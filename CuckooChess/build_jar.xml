@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project CuckooChess">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="create_run_jar">
+        <jar destfile="deploy/CuckooChess.jar"
+        	filesetmanifest="skip"
+        	update="false" duplicate="fail">
+            <manifest>
+                <attribute name="Main-Class" value="tui.Main"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+
+        	<fileset dir="../CuckooChessEngine/bin">
+        	  <include name="**/*"/>
+        	  <exclude name="**/*Test.class"/>
+        	</fileset>
+        	<fileset dir="../CuckooChessEngine">
+        		<include name="src/**/*.java"/>
+        		<include name="test/**/*.java"/>
+        	</fileset>
+            	
+        	<fileset dir="bin">
+        	  <include name="**/*"/>
+        	  <exclude name="**/*Test.class"/>
+        	</fileset>
+        	<fileset dir=".">
+        		<include name="src/**/*.java"/>
+        		<include name="test/**/*.java"/>
+        	</fileset>
+        </jar>
+    </target>
+</project>
