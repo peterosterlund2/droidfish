@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content">
+	
+	<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:stretchColumns="1">
+    <TableRow>
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Before">
+		</TextView>
+		<EditText
+			android:id="@+id/ed_comments_pre" 
+			android:background="@android:drawable/editbox_background"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:lines="2"
+			android:inputType="textMultiLine">
+		</EditText>
+    </TableRow>
+
+    <TableRow>
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Move">
+		</TextView>
+		<LinearLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content">
+			android:layout_weight="1"
+			<TextView
+				android:id="@+id/ed_comments_move" 
+				android:background="@android:drawable/editbox_background"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:lines="1"
+				android:inputType="text">
+			</TextView>
+			<EditText
+				android:id="@+id/ed_comments_nag" 
+				android:background="@android:drawable/editbox_background"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:lines="1"
+				android:minEms="3"
+				android:inputType="text">
+			</EditText>
+		</LinearLayout>
+    </TableRow>
+
+    <TableRow>
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="After">
+		</TextView>
+		<EditText
+			android:id="@+id/ed_comments_post" 
+			android:background="@android:drawable/editbox_background"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:lines="5"
+			android:inputType="textMultiLine">
+		</EditText>
+    </TableRow>
+	</TableLayout>
+
+	<LinearLayout
+	    android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+		<Button
+			android:id="@+id/ed_comments_cancel"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="Cancel">
+		</Button>
+		<Button
+			android:id="@+id/ed_comments_ok"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="Ok">
+		</Button>
+	</LinearLayout>
+
+</LinearLayout>

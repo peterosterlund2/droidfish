@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory
+		android:title="Playing Options">
+		<CheckBoxPreference
+			android:key="boardFlipped"
+			android:title="Flip Board"
+			android:summary="View board from black side"
+			android:defaultValue="false">
+		</CheckBoxPreference>
+		<CheckBoxPreference
+			android:key="autoSwapSides"
+			android:title="Auto Swap Sides"
+			android:summary="Automatically swap sides when new game started. Also overrides Flip Board setting"
+			android:defaultValue="false">
+		</CheckBoxPreference>
+	</PreferenceCategory>
+    <PreferenceCategory
+        android:title="Engine Settings">
+        <ListPreference
+            android:key="engine"
+            android:title="Engine"
+            android:summary="Chess Engine"
+            android:entryValues="@array/engine_values"
+            android:entries="@array/engine_texts"
+            android:defaultValue="stockfish">
+        </ListPreference>
+        <org.petero.droidfish.SeekBarPreference
+            android:key="strength"
+            android:defaultValue="1000"
+            android:title="Strength">
+        </org.petero.droidfish.SeekBarPreference>
+        <CheckBoxPreference
+            android:key="ponderMode"
+            android:title="Pondering"
+            android:summary="Let engine think while waiting for opponent's move"
+            android:defaultValue="false">
+        </CheckBoxPreference>
+        <ListPreference
+            android:key="threads"
+            android:title="Threads"
+            android:summary="Number of engine threads (CPU cores) to use"
+            android:entryValues="@array/engine_threads_values"
+            android:entries="@array/engine_threads_texts"
+            android:defaultValue="0">
+        </ListPreference>
+    </PreferenceCategory>
+	<PreferenceCategory
+		android:title="Time Control">
+		<ListPreference
+			android:key="movesPerSession"
+			android:title="Moves"
+			android:summary="Number of moves between time controls"
+			android:entryValues="@array/moves_per_session_values"
+			android:entries="@array/moves_per_session_texts"
+			android:defaultValue="60">
+		</ListPreference>
+		<ListPreference
+			android:key="timeControl"
+			android:title="Time"
+			android:summary="Maximum thinking time between time controls"
+			android:entryValues="@array/time_control_values"
+			android:entries="@array/time_control_texts"
+			android:defaultValue="300000">
+		</ListPreference>
+		<ListPreference
+			android:key="timeIncrement"
+			android:title="Increment"
+			android:summary="Extra thinking time for each completed move"
+			android:entryValues="@array/time_increment_values"
+			android:entries="@array/time_increment_texts"
+			android:defaultValue="0">
+		</ListPreference>
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="Hints">
+		<CheckBoxPreference
+			android:key="showThinking"
+			android:title="Show Computer Thinking"
+			android:summary="Display computer algorithm information during search"
+			android:defaultValue="false">
+		</CheckBoxPreference>
+		<CheckBoxPreference
+			android:key="whiteBasedScores"
+			android:title="White-based scores"
+			android:summary="Positive analysis scores are good for white"
+			android:defaultValue="false">
+		</CheckBoxPreference>
+		<CheckBoxPreference
+			android:key="bookHints"
+			android:title="Show Book Hints"
+			android:summary="Display opening book move hints for human player"
+			android:defaultValue="false">
+		</CheckBoxPreference>
+		<ListPreference
+			android:key="thinkingArrows"
+			android:title="Use Arrows"
+			android:summary="Use arrows to display moves on chess board"
+			android:entryValues="@array/thinking_arrows_values"
+			android:entries="@array/thinking_arrows_texts"
+			android:defaultValue="2">
+		</ListPreference>
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="User Interface">
+		<CheckBoxPreference
+			android:key="animateMoves"
+			android:title="Animate Moves"
+			android:summary="Animate piece movements"
+			android:defaultValue="true">
+		</CheckBoxPreference>
+		<CheckBoxPreference
+			android:key="oneTouchMoves"
+			android:title="One Touch Moves"
+			android:summary="Touching a square that corresponds to one unique move makes that move immediately"
+			android:defaultValue="false">
+		</CheckBoxPreference>
+		<CheckBoxPreference
+			android:key="soundEnabled"
+			android:title="Enable Sounds"
+			android:summary="Play sound when computer makes a move"
+			android:defaultValue="false">
+		</CheckBoxPreference>
+		<CheckBoxPreference
+			android:key="fullScreenMode"
+			android:title="Fullscreen Mode"
+			android:summary="Fullscreen mode hides the status bar"
+			android:defaultValue="false">
+		</CheckBoxPreference>
+        <CheckBoxPreference
+            android:key="wakeLock"
+            android:title="Disable Screen Timeout"
+            android:defaultValue="false">
+        </CheckBoxPreference>
+		<CheckBoxPreference
+			android:key="drawSquareLabels"
+			android:title="Square Labels"
+			android:summary="Display square labels: a-h and 1-8"
+			android:defaultValue="false">
+		</CheckBoxPreference>
+		<ListPreference
+			android:key="scrollSensitivity"
+			android:title="Scrolling Speed"
+			android:summary="Scrolling speed for game navigation"
+			android:entryValues="@array/scroll_sensitivity_values"
+			android:entries="@array/scroll_sensitivity_texts"
+			android:defaultValue="2">
+		</ListPreference>
+		<CheckBoxPreference
+			android:key="invertScrollDirection"
+			android:title="Invert Scroll Direction"
+			android:summary="Enable this if you think scrolling moves in the wrong direction"
+			android:defaultValue="false">
+		</CheckBoxPreference>
+		<ListPreference
+			android:key="fontSize"
+			android:title="Text Size"
+			android:summary="Font size for move list and game information"
+			android:entryValues="@array/font_size_values"
+			android:entries="@array/font_size_texts"
+			android:defaultValue="12">
+		</ListPreference>
+        <CheckBoxPreference
+            android:key="largeButtons"
+            android:title="Large Buttons"
+            android:summary="Use large buttons for game navigation and mode setting"
+            android:defaultValue="false">
+        </CheckBoxPreference>
+		<PreferenceScreen
+			android:key="colors"
+			android:title="Color Settings"
+			android:summary="Change individual colors">
+			<PreferenceCategory
+				android:title="Chess Board">
+				<EditTextPreference
+					android:key="color_brightSquare"
+					android:title="Bright Squares"
+					android:defaultValue="#FFFFFFFA">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_darkSquare"
+					android:title="Dark Squares"
+					android:defaultValue="#FF83A5D2">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_selectedSquare"
+					android:title="Selected Square"
+					android:defaultValue="#FF3232D1">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_cursorSquare"
+					android:title="Trackball Cursor"
+					android:defaultValue="#FF5F5FFD">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_brightPiece"
+					android:title="White Pieces"
+					android:defaultValue="#FFF0F0F0">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_darkPiece"
+					android:title="Black Pieces"
+					android:defaultValue="#FF282828">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_arrow0"
+					android:title="Arrow 1"
+					android:defaultValue="#A01F1FFF">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_arrow1"
+					android:title="Arrow 2"
+					android:defaultValue="#A01FFF1F">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_arrow2"
+					android:title="Arrow 3"
+					android:defaultValue="#501F1FFF">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_arrow3"
+					android:title="Arrow 4"
+					android:defaultValue="#501FFF1F">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_arrow4"
+					android:title="Arrow 5"
+					android:defaultValue="#1E1F1FFF">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_arrow5"
+					android:title="Arrow 6"
+					android:defaultValue="#281FFF1F">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_squareLabel"
+					android:title="Square Labels"
+					android:defaultValue="#FFFF0000">
+				</EditTextPreference>
+			</PreferenceCategory>
+			<PreferenceCategory
+				android:title="Move List">
+				<EditTextPreference
+					android:key="color_currentMove"
+					android:title="Current Move"
+					android:defaultValue="#FF3333FF">
+				</EditTextPreference>
+			</PreferenceCategory>
+		</PreferenceScreen>
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="Other">
+        <PreferenceScreen
+            android:key="bookSettings"
+            android:title="Opening Book Settings"
+            android:summary="Settings for opening book usage">
+            <ListPreference
+                android:key="bookMaxLength"
+                android:title="Book Length"
+                android:summary="Maximum book line length"
+                android:entryValues="@array/book_line_length_values"
+                android:entries="@array/book_line_length_texts"
+                android:defaultValue="1000000">
+            </ListPreference>
+            <CheckBoxPreference
+                android:key="bookPreferMainLines"
+                android:title="Prefer main lines"
+                android:summary="Prefer book moves marked as main moves"
+                android:defaultValue="false">
+            </CheckBoxPreference>
+            <CheckBoxPreference
+                android:key="bookTournamentMode"
+                android:title="Tournament mode"
+                android:summary="Ignore moves marked as not for tournament play"
+                android:defaultValue="false">
+            </CheckBoxPreference>
+            <org.petero.droidfish.SeekBarPreference
+                android:key="bookRandom"
+                android:defaultValue="500"
+                android:title="Book Randomization">
+            </org.petero.droidfish.SeekBarPreference>
+    		<EditTextPreference
+                android:key="bookFile"
+                android:title="Book Filename"
+                android:summary="Polyglot or CTG book file in DroidFish directory on SD Card"
+                android:defaultValue="">
+            </EditTextPreference>
+		</PreferenceScreen>
+		<PreferenceScreen
+			android:key="pgnSettings"
+			android:title="PGN Settings"
+			android:summary="Settings for import and export of portable game notation (PGN) data">
+			<PreferenceCategory
+				android:title="PGN viewer">
+				<CheckBoxPreference
+					android:key="viewVariations"
+					android:title="Variations"
+					android:summary="Include non-mainline moves"
+					android:defaultValue="true">
+				</CheckBoxPreference>
+				<CheckBoxPreference
+					android:key="viewComments"
+					android:title="Comments"
+					android:summary="Include user written comments"
+					android:defaultValue="true">
+				</CheckBoxPreference>
+				<CheckBoxPreference
+					android:key="viewNAG"
+					android:title="Annotations"
+					android:summary="Include numeric annotation glyphs (NAGs), such as ! and ?"
+					android:defaultValue="true">
+				</CheckBoxPreference>
+				<CheckBoxPreference
+					android:key="viewHeaders"
+					android:title="Headers"
+					android:summary="Show PGN header lines"
+					android:defaultValue="false">
+				</CheckBoxPreference>
+			</PreferenceCategory>
+			<PreferenceCategory
+				android:title="PGN import">
+				<CheckBoxPreference
+					android:key="importVariations"
+					android:title="Variations"
+					android:summary="Include non-mainline moves"
+					android:defaultValue="true">
+				</CheckBoxPreference>
+				<CheckBoxPreference
+					android:key="importComments"
+					android:title="Comments"
+					android:summary="Include user written comments"
+					android:defaultValue="true">
+				</CheckBoxPreference>
+				<CheckBoxPreference
+					android:key="importNAG"
+					android:title="Annotations"
+					android:summary="Include numeric annotation glyphs (NAGs), such as ! and ?"
+					android:defaultValue="true">
+				</CheckBoxPreference>
+			</PreferenceCategory>
+			<PreferenceCategory
+				android:title="PGN export">
+				<CheckBoxPreference
+					android:key="exportVariations"
+					android:title="Variations"
+					android:summary="Include non-mainline moves"
+					android:defaultValue="true">
+				</CheckBoxPreference>
+				<CheckBoxPreference
+					android:key="exportComments"
+					android:title="Comments"
+					android:summary="Include user written comments"
+					android:defaultValue="true">
+				</CheckBoxPreference>
+				<CheckBoxPreference
+					android:key="exportNAG"
+					android:title="Annotations"
+					android:summary="Include numeric annotation glyphs (NAGs), such as ! and ?"
+					android:defaultValue="true">
+				</CheckBoxPreference>
+				<CheckBoxPreference
+					android:key="exportPlayerAction"
+					android:title="Player Actions"
+					android:summary="Include information about draw and resign actions"
+					android:defaultValue="false">
+				</CheckBoxPreference>
+				<CheckBoxPreference
+					android:key="exportTime"
+					android:title="Clock"
+					android:summary="Include time information for each move"
+					android:defaultValue="false">
+				</CheckBoxPreference>
+			</PreferenceCategory>
+		</PreferenceScreen>
+	</PreferenceCategory>
+</PreferenceScreen>

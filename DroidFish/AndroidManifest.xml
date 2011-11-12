@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="org.petero.droidfish"
+      android:versionCode="42"
+      android:versionName="1.36"
+      android:installLocation="auto">
+    <supports-screens android:largeScreens="true"
+                      android:anyDensity="true" />
+    <application android:icon="@drawable/icon"
+    			 android:label="@string/app_name"
+    			 android:debuggable="false">
+        <activity android:name=".DroidFish"
+                  android:label="@string/app_name"
+                  android:configChanges="orientation">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/x-chess-pgn" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.Preferences"
+        		  android:label="Preferences">
+        </activity>
+        <activity android:name=".activities.EditBoard"
+        		  android:label="Edit Board"
+                  android:configChanges="orientation">
+        </activity>
+        <activity android:name=".activities.EditPGNLoad"
+        		  android:label="Edit File / Load Game"
+        		  android:configChanges="orientation">
+        </activity>
+        <activity android:name=".activities.EditPGNSave"
+        		  android:label="Edit File / Save Game"
+        		  android:configChanges="orientation">
+        </activity>
+        <activity android:name=".activities.LoadScid"
+                  android:label="Load Scid Game"
+                  android:configChanges="orientation">
+        </activity>
+        <activity android:name=".activities.CPUWarning"
+        		  android:label="CPU Warning">
+        </activity>
+        <activity android:name=".activities.EditHeaders"
+        		  android:label="Edit Headers">
+        </activity>
+        <activity android:name=".activities.EditComments"
+        		  android:label="Edit Comments">
+        </activity>
+    </application>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-sdk android:minSdkVersion="3"
+              android:targetSdkVersion="10"/>
+</manifest>

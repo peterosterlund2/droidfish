@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+  		android:id="@+id/item_new_game"
+	  	android:title="New Game"
+  		android:icon="@drawable/start">
+	</item>
+	<item
+		android:id="@+id/item_file_menu"
+		android:title="File"
+  		android:icon="@android:drawable/ic_menu_save">
+	</item>
+	<item
+		android:id="@+id/item_resign"
+		android:title="Resign game"
+  		android:icon="@android:drawable/ic_menu_delete">
+	</item>
+	<item
+  		android:id="@+id/item_editboard"
+	  	android:title="Edit Board"
+  		android:icon="@drawable/edit">
+	</item>
+	<item
+	 	android:id="@+id/item_settings"
+	  	android:title="Settings"
+  		android:icon="@android:drawable/ic_menu_preferences">
+	</item>
+    <item
+        android:id="@+id/item_goto_move"
+        android:title="Goto Move"
+        android:icon="@android:drawable/ic_menu_mylocation">
+    </item>
+	<item
+		android:id="@+id/item_force_move"
+		android:title="Force Computer Move">
+	</item>
+	<item
+		android:id="@+id/item_draw"
+		android:title="Claim/Offer/Accept Draw">
+	</item>
+	<item
+		android:id="@+id/select_book"
+		android:title="Select Opening Book">
+	</item>
+	<item
+		android:id="@+id/set_color_theme"
+		android:title="Set Color Theme">
+	</item>
+	<item
+		android:id="@+id/item_about"
+		android:title="About / Help">
+	</item>
+</menu>

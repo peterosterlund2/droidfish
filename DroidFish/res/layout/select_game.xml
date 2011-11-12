@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:orientation="vertical">
+  <EditText
+  	android:text=""
+  	android:id="@+id/select_game_filter"
+  	android:hint="Filter text"
+  	android:layout_width="fill_parent"
+  	android:layout_height="wrap_content"
+  	android:maxLines="1"
+  	android:inputType="text">
+  </EditText>
+  <ListView
+    android:id="@android:id/list"
+    android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:focusable="false">
+  </ListView>
+</LinearLayout>
