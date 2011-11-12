@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">CuckooChess</string>
+  <string-array name="thinking_times_texts">
+    <item>Easy</item>
+    <item>1s</item>
+    <item>5s</item>
+    <item>10s</item>
+    <item>30s</item>
+    <item>60s</item>
+  </string-array>
+  <string-array name="thinking_times_values">
+    <item>-1</item>
+    <item>1000</item>
+    <item>5000</item>
+    <item>10000</item>
+    <item>30000</item>
+    <item>60000</item>
+  </string-array>
+  <string-array name="font_size_texts">
+    <item>Small</item>
+    <item>Medium</item>
+    <item>Large</item>
+  </string-array>
+  <string-array name="font_size_values">
+    <item>10</item>
+    <item>12</item>
+    <item>16</item>
+  </string-array>
+</resources>

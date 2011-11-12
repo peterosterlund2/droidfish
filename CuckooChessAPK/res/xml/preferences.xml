@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+<CheckBoxPreference
+	android:title="Play White"
+	android:key="playerWhite"
+	android:defaultValue="true">
+</CheckBoxPreference>
+<CheckBoxPreference
+	android:title="Flip Board"
+	android:key="boardFlipped"
+	android:defaultValue="false">
+</CheckBoxPreference>
+<ListPreference
+	android:title="Thinking Time"
+	android:key="timeLimit"
+	android:entryValues="@array/thinking_times_values"
+	android:entries="@array/thinking_times_texts"
+	android:defaultValue="5000">
+</ListPreference>
+<CheckBoxPreference
+	android:title="Show Computer Thinking"
+	android:key="showThinking"
+	android:defaultValue="false">
+</CheckBoxPreference>
+<ListPreference
+	android:title="Text Size"
+	android:key="fontSize"
+	android:entryValues="@array/font_size_values"
+	android:entries="@array/font_size_texts"
+	android:defaultValue="12">
+</ListPreference>
+</PreferenceScreen>

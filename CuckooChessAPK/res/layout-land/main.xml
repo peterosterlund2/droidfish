@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+	<view
+		class="org.petero.cuckoochess.ChessBoard"
+    	android:id="@+id/chessboard"
+	    android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"/>
+	<LinearLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+    	android:orientation="vertical"
+	    android:layout_width="fill_parent"
+    	android:layout_height="fill_parent">
+	<TextView
+	    android:id="@+id/status"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:includeFontPadding="true"
+	    android:typeface="monospace"
+	    android:textSize="10dip"/>
+	<ScrollView
+		android:id="@+id/scrollView"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="1">
+		<TextView
+		    android:id="@+id/moveList"
+		    android:layout_width="fill_parent" 
+		    android:layout_height="wrap_content" 
+		    android:includeFontPadding="true"
+		    android:typeface="monospace"
+		    android:textSize="10dip"/>
+   	</ScrollView>
+	<TextView
+	    android:id="@+id/thinking"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:includeFontPadding="true"
+	    android:typeface="monospace"
+	    android:textSize="10dip"/>
+	</LinearLayout>
+</LinearLayout>
