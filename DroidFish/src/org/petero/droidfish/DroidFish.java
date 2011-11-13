@@ -100,7 +100,6 @@ import android.widget.Toast;
 
 public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! book.txt (and test classes) should not be included in apk
-    // FIXME!!! There should only be one Book.java file
     // FIXME!!! Current position in game should be visible: moveListScroll.scrollTo(0, y);
 
     // FIXME!!! PGN view option: game continuation (for training)
