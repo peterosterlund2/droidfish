@@ -41,7 +41,7 @@ public class GameTree {
     String timeControl;
 
     // Non-standard tags
-    static private class TagPair {
+    static private final class TagPair {
         String tagName;
         String tagValue;
     }
@@ -1373,10 +1373,20 @@ public class GameTree {
             else if (tag.equals("White")) white = val;
             else if (tag.equals("Black")) black = val;
             else {
-                TagPair tp = new TagPair();
-                tp.tagName = tag;
-                tp.tagValue = val;
-                tagPairs.add(tp);
+                boolean found = false;
+                for (TagPair t : tagPairs) {
+                    if (t.tagName.equals(tag)) {
+                        t.tagValue = val;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    TagPair tp = new TagPair();
+                    tp.tagName = tag;
+                    tp.tagValue = val;
+                    tagPairs.add(tp);
+                }
             }
         }
     }
