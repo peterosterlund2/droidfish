@@ -948,8 +948,7 @@ public class DroidFish extends Activity implements GUIInterface {
     static private final int THINKING_MENU_DIALOG = 11;
     static private final int GO_BACK_MENU_DIALOG = 12;
     static private final int GO_FORWARD_MENU_DIALOG = 13;
-    static private final int SELECT_SCID_FILE_DIALOG = 14;
-    static private final int FILE_MENU_DIALOG = 15;
+    static private final int FILE_MENU_DIALOG = 14;
 
     @Override
     protected Dialog onCreateDialog(int id) {
@@ -1022,8 +1021,7 @@ public class DroidFish extends Activity implements GUIInterface {
                         showDialog(SELECT_PGN_FILE_DIALOG);
                         break;
                     case LOAD_SCID_GAME:
-                        removeDialog(SELECT_SCID_FILE_DIALOG);
-                        showDialog(SELECT_SCID_FILE_DIALOG);
+                        selectScidFile();
                         break;
                     case SAVE_GAME:
                         removeDialog(SELECT_PGN_FILE_SAVE_DIALOG);
@@ -1062,8 +1060,7 @@ public class DroidFish extends Activity implements GUIInterface {
                         showDialog(SELECT_PGN_FILE_SAVE_DIALOG);
                         break;
                     case LOAD_SCID_GAME:
-                        removeDialog(SELECT_SCID_FILE_DIALOG);
-                        showDialog(SELECT_SCID_FILE_DIALOG);
+                        selectScidFile();
                         break;
                     }
                 }
@@ -1202,14 +1199,6 @@ public class DroidFish extends Activity implements GUIInterface {
             });
             AlertDialog alert = builder.create();
             return alert;
-        }
-        case SELECT_SCID_FILE_DIALOG: {
-            Intent intent = new Intent();
-            intent.setComponent(new ComponentName("org.scid.android",
-                                                  "org.scid.android.SelectFileActivity"));
-            intent.setAction(".si4");
-            startActivityForResult(intent, RESULT_SELECT_SCID);
-            return null;
         }
         case SELECT_PGN_FILE_SAVE_DIALOG: {
             final String[] fileNames = findFilesInDirectory(pgnDir, null);
@@ -1566,6 +1555,14 @@ public class DroidFish extends Activity implements GUIInterface {
         }
         }
         return null;
+    }
+
+    private final void selectScidFile() {
+        Intent intent = new Intent();
+        intent.setComponent(new ComponentName("org.scid.android",
+                                              "org.scid.android.SelectFileActivity"));
+        intent.setAction(".si4");
+        startActivityForResult(intent, RESULT_SELECT_SCID);
     }
 
     final static int FT_NONE = 0;
