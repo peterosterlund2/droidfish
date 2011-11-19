@@ -1068,7 +1068,6 @@ split_point_start: // At split points actual search starts from here
               ss->reduction = reduction<PvNode>(depth, moveCount);
               if (ss->reduction)
               {
-                  alpha = SpNode ? sp->alpha : alpha;
                   Depth d = newDepth - ss->reduction;
                   value = -search<NonPV>(pos, ss+1, -(alpha+1), -alpha, d);
 
