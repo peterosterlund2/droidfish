@@ -947,8 +947,7 @@ public class Evaluate {
             // King + minor piece vs king + minor piece is a draw
             return 0;
         }
-        if (!handled && (pos.wMtrl == qV) && (pos.bMtrl == pV) &&
-            (Long.bitCount(pos.pieceTypeBB[Piece.WQUEEN]) == 1)) {
+        if (!handled && (pos.wMtrl == qV) && (pos.bMtrl == pV) && (pos.pieceTypeBB[Piece.WQUEEN] != 0)) {
             int wk = BitBoard.numberOfTrailingZeros(pos.pieceTypeBB[Piece.WKING]);
             int wq = BitBoard.numberOfTrailingZeros(pos.pieceTypeBB[Piece.WQUEEN]);
             int bk = BitBoard.numberOfTrailingZeros(pos.pieceTypeBB[Piece.BKING]);
@@ -956,15 +955,26 @@ public class Evaluate {
             score = evalKQKP(wk, wq, bk, bp);
             handled = true;
         }
-        if (!handled && (pos.wMtrl == rV) && (pos.bMtrl == pV) &&
-                (Long.bitCount(pos.pieceTypeBB[Piece.WROOK]) == 1)) {
-            int bp = BitBoard.numberOfTrailingZeros(pos.pieceTypeBB[Piece.BPAWN]);
-            score = krkpEval(pos.getKingSq(true), pos.getKingSq(false),
-                             bp, pos.whiteMove);
-            handled = true;
+        if (!handled && (pos.wMtrl == rV) && (pos.pieceTypeBB[Piece.WROOK] != 0)) {
+            if (pos.bMtrl == pV) {
+                int bp = BitBoard.numberOfTrailingZeros(pos.pieceTypeBB[Piece.BPAWN]);
+                score = krkpEval(pos.getKingSq(true), pos.getKingSq(false),
+                        bp, pos.whiteMove);
+                handled = true;
+            } else if ((pos.bMtrl == bV) && (pos.pieceTypeBB[Piece.BBISHOP] != 0)) {
+                score /= 8;
+                final int kSq = pos.getKingSq(false);
+                final int x = Position.getX(kSq);
+                final int y = Position.getY(kSq);
+                if ((pos.pieceTypeBB[Piece.BBISHOP] & BitBoard.maskDarkSq) != 0) {
+                    score += (7 - distToH1A8[7-y][7-x]) * 7;
+                } else {
+                    score += (7 - distToH1A8[7-y][x]) * 7;
+                }
+                handled = true;
+            }
         }
-        if (!handled && (pos.bMtrl == qV) && (pos.wMtrl == pV) && 
-            (Long.bitCount(pos.pieceTypeBB[Piece.BQUEEN]) == 1)) {
+        if (!handled && (pos.bMtrl == qV) && (pos.wMtrl == pV) && (pos.pieceTypeBB[Piece.BQUEEN] != 0)) {
             int bk = BitBoard.numberOfTrailingZeros(pos.pieceTypeBB[Piece.BKING]);
             int bq = BitBoard.numberOfTrailingZeros(pos.pieceTypeBB[Piece.BQUEEN]);
             int wk = BitBoard.numberOfTrailingZeros(pos.pieceTypeBB[Piece.WKING]);
@@ -972,12 +982,24 @@ public class Evaluate {
             score = -evalKQKP(63-bk, 63-bq, 63-wk, 63-wp);
             handled = true;
         }
-        if (!handled && (pos.bMtrl == rV) && (pos.wMtrl == pV) &&
-                (Long.bitCount(pos.pieceTypeBB[Piece.BROOK]) == 1)) {
-            int wp = BitBoard.numberOfTrailingZeros(pos.pieceTypeBB[Piece.WPAWN]);
-            score = -krkpEval(63-pos.getKingSq(false), 63-pos.getKingSq(true),
-                             63-wp, !pos.whiteMove);
-            handled = true;
+        if (!handled && (pos.bMtrl == rV) && (pos.pieceTypeBB[Piece.BROOK] != 0)) {
+            if (pos.wMtrl == pV) {
+                int wp = BitBoard.numberOfTrailingZeros(pos.pieceTypeBB[Piece.WPAWN]);
+                score = -krkpEval(63-pos.getKingSq(false), 63-pos.getKingSq(true),
+                        63-wp, !pos.whiteMove);
+                handled = true;
+            } else if ((pos.wMtrl == bV) && (pos.pieceTypeBB[Piece.WBISHOP] != 0)) {
+                score /= 8;
+                final int kSq = pos.getKingSq(true);
+                final int x = Position.getX(kSq);
+                final int y = Position.getY(kSq);
+                if ((pos.pieceTypeBB[Piece.WBISHOP] & BitBoard.maskDarkSq) != 0) {
+                    score -= (7 - distToH1A8[7-y][7-x]) * 7;
+                } else {
+                    score -= (7 - distToH1A8[7-y][x]) * 7;
+                }
+                handled = true;
+            }
         }
         if (!handled && (score > 0)) {
             if ((wMtrlPawns == 0) && (wMtrlNoPawns <= bMtrlNoPawns + bV)) {

@@ -371,8 +371,8 @@ public class Position {
     }
 
 
-    public final int getKingSq(boolean whiteMove) {
-        return whiteMove ? wKingSq : bKingSq;
+    public final int getKingSq(boolean white) {
+        return white ? wKingSq : bKingSq;
     }
 
     /** Apply a move to the current position. */

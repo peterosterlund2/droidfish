@@ -301,6 +301,15 @@ public class EvaluateTest {
         pos = TextIO.readFEN("rk/p/8/8/8/8/NKR/8 w - - 0 1");
         score = evalWhite(pos);
         assertTrue(score < nV - 2 * pV);
+        
+        // KRKB, defending king should prefer corner that bishop cannot attack
+        pos = TextIO.readFEN("6B1/8/8/8/8/2k5/4r3/2K5 w - - 0 93");
+        score = evalWhite(pos);
+        assertTrue(score >= -pV);
+        score = moveScore(pos, "Kd1");
+        assertTrue(score < 0);
+        score = moveScore(pos, "Kb1");
+        assertTrue(score > 0);
     }
 
     /**
