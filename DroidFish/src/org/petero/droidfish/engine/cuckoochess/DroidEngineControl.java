@@ -90,7 +90,7 @@ public class DroidEngineControl {
             os.printf("info currmove %s currmovenumber %d%n", moveToString(m), moveNr);
         }
 
-        public void notifyPV(int depth, int score, int time, int nodes, int nps, boolean isMate,
+        public void notifyPV(int depth, int score, int time, long nodes, int nps, boolean isMate,
                 boolean upperBound, boolean lowerBound, ArrayList<Move> pv) {
             StringBuilder pvBuf = new StringBuilder();
             for (Move m : pv) {
@@ -107,7 +107,7 @@ public class DroidEngineControl {
                     depth, isMate ? "mate" : "cp", score, bound, time, nodes, nps, pvBuf.toString());
         }
 
-        public void notifyStats(int nodes, int nps, int time) {
+        public void notifyStats(long nodes, int nps, int time) {
             os.printf("info nodes %d nps %d time %d%n", nodes, nps, time);
         }
     }

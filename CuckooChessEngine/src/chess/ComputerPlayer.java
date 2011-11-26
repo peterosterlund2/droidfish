@@ -30,7 +30,7 @@ public class ComputerPlayer implements Player {
     public static final String engineName;
 
     static {
-        String name = "CuckooChess 1.13a3";
+        String name = "CuckooChess 1.13a4";
         String m = System.getProperty("sun.arch.data.model");
         if ("32".equals(m))
             name += " 32-bit";

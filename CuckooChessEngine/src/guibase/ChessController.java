@@ -58,7 +58,7 @@ public class ChessController {
         int currDepth = 0;
         int currMoveNr = 0;
         String currMove = "";
-        int currNodes = 0;
+        long currNodes = 0;
         int currNps = 0;
         int currTime = 0;
 
@@ -106,7 +106,7 @@ public class ChessController {
             setSearchInfo();
         }
 
-        public void notifyPV(int depth, int score, int time, int nodes, int nps, boolean isMate,
+        public void notifyPV(int depth, int score, int time, long nodes, int nps, boolean isMate,
                 boolean upperBound, boolean lowerBound, ArrayList<Move> pv) {
             pvDepth = depth;
             pvScore = score;
@@ -128,7 +128,7 @@ public class ChessController {
             setSearchInfo();
         }
 
-        public void notifyStats(int nodes, int nps, int time) {
+        public void notifyStats(long nodes, int nps, int time) {
             currNodes = nodes;
             currNps = nps;
             currTime = time;

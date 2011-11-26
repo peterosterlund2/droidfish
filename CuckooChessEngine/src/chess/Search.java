@@ -64,7 +64,7 @@ public class Search {
     long minTimeMillis;     // Minimum recommended thinking time
     long maxTimeMillis;     // Maximum allowed thinking time
     boolean searchNeedMoreTime; // True if negaScout should use up to maxTimeMillis time.
-    private int maxNodes;   // Maximum number of nodes to search (approximately)
+    private long maxNodes;  // Maximum number of nodes to search (approximately)
     int nodesToGo;          // Number of nodes until next time check
     public int nodesBetweenTimeCheck = 5000; // How often to check remaining time
 
@@ -74,11 +74,11 @@ public class Search {
     long randomSeed = 0;
 
     // Search statistics stuff
-    int nodes;
-    int qNodes;
+    long nodes;
+    long qNodes;
     int[] nodesPlyVec;
     int[] nodesDepthVec;
-    int totalNodes;
+    long totalNodes;
     long tLastStats;        // Time when notifyStats was last called
     boolean verbose;
     
@@ -124,9 +124,9 @@ public class Search {
     public interface Listener {
         public void notifyDepth(int depth);
         public void notifyCurrMove(Move m, int moveNr);
-        public void notifyPV(int depth, int score, int time, int nodes, int nps,
+        public void notifyPV(int depth, int score, int time, long nodes, int nps,
                 boolean isMate, boolean upperBound, boolean lowerBound, ArrayList<Move> pv);
-        public void notifyStats(int nodes, int nps, int time);
+        public void notifyStats(long nodes, int nps, int time);
     }
 
     Listener listener;
@@ -136,7 +136,7 @@ public class Search {
 
     private final static class MoveInfo {
         Move move;
-        int nodes;
+        long nodes;
         MoveInfo(Move m, int n) { move = m;  nodes = n; }
         public static final class SortByScore implements Comparator<MoveInfo> {
             public int compare(MoveInfo mi1, MoveInfo mi2) {
@@ -157,7 +157,13 @@ public class Search {
                     return 1;
                 if (mi2 == null)
                     return -1;
-                return mi2.nodes - mi1.nodes;
+                long d = mi2.nodes - mi1.nodes;
+                if (d < 0)
+                    return -1;
+                else if (d > 0)
+                    return 1;
+                else
+                    return 0;
             }
         }
     }
@@ -176,7 +182,7 @@ public class Search {
     }
 
     final public Move iterativeDeepening(MoveGen.MoveList scMovesIn,
-            int maxDepth, int initialMaxNodes, boolean verbose) {
+            int maxDepth, long initialMaxNodes, boolean verbose) {
         tStart = System.currentTimeMillis();
 //        log = TreeLogger.getWriter("/home/petero/treelog.dmp", pos);
         totalNodes = 0;
@@ -234,8 +240,8 @@ public class Search {
                             lmrS = plyScale;
                     }
                 }
-/*                int nodes0 = nodes;
-                int qNodes0 = qNodes;
+/*                long nodes0 = nodes;
+                long qNodes0 = qNodes;
                 System.out.printf("%2d %5s %5d %5d %6s %6s ",
                         mi, "-", alpha, beta, "-", "-");
                 System.out.printf("%-6s...\n", TextIO.moveToUCIString(m)); */
@@ -249,7 +255,7 @@ public class Search {
                     sti.lmr = 0;
                     score = -negaScout(-beta, -alpha, 1, depthS - plyScale, -1, givesCheck);
                 }
-                int nodesThisMove = nodes + qNodes;
+                long nodesThisMove = nodes + qNodes;
                 posHashListSize--;
                 pos.unMakeMove(m, ui);
                 {
@@ -749,8 +755,8 @@ public class Search {
                 nodes++;
                 totalNodes++;
                 sti.currentMove = m;
-/*              int nodes0 = nodes;
-                int qNodes0 = qNodes;
+/*              long nodes0 = nodes;
+                long qNodes0 = qNodes;
                 if ((ply < 3) && (newDepth > plyScale)) {
                     System.out.printf("%2d %5s %5d %5d %6s %6s ",
                             mi, "-", alpha, beta, "-", "-");
