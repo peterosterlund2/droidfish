@@ -28,6 +28,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 
 import org.petero.droidfish.PGNOptions;
 import org.petero.droidfish.gamelogic.Game.GameState;
@@ -1362,10 +1363,9 @@ public class GameTree {
         }
     }
 
-    void setHeaders(ArrayList<String> tags, ArrayList<String> vals) {
-        for (int i = 0 ; i < tags.size(); i++) {
-            String tag = tags.get(i);
-            String val = vals.get(i);
+    void setHeaders(Map<String,String> headers) {
+        for (String tag : headers.keySet()) {
+            String val = headers.get(tag);
             if (tag.equals("Event")) event = val;
             else if (tag.equals("Site")) site = val;
             else if (tag.equals("Date")) date = val;
@@ -1391,16 +1391,16 @@ public class GameTree {
         }
     }
 
-    void getHeaders(ArrayList<String> tags, ArrayList<String> vals) {
-        tags.add("Event"); vals.add(event);
-        tags.add("Site");  vals.add(site);
-        tags.add("Date");  vals.add(date);
-        tags.add("Round"); vals.add(round);
-        tags.add("White"); vals.add(white);
-        tags.add("Black"); vals.add(black);
+    void getHeaders(Map<String,String> headers) {
+        headers.put("Event", event);
+        headers.put("Site",  site);
+        headers.put("Date",  date);
+        headers.put("Round", round);
+        headers.put("White", white);
+        headers.put("Black", black);
         for (int i = 0; i < tagPairs.size(); i++) {
-            tags.add(tagPairs.get(i).tagName);
-            vals.add(tagPairs.get(i).tagValue);
+            TagPair tp = tagPairs.get(i);
+            headers.put(tp.tagName, tp.tagValue);
         }
     }
 }

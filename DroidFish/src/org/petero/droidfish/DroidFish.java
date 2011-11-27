@@ -1339,10 +1339,9 @@ public class DroidFish extends Activity implements GUIInterface {
                 public void onClick(DialogInterface dialog, int item) {
                     switch (finalActions.get(item)) {
                     case EDIT_HEADERS: {
-                        ArrayList<String> tags = new ArrayList<String>();
-                        ArrayList<String> tagValues = new ArrayList<String>();
-                        ctrl.getHeaders(tags, tagValues);
-                    	
+                        final TreeMap<String,String> headers = new TreeMap<String,String>();
+                        ctrl.getHeaders(headers);
+
                     	AlertDialog.Builder builder = new AlertDialog.Builder(DroidFish.this);
                     	builder.setTitle(R.string.edit_headers);
                     	View content = View.inflate(DroidFish.this, R.layout.edit_headers, null);
@@ -1356,10 +1355,6 @@ public class DroidFish extends Activity implements GUIInterface {
                         round = (TextView)content.findViewById(R.id.ed_header_round);
                         white = (TextView)content.findViewById(R.id.ed_header_white);
                         black = (TextView)content.findViewById(R.id.ed_header_black);
-                        
-                        final TreeMap<String,String> headers = new TreeMap<String,String>();
-                        for (int i = 0; i < tags.size(); i++)
-                            headers.put(tags.get(i), tagValues.get(i));
                         
                         event.setText(headers.get("Event"));
                         site .setText(headers.get("Site"));
@@ -1377,20 +1372,11 @@ public class DroidFish extends Activity implements GUIInterface {
 						        headers.put("Round", round.getText().toString().trim());
 						        headers.put("White", white.getText().toString().trim());
 						        headers.put("Black", black.getText().toString().trim());
-
-						        ArrayList<String> tags = new ArrayList<String>();
-						        ArrayList<String> tagValues = new ArrayList<String>();
-						        for (String k : headers.keySet()) {
-						            tags.add(k);
-						            tagValues.add(headers.get(k));
-						        }
-						        
-				                ctrl.setHeaders(tags, tagValues);
+				                ctrl.setHeaders(headers);
 							}
                     	});
-                    	
+
                     	builder.show();
-                    	
                         break;
                     }
                     case EDIT_COMMENTS: {
@@ -1431,7 +1417,6 @@ public class DroidFish extends Activity implements GUIInterface {
                         });
                         
                         builder.show();
-                        
                         break;
                     }
                     case REMOVE_SUBTREE:

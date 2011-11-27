@@ -20,6 +20,7 @@ package org.petero.droidfish.gamelogic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.petero.droidfish.BookOptions;
 import org.petero.droidfish.GUIInterface;
@@ -901,14 +902,14 @@ public class DroidChessController {
         }
     }
 
-    public final void setHeaders(ArrayList<String> tags, ArrayList<String> tagValues) {
-        game.tree.setHeaders(tags, tagValues);
+    public final void setHeaders(Map<String,String> headers) {
+        game.tree.setHeaders(headers);
         gameTextListener.clear();
         updateGUI();
     }
 
-    public final void getHeaders(ArrayList<String> tags, ArrayList<String> tagValues) {
-        game.tree.getHeaders(tags, tagValues);
+    public final void getHeaders(Map<String,String> headers) {
+        game.tree.getHeaders(headers);
     }
 
     public static final class CommentInfo {
