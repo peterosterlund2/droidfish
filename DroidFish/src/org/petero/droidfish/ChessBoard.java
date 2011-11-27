@@ -102,6 +102,9 @@ public class ChessBoard extends View {
             moveMarkPaint.add(p);
         }
 
+        if (isInEditMode())
+            return;
+
         Typeface chessFont = Typeface.createFromAsset(getContext().getAssets(), "ChessCases.ttf");
         whitePiecePaint.setTypeface(chessFont);
         blackPiecePaint.setTypeface(chessFont);
@@ -353,6 +356,8 @@ public class ChessBoard extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        if (isInEditMode())
+            return;
 //      long t0 = System.currentTimeMillis();
         boolean animActive = anim.updateState();
         final int width = getWidth();

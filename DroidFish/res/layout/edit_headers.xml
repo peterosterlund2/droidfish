@@ -106,20 +106,20 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content">
 		<Button
-			android:id="@+id/ed_header_cancel"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="Cancel">
-		</Button>
-		<Button
 			android:id="@+id/ed_header_ok"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="Ok">
 		</Button>
-	</LinearLayout>
+        <Button
+            android:id="@+id/ed_header_cancel"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel">
+        </Button>
+    </LinearLayout>
 
 </LinearLayout>
 </ScrollView>

@@ -27,20 +27,20 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content">
 			<Button
-				android:text="Cancel"
-				android:id="@+id/eb_cancel"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_weight="1">
-			</Button>
-			<Button
 				android:text="Ok"
 				android:id="@+id/eb_ok"
-				android:layout_width="wrap_content"
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:layout_weight="1">
 			</Button>
-		</LinearLayout>
+            <Button
+                android:text="Cancel"
+                android:id="@+id/eb_cancel"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+            </Button>
+					</LinearLayout>
 	</LinearLayout>
 </LinearLayout>
 						
