@@ -26,11 +26,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 import org.petero.droidfish.activities.CPUWarning;
 import org.petero.droidfish.activities.EditBoard;
-import org.petero.droidfish.activities.EditComments;
-import org.petero.droidfish.activities.EditHeaders;
 import org.petero.droidfish.activities.EditPGNLoad;
 import org.petero.droidfish.activities.EditPGNSave;
 import org.petero.droidfish.activities.LoadScid;
@@ -657,9 +656,7 @@ public class DroidFish extends Activity implements GUIInterface {
     static private final int RESULT_EDITBOARD = 0;
     static private final int RESULT_SETTINGS = 1;
     static private final int RESULT_LOAD_PGN = 2;
-    static private final int RESULT_EDITHEADERS = 3;
-    static private final int RESULT_EDITCOMMENTS = 4;
-    static private final int RESULT_SELECT_SCID = 5;
+    static private final int RESULT_SELECT_SCID = 3;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -760,24 +757,6 @@ public class DroidFish extends Activity implements GUIInterface {
                 } catch (ChessParseError e) {
                     Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-            }
-            break;
-        case RESULT_EDITHEADERS:
-            if (resultCode == RESULT_OK) {
-                Bundle bundle = data.getBundleExtra("org.petero.droidfish.headers");
-                ArrayList<String> tags = bundle.getStringArrayList("tags");
-                ArrayList<String> tagValues = bundle.getStringArrayList("tagValues");
-                ctrl.setHeaders(tags, tagValues);
-            }
-            break;
-        case RESULT_EDITCOMMENTS:
-            if (resultCode == RESULT_OK) {
-                Bundle bundle = data.getBundleExtra("org.petero.droidfish.comments");
-                DroidChessController.CommentInfo commInfo = new DroidChessController.CommentInfo();
-                commInfo.preComment = bundle.getString("preComment");
-                commInfo.postComment = bundle.getString("postComment");
-                commInfo.nag = bundle.getInt("nag");
-                ctrl.setComments(commInfo);
             }
             break;
         case RESULT_SELECT_SCID:
@@ -1360,29 +1339,99 @@ public class DroidFish extends Activity implements GUIInterface {
                 public void onClick(DialogInterface dialog, int item) {
                     switch (finalActions.get(item)) {
                     case EDIT_HEADERS: {
-                        Intent i = new Intent(DroidFish.this, EditHeaders.class);
-                        i.setAction("");
-                        Bundle bundle = new Bundle();
                         ArrayList<String> tags = new ArrayList<String>();
                         ArrayList<String> tagValues = new ArrayList<String>();
                         ctrl.getHeaders(tags, tagValues);
-                        bundle.putStringArrayList("tags", tags);
-                        bundle.putStringArrayList("tagValues", tagValues);
-                        i.putExtra("org.petero.droidfish.headers", bundle);
-                        startActivityForResult(i, RESULT_EDITHEADERS);
+                    	
+                    	AlertDialog.Builder builder = new AlertDialog.Builder(DroidFish.this);
+                    	builder.setTitle(R.string.edit_headers);
+                    	View content = View.inflate(DroidFish.this, R.layout.edit_headers, null);
+                    	builder.setView(content);
+                    	
+                    	final TextView event, site, date, round, white, black;
+                    	
+                    	event = (TextView)content.findViewById(R.id.ed_header_event);
+                        site = (TextView)content.findViewById(R.id.ed_header_site);
+                        date = (TextView)content.findViewById(R.id.ed_header_date);
+                        round = (TextView)content.findViewById(R.id.ed_header_round);
+                        white = (TextView)content.findViewById(R.id.ed_header_white);
+                        black = (TextView)content.findViewById(R.id.ed_header_black);
+                        
+                        final TreeMap<String,String> headers = new TreeMap<String,String>();
+                        for (int i = 0; i < tags.size(); i++)
+                            headers.put(tags.get(i), tagValues.get(i));
+                        
+                        event.setText(headers.get("Event"));
+                        site .setText(headers.get("Site"));
+                        date .setText(headers.get("Date"));
+                        round.setText(headers.get("Round"));
+                        white.setText(headers.get("White"));
+                        black.setText(headers.get("Black"));
+                    	
+                    	builder.setNegativeButton("Cancel", null);
+                    	builder.setPositiveButton("Ok", new Dialog.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								headers.put("Event", event.getText().toString().trim());
+						        headers.put("Site",  site .getText().toString().trim());
+						        headers.put("Date",  date .getText().toString().trim());
+						        headers.put("Round", round.getText().toString().trim());
+						        headers.put("White", white.getText().toString().trim());
+						        headers.put("Black", black.getText().toString().trim());
+
+						        ArrayList<String> tags = new ArrayList<String>();
+						        ArrayList<String> tagValues = new ArrayList<String>();
+						        for (String k : headers.keySet()) {
+						            tags.add(k);
+						            tagValues.add(headers.get(k));
+						        }
+						        
+				                ctrl.setHeaders(tags, tagValues);
+							}
+                    	});
+                    	
+                    	builder.show();
+                    	
                         break;
                     }
                     case EDIT_COMMENTS: {
-                        Intent i = new Intent(DroidFish.this, EditComments.class);
-                        i.setAction("");
-                        DroidChessController.CommentInfo commInfo = ctrl.getComments();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("preComment", commInfo.preComment);
-                        bundle.putString("postComment", commInfo.postComment);
-                        bundle.putInt("nag", commInfo.nag);
-                        bundle.putString("move", commInfo.move);
-                        i.putExtra("org.petero.droidfish.comments", bundle);
-                        startActivityForResult(i, RESULT_EDITCOMMENTS);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(DroidFish.this);
+                    	builder.setTitle(R.string.edit_comments);
+                    	View content = View.inflate(DroidFish.this, R.layout.edit_comments, null);
+                    	builder.setView(content);
+                    	
+                    	DroidChessController.CommentInfo commInfo = ctrl.getComments();
+                    	
+                    	final TextView preComment, moveView, nag, postComment;
+                    	preComment = (TextView)content.findViewById(R.id.ed_comments_pre);
+                        moveView = (TextView)content.findViewById(R.id.ed_comments_move);
+                        nag = (TextView)content.findViewById(R.id.ed_comments_nag);
+                        postComment = (TextView)content.findViewById(R.id.ed_comments_post);
+                        
+                        preComment.setText(commInfo.preComment);
+                        postComment.setText(commInfo.postComment);
+                        moveView.setText(commInfo.move);
+                        String nagStr = Node.nagStr(commInfo.nag).trim();
+                        if ((nagStr.length() == 0) && (commInfo.nag > 0))
+                            nagStr = String.format("%d", commInfo.nag);
+                        nag.setText(nagStr);
+                        
+                        builder.setNegativeButton("Cancel", null);
+                        builder.setPositiveButton("Ok", new Dialog.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								String pre = preComment.getText().toString().trim();
+						        String post = postComment.getText().toString().trim();
+						        int nagVal = Node.strToNag(nag.getText().toString());
+						        
+						        DroidChessController.CommentInfo commInfo = new DroidChessController.CommentInfo();
+				                commInfo.preComment = pre;
+				                commInfo.postComment = post;
+				                commInfo.nag = nagVal;
+				                ctrl.setComments(commInfo);
+							}
+                        });
+                        
+                        builder.show();
+                        
                         break;
                     }
                     case REMOVE_SUBTREE:

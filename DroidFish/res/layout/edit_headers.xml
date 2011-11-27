@@ -3,11 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    
-<LinearLayout
-    android:orientation="vertical"
-	android:layout_width="fill_parent"
-	android:layout_height="wrap_content">
 	
 	<TableLayout
     android:layout_width="fill_parent"
@@ -100,26 +95,4 @@
 		</EditText>
     </TableRow>
 	</TableLayout>
-
-	<LinearLayout
-	    android:orientation="horizontal"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content">
-		<Button
-			android:id="@+id/ed_header_ok"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="Ok">
-		</Button>
-        <Button
-            android:id="@+id/ed_header_cancel"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Cancel">
-        </Button>
-    </LinearLayout>
-
-</LinearLayout>
 </ScrollView>
