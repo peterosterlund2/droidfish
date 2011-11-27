@@ -1,7 +1,9 @@
 package org.petero.droidfish;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
@@ -13,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -86,8 +87,9 @@ public class SeekBarPreference extends Preference
         currValBox.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Dialog dialog = new Dialog(getContext());
-                dialog.setContentView(R.layout.select_percentage);
+            	View content = View.inflate(SeekBarPreference.this.getContext(), R.layout.select_percentage, null);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(SeekBarPreference.this.getContext());
+                builder.setView(content);
                 String title = "";
                 String key = getKey();
                 if (key.equals("strength")) {
@@ -95,10 +97,8 @@ public class SeekBarPreference extends Preference
                 } else if (key.equals("bookRandom")) {
                     title = getContext().getString(R.string.edit_randomization);
                 }
-                dialog.setTitle(title);
-                final EditText valueView = (EditText)dialog.findViewById(R.id.selpercentage_number);
-                Button ok = (Button)dialog.findViewById(R.id.selpercentage_ok);
-                Button cancel = (Button)dialog.findViewById(R.id.selpercentage_cancel);
+                builder.setTitle(title);
+                final EditText valueView = (EditText)content.findViewById(R.id.selpercentage_number);
                 valueView.setText(currValBox.getText().toString().replaceAll("%", ""));
                 final Runnable selectValue = new Runnable() {
                     public void run() {
@@ -107,7 +107,6 @@ public class SeekBarPreference extends Preference
                             int value = (int)(Double.parseDouble(txt) * 10 + 0.5);
                             if (value < 0) value = 0;
                             if (value > maxValue) value = maxValue;
-                            dialog.cancel();
                             onProgressChanged(bar, value, false);
                         } catch (NumberFormatException nfe) {
                         }
@@ -122,18 +121,14 @@ public class SeekBarPreference extends Preference
                         return false;
                     }
                 });
-                ok.setOnClickListener(new OnClickListener() {
-                    public void onClick(View v) {
-                        selectValue.run();
-                    }
+                builder.setPositiveButton("Ok", new Dialog.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						selectValue.run();
+					}
                 });
-                cancel.setOnClickListener(new OnClickListener() {
-                    public void onClick(View v) {
-                        dialog.cancel();
-                    }
-                });
+                builder.setNegativeButton("Cancel", null);
 
-                dialog.show();
+                builder.create().show();
             }
         });
 

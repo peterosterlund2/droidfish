@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
 <LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content">
@@ -8,16 +12,17 @@
 	<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:stretchColumns="1">
+    android:stretchColumns="1"
+    android:padding="10dp">
     <TableRow>
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:paddingRight="10dp"
 			android:text="Before">
 		</TextView>
 		<EditText
 			android:id="@+id/ed_comments_pre" 
-			android:background="@android:drawable/editbox_background"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
@@ -30,25 +35,26 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
 			android:text="Move">
 		</TextView>
 		<LinearLayout
 			xmlns:android="http://schemas.android.com/apk/res/android"
 		    android:orientation="horizontal"
 			android:layout_width="fill_parent"
-			android:layout_height="wrap_content">
-			android:layout_weight="1"
-			<TextView
-				android:id="@+id/ed_comments_move" 
-				android:background="@android:drawable/editbox_background"
+			android:layout_height="wrap_content"
+			android:layout_weight="1">
+			<EditText
+				android:id="@+id/ed_comments_move"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:lines="1"
-				android:inputType="text">
-			</TextView>
+				android:minEms="3"
+				android:inputType="text"
+				android:enabled="false">
+			</EditText>
 			<EditText
 				android:id="@+id/ed_comments_nag" 
-				android:background="@android:drawable/editbox_background"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:lines="1"
@@ -66,7 +72,6 @@
 		</TextView>
 		<EditText
 			android:id="@+id/ed_comments_post" 
-			android:background="@android:drawable/editbox_background"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
@@ -97,3 +102,4 @@
 	</LinearLayout>
 
 </LinearLayout>
+</ScrollView>

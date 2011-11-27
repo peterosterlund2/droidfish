@@ -1,62 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="wrap_content"
-	android:layout_height="wrap_content">
-	<LinearLayout
-	    android:orientation="horizontal"
+	android:layout_height="wrap_content"
+	android:padding="10dp">
+
+	<TableRow
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content">
+
 		<TextView
-			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
-			android:layout_weight="1"
+			android:layout_height="wrap_content"
+			android:paddingRight="10dp"
 			android:text="Halfmove clock">
 		</TextView>
+
 		<EditText
-			android:id="@+id/ed_cnt_halfmove" 
-			android:background="@android:drawable/editbox_background"
+			android:id="@+id/ed_cnt_halfmove"
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
+			android:minEms="3"
 			android:inputType="number">
 		</EditText>
-	</LinearLayout>
-	<LinearLayout
-	    android:orientation="horizontal"
+	</TableRow>
+
+	<TableRow
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content">
+
 		<TextView
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:layout_width="fill_parent"
+			android:paddingRight="10dp"
 			android:text="Fullmove counter">
 		</TextView>
+
 		<EditText
 			android:id="@+id/ed_cnt_fullmove"
-			android:background="@android:drawable/editbox_background"
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
+			android:minEms="3"
 			android:inputType="number">
 		</EditText>
-	</LinearLayout>
-	<LinearLayout
-	    android:orientation="horizontal"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content">
-		<Button
-			android:id="@+id/ed_cnt_cancel"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="Cancel">
-		</Button>
-		<Button
-			android:id="@+id/ed_cnt_ok"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="Ok">
-		</Button>
-	</LinearLayout>
-</LinearLayout>
+	</TableRow>
+</TableLayout>

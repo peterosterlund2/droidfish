@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
 <LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content">
 	
-	<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	<TableLayout
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:stretchColumns="1">
+    android:stretchColumns="1"
+    android:padding="10dp">
     <TableRow>
 		<TextView
 			android:layout_width="wrap_content"
@@ -17,7 +22,6 @@
 		</TextView>
 		<EditText
 			android:id="@+id/ed_header_event" 
-			android:background="@android:drawable/editbox_background"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
@@ -32,7 +36,6 @@
 		</TextView>
 		<EditText
 			android:id="@+id/ed_header_site" 
-			android:background="@android:drawable/editbox_background"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
@@ -46,8 +49,7 @@
 			android:text="Date">
 		</TextView>
 		<EditText
-			android:id="@+id/ed_header_date" 
-			android:background="@android:drawable/editbox_background"
+			android:id="@+id/ed_header_date"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
@@ -58,11 +60,11 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Round">
+			android:text="Round"
+			android:paddingRight="10dp">
 		</TextView>
 		<EditText
 			android:id="@+id/ed_header_round" 
-			android:background="@android:drawable/editbox_background"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
@@ -76,8 +78,7 @@
 			android:text="White">
 		</TextView>
 		<EditText
-			android:id="@+id/ed_header_white" 
-			android:background="@android:drawable/editbox_background"
+			android:id="@+id/ed_header_white"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
@@ -92,7 +93,6 @@
 		</TextView>
 		<EditText
 			android:id="@+id/ed_header_black" 
-			android:background="@android:drawable/editbox_background"
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
 			android:layout_weight="1"
@@ -122,3 +122,4 @@
 	</LinearLayout>
 
 </LinearLayout>
+</ScrollView>

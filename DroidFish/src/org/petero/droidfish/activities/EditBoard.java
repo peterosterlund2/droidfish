@@ -307,21 +307,21 @@ public class EditBoard extends Activity {
         }
         case SIDE_DIALOG: {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(R.string.select_side_to_move_first)
-                   .setPositiveButton(R.string.white, new DialogInterface.OnClickListener() {
-                       public void onClick(DialogInterface dialog, int id) {
-                           cb.pos.setWhiteMove(true);
-                           checkValid();
-                           dialog.cancel();
-                       }
-                   })
-                   .setNegativeButton(R.string.black, new DialogInterface.OnClickListener() {
-                       public void onClick(DialogInterface dialog, int id) {
-                           cb.pos.setWhiteMove(false);
-                           checkValid();
-                           dialog.cancel();
-                       }
-                   });
+            builder.setTitle(R.string.select_side_to_move_first);
+            final int selectedItem = (cb.pos.whiteMove) ? 0 : 1;
+            builder.setSingleChoiceItems(new String[]{getString(R.string.white), getString(R.string.black)}, selectedItem, new Dialog.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    if (id == 0) { // white to move
+                        cb.pos.setWhiteMove(true);
+                        checkValid();
+                        dialog.cancel();
+                    } else {
+                        cb.pos.setWhiteMove(false);
+                        checkValid();
+                        dialog.cancel();
+                    }
+				}
+            });
             AlertDialog alert = builder.create();
             return alert;
         }
@@ -372,19 +372,20 @@ public class EditBoard extends Activity {
             builder.setSingleChoiceItems(items, getEPFile(), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
                     setEPFile(item);
+                    dialog.cancel();
                 }
             });
             AlertDialog alert = builder.create();
             return alert;
         }
         case MOVCNT_DIALOG: {
-            final Dialog dialog = new Dialog(this);
-            dialog.setContentView(R.layout.edit_move_counters);
-            dialog.setTitle(R.string.edit_move_counters);
-            final EditText halfMoveClock = (EditText)dialog.findViewById(R.id.ed_cnt_halfmove);
-            final EditText fullMoveCounter = (EditText)dialog.findViewById(R.id.ed_cnt_fullmove);
-            Button ok = (Button)dialog.findViewById(R.id.ed_cnt_ok);
-            Button cancel = (Button)dialog.findViewById(R.id.ed_cnt_cancel);
+        	View content = View.inflate(this, R.layout.edit_move_counters, null);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            
+            builder.setView(content);
+            builder.setTitle(R.string.edit_move_counters);
+            final EditText halfMoveClock = (EditText)content.findViewById(R.id.ed_cnt_halfmove);
+            final EditText fullMoveCounter = (EditText)content.findViewById(R.id.ed_cnt_fullmove);
             halfMoveClock.setText(String.format("%d", cb.pos.halfMoveClock));
             fullMoveCounter.setText(String.format("%d", cb.pos.fullMoveCounter));
             final Runnable setCounters = new Runnable() {
@@ -394,29 +395,28 @@ public class EditBoard extends Activity {
                         int fullCount = Integer.parseInt(fullMoveCounter.getText().toString());
                         cb.pos.halfMoveClock = halfClock;
                         cb.pos.fullMoveCounter = fullCount;
-                        dialog.cancel();
                     } catch (NumberFormatException nfe) {
                         Toast.makeText(getApplicationContext(), R.string.invalid_number_format, Toast.LENGTH_SHORT).show();
                     }
                 }
             };
+            builder.setPositiveButton("Ok", new Dialog.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					setCounters.run();
+				}
+            });
+            builder.setNegativeButton("Cancel", null);
+            
+            final Dialog dialog = builder.create();
+            
             fullMoveCounter.setOnKeyListener(new OnKeyListener() {
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
                     if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                         setCounters.run();
+                        dialog.cancel();
                         return true;
                     }
                     return false;
-                }
-            });
-            ok.setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
-                    setCounters.run();
-                }
-            });
-            cancel.setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
-                    dialog.cancel();
                 }
             });
             return dialog;

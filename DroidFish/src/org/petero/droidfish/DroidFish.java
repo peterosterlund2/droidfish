@@ -1081,41 +1081,39 @@ public class DroidFish extends Activity implements GUIInterface {
             return alert;
         }
         case SELECT_MOVE_DIALOG: {
-            final Dialog dialog = new Dialog(this);
-            dialog.setContentView(R.layout.select_move_number);
-            dialog.setTitle(R.string.goto_move);
-            final EditText moveNrView = (EditText)dialog.findViewById(R.id.selmove_number);
-            Button ok = (Button)dialog.findViewById(R.id.selmove_ok);
-            Button cancel = (Button)dialog.findViewById(R.id.selmove_cancel);
+        	View content = View.inflate(this, R.layout.select_move_number, null);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setView(content);
+            builder.setTitle(R.string.goto_move);
+            final EditText moveNrView = (EditText)content.findViewById(R.id.selmove_number);
             moveNrView.setText("1");
             final Runnable gotoMove = new Runnable() {
                 public void run() {
                     try {
                         int moveNr = Integer.parseInt(moveNrView.getText().toString());
                         ctrl.gotoMove(moveNr);
-                        dialog.cancel();
                     } catch (NumberFormatException nfe) {
                         Toast.makeText(getApplicationContext(), R.string.invalid_number_format, Toast.LENGTH_SHORT).show();
                     }
                 }
             };
+            builder.setPositiveButton("Ok", new Dialog.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					gotoMove.run();
+				}
+            });
+            builder.setNegativeButton("Cancel", null);
+            
+            final AlertDialog dialog = builder.create();
+            
             moveNrView.setOnKeyListener(new OnKeyListener() {
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
                     if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                         gotoMove.run();
+                        dialog.cancel();
                         return true;
                     }
                     return false;
-                }
-            });
-            ok.setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
-                    gotoMove.run();
-                }
-            });
-            cancel.setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
-                    dialog.cancel();
                 }
             });
             return dialog;
@@ -1300,6 +1298,7 @@ public class DroidFish extends Activity implements GUIInterface {
                 getString(R.string.comp_vs_comp)
             };
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.select_game_mode);
             builder.setItems(items, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
                     int gameModeType = -1;

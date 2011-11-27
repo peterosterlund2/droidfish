@@ -4,7 +4,7 @@
 	<item
   		android:id="@+id/item_new_game"
 	  	android:title="New Game"
-  		android:icon="@drawable/start">
+  		android:icon="@android:drawable/ic_menu_add">
 	</item>
 	<item
 		android:id="@+id/item_file_menu"
@@ -19,7 +19,7 @@
 	<item
   		android:id="@+id/item_editboard"
 	  	android:title="Edit Board"
-  		android:icon="@drawable/edit">
+  		android:icon="@android:drawable/ic_menu_edit">
 	</item>
 	<item
 	 	android:id="@+id/item_settings"
