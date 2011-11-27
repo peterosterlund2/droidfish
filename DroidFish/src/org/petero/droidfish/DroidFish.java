@@ -128,7 +128,6 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! Remember multi-PV analysis setting when program restarted.
     // FIXME!!! Use high-res buttons from Scid on the go.
     // FIXME!!! Auto-swap sides is not good in combination with analysis mode.
-    // FIXME!!! Make it possible to cancel Scid file reading.
 
     private ChessBoard cb;
     private static DroidChessController ctrl = null;

@@ -26,8 +26,10 @@ import org.petero.droidfish.R;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.net.Uri;
@@ -59,6 +61,8 @@ public class LoadScid extends ListActivity {
     private String lastFileName = "";
     private long lastModTime = -1;
 
+    Thread workThread = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,16 +85,18 @@ public class LoadScid extends ListActivity {
         if (action.equals("org.petero.droidfish.loadScid")) {
             showDialog(PROGRESS_DIALOG);
             final LoadScid lpgn = this;
-            new Thread(new Runnable() {
+            workThread = new Thread(new Runnable() {
                 public void run() {
-                    readFile();
+                    if (!readFile())
+                        return;
                     runOnUiThread(new Runnable() {
                         public void run() {
                             lpgn.showList();
                         }
                     });
                 }
-            }).start();
+            });
+            workThread.start();
         } else if (action.equals("org.petero.droidfish.loadScidNextGame") ||
                    action.equals("org.petero.droidfish.loadScidPrevGame")) {
             boolean next = action.equals("org.petero.droidfish.loadScidNextGame");
@@ -101,9 +107,10 @@ public class LoadScid extends ListActivity {
                 setResult(RESULT_CANCELED);
                 finish();
             } else {
-                new Thread(new Runnable() {
+                workThread = new Thread(new Runnable() {
                     public void run() {
-                        readFile();
+                        if (!readFile())
+                            return;
                         runOnUiThread(new Runnable() {
                             public void run() {
                                 if (loadItem >= gamesInFile.size()) {
@@ -118,7 +125,8 @@ public class LoadScid extends ListActivity {
                             }
                         });
                     }
-                }).start();
+                });
+                workThread.start();
             }
         } else { // Unsupported action
             setResult(RESULT_CANCELED);
@@ -142,6 +150,19 @@ public class LoadScid extends ListActivity {
         editor.putLong("lastScidModTime", lastModTime);
         editor.commit();
         super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (workThread != null) {
+            workThread.interrupt();
+            try {
+                workThread.join();
+            } catch (InterruptedException e) {
+            }
+            workThread = null;
+        }
+        super.onDestroy();
     }
 
     private final void showList() {
@@ -170,19 +191,26 @@ public class LoadScid extends ListActivity {
             progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progress.setTitle(R.string.reading_scid_file);
             progress.setMessage(getString(R.string.please_wait));
-            progress.setCancelable(false);
+            progress.setOnCancelListener(new OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    Thread thr = workThread;
+                    if (thr != null)
+                        thr.interrupt();
+                }
+            });
             return progress;
         default:
             return null;
         }
     }
 
-    private final void readFile() {
+    private final boolean readFile() {
         if (!fileName.equals(lastFileName))
             defaultItem = 0;
         long modTime = new File(fileName).lastModified();
         if (cacheValid && (modTime == lastModTime) && fileName.equals(lastFileName))
-            return;
+            return true;
         lastModTime = modTime;
         lastFileName = fileName;
 
@@ -196,6 +224,11 @@ public class LoadScid extends ListActivity {
                 addGameInfo(cursor);
                 int gameNo = 1;
                 while (cursor.moveToNext()) {
+                    if (Thread.currentThread().isInterrupted()) {
+                        setResult(RESULT_CANCELED);
+                        finish();
+                        return false;
+                    }
                     addGameInfo(cursor);
                     gameNo++;
                     final int newPercent = (int)(gameNo * 100 / noGames);
@@ -213,6 +246,7 @@ public class LoadScid extends ListActivity {
             }
         }
         cacheValid = true;
+        return true;
     }
 
     private int idIdx;
