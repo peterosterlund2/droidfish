@@ -126,6 +126,9 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! Add anti-lamer test: 4kr2/8/8/4PpN1/8/8/4Q3/3RK3 w - f6 0 2 bm exf6
 
     // FIXME!!! Remember multi-PV analysis setting when program restarted.
+    // FIXME!!! Use high-res buttons from Scid on the go.
+    // FIXME!!! Auto-swap sides is not good in combination with analysis mode.
+    // FIXME!!! Make it possible to cancel Scid file reading.
 
     private ChessBoard cb;
     private static DroidChessController ctrl = null;
