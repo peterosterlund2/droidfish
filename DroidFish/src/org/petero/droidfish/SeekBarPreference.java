@@ -43,8 +43,7 @@ public class SeekBarPreference extends Preference
     protected View onCreateView(ViewGroup parent) {
         TextView name = new TextView(getContext());
         name.setText(getTitle());
-        name.setTextSize(20);
-        name.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
+        name.setTextAppearance(getContext(), android.R.style.TextAppearance_Large);
         name.setGravity(Gravity.LEFT);
         LinearLayout.LayoutParams lp =
             new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,

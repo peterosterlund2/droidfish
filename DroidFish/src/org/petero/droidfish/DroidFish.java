@@ -1078,12 +1078,12 @@ public class DroidFish extends Activity implements GUIInterface {
                     }
                 }
             };
-            builder.setPositiveButton("Ok", new Dialog.OnClickListener() {
+            builder.setPositiveButton(R.string.ok, new Dialog.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
 					gotoMove.run();
 				}
             });
-            builder.setNegativeButton("Cancel", null);
+            builder.setNegativeButton(R.string.cancel, null);
             
             final AlertDialog dialog = builder.create();
             
@@ -1217,12 +1217,11 @@ public class DroidFish extends Activity implements GUIInterface {
             return alert;
         }
         case SELECT_PGN_SAVE_NEWFILE_DIALOG: {
-            final Dialog dialog = new Dialog(this);
-            dialog.setContentView(R.layout.create_pgn_file);
-            dialog.setTitle(R.string.select_pgn_file_save);
-            final EditText fileNameView = (EditText)dialog.findViewById(R.id.create_pgn_filename);
-            Button ok = (Button)dialog.findViewById(R.id.create_pgn_ok);
-            Button cancel = (Button)dialog.findViewById(R.id.create_pgn_cancel);
+        	View content = View.inflate(this, R.layout.create_pgn_file, null);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setView(content);
+            builder.setTitle(R.string.select_pgn_file_save);
+            final EditText fileNameView = (EditText)content.findViewById(R.id.create_pgn_filename);
             fileNameView.setText("");
             final Runnable savePGN = new Runnable() {
                 public void run() {
@@ -1230,26 +1229,24 @@ public class DroidFish extends Activity implements GUIInterface {
                     if ((pgnFile.length() > 0) && !pgnFile.contains("."))
                         pgnFile += ".pgn";
                     savePGNToFile(ctrl.getPGN(), pgnFile, false);
-                    dialog.cancel();
                 }
             };
+            builder.setPositiveButton(R.string.ok, new Dialog.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					savePGN.run();
+				}
+            });
+            builder.setNegativeButton(R.string.cancel, null);
+            
+            final Dialog dialog = builder.create();
             fileNameView.setOnKeyListener(new OnKeyListener() {
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
                     if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                         savePGN.run();
+                        dialog.cancel();
                         return true;
                     }
                     return false;
-                }
-            });
-            ok.setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
-                    savePGN.run();
-                }
-            });
-            cancel.setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
-                    dialog.cancel();
                 }
             });
             return dialog;
@@ -1363,8 +1360,8 @@ public class DroidFish extends Activity implements GUIInterface {
                         white.setText(headers.get("White"));
                         black.setText(headers.get("Black"));
                     	
-                    	builder.setNegativeButton("Cancel", null);
-                    	builder.setPositiveButton("Ok", new Dialog.OnClickListener() {
+                    	builder.setNegativeButton(R.string.cancel, null);
+                    	builder.setPositiveButton(R.string.ok, new Dialog.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
 								headers.put("Event", event.getText().toString().trim());
 						        headers.put("Site",  site .getText().toString().trim());
@@ -1401,8 +1398,8 @@ public class DroidFish extends Activity implements GUIInterface {
                             nagStr = String.format("%d", commInfo.nag);
                         nag.setText(nagStr);
                         
-                        builder.setNegativeButton("Cancel", null);
-                        builder.setPositiveButton("Ok", new Dialog.OnClickListener() {
+                        builder.setNegativeButton(R.string.cancel, null);
+                        builder.setPositiveButton(R.string.ok, new Dialog.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
 								String pre = preComment.getText().toString().trim();
 						        String post = postComment.getText().toString().trim();

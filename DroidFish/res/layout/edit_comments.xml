@@ -15,7 +15,7 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_vertical"
 			android:paddingRight="10dp"
-			android:text="Before">
+			android:text="Before:">
 		</TextView>
 		<EditText
 			android:id="@+id/ed_comments_pre" 
@@ -32,10 +32,9 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_vertical"
-			android:text="Move">
+			android:text="Move:">
 		</TextView>
 		<LinearLayout
-			xmlns:android="http://schemas.android.com/apk/res/android"
 		    android:orientation="horizontal"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
@@ -65,7 +64,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_vertical"
-			android:text="After">
+			android:text="After:">
 		</TextView>
 		<EditText
 			android:id="@+id/ed_comments_post" 

@@ -13,7 +13,7 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Event">
+			android:text="Event:">
 		</TextView>
 		<EditText
 			android:id="@+id/ed_header_event" 
@@ -27,7 +27,7 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Site">
+			android:text="Site:">
 		</TextView>
 		<EditText
 			android:id="@+id/ed_header_site" 
@@ -41,7 +41,7 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Date">
+			android:text="Date:">
 		</TextView>
 		<EditText
 			android:id="@+id/ed_header_date"
@@ -55,7 +55,7 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Round"
+			android:text="Round:"
 			android:paddingRight="10dp">
 		</TextView>
 		<EditText
@@ -70,7 +70,7 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="White">
+			android:text="White:">
 		</TextView>
 		<EditText
 			android:id="@+id/ed_header_white"
@@ -84,7 +84,7 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Black">
+			android:text="Black:">
 		</TextView>
 		<EditText
 			android:id="@+id/ed_header_black" 

@@ -5,13 +5,13 @@
   android:layout_height="fill_parent"
   android:orientation="vertical">
   <EditText
-  	android:text=""
   	android:id="@+id/select_game_filter"
-  	android:hint="Filter text"
+  	android:hint="@string/filter_text"
   	android:layout_width="fill_parent"
   	android:layout_height="wrap_content"
   	android:maxLines="1"
-  	android:inputType="text">
+  	android:inputType="text"
+  	android:layout_margin="10dp">
   </EditText>
   <ListView
     android:id="@android:id/list"

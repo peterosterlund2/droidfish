@@ -320,4 +320,11 @@ you are not actively using the program.\
 	<string name="load_next_game">Load Next Game</string>
 	<string name="no_prev_game">No previous game</string>
 	<string name="no_next_game">No next game</string>
+	<string name="ok">Ok</string>
+	<string name="cancel">Cancel</string>
+	<string name="move_number">Move number:</string>
+	<string name="filename">Filename:</string>
+	<string name="halfmove">Halfmove clock:</string>
+	<string name="fullmove">Fullmove counter:</string>
+	<string name="filter_text">Filter text</string>
 </resources>

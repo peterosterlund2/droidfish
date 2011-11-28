@@ -12,7 +12,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:paddingRight="10dp"
-			android:text="Halfmove clock">
+			android:text="@string/halfmove">
 		</TextView>
 
 		<EditText
@@ -32,7 +32,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:paddingRight="10dp"
-			android:text="Fullmove counter">
+			android:text="@string/fullmove">
 		</TextView>
 
 		<EditText

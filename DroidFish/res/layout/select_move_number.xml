@@ -9,7 +9,7 @@
 	<TextView
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
-		android:text="Move number"
+		android:text="@string/move_number"
 		android:paddingRight="10dp">
 	</TextView>
 

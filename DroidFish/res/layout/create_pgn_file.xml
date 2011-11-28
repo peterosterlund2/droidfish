@@ -1,45 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-	android:layout_width="wrap_content"
-	android:layout_height="wrap_content">
-	<LinearLayout
-	    android:orientation="horizontal"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content">
+    android:orientation="horizontal"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:padding="10dp">
 		<TextView
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
-			android:layout_weight="1"
-			android:text="Filename:">
+			android:paddingRight="10dp"
+			android:text="@string/filename">
 		</TextView>
 		<EditText
 			android:id="@+id/create_pgn_filename" 
-			android:background="@android:drawable/editbox_background"
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
-			android:minEms="8"
+			android:layout_weight="1"
 			android:inputType="text">
 		</EditText>
-	</LinearLayout>
-	<LinearLayout
-	    android:orientation="horizontal"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content">
-		<Button
-			android:id="@+id/create_pgn_ok"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="Ok">
-		</Button>
-        <Button
-            android:id="@+id/create_pgn_cancel"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Cancel">
-        </Button>
-	</LinearLayout>
 </LinearLayout>
