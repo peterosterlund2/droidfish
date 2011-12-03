@@ -83,7 +83,7 @@ public class SearchTest {
         sc = new Search(pos, nullHist, 0, tt);
         score = sc.negaScout(-mate0, mate0, 0, 3*plyScale, -1, MoveGen.inCheck(pos));
         assertTrue(Math.abs(score) < 50);   // Stale-mate trap
-        score2 = idSearch(sc, 5).score;
+        score2 = idSearch(sc, 9).score;
         assertEquals(score, score2);
 
         pos = TextIO.readFEN("8/8/2K5/3QP3/P6P/1q6/8/k7 w - - 31 51");

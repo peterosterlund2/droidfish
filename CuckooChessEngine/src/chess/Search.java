@@ -535,6 +535,43 @@ public class Search {
             return score;
         }
 
+        // Razoring
+        if ((Math.abs(alpha) <= MATE0 / 2) && (depth < 4*plyScale) && (beta == alpha + 1)) {
+            if (evalScore == UNKNOWN_SCORE) {
+                evalScore = eval.evalPos(pos);
+            }
+            final int razorMargin = 250;
+            if (evalScore < beta - razorMargin) {
+                q0Eval = evalScore;
+                int score = quiesce(alpha-razorMargin, beta-razorMargin, ply, 0, inCheck);
+                if (score <= alpha-razorMargin) {
+                    emptyMove.score = score;
+                    tt.insert(hKey, emptyMove, TTEntry.T_LE, ply, depth, evalScore);
+                    if (log != null) log.logNodeEnd(sti.nodeIdx, score, TTEntry.T_LE, evalScore, hKey);
+                    return score;
+                }
+            }
+        }
+
+        // Reverse futility pruning
+        if (!inCheck && (depth < 5*plyScale) && (posExtend == 0)) {
+            if ((Math.abs(alpha) <= MATE0 / 2) && (Math.abs(beta) <= MATE0 / 2)) {
+                int margin;
+                if (depth <= plyScale)        margin = 200;
+                else if (depth <= 2*plyScale) margin = 400;
+                else if (depth <= 3*plyScale) margin = 600;
+                else                          margin = 800;
+                if (evalScore == UNKNOWN_SCORE)
+                    evalScore = eval.evalPos(pos);
+                if (evalScore - margin >= beta) {
+                    emptyMove.score = evalScore - margin;
+                    tt.insert(hKey, emptyMove, TTEntry.T_GE, ply, depth, evalScore);
+                    if (log != null) log.logNodeEnd(sti.nodeIdx, evalScore - margin, TTEntry.T_GE, evalScore, hKey);
+                    return evalScore - margin;
+                }
+            }
+        }
+
         // Try null-move pruning
         // FIXME! Try null-move verification in late endgames. See loss in round 21.
         sti.currentMove = emptyMove;
@@ -593,45 +630,20 @@ public class Search {
             }
         }
 
-        // Razoring
-        if ((Math.abs(alpha) <= MATE0 / 2) && (depth < 4*plyScale) && (beta == alpha + 1)) {
-            if (evalScore == UNKNOWN_SCORE) {
-                evalScore = eval.evalPos(pos);
-            }
-            final int razorMargin = 250;
-            if (evalScore < beta - razorMargin) {
-                q0Eval = evalScore;
-                int score = quiesce(alpha-razorMargin, beta-razorMargin, ply, 0, inCheck);
-                if (score <= alpha-razorMargin) {
-                    emptyMove.score = score;
-                    tt.insert(hKey, emptyMove, TTEntry.T_LE, ply, depth, evalScore);
-                    if (log != null) log.logNodeEnd(sti.nodeIdx, score, TTEntry.T_LE, evalScore, hKey);
-                    return score;
-                }
-            }
-        }
-
         boolean futilityPrune = false;
         int futilityScore = alpha;
         if (!inCheck && (depth < 5*plyScale) && (posExtend == 0)) {
             if ((Math.abs(alpha) <= MATE0 / 2) && (Math.abs(beta) <= MATE0 / 2)) {
                 int margin;
-                if (depth <= plyScale) {
-                    margin = 61;
-                } else if (depth <= 2*plyScale) {
-                    margin = 144;
-                } else if (depth <= 3*plyScale) {
-                    margin = 268;
-                } else {
-                    margin = 334;
-                }
-                if (evalScore == UNKNOWN_SCORE) {
+                if (depth <= plyScale)        margin = 61;
+                else if (depth <= 2*plyScale) margin = 144;
+                else if (depth <= 3*plyScale) margin = 268;
+                else                          margin = 334;
+                if (evalScore == UNKNOWN_SCORE)
                     evalScore = eval.evalPos(pos);
-                }
                 futilityScore = evalScore + margin;
-                if (futilityScore <= alpha) {
+                if (futilityScore <= alpha)
                     futilityPrune = true;
-                }
             }
         }
 
