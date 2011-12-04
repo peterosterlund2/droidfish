@@ -89,7 +89,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -325,7 +324,7 @@ public class DroidFish extends Activity implements GUIInterface {
                     distanceX = -distanceX;
                     distanceY = -distanceY;
                 }
-                if (scrollSensitivity > 0) {
+                if ((scrollSensitivity > 0) && (cb.sqSize > 0)) {
                     scrollX += distanceX;
                     scrollY += distanceY;
                     float scrollUnit = cb.sqSize * scrollSensitivity;
