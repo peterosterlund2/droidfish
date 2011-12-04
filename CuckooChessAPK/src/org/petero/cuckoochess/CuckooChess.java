@@ -240,9 +240,6 @@ public class CuckooChess extends Activity implements GUIInterface {
         }
     }
 
-    // FIXME!!! Implement "edit board"
-    // FIXME!!! Implement analysis mode
-
     @Override
     public void setPosition(Position pos) {
         cb.setPosition(pos);
