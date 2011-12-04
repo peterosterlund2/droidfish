@@ -554,8 +554,15 @@ public class Search {
         }
 
         // Reverse futility pruning
-        if (!inCheck && (depth < 5*plyScale) && (posExtend == 0)) {
-            if ((Math.abs(alpha) <= MATE0 / 2) && (Math.abs(beta) <= MATE0 / 2)) {
+        if (!inCheck && (depth < 5*plyScale) && (posExtend == 0) && 
+            (Math.abs(alpha) <= MATE0 / 2) && (Math.abs(beta) <= MATE0 / 2)) {
+            boolean mtrlOk;
+            if (pos.whiteMove) {
+                mtrlOk = (pos.wMtrl > pos.wMtrlPawns) && (pos.wMtrlPawns > 0);
+            } else {
+                mtrlOk = (pos.bMtrl > pos.bMtrlPawns) && (pos.bMtrlPawns > 0);
+            }
+            if (mtrlOk) {
                 int margin;
                 if (depth <= plyScale)        margin = 204;
                 else if (depth <= 2*plyScale) margin = 420;
@@ -615,15 +622,12 @@ public class Search {
                     if ((searchTreeInfo[ply-1].lmr > 0) && (depth < 5*plyScale)) {
                         Move m1 = searchTreeInfo[ply-1].currentMove;
                         Move m2 = searchTreeInfo[ply+1].bestMove; // threat move
-                        if (m1.from != m1.to) {
-                            if ((m1.to == m2.from) || (m1.from == m2.to) ||
-                                ((BitBoard.squaresBetween[m2.from][m2.to] & (1L << m1.from)) != 0)) {
-                                // if the threat move was made possible by a reduced
-                                // move on the previous ply, the reduction was unsafe.
-                                // Return alpha to trigger a non-reduced re-search.
-                                if (log != null) log.logNodeEnd(sti.nodeIdx, alpha, TTEntry.T_LE, evalScore, hKey);
-                                return alpha;
-                            }
+                        if (relatedMoves(m1, m2)) {
+                            // if the threat move was made possible by a reduced
+                            // move on the previous ply, the reduction was unsafe.
+                            // Return alpha to trigger a non-reduced re-search.
+                            if (log != null) log.logNodeEnd(sti.nodeIdx, alpha, TTEntry.T_LE, evalScore, hKey);
+                            return alpha;
                         }
                     }
                 }
@@ -842,6 +846,16 @@ public class Search {
         }
         moveGen.returnMoveList(moves);
         return bestScore;
+    }
+
+    /** Return true if move m2 was made possible by move m1. */
+    private final boolean relatedMoves(Move m1, Move m2) {
+        if ((m1.from == m1.to) || (m2.from == m2.to))
+            return false;
+        if ((m1.to == m2.from) || (m1.from == m2.to) ||
+            ((BitBoard.squaresBetween[m2.from][m2.to] & (1L << m1.from)) != 0))
+            return true;
+        return false;
     }
 
     /** Return true if move should be skipped in order to make engine play weaker. */
