@@ -189,7 +189,7 @@ public class DroidChessController {
         listener = new SearchListener();
     }
 
-    public final void setBookOptions(BookOptions options) {
+    public final synchronized void setBookOptions(BookOptions options) {
         if (!bookOptions.equals(options)) {
             bookOptions = options;
             if (computerPlayer != null) {
@@ -230,8 +230,6 @@ public class DroidChessController {
             computerPlayer.setListener(listener);
             computerPlayer.setBookOptions(bookOptions);
         }
-        computerPlayer.setEngineStrength(engine, strength);
-        computerPlayer.setNumPV(numPV);
         game = new Game(computerPlayer, gameTextListener, timeControl, movesPerSession, timeIncrement);
         setPlayerNames(game);
         updateGameMode();
@@ -855,13 +853,13 @@ public class DroidChessController {
             game.timeController.setTimeControl(timeControl, movesPerSession, timeIncrement);
     }
 
-    public final void stopSearch() {
+    public final synchronized void stopSearch() {
         if (computerThread != null) {
             computerPlayer.stopSearch();
         }
     }
 
-    public final void stopPonder() {
+    public final synchronized void stopPonder() {
         if ((computerThread != null) && humansTurn())
             stopComputerThinking();
     }
