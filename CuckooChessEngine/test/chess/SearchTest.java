@@ -177,7 +177,7 @@ public class SearchTest {
         pos = TextIO.readFEN("7k/5RR1/8/8/8/8/1q3q2/3K4 w - - 0 1");
         sc = new Search(pos, nullHist, 0, tt);
         sc.maxTimeMillis = -1;
-        score = idSearch(sc, 3).score;
+        score = idSearch(sc, 4).score;
         assertTrue(score < 0);
 
         pos = TextIO.readFEN("7k/5RR1/8/8/8/8/1q3q2/3K4 w - - 0 1");
