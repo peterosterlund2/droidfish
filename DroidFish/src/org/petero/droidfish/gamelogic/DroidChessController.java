@@ -562,8 +562,10 @@ public class DroidChessController {
         }
     }
 
-    Move promoteMove;
+    private Move promoteMove;
     public final void reportPromotePiece(int choice) {
+        if (promoteMove == null)
+            return;
         final boolean white = game.currPos().whiteMove;
         int promoteTo;
         switch (choice) {
