@@ -557,10 +557,10 @@ public class Search {
         if (!inCheck && (depth < 5*plyScale) && (posExtend == 0)) {
             if ((Math.abs(alpha) <= MATE0 / 2) && (Math.abs(beta) <= MATE0 / 2)) {
                 int margin;
-                if (depth <= plyScale)        margin = 200;
-                else if (depth <= 2*plyScale) margin = 400;
-                else if (depth <= 3*plyScale) margin = 600;
-                else                          margin = 800;
+                if (depth <= plyScale)        margin = 204;
+                else if (depth <= 2*plyScale) margin = 420;
+                else if (depth <= 3*plyScale) margin = 533;
+                else                          margin = 788;
                 if (evalScore == UNKNOWN_SCORE)
                     evalScore = eval.evalPos(pos);
                 if (evalScore - margin >= beta) {
