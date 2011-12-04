@@ -227,15 +227,15 @@ public class DroidFish extends Activity implements GUIInterface {
             if ((intent.getData() != null) && intent.getScheme().equals("content")) {
                 ContentResolver resolver = getContentResolver();
                 InputStream in = resolver.openInputStream(intent.getData());
-                String tmp = "";
+                StringBuilder sb = new StringBuilder();
                 while (true) {
                     byte[] buffer = new byte[16384];
                     int len = in.read(buffer);
                     if (len <= 0)
                         break;
-                    tmp += new String(buffer, 0, len);
+                    sb.append(new String(buffer, 0, len));
                 }
-                pgn = tmp;
+                pgn = sb.toString();
             }
         } catch (IOException e) {
             Toast.makeText(getApplicationContext(), "Failed to read pgn data", Toast.LENGTH_SHORT).show();

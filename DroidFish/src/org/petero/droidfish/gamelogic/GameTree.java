@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.petero.droidfish.PGNOptions;
 import org.petero.droidfish.gamelogic.Game.GameState;
@@ -1364,8 +1365,9 @@ public class GameTree {
     }
 
     void setHeaders(Map<String,String> headers) {
-        for (String tag : headers.keySet()) {
-            String val = headers.get(tag);
+        for (Entry<String, String> entry : headers.entrySet()) {
+            String tag = entry.getKey();
+            String val = entry.getValue();
             if (tag.equals("Event")) event = val;
             else if (tag.equals("Site")) site = val;
             else if (tag.equals("Date")) date = val;

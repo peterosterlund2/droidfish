@@ -325,7 +325,8 @@ public class PGNFile {
             copyData(fileReader, fileWriter, fileReader.length() - gi.endPos);
             fileReader.close();
             fileWriter.close();
-            tmpFile.renameTo(fileName);
+            if (!tmpFile.renameTo(fileName))
+                throw new IOException();
 
             // Update gamesInFile
             if (gamesInFile != null) {
