@@ -531,7 +531,7 @@ public class Search {
             }
             emptyMove.score = score;
             tt.insert(hKey, emptyMove, type, ply, depth, q0Eval);
-            if (log != null) log.logNodeEnd(sti.nodeIdx, score, type, evalScore, hKey);
+            if (log != null) log.logNodeEnd(sti.nodeIdx, score, type, q0Eval, hKey);
             return score;
         }
 
@@ -546,8 +546,8 @@ public class Search {
                 int score = quiesce(alpha-razorMargin, beta-razorMargin, ply, 0, inCheck);
                 if (score <= alpha-razorMargin) {
                     emptyMove.score = score;
-                    tt.insert(hKey, emptyMove, TTEntry.T_LE, ply, depth, evalScore);
-                    if (log != null) log.logNodeEnd(sti.nodeIdx, score, TTEntry.T_LE, evalScore, hKey);
+                    tt.insert(hKey, emptyMove, TTEntry.T_LE, ply, depth, q0Eval);
+                    if (log != null) log.logNodeEnd(sti.nodeIdx, score, TTEntry.T_LE, q0Eval, hKey);
                     return score;
                 }
             }
