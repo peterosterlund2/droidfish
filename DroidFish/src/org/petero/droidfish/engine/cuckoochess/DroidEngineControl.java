@@ -315,6 +315,8 @@ public class DroidEngineControl {
      * Try to find a move to ponder from the transposition table.
      */
     final Move getPonderMove(Position pos, Move m) {
+        if (m == null)
+            return null;
         Move ret = null;
         UndoInfo ui = new UndoInfo();
         pos.makeMove(m, ui);
@@ -333,6 +335,8 @@ public class DroidEngineControl {
     }
 
     static final String moveToString(Move m) {
+        if (m == null)
+            return "0000";
         String ret = TextIO.squareToString(m.from);
         ret += TextIO.squareToString(m.to);
         switch (m.promoteTo) {
