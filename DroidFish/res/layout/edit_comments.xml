@@ -15,7 +15,7 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_vertical"
 			android:paddingRight="10dp"
-			android:text="Before:">
+			android:text="@string/comment_before">
 		</TextView>
 		<EditText
 			android:id="@+id/ed_comments_pre" 
@@ -32,7 +32,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_vertical"
-			android:text="Move:">
+			android:text="@string/comment_move">
 		</TextView>
 		<LinearLayout
 		    android:orientation="horizontal"
@@ -64,7 +64,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_vertical"
-			android:text="After:">
+			android:text="@string/comment_after">
 		</TextView>
 		<EditText
 			android:id="@+id/ed_comments_post" 

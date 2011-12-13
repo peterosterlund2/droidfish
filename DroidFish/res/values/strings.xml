@@ -294,7 +294,7 @@ you are not actively using the program.\
 	<string name="reading_pgn_file">Reading PGN file</string>
 	<string name="reading_scid_file">Reading Scid file</string>
 	<string name="new_file">&lt;New File&gt;</string>
-	<string name="please_wait">Please wait...</string>
+	<string name="please_wait">Please wait&#8230;</string>
 	<string name="no_pgn_files">No files found in directory DroidFish/pgn on the SD card</string>
 	<string name="no_scid_files">No files found in directory scid on the SD card</string>
 	<string name="select_color_theme">Select Color Theme</string>
@@ -327,4 +327,14 @@ you are not actively using the program.\
 	<string name="halfmove">Halfmove clock:</string>
 	<string name="fullmove">Fullmove counter:</string>
 	<string name="filter_text">Filter text</string>
+	<string name="value_percent">Value (%):</string>
+	<string name="header_event">Event:</string>
+	<string name="header_site">Site:</string>
+	<string name="header_date">Date:</string>
+	<string name="header_round">Round:</string>
+	<string name="header_white">White:</string>
+	<string name="header_black">Black:</string>
+	<string name="comment_before">Before:</string>
+	<string name="comment_move">Move:</string>
+	<string name="comment_after">After:</string>
 </resources>

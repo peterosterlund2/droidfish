@@ -7,7 +7,6 @@
 	<TextView
 	    style="?android:attr/windowTitleStyle"
 		android:id="@+id/white_clock"
-		android:text="White: 0:00"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentLeft="true">
@@ -23,7 +22,6 @@
 	<TextView
 	    style="?android:attr/windowTitleStyle"
 		android:id="@+id/black_clock"
-		android:text="Black: 0:00"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentRight="true">

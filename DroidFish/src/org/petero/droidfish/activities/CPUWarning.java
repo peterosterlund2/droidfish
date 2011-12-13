@@ -31,7 +31,6 @@ public class CPUWarning extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cpu_warning);
         showDialog(CPU_WARNING_DIALOG);
     }
 
