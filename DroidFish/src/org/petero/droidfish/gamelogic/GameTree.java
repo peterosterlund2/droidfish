@@ -956,6 +956,10 @@ public class GameTree {
             this.postComment = postComment;
         }
 
+        public Node getParent() {
+            return parent;
+        }
+
         /** nodePos must represent the same position as this Node object. */
         private final boolean verifyChildren(Position nodePos) {
             boolean anyToRemove = false;

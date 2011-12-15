@@ -71,6 +71,7 @@ import android.os.PowerManager.WakeLock;
 import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
 import android.text.Html;
+import android.text.Layout;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
@@ -98,7 +99,6 @@ import android.widget.Toast;
 
 public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! book.txt (and test classes) should not be included in apk
-    // FIXME!!! Current position in game should be visible: moveListScroll.scrollTo(0, y);
 
     // FIXME!!! PGN view option: game continuation (for training)
     // FIXME!!! Command to go to next/previous move in PGN export order.
@@ -807,8 +807,13 @@ public class DroidFish extends Activity implements GUIInterface {
     @Override
     public void moveListUpdated() {
         moveList.setText(gameTextListener.getSpannableData());
-        if (gameTextListener.atEnd())
-            moveListScroll.fullScroll(ScrollView.FOCUS_DOWN);
+        Layout layout = moveList.getLayout();
+        if (layout != null) {
+            int currPos = gameTextListener.getCurrPos();
+            int line = layout.getLineForOffset(currPos);
+            int y = (int) ((line - 1.5) * moveList.getLineHeight());
+            moveListScroll.scrollTo(0, y);
+        }
     }
 
     @Override
@@ -1786,8 +1791,8 @@ public class DroidFish extends Activity implements GUIInterface {
         public final SpannableStringBuilder getSpannableData() {
             return sb;
         }
-        public final boolean atEnd() {
-            return currPos >= endPos - 10;
+        public final int getCurrPos() {
+            return currPos;
         }
 
         public boolean isUpToDate() {
@@ -1936,11 +1941,15 @@ public class DroidFish extends Activity implements GUIInterface {
         public void setCurrent(Node node) {
             sb.removeSpan(bgSpan);
             NodeInfo ni = nodeToCharPos.get(node);
+            if ((ni == null) && (node != null) && (node.getParent() != null))
+                ni = nodeToCharPos.get(node.getParent());
             if (ni != null) {
                 int color = ColorTheme.instance().getColor(ColorTheme.CURRENT_MOVE);
                 bgSpan = new BackgroundColorSpan(color);
                 sb.setSpan(bgSpan, ni.l0, ni.l1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 currPos = ni.l0;
+            } else {
+                currPos = 0;
             }
             currNode = node;
         }
