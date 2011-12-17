@@ -165,26 +165,27 @@
     </string-array>
     <string name="about_info">\
 <b>Information</b>\n\
-<i>DroidFish</i> ist eine Android-Version des bekannten Schachprogramms <i>Stockfish 2.1</i>. \
-<i>Stockfish</i> ist eines der spielstärksten Schachprogramme der Welt. \
+<i>DroidFish</i> ist eine Android-Version von <i>Stockfish 2.1</i>, \
+das zu den spielstärksten Schachprogrammen der Welt zählt. \
 Die Android-Version erreicht auf einem 1GHz-Snapdragon-Prozessor oft eine Rechentiefe von 15 oder mehr Halbzügen.\n\
 \n\
 <b>Funktionen</b>\n\
 * Eröffnungsbuch\n\
-* Unbegrenzte Rücknahme/ Wiederholung\n\
+* Unbegrenzte Rücknahme und Wiederholung\n\
 * Kopieren und Einfügen über die Zwischenablage\n\
-* Analysemodus\n\
-* Zweispielermodus\n\
-* Computer gegen Computer\n\
+* Analyse-Modus\n\
+* Zwei-Spieler-Modus\n\
+* Computer-gegen-Computer-Modus\n\
 * Stellungseingabe\n\
 * Umfangreiche PGN-Unterstützung\n\
 * Einstellbare Spielstärke\n\
 \n\
 <b>Hinweise</b>\n\
 * Längeres Drücken auf das Spielfeld während einer Partie aktiviert ein Menu mit den Funktionen zum Kopieren und Einfügen sowie zum Laden und Speichern von PGN-Dateien.\n\
-* Im Stellungseingabemodus aktiviert längeres Drücken auf das Spielfeld ein Menu zum Bearbeiten.\n\
+* Im Stellungseingabe-Modus aktiviert längeres Drücken auf das Spielfeld ein Menu zum Bearbeiten.\n\
 * Mit einem Wischen auf dem Spielfeld nach links oder rechts lassen sich Züge zurücknehmen oder wiederholen.\n\
-* Wenn eine Partie verschiedene Variationen enthält, führt ein Wischen auf dem Spielfeld nach oben oder unten zur vorherigen oder nächsten Variation.\n\
+* Wenn eine Partie verschiedene Varianten enthält, führt ein Wischen auf dem Spielfeld \
+nach oben oder unten zur vorherigen oder nächsten Variante.\n\
 * Längeres Drücken auf die Links- und Rechts-Schaltflächen aktiviert zusätzliche Kommandos zur Navigation.\n\
 \n\
 <b>Eröffnungsbücher</b>\n\
@@ -192,10 +193,10 @@ DroidFish enthält ein kleines internes Eröffnungsbuch. Wenn Sie ein größeres
 verwenden möchten, können Sie die Verwendung externer Eröffnungsbücher (<i>Polyglot</i> \
 oder <i>CTG</i>) folgendermaßen konfigurieren:\n\
 1. Erstellen Sie ein Verzeichnis mit dem Namen <i>DroidFish</i> auf der SD-Karte.\n\
-2a. Kopieren Sie eines oder mehrere Polyglot-Eröffnungsbücher in dieses Verzeichnis. \
+2a. Kopieren Sie eines oder mehrere Polyglot-Eröffnungsbücher in das Verzeichnis. \
 Diese müssen die Dateiendung <i>.bin</i> aufweisen.\n\
-2b. Kopieren Sie eines oder mehrere CTG-Eröffnungsbücher in das Verzeichnis <i>DroidFish</i>. \
-Diese bestehen auf drei Dateien mit den Endungen <i>.ctg</i>, <i>.ctb</i> und <i>.cto</i>. \
+2b. Kopieren Sie eines oder mehrere CTG-Eröffnungsbücher in das Verzeichnis. \
+Diese bestehen aus drei Dateien mit den Endungen <i>.ctg</i>, <i>.ctb</i> und <i>.cto</i>. \
 Sie müssen alle drei Dateien kopieren.\n\
 3. Aktivieren Sie im Programm-Menu die Funktion <i>Eröffnungsbuch auswählen</i>.\n\
 4. Wählen Sie das Eröffnungsbuch aus, das Sie benutzen möchten.\n\
@@ -205,41 +206,44 @@ DroidFish kann Partien aus PGN-Dateien laden. Diese Funktion nutzen Sie folgende
 1. Erstellen Sie ein Verzeichnis mit dem Namen <i>DroidFish/pgn</i> auf der SD-Karte.\n\
 2. Kopieren Sie eine oder mehrere PGN-Dateien in dieses Verzeichnis.\n\
 3. Drücken Sie länger auf das Spielfeld und wählen Sie aus dem darauf folgenden Menu die Funktion <i>Partie aus PGN-Datei laden</i>.\n\
-4. Wählen Sie die Datei und anschließend innerhalb der Datei die Partie aus, die Sie laden möchten.\n\
+4. Wählen Sie die Datei und anschließend innerhalb der Datei die Partie, die Sie laden möchten.\n\
 \n\
 Um Partie-Informationen wie die Spielernamen zu ändern, drücken Sie länger auf die Zugliste und wählen \
 <i>Partie-Informationen</i>. Um Komentare für einen Zug zu bearbeiten, drücken Sie länger auf die Zugliste und wählen \
 <i>Kommentare</i>. Um eine veränderte Partei zu speichern, drücken Sie länger auf das Spielfeld und wählen dann \
 <i>Partie in PGN-Datei speichern</i>.\n\
 \n\
-Um die Computer-Analyse zum Spielbaum hinzuzufügen, drücken Sie auf die Analyse-Informationen, während der Computer rechnet, und wählen <i>Analyse hinzufügen</i>. Die aktuelle Hauptvariante wird \
-dann als Variation zum Spielbaum hinzugefügt.\n\
+Um die Computer-Analyse zum Spielbaum hinzuzufügen, drücken Sie auf die Analyse-Informationen, \
+während der Computer rechnet, und wählen <i>Analyse hinzufügen</i>. Die aktuelle Hauptvariante \
+wird dann als Variante zum Spielbaum hinzugefügt.\n\
 \n\
-Im Analysemodus ist es möglich, Null-Züge zum Spielbaum hinzuzufügen. Denken Sie aber daran, \
+Im Analyse-Modus ist es möglich, Null-Züge zum Spielbaum hinzuzufügen. Denken Sie aber daran, \
 dass Null-Züge nicht Teil des PGN-Standards sind und möglicherweise nicht in anderen \
 Programmen mit PGN-Unterstützung funktionieren.\n\
 \n\
 <b>Scid-Dateien</b>\n\
-Wenn Sie das Programm <i>Scid on the go</i> installiert haben, können Sie in DroidFish Scid-Datenbank-Dateien \
-direkt einlesen. Drücken Sie dazu länger auf das Spielfeld und wählen Sie die Funktion <i>Spiel aus Scid-Datei laden</i>.\n\
+Wenn Sie das Programm <i>Scid on the go</i> installiert haben, können Sie in DroidFish \
+Scid-Datenbank-Dateien direkt einlesen. Drücken Sie dazu länger auf das Spielfeld und wählen Sie \
+die Funktion <i>Spiel aus Scid-Datei laden</i>.\n\
 \n\
 <b>Lizenz</b>\n\
 GNU GPL v3\n\
 \n\
 <b>Entwickler</b>\n\
-* <i>Stockfish</i> wird entwickelt von Tord Romstad, Marco Costalba und Joona Kiiski.\n\
-* <i>Droidfish</i> wird entwickelt von Peter Österlund.\n\
-* Verbesserungen der Benutzeroberfläche stammen von Aaro Korhonen.\n\
+* Das Schachprogramm <i>Stockfish</i> wird entwickelt von Tord Romstad, Marco Costalba und Joona Kiiski.\n\
+* Die Android-Version <i>Droidfish</i> wird entwickelt von Peter Österlund.\n\
+* Von Aaro Korhonen stammen Verbesserungen der Benutzeroberfläche.\n\
     </string>
     <string name="cpu_warning">\
 <b>Prozessor-Nutzung</b>\n\
-Wenn Sie DroidFish im Hintergrund in der <i>Spielmodus</i>-Einstellung <i>Analyse</i> \
-oder <i>Computer gegen Computer</i> laufen lassen, oder wenn als <i>Rechenzeit</i> \
-ein großer Wert eingestellt ist, oder wenn <i>Vorausberechnung</i> aktivier ist, kann das Programm \
-viel Prozessor-Leistung in Anspruch nehmen.\n\
+Wenn Sie DroidFish im Hintergrund in der Spielmodus-Einstellung <i>Analyse</i> \
+oder <i>Computer gegen Computer</i> laufen lassen, oder wenn als Rechenzeit \
+ein großer Wert eingestellt ist, oder wenn die Einstellung <i>Vorausberechnung</i> aktiviert ist, \
+kann das Programm viel Prozessor-Leistung in Anspruch nehmen.\n\
 \n\
-Um Strom zu sparen, ist es empfehlenswert, dass Sie diese Parameter entsprechend anders einstellen, \
-oder dass Sie das Programm beenden, wenn Sie es nicht aktiv nutzen.\
+Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese \
+Parameter entsprechend anders einstellen, oder dass Sie das Programm beenden, \
+wenn Sie es nicht aktiv nutzen.\
     </string>
     <string name="offer_draw">Remis anbieten</string>
     <string name="queen">Dame</string>
@@ -250,12 +254,12 @@ oder dass Sie das Programm beenden, wenn Sie es nicht aktiv nutzen.\
     <string name="copy_game">Partie in die Zwischenablage kopieren</string>
     <string name="copy_position">Stellung in die Zwischenablage kopieren</string>
     <string name="paste">Aus der Zwischenablage einfügen</string>
-    <string name="load_game">Partie aus PGN-Datei laden</string>
-    <string name="load_scid_game">Partie aus Scid-Datei laden</string>
-    <string name="save_game">Partie in PGN-Datei speichern</string>
+    <string name="load_game">Partie aus einer PGN-Datei laden</string>
+    <string name="load_scid_game">Partie aus einer Scid-Datei laden</string>
+    <string name="save_game">Partie in eine PGN-Datei speichern</string>
     <string name="truncate_gametree">Spielbaum abschneiden</string>
-    <string name="move_var_up">Variation nach oben</string>
-    <string name="move_var_down">Variation nach unten</string>
+    <string name="move_var_up">Variante nach oben verschieben</string>
+    <string name="move_var_down">Variante nach unten verschieben</string>
     <string name="add_null_move">Null-Zug hinzufügen</string>
     <string name="tools_menu">Hilfsmittel</string>
     <string name="load_save_menu">Partie laden/speichern</string>
@@ -264,10 +268,10 @@ oder dass Sie das Programm beenden, wenn Sie es nicht aktiv nutzen.\
     <string name="edit_randomization">Randomisierung ändern</string>
     <string name="invalid_number_format">Ungültiges Zahlenformat</string>
     <string name="side_to_move">Seite am Zug</string>
-    <string name="clear_board">Stellung leeren</string>
+    <string name="clear_board">Spielfeld leeren</string>
     <string name="initial_position">Ausgangsposition</string>
-    <string name="castling_flags">Rochade-Einstellungen</string>
-    <string name="en_passant_file">En-Passant-Einstellungen</string>
+    <string name="castling_flags">Rochade-Rechte</string>
+    <string name="en_passant_file">En-passant-Einstellungen</string>
     <string name="move_counters">Zug-Zähler</string>
     <string name="paste_position">Position einfügen</string>
     <string name="edit_board">Stellung bearbeiten</string>
@@ -278,14 +282,14 @@ oder dass Sie das Programm beenden, wenn Sie es nicht aktiv nutzen.\
     <string name="white_queen_castle">Lange Rochade Weiß</string>
     <string name="black_king_castle">Kurze Rochade Schwarz</string>
     <string name="black_queen_castle">Lange Rochade Schwarz</string>
-    <string name="none">None</string>
-    <string name="select_en_passant_file">En Passant einstellen</string>
+    <string name="none">Nein</string>
+    <string name="select_en_passant_file">En passant möglich?</string>
     <string name="edit_move_counters">Zug-Zähler einstellen</string>
     <string name="internal_book">&lt;Internes Buch&gt;</string>
     <string name="select_opening_book_file">Eröffnungsbuch wählen</string>
     <string name="select_pgn_file">PGN-Datei zum Öffnen wählen</string>
-    <string name="select_pgn_file_save">In PGN-Datei speichern</string>
-    <string name="select_scid_file">Scid-Datei zum Öffnen wählen</string>
+    <string name="select_pgn_file_save">In eine PGN-Datei speichern</string>
+    <string name="select_scid_file">Scid-Datei wird gelesen</string>
     <string name="select_pgn_game">Partei zum Öffnen auswählen</string>
     <string name="reading_pgn_file">PGN-Datei wird gelesen</string>
     <string name="reading_scid_file">Scid-Datei wird gelesen</string>
@@ -295,8 +299,8 @@ oder dass Sie das Programm beenden, wenn Sie es nicht aktiv nutzen.\
     <string name="no_scid_files">Keine Dateien im Verzeichnis scid auf der SD-Karte gefunden</string>
     <string name="select_color_theme">Farbschema auswählen</string>
     <string name="select_game_mode">Spielmodus auswählen</string>
-    <string name="edit_replay_game">Partie bearbeiten/ nachspielen</string>
-    <string name="analysis_mode">Analysemodus</string>
+    <string name="edit_replay_game">Partie bearbeiten/nachspielen</string>
+    <string name="analysis_mode">Analyse-Modus</string>
     <string name="play_white">Mit Weiß spielen</string>
     <string name="play_black">Mit Schwarz spielen</string>
     <string name="two_players">Zwei Spieler</string>
@@ -308,11 +312,11 @@ oder dass Sie das Programm beenden, wenn Sie es nicht aktiv nutzen.\
     <string name="go_back">Zurück</string>
     <string name="go_forward">Vorwärts</string>
     <string name="goto_start_game">Zum Partiebeginn</string>
-    <string name="goto_start_variation">Zum Beginn der Variation</string>
-    <string name="goto_prev_variation">Zur vorherigen Variation</string>
+    <string name="goto_start_variation">Zum Beginn der Variante</string>
+    <string name="goto_prev_variation">Zur vorherigen Variante</string>
     <string name="load_prev_game">Vorherige Partie laden</string>
-    <string name="goto_end_variation">Zum Ende der Variation</string>
-    <string name="goto_next_variation">Zur nächsten Variation</string>
+    <string name="goto_end_variation">Zum Ende der Variante</string>
+    <string name="goto_next_variation">Zur nächsten Variante</string>
     <string name="load_next_game">Nächste Partie laden</string>
     <string name="no_prev_game">Keine vorherige Partie</string>
     <string name="no_next_game">Keine nächste Partie</string>
@@ -330,10 +334,41 @@ oder dass Sie das Programm beenden, wenn Sie es nicht aktiv nutzen.\
     <string name="header_round">Runde:</string>
     <string name="header_white">Weiß:</string>
     <string name="header_black">Schwarz:</string>
-    <string name="comment_before">Bevor:</string>
+    <string name="comment_before">Vorher:</string>
     <string name="comment_move">Zug:</string>
-    <string name="comment_after">Nach:</string>
+    <string name="comment_after">Nachher:</string>
+    <string name="whites_move">Weiß am Zug</string>
+    <string name="blacks_move">Schwarz am Zug</string>
+    <string name="ponder">Vorausberechnung</string>
+    <string name="thinking">Berechnung</string>
+    <string name="analyzing">Analyse</string>
+    <string name="white_mate">Spielende, Matt durch Weiß!</string>
+    <string name="black_mate">Spielende, Matt durch Schwarz!</string>
+    <string name="stalemate">Spielende, Remis (Patt)!</string>
+    <string name="draw_rep">Spielende, Remis (Wiederholung)!</string>
+    <string name="draw_50">Spielende, Remis (50-Züge-Regel)!</string>
+    <string name="draw_no_mate">Spielende, Remis (kein Matt möglich)!</string>
+    <string name="draw_agree">Spielende, Remis (Vereinbarung)!</string>
+    <string name="resign_white">Spielende, Aufgabe durch Weiß!</string>
+    <string name="resign_black">Spielende, Aufgabe durch Schwarz!</string>
+    <string name="book">Buch:</string>
+    <string name="invalid_move">Unzulässiger Zug</string>
+    <string name="load_game_title">Datei bearbeiten/Partie laden</string>
+    <string name="save_game_title">Datei bearbeiten/Partie speichern</string>
+    <string name="load_scid_game_title">Scid-Partie laden</string>
+    <string name="cpu_warning_title">Prozessor-Warnung</string>
+    <string name="failed_to_read_pgn_data">PGN-Daten konnten nicht gelesen werden</string>
+    <string name="variation">Variante:</string>
+    <string name="add_analysis">Analyse hinzufügen</string>
+    <string name="fewer_variations">Weniger Varianten</string>
+    <string name="more_variations">Mehr Varianten</string>
+    <string name="heavy_cpu_usage">Starke Prozessor-Nutzung</string>
+    <string name="background_processing">Verarbeitung im Hintergrund</string>
+    <string name="lot_cpu_power">DroidFish nutzt viel Prozessor-Rechenzeit</string>
+    <string name="delete_game">Partie löschen?</string>
     <string name="delete_file">Datei löschen</string>
+    <string name="delete_file_question">Datei löschen?</string>
+    <string name="delete_named_file">Datei %s löschen?</string>
 
     <string name="option_new_game">Neue Partie</string>
     <string name="option_file">Datei</string>
@@ -345,11 +380,11 @@ oder dass Sie das Programm beenden, wenn Sie es nicht aktiv nutzen.\
     <string name="option_draw">Remis anbieten/annehmen</string>
     <string name="option_select_book">Eröffnungsbuch auswählen</string>
     <string name="option_color_theme">Farbschema auswählen</string>
-    <string name="option_about">Information/Hilfe</string>
+    <string name="option_about">Information/Hinweise</string>
 
     <string name="prefs_playing_options">Spieloptionen</string>
     <string name="prefs_boardFlipped_title">Ansicht drehen</string>
-    <string name="prefs_boardFlipped_summary">Brett aus der Perspektive von Schwarz darstellen</string>
+    <string name="prefs_boardFlipped_summary">Spielfeld aus der Perspektive von Schwarz darstellen</string>
     <string name="prefs_autoSwapSides_title">Automatischer Seitenwechsel</string>
     <string name="prefs_autoSwapSides_summary">Seiten beim Start einer neuen Partie automatisch wechseln (Einstellung Ansicht drehen ignorieren)</string>
     <string name="prefs_engine_settings">Engine-Einstellungen</string>
@@ -357,9 +392,9 @@ oder dass Sie das Programm beenden, wenn Sie es nicht aktiv nutzen.\
     <string name="prefs_engine_summary">Auswahl der Schach-Engine</string>
     <string name="prefs_strength_title">Spielstärke</string>
     <string name="prefs_ponderMode_title">Vorausberechnung</string>
-    <string name="prefs_ponderMode_summary">Vorausberechnung von Zügen durch die Engine beim Warten auf einen Zug des Spielers</string>
+    <string name="prefs_ponderMode_summary">Vorausberechnung von Zügen durch die Engine, wenn der Spieler am Zug ist</string>
     <string name="prefs_threads_title">Parallelberechnung</string>
-    <string name="prefs_threads_summary">Zahl der zu nutzenden Engine-Ausführungen (Prozessorkerne)</string>
+    <string name="prefs_threads_summary">Zahl der zu nutzenden parallelen Engine-Stränge (Prozessorkerne)</string>
     <string name="prefs_time_control">Zeitvorgabe</string>
     <string name="prefs_movesPerSession_title">Züge</string>
     <string name="prefs_movesPerSession_summary">Zahl der Züge innerhalb der Zeitvorgabe</string>
@@ -367,7 +402,7 @@ oder dass Sie das Programm beenden, wenn Sie es nicht aktiv nutzen.\
     <string name="prefs_timeControl_summary">Zeitspanne für die Vorgabe</string>
     <string name="prefs_timeIncrement_title">Erhöhung</string>
     <string name="prefs_timeIncrement_summary">Zusätzliche Zeit pro vollständigem Zug</string>
-    <string name="prefs_hints">Hinweise</string>
+    <string name="prefs_hints">Hinweise"</string>
     <string name="prefs_showThinking_title">Berechnungen anzeigen</string>
     <string name="prefs_showThinking_summary">Computeralgorithmus-Informationen während der Zugsuche anzeigen</string>
     <string name="prefs_whiteBasedScores_title">Weiß-bezogene Werte</string>
@@ -375,7 +410,7 @@ oder dass Sie das Programm beenden, wenn Sie es nicht aktiv nutzen.\
     <string name="prefs_bookHints_title">Eröffnungsbuch-Hinweise</string>
     <string name="prefs_bookHints_summary">Hinweise aus dem Eröffnungsbuch für den Spieler anzeigen</string>
     <string name="prefs_thinkingArrows_title">Pfeile nutzen</string>
-    <string name="prefs_thinkingArrows_summary">Pfeile zur Anzeige von Zügen auf dem Brett nutzen</string>
+    <string name="prefs_thinkingArrows_summary">Pfeile zur Anzeige von Zügen auf dem Spielfeld nutzen</string>
     <string name="prefs_user_interface">Benutzeroberfläche</string>
     <string name="prefs_animateMoves_title">Zuganimation</string>
     <string name="prefs_animateMoves_summary">Bewegung der Figuren animieren</string>
@@ -429,30 +464,30 @@ oder dass Sie das Programm beenden, wenn Sie es nicht aktiv nutzen.\
     <string name="prefs_pgnSettings_title">PGN-Einstellungen</string>
     <string name="prefs_pgnSettings_summary">Einstellungen für den Import und den Export von PGN-Daten</string>
     <string name="prefs_pgn_viewer">PGN-Anzeige</string>
-    <string name="prefs_viewVariations_title">Variationen</string>
+    <string name="prefs_viewVariations_title">Varianten</string>
     <string name="prefs_viewVariations_summary">Nicht-Hauptlinienzüge anzeigen</string>
     <string name="prefs_viewComments_title">Kommentare</string>
     <string name="prefs_viewComments_summary">Benutzerkommentare anzeigen</string>
     <string name="prefs_viewNAG_title">Annotationen</string>
-    <string name="prefs_viewNAG_summary">Numeric Annotation Glyphs (NAGs) anzeigen</string>
+    <string name="prefs_viewNAG_summary">Annotationen (Numeric Annotation Glyphs, NAGs) anzeigen</string>
     <string name="prefs_viewHeaders_title">Partie-Informationen</string>
     <string name="prefs_viewHeaders_summary">Partie-Informationen anzeigen</string>
     <string name="prefs_pgn_import">PGN-Import</string>
-    <string name="prefs_importVariations_title">Variationen</string>
+    <string name="prefs_importVariations_title">Varianten</string>
     <string name="prefs_importVariations_summary">Nicht-Hauptlinienzüge importieren</string>
     <string name="prefs_importComments_title">Kommentare</string>
     <string name="prefs_importComments_summary">Benutzerkommentare importieren</string>
     <string name="prefs_importNAG_title">Annotationen</string>
-    <string name="prefs_importNAG_summary">Numeric Annotation Glyphs (NAGs) importieren</string>
+    <string name="prefs_importNAG_summary">Annotationen (Numeric Annotation Glyphs, NAGs) importieren</string>
     <string name="prefs_pgn_export">PGN-Export</string>
-    <string name="prefs_exportVariations_title">Variationen</string>
+    <string name="prefs_exportVariations_title">Varianten</string>
     <string name="prefs_exportVariations_summary">Nicht-Hauptlinienzüge exportieren</string>
     <string name="prefs_exportComments_title">Kommentare</string>
     <string name="prefs_exportComments_summary">Benutzerkommentare exportieren</string>
     <string name="prefs_exportNAG_title">Annotationen</string>
-    <string name="prefs_exportNAG_summary">Numeric Annotation Glyphs (NAGs) exportieren</string>
+    <string name="prefs_exportNAG_summary">Annotationen (Numeric Annotation Glyphs, NAGs) exportieren</string>
     <string name="prefs_exportPlayerAction_title">Spieler-Aktionen</string>
-    <string name="prefs_exportPlayerAction_summary">Spieler-Aktionen wie Remisangebote und Partie-Aufgabe exportieren</string>
+    <string name="prefs_exportPlayerAction_summary">Spieler-Aktionen wie Remis-Angebote und Partie-Aufgabe exportieren</string>
     <string name="prefs_exportTime_title">Zeit</string>
     <string name="prefs_exportTime_summary">Zeit-Informationen für jeden Zug exportieren</string>
 </resources>
