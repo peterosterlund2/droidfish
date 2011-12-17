@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
+import org.petero.droidfish.R;
 import org.petero.droidfish.gamelogic.Pair;
 
 import android.app.Activity;
@@ -306,12 +307,10 @@ public class PGNFile {
             FileWriter fw = new FileWriter(fileName, true);
             fw.write(pgn);
             fw.close();
-            Toast.makeText(context, "Game saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.game_saved, Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
-            if (context != null) {
-                String msg = "Failed to save game";
-                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-            }
+            if (context != null)
+                Toast.makeText(context, R.string.failed_to_save_game, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -343,10 +342,8 @@ public class PGNFile {
             }
             return true;
         } catch (IOException e) {
-            if (context != null) {
-                String msg = "Failed to delete game";
-                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-            }
+            if (context != null)
+                Toast.makeText(context, R.string.failed_to_delete_game, Toast.LENGTH_SHORT).show();
         }
         return false;
     }
@@ -363,13 +360,11 @@ public class PGNFile {
             fileReader.close();
             fileWriter.close();
             tmpFile.renameTo(fileName);
-            Toast.makeText(context, "Game saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.game_saved, Toast.LENGTH_SHORT).show();
             return true;
         } catch (IOException e) {
-            if (context != null) {
-                String msg = "Failed to save game";
-                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-            }
+            if (context != null)
+                Toast.makeText(context, R.string.failed_to_save_game, Toast.LENGTH_SHORT).show();
         }
         return false;
     }

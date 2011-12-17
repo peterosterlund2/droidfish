@@ -322,6 +322,8 @@ you are not actively using the program.\
     <string name="no_next_game">No next game</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="move_number">Move number:</string>
     <string name="filename">Filename:</string>
     <string name="halfmove">Halfmove clock:</string>
@@ -369,6 +371,14 @@ you are not actively using the program.\
     <string name="delete_file">Delete file</string>
     <string name="delete_file_question">Delete file?</string>
     <string name="delete_named_file">Delete file %s?</string>
+    <string name="game_saved">Game saved</string>
+    <string name="failed_to_save_game">Failed to save game</string>
+    <string name="failed_to_delete_game">Failed to delete game</string>
+    <string name="file_too_large">File too large</string>
+    <string name="save_game_question">Save game?</string>
+    <string name="before_selected">Before Selected</string>
+    <string name="after_selected">After Selected</string>
+    <string name="replace_selected">Replace Selected</string>
 
     <string name="err_too_few_spaces">Too few spaces</string>
     <string name="err_invalid_piece">Invalid piece</string>

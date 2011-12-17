@@ -313,13 +313,13 @@ public class EditPGN extends ListActivity {
             builder.setTitle(R.string.delete_game);
             String msg = gi.toString();
             builder.setMessage(msg);
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     deleteGame(gi);
                     dialog.cancel();
                 }
             });
-            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     dialog.cancel();
                 }
@@ -331,8 +331,12 @@ public class EditPGN extends ListActivity {
             final GameInfo gi = selectedGi;
             selectedGi = null;
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Save game?");
-            final CharSequence[] items = { "Before Selected", "After Selected", "Replace Selected" };
+            builder.setTitle(R.string.save_game_question);
+            final CharSequence[] items = {
+                getString(R.string.before_selected),
+                getString(R.string.after_selected),
+                getString(R.string.replace_selected),
+            };
             builder.setItems(items, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
                     GameInfo giToReplace;
@@ -356,13 +360,13 @@ public class EditPGN extends ListActivity {
             String name = new File(pgnFile.getName()).getName();
             String msg = String.format(getString(R.string.delete_named_file), name);
             builder.setMessage(msg);
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     pgnFile.delete();
                     finish();
                 }
             });
-            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     dialog.cancel();
                 }
@@ -389,7 +393,8 @@ public class EditPGN extends ListActivity {
             if (p.first == GameInfoResult.OUT_OF_MEMORY) {
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        Toast.makeText(getApplicationContext(), "File too large", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.file_too_large,
+                                       Toast.LENGTH_SHORT).show();
                     }
                 });
             }
