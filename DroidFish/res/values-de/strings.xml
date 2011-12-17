@@ -181,10 +181,10 @@ Die Android-Version erreicht auf einem 1GHz-Snapdragon-Prozessor oft eine Rechen
 * Einstellbare Spielstärke\n\
 \n\
 <b>Hinweise</b>\n\
-* Längeres Drücken auf das Spielfeld während einer Partie aktiviert ein Menu mit den Funktionen zum Kopieren und Einfügen sowie zum Laden und Speichern von PGN-Dateien.\n\
+* Längeres Drücken auf das Spielfeld während einer Partie aktiviert ein Menu mit Funktionen zum Kopieren und Einfügen sowie zum Laden und Speichern von PGN-Dateien.\n\
 * Im Stellungseingabe-Modus aktiviert längeres Drücken auf das Spielfeld ein Menu zum Bearbeiten.\n\
-* Mit einem Wischen auf dem Spielfeld nach links oder rechts lassen sich Züge zurücknehmen oder wiederholen.\n\
-* Wenn eine Partie verschiedene Varianten enthält, führt ein Wischen auf dem Spielfeld \
+* Durch Wischen auf dem Spielfeld nach links oder rechts lassen sich Züge zurücknehmen oder wiederholen.\n\
+* Wenn eine Partie verschiedene Varianten enthält, führt Wischen auf dem Spielfeld \
 nach oben oder unten zur vorherigen oder nächsten Variante.\n\
 * Längeres Drücken auf die Links- und Rechts-Schaltflächen aktiviert zusätzliche Kommandos zur Navigation.\n\
 \n\
@@ -205,13 +205,13 @@ Sie müssen alle drei Dateien kopieren.\n\
 DroidFish kann Partien aus PGN-Dateien laden. Diese Funktion nutzen Sie folgendermaßen:\n\
 1. Erstellen Sie ein Verzeichnis mit dem Namen <i>DroidFish/pgn</i> auf der SD-Karte.\n\
 2. Kopieren Sie eine oder mehrere PGN-Dateien in dieses Verzeichnis.\n\
-3. Drücken Sie länger auf das Spielfeld und wählen Sie aus dem darauf folgenden Menu die Funktion <i>Partie aus PGN-Datei laden</i>.\n\
+3. Drücken Sie länger auf das Spielfeld und wählen Sie aus dem darauf folgenden Menu die Funktion <i>Partie aus einer PGN-Datei laden</i>.\n\
 4. Wählen Sie die Datei und anschließend innerhalb der Datei die Partie, die Sie laden möchten.\n\
 \n\
 Um Partie-Informationen wie die Spielernamen zu ändern, drücken Sie länger auf die Zugliste und wählen \
 <i>Partie-Informationen</i>. Um Komentare für einen Zug zu bearbeiten, drücken Sie länger auf die Zugliste und wählen \
 <i>Kommentare</i>. Um eine veränderte Partei zu speichern, drücken Sie länger auf das Spielfeld und wählen dann \
-<i>Partie in PGN-Datei speichern</i>.\n\
+<i>Partie in eine PGN-Datei speichern</i>.\n\
 \n\
 Um die Computer-Analyse zum Spielbaum hinzuzufügen, drücken Sie auf die Analyse-Informationen, \
 während der Computer rechnet, und wählen <i>Analyse hinzufügen</i>. Die aktuelle Hauptvariante \
@@ -224,7 +224,7 @@ Programmen mit PGN-Unterstützung funktionieren.\n\
 <b>Scid-Dateien</b>\n\
 Wenn Sie das Programm <i>Scid on the go</i> installiert haben, können Sie in DroidFish \
 Scid-Datenbank-Dateien direkt einlesen. Drücken Sie dazu länger auf das Spielfeld und wählen Sie \
-die Funktion <i>Spiel aus Scid-Datei laden</i>.\n\
+die Funktion <i>Partie aus einer Scid-Datei laden</i>.\n\
 \n\
 <b>Lizenz</b>\n\
 GNU GPL v3\n\
@@ -289,8 +289,8 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="select_opening_book_file">Eröffnungsbuch wählen</string>
     <string name="select_pgn_file">PGN-Datei zum Öffnen wählen</string>
     <string name="select_pgn_file_save">In eine PGN-Datei speichern</string>
-    <string name="select_scid_file">Scid-Datei wird gelesen</string>
-    <string name="select_pgn_game">Partei zum Öffnen auswählen</string>
+    <string name="select_scid_file">Scid-Datei zum Öffnen wählen</string>
+    <string name="select_pgn_game">Partie zum Öffnen auswählen</string>
     <string name="reading_pgn_file">PGN-Datei wird gelesen</string>
     <string name="reading_scid_file">Scid-Datei wird gelesen</string>
     <string name="new_file">&lt;Neue Datei&gt;</string>
@@ -300,7 +300,7 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="select_color_theme">Farbschema auswählen</string>
     <string name="select_game_mode">Spielmodus auswählen</string>
     <string name="edit_replay_game">Partie bearbeiten/nachspielen</string>
-    <string name="analysis_mode">Analyse-Modus</string>
+    <string name="analysis_mode">Analyse</string>
     <string name="play_white">Mit Weiß spielen</string>
     <string name="play_black">Mit Schwarz spielen</string>
     <string name="two_players">Zwei Spieler</string>
@@ -387,10 +387,10 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="err_invalid_side">Unzulässige Seite</string>
     <string name="err_invalid_castling_flags">Unzulässige Rochade-Einstellungen</string>
     <string name="err_invalid_en_passant_square">Unzulässiges Feld für en passant</string>
-    <string name="err_white_num_kings">Weiß darf nur einen König haben</string>
-    <string name="err_black_num_kings">Schwarz darf nur einen König haben</string>
+    <string name="err_white_num_kings">Weiß muss genau einen König haben</string>
+    <string name="err_black_num_kings">Schwarz muss genau einen König haben</string>
     <string name="err_king_capture_possible">Schlagen des Königs möglich</string>
-    <string name="err_too_many_rows">Zuviele Zeilen</string>
+    <string name="err_too_many_rows">Zuviele Reihen</string>
     <string name="err_too_many_columns">Zuviele Spalten</string>
     <string name="err_pawn_on_first_last_rank">Bauer in der ersten/letzten Reihe</string>
 
@@ -410,7 +410,7 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="prefs_boardFlipped_title">Ansicht drehen</string>
     <string name="prefs_boardFlipped_summary">Spielfeld aus der Perspektive von Schwarz darstellen</string>
     <string name="prefs_autoSwapSides_title">Automatischer Seitenwechsel</string>
-    <string name="prefs_autoSwapSides_summary">Seiten beim Start einer neuen Partie automatisch wechseln (Einstellung Ansicht drehen ignorieren)</string>
+    <string name="prefs_autoSwapSides_summary">Seiten beim Start einer neuen Partie automatisch wechseln (Einstellung <i>Ansicht drehen</i> ignorieren)</string>
     <string name="prefs_engine_settings">Engine-Einstellungen</string>
     <string name="prefs_engine_title">Schach-Engine</string>
     <string name="prefs_engine_summary">Auswahl der Schach-Engine</string>
@@ -453,7 +453,7 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="prefs_invertScrollDirection_summary">Wischrichtung für Partie-Navigation umkehren</string>
     <string name="prefs_fontSize_title">Schriftgröße</string>
     <string name="prefs_fontSize_summary">Schriftgröße für Zugliste und Partie-Informationen einstellen</string>
-    <string name="prefs_largeButtons_title">Große Schaltflächen</string>
+    <string name="prefs_largeButtons_title">Größe der Schaltflächen</string>
     <string name="prefs_largeButtons_summary">Große Schaltflächen für Partie-Navigation und Spielmodus-Einstellung verwenden</string>
     <string name="prefs_colors_title">Farbeinstellungen</string>
     <string name="prefs_colors_summary">Einzelne Farben ändern</string>
