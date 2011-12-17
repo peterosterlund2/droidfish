@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory
-        android:title="Spieloptionen">
-        <CheckBoxPreference
-            android:key="boardFlipped"
-            android:title="Brett drehen"
-            android:summary="Brettansicht von der schwarzen Seite"
-            android:defaultValue="false">
-        </CheckBoxPreference>
-        <CheckBoxPreference
-            android:key="autoSwapSides"
-            android:title="Automatischer Seitenwechsel"
-            android:summary="Seiten automatisch wechseln beim Start einer neuen Partie (Einstellung Brett drehen ignorieren)"
-            android:defaultValue="false">
-        </CheckBoxPreference>
-    </PreferenceCategory>
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory
+		android:title="Spieloptionen">
+		<CheckBoxPreference
+			android:key="boardFlipped"
+			android:title="Ansicht drehen"
+			android:summary="Brett aus der Perspektive von Schwarz darstellen"
+			android:defaultValue="false">
+		</CheckBoxPreference>
+		<CheckBoxPreference
+			android:key="autoSwapSides"
+			android:title="Automatischer Seitenwechsel"
+			android:summary="Seiten beim Start einer neuen Partie automatisch wechseln (Einstellung Ansicht drehen ignorieren)"
+			android:defaultValue="false">
+		</CheckBoxPreference>
+	</PreferenceCategory>
     <PreferenceCategory
         android:title="Engine-Einstellungen">
         <ListPreference
@@ -34,7 +34,7 @@
         <CheckBoxPreference
             android:key="ponderMode"
             android:title="Vorausberechnung"
-            android:summary="Vorausberechnung von Zügen durch die Engine beim Warten auf Zug des Spielers"
+            android:summary="Vorausberechnung von Zügen durch die Engine beim Warten auf einen Zug des Spielers"
             android:defaultValue="false">
         </CheckBoxPreference>
         <ListPreference
@@ -46,211 +46,211 @@
             android:defaultValue="0">
         </ListPreference>
     </PreferenceCategory>
-    <PreferenceCategory
-        android:title="Zeitvorgabe">
-        <ListPreference
-            android:key="movesPerSession"
-            android:title="Züge"
-            android:summary="Zahl der Züge innerhalb der Zeitvorgabe"
-            android:entryValues="@array/moves_per_session_values"
-            android:entries="@array/moves_per_session_texts"
-            android:defaultValue="60">
-        </ListPreference>
-        <ListPreference
-            android:key="timeControl"
-            android:title="Zeit"
-            android:summary="Zeitspanne für die Vorgabe"
-            android:entryValues="@array/time_control_values"
-            android:entries="@array/time_control_texts"
-            android:defaultValue="300000">
-        </ListPreference>
-        <ListPreference
-            android:key="timeIncrement"
-            android:title="Erhöhung"
-            android:summary="Zusätzliche Zeit pro vollständigem Zug"
-            android:entryValues="@array/time_increment_values"
-            android:entries="@array/time_increment_texts"
-            android:defaultValue="0">
-        </ListPreference>
-    </PreferenceCategory>
-    <PreferenceCategory
-        android:title="Hinweise">
-        <CheckBoxPreference
-            android:key="showThinking"
-            android:title="Berechnungen anzeigen"
-            android:summary="Computeralgorithmus-Informationen während der Zugsuche anzeigen"
-            android:defaultValue="false">
-        </CheckBoxPreference>
-        <CheckBoxPreference
-            android:key="whiteBasedScores"
-            android:title="Weiß-bezogene Werte"
-            android:summary="Positive Analyse-Werte entsprechen guten Varianten für Weiß"
-            android:defaultValue="false">
-        </CheckBoxPreference>
-        <CheckBoxPreference
-            android:key="bookHints"
-            android:title="Eröffnungsbuch-Hinweise"
-            android:summary="Hinweise aus dem Eröffnungsbuch für den Spieler anzeigen"
-            android:defaultValue="false">
-        </CheckBoxPreference>
-        <ListPreference
-            android:key="thinkingArrows"
-            android:title="Pfeile nutzen"
-            android:summary="Pfeile zur Anzeige von Zügen auf dem Brett nutzen"
-            android:entryValues="@array/thinking_arrows_values"
-            android:entries="@array/thinking_arrows_texts"
-            android:defaultValue="2">
-        </ListPreference>
-    </PreferenceCategory>
-    <PreferenceCategory
-        android:title="Benutzeroberfläche">
-        <CheckBoxPreference
-            android:key="animateMoves"
-            android:title="Zuganimation"
-            android:summary="Bewegung der Figuren animieren"
-            android:defaultValue="true">
-        </CheckBoxPreference>
-        <CheckBoxPreference
-            android:key="oneTouchMoves"
-            android:title="Einzelberührung"
-            android:summary="Bei Berührung eines Feldes, von dem genau ein Zug möglich ist, diesen Zug sofort ausführen"
-            android:defaultValue="false">
-        </CheckBoxPreference>
-        <CheckBoxPreference
-            android:key="soundEnabled"
-            android:title="Töne"
-            android:summary="Ton bei Computer-Zug ausgeben"
-            android:defaultValue="false">
-        </CheckBoxPreference>
-        <CheckBoxPreference
-            android:key="fullScreenMode"
-            android:title="Vollbildanzeige"
-            android:summary="Vollbildanzeige mit verdeckter Statuszeile aktivieren"
-            android:defaultValue="false">
-        </CheckBoxPreference>
+	<PreferenceCategory
+		android:title="Zeitvorgabe">
+		<ListPreference
+			android:key="movesPerSession"
+			android:title="Züge"
+			android:summary="Zahl der Züge innerhalb der Zeitvorgabe"
+			android:entryValues="@array/moves_per_session_values"
+			android:entries="@array/moves_per_session_texts"
+			android:defaultValue="60">
+		</ListPreference>
+		<ListPreference
+			android:key="timeControl"
+			android:title="Zeit"
+			android:summary="Zeitspanne für die Vorgabe"
+			android:entryValues="@array/time_control_values"
+			android:entries="@array/time_control_texts"
+			android:defaultValue="300000">
+		</ListPreference>
+		<ListPreference
+			android:key="timeIncrement"
+			android:title="Erhöhung"
+			android:summary="Zusätzliche Zeit pro vollständigem Zug"
+			android:entryValues="@array/time_increment_values"
+			android:entries="@array/time_increment_texts"
+			android:defaultValue="0">
+		</ListPreference>
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="Hinweise">
+		<CheckBoxPreference
+			android:key="showThinking"
+			android:title="Berechnungen anzeigen"
+			android:summary="Computeralgorithmus-Informationen während der Zugsuche anzeigen"
+			android:defaultValue="false">
+		</CheckBoxPreference>
+		<CheckBoxPreference
+			android:key="whiteBasedScores"
+			android:title="Weiß-bezogene Werte"
+			android:summary="Positive Analyse-Werte entsprechen guten Varianten für Weiß"
+			android:defaultValue="false">
+		</CheckBoxPreference>
+		<CheckBoxPreference
+			android:key="bookHints"
+			android:title="Eröffnungsbuch-Hinweise"
+			android:summary="Hinweise aus dem Eröffnungsbuch für den Spieler anzeigen"
+			android:defaultValue="false">
+		</CheckBoxPreference>
+		<ListPreference
+			android:key="thinkingArrows"
+			android:title="Pfeile nutzen"
+			android:summary="Pfeile zur Anzeige von Zügen auf dem Brett nutzen"
+			android:entryValues="@array/thinking_arrows_values"
+			android:entries="@array/thinking_arrows_texts"
+			android:defaultValue="2">
+		</ListPreference>
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="Benutzeroberfläche">
+		<CheckBoxPreference
+			android:key="animateMoves"
+			android:title="Zuganimation"
+			android:summary="Bewegung der Figuren animieren"
+			android:defaultValue="true">
+		</CheckBoxPreference>
+		<CheckBoxPreference
+			android:key="oneTouchMoves"
+			android:title="Einzelberührung"
+			android:summary="Bei Berührung eines Feldes, von dem genau ein Zug möglich ist, diesen Zug sofort ausführen"
+			android:defaultValue="false">
+		</CheckBoxPreference>
+		<CheckBoxPreference
+			android:key="soundEnabled"
+			android:title="Töne"
+			android:summary="Ton bei Computer-Zug ausgeben"
+			android:defaultValue="false">
+		</CheckBoxPreference>
+		<CheckBoxPreference
+			android:key="fullScreenMode"
+			android:title="Vollbildanzeige"
+			android:summary="Vollbildanzeige mit verdeckter Statuszeile aktivieren"
+			android:defaultValue="false">
+		</CheckBoxPreference>
         <CheckBoxPreference
             android:key="wakeLock"
             android:title="Bildschirmabschaltung deaktivieren"
             android:defaultValue="false">
         </CheckBoxPreference>
-        <CheckBoxPreference
-            android:key="drawSquareLabels"
-            android:title="Feldbeschriftung"
-            android:summary="Feldbeschriftung (a-h und 1-8) anzeigen"
-            android:defaultValue="false">
-        </CheckBoxPreference>
-        <ListPreference
-            android:key="scrollSensitivity"
-            android:title="Wischgeschwindigkeit"
-            android:summary="Wischgeschwindigkeit für Partie-Navigation einstellen"
-            android:entryValues="@array/scroll_sensitivity_values"
-            android:entries="@array/scroll_sensitivity_texts"
-            android:defaultValue="2">
-        </ListPreference>
-        <CheckBoxPreference
-            android:key="invertScrollDirection"
-            android:title="Wischrichtung"
-            android:summary="Wischrichtung für Partie-Navigation umkehren"
-            android:defaultValue="false">
-        </CheckBoxPreference>
-        <ListPreference
-            android:key="fontSize"
-            android:title="Schriftgröße"
-            android:summary="Schriftgröße für Zugliste und Partie-Informationen einstellen"
-            android:entryValues="@array/font_size_values"
-            android:entries="@array/font_size_texts"
-            android:defaultValue="12">
-        </ListPreference>
+		<CheckBoxPreference
+			android:key="drawSquareLabels"
+			android:title="Feldbeschriftung"
+			android:summary="Feldbeschriftung (a-h und 1-8) anzeigen"
+			android:defaultValue="false">
+		</CheckBoxPreference>
+		<ListPreference
+			android:key="scrollSensitivity"
+			android:title="Wischgeschwindigkeit"
+			android:summary="Wischgeschwindigkeit für Partie-Navigation einstellen"
+			android:entryValues="@array/scroll_sensitivity_values"
+			android:entries="@array/scroll_sensitivity_texts"
+			android:defaultValue="2">
+		</ListPreference>
+		<CheckBoxPreference
+			android:key="invertScrollDirection"
+			android:title="Wischrichtung"
+			android:summary="Wischrichtung für Partie-Navigation umkehren"
+			android:defaultValue="false">
+		</CheckBoxPreference>
+		<ListPreference
+			android:key="fontSize"
+			android:title="Schriftgröße"
+			android:summary="Schriftgröße für Zugliste und Partie-Informationen einstellen"
+			android:entryValues="@array/font_size_values"
+			android:entries="@array/font_size_texts"
+			android:defaultValue="12">
+		</ListPreference>
         <CheckBoxPreference
             android:key="largeButtons"
             android:title="Große Schaltflächen"
             android:summary="Große Schaltflächen für Partie-Navigation und Spielmodus-Einstellung verwenden"
             android:defaultValue="false">
         </CheckBoxPreference>
-        <PreferenceScreen
-            android:key="colors"
-            android:title="Farbeinstellungen"
-            android:summary="Einzelne Farben ändern">
-            <PreferenceCategory
-                android:title="Spielfeld">
-                <EditTextPreference
-                    android:key="color_brightSquare"
-                    android:title="Helle Felder"
-                    android:defaultValue="#FFFFFFFA">
-                </EditTextPreference>
-                <EditTextPreference
-                    android:key="color_darkSquare"
-                    android:title="Dunkle Felder"
-                    android:defaultValue="#FF83A5D2">
-                </EditTextPreference>
-                <EditTextPreference
-                    android:key="color_selectedSquare"
-                    android:title="Ausgewähltes Feld"
-                    android:defaultValue="#FF3232D1">
-                </EditTextPreference>
-                <EditTextPreference
-                    android:key="color_cursorSquare"
-                    android:title="Trackball-Cursor"
-                    android:defaultValue="#FF5F5FFD">
-                </EditTextPreference>
-                <EditTextPreference
-                    android:key="color_brightPiece"
-                    android:title="Weiße Figuren"
-                    android:defaultValue="#FFF0F0F0">
-                </EditTextPreference>
-                <EditTextPreference
-                    android:key="color_darkPiece"
-                    android:title="Schwarze Figuren"
-                    android:defaultValue="#FF282828">
-                </EditTextPreference>
-                <EditTextPreference
-                    android:key="color_arrow0"
-                    android:title="Pfeil 1"
-                    android:defaultValue="#A01F1FFF">
-                </EditTextPreference>
-                <EditTextPreference
-                    android:key="color_arrow1"
-                    android:title="Pfeil 2"
-                    android:defaultValue="#A01FFF1F">
-                </EditTextPreference>
-                <EditTextPreference
-                    android:key="color_arrow2"
-                    android:title="Pfeil 3"
-                    android:defaultValue="#501F1FFF">
-                </EditTextPreference>
-                <EditTextPreference
-                    android:key="color_arrow3"
-                    android:title="Pfeil 4"
-                    android:defaultValue="#501FFF1F">
-                </EditTextPreference>
-                <EditTextPreference
-                    android:key="color_arrow4"
-                    android:title="Pfeil 5"
-                    android:defaultValue="#1E1F1FFF">
-                </EditTextPreference>
-                <EditTextPreference
-                    android:key="color_arrow5"
-                    android:title="Pfeil 6"
-                    android:defaultValue="#281FFF1F">
-                </EditTextPreference>
-                <EditTextPreference
-                    android:key="color_squareLabel"
-                    android:title="Feldbeschriftung"
-                    android:defaultValue="#FFFF0000">
-                </EditTextPreference>
-            </PreferenceCategory>
-            <PreferenceCategory
-                android:title="Zuglsite">
-                <EditTextPreference
-                    android:key="color_currentMove"
-                    android:title="Aktueller Zug"
-                    android:defaultValue="#FF3333FF">
-                </EditTextPreference>
-            </PreferenceCategory>
-        </PreferenceScreen>
-    </PreferenceCategory>
-    <PreferenceCategory
-        android:title="Sonstige Optionen">
+		<PreferenceScreen
+			android:key="colors"
+			android:title="Farbeinstellungen"
+			android:summary="Einzelne Farben ändern">
+			<PreferenceCategory
+				android:title="Spielfeld">
+				<EditTextPreference
+					android:key="color_brightSquare"
+					android:title="Helle Felder"
+					android:defaultValue="#FFFFFFFA">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_darkSquare"
+					android:title="Dunkle Felder"
+					android:defaultValue="#FF83A5D2">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_selectedSquare"
+					android:title="Ausgewähltes Feld"
+					android:defaultValue="#FF3232D1">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_cursorSquare"
+					android:title="Trackball-Cursor"
+					android:defaultValue="#FF5F5FFD">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_brightPiece"
+					android:title="Weiße Figuren"
+					android:defaultValue="#FFF0F0F0">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_darkPiece"
+					android:title="Schwarze Figuren"
+					android:defaultValue="#FF282828">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_arrow0"
+					android:title="Pfeil 1"
+					android:defaultValue="#A01F1FFF">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_arrow1"
+					android:title="Pfeil 2"
+					android:defaultValue="#A01FFF1F">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_arrow2"
+					android:title="Pfeil 3"
+					android:defaultValue="#501F1FFF">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_arrow3"
+					android:title="Pfeil 4"
+					android:defaultValue="#501FFF1F">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_arrow4"
+					android:title="Pfeil 5"
+					android:defaultValue="#1E1F1FFF">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_arrow5"
+					android:title="Pfeil 6"
+					android:defaultValue="#281FFF1F">
+				</EditTextPreference>
+				<EditTextPreference
+					android:key="color_squareLabel"
+					android:title="Feldbeschriftung"
+					android:defaultValue="#FFFF0000">
+				</EditTextPreference>
+			</PreferenceCategory>
+			<PreferenceCategory
+				android:title="Zugliste">
+				<EditTextPreference
+					android:key="color_currentMove"
+					android:title="Aktueller Zug"
+					android:defaultValue="#FF3333FF">
+				</EditTextPreference>
+			</PreferenceCategory>
+		</PreferenceScreen>
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="Sonstige Optionen">
         <PreferenceScreen
             android:key="bookSettings"
             android:title="Eröffnungsbuch"
@@ -280,98 +280,98 @@
                 android:defaultValue="500"
                 android:title="Buchrandomisierung">
             </org.petero.droidfish.SeekBarPreference>
-            <EditTextPreference
+    		<EditTextPreference
                 android:key="bookFile"
                 android:title="Buch-Dateiname"
                 android:summary="Polyglot- oder CTG-Datei im DroidFish-Verzeichnis auf der SD-Karte"
                 android:defaultValue="">
             </EditTextPreference>
-        </PreferenceScreen>
-        <PreferenceScreen
-            android:key="pgnSettings"
-            android:title="PGN-Einstellungen"
-            android:summary="Einstellungen für den Import und den Export von PGN-Daten">
-            <PreferenceCategory
-                android:title="PGN-Anzeige">
-                <CheckBoxPreference
-                    android:key="viewVariations"
-                    android:title="Variationen"
-                    android:summary="Nicht-Hauptlinienzüge anzeigen"
-                    android:defaultValue="true">
-                </CheckBoxPreference>
-                <CheckBoxPreference
-                    android:key="viewComments"
-                    android:title="Kommentare"
-                    android:summary="Benutzerkommentare anzeigen"
-                    android:defaultValue="true">
-                </CheckBoxPreference>
-                <CheckBoxPreference
-                    android:key="viewNAG"
-                    android:title="Annotationen"
-                    android:summary="Numeric Annotation Glyphs (NAGs) anzeigen"
-                    android:defaultValue="true">
-                </CheckBoxPreference>
-                <CheckBoxPreference
-                    android:key="viewHeaders"
-                    android:title="Partie-Informationen"
-                    android:summary="Partie-Informationen anzeigen"
-                    android:defaultValue="false">
-                </CheckBoxPreference>
-            </PreferenceCategory>
-            <PreferenceCategory
-                android:title="PGN-Import">
-                <CheckBoxPreference
-                    android:key="importVariations"
-                    android:title="Variationen"
-                    android:summary="Nicht-Hauptlinienzüge importieren"
-                    android:defaultValue="true">
-                </CheckBoxPreference>
-                <CheckBoxPreference
-                    android:key="importComments"
-                    android:title="Kommentare"
-                    android:summary="Benutzerkommentare importieren"
-                    android:defaultValue="true">
-                </CheckBoxPreference>
-                <CheckBoxPreference
-                    android:key="importNAG"
-                    android:title="Annotationen"
-                    android:summary="Numeric Annotation Glyphs (NAGs) importieren"
-                    android:defaultValue="true">
-                </CheckBoxPreference>
-            </PreferenceCategory>
-            <PreferenceCategory
-                android:title="PGN-Export">
-                <CheckBoxPreference
-                    android:key="exportVariations"
-                    android:title="Variationen"
-                    android:summary="Nicht-Hauptlinienzüge exportieren"
-                    android:defaultValue="true">
-                </CheckBoxPreference>
-                <CheckBoxPreference
-                    android:key="exportComments"
-                    android:title="Comments"
-                    android:summary="Benutzerkommentare exportieren"
-                    android:defaultValue="true">
-                </CheckBoxPreference>
-                <CheckBoxPreference
-                    android:key="exportNAG"
-                    android:title="Annotationen"
-                    android:summary="Numeric Annotation Glyphs (NAGs) exportieren"
-                    android:defaultValue="true">
-                </CheckBoxPreference>
-                <CheckBoxPreference
-                    android:key="exportPlayerAction"
-                    android:title="Spieler-Aktionen"
-                    android:summary="Spieler-Aktionen wie Remisangebote und Partie-Aufgabe exportieren"
-                    android:defaultValue="false">
-                </CheckBoxPreference>
-                <CheckBoxPreference
-                    android:key="exportTime"
-                    android:title="Zeit"
-                    android:summary="Zeit-Informationen für jeden Zug exportieren"
-                    android:defaultValue="false">
-                </CheckBoxPreference>
-            </PreferenceCategory>
-        </PreferenceScreen>
-    </PreferenceCategory>
+		</PreferenceScreen>
+		<PreferenceScreen
+			android:key="pgnSettings"
+			android:title="PGN-Einstellungen"
+			android:summary="Einstellungen für den Import und den Export von PGN-Daten">
+			<PreferenceCategory
+				android:title="PGN-Anzeige">
+				<CheckBoxPreference
+					android:key="viewVariations"
+					android:title="Variationen"
+					android:summary="Nicht-Hauptlinienzüge anzeigen"
+					android:defaultValue="true">
+				</CheckBoxPreference>
+				<CheckBoxPreference
+					android:key="viewComments"
+					android:title="Kommentare"
+					android:summary="Benutzerkommentare anzeigen"
+					android:defaultValue="true">
+				</CheckBoxPreference>
+				<CheckBoxPreference
+					android:key="viewNAG"
+					android:title="Annotationen"
+					android:summary="Numeric Annotation Glyphs (NAGs) anzeigen"
+					android:defaultValue="true">
+				</CheckBoxPreference>
+				<CheckBoxPreference
+					android:key="viewHeaders"
+					android:title="Partie-Informationen"
+					android:summary="Partie-Informationen anzeigen"
+					android:defaultValue="false">
+				</CheckBoxPreference>
+			</PreferenceCategory>
+			<PreferenceCategory
+				android:title="PGN-Import">
+				<CheckBoxPreference
+					android:key="importVariations"
+					android:title="Variationen"
+					android:summary="Nicht-Hauptlinienzüge importieren"
+					android:defaultValue="true">
+				</CheckBoxPreference>
+				<CheckBoxPreference
+					android:key="importComments"
+					android:title="Kommentare"
+					android:summary="Benutzerkommentare importieren"
+					android:defaultValue="true">
+				</CheckBoxPreference>
+				<CheckBoxPreference
+					android:key="importNAG"
+					android:title="Annotationen"
+					android:summary="Numeric Annotation Glyphs (NAGs) importieren"
+					android:defaultValue="true">
+				</CheckBoxPreference>
+			</PreferenceCategory>
+			<PreferenceCategory
+				android:title="PGN-Export">
+				<CheckBoxPreference
+					android:key="exportVariations"
+					android:title="Variationen"
+					android:summary="Nicht-Hauptlinienzüge exportieren"
+					android:defaultValue="true">
+				</CheckBoxPreference>
+				<CheckBoxPreference
+					android:key="exportComments"
+					android:title="Kommentare"
+					android:summary="Benutzerkommentare exportieren"
+					android:defaultValue="true">
+				</CheckBoxPreference>
+				<CheckBoxPreference
+					android:key="exportNAG"
+					android:title="Annotationen"
+					android:summary="Numeric Annotation Glyphs (NAGs) exportieren"
+					android:defaultValue="true">
+				</CheckBoxPreference>
+				<CheckBoxPreference
+					android:key="exportPlayerAction"
+					android:title="Spieler-Aktionen"
+					android:summary="Spieler-Aktionen wie Remisangebote und Partie-Aufgabe exportieren"
+					android:defaultValue="false">
+				</CheckBoxPreference>
+				<CheckBoxPreference
+					android:key="exportTime"
+					android:title="Zeit"
+					android:summary="Zeit-Informationen für jeden Zug exportieren"
+					android:defaultValue="false">
+				</CheckBoxPreference>
+			</PreferenceCategory>
+		</PreferenceScreen>
+	</PreferenceCategory>
 </PreferenceScreen>
