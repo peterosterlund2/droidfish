@@ -3,52 +3,52 @@
 	xmlns:android="http://schemas.android.com/apk/res/android">
 	<item
   		android:id="@+id/item_new_game"
-	  	android:title="New Game"
+	  	android:title="@string/option_new_game"
   		android:icon="@android:drawable/ic_menu_add">
 	</item>
 	<item
 		android:id="@+id/item_file_menu"
-		android:title="File"
+		android:title="@string/option_file"
   		android:icon="@android:drawable/ic_menu_save">
 	</item>
 	<item
 		android:id="@+id/item_resign"
-		android:title="Resign game"
+		android:title="@string/option_resign_game"
   		android:icon="@android:drawable/ic_menu_delete">
 	</item>
 	<item
   		android:id="@+id/item_editboard"
-	  	android:title="Edit Board"
+	  	android:title="@string/option_edit_board"
   		android:icon="@android:drawable/ic_menu_edit">
 	</item>
 	<item
 	 	android:id="@+id/item_settings"
-	  	android:title="Settings"
+	  	android:title="@string/option_settings"
   		android:icon="@android:drawable/ic_menu_preferences">
 	</item>
     <item
         android:id="@+id/item_goto_move"
-        android:title="Goto Move"
+        android:title="@string/option_goto_move"
         android:icon="@android:drawable/ic_menu_mylocation">
     </item>
 	<item
 		android:id="@+id/item_force_move"
-		android:title="Force Computer Move">
+		android:title="@string/option_force_computer_move">
 	</item>
 	<item
 		android:id="@+id/item_draw"
-		android:title="Claim/Offer/Accept Draw">
+		android:title="@string/option_draw">
 	</item>
 	<item
 		android:id="@+id/select_book"
-		android:title="Select Opening Book">
+		android:title="@string/option_select_book">
 	</item>
 	<item
 		android:id="@+id/set_color_theme"
-		android:title="Set Color Theme">
+		android:title="@string/option_color_theme">
 	</item>
 	<item
 		android:id="@+id/item_about"
-		android:title="About / Help">
+		android:title="@string/option_about">
 	</item>
 </menu>
