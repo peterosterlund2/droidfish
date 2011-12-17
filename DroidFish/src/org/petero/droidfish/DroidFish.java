@@ -1754,8 +1754,8 @@ public class DroidFish extends Activity implements GUIInterface {
 
     @Override
     public void setRemainingTime(long wTime, long bTime, long nextUpdate) {
-        whiteClock.setText("White: " + timeToString(wTime));
-        blackClock.setText("Black: " + timeToString(bTime));
+        whiteClock.setText(getString(R.string.header_white) + " " + timeToString(wTime));
+        blackClock.setText(getString(R.string.header_black) + " " + timeToString(bTime));
         handlerTimer.removeCallbacks(r);
         if (nextUpdate > 0) {
             handlerTimer.postDelayed(r, nextUpdate);
