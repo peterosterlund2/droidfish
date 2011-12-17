@@ -377,7 +377,7 @@ public class DroidChessController {
             } else {
                 // Don't undo first white move if playing black vs computer,
                 // because that would cause computer to immediately make
-                // a new move and the whole redo history will be lost.
+                // a new move.
                 if (gameMode.playerWhite() || gameMode.playerBlack()) {
                     game.redoMove();
                     return false;
@@ -425,6 +425,26 @@ public class DroidChessController {
             setAnimMove(game.prevPos(), game.getLastMove(), true);
             updateGUI();
         }
+    }
+
+    public final void goNode(Node node) {
+        if (node == null)
+            return;
+        ss.searchResultWanted = false;
+        stopAnalysis();
+        stopComputerThinking();
+        game.goNode(node);
+        ponderMove = null;
+        if (!humansTurn()) {
+            if (game.getLastMove() != null) {
+                game.undoMove();
+                if (!humansTurn())
+                    game.redoMove();
+            }
+        }
+        updateComputeThreads(true);
+        setSelection();
+        updateGUI();
     }
 
     public final int numVariations() {

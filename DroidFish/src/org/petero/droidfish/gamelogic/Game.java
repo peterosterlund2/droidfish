@@ -323,6 +323,12 @@ public class Game {
         }
     }
 
+    public final void goNode(Node node) {
+        tree.goNode(node);
+        pendingDrawOffer = false;
+        updateTimeControl(true);
+    }
+
     public final void newGame() {
         tree = new GameTree(gameTextListener);
         if (computerPlayer != null)

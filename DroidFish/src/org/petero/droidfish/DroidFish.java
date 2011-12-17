@@ -74,7 +74,11 @@ import android.text.Html;
 import android.text.Layout;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
 import android.text.style.BackgroundColorSpan;
+import android.text.style.ClickableSpan;
 import android.text.style.LeadingMarginSpan;
 import android.text.style.StyleSpan;
 import android.util.TypedValue;
@@ -101,7 +105,6 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! book.txt (and test classes) should not be included in apk
 
     // FIXME!!! PGN view option: game continuation (for training)
-    // FIXME!!! Command to go to next/previous move in PGN export order.
     // FIXME!!! Remove invalid playerActions in PGN import (should be done in verifyChildren)
     // FIXME!!! Implement bookmark mechanism for positions in pgn files
 
@@ -303,6 +306,7 @@ public class DroidFish extends Activity implements GUIInterface {
         status.setFocusable(false);
         moveListScroll.setFocusable(false);
         moveList.setFocusable(false);
+        moveList.setMovementMethod(LinkMovementMethod.getInstance());
         thinking.setFocusable(false);
 
         cb = (ChessBoard)findViewById(R.id.chessboard);
@@ -1889,6 +1893,22 @@ public class DroidFish extends Activity implements GUIInterface {
 
         boolean pendingNewLine = false;
 
+        /** Makes moves in the move list clickable. */
+        private final static class MoveLink extends ClickableSpan {
+            private Node node;
+            MoveLink(Node n) {
+                node = n;
+            }
+            @Override
+            public void onClick(View widget) {
+                if (ctrl != null)
+                    ctrl.goNode(node);
+            }
+            @Override
+            public void updateDrawState(TextPaint ds) {
+            }
+        }
+
         public void processToken(Node node, int type, String token) {
             if (    (prevType == PgnToken.RIGHT_BRACKET) &&
                     (type != PgnToken.LEFT_BRACKET))  {
@@ -1950,6 +1970,7 @@ public class DroidFish extends Activity implements GUIInterface {
                 sb.append(token);
                 int l1 = sb.length();
                 nodeToCharPos.put(node, new NodeInfo(l0, l1));
+                sb.setSpan(new MoveLink(node), l0, l1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 if (endPos < l0) endPos = l0;
                 col0 = false;
                 if (nestLevel == 0) paraBold = true;

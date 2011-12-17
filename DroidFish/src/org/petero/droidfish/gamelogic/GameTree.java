@@ -571,7 +571,7 @@ public class GameTree {
                 dos.writeUTF(tagPairs.get(i).tagValue);
             }
             Node.writeToStream(dos, rootNode);
-            List<Integer> pathFromRoot = currentNode.getPathFromRoot();
+            ArrayList<Integer> pathFromRoot = currentNode.getPathFromRoot();
             int pathLen = pathFromRoot.size();
             dos.writeInt(pathLen);
             for (int i = 0; i < pathLen; i++)
@@ -652,6 +652,15 @@ public class GameTree {
             currentPos.makeMove(currentNode.move, currentNode.ui);
             TextIO.fixupEPSquare(currentPos);
         }
+    }
+
+    /** Go to given node in game tree. */
+    public final void goNode(Node node) {
+        ArrayList<Integer> path = node.getPathFromRoot();
+        while (currentNode != rootNode)
+            goBack();
+        for (Integer c : path)
+            goForward(c);
     }
 
     /** List of possible continuation moves. */
@@ -985,11 +994,19 @@ public class GameTree {
             return anyToRemove;
         }
 
-        final List<Integer> getPathFromRoot() {
-            List<Integer> ret = new ArrayList<Integer>(64);
+        final ArrayList<Integer> getPathFromRoot() {
+            ArrayList<Integer> ret = new ArrayList<Integer>(64);
             Node node = this;
             while (node.parent != null) {
-                ret.add(node.parent.defaultChild);
+                Node p = node.parent;
+                int childNo = -1;
+                for (int i = 0; i < p.children.size(); i++)
+                    if (p.children.get(i) == node) {
+                        childNo = i;
+                        break;
+                    }
+                if (childNo == -1) throw new RuntimeException();
+                ret.add(childNo);
                 node = node.parent;
             }
             Collections.reverse(ret);
