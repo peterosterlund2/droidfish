@@ -365,4 +365,8 @@ you are not actively using the program.\
     <string name="heavy_cpu_usage">Heavy CPU usage</string>
     <string name="background_processing">Background processing</string>
     <string name="lot_cpu_power">DroidFish is using a lot of CPU power</string>
+    <string name="delete_game">Delete game?</string>
+    <string name="delete_file">Delete file</string>
+    <string name="delete_file_question">Delete file?</string>
+    <string name="delete_named_file">Delete file %s?</string>
 </resources>

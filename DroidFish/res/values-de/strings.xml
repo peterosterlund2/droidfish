@@ -333,4 +333,5 @@ oder dass Sie das Programm beenden, wenn Sie es nicht aktiv nutzen.\
     <string name="comment_before">Bevor:</string>
     <string name="comment_move">Zug:</string>
     <string name="comment_after">Nach:</string>
+    <string name="delete_file">Datei löschen</string>
 </resources>

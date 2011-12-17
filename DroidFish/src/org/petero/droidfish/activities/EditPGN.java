@@ -310,7 +310,7 @@ public class EditPGN extends ListActivity {
             final GameInfo gi = selectedGi;
             selectedGi = null;
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Delete game?");
+            builder.setTitle(R.string.delete_game);
             String msg = gi.toString();
             builder.setMessage(msg);
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -352,9 +352,9 @@ public class EditPGN extends ListActivity {
         }
         case DELETE_PGN_FILE_DIALOG: {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Delete file?");
+            builder.setTitle(R.string.delete_file_question);
             String name = new File(pgnFile.getName()).getName();
-            String msg = String.format("Delete file %s?", name);
+            String msg = String.format(getString(R.string.delete_named_file), name);
             builder.setMessage(msg);
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
