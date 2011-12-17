@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DroidFish</string>
+    <string-array name="engine_texts">
+        <item>Stockfish</item>
+        <item>CuckooChess</item>
+    </string-array>
+    <string-array name="engine_values">
+       <item>stockfish</item>
+       <item>cuckoochess</item>
+    </string-array>
+    <string-array name="engine_threads_texts">
+        <item>Automatisch</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string-array name="engine_threads_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string-array name="moves_per_session_texts">
+        <item>Ganzes Spiel</item>
+        <item>1 Zug</item>
+        <item>10 Züge</item>
+        <item>20 Züge</item>
+        <item>30 Züge</item>
+        <item>40 Züge</item>
+        <item>50 Züge</item>
+        <item>60 Züge</item>
+    </string-array>
+    <string-array name="moves_per_session_values">
+        <item>0</item>
+        <item>1</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+    </string-array>
+    <string-array name="time_control_texts">
+        <item>15 Sekunden</item>
+        <item>30 Sekunden</item>
+        <item>1 Minute</item>
+        <item>2 Minuten</item>
+        <item>3 Minuten</item>
+        <item>5 Minuten</item>
+        <item>10 Minuten</item>
+        <item>15 Minuten</item>
+        <item>30 Minuten</item>
+        <item>45 Minuten</item>
+        <item>60 Minuten</item>
+        <item>90 Minuten</item>
+        <item>120 Minuten</item>
+    </string-array>
+    <string-array name="time_control_values">
+        <item>15000</item>
+        <item>30000</item>
+        <item>60000</item>
+        <item>120000</item>
+        <item>180000</item>
+        <item>300000</item>
+        <item>600000</item>
+        <item>900000</item>
+        <item>1800000</item>
+        <item>2700000</item>
+        <item>3600000</item>
+        <item>5400000</item>
+        <item>7200000</item>
+    </string-array>
+    <string-array name="time_increment_texts">
+        <item>0s</item>
+        <item>1s</item>
+        <item>2s</item>
+        <item>3s</item>
+        <item>4s</item>
+        <item>5s</item>
+        <item>10s</item>
+        <item>12s</item>
+        <item>15s</item>
+        <item>30s</item>
+        <item>60s</item>
+    </string-array>
+    <string-array name="time_increment_values">
+        <item>0</item>
+        <item>1000</item>
+        <item>2000</item>
+        <item>3000</item>
+        <item>4000</item>
+        <item>5000</item>
+        <item>10000</item>
+        <item>12000</item>
+        <item>15000</item>
+        <item>30000</item>
+        <item>60000</item>
+    </string-array>
+    <string-array name="font_size_texts">
+        <item>Klein</item>
+        <item>Mittel</item>
+        <item>Groß</item>
+        <item>Sehr groß</item>
+    </string-array>
+    <string-array name="font_size_values">
+        <item>10</item>
+        <item>12</item>
+        <item>16</item>
+        <item>21</item>
+    </string-array>
+    <string-array name="thinking_arrows_texts">
+        <item>Keine Pfeile</item>
+        <item>Max. 1 Pfeil</item>
+        <item>Max. 2 Pfeile</item>
+        <item>Max. 3 Pfeile</item>
+        <item>Max. 4 Pfeile</item>
+        <item>Max. 5 Pfeile</item>
+        <item>Max. 6 Pfeile</item>
+    </string-array>
+    <string-array name="thinking_arrows_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+    <string-array name="scroll_sensitivity_texts">
+        <item>Aus</item>
+        <item>Sehr langsam</item>
+        <item>Langsam</item>
+        <item>Normal</item>
+        <item>Schnell</item>
+        <item>Sehr schnell</item>
+    </string-array>
+    <string-array name="scroll_sensitivity_values">
+        <item>0</item>
+        <item>6</item>
+        <item>3</item>
+        <item>2</item>
+        <item>1</item>
+        <item>0.5</item>
+    </string-array>
+    <string-array name="book_line_length_values">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>30</item>
+        <item>50</item>
+        <item>1000000</item>
+    </string-array>
+    <string-array name="book_line_length_texts">
+        <item>5 Züge</item>
+        <item>10 Züge</item>
+        <item>15 Züge</item>
+        <item>20 Züge</item>
+        <item>30 Züge</item>
+        <item>50 Züge</item>
+        <item>Unbegrenzt</item>
+    </string-array>
+    <string name="about_info">\
+<b>Information</b>\n\
+<i>DroidFish</i> ist eine Android-Version des bekannten Schachprogramms <i>Stockfish 2.1</i>. \
+<i>Stockfish</i> ist eines der spielstärksten Schachprogramme der Welt. \
+Die Android-Version erreicht auf einem 1GHz-Snapdragon-Prozessor oft eine Rechentiefe von 15 oder mehr Halbzügen.\n\
+\n\
+<b>Funktionen</b>\n\
+* Eröffnungsbuch\n\
+* Unbegrenzte Rücknahme/ Wiederholung\n\
+* Kopieren und Einfügen über die Zwischenablage\n\
+* Analysemodus\n\
+* Zweispielermodus\n\
+* Computer gegen Computer\n\
+* Stellungseingabe\n\
+* Umfangreiche PGN-Unterstützung\n\
+* Einstellbare Spielstärke\n\
+\n\
+<b>Hinweise</b>\n\
+* Längeres Drücken auf das Spielfeld während einer Partie aktiviert ein Menu mit den Funktionen zum Kopieren und Einfügen sowie zum Laden und Speichern von PGN-Dateien.\n\
+* Im Stellungseingabemodus aktiviert längeres Drücken auf das Spielfeld ein Menu zum Bearbeiten.\n\
+* Mit einem Wischen auf dem Spielfeld nach links oder rechts lassen sich Züge zurücknehmen oder wiederholen.\n\
+* Wenn eine Partie verschiedene Variationen enthält, führt ein Wischen auf dem Spielfeld nach oben oder unten zur vorherigen oder nächsten Variation.\n\
+* Längeres Drücken auf die Links- und Rechts-Schaltflächen aktiviert zusätzliche Kommandos zur Navigation.\n\
+\n\
+<b>Eröffnungsbücher</b>\n\
+DroidFish enthält ein kleines internes Eröffnungsbuch. Wenn Sie ein größeres Eröffnungsbuch \
+verwenden möchten, können Sie die Verwendung externer Eröffnungsbücher (<i>Polyglot</i> \
+oder <i>CTG</i>) folgendermaßen konfigurieren:\n\
+1. Erstellen Sie ein Verzeichnis mit dem Namen <i>DroidFish</i> auf der SD-Karte.\n\
+2a. Kopieren Sie eines oder mehrere Polyglot-Eröffnungsbücher in dieses Verzeichnis. \
+Diese müssen die Dateiendung <i>.bin</i> aufweisen.\n\
+2b. Kopieren Sie eines oder mehrere CTG-Eröffnungsbücher in das Verzeichnis <i>DroidFish</i>. \
+Diese bestehen auf drei Dateien mit den Endungen <i>.ctg</i>, <i>.ctb</i> und <i>.cto</i>. \
+Sie müssen alle drei Dateien kopieren.\n\
+3. Aktivieren Sie im Programm-Menu die Funktion <i>Eröffnungsbuch auswählen</i>.\n\
+4. Wählen Sie das Eröffnungsbuch aus, das Sie benutzen möchten.\n\
+\n\
+<b>PGN-Dateien</b>\n\
+DroidFish kann Partien aus PGN-Dateien laden. Diese Funktion nutzen Sie folgendermaßen:\n\
+1. Erstellen Sie ein Verzeichnis mit dem Namen <i>DroidFish/pgn</i> auf der SD-Karte.\n\
+2. Kopieren Sie eine oder mehrere PGN-Dateien in dieses Verzeichnis.\n\
+3. Drücken Sie länger auf das Spielfeld und wählen Sie aus dem darauf folgenden Menu die Funktion <i>Partie aus PGN-Datei laden</i>.\n\
+4. Wählen Sie die Datei und anschließend innerhalb der Datei die Partie aus, die Sie laden möchten.\n\
+\n\
+Um Partie-Informationen wie die Spielernamen zu ändern, drücken Sie länger auf die Zugliste und wählen \
+<i>Partie-Informationen</i>. Um Komentare für einen Zug zu bearbeiten, drücken Sie länger auf die Zugliste und wählen \
+<i>Kommentare</i>. Um eine veränderte Partei zu speichern, drücken Sie länger auf das Spielfeld und wählen dann \
+<i>Partie in PGN-Datei speichern</i>.\n\
+\n\
+Um die Computer-Analyse zum Spielbaum hinzuzufügen, drücken Sie auf die Analyse-Informationen, während der Computer rechnet, und wählen <i>Analyse hinzufügen</i>. Die aktuelle Hauptvariante wird \
+dann als Variation zum Spielbaum hinzugefügt.\n\
+\n\
+Im Analysemodus ist es möglich, Null-Züge zum Spielbaum hinzuzufügen. Denken Sie aber daran, \
+dass Null-Züge nicht Teil des PGN-Standards sind und möglicherweise nicht in anderen \
+Programmen mit PGN-Unterstützung funktionieren.\n\
+\n\
+<b>Scid-Dateien</b>\n\
+Wenn Sie das Programm <i>Scid on the go</i> installiert haben, können Sie in DroidFish Scid-Datenbank-Dateien \
+direkt einlesen. Drücken Sie dazu länger auf das Spielfeld und wählen Sie die Funktion <i>Spiel aus Scid-Datei laden</i>.\n\
+\n\
+<b>Lizenz</b>\n\
+GNU GPL v3\n\
+\n\
+<b>Entwickler</b>\n\
+* <i>Stockfish</i> wird entwickelt von Tord Romstad, Marco Costalba und Joona Kiiski.\n\
+* <i>Droidfish</i> wird entwickelt von Peter Österlund.\n\
+* Verbesserungen der Benutzeroberfläche stammen von Aaro Korhonen.\n\
+    </string>
+    <string name="cpu_warning">\
+<b>Prozessor-Nutzung</b>\n\
+Wenn Sie DroidFish im Hintergrund in der <i>Spielmodus</i>-Einstellung <i>Analyse</i> \
+oder <i>Computer gegen Computer</i> laufen lassen, oder wenn als <i>Rechenzeit</i> \
+ein großer Wert eingestellt ist, oder wenn <i>Vorausberechnung</i> aktivier ist, kann das Programm \
+viel Prozessor-Leistung in Anspruch nehmen.\n\
+\n\
+Um Strom zu sparen, ist es empfehlenswert, dass Sie diese Parameter entsprechend anders einstellen, \
+oder dass Sie das Programm beenden, wenn Sie es nicht aktiv nutzen.\
+    </string>
+    <string name="offer_draw">Remis anbieten</string>
+    <string name="queen">Dame</string>
+    <string name="rook">Turm</string>
+    <string name="bishop">Läufer</string>
+    <string name="knight">Springer</string>
+    <string name="promote_pawn_to">Bauer umwandeln in?</string>
+    <string name="copy_game">Partie in die Zwischenablage kopieren</string>
+    <string name="copy_position">Stellung in die Zwischenablage kopieren</string>
+    <string name="paste">Aus der Zwischenablage einfügen</string>
+    <string name="load_game">Partie aus PGN-Datei laden</string>
+    <string name="load_scid_game">Partie aus Scid-Datei laden</string>
+    <string name="save_game">Partie in PGN-Datei speichern</string>
+    <string name="truncate_gametree">Spielbaum abschneiden</string>
+    <string name="move_var_up">Variation nach oben</string>
+    <string name="move_var_down">Variation nach unten</string>
+    <string name="add_null_move">Null-Zug hinzufügen</string>
+    <string name="tools_menu">Hilfsmittel</string>
+    <string name="load_save_menu">Partie laden/speichern</string>
+    <string name="goto_move">Gehe zu Zug</string>
+    <string name="edit_strength">Spielstärke ändern</string>
+    <string name="edit_randomization">Randomisierung ändern</string>
+    <string name="invalid_number_format">Ungültiges Zahlenformat</string>
+    <string name="side_to_move">Seite am Zug</string>
+    <string name="clear_board">Stellung leeren</string>
+    <string name="initial_position">Ausgangsposition</string>
+    <string name="castling_flags">Rochade-Einstellungen</string>
+    <string name="en_passant_file">En-Passant-Einstellungen</string>
+    <string name="move_counters">Zug-Zähler</string>
+    <string name="paste_position">Position einfügen</string>
+    <string name="edit_board">Stellung bearbeiten</string>
+    <string name="select_side_to_move_first">Seite für den ersten Zug auswählen</string>
+    <string name="white">Weiß</string>
+    <string name="black">Schwarz</string>
+    <string name="white_king_castle">Kurze Rochade Weiß</string>
+    <string name="white_queen_castle">Lange Rochade Weiß</string>
+    <string name="black_king_castle">Kurze Rochade Schwarz</string>
+    <string name="black_queen_castle">Lange Rochade Schwarz</string>
+    <string name="none">None</string>
+    <string name="select_en_passant_file">En Passant einstellen</string>
+    <string name="edit_move_counters">Zug-Zähler einstellen</string>
+    <string name="internal_book">&lt;Internes Buch&gt;</string>
+    <string name="select_opening_book_file">Eröffnungsbuch wählen</string>
+    <string name="select_pgn_file">PGN-Datei zum Öffnen wählen</string>
+    <string name="select_pgn_file_save">In PGN-Datei speichern</string>
+    <string name="select_scid_file">Scid-Datei zum Öffnen wählen</string>
+    <string name="select_pgn_game">Partei zum Öffnen auswählen</string>
+    <string name="reading_pgn_file">PGN-Datei wird gelesen</string>
+    <string name="reading_scid_file">Scid-Datei wird gelesen</string>
+    <string name="new_file">&lt;Neue Datei&gt;</string>
+    <string name="please_wait">Bitte warten&#8230;</string>
+    <string name="no_pgn_files">Keine Dateien im Verzeichnis DroidFish/pgn auf der SD-Karte gefunden</string>
+    <string name="no_scid_files">Keine Dateien im Verzeichnis scid auf der SD-Karte gefunden</string>
+    <string name="select_color_theme">Farbschema auswählen</string>
+    <string name="select_game_mode">Spielmodus auswählen</string>
+    <string name="edit_replay_game">Partie bearbeiten/ nachspielen</string>
+    <string name="analysis_mode">Analysemodus</string>
+    <string name="play_white">Mit Weiß spielen</string>
+    <string name="play_black">Mit Schwarz spielen</string>
+    <string name="two_players">Zwei Spieler</string>
+    <string name="comp_vs_comp">Computer gegen Computer</string>
+    <string name="analysis">Analyse</string>
+    <string name="edit_game">Partie bearbeiten</string>
+    <string name="edit_headers">Informationen</string>
+    <string name="edit_comments">Kommentare</string>
+    <string name="go_back">Zurück</string>
+    <string name="go_forward">Vorwärts</string>
+    <string name="goto_start_game">Zum Partiebeginn</string>
+    <string name="goto_start_variation">Zum Beginn der Variation</string>
+    <string name="goto_prev_variation">Zur vorherigen Variation</string>
+    <string name="load_prev_game">Vorherige Partie laden</string>
+    <string name="goto_end_variation">Zum Ende der Variation</string>
+    <string name="goto_next_variation">Zur nächsten Variation</string>
+    <string name="load_next_game">Nächste Partie laden</string>
+    <string name="no_prev_game">Keine vorherige Partie</string>
+    <string name="no_next_game">Keine nächste Partie</string>
+    <string name="ok">Okay</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="move_number">Zugnummer:</string>
+    <string name="filename">Dateiname:</string>
+    <string name="halfmove">Halbzug:</string>
+    <string name="fullmove">Zugnummer:</string>
+    <string name="filter_text">Filtertext</string>
+    <string name="value_percent">Wert (%):</string>
+    <string name="header_event">Ereignis:</string>
+    <string name="header_site">Ort:</string>
+    <string name="header_date">Datum:</string>
+    <string name="header_round">Runde:</string>
+    <string name="header_white">Weiß:</string>
+    <string name="header_black">Schwarz:</string>
+    <string name="comment_before">Bevor:</string>
+    <string name="comment_move">Zug:</string>
+    <string name="comment_after">Nach:</string>
+</resources>

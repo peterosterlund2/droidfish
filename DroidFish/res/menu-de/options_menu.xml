@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_new_game"
+        android:title="Neue Partie"
+        android:icon="@android:drawable/ic_menu_add">
+    </item>
+    <item
+        android:id="@+id/item_file_menu"
+        android:title="Datei"
+        android:icon="@android:drawable/ic_menu_save">
+    </item>
+    <item
+        android:id="@+id/item_resign"
+        android:title="Partie aufgeben"
+        android:icon="@android:drawable/ic_menu_delete">
+    </item>
+    <item
+        android:id="@+id/item_editboard"
+        android:title="Stellung bearbeiten"
+        android:icon="@android:drawable/ic_menu_edit">
+    </item>
+    <item
+        android:id="@+id/item_settings"
+        android:title="Einstellungen"
+        android:icon="@android:drawable/ic_menu_preferences">
+    </item>
+    <item
+        android:id="@+id/item_goto_move"
+        android:title="Gehe zu Zug"
+        android:icon="@android:drawable/ic_menu_mylocation">
+    </item>
+    <item
+        android:id="@+id/item_force_move"
+        android:title="Computerzug erzwingen">
+    </item>
+    <item
+        android:id="@+id/item_draw"
+        android:title="Remis anbieten/annehmen">
+    </item>
+    <item
+        android:id="@+id/select_book"
+        android:title="Eröffnungsbuch auswählen">
+    </item>
+    <item
+        android:id="@+id/set_color_theme"
+        android:title="Farbschema auswählen">
+    </item>
+    <item
+        android:id="@+id/item_about"
+        android:title="Information/Hilfe">
+    </item>
+</menu>
