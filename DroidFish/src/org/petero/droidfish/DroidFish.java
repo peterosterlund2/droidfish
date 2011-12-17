@@ -419,8 +419,10 @@ public class DroidFish extends Activity implements GUIInterface {
         });
         thinking.setOnLongClickListener(new OnLongClickListener() {
             public boolean onLongClick(View v) {
-                removeDialog(THINKING_MENU_DIALOG);
-                showDialog(THINKING_MENU_DIALOG);
+                if (!pvMoves.isEmpty()) {
+                    removeDialog(THINKING_MENU_DIALOG);
+                    showDialog(THINKING_MENU_DIALOG);
+                }
                 return true;
             }
         });
@@ -1499,8 +1501,6 @@ public class DroidFish extends Activity implements GUIInterface {
             return alert;
         }
         case THINKING_MENU_DIALOG: {
-            if (pvMoves.isEmpty())
-                return null;
             final int ADD_ANALYSIS = 0;
             final int MULTIPV_DEC = 1;
             final int MULTIPV_INC = 2;
