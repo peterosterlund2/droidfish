@@ -39,25 +39,21 @@ import org.petero.droidfish.gamelogic.SearchListener.PvInfo;
  * @author petero
  */
 public class DroidComputerPlayer {
-    private static String engineName = "";
+    private String engineName = "";
 
-    private static UCIEngine uciEngine = null;
+    private UCIEngine uciEngine = null;
     private SearchListener listener;
     private DroidBook book;
     private boolean newGame = false;
     private String engine = "";
     private int maxPV = 1;  // >1 if multiPV mode is supported
-    private static int numCPUs = 1;
+    private int numCPUs = 1;
 
     private boolean havePonderHit = false;
 
     public DroidComputerPlayer(String engine) {
         this.engine = engine;
-        if (uciEngine != null) {
-            stopSearch();
-        } else {
-            startEngine();
-        }
+        startEngine();
         listener = null;
         book = DroidBook.getInstance();
     }
