@@ -7,8 +7,8 @@
     <supports-screens android:largeScreens="true"
                       android:anyDensity="true" />
     <application android:icon="@drawable/icon"
-    			 android:label="@string/app_name"
-    			 android:debuggable="false">
+                 android:label="@string/app_name"
+                 android:debuggable="false">
         <activity android:name=".DroidFish"
                   android:label="@string/app_name"
                   android:configChanges="orientation|keyboardHidden">
@@ -23,26 +23,26 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.Preferences"
-        		  android:label="Preferences">
+                  android:label="Preferences">
         </activity>
         <activity android:name=".activities.EditBoard"
-        		  android:label="@string/edit_board"
+                  android:label="@string/edit_board"
                   android:configChanges="orientation">
         </activity>
         <activity android:name=".activities.EditPGNLoad"
-        		  android:label="@string/load_game_title"
-        		  android:configChanges="orientation">
+                  android:label="@string/load_game_title"
+                  android:configChanges="orientation">
         </activity>
         <activity android:name=".activities.EditPGNSave"
-        		  android:label="@string/save_game_title"
-        		  android:configChanges="orientation">
+                  android:label="@string/save_game_title"
+                  android:configChanges="orientation">
         </activity>
         <activity android:name=".activities.LoadScid"
                   android:label="@string/load_scid_game_title"
                   android:configChanges="orientation">
         </activity>
         <activity android:name=".activities.CPUWarning"
-        		  android:label="@string/cpu_warning_title">
+                  android:label="@string/cpu_warning_title">
         </activity>
     </application>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
