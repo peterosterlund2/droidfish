@@ -2,26 +2,26 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-        android:title="Playing Options">
+        android:title="@string/prefs_playing_options">
         <CheckBoxPreference
             android:key="boardFlipped"
-            android:title="Flip Board"
-            android:summary="View board from black side"
+            android:title="@string/prefs_boardFlipped_title"
+            android:summary="@string/prefs_boardFlipped_summary"
             android:defaultValue="false">
         </CheckBoxPreference>
         <CheckBoxPreference
             android:key="autoSwapSides"
-            android:title="Auto Swap Sides"
-            android:summary="Automatically swap sides when new game started. Also overrides Flip Board setting"
+            android:title="@string/prefs_autoSwapSides_title"
+            android:summary="@string/prefs_autoSwapSides_summary"
             android:defaultValue="false">
         </CheckBoxPreference>
     </PreferenceCategory>
     <PreferenceCategory
-        android:title="Engine Settings">
+        android:title="@string/prefs_engine_settings">
         <ListPreference
             android:key="engine"
-            android:title="Engine"
-            android:summary="Chess Engine"
+            android:title="@string/prefs_engine_title"
+            android:summary="@string/prefs_engine_summary"
             android:entryValues="@array/engine_values"
             android:entries="@array/engine_texts"
             android:defaultValue="stockfish">
@@ -29,346 +29,346 @@
         <org.petero.droidfish.SeekBarPreference
             android:key="strength"
             android:defaultValue="1000"
-            android:title="Strength">
+            android:title="@string/prefs_strength_title">
         </org.petero.droidfish.SeekBarPreference>
         <CheckBoxPreference
             android:key="ponderMode"
-            android:title="Pondering"
-            android:summary="Let engine think while waiting for opponent's move"
+            android:title="@string/prefs_ponderMode_title"
+            android:summary="@string/prefs_ponderMode_summary"
             android:defaultValue="false">
         </CheckBoxPreference>
         <ListPreference
             android:key="threads"
-            android:title="Threads"
-            android:summary="Number of engine threads (CPU cores) to use"
+            android:title="@string/prefs_threads_title"
+            android:summary="@string/prefs_threads_summary"
             android:entryValues="@array/engine_threads_values"
             android:entries="@array/engine_threads_texts"
             android:defaultValue="0">
         </ListPreference>
     </PreferenceCategory>
     <PreferenceCategory
-        android:title="Time Control">
+        android:title="@string/prefs_time_control">
         <ListPreference
             android:key="movesPerSession"
-            android:title="Moves"
-            android:summary="Number of moves between time controls"
+            android:title="@string/prefs_movesPerSession_title"
+            android:summary="@string/prefs_movesPerSession_summary"
             android:entryValues="@array/moves_per_session_values"
             android:entries="@array/moves_per_session_texts"
             android:defaultValue="60">
         </ListPreference>
         <ListPreference
             android:key="timeControl"
-            android:title="Time"
-            android:summary="Maximum thinking time between time controls"
+            android:title="@string/prefs_timeControl_title"
+            android:summary="@string/prefs_timeControl_summary"
             android:entryValues="@array/time_control_values"
             android:entries="@array/time_control_texts"
             android:defaultValue="300000">
         </ListPreference>
         <ListPreference
             android:key="timeIncrement"
-            android:title="Increment"
-            android:summary="Extra thinking time for each completed move"
+            android:title="@string/prefs_timeIncrement_title"
+            android:summary="@string/prefs_timeIncrement_summary"
             android:entryValues="@array/time_increment_values"
             android:entries="@array/time_increment_texts"
             android:defaultValue="0">
         </ListPreference>
     </PreferenceCategory>
     <PreferenceCategory
-        android:title="Hints">
+        android:title="@string/prefs_hints">
         <CheckBoxPreference
             android:key="showThinking"
-            android:title="Show Computer Thinking"
-            android:summary="Display computer algorithm information during search"
+            android:title="@string/prefs_showThinking_title"
+            android:summary="@string/prefs_showThinking_summary"
             android:defaultValue="false">
         </CheckBoxPreference>
         <CheckBoxPreference
             android:key="whiteBasedScores"
-            android:title="White-based scores"
-            android:summary="Positive analysis scores are good for white"
+            android:title="@string/prefs_whiteBasedScores_title"
+            android:summary="@string/prefs_whiteBasedScores_summary"
             android:defaultValue="false">
         </CheckBoxPreference>
         <CheckBoxPreference
             android:key="bookHints"
-            android:title="Show Book Hints"
-            android:summary="Display opening book move hints for human player"
+            android:title="@string/prefs_bookHints_title"
+            android:summary="@string/prefs_bookHints_summary"
             android:defaultValue="false">
         </CheckBoxPreference>
         <ListPreference
             android:key="thinkingArrows"
-            android:title="Use Arrows"
-            android:summary="Use arrows to display moves on chess board"
+            android:title="@string/prefs_thinkingArrows_title"
+            android:summary="@string/prefs_thinkingArrows_summary"
             android:entryValues="@array/thinking_arrows_values"
             android:entries="@array/thinking_arrows_texts"
             android:defaultValue="2">
         </ListPreference>
     </PreferenceCategory>
     <PreferenceCategory
-        android:title="User Interface">
+        android:title="@string/prefs_user_interface">
         <CheckBoxPreference
             android:key="animateMoves"
-            android:title="Animate Moves"
-            android:summary="Animate piece movements"
+            android:title="@string/prefs_animateMoves_title"
+            android:summary="@string/prefs_animateMoves_summary"
             android:defaultValue="true">
         </CheckBoxPreference>
         <CheckBoxPreference
             android:key="oneTouchMoves"
-            android:title="One Touch Moves"
-            android:summary="Touching a square that corresponds to one unique move makes that move immediately"
+            android:title="@string/prefs_oneTouchMoves_title"
+            android:summary="@string/prefs_oneTouchMoves_summary"
             android:defaultValue="false">
         </CheckBoxPreference>
         <CheckBoxPreference
             android:key="soundEnabled"
-            android:title="Enable Sounds"
-            android:summary="Play sound when computer makes a move"
+            android:title="@string/prefs_soundEnabled_title"
+            android:summary="@string/prefs_soundEnabled_summary"
             android:defaultValue="false">
         </CheckBoxPreference>
         <CheckBoxPreference
             android:key="fullScreenMode"
-            android:title="Fullscreen Mode"
-            android:summary="Fullscreen mode hides the status bar"
+            android:title="@string/prefs_fullScreenMode_title"
+            android:summary="@string/prefs_fullScreenMode_summary"
             android:defaultValue="false">
         </CheckBoxPreference>
         <CheckBoxPreference
             android:key="wakeLock"
-            android:title="Disable Screen Timeout"
+            android:title="@string/prefs_wakeLock_title"
             android:defaultValue="false">
         </CheckBoxPreference>
         <CheckBoxPreference
             android:key="drawSquareLabels"
-            android:title="Square Labels"
-            android:summary="Display square labels: a-h and 1-8"
+            android:title="@string/prefs_drawSquareLabels_title"
+            android:summary="@string/prefs_drawSquareLabels_summary"
             android:defaultValue="false">
         </CheckBoxPreference>
         <ListPreference
             android:key="scrollSensitivity"
-            android:title="Scrolling Speed"
-            android:summary="Scrolling speed for game navigation"
+            android:title="@string/prefs_scrollSensitivity_title"
+            android:summary="@string/prefs_scrollSensitivity_summary"
             android:entryValues="@array/scroll_sensitivity_values"
             android:entries="@array/scroll_sensitivity_texts"
             android:defaultValue="2">
         </ListPreference>
         <CheckBoxPreference
             android:key="invertScrollDirection"
-            android:title="Invert Scroll Direction"
-            android:summary="Enable this if you think scrolling moves in the wrong direction"
+            android:title="@string/prefs_invertScrollDirection_title"
+            android:summary="@string/prefs_invertScrollDirection_summary"
             android:defaultValue="false">
         </CheckBoxPreference>
         <ListPreference
             android:key="fontSize"
-            android:title="Text Size"
-            android:summary="Font size for move list and game information"
+            android:title="@string/prefs_fontSize_title"
+            android:summary="@string/prefs_fontSize_summary"
             android:entryValues="@array/font_size_values"
             android:entries="@array/font_size_texts"
             android:defaultValue="12">
         </ListPreference>
         <CheckBoxPreference
             android:key="largeButtons"
-            android:title="Large Buttons"
-            android:summary="Use large buttons for game navigation and mode setting"
+            android:title="@string/prefs_largeButtons_title"
+            android:summary="@string/prefs_largeButtons_summary"
             android:defaultValue="false">
         </CheckBoxPreference>
         <PreferenceScreen
             android:key="colors"
-            android:title="Color Settings"
-            android:summary="Change individual colors">
+            android:title="@string/prefs_colors_title"
+            android:summary="@string/prefs_colors_summary">
             <PreferenceCategory
-                android:title="Chess Board">
+                android:title="@string/prefs_chess_board">
                 <EditTextPreference
                     android:key="color_brightSquare"
-                    android:title="Bright Squares"
+                    android:title="@string/prefs_color_brightSquare_title"
                     android:defaultValue="#FFFFFFFA">
                 </EditTextPreference>
                 <EditTextPreference
                     android:key="color_darkSquare"
-                    android:title="Dark Squares"
+                    android:title="@string/prefs_color_darkSquare_title"
                     android:defaultValue="#FF83A5D2">
                 </EditTextPreference>
                 <EditTextPreference
                     android:key="color_selectedSquare"
-                    android:title="Selected Square"
+                    android:title="@string/prefs_color_selectedSquare_title"
                     android:defaultValue="#FF3232D1">
                 </EditTextPreference>
                 <EditTextPreference
                     android:key="color_cursorSquare"
-                    android:title="Trackball Cursor"
+                    android:title="@string/prefs_color_cursorSquare_title"
                     android:defaultValue="#FF5F5FFD">
                 </EditTextPreference>
                 <EditTextPreference
                     android:key="color_brightPiece"
-                    android:title="White Pieces"
+                    android:title="@string/prefs_color_brightPiece_title"
                     android:defaultValue="#FFF0F0F0">
                 </EditTextPreference>
                 <EditTextPreference
                     android:key="color_darkPiece"
-                    android:title="Black Pieces"
+                    android:title="@string/prefs_color_darkPiece_title"
                     android:defaultValue="#FF282828">
                 </EditTextPreference>
                 <EditTextPreference
                     android:key="color_arrow0"
-                    android:title="Arrow 1"
+                    android:title="@string/prefs_color_arrow0_title"
                     android:defaultValue="#A01F1FFF">
                 </EditTextPreference>
                 <EditTextPreference
                     android:key="color_arrow1"
-                    android:title="Arrow 2"
+                    android:title="@string/prefs_color_arrow1_title"
                     android:defaultValue="#A01FFF1F">
                 </EditTextPreference>
                 <EditTextPreference
                     android:key="color_arrow2"
-                    android:title="Arrow 3"
+                    android:title="@string/prefs_color_arrow2_title"
                     android:defaultValue="#501F1FFF">
                 </EditTextPreference>
                 <EditTextPreference
                     android:key="color_arrow3"
-                    android:title="Arrow 4"
+                    android:title="@string/prefs_color_arrow3_title"
                     android:defaultValue="#501FFF1F">
                 </EditTextPreference>
                 <EditTextPreference
                     android:key="color_arrow4"
-                    android:title="Arrow 5"
+                    android:title="@string/prefs_color_arrow4_title"
                     android:defaultValue="#1E1F1FFF">
                 </EditTextPreference>
                 <EditTextPreference
                     android:key="color_arrow5"
-                    android:title="Arrow 6"
+                    android:title="@string/prefs_color_arrow5_title"
                     android:defaultValue="#281FFF1F">
                 </EditTextPreference>
                 <EditTextPreference
                     android:key="color_squareLabel"
-                    android:title="Square Labels"
+                    android:title="@string/prefs_color_squareLabel_title"
                     android:defaultValue="#FFFF0000">
                 </EditTextPreference>
             </PreferenceCategory>
             <PreferenceCategory
-                android:title="Move List">
+                android:title="@string/prefs_move_list">
                 <EditTextPreference
                     android:key="color_currentMove"
-                    android:title="Current Move"
+                    android:title="@string/prefs_color_currentMove_title"
                     android:defaultValue="#FF3333FF">
                 </EditTextPreference>
             </PreferenceCategory>
         </PreferenceScreen>
     </PreferenceCategory>
     <PreferenceCategory
-        android:title="Other">
+        android:title="@string/prefs_other">
         <PreferenceScreen
             android:key="bookSettings"
-            android:title="Opening Book Settings"
-            android:summary="Settings for opening book usage">
+            android:title="@string/prefs_bookSettings_title"
+            android:summary="@string/prefs_bookSettings_summary">
             <ListPreference
                 android:key="bookMaxLength"
-                android:title="Book Length"
-                android:summary="Maximum book line length"
+                android:title="@string/prefs_bookMaxLength_title"
+                android:summary="@string/prefs_bookMaxLength_summary"
                 android:entryValues="@array/book_line_length_values"
                 android:entries="@array/book_line_length_texts"
                 android:defaultValue="1000000">
             </ListPreference>
             <CheckBoxPreference
                 android:key="bookPreferMainLines"
-                android:title="Prefer main lines"
-                android:summary="Prefer book moves marked as main moves"
+                android:title="@string/prefs_bookPreferMainLines_title"
+                android:summary="@string/prefs_bookPreferMainLines_summary"
                 android:defaultValue="false">
             </CheckBoxPreference>
             <CheckBoxPreference
                 android:key="bookTournamentMode"
-                android:title="Tournament mode"
-                android:summary="Ignore moves marked as not for tournament play"
+                android:title="@string/prefs_bookTournamentMode_title"
+                android:summary="@string/prefs_bookTournamentMode_summary"
                 android:defaultValue="false">
             </CheckBoxPreference>
             <org.petero.droidfish.SeekBarPreference
                 android:key="bookRandom"
                 android:defaultValue="500"
-                android:title="Book Randomization">
+                android:title="@string/prefs_bookRandom_title">
             </org.petero.droidfish.SeekBarPreference>
             <EditTextPreference
                 android:key="bookFile"
-                android:title="Book Filename"
-                android:summary="Polyglot or CTG book file in DroidFish directory on SD Card"
+                android:title="@string/prefs_bookFile_title"
+                android:summary="@string/prefs_bookFile_summary"
                 android:defaultValue="">
             </EditTextPreference>
         </PreferenceScreen>
         <PreferenceScreen
             android:key="pgnSettings"
-            android:title="PGN Settings"
-            android:summary="Settings for import and export of portable game notation (PGN) data">
+            android:title="@string/prefs_pgnSettings_title"
+            android:summary="@string/prefs_pgnSettings_summary">
             <PreferenceCategory
-                android:title="PGN viewer">
+                android:title="@string/prefs_pgn_viewer">
                 <CheckBoxPreference
                     android:key="viewVariations"
-                    android:title="Variations"
-                    android:summary="Include non-mainline moves"
+                    android:title="@string/prefs_viewVariations_title"
+                    android:summary="@string/prefs_viewVariations_summary"
                     android:defaultValue="true">
                 </CheckBoxPreference>
                 <CheckBoxPreference
                     android:key="viewComments"
-                    android:title="Comments"
-                    android:summary="Include user written comments"
+                    android:title="@string/prefs_viewComments_title"
+                    android:summary="@string/prefs_viewComments_summary"
                     android:defaultValue="true">
                 </CheckBoxPreference>
                 <CheckBoxPreference
                     android:key="viewNAG"
-                    android:title="Annotations"
-                    android:summary="Include numeric annotation glyphs (NAGs), such as ! and ?"
+                    android:title="@string/prefs_viewNAG_title"
+                    android:summary="@string/prefs_viewNAG_summary"
                     android:defaultValue="true">
                 </CheckBoxPreference>
                 <CheckBoxPreference
                     android:key="viewHeaders"
-                    android:title="Headers"
-                    android:summary="Show PGN header lines"
+                    android:title="@string/prefs_viewHeaders_title"
+                    android:summary="@string/prefs_viewHeaders_summary"
                     android:defaultValue="false">
                 </CheckBoxPreference>
             </PreferenceCategory>
             <PreferenceCategory
-                android:title="PGN import">
+                android:title="@string/prefs_pgn_import">
                 <CheckBoxPreference
                     android:key="importVariations"
-                    android:title="Variations"
-                    android:summary="Include non-mainline moves"
+                    android:title="@string/prefs_importVariations_title"
+                    android:summary="@string/prefs_importVariations_summary"
                     android:defaultValue="true">
                 </CheckBoxPreference>
                 <CheckBoxPreference
                     android:key="importComments"
-                    android:title="Comments"
-                    android:summary="Include user written comments"
+                    android:title="@string/prefs_importComments_title"
+                    android:summary="@string/prefs_importComments_summary"
                     android:defaultValue="true">
                 </CheckBoxPreference>
                 <CheckBoxPreference
                     android:key="importNAG"
-                    android:title="Annotations"
-                    android:summary="Include numeric annotation glyphs (NAGs), such as ! and ?"
+                    android:title="@string/prefs_importNAG_title"
+                    android:summary="@string/prefs_importNAG_summary"
                     android:defaultValue="true">
                 </CheckBoxPreference>
             </PreferenceCategory>
             <PreferenceCategory
-                android:title="PGN export">
+                android:title="@string/prefs_pgn_export">
                 <CheckBoxPreference
                     android:key="exportVariations"
-                    android:title="Variations"
-                    android:summary="Include non-mainline moves"
+                    android:title="@string/prefs_exportVariations_title"
+                    android:summary="@string/prefs_exportVariations_summary"
                     android:defaultValue="true">
                 </CheckBoxPreference>
                 <CheckBoxPreference
                     android:key="exportComments"
-                    android:title="Comments"
-                    android:summary="Include user written comments"
+                    android:title="@string/prefs_exportComments_title"
+                    android:summary="@string/prefs_exportComments_summary"
                     android:defaultValue="true">
                 </CheckBoxPreference>
                 <CheckBoxPreference
                     android:key="exportNAG"
-                    android:title="Annotations"
-                    android:summary="Include numeric annotation glyphs (NAGs), such as ! and ?"
+                    android:title="@string/prefs_exportNAG_title"
+                    android:summary="@string/prefs_exportNAG_summary"
                     android:defaultValue="true">
                 </CheckBoxPreference>
                 <CheckBoxPreference
                     android:key="exportPlayerAction"
-                    android:title="Player Actions"
-                    android:summary="Include information about draw and resign actions"
+                    android:title="@string/prefs_exportPlayerAction_title"
+                    android:summary="@string/prefs_exportPlayerAction_summary"
                     android:defaultValue="false">
                 </CheckBoxPreference>
                 <CheckBoxPreference
                     android:key="exportTime"
-                    android:title="Clock"
-                    android:summary="Include time information for each move"
+                    android:title="@string/prefs_exportTime_title"
+                    android:summary="@string/prefs_exportTime_summary"
                     android:defaultValue="false">
                 </CheckBoxPreference>
             </PreferenceCategory>
