@@ -754,7 +754,7 @@ public class DroidFish extends Activity implements GUIInterface {
                     String pgn = data.getAction();
                     ctrl.setFENOrPGN(pgn);
                 } catch (ChessParseError e) {
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getParseErrString(e), Toast.LENGTH_SHORT).show();
                 }
             }
             break;
@@ -774,6 +774,13 @@ public class DroidFish extends Activity implements GUIInterface {
             }
             break;
         }
+    }
+
+    private final String getParseErrString(ChessParseError e) {
+        if (e.resourceId == -1)
+            return e.getMessage();
+        else
+            return getString(e.resourceId);
     }
 
     private final void setBoardFlip() {
@@ -1049,7 +1056,7 @@ public class DroidFish extends Activity implements GUIInterface {
                             try {
                                 ctrl.setFENOrPGN(fenPgn);
                             } catch (ChessParseError e) {
-                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), getParseErrString(e), Toast.LENGTH_SHORT).show();
                             }
                         }
                         break;

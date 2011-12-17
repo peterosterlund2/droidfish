@@ -207,9 +207,16 @@ public class EditBoard extends Activity {
             status.setText("");
             return true;
         } catch (ChessParseError e) {
-            status.setText(e.getMessage());
+            status.setText(getParseErrString(e));
         }
         return false;
+    }
+
+    private final String getParseErrString(ChessParseError e) {
+        if (e.resourceId == -1)
+            return e.getMessage();
+        else
+            return getString(e.resourceId);
     }
 
     static final int EDIT_DIALOG = 0;
@@ -292,7 +299,7 @@ public class EditBoard extends Activity {
                             } catch (ChessParseError e) {
                                 if (e.pos != null)
                                     cb.setPosition(e.pos);
-                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), getParseErrString(e), Toast.LENGTH_SHORT).show();
                             }
                             cb.setSelection(-1);
                             checkValid();

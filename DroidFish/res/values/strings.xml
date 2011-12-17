@@ -370,6 +370,18 @@ you are not actively using the program.\
     <string name="delete_file_question">Delete file?</string>
     <string name="delete_named_file">Delete file %s?</string>
 
+    <string name="err_too_few_spaces">Too few spaces</string>
+    <string name="err_invalid_piece">Invalid piece</string>
+    <string name="err_invalid_side">Invalid side</string>
+    <string name="err_invalid_castling_flags">Invalid castling flags</string>
+    <string name="err_invalid_en_passant_square">Invalid en passant square</string>
+    <string name="err_white_num_kings">White must have exactly one king</string>
+    <string name="err_black_num_kings">Black must have exactly one king</string>
+    <string name="err_king_capture_possible">King capture possible</string>
+    <string name="err_too_many_rows">Too many rows</string>
+    <string name="err_too_many_columns">Too many columns</string>
+    <string name="err_pawn_on_first_last_rank">Pawn on first/last rank</string>
+
     <string name="option_new_game">New Game</string>
     <string name="option_file">File</string>
     <string name="option_resign_game">Resign game</string>
