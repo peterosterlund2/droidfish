@@ -322,6 +322,8 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="no_next_game">Keine nächste Partie</string>
     <string name="ok">Okay</string>
     <string name="cancel">Abbrechen</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
     <string name="move_number">Zugnummer:</string>
     <string name="filename">Dateiname:</string>
     <string name="halfmove">Halbzug:</string>
@@ -369,6 +371,27 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="delete_file">Datei löschen</string>
     <string name="delete_file_question">Datei löschen?</string>
     <string name="delete_named_file">Datei %s löschen?</string>
+
+    <string name="game_saved">Partie gespeichert</string>
+    <string name="failed_to_save_game">Speichern der Partie nicht möglich</string>
+    <string name="failed_to_delete_game">Löschen der Partie nicht möglich</string>
+    <string name="file_too_large">Datei zu groß</string>
+    <string name="save_game_question">Partie speichern?</string>
+    <string name="before_selected">Vor der Auswahl</string>
+    <string name="after_selected">Nach der Auswahl</string>
+    <string name="replace_selected">Auswahl ersetzen</string>
+
+    <string name="err_too_few_spaces">Zuwenig Felder</string>
+    <string name="err_invalid_piece">Unzulässige Figur</string>
+    <string name="err_invalid_side">Unzulässige Seite</string>
+    <string name="err_invalid_castling_flags">Unzulässige Rochade-Einstellungen</string>
+    <string name="err_invalid_en_passant_square">Unzulässiges Feld für en passant</string>
+    <string name="err_white_num_kings">Weiß darf nur einen König haben</string>
+    <string name="err_black_num_kings">Schwarz darf nur einen König haben</string>
+    <string name="err_king_capture_possible">Schlagen des Königs möglich</string>
+    <string name="err_too_many_rows">Zuviele Zeilen</string>
+    <string name="err_too_many_columns">Zuviele Spalten</string>
+    <string name="err_pawn_on_first_last_rank">Bauer in der ersten/letzten Reihe</string>
 
     <string name="option_new_game">Neue Partie</string>
     <string name="option_file">Datei</string>
