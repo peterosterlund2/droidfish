@@ -355,6 +355,7 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="resign_black">Spielende, Aufgabe durch Schwarz!</string>
     <string name="book">Buch:</string>
     <string name="invalid_move">Unzulässiger Zug</string>
+    <string name="preferences">Einstellungen</string>
     <string name="load_game_title">Datei bearbeiten/Partie laden</string>
     <string name="save_game_title">Datei bearbeiten/Partie speichern</string>
     <string name="load_scid_game_title">Scid-Partie laden</string>

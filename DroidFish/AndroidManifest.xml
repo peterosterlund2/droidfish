@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.Preferences"
-                  android:label="Preferences">
+                  android:label="@string/preferences">
         </activity>
         <activity android:name=".activities.EditBoard"
                   android:label="@string/edit_board"
