@@ -21,9 +21,9 @@ package org.petero.droidfish;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.petero.droidfish.gamelogic.Game;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.Position;
-
 
 /** Interface between the GUI and the ChessController. */
 public interface GUIInterface {
@@ -34,8 +34,18 @@ public interface GUIInterface {
     /** Mark square i as selected. Set to -1 to clear selection. */
     public void setSelection(int sq);
 
+    final static class GameStatus {
+        public Game.GameState state = Game.GameState.ALIVE;
+        public int moveNr = 0;
+        public String drawInfo = ""; // Move required to claim draw, or empty string
+        public boolean white = false;
+        public boolean ponder = false;
+        public boolean thinking = false;
+        public boolean analyzing = false;
+    }
+
     /** Set the status text. */
-    public void setStatusString(String str);
+    public void setStatus(GameStatus status);
 
     /** Update the list of moves. */
     public void moveListUpdated();

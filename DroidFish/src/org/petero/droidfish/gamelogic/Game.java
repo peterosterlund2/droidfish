@@ -200,46 +200,8 @@ public class Game {
         }
     }
 
-    public final String getGameStateString() {
-        switch (getGameState()) {
-            case ALIVE:
-                return "";
-            case WHITE_MATE:
-                return "Game over, white mates!";
-            case BLACK_MATE:
-                return "Game over, black mates!";
-            case WHITE_STALEMATE:
-            case BLACK_STALEMATE:
-                return "Game over, draw by stalemate!";
-            case DRAW_REP:
-            {
-                String ret = "Game over, draw by repetition!";
-                String drawInfo = tree.getGameStateInfo();
-                if (drawInfo.length() > 0) {
-                    ret = ret + " [" + drawInfo+ "]";
-                }
-                return ret;
-            }
-            case DRAW_50:
-            {
-                String ret = "Game over, draw by 50 move rule!";
-                String drawInfo = tree.getGameStateInfo();
-                if (drawInfo.length() > 0) {
-                    ret = ret + " [" + drawInfo + "]";
-                }
-                return ret;
-            }
-            case DRAW_NO_MATE:
-                return "Game over, draw by impossibility of mate!";
-            case DRAW_AGREE:
-                return "Game over, draw by agreement!";
-            case RESIGN_WHITE:
-                return "Game over, white resigns!";
-            case RESIGN_BLACK:
-                return "Game over, black resigns!";
-            default:
-                throw new RuntimeException();
-        }
+    public final String getDrawInfo() {
+        return tree.getGameStateInfo();
     }
 
     /**

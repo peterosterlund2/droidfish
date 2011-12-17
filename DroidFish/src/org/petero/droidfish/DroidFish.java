@@ -112,7 +112,6 @@ public class DroidFish extends Activity implements GUIInterface {
 
     // FIXME!!! Online play on FICS
     // FIXME!!! Add chess960 support
-    // FIXME!!! Make program translatable
     // FIXME!!! Implement "hint" feature
 
     // FIXME!!! Don't send "stop" command when engine is already stopped
@@ -800,7 +799,60 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     @Override
-    public void setStatusString(String str) {
+    public void setStatus(GameStatus s) {
+        String str;
+        switch (s.state) {
+        case ALIVE:
+            str = Integer.valueOf(s.moveNr).toString();
+            if (s.white)
+                str += ". " + getString(R.string.whites_move);
+            else
+                str += "... " + getString(R.string.blacks_move);
+            if (s.ponder) str += " (" + getString(R.string.ponder) + ")";
+            if (s.thinking) str += " (" + getString(R.string.thinking) + ")";
+            if (s.analyzing) str += " (" + getString(R.string.analyzing) + ")";
+            break;
+        case WHITE_MATE:
+            str = getString(R.string.white_mate);
+            break;
+        case BLACK_MATE:
+            str = getString(R.string.black_mate);
+            break;
+        case WHITE_STALEMATE:
+        case BLACK_STALEMATE:
+            str = getString(R.string.stalemate);
+            break;
+        case DRAW_REP: {
+            str = getString(R.string.draw_rep);
+            if (s.drawInfo.length() > 0)
+                str = str + " [" + s.drawInfo + "]";
+            break;
+        }
+        case DRAW_50: {
+            str = getString(R.string.draw_50);
+            if (s.drawInfo.length() > 0)
+                str = str + " [" + s.drawInfo + "]";
+            break;
+        }
+        case DRAW_NO_MATE:
+            str = getString(R.string.draw_no_mate);
+            break;
+        case DRAW_AGREE:
+            str = getString(R.string.draw_agree);
+            break;
+        case RESIGN_WHITE:
+            str = getString(R.string.resign_white);
+            break;
+        case RESIGN_BLACK:
+            str = getString(R.string.resign_black);
+            break;
+        default:
+            throw new RuntimeException();
+        }
+        setStatusString(str);
+    }
+
+    private final void setStatusString(String str) {
         status.setText(str);
     }
 

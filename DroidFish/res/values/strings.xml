@@ -337,4 +337,18 @@ you are not actively using the program.\
 	<string name="comment_before">Before:</string>
 	<string name="comment_move">Move:</string>
 	<string name="comment_after">After:</string>
+    <string name="whites_move">White\'s move</string>
+    <string name="blacks_move">Black\'s move</string>
+    <string name="ponder">ponder</string>
+    <string name="thinking">thinking</string>
+    <string name="analyzing">analyzing</string>
+    <string name="white_mate">Game over, white mates!</string>
+    <string name="black_mate">Game over, black mates!</string>
+    <string name="stalemate">Game over, draw by stalemate!</string>
+    <string name="draw_rep">Game over, draw by repetition!</string>
+    <string name="draw_50">Game over, draw by 50 move rule!</string>
+    <string name="draw_no_mate">Game over, draw by impossibility of mate!</string>
+    <string name="draw_agree">Game over, draw by agreement!</string>
+    <string name="resign_white">Game over, white resigns!</string>
+    <string name="resign_black">Game over, black resigns!</string>
 </resources>

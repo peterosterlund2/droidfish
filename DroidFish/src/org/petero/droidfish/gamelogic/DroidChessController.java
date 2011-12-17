@@ -614,17 +614,23 @@ public class DroidChessController {
     }
 
     final private void updateGUI() {
-        String str;
-        if (game.getGameState() == Game.GameState.ALIVE) {
-            str = Integer.valueOf(game.currPos().fullMoveCounter).toString();
-            str += game.currPos().whiteMove ? ". White's move" : "... Black's move";
+        GUIInterface.GameStatus s = new GUIInterface.GameStatus();
+        s.state = game.getGameState();
+        if (s.state == Game.GameState.ALIVE) {
+            s.moveNr = game.currPos().fullMoveCounter;
+            s.white = game.currPos().whiteMove;
             if (computerThread != null)
-                str += humansTurn() ? " (ponder)" : " (thinking)";
-            if (analysisThread != null) str += " (analyzing)";
+                if (humansTurn())
+                    s.ponder = true;
+                else
+                    s.thinking = true;
+            if (analysisThread != null)
+                s.analyzing = true;
         } else {
-            str = game.getGameStateString();
+            if ((s.state == GameState.DRAW_REP) || (s.state == GameState.DRAW_50))
+                s.drawInfo = game.getDrawInfo();
         }
-        gui.setStatusString(str);
+        gui.setStatus(s);
         updateMoveList();
 
         StringBuilder sb = new StringBuilder();
