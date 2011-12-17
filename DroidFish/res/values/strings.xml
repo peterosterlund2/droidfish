@@ -351,4 +351,18 @@ you are not actively using the program.\
     <string name="draw_agree">Game over, draw by agreement!</string>
     <string name="resign_white">Game over, white resigns!</string>
     <string name="resign_black">Game over, black resigns!</string>
+    <string name="book">Book:</string>
+    <string name="invalid_move">Invalid move</string>
+    <string name="load_game_title">Edit File / Load Game</string>
+    <string name="save_game_title">Edit File / Save Game</string>
+    <string name="load_scid_game_title">Load Scid Game</string>
+    <string name="cpu_warning_title">CPU Warning</string>
+    <string name="failed_to_read_pgn_data">Failed to read pgn data</string>
+    <string name="variation">Var:</string>
+    <string name="add_analysis">Add Analysis</string>
+    <string name="fewer_variations">Fewer Variations</string>
+    <string name="more_variations">More Variations</string>
+    <string name="heavy_cpu_usage">Heavy CPU usage</string>
+    <string name="background_processing">Background processing</string>
+    <string name="lot_cpu_power">DroidFish is using a lot of CPU power</string>
 </resources>

@@ -26,23 +26,23 @@
         		  android:label="Preferences">
         </activity>
         <activity android:name=".activities.EditBoard"
-        		  android:label="Edit Board"
+        		  android:label="@string/edit_board"
                   android:configChanges="orientation">
         </activity>
         <activity android:name=".activities.EditPGNLoad"
-        		  android:label="Edit File / Load Game"
+        		  android:label="@string/load_game_title"
         		  android:configChanges="orientation">
         </activity>
         <activity android:name=".activities.EditPGNSave"
-        		  android:label="Edit File / Save Game"
+        		  android:label="@string/save_game_title"
         		  android:configChanges="orientation">
         </activity>
         <activity android:name=".activities.LoadScid"
-                  android:label="Load Scid Game"
+                  android:label="@string/load_scid_game_title"
                   android:configChanges="orientation">
         </activity>
         <activity android:name=".activities.CPUWarning"
-        		  android:label="CPU Warning">
+        		  android:label="@string/cpu_warning_title">
         </activity>
     </application>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

@@ -236,7 +236,8 @@ public class DroidFish extends Activity implements GUIInterface {
                 pgn = sb.toString();
             }
         } catch (IOException e) {
-            Toast.makeText(getApplicationContext(), "Failed to read pgn data", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.failed_to_read_pgn_data,
+                           Toast.LENGTH_SHORT).show();
         }
         return pgn;
     }
@@ -936,7 +937,7 @@ public class DroidFish extends Activity implements GUIInterface {
             String s = "";
             if (!thinkingEmpty)
                 s += "<br>";
-            s += "<b>Book:</b>" + bookInfoStr;
+            s += "<b>" + getString(R.string.book) + "</b>" + bookInfoStr;
             thinking.append(Html.fromHtml(s));
             thinkingEmpty = false;
         }
@@ -944,7 +945,7 @@ public class DroidFish extends Activity implements GUIInterface {
             String s = "";
             if (!thinkingEmpty)
                 s += "<br>";
-            s += "<b>Var:</b> " + variantStr;
+            s += "<b>" + getString(R.string.variation) + "</b> " + variantStr;
             thinking.append(Html.fromHtml(s));
         }
 
@@ -1498,15 +1499,15 @@ public class DroidFish extends Activity implements GUIInterface {
             final int MULTIPV_INC = 2;
             List<CharSequence> lst = new ArrayList<CharSequence>();
             List<Integer> actions = new ArrayList<Integer>();
-            lst.add("Add Analysis"); actions.add(ADD_ANALYSIS);
+            lst.add(getString(R.string.add_analysis)); actions.add(ADD_ANALYSIS);
             final int numPV = ctrl.getNumPV();
             if (gameMode.analysisMode()) {
                 int maxPV = ctrl.maxPV();
                 if (numPV > 1) {
-                    lst.add("Fewer Variations"); actions.add(MULTIPV_DEC);
+                    lst.add(getString(R.string.fewer_variations)); actions.add(MULTIPV_DEC);
                 }
                 if (numPV < maxPV) {
-                    lst.add("More Variations"); actions.add(MULTIPV_INC);
+                    lst.add(getString(R.string.more_variations)); actions.add(MULTIPV_INC);
                 }
             }
             final List<Integer> finalActions = actions;
@@ -1720,7 +1721,9 @@ public class DroidFish extends Activity implements GUIInterface {
 
     @Override
     public void reportInvalidMove(Move m) {
-        String msg = String.format("Invalid move %s-%s", TextIO.squareToString(m.from), TextIO.squareToString(m.to));
+        String msg = String.format("%s %s-%s",
+                getString(R.string.invalid_move),
+                TextIO.squareToString(m.from), TextIO.squareToString(m.to));
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
@@ -1760,14 +1763,14 @@ public class DroidFish extends Activity implements GUIInterface {
         NotificationManager mNotificationManager = (NotificationManager)getSystemService(ns);
         if (show) {
             int icon = R.drawable.icon;
-            CharSequence tickerText = "Heavy CPU usage";
+            CharSequence tickerText = getString(R.string.heavy_cpu_usage);
             long when = System.currentTimeMillis();
             Notification notification = new Notification(icon, tickerText, when);
             notification.flags |= Notification.FLAG_ONGOING_EVENT;
 
             Context context = getApplicationContext();
-            CharSequence contentTitle = "Background processing";
-            CharSequence contentText = "DroidFish is using a lot of CPU power";
+            CharSequence contentTitle = getString(R.string.background_processing);
+            CharSequence contentText = getString(R.string.lot_cpu_power);
             Intent notificationIntent = new Intent(this, CPUWarning.class);
 
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
