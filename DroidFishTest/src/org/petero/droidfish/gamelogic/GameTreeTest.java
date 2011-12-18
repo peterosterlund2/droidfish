@@ -652,4 +652,44 @@ public class GameTreeTest extends TestCase {
         assertTrue(pgn.indexOf("cxb8=N") >= 0);           // ... but PGN promotions do have the = sign
         assertTrue(pgn.indexOf("cxd8=R+") >= 0);
     }
+
+    public final void testGoNode() throws ChessParseError {
+        GameTree gt = new GameTree(null);
+        PGNOptions options = new PGNOptions();
+        options.imp.variations = true;
+        options.imp.comments = false;
+        options.imp.nag = false;
+        boolean res = gt.readPGN("e4 (d4 d5 c4) e5 Nf3 Nc6 Bb5 (Bc4 Bc5 (Nf6)) a6", options);
+        assertEquals(true, res);
+        assertEquals("*e4 e5 Nf3 Nc6 Bb5 a6", getMoveListAsString(gt));
+        gt.goForward(-1);
+        Node ne4 = gt.currentNode;
+        for (int i = 0; i < 5; i++) gt.goForward(-1);
+        assertEquals("e4 e5 Nf3 Nc6 Bb5 a6*", getMoveListAsString(gt));
+        Node na6 = gt.currentNode;
+        gt.goNode(gt.rootNode);
+        assertEquals("*e4 e5 Nf3 Nc6 Bb5 a6", getMoveListAsString(gt));
+        gt.goNode(na6);
+        assertEquals("e4 e5 Nf3 Nc6 Bb5 a6*", getMoveListAsString(gt));
+        gt.goBack();
+        gt.goBack();
+        gt.goForward(1);
+        gt.goForward(-1);
+        Node nBc5 = gt.currentNode;
+        assertEquals("e4 e5 Nf3 Nc6 Bc4 Bc5*", getMoveListAsString(gt));
+        gt.goNode(na6);
+        assertEquals("e4 e5 Nf3 Nc6 Bb5 a6*", getMoveListAsString(gt));
+        gt.goNode(nBc5);
+        gt.goBack();
+        gt.goForward(1);
+        assertEquals("e4 e5 Nf3 Nc6 Bc4 Nf6*", getMoveListAsString(gt));
+        gt.goNode(gt.rootNode);
+        gt.goForward(1);
+        assertEquals("d4* d5 c4", getMoveListAsString(gt));
+        gt.goNode(ne4);
+        assertEquals("e4* e5 Nf3 Nc6 Bc4 Nf6", getMoveListAsString(gt));
+        gt.goNode(na6);
+        gt.goNode(ne4);
+        assertEquals("e4* e5 Nf3 Nc6 Bb5 a6", getMoveListAsString(gt));
+    }
 }
