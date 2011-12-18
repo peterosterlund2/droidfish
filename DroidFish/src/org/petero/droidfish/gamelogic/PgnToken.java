@@ -46,8 +46,9 @@ public class PgnToken {
         this.token = token;
     }
 
+    /** PGN parser visitor interface. */
     public interface PgnTokenReceiver {
-        /** If this method returns false, the object needs a full reinitialization, using clear() and processToken(). */
+        /** If this method returns false, the object needs a full re-initialization, using clear() and processToken(). */
         public boolean isUpToDate();
 
         /** Clear object state. */

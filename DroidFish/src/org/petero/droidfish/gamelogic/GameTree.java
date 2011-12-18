@@ -40,21 +40,24 @@ public class GameTree {
     // Result is the last tag pair in the STR, but it is computed on demand from the game tree.
 
     Position startPos;
-    String timeControl;
+    private String timeControl;
 
     // Non-standard tags
     static private final class TagPair {
         String tagName;
         String tagValue;
     }
-    List<TagPair> tagPairs;
+    private List<TagPair> tagPairs;
 
     Node rootNode;
     Node currentNode;
     Position currentPos;    // Cached value. Computable from "currentNode".
 
-    PgnToken.PgnTokenReceiver gameStateListener;
+    private final PgnToken.PgnTokenReceiver gameStateListener;
 
+    /** Creates an empty GameTree start the standard start position.
+     * @param gameStateListener  Optional tree change listener.
+     */
     public GameTree(PgnToken.PgnTokenReceiver gameStateListener) {
         this.gameStateListener = gameStateListener;
         try {
@@ -732,7 +735,7 @@ public class GameTree {
         updateListener();
     }
 
-    /* Get linear game history, using default variations at branch points. */
+    /** Get linear game history, using default variations at branch points. */
     public final Pair<List<Node>, Integer> getMoveList() {
         List<Node> ret = new ArrayList<Node>();
         Node node = currentNode;

@@ -31,6 +31,11 @@ import org.petero.droidfish.gamelogic.GameTree.PgnScanner;
 
 public class GameTreeTest extends TestCase {
 
+    /** Add a move to the game tree, with no comments or annotations. */
+    private final int addStdMove(GameTree gt, String moveStr) {
+        return gt.addMove(moveStr, "", 0, "", "");
+    }
+
     public final void testGameTree() throws ChessParseError {
         GameTree gt = new GameTree(null);
         Position expectedPos = TextIO.readFEN(TextIO.startPosFEN);
@@ -39,7 +44,7 @@ public class GameTreeTest extends TestCase {
         List<Move> varList = gt.variations();
         assertEquals(0, varList.size());
 
-        int varNo = gt.addMove("e4", "", 0, "", "");
+        int varNo = addStdMove(gt, "e4");
         assertEquals(0, varNo);
         assertEquals(expectedPos, gt.currentPos);
 
@@ -53,7 +58,7 @@ public class GameTreeTest extends TestCase {
         expectedPos.unMakeMove(move, ui);
         assertEquals(expectedPos, gt.currentPos);
 
-        varNo = gt.addMove("d4", "", 0, "", "");
+        varNo = addStdMove(gt, "d4");
         assertEquals(1, varNo);
         assertEquals(expectedPos, gt.currentPos);
         varList = gt.variations();
@@ -64,7 +69,7 @@ public class GameTreeTest extends TestCase {
         expectedPos.makeMove(move, ui);
         assertEquals(expectedPos, gt.currentPos);
 
-        varNo = gt.addMove("g8f6", "", 0, "", "");
+        varNo = addStdMove(gt, "g8f6");
         assertEquals(0, varNo);
         assertEquals(expectedPos, gt.currentPos);
         varList = gt.variations();
@@ -120,22 +125,22 @@ public class GameTreeTest extends TestCase {
 
     public final void testGetMoveList() throws ChessParseError {
         GameTree gt = new GameTree(null);
-        gt.addMove("e4", "", 0, "", "");
-        gt.addMove("d4", "", 0, "", "");
+        addStdMove(gt, "e4");
+        addStdMove(gt, "d4");
         assertEquals("*e4", getMoveListAsString(gt));
 
         gt.goForward(0);
         assertEquals("e4*", getMoveListAsString(gt));
 
-        gt.addMove("e5", "", 0, "", "");
-        gt.addMove("c5", "", 0, "", "");
+        addStdMove(gt, "e5");
+        addStdMove(gt, "c5");
         assertEquals("e4* e5", getMoveListAsString(gt));
 
         gt.goForward(1);
         assertEquals("e4 c5*", getMoveListAsString(gt));
 
-        gt.addMove("Nf3", "", 0, "", "");
-        gt.addMove("d4", "", 0, "", "");
+        addStdMove(gt, "Nf3");
+        addStdMove(gt, "d4");
         assertEquals("e4 c5* Nf3", getMoveListAsString(gt));
 
         gt.goForward(1);
@@ -162,9 +167,9 @@ public class GameTreeTest extends TestCase {
 
     public final void testReorderVariation() throws ChessParseError {
         GameTree gt = new GameTree(null);
-        gt.addMove("e4", "", 0, "", "");
-        gt.addMove("d4", "", 0, "", "");
-        gt.addMove("c4", "", 0, "", "");
+        addStdMove(gt, "e4");
+        addStdMove(gt, "d4");
+        addStdMove(gt, "c4");
         assertEquals("e4 d4 c4", getVariationsAsString(gt));
         assertEquals(0, gt.currentNode.defaultChild);
 
@@ -187,10 +192,10 @@ public class GameTreeTest extends TestCase {
 
     public final void testDeleteVariation() throws ChessParseError {
         GameTree gt = new GameTree(null);
-        gt.addMove("e4", "", 0, "", "");
-        gt.addMove("d4", "", 0, "", "");
-        gt.addMove("c4", "", 0, "", "");
-        gt.addMove("f4", "", 0, "", "");
+        addStdMove(gt, "e4");
+        addStdMove(gt, "d4");
+        addStdMove(gt, "c4");
+        addStdMove(gt, "f4");
         gt.deleteVariation(0);
         assertEquals("d4 c4 f4", getVariationsAsString(gt));
         assertEquals(0, gt.currentNode.defaultChild);
@@ -202,8 +207,8 @@ public class GameTreeTest extends TestCase {
         assertEquals("c4 d4", getVariationsAsString(gt));
         assertEquals(1, gt.currentNode.defaultChild);
 
-        gt.addMove("g4", "", 0, "", "");
-        gt.addMove("h4", "", 0, "", "");
+        addStdMove(gt, "g4");
+        addStdMove(gt, "h4");
         assertEquals("c4 d4 g4 h4", getVariationsAsString(gt));
         assertEquals(1, gt.currentNode.defaultChild);
         gt.reorderVariation(1, 2);
@@ -232,7 +237,7 @@ public class GameTreeTest extends TestCase {
         assertEquals(initialTime, gt.getRemainingTime(true, initialTime));
         assertEquals(initialTime, gt.getRemainingTime(false, initialTime));
 
-        gt.addMove("e4", "", 0, "", "");
+        addStdMove(gt, "e4");
         gt.goForward(-1);
         assertEquals(initialTime, gt.getRemainingTime(true, initialTime));
         assertEquals(initialTime, gt.getRemainingTime(false, initialTime));
@@ -240,7 +245,7 @@ public class GameTreeTest extends TestCase {
         assertEquals(45000, gt.getRemainingTime(true, initialTime));
         assertEquals(initialTime, gt.getRemainingTime(false, initialTime));
 
-        gt.addMove("e5", "", 0, "", "");
+        addStdMove(gt, "e5");
         assertEquals(45000, gt.getRemainingTime(true, initialTime));
         assertEquals(initialTime, gt.getRemainingTime(false, initialTime));
 
@@ -248,9 +253,9 @@ public class GameTreeTest extends TestCase {
         assertEquals(45000, gt.getRemainingTime(true, initialTime));
         assertEquals(initialTime, gt.getRemainingTime(false, initialTime));
 
-        gt.addMove("Nf3", "", 0, "", "");
+        addStdMove(gt, "Nf3");
         gt.goForward(-1);
-        gt.addMove("Nc6", "", 0, "", "");
+        addStdMove(gt, "Nc6");
         gt.goForward(-1);
         assertEquals(45000, gt.getRemainingTime(true, initialTime));
         assertEquals(initialTime, gt.getRemainingTime(false, initialTime));
@@ -259,13 +264,13 @@ public class GameTreeTest extends TestCase {
         assertEquals(45000, gt.getRemainingTime(true, initialTime));
         assertEquals(30000, gt.getRemainingTime(false, initialTime));
 
-        gt.addMove("Bb5", "", 0, "", "");
+        addStdMove(gt, "Bb5");
         gt.goForward(-1);
         gt.setRemainingTime(20000);
         assertEquals(20000, gt.getRemainingTime(true, initialTime));
         assertEquals(30000, gt.getRemainingTime(false, initialTime));
 
-        gt.addMove("a6", "", 0, "", "");
+        addStdMove(gt, "a6");
         gt.goForward(-1);
         gt.setRemainingTime(15000);
         assertEquals(20000, gt.getRemainingTime(true, initialTime));
@@ -598,7 +603,7 @@ public class GameTreeTest extends TestCase {
         assertEquals(0, varNo);
         assertEquals("e4", getVariationsAsString(gt));
         gt.goForward(0);
-        varNo = gt.addMove("e5", "", 0, "", "");
+        varNo = addStdMove(gt, "e5");
         assertEquals(0, varNo);
         assertEquals("e5", getVariationsAsString(gt));
         gt.goForward(0);
@@ -609,14 +614,14 @@ public class GameTreeTest extends TestCase {
 
     public final void testGameResult() throws ChessParseError {
         GameTree gt = new GameTree(null);
-        int varNo = gt.addMove("e4", "", 0, "", "");
+        int varNo = addStdMove(gt, "e4");
         gt.goForward(varNo);
-        varNo = gt.addMove("e5", "", 0, "", "");
+        varNo = addStdMove(gt, "e5");
         gt.goForward(varNo);
         varNo = gt.addMove("--", "resign", 0, "", "");
         gt.goBack();
         gt.goBack();
-        varNo = gt.addMove("d4", "", 0, "", "");
+        varNo = addStdMove(gt, "d4");
         gt.goForward(varNo);
         varNo = gt.addMove("--", "resign", 0, "", "");
         gt.goForward(varNo);
@@ -636,9 +641,9 @@ public class GameTreeTest extends TestCase {
         // before the promotion piece
         GameTree gt = new GameTree(null);
         gt.setStartPos(TextIO.readFEN("rnbqkbnr/ppPppppp/8/8/8/8/PP1PPPPP/RNBQKBNR w KQkq - 0 1"));
-        int varNo = gt.addMove("cxb8N", "", 0, "", "");
+        int varNo = addStdMove(gt, "cxb8N");
         assertEquals(0, varNo);
-        varNo = gt.addMove("cxd8R+", "", 0, "", "");
+        varNo = addStdMove(gt, "cxd8R+");
         assertEquals(1, varNo);
         assertEquals("cxb8N cxd8R+", getVariationsAsString(gt)); // Normal short alg notation does not have =
         PGNOptions options = new PGNOptions();
@@ -646,6 +651,5 @@ public class GameTreeTest extends TestCase {
         String pgn = gt.toPGN(options);
         assertTrue(pgn.indexOf("cxb8=N") >= 0);           // ... but PGN promotions do have the = sign
         assertTrue(pgn.indexOf("cxd8=R+") >= 0);
-
     }
 }
