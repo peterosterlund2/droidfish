@@ -82,7 +82,7 @@ public class MoveGenTest extends TestCase {
      * Test of pseudoLegalMoves method, of class MoveGen. Pawn moves.
      */
     public void testPawnMoves() throws ChessParseError {
-        String fen = "1r2k3/P1pppp1p/8/1pP3p1/1nPp2P1/n4p1P/1P2PP2/4KBNR w K b6 0 1";
+        String fen = "1r2k3/P1pppp2/8/1pP3p1/1nPp2P1/n4p1P/1P2PP2/4KBNR w K b6 0 1";
         Position pos = TextIO.readFEN(fen);
         assertEquals(fen, TextIO.toFEN(pos));
         List<String> strMoves = getMoveList(pos, false);
@@ -107,7 +107,7 @@ public class MoveGenTest extends TestCase {
         assertTrue(strMoves.contains("d4-d3"));
         assertTrue(strMoves.contains("e7-e6"));
         assertTrue(strMoves.contains("e7-e5"));
-        assertEquals(28, strMoves.size());
+        assertEquals(26, strMoves.size());
 
         // Check black pawn promotion
         pos.setPiece(Position.getSquare(0,1), Piece.BPAWN);
