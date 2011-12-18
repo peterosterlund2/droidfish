@@ -390,8 +390,8 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="err_white_num_kings">Weiß muss genau einen König haben</string>
     <string name="err_black_num_kings">Schwarz muss genau einen König haben</string>
     <string name="err_king_capture_possible">Schlagen des Königs möglich</string>
-    <string name="err_too_many_rows">Zuviele Reihen</string>
-    <string name="err_too_many_columns">Zuviele Spalten</string>
+    <string name="err_too_many_rows">Zu viele Reihen</string>
+    <string name="err_too_many_columns">Zu viele Spalten</string>
     <string name="err_pawn_on_first_last_rank">Bauer in der ersten/letzten Reihe</string>
     <string name="err_too_many_white_pieces">Zu viele weiße Figuren</string>
     <string name="err_too_many_black_pieces">Zu viele schwarze Figuren</string>
