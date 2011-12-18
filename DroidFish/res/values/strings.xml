@@ -392,6 +392,8 @@ you are not actively using the program.\
     <string name="err_too_many_rows">Too many rows</string>
     <string name="err_too_many_columns">Too many columns</string>
     <string name="err_pawn_on_first_last_rank">Pawn on first/last rank</string>
+    <string name="err_too_many_white_pieces">Too many white pieces</string>
+    <string name="err_too_many_black_pieces">Too many black pieces</string>
 
     <string name="option_new_game">New Game</string>
     <string name="option_file">File</string>

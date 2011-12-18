@@ -128,24 +128,34 @@ public class TextIO {
         }
 
         // Each side must have exactly one king
-        int wKings = 0;
-        int bKings = 0;
-        for (int x = 0; x < 8; x++) {
-            for (int y = 0; y < 8; y++) {
-                int p = pos.getPiece(Position.getSquare(x, y));
-                if (p == Piece.WKING) {
-                    wKings++;
-                } else if (p == Piece.BKING) {
-                    bKings++;
-                }
-            }
-        }
-        if (wKings != 1) {
+        int[] nPieces = new int[Piece.nPieceTypes];
+        for (int i = 0; i < Piece.nPieceTypes; i++)
+            nPieces[i] = 0;
+        for (int x = 0; x < 8; x++)
+            for (int y = 0; y < 8; y++)
+                nPieces[pos.getPiece(Position.getSquare(x, y))]++;
+        if (nPieces[Piece.WKING] != 1)
             throw new ChessParseError(R.string.err_white_num_kings, pos);
-        }
-        if (bKings != 1) {
+        if (nPieces[Piece.BKING] != 1)
             throw new ChessParseError(R.string.err_black_num_kings, pos);
-        }
+
+        // White must not have too many pieces
+        int maxWPawns = 8;
+        maxWPawns -= Math.max(0, nPieces[Piece.WKNIGHT] - 2);
+        maxWPawns -= Math.max(0, nPieces[Piece.WBISHOP] - 2);
+        maxWPawns -= Math.max(0, nPieces[Piece.WROOK  ] - 2);
+        maxWPawns -= Math.max(0, nPieces[Piece.WQUEEN ] - 1);
+        if (nPieces[Piece.WPAWN] > maxWPawns)
+            throw new ChessParseError(R.string.err_too_many_white_pieces, pos);
+
+        // Black must not have too many pieces
+        int maxBPawns = 8;
+        maxBPawns -= Math.max(0, nPieces[Piece.BKNIGHT] - 2);
+        maxBPawns -= Math.max(0, nPieces[Piece.BBISHOP] - 2);
+        maxBPawns -= Math.max(0, nPieces[Piece.BROOK  ] - 2);
+        maxBPawns -= Math.max(0, nPieces[Piece.BQUEEN ] - 1);
+        if (nPieces[Piece.BPAWN] > maxBPawns)
+            throw new ChessParseError(R.string.err_too_many_black_pieces, pos);
 
         // Make sure king can not be captured
         Position pos2 = new Position(pos);
