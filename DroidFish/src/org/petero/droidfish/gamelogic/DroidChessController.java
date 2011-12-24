@@ -196,8 +196,10 @@ public class DroidChessController {
             if (computerPlayer != null) {
                 computerPlayer.setBookOptions(bookOptions);
                 if (analysisThread != null) {
-                    stopAnalysis();
-                    startAnalysis();
+                    boolean updateGui = stopAnalysis();
+                    updateGui |= startAnalysis();
+                    if (updateGui)
+                        updateGUI();
                 }
                 updateBookHints();
             }
@@ -222,8 +224,10 @@ public class DroidChessController {
 
     public final void newGame(GameMode gameMode) {
         ss.searchResultWanted = false;
-        stopComputerThinking();
-        stopAnalysis();
+        boolean updateGui = stopComputerThinking();
+        updateGui |= stopAnalysis();
+        if (updateGui)
+            updateGUI();
         this.gameMode = gameMode;
         ponderMove = null;
         if (computerPlayer == null) {
@@ -775,11 +779,10 @@ public class DroidChessController {
             listener.clearSearchInfo();
             computerPlayer.shouldStop = false;
             computerThread.start();
-            updateGUI();
         }
     }
 
-    private final synchronized void stopComputerThinking() {
+    private final synchronized boolean stopComputerThinking() {
         if (computerThread != null) {
             computerPlayer.stopSearch();
             try {
@@ -788,13 +791,14 @@ public class DroidChessController {
                 System.out.printf("Could not stop computer thread%n");
             }
             computerThread = null;
-            updateGUI();
+            return true;
         }
+        return false;
     }
 
-    private final synchronized void startAnalysis() {
+    private final synchronized boolean startAnalysis() {
         if (gameMode.analysisMode()) {
-            if (computerThread != null) return;
+            if (computerThread != null) return false;
             if (analysisThread == null) {
                 ss = new SearchStatus();
                 final Pair<Position, ArrayList<Move>> ph = game.getUCIHistory();
@@ -814,12 +818,13 @@ public class DroidChessController {
                 listener.clearSearchInfo();
                 computerPlayer.shouldStop = false;
                 analysisThread.start();
-                updateGUI();
+                return true;
             }
         }
+        return false;
     }
 
-    private final synchronized void stopAnalysis() {
+    private final synchronized boolean stopAnalysis() {
         if (analysisThread != null) {
             computerPlayer.stopSearch();
             try {
@@ -829,8 +834,9 @@ public class DroidChessController {
             }
             analysisThread = null;
             listener.clearSearchInfo();
-            updateGUI();
+            return true;
         }
+        return false;
     }
 
     public final synchronized void setEngineStrength(String engine, int strength) {
@@ -887,8 +893,11 @@ public class DroidChessController {
     }
 
     public final synchronized void stopPonder() {
-        if ((computerThread != null) && humansTurn())
-            stopComputerThinking();
+        if ((computerThread != null) && humansTurn()) {
+            boolean updateGui = stopComputerThinking();
+            if (updateGui)
+                updateGUI();
+        }
     }
 
     private Object shutdownEngineLock = new Object();
@@ -896,8 +905,10 @@ public class DroidChessController {
         synchronized (shutdownEngineLock) {
             gameMode = new GameMode(GameMode.TWO_PLAYERS);
             ss.searchResultWanted = false;
-            stopComputerThinking();
-            stopAnalysis();
+            boolean updateGui = stopComputerThinking();
+            updateGui |= stopAnalysis();
+            if (updateGui)
+                updateGUI();
             ponderMove = null;
             computerPlayer.shutdownEngine();
         }
