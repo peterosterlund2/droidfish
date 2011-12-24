@@ -132,6 +132,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private ChessBoard cb;
     private static DroidChessController ctrl = null;
     private boolean mShowThinking;
+    private boolean mShowStats;
     private boolean mWhiteBasedScores;
     private boolean mShowBookHints;
     private int maxNumArrows;
@@ -532,6 +533,7 @@ public class DroidFish extends Activity implements GUIInterface {
         cb.oneTouchMoves = settings.getBoolean("oneTouchMoves", false);
 
         mShowThinking = settings.getBoolean("showThinking", false);
+        mShowStats = settings.getBoolean("showStats", true);
         mWhiteBasedScores = settings.getBoolean("whiteBasedScores", false);
         maxNumArrows = getIntSetting("thinkingArrows", 2);
         mShowBookHints = settings.getBoolean("bookHints", false);
@@ -912,7 +914,8 @@ public class DroidFish extends Activity implements GUIInterface {
         updateThinkingInfo();
     }
 
-    private String thinkingStr = "";
+    private String thinkingStr1 = "";
+    private String thinkingStr2 = "";
     private String bookInfoStr = "";
     private String variantStr = "";
     private ArrayList<ArrayList<Move>> pvMoves = new ArrayList<ArrayList<Move>>();
@@ -920,9 +923,10 @@ public class DroidFish extends Activity implements GUIInterface {
     private List<Move> variantMoves = null;
 
     @Override
-    public void setThinkingInfo(String pvStr, String bookInfo,
+    public void setThinkingInfo(String pvStr, String statStr, String bookInfo,
                                 ArrayList<ArrayList<Move>> pvMoves, List<Move> bookMoves) {
-        thinkingStr = pvStr;
+        thinkingStr1 = pvStr;
+        thinkingStr2 = statStr;
         bookInfoStr = bookInfo;
         this.pvMoves = pvMoves;
         this.bookMoves = bookMoves;
@@ -941,7 +945,9 @@ public class DroidFish extends Activity implements GUIInterface {
         {
             String s = "";
             if (mShowThinking || gameMode.analysisMode()) {
-                s = thinkingStr;
+                s = thinkingStr1;
+                if (mShowStats)
+                    s += "\n" + thinkingStr2;
             }
             thinking.setText(s, TextView.BufferType.SPANNABLE);
             if (s.length() > 0) thinkingEmpty = false;
@@ -1508,6 +1514,8 @@ public class DroidFish extends Activity implements GUIInterface {
             final int ADD_ANALYSIS = 0;
             final int MULTIPV_DEC = 1;
             final int MULTIPV_INC = 2;
+            final int HIDE_STATISTICS = 3;
+            final int SHOW_STATISTICS = 4;
             List<CharSequence> lst = new ArrayList<CharSequence>();
             List<Integer> actions = new ArrayList<Integer>();
             lst.add(getString(R.string.add_analysis)); actions.add(ADD_ANALYSIS);
@@ -1520,6 +1528,11 @@ public class DroidFish extends Activity implements GUIInterface {
                 if (numPV < maxPV) {
                     lst.add(getString(R.string.more_variations)); actions.add(MULTIPV_INC);
                 }
+                if (mShowStats) {
+                    lst.add(getString(R.string.hide_statistics)); actions.add(HIDE_STATISTICS);
+                } else {
+                    lst.add(getString(R.string.show_statistics)); actions.add(SHOW_STATISTICS);
+                }
             }
             final List<Integer> finalActions = actions;
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -1529,7 +1542,7 @@ public class DroidFish extends Activity implements GUIInterface {
                     switch (finalActions.get(item)) {
                     case ADD_ANALYSIS: {
                         ArrayList<ArrayList<Move>> pvMovesTmp = pvMoves;
-                        String[] pvStrs = thinkingStr.split("\n");
+                        String[] pvStrs = thinkingStr1.split("\n");
                         for (int i = 0; i < pvMovesTmp.size(); i++) {
                             ArrayList<Move> pv = pvMovesTmp.get(i);
                             StringBuilder preComment = new StringBuilder();
@@ -1554,6 +1567,15 @@ public class DroidFish extends Activity implements GUIInterface {
                     case MULTIPV_INC:
                         ctrl.setMultiPVMode(numPV + 1);
                         break;
+                    case HIDE_STATISTICS:
+                    case SHOW_STATISTICS: {
+                        mShowStats = finalActions.get(item) == SHOW_STATISTICS;
+                        Editor editor = settings.edit();
+                        editor.putBoolean("showStats", mShowStats);
+                        editor.commit();
+                        updateThinkingInfo();
+                        break;
+                    }
                     }
                 }
             });

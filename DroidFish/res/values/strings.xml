@@ -365,6 +365,8 @@ you are not actively using the program.\
     <string name="add_analysis">Add Analysis</string>
     <string name="fewer_variations">Fewer Variations</string>
     <string name="more_variations">More Variations</string>
+    <string name="hide_statistics">Hide statistics</string>
+    <string name="show_statistics">Show statistics</string>
     <string name="heavy_cpu_usage">Heavy CPU usage</string>
     <string name="background_processing">Background processing</string>
     <string name="lot_cpu_power">DroidFish is using a lot of CPU power</string>

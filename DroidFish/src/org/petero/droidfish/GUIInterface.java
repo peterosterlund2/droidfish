@@ -51,7 +51,8 @@ public interface GUIInterface {
     public void moveListUpdated();
 
     /** Update the computer thinking information. */
-    public void setThinkingInfo(String pvStr, String bookInfo, ArrayList<ArrayList<Move>> pvMoves, List<Move> bookMoves);
+    public void setThinkingInfo(String pvStr, String statStr, String bookInfo,
+                                ArrayList<ArrayList<Move>> pvMoves, List<Move> bookMoves);
 
     /** Ask what to promote a pawn to. Should call reportPromotePiece() when done. */
     public void requestPromotePiece();

@@ -96,12 +96,11 @@ public class DroidChessController {
                 }
 
                 buf.append(pvi.pvStr);
-                buf.append("\n");
             }
-            if (currDepth > 0) {
-                buf.append(String.format("d:%d %d:%s t:%.2f n:%d nps:%d", currDepth,
-                        currMoveNr, currMove, currTime / 1000.0, currNodes, currNps));
-            }
+            final String statStr = (currDepth > 0) ?
+                    String.format("d:%d %d:%s t:%.2f n:%d nps:%d", currDepth, currMoveNr, currMove,
+                                  currTime / 1000.0, currNodes, currNps)
+                    : "";
             final String newPV = buf.toString();
             final String newBookInfo = bookInfo;
             final SearchStatus localSS = ss;
@@ -112,7 +111,7 @@ public class DroidChessController {
                     ArrayList<ArrayList<Move>> pvMoves = new ArrayList<ArrayList<Move>>();
                     for (int i = 0; i < pvInfoV.size(); i++)
                         pvMoves.add(pvInfoV.get(i).pv);
-                    gui.setThinkingInfo(newPV, newBookInfo, pvMoves, bookMoves);
+                    gui.setThinkingInfo(newPV, statStr, newBookInfo, pvMoves, bookMoves);
                 }
             });
         }
