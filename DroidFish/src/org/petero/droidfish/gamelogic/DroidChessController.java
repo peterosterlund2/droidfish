@@ -82,6 +82,8 @@ public class DroidChessController {
                 PvInfo pvi = pvInfoV.get(i);
                 if (pvi.depth <= 0)
                     continue;
+                if (i > 0)
+                    buf.append('\n');
                 buf.append(String.format("[%d] ", pvi.depth));
                 boolean negateScore = !whiteMove && gui.whiteBasedScores();
                 if (pvi.upperBound || pvi.lowerBound) {
