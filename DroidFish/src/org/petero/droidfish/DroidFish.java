@@ -424,9 +424,11 @@ public class DroidFish extends Activity implements GUIInterface {
         });
         thinking.setOnLongClickListener(new OnLongClickListener() {
             public boolean onLongClick(View v) {
-                if (!pvMoves.isEmpty()) {
-                    removeDialog(THINKING_MENU_DIALOG);
-                    showDialog(THINKING_MENU_DIALOG);
+                if (mShowThinking || gameMode.analysisMode()) {
+                    if (!pvMoves.isEmpty()) {
+                        removeDialog(THINKING_MENU_DIALOG);
+                        showDialog(THINKING_MENU_DIALOG);
+                    }
                 }
                 return true;
             }
@@ -966,7 +968,9 @@ public class DroidFish extends Activity implements GUIInterface {
                 s += "<br>";
             s += "<b>" + getString(R.string.variation) + "</b> " + variantStr;
             thinking.append(Html.fromHtml(s));
+            thinkingEmpty = false;
         }
+        thinking.setVisibility(thinkingEmpty ? View.GONE : View.VISIBLE);
 
         List<Move> hints = null;
         if (mShowThinking || gameMode.analysisMode()) {
@@ -1528,6 +1532,8 @@ public class DroidFish extends Activity implements GUIInterface {
                 if (numPV < maxPV) {
                     lst.add(getString(R.string.more_variations)); actions.add(MULTIPV_INC);
                 }
+            }
+            if (thinkingStr1.length() > 0) {
                 if (mShowStats) {
                     lst.add(getString(R.string.hide_statistics)); actions.add(HIDE_STATISTICS);
                 } else {
