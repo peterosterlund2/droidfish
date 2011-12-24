@@ -239,27 +239,39 @@ public class PGNFile {
                         hi = new HeaderInfo();
                     }
                     if (line.startsWith("[Event ")) {
-                        hi.event = line.substring(8, len - 2);
-                        if (hi.event.equals("?")) hi.event = "";
+                        if (len >= 10) {
+                            hi.event = line.substring(8, len - 2);
+                            if (hi.event.equals("?")) hi.event = "";
+                        }
                     } else if (line.startsWith("[Site ")) {
-                        hi.site = line.substring(7, len - 2);
-                        if (hi.site.equals("?")) hi.site = "";
+                        if (len >= 9) {
+                            hi.site = line.substring(7, len - 2);
+                            if (hi.site.equals("?")) hi.site = "";
+                        }
                     } else if (line.startsWith("[Date ")) {
-                        hi.date = line.substring(7, len - 2);
-                        if (hi.date.equals("?")) hi.date = "";
+                        if (len >= 9) {
+                            hi.date = line.substring(7, len - 2);
+                            if (hi.date.equals("?")) hi.date = "";
+                        }
                     } else if (line.startsWith("[Round ")) {
-                        hi.round = line.substring(8, len - 2);
-                        if (hi.round.equals("?")) hi.round = "";
+                        if (len >= 10) {
+                            hi.round = line.substring(8, len - 2);
+                            if (hi.round.equals("?")) hi.round = "";
+                        }
                     } else if (line.startsWith("[White ")) {
-                        hi.white = line.substring(8, len - 2);
+                        if (len >= 10)
+                            hi.white = line.substring(8, len - 2);
                     } else if (line.startsWith("[Black ")) {
-                        hi.black = line.substring(8, len - 2);
+                        if (len >= 10)
+                            hi.black = line.substring(8, len - 2);
                     } else if (line.startsWith("[Result ")) {
-                        hi.result = line.substring(9, len - 2);
-                        if (hi.result.equals("1-0")) hi.result = "1-0";
-                        else if (hi.result.equals("0-1")) hi.result = "0-1";
-                        else if ((hi.result.equals("1/2-1/2")) || (hi.result.equals("1/2"))) hi.result = "1/2-1/2";
-                        else hi.result = "*";
+                        if (len >= 11) {
+                            hi.result = line.substring(9, len - 2);
+                            if (hi.result.equals("1-0")) hi.result = "1-0";
+                            else if (hi.result.equals("0-1")) hi.result = "0-1";
+                            else if ((hi.result.equals("1/2-1/2")) || (hi.result.equals("1/2"))) hi.result = "1/2-1/2";
+                            else hi.result = "*";
+                        }
                     }
                 } else {
                     inHeader = false;
