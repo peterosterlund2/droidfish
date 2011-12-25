@@ -34,6 +34,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.ClipboardManager;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -104,18 +105,34 @@ public class EditBoard extends Activity {
         cb.setFocusable(true);
         cb.requestFocus();
         cb.setClickable(true);
-        cb.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    int sq = cb.eventToSquare(event);
-                    Move m = cb.mousePressed(sq);
-                    if (m != null) {
-                        doMove(m);
-                    }
-                    return false;
-                }
+        final GestureDetector gd = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
+            public boolean onDown(MotionEvent e) {
                 return false;
+            }
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                cb.cancelLongPress();
+                return true;
+            }
+            public boolean onSingleTapUp(MotionEvent e) {
+                cb.cancelLongPress();
+                handleClick(e);
+                return true;
+            }
+            public boolean onDoubleTapEvent(MotionEvent e) {
+                if (e.getAction() == MotionEvent.ACTION_UP)
+                    handleClick(e);
+                return true;
+            }
+            private final void handleClick(MotionEvent e) {
+                int sq = cb.eventToSquare(e);
+                Move m = cb.mousePressed(sq);
+                if (m != null)
+                    doMove(m);
+            }
+        });
+        cb.setOnTouchListener(new OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                return gd.onTouchEvent(event);
             }
         });
         cb.setOnTrackballListener(new ChessBoard.OnTrackballListener() {
@@ -154,7 +171,10 @@ public class EditBoard extends Activity {
         if (m.from >= 0)
             pos.setPiece(m.from, Piece.EMPTY);
         cb.setPosition(pos);
-        cb.setSelection(-1);
+        if (m.from >= 0)
+            cb.setSelection(-1);
+        else
+            cb.setSelection(m.from);
         checkValid();
     }
 
