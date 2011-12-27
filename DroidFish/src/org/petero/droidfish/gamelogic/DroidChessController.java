@@ -201,10 +201,8 @@ public class DroidChessController {
             setPlayerNames(newGame);
         } catch (ChessParseError e) {
             // Try read as PGN instead
-            if (!newGame.readPGN(fenPgn, pgnOptions)) {
-                // FIXME!! Should detect when PGN game contains only one invalid move.
+            if (!newGame.readPGN(fenPgn, pgnOptions))
                 throw e;
-            }
         }
         ss.searchResultWanted = false;
         game = newGame;
