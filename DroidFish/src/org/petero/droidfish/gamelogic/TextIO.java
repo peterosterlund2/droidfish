@@ -72,10 +72,18 @@ public class TextIO {
                 default: throw new ChessParseError(R.string.err_invalid_piece, pos);
             }
         }
-        if (words[1].length() == 0) {
+
+        if (words[1].length() > 0) {
+            boolean wtm;
+            switch (words[1].charAt(0)) {
+            case 'w': wtm = true; break;
+            case 'b': wtm = false; break;
+            default: throw new ChessParseError(R.string.err_invalid_side, pos);
+            }
+            pos.setWhiteMove(wtm);
+        } else {
             throw new ChessParseError(R.string.err_invalid_side, pos);
         }
-        pos.setWhiteMove(words[1].charAt(0) == 'w');
 
         // Castling rights
         int castleMask = 0;

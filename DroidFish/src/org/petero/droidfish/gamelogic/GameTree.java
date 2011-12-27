@@ -477,10 +477,13 @@ public class GameTree {
         Node gameRoot = new Node();
         Node.parsePgn(scanner, gameRoot, options);
 
-        // Store parsed data in GameTree
-        if ((tagPairs.size() == 0) && (gameRoot.children.size() == 0))
-            return false;
+        if (tagPairs.size() == 0) {
+            gameRoot.verifyChildren(TextIO.readFEN(TextIO.startPosFEN));
+            if (gameRoot.children.size() == 0)
+                return false;
+        }
 
+        // Store parsed data in GameTree
         String fen = TextIO.startPosFEN;
         int nTags = tagPairs.size();
         for (int i = 0; i < nTags; i++) {
