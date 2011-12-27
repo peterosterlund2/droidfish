@@ -35,6 +35,7 @@ public class Game {
     private DroidComputerPlayer computerPlayer;
     TimeControl timeController;
     private boolean gamePaused;
+    /** If true, add new moves as mainline moves. */
     private boolean addFirst;
 
     PgnToken.PgnTokenReceiver gameTextListener;
@@ -50,6 +51,7 @@ public class Game {
         newGame();
     }
 
+    /** De-serialize from byte array. */
     final void fromByteArray(byte[] data) {
         tree.fromByteArray(data);
         updateTimeControl(true);
@@ -66,10 +68,12 @@ public class Game {
         }
     }
 
+    /** Set whether new moves are entered as mainline moves or variations. */
     public final void setAddFirst(boolean addFirst) {
         this.addFirst = addFirst;
     }
 
+    /** Sets start position and discards the whole game tree. */
     final void setPos(Position pos) {
         tree.setStartPos(new Position(pos));
         updateTimeControl(false);
@@ -217,6 +221,7 @@ public class Game {
         return nVar > 0;
     }
 
+    /** Get number of variations in current game position. */
     public final int numVariations() {
         if (tree.currentNode == tree.rootNode)
             return 1;
@@ -226,6 +231,7 @@ public class Game {
         return nChildren;
     }
 
+    /** Get current variation in current position. */
     public final int currVariation() {
         if (tree.currentNode == tree.rootNode)
             return 0;
@@ -235,6 +241,7 @@ public class Game {
         return defChild;
     }
 
+    /** Go to a new variation in the game tree. */
     public final void changeVariation(int delta) {
         if (tree.currentNode == tree.rootNode)
             return;
@@ -249,6 +256,7 @@ public class Game {
         updateTimeControl(true);
     }
 
+    /** Move current variation up/down in the game tree. */
     public final void moveVariation(int delta) {
         if (tree.currentNode == tree.rootNode)
             return;
@@ -264,6 +272,7 @@ public class Game {
         updateTimeControl(true);
     }
 
+    /** Delete whole game sub-tree rooted at current position. */
     public final void removeSubTree() {
         if (getLastMove() != null) {
             tree.goBack();
@@ -323,10 +332,14 @@ public class Game {
         }
     }
 
-    public final void goNode(Node node) {
-        tree.goNode(node);
+    /** Go to given node in game tree.
+     * @return True if current node changed, false otherwise. */
+    public final boolean goNode(Node node) {
+        if (!tree.goNode(node))
+            return false;
         pendingDrawOffer = false;
         updateTimeControl(true);
+        return true;
     }
 
     public final void newGame() {

@@ -657,13 +657,17 @@ public class GameTree {
         }
     }
 
-    /** Go to given node in game tree. */
-    public final void goNode(Node node) {
+    /** Go to given node in game tree.
+     * @return True if current node changed, false otherwise. */
+    public final boolean goNode(Node node) {
+        if (node == currentNode)
+            return false;
         ArrayList<Integer> path = node.getPathFromRoot();
         while (currentNode != rootNode)
             goBack();
         for (Integer c : path)
             goForward(c);
+        return true;
     }
 
     /** List of possible continuation moves. */
@@ -1388,6 +1392,7 @@ public class GameTree {
         }
     }
 
+    /** Set PGN header tags and values. */
     void setHeaders(Map<String,String> headers) {
         for (Entry<String, String> entry : headers.entrySet()) {
             String tag = entry.getKey();
@@ -1417,6 +1422,7 @@ public class GameTree {
         }
     }
 
+    /** Get PGN header tags and values. */
     void getHeaders(Map<String,String> headers) {
         headers.put("Event", event);
         headers.put("Site",  site);

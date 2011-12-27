@@ -31,7 +31,7 @@ public interface GUIInterface {
     /** Update the displayed board position. */
     public void setPosition(Position pos, String variantInfo, List<Move> variantMoves);
 
-    /** Mark square i as selected. Set to -1 to clear selection. */
+    /** Mark square sq as selected. Set to -1 to clear selection. */
     public void setSelection(int sq);
 
     final static class GameStatus {

@@ -74,6 +74,7 @@ public final class DroidBook {
         rndGen.setSeed(System.currentTimeMillis());
     }
 
+    /** Set opening book options. */
     public final void setOptions(BookOptions options) {
         this.options = options;
         if (CtgBook.canHandle(options))
@@ -136,7 +137,7 @@ public final class DroidBook {
         }
     }
 
-    /** Return a string describing all book moves. */
+    /** Return all book moves, both as a formatted string and as a list of moves. */
     public final Pair<String,ArrayList<Move>> getAllBookMoves(Position pos) {
         StringBuilder ret = new StringBuilder();
         ArrayList<Move> bookMoveList = new ArrayList<Move>();

@@ -54,7 +54,542 @@ public class DroidChessController {
     private int movesPerSession;
     private int timeIncrement;
 
-    class SearchListener implements org.petero.droidfish.gamelogic.SearchListener {
+    private SearchListener listener;
+    private boolean guiPaused = false;
+
+    /** Partial move that needs promotion choice to be completed. */
+    private Move promoteMove;
+
+    private Object shutdownEngineLock = new Object();
+
+
+    /** Constructor. */
+    public DroidChessController(GUIInterface gui, PgnToken.PgnTokenReceiver gameTextListener, PGNOptions options) {
+        this.gui = gui;
+        this.gameTextListener = gameTextListener;
+        pgnOptions = options;
+        listener = new SearchListener();
+    }
+
+    /** Start a new game. */
+    public final void newGame(GameMode gameMode) {
+        ss.searchResultWanted = false;
+        boolean updateGui = stopComputerThinking();
+        updateGui |= stopAnalysis();
+        if (updateGui)
+            updateGUI();
+        this.gameMode = gameMode;
+        ponderMove = null;
+        if (computerPlayer == null) {
+            computerPlayer = new DroidComputerPlayer(engine);
+            computerPlayer.setListener(listener);
+            computerPlayer.setBookOptions(bookOptions);
+        }
+        game = new Game(computerPlayer, gameTextListener, timeControl, movesPerSession, timeIncrement);
+        setPlayerNames(game);
+        updateGameMode();
+    }
+
+    /** Start playing a new game. Should be called after newGame(). */
+    public final void startGame() {
+        updateComputeThreads(true);
+        setSelection();
+        updateGUI();
+        updateGameMode();
+    }
+
+    /** Set time control parameters. */
+    public final synchronized void setTimeLimit(int time, int moves, int inc) {
+        timeControl = time;
+        movesPerSession = moves;
+        timeIncrement = inc;
+        if (game != null)
+            game.timeController.setTimeControl(timeControl, movesPerSession, timeIncrement);
+    }
+
+    /** The chess clocks are stopped when the GUI is paused. */
+    public final void setGuiPaused(boolean paused) {
+        guiPaused = paused;
+        updateGameMode();
+    }
+
+    /** Set game mode. */
+    public final void setGameMode(GameMode newMode) {
+        if (!gameMode.equals(newMode)) {
+            if (newMode.humansTurn(game.currPos().whiteMove))
+                ss.searchResultWanted = false;
+            gameMode = newMode;
+            if (!gameMode.playerWhite() || !gameMode.playerBlack())
+                setPlayerNames(game); // If computer player involved, set player names
+            updateGameMode();
+            ponderMove = null;
+            ss.searchResultWanted = false;
+            stopComputerThinking();
+            updateComputeThreads(true);
+            updateGUI();
+        }
+    }
+
+    /** Set engine book options. */
+    public final synchronized void setBookOptions(BookOptions options) {
+        if (!bookOptions.equals(options)) {
+            bookOptions = options;
+            if (computerPlayer != null) {
+                computerPlayer.setBookOptions(bookOptions);
+                if (analysisThread != null) {
+                    boolean updateGui = stopAnalysis();
+                    updateGui |= startAnalysis();
+                    if (updateGui)
+                        updateGUI();
+                }
+                updateBookHints();
+            }
+        }
+    }
+
+    /** Set engine and engine strength. Restart computer thinking if appropriate.
+     * @param engine Name of engine.
+     * @param strength Engine strength, 0 - 1000. */
+    public final synchronized void setEngineStrength(String engine, int strength) {
+        boolean newEngine = !engine.equals(this.engine);
+        if (newEngine)
+            numPV = 1;
+        if (newEngine || (strength != this.strength)) {
+            this.engine = engine;
+            this.strength = strength;
+            if (newEngine && ((analysisThread != null) || (computerThread != null))) {
+                stopAnalysis();
+                updateComputeThreads(true);
+                updateGUI();
+            }
+        }
+    }
+
+    /** Notify controller that preferences has changed. */
+    public final void prefsChanged() {
+        updateBookHints();
+        updateMoveList();
+        listener.prefsChanged();
+    }
+
+    /** De-serialize from byte array. */
+    public final void fromByteArray(byte[] data) {
+        game.fromByteArray(data);
+    }
+
+    /** Serialize to byte array. */
+    public final byte[] toByteArray() {
+        return game.tree.toByteArray();
+    }
+
+    /** Return FEN string corresponding to a current position. */
+    public final String getFEN() {
+        return TextIO.toFEN(game.tree.currentPos);
+    }
+
+    /** Convert current game to PGN format. */
+    public final String getPGN() {
+        return game.tree.toPGN(pgnOptions);
+    }
+
+    /** Parse a string as FEN or PGN data. */
+    public final void setFENOrPGN(String fenPgn) throws ChessParseError {
+        Game newGame = new Game(null, gameTextListener, timeControl, movesPerSession, timeIncrement);
+        try {
+            Position pos = TextIO.readFEN(fenPgn);
+            newGame.setPos(pos);
+            setPlayerNames(newGame);
+        } catch (ChessParseError e) {
+            // Try read as PGN instead
+            if (!newGame.readPGN(fenPgn, pgnOptions)) {
+                // FIXME!! Should detect when PGN game contains only one invalid move.
+                throw e;
+            }
+        }
+        ss.searchResultWanted = false;
+        game = newGame;
+        game.setComputerPlayer(computerPlayer);
+        gameTextListener.clear();
+        updateGameMode();
+        stopAnalysis();
+        stopComputerThinking();
+        computerPlayer.clearTT();
+        ponderMove = null;
+        updateComputeThreads(true);
+        gui.setSelection(-1);
+        updateGUI();
+    }
+
+    /** True if human's turn to make a move. (True in analysis mode.) */
+    public final boolean humansTurn() {
+        return gameMode.humansTurn(game.currPos().whiteMove);
+    }
+
+    /** Return true if computer player is using CPU power. */
+    public final boolean computerBusy() {
+        return (computerThread != null) || (analysisThread != null);
+    }
+
+    /** Make a move for a human player. */
+    public final void makeHumanMove(Move m) {
+        if (humansTurn()) {
+            Position oldPos = new Position(game.currPos());
+            if (doMove(m)) {
+                if (m.equals(ponderMove) && !gameMode.analysisMode() &&
+                    (analysisThread == null) && (computerThread != null)) {
+                    computerPlayer.ponderHit(oldPos, ponderMove);
+                } else {
+                    ss.searchResultWanted = false;
+                    stopAnalysis();
+                    stopComputerThinking();
+                    updateComputeThreads(true);
+                }
+                setAnimMove(oldPos, m, true);
+                updateGUI();
+            } else {
+                gui.setSelection(-1);
+            }
+        }
+    }
+
+    /** Report promotion choice for incomplete move. 
+     * @param choice 0=queen, 1=rook, 2=bishop, 3=knight. */
+    public final void reportPromotePiece(int choice) {
+        if (promoteMove == null)
+            return;
+        final boolean white = game.currPos().whiteMove;
+        int promoteTo;
+        switch (choice) {
+            case 1:
+                promoteTo = white ? Piece.WROOK : Piece.BROOK;
+                break;
+            case 2:
+                promoteTo = white ? Piece.WBISHOP : Piece.BBISHOP;
+                break;
+            case 3:
+                promoteTo = white ? Piece.WKNIGHT : Piece.BKNIGHT;
+                break;
+            default:
+                promoteTo = white ? Piece.WQUEEN : Piece.BQUEEN;
+                break;
+        }
+        promoteMove.promoteTo = promoteTo;
+        Move m = promoteMove;
+        promoteMove = null;
+        makeHumanMove(m);
+    }
+
+    /** Add a null-move to the game tree. */
+    public final void makeHumanNullMove() {
+        if (humansTurn()) {
+            int varNo = game.tree.addMove("--", "", 0, "", "");
+            game.tree.goForward(varNo);
+            ss.searchResultWanted = false;
+            stopAnalysis();
+            stopComputerThinking();
+            ponderMove = null;
+            updateComputeThreads(true);
+            updateGUI();
+            gui.setSelection(-1);
+        }
+    }
+
+    /** Help human to claim a draw by trying to find and execute a valid draw claim. */
+    public final boolean claimDrawIfPossible() {
+        if (!findValidDrawClaim())
+            return false;
+        updateGUI();
+        return true;
+    }
+
+    /** Resign game for current player. */
+    public final void resignGame() {
+        if (game.getGameState() == GameState.ALIVE) {
+            game.processString("resign");
+            updateGUI();
+        }
+    }
+
+    /** Undo last move. Does not truncate game tree. */
+    public final void undoMove() {
+        if (game.getLastMove() != null) {
+            ss.searchResultWanted = false;
+            stopAnalysis();
+            stopComputerThinking();
+            boolean didUndo = undoMoveNoUpdate();
+            updateComputeThreads(true);
+            setSelection();
+            if (didUndo)
+                setAnimMove(game.currPos(), game.getNextMove(), false);
+            updateGUI();
+        }
+    }
+
+    /** Redo last move. Follows default variation. */
+    public final void redoMove() {
+        if (game.canRedoMove()) {
+            ss.searchResultWanted = false;
+            stopAnalysis();
+            stopComputerThinking();
+            redoMoveNoUpdate();
+            updateComputeThreads(true);
+            setSelection();
+            setAnimMove(game.prevPos(), game.getLastMove(), true);
+            updateGUI();
+        }
+    }
+
+    /** Go back/forward to a given move number.
+     * Follows default variations when going forward. */
+    public final void gotoMove(int moveNr) {
+        boolean needUpdate = false;
+        while (game.currPos().fullMoveCounter > moveNr) { // Go backward
+            int before = game.currPos().fullMoveCounter * 2 + (game.currPos().whiteMove ? 0 : 1);
+            undoMoveNoUpdate();
+            int after = game.currPos().fullMoveCounter * 2 + (game.currPos().whiteMove ? 0 : 1);
+            if (after >= before)
+                break;
+            needUpdate = true;
+        }
+        while (game.currPos().fullMoveCounter < moveNr) { // Go forward
+            int before = game.currPos().fullMoveCounter * 2 + (game.currPos().whiteMove ? 0 : 1);
+            redoMoveNoUpdate();
+            int after = game.currPos().fullMoveCounter * 2 + (game.currPos().whiteMove ? 0 : 1);
+            if (after <= before)
+                break;
+            needUpdate = true;
+        }
+        if (needUpdate) {
+            ss.searchResultWanted = false;
+            stopAnalysis();
+            stopComputerThinking();
+            ponderMove = null;
+            updateComputeThreads(true);
+            setSelection();
+            updateGUI();
+        }
+    }
+
+    /** Go to start of the current variation. */
+    public final void gotoStartOfVariation() {
+        boolean needUpdate = false;
+        while (true) {
+            if (!undoMoveNoUpdate())
+                break;
+            needUpdate = true;
+            if (game.numVariations() > 1)
+                break;
+        }
+        if (needUpdate) {
+            ss.searchResultWanted = false;
+            stopAnalysis();
+            stopComputerThinking();
+            ponderMove = null;
+            updateComputeThreads(true);
+            setSelection();
+            updateGUI();
+        }
+    }
+
+    /** Go to given node in game tree. */
+    public final void goNode(Node node) {
+        if (node == null)
+            return;
+        if (!game.goNode(node))
+            return;
+        ponderMove = null;
+        if (!humansTurn()) {
+            if (game.getLastMove() != null) {
+                game.undoMove();
+                if (!humansTurn())
+                    game.redoMove();
+            }
+        }
+        ss.searchResultWanted = false;
+        stopAnalysis();
+        stopComputerThinking();
+        ponderMove = null;
+        updateComputeThreads(true);
+        setSelection();
+        updateGUI();
+    }
+
+    /** Get number of variations in current game position. */
+    public final int numVariations() {
+        return game.numVariations();
+    }
+
+    /** Get current variation in current position. */
+    public final int currVariation() {
+        return game.currVariation();
+    }
+
+    /** Go to a new variation in the game tree. */
+    public final void changeVariation(int delta) {
+        if (game.numVariations() > 1) {
+            ss.searchResultWanted = false;
+            stopAnalysis();
+            stopComputerThinking();
+            game.changeVariation(delta);
+            ponderMove = null;
+            updateComputeThreads(true);
+            setSelection();
+            updateGUI();
+        }
+    }
+
+    /** Delete whole game sub-tree rooted at current position. */
+    public final void removeSubTree() {
+        ss.searchResultWanted = false;
+        stopAnalysis();
+        stopComputerThinking();
+        game.removeSubTree();
+        ponderMove = null;
+        updateComputeThreads(true);
+        setSelection();
+        updateGUI();
+    }
+
+    /** Move current variation up/down in the game tree. */
+    public final void moveVariation(int delta) {
+        if (game.numVariations() > 1) {
+            game.moveVariation(delta);
+            updateGUI();
+        }
+    }
+
+    /** Add a variation to the game tree.
+     * @param preComment Comment to add before first move.
+     * @param pvMoves List of moves in variation. 
+     * @param updateDefault If true, make this the default variation. */
+    public final void addVariation(String preComment, List<Move> pvMoves, boolean updateDefault) {
+        for (int i = 0; i < pvMoves.size(); i++) {
+            Move m = pvMoves.get(i);
+            String moveStr = TextIO.moveToUCIString(m);
+            String pre = (i == 0) ? preComment : "";
+            int varNo = game.tree.addMove(moveStr, "", 0, pre, "");
+            game.tree.goForward(varNo, updateDefault);
+        }
+        for (int i = 0; i < pvMoves.size(); i++)
+            game.tree.goBack();
+        gameTextListener.clear();
+        updateGUI();
+    }
+
+    /** Update remaining time and trigger GUI update of clocks. */
+    public final void updateRemainingTime() {
+        long now = System.currentTimeMillis();
+        long wTime = game.timeController.getRemainingTime(true, now);
+        long bTime = game.timeController.getRemainingTime(false, now);
+        long nextUpdate = 0;
+        if (game.timeController.clockRunning()) {
+            long t = game.currPos().whiteMove ? wTime : bTime;
+            nextUpdate = (t % 1000);
+            if (nextUpdate < 0) nextUpdate += 1000;
+            nextUpdate += 1;
+        }
+        gui.setRemainingTime(wTime, bTime, nextUpdate);
+    }
+
+    /** Return maximum number of PVs supported by engine. */
+    public final synchronized int maxPV() {
+        if (computerPlayer == null)
+            return 1;
+        return computerPlayer.getMaxPV();
+    }
+
+    /** Get multi-PV mode setting. */
+    public final int getNumPV() {
+        return this.numPV;
+    }
+
+    /** Set multi-PV mode. */
+    public final synchronized void setMultiPVMode(int numPV) {
+        if (numPV < 1) numPV = 1;
+        if (numPV > maxPV()) numPV = maxPV();
+        if (numPV != this.numPV) {
+            this.numPV = numPV;
+            if (analysisThread != null) {
+                stopAnalysis();
+                ponderMove = null;
+                updateComputeThreads(true);
+                updateGUI();
+            }
+        }
+    }
+
+    /** Request computer player to make a move immediately. */
+    public final synchronized void stopSearch() {
+        if (computerThread != null) {
+            computerPlayer.stopSearch();
+        }
+    }
+
+    /** Stop ponder search. */
+    public final synchronized void stopPonder() {
+        if ((computerThread != null) && humansTurn()) {
+            boolean updateGui = stopComputerThinking();
+            if (updateGui)
+                updateGUI();
+        }
+    }
+
+    /** Shut down chess engine process. */
+    public final synchronized void shutdownEngine() {
+        synchronized (shutdownEngineLock) {
+            gameMode = new GameMode(GameMode.TWO_PLAYERS);
+            ss.searchResultWanted = false;
+            boolean updateGui = stopComputerThinking();
+            updateGui |= stopAnalysis();
+            if (updateGui)
+                updateGUI();
+            ponderMove = null;
+            computerPlayer.shutdownEngine();
+        }
+    }
+
+    /** Get PGN header tags and values. */
+    public final void getHeaders(Map<String,String> headers) {
+        game.tree.getHeaders(headers);
+    }
+
+    /** Set PGN header tags and values. */
+    public final void setHeaders(Map<String,String> headers) {
+        game.tree.setHeaders(headers);
+        gameTextListener.clear();
+        updateGUI();
+    }
+
+    /** Comments associated with a move. */
+    public static final class CommentInfo {
+        public String move;
+        public String preComment, postComment;
+        public int nag;
+    }
+
+    /** Get comments associated with current position. */
+    public final CommentInfo getComments() {
+        Node cur = game.tree.currentNode;
+        CommentInfo ret = new CommentInfo();
+        ret.move = cur.moveStr;
+        ret.preComment = cur.preComment;
+        ret.postComment = cur.postComment;
+        ret.nag = cur.nag;
+        return ret;
+    }
+
+    /** Set comments associated with current position. */
+    public final void setComments(CommentInfo commInfo) {
+        Node cur = game.tree.currentNode;
+        cur.preComment = commInfo.preComment;
+        cur.postComment = commInfo.postComment;
+        cur.nag = commInfo.nag;
+        gameTextListener.clear();
+        updateGUI();
+    }
+
+    /** Engine search information receiver. */
+    private final class SearchListener implements org.petero.droidfish.gamelogic.SearchListener {
         private int currDepth = 0;
         private int currMoveNr = 0;
         private String currMove = "";
@@ -180,31 +715,6 @@ public class DroidChessController {
             setSearchInfo();
         }
     }
-    SearchListener listener;
-
-
-    public DroidChessController(GUIInterface gui, PgnToken.PgnTokenReceiver gameTextListener, PGNOptions options) {
-        this.gui = gui;
-        this.gameTextListener = gameTextListener;
-        pgnOptions = options;
-        listener = new SearchListener();
-    }
-
-    public final synchronized void setBookOptions(BookOptions options) {
-        if (!bookOptions.equals(options)) {
-            bookOptions = options;
-            if (computerPlayer != null) {
-                computerPlayer.setBookOptions(bookOptions);
-                if (analysisThread != null) {
-                    boolean updateGui = stopAnalysis();
-                    updateGui |= startAnalysis();
-                    if (updateGui)
-                        updateGUI();
-                }
-                updateBookHints();
-            }
-        }
-    }
 
     private final void updateBookHints() {
         if (gameMode != null) {
@@ -220,38 +730,7 @@ public class DroidChessController {
     private final static class SearchStatus {
         boolean searchResultWanted = true;
     }
-    SearchStatus ss = new SearchStatus();
-
-    public final void newGame(GameMode gameMode) {
-        ss.searchResultWanted = false;
-        boolean updateGui = stopComputerThinking();
-        updateGui |= stopAnalysis();
-        if (updateGui)
-            updateGUI();
-        this.gameMode = gameMode;
-        ponderMove = null;
-        if (computerPlayer == null) {
-            computerPlayer = new DroidComputerPlayer(engine);
-            computerPlayer.setListener(listener);
-            computerPlayer.setBookOptions(bookOptions);
-        }
-        game = new Game(computerPlayer, gameTextListener, timeControl, movesPerSession, timeIncrement);
-        setPlayerNames(game);
-        updateGameMode();
-    }
-
-    public final void startGame() {
-        updateComputeThreads(true);
-        setSelection();
-        updateGUI();
-        updateGameMode();
-    }
-
-    private boolean guiPaused = false;
-    public final void setGuiPaused(boolean paused) {
-        guiPaused = paused;
-        updateGameMode();
-    }
+    private SearchStatus ss = new SearchStatus();
 
     private final void updateGameMode() {
         if (game != null) {
@@ -263,6 +742,7 @@ public class DroidChessController {
         }
     }
 
+    /** Start/stop computer thinking/analysis as appropriate. */
     private final void updateComputeThreads(boolean clearPV) {
         boolean analysis = gameMode.analysisMode();
         boolean computersTurn = !humansTurn();
@@ -281,29 +761,6 @@ public class DroidChessController {
             startComputerThinking(ponder);
     }
 
-    /** Set game mode. */
-    public final void setGameMode(GameMode newMode) {
-        if (!gameMode.equals(newMode)) {
-            if (newMode.humansTurn(game.currPos().whiteMove))
-                ss.searchResultWanted = false;
-            gameMode = newMode;
-            if (!gameMode.playerWhite() || !gameMode.playerBlack())
-                setPlayerNames(game); // If computer player involved, set player names
-            updateGameMode();
-            ponderMove = null;
-            ss.searchResultWanted = false;
-            stopComputerThinking();
-            updateComputeThreads(true);
-            updateGUI();
-        }
-    }
-
-    public final void prefsChanged() {
-        updateBookHints();
-        updateMoveList();
-        listener.prefsChanged();
-    }
-
     private final void setPlayerNames(Game game) {
         if (game != null) {
             String engine = (computerPlayer != null) ? computerPlayer.getEngineName() :
@@ -312,59 +769,6 @@ public class DroidChessController {
             String black = gameMode.playerBlack() ? "Player" : engine;
             game.tree.setPlayerNames(white, black);
         }
-    }
-
-    public final void fromByteArray(byte[] data) {
-        game.fromByteArray(data);
-    }
-
-    public final byte[] toByteArray() {
-        return game.tree.toByteArray();
-    }
-
-    public final String getFEN() {
-        return TextIO.toFEN(game.tree.currentPos);
-    }
-
-    /** Convert current game to PGN format. */
-    public final String getPGN() {
-        return game.tree.toPGN(pgnOptions);
-    }
-
-    public final void setFENOrPGN(String fenPgn) throws ChessParseError {
-        Game newGame = new Game(null, gameTextListener, timeControl, movesPerSession, timeIncrement);
-        try {
-            Position pos = TextIO.readFEN(fenPgn);
-            newGame.setPos(pos);
-            setPlayerNames(newGame);
-        } catch (ChessParseError e) {
-            // Try read as PGN instead
-            if (!newGame.readPGN(fenPgn, pgnOptions)) {
-                throw e;
-            }
-        }
-        ss.searchResultWanted = false;
-        game = newGame;
-        game.setComputerPlayer(computerPlayer);
-        gameTextListener.clear();
-        updateGameMode();
-        stopAnalysis();
-        stopComputerThinking();
-        computerPlayer.clearTT();
-        ponderMove = null;
-        updateComputeThreads(true);
-        gui.setSelection(-1);
-        updateGUI();
-    }
-
-    /** True if human's turn to make a move. (True in analysis mode.) */
-    public final boolean humansTurn() {
-        return gameMode.humansTurn(game.currPos().whiteMove);
-    }
-
-    /** Return true if computer player is using CPU power. */
-    public final boolean computerBusy() {
-        return (computerThread != null) || (analysisThread != null);
     }
 
     private final boolean undoMoveNoUpdate() {
@@ -392,20 +796,6 @@ public class DroidChessController {
         return true;
     }
 
-    public final void undoMove() {
-        if (game.getLastMove() != null) {
-            ss.searchResultWanted = false;
-            stopAnalysis();
-            stopComputerThinking();
-            boolean didUndo = undoMoveNoUpdate();
-            updateComputeThreads(true);
-            setSelection();
-            if (didUndo)
-                setAnimMove(game.currPos(), game.getNextMove(), false);
-            updateGUI();
-        }
-    }
-
     private final void redoMoveNoUpdate() {
         if (game.canRedoMove()) {
             ss.searchResultWanted = false;
@@ -419,203 +809,11 @@ public class DroidChessController {
         }
     }
 
-    public final void redoMove() {
-        if (game.canRedoMove()) {
-            ss.searchResultWanted = false;
-            stopAnalysis();
-            stopComputerThinking();
-            redoMoveNoUpdate();
-            updateComputeThreads(true);
-            setSelection();
-            setAnimMove(game.prevPos(), game.getLastMove(), true);
-            updateGUI();
-        }
-    }
-
-    public final void goNode(Node node) {
-        if (node == null)
-            return;
-        ss.searchResultWanted = false;
-        stopAnalysis();
-        stopComputerThinking();
-        game.goNode(node);
-        ponderMove = null;
-        if (!humansTurn()) {
-            if (game.getLastMove() != null) {
-                game.undoMove();
-                if (!humansTurn())
-                    game.redoMove();
-            }
-        }
-        updateComputeThreads(true);
-        setSelection();
-        updateGUI();
-    }
-
-    public final int numVariations() {
-        return game.numVariations();
-    }
-
-    public final int currVariation() {
-        return game.currVariation();
-    }
-
-    public final void changeVariation(int delta) {
-        if (game.numVariations() > 1) {
-            ss.searchResultWanted = false;
-            stopAnalysis();
-            stopComputerThinking();
-            game.changeVariation(delta);
-            ponderMove = null;
-            updateComputeThreads(true);
-            setSelection();
-            updateGUI();
-        }
-    }
-
-    public final void removeSubTree() {
-        ss.searchResultWanted = false;
-        stopAnalysis();
-        stopComputerThinking();
-        game.removeSubTree();
-        ponderMove = null;
-        updateComputeThreads(true);
-        setSelection();
-        updateGUI();
-    }
-
-    public final void moveVariation(int delta) {
-        if (game.numVariations() > 1) {
-            game.moveVariation(delta);
-            updateGUI();
-        }
-    }
-
-    public final void addVariation(String preComment, List<Move> pvMoves, boolean updateDefault) {
-        for (int i = 0; i < pvMoves.size(); i++) {
-            Move m = pvMoves.get(i);
-            String moveStr = TextIO.moveToUCIString(m);
-            String pre = (i == 0) ? preComment : "";
-            int varNo = game.tree.addMove(moveStr, "", 0, pre, "");
-            game.tree.goForward(varNo, updateDefault);
-        }
-        for (int i = 0; i < pvMoves.size(); i++)
-            game.tree.goBack();
-        gameTextListener.clear();
-        updateGUI();
-    }
-
-    public final void gotoMove(int moveNr) {
-        boolean needUpdate = false;
-        while (game.currPos().fullMoveCounter > moveNr) { // Go backward
-            int before = game.currPos().fullMoveCounter * 2 + (game.currPos().whiteMove ? 0 : 1);
-            undoMoveNoUpdate();
-            int after = game.currPos().fullMoveCounter * 2 + (game.currPos().whiteMove ? 0 : 1);
-            if (after >= before)
-                break;
-            needUpdate = true;
-        }
-        while (game.currPos().fullMoveCounter < moveNr) { // Go forward
-            int before = game.currPos().fullMoveCounter * 2 + (game.currPos().whiteMove ? 0 : 1);
-            redoMoveNoUpdate();
-            int after = game.currPos().fullMoveCounter * 2 + (game.currPos().whiteMove ? 0 : 1);
-            if (after <= before)
-                break;
-            needUpdate = true;
-        }
-        if (needUpdate) {
-            ss.searchResultWanted = false;
-            stopAnalysis();
-            stopComputerThinking();
-            ponderMove = null;
-            updateComputeThreads(true);
-            setSelection();
-            updateGUI();
-        }
-    }
-
-    public final void gotoStartOfVariation() {
-        ss.searchResultWanted = false;
-        stopAnalysis();
-        stopComputerThinking();
-        while (true) {
-            if (!undoMoveNoUpdate())
-                break;
-            if (game.numVariations() > 1)
-                break;
-        }
-        ponderMove = null;
-        updateComputeThreads(true);
-        setSelection();
-        updateGUI();
-    }
-
-    public final void makeHumanMove(Move m) {
-        if (humansTurn()) {
-            Position oldPos = new Position(game.currPos());
-            if (doMove(m)) {
-                if (m.equals(ponderMove) && !gameMode.analysisMode() &&
-                    (analysisThread == null) && (computerThread != null)) {
-                    computerPlayer.ponderHit(oldPos, ponderMove);
-                } else {
-                    ss.searchResultWanted = false;
-                    stopAnalysis();
-                    stopComputerThinking();
-                    updateComputeThreads(true);
-                }
-                setAnimMove(oldPos, m, true);
-                updateGUI();
-            } else {
-                gui.setSelection(-1);
-            }
-        }
-    }
-
-    public final void makeHumanNullMove() {
-        if (humansTurn()) {
-            int varNo = game.tree.addMove("--", "", 0, "", "");
-            game.tree.goForward(varNo);
-            ss.searchResultWanted = false;
-            stopAnalysis();
-            stopComputerThinking();
-            ponderMove = null;
-            updateComputeThreads(true);
-            updateGUI();
-            gui.setSelection(-1);
-        }
-    }
-
-    private Move promoteMove;
-    public final void reportPromotePiece(int choice) {
-        if (promoteMove == null)
-            return;
-        final boolean white = game.currPos().whiteMove;
-        int promoteTo;
-        switch (choice) {
-            case 1:
-                promoteTo = white ? Piece.WROOK : Piece.BROOK;
-                break;
-            case 2:
-                promoteTo = white ? Piece.WBISHOP : Piece.BBISHOP;
-                break;
-            case 3:
-                promoteTo = white ? Piece.WKNIGHT : Piece.BKNIGHT;
-                break;
-            default:
-                promoteTo = white ? Piece.WQUEEN : Piece.BQUEEN;
-                break;
-        }
-        promoteMove.promoteTo = promoteTo;
-        Move m = promoteMove;
-        promoteMove = null;
-        makeHumanMove(m);
-    }
-
     /**
      * Move a piece from one square to another.
      * @return True if the move was legal, false otherwise.
      */
-    final private boolean doMove(Move move) {
+    private final boolean doMove(Move move) {
         Position pos = game.currPos();
         ArrayList<Move> moves = new MoveGen().pseudoLegalMoves(pos);
         moves = MoveGen.removeIllegal(pos, moves);
@@ -638,7 +836,7 @@ public class DroidChessController {
         return false;
     }
 
-    final private void updateGUI() {
+    private final void updateGUI() {
         GUIInterface.GameStatus s = new GUIInterface.GameStatus();
         s.state = game.getGameState();
         if (s.state == Game.GameState.ALIVE) {
@@ -678,7 +876,7 @@ public class DroidChessController {
         updateRemainingTime();
     }
 
-    final private void updateMoveList() {
+    private final void updateMoveList() {
         if (game == null)
             return;
         if (!gameTextListener.isUpToDate()) {
@@ -696,22 +894,8 @@ public class DroidChessController {
         gui.moveListUpdated();
     }
 
-    final public void updateRemainingTime() {
-        // Update remaining time
-        long now = System.currentTimeMillis();
-        long wTime = game.timeController.getRemainingTime(true, now);
-        long bTime = game.timeController.getRemainingTime(false, now);
-        long nextUpdate = 0;
-        if (game.timeController.clockRunning()) {
-            long t = game.currPos().whiteMove ? wTime : bTime;
-            nextUpdate = (t % 1000);
-            if (nextUpdate < 0) nextUpdate += 1000;
-            nextUpdate += 1;
-        }
-        gui.setRemainingTime(wTime, bTime, nextUpdate);
-    }
-
-    final private void setSelection() {
+    /** Mark last played move in the GUI. */
+    private final void setSelection() {
         Move m = game.getLastMove();
         int sq = ((m != null) && (m.from != m.to)) ? m.to : -1;
         gui.setSelection(sq);
@@ -839,89 +1023,6 @@ public class DroidChessController {
         return false;
     }
 
-    public final synchronized void setEngineStrength(String engine, int strength) {
-        boolean newEngine = !engine.equals(this.engine);
-        if (newEngine)
-            numPV = 1;
-        if (newEngine || (strength != this.strength)) {
-            this.engine = engine;
-            this.strength = strength;
-            if (newEngine && ((analysisThread != null) || (computerThread != null))) {
-                stopAnalysis();
-                updateComputeThreads(true);
-                updateGUI();
-            }
-        }
-    }
-
-    public final synchronized int maxPV() {
-        if (computerPlayer == null)
-            return 1;
-        return computerPlayer.getMaxPV();
-    }
-
-    public final int getNumPV() {
-        return this.numPV;
-    }
-
-    public final synchronized void setMultiPVMode(int numPV) {
-        if (numPV < 1) numPV = 1;
-        if (numPV > maxPV()) numPV = maxPV();
-        if (numPV != this.numPV) {
-            this.numPV = numPV;
-            if (analysisThread != null) {
-                stopAnalysis();
-                ponderMove = null;
-                updateComputeThreads(true);
-                updateGUI();
-            }
-        }
-    }
-
-    public final synchronized void setTimeLimit(int time, int moves, int inc) {
-        timeControl = time;
-        movesPerSession = moves;
-        timeIncrement = inc;
-        if (game != null)
-            game.timeController.setTimeControl(timeControl, movesPerSession, timeIncrement);
-    }
-
-    public final synchronized void stopSearch() {
-        if (computerThread != null) {
-            computerPlayer.stopSearch();
-        }
-    }
-
-    public final synchronized void stopPonder() {
-        if ((computerThread != null) && humansTurn()) {
-            boolean updateGui = stopComputerThinking();
-            if (updateGui)
-                updateGUI();
-        }
-    }
-
-    private Object shutdownEngineLock = new Object();
-    public final synchronized void shutdownEngine() {
-        synchronized (shutdownEngineLock) {
-            gameMode = new GameMode(GameMode.TWO_PLAYERS);
-            ss.searchResultWanted = false;
-            boolean updateGui = stopComputerThinking();
-            updateGui |= stopAnalysis();
-            if (updateGui)
-                updateGUI();
-            ponderMove = null;
-            computerPlayer.shutdownEngine();
-        }
-    }
-
-    /** Help human to claim a draw by trying to find and execute a valid draw claim. */
-    public final boolean claimDrawIfPossible() {
-        if (!findValidDrawClaim())
-            return false;
-        updateGUI();
-        return true;
-    }
-
     private final boolean findValidDrawClaim() {
         if (game.getGameState() != GameState.ALIVE) return true;
         game.processString("draw accept");
@@ -931,46 +1032,5 @@ public class DroidChessController {
         game.processString("draw 50");
         if (game.getGameState() != GameState.ALIVE) return true;
         return false;
-    }
-
-    public final void resignGame() {
-        if (game.getGameState() == GameState.ALIVE) {
-            game.processString("resign");
-            updateGUI();
-        }
-    }
-
-    public final void setHeaders(Map<String,String> headers) {
-        game.tree.setHeaders(headers);
-        gameTextListener.clear();
-        updateGUI();
-    }
-
-    public final void getHeaders(Map<String,String> headers) {
-        game.tree.getHeaders(headers);
-    }
-
-    public static final class CommentInfo {
-        public String move;
-        public String preComment, postComment;
-        public int nag;
-    }
-    public final CommentInfo getComments() {
-        Node cur = game.tree.currentNode;
-        CommentInfo ret = new CommentInfo();
-        ret.move = cur.moveStr;
-        ret.preComment = cur.preComment;
-        ret.postComment = cur.postComment;
-        ret.nag = cur.nag;
-        return ret;
-    }
-
-    public final void setComments(CommentInfo commInfo) {
-        Node cur = game.tree.currentNode;
-        cur.preComment = commInfo.preComment;
-        cur.postComment = commInfo.postComment;
-        cur.nag = commInfo.nag;
-        gameTextListener.clear();
-        updateGUI();
     }
 }

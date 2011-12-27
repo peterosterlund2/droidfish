@@ -107,6 +107,7 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! PGN view option: game continuation (for training)
     // FIXME!!! Remove invalid playerActions in PGN import (should be done in verifyChildren)
     // FIXME!!! Implement bookmark mechanism for positions in pgn files
+    // FIXME!!! Display chess notation in local language
 
     // FIXME!!! Computer clock should stop if phone turned off (computer stops thinking if unplugged)
     // FIXME!!! Add support for all time controls defined by the PGN standard
@@ -511,9 +512,8 @@ public class DroidFish extends Activity implements GUIInterface {
 
     @Override
     protected void onDestroy() {
-        if (ctrl != null) {
+        if (ctrl != null)
             ctrl.shutdownEngine();
-        }
         setNotification(false);
         super.onDestroy();
     }
@@ -1552,7 +1552,7 @@ public class DroidFish extends Activity implements GUIInterface {
                         for (int i = 0; i < pvMovesTmp.size(); i++) {
                             ArrayList<Move> pv = pvMovesTmp.get(i);
                             StringBuilder preComment = new StringBuilder();
-                            if (pvStrs.length > i) {
+                            if (i < pvStrs.length) {
                                 String[] tmp = pvStrs[i].split(" ");
                                 for (int j = 0; j < 2; j++) {
                                     if (j < tmp.length) {

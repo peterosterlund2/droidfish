@@ -667,7 +667,8 @@ public class GameTreeTest extends TestCase {
         for (int i = 0; i < 5; i++) gt.goForward(-1);
         assertEquals("e4 e5 Nf3 Nc6 Bb5 a6*", getMoveListAsString(gt));
         Node na6 = gt.currentNode;
-        gt.goNode(gt.rootNode);
+        assertTrue(gt.goNode(gt.rootNode));
+        assertFalse(gt.goNode(gt.rootNode));
         assertEquals("*e4 e5 Nf3 Nc6 Bb5 a6", getMoveListAsString(gt));
         gt.goNode(na6);
         assertEquals("e4 e5 Nf3 Nc6 Bb5 a6*", getMoveListAsString(gt));

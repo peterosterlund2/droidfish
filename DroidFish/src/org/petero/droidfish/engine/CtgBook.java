@@ -271,7 +271,7 @@ public class CtgBook implements IOpeningBook {
             return page;
         }
 
-        final private static int tbl[] = {
+        private final static int tbl[] = {
             0x3100d2bf, 0x3118e3de, 0x34ab1372, 0x2807a847,
             0x1633f566, 0x2143b359, 0x26d56488, 0x3b9e6f59,
             0x37755656, 0x3089ca7b, 0x18e92d85, 0x0cd0e9d8,
@@ -290,7 +290,7 @@ public class CtgBook implements IOpeningBook {
             0x274c7e7c, 0x1e8be65c, 0x2fa0b0bb, 0x1eb6c371
         };
 
-        final private static int getHashValue(byte[] encodedPos) {
+        private final static int getHashValue(byte[] encodedPos) {
             int hash = 0;
             int tmp = 0;
             for (int i = 0; i < encodedPos.length; i++) {
