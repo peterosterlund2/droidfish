@@ -1751,11 +1751,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
     @Override
     public void requestPromotePiece() {
-        runOnUIThread(new Runnable() {
-            public void run() {
-                showDialog(PROMOTE_DIALOG);
-            }
-        });
+        showDialog(PROMOTE_DIALOG);
     }
 
     @Override

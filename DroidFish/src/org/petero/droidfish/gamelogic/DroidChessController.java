@@ -72,7 +72,7 @@ public class DroidChessController {
     }
 
     /** Start a new game. */
-    public final void newGame(GameMode gameMode) {
+    public final synchronized void newGame(GameMode gameMode) {
         ss.searchResultWanted = false;
         boolean updateGui = stopComputerThinking();
         updateGui |= stopAnalysis();
@@ -85,13 +85,14 @@ public class DroidChessController {
             computerPlayer.setListener(listener);
             computerPlayer.setBookOptions(bookOptions);
         }
-        game = new Game(computerPlayer, gameTextListener, timeControl, movesPerSession, timeIncrement);
+        game = new Game(gameTextListener, timeControl, movesPerSession, timeIncrement);
+        computerPlayer.clearTT();
         setPlayerNames(game);
         updateGameMode();
     }
 
     /** Start playing a new game. Should be called after newGame(). */
-    public final void startGame() {
+    public final synchronized void startGame() {
         updateComputeThreads(true);
         setSelection();
         updateGUI();
@@ -108,13 +109,13 @@ public class DroidChessController {
     }
 
     /** The chess clocks are stopped when the GUI is paused. */
-    public final void setGuiPaused(boolean paused) {
+    public final synchronized void setGuiPaused(boolean paused) {
         guiPaused = paused;
         updateGameMode();
     }
 
     /** Set game mode. */
-    public final void setGameMode(GameMode newMode) {
+    public final synchronized void setGameMode(GameMode newMode) {
         if (!gameMode.equals(newMode)) {
             if (newMode.humansTurn(game.currPos().whiteMove))
                 ss.searchResultWanted = false;
@@ -166,35 +167,35 @@ public class DroidChessController {
     }
 
     /** Notify controller that preferences has changed. */
-    public final void prefsChanged() {
+    public final synchronized void prefsChanged() {
         updateBookHints();
         updateMoveList();
         listener.prefsChanged();
     }
 
     /** De-serialize from byte array. */
-    public final void fromByteArray(byte[] data) {
+    public final synchronized void fromByteArray(byte[] data) {
         game.fromByteArray(data);
     }
 
     /** Serialize to byte array. */
-    public final byte[] toByteArray() {
+    public final synchronized byte[] toByteArray() {
         return game.tree.toByteArray();
     }
 
     /** Return FEN string corresponding to a current position. */
-    public final String getFEN() {
+    public final synchronized String getFEN() {
         return TextIO.toFEN(game.tree.currentPos);
     }
 
     /** Convert current game to PGN format. */
-    public final String getPGN() {
+    public final synchronized String getPGN() {
         return game.tree.toPGN(pgnOptions);
     }
 
     /** Parse a string as FEN or PGN data. */
-    public final void setFENOrPGN(String fenPgn) throws ChessParseError {
-        Game newGame = new Game(null, gameTextListener, timeControl, movesPerSession, timeIncrement);
+    public final synchronized void setFENOrPGN(String fenPgn) throws ChessParseError {
+        Game newGame = new Game(gameTextListener, timeControl, movesPerSession, timeIncrement);
         try {
             Position pos = TextIO.readFEN(fenPgn);
             newGame.setPos(pos);
@@ -206,7 +207,8 @@ public class DroidChessController {
         }
         ss.searchResultWanted = false;
         game = newGame;
-        game.setComputerPlayer(computerPlayer);
+        if (computerPlayer != null)
+            computerPlayer.clearTT();
         gameTextListener.clear();
         updateGameMode();
         stopAnalysis();

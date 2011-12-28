@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.petero.droidfish.PGNOptions;
-import org.petero.droidfish.engine.DroidComputerPlayer;
 import org.petero.droidfish.gamelogic.GameTree.Node;
 
 /**
@@ -32,7 +31,6 @@ import org.petero.droidfish.gamelogic.GameTree.Node;
 public class Game {
     boolean pendingDrawOffer;
     GameTree tree;
-    private DroidComputerPlayer computerPlayer;
     TimeControl timeController;
     private boolean gamePaused;
     /** If true, add new moves as mainline moves. */
@@ -40,9 +38,8 @@ public class Game {
 
     PgnToken.PgnTokenReceiver gameTextListener;
 
-    public Game(DroidComputerPlayer computerPlayer, PgnToken.PgnTokenReceiver gameTextListener,
+    public Game(PgnToken.PgnTokenReceiver gameTextListener,
                 int timeControl, int movesPerSession, int timeIncrement) {
-        this.computerPlayer = computerPlayer;
         this.gameTextListener = gameTextListener;
         tree = new GameTree(gameTextListener);
         timeController = new TimeControl();
@@ -55,10 +52,6 @@ public class Game {
     final void fromByteArray(byte[] data) {
         tree.fromByteArray(data);
         updateTimeControl(true);
-    }
-
-    public final void setComputerPlayer(DroidComputerPlayer computerPlayer) {
-        this.computerPlayer = computerPlayer;
     }
 
     public final void setGamePaused(boolean gamePaused) {
@@ -344,8 +337,6 @@ public class Game {
 
     public final void newGame() {
         tree = new GameTree(gameTextListener);
-        if (computerPlayer != null)
-            computerPlayer.clearTT();
         timeController.reset();
         pendingDrawOffer = false;
         updateTimeControl(true);
