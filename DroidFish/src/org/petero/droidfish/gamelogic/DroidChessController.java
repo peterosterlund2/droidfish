@@ -221,17 +221,17 @@ public class DroidChessController {
     }
 
     /** True if human's turn to make a move. (True in analysis mode.) */
-    public final boolean humansTurn() {
+    public final synchronized boolean humansTurn() {
         return gameMode.humansTurn(game.currPos().whiteMove);
     }
 
     /** Return true if computer player is using CPU power. */
-    public final boolean computerBusy() {
+    public final synchronized boolean computerBusy() {
         return (computerThread != null) || (analysisThread != null);
     }
 
     /** Make a move for a human player. */
-    public final void makeHumanMove(Move m) {
+    public final synchronized void makeHumanMove(Move m) {
         if (humansTurn()) {
             Position oldPos = new Position(game.currPos());
             if (doMove(m)) {
@@ -254,7 +254,7 @@ public class DroidChessController {
 
     /** Report promotion choice for incomplete move. 
      * @param choice 0=queen, 1=rook, 2=bishop, 3=knight. */
-    public final void reportPromotePiece(int choice) {
+    public final synchronized void reportPromotePiece(int choice) {
         if (promoteMove == null)
             return;
         final boolean white = game.currPos().whiteMove;
@@ -280,7 +280,7 @@ public class DroidChessController {
     }
 
     /** Add a null-move to the game tree. */
-    public final void makeHumanNullMove() {
+    public final synchronized void makeHumanNullMove() {
         if (humansTurn()) {
             int varNo = game.tree.addMove("--", "", 0, "", "");
             game.tree.goForward(varNo);
@@ -295,7 +295,7 @@ public class DroidChessController {
     }
 
     /** Help human to claim a draw by trying to find and execute a valid draw claim. */
-    public final boolean claimDrawIfPossible() {
+    public final synchronized boolean claimDrawIfPossible() {
         if (!findValidDrawClaim())
             return false;
         updateGUI();
@@ -303,7 +303,7 @@ public class DroidChessController {
     }
 
     /** Resign game for current player. */
-    public final void resignGame() {
+    public final synchronized void resignGame() {
         if (game.getGameState() == GameState.ALIVE) {
             game.processString("resign");
             updateGUI();
@@ -311,7 +311,7 @@ public class DroidChessController {
     }
 
     /** Undo last move. Does not truncate game tree. */
-    public final void undoMove() {
+    public final synchronized void undoMove() {
         if (game.getLastMove() != null) {
             ss.searchResultWanted = false;
             stopAnalysis();
@@ -326,7 +326,7 @@ public class DroidChessController {
     }
 
     /** Redo last move. Follows default variation. */
-    public final void redoMove() {
+    public final synchronized void redoMove() {
         if (game.canRedoMove()) {
             ss.searchResultWanted = false;
             stopAnalysis();
@@ -341,7 +341,7 @@ public class DroidChessController {
 
     /** Go back/forward to a given move number.
      * Follows default variations when going forward. */
-    public final void gotoMove(int moveNr) {
+    public final synchronized void gotoMove(int moveNr) {
         boolean needUpdate = false;
         while (game.currPos().fullMoveCounter > moveNr) { // Go backward
             int before = game.currPos().fullMoveCounter * 2 + (game.currPos().whiteMove ? 0 : 1);
@@ -371,7 +371,7 @@ public class DroidChessController {
     }
 
     /** Go to start of the current variation. */
-    public final void gotoStartOfVariation() {
+    public final synchronized void gotoStartOfVariation() {
         boolean needUpdate = false;
         while (true) {
             if (!undoMoveNoUpdate())
@@ -392,7 +392,7 @@ public class DroidChessController {
     }
 
     /** Go to given node in game tree. */
-    public final void goNode(Node node) {
+    public final synchronized void goNode(Node node) {
         if (node == null)
             return;
         if (!game.goNode(node))
@@ -415,17 +415,17 @@ public class DroidChessController {
     }
 
     /** Get number of variations in current game position. */
-    public final int numVariations() {
+    public final synchronized int numVariations() {
         return game.numVariations();
     }
 
     /** Get current variation in current position. */
-    public final int currVariation() {
+    public final synchronized int currVariation() {
         return game.currVariation();
     }
 
     /** Go to a new variation in the game tree. */
-    public final void changeVariation(int delta) {
+    public final synchronized void changeVariation(int delta) {
         if (game.numVariations() > 1) {
             ss.searchResultWanted = false;
             stopAnalysis();
@@ -439,7 +439,7 @@ public class DroidChessController {
     }
 
     /** Delete whole game sub-tree rooted at current position. */
-    public final void removeSubTree() {
+    public final synchronized void removeSubTree() {
         ss.searchResultWanted = false;
         stopAnalysis();
         stopComputerThinking();
@@ -451,7 +451,7 @@ public class DroidChessController {
     }
 
     /** Move current variation up/down in the game tree. */
-    public final void moveVariation(int delta) {
+    public final synchronized void moveVariation(int delta) {
         if (game.numVariations() > 1) {
             game.moveVariation(delta);
             updateGUI();
@@ -462,7 +462,7 @@ public class DroidChessController {
      * @param preComment Comment to add before first move.
      * @param pvMoves List of moves in variation. 
      * @param updateDefault If true, make this the default variation. */
-    public final void addVariation(String preComment, List<Move> pvMoves, boolean updateDefault) {
+    public final synchronized void addVariation(String preComment, List<Move> pvMoves, boolean updateDefault) {
         for (int i = 0; i < pvMoves.size(); i++) {
             Move m = pvMoves.get(i);
             String moveStr = TextIO.moveToUCIString(m);
@@ -477,7 +477,7 @@ public class DroidChessController {
     }
 
     /** Update remaining time and trigger GUI update of clocks. */
-    public final void updateRemainingTime() {
+    public final synchronized void updateRemainingTime() {
         long now = System.currentTimeMillis();
         long wTime = game.timeController.getRemainingTime(true, now);
         long bTime = game.timeController.getRemainingTime(false, now);
@@ -499,7 +499,7 @@ public class DroidChessController {
     }
 
     /** Get multi-PV mode setting. */
-    public final int getNumPV() {
+    public final synchronized int getNumPV() {
         return this.numPV;
     }
 
@@ -549,12 +549,12 @@ public class DroidChessController {
     }
 
     /** Get PGN header tags and values. */
-    public final void getHeaders(Map<String,String> headers) {
+    public final synchronized void getHeaders(Map<String,String> headers) {
         game.tree.getHeaders(headers);
     }
 
     /** Set PGN header tags and values. */
-    public final void setHeaders(Map<String,String> headers) {
+    public final synchronized void setHeaders(Map<String,String> headers) {
         game.tree.setHeaders(headers);
         gameTextListener.clear();
         updateGUI();
@@ -568,7 +568,7 @@ public class DroidChessController {
     }
 
     /** Get comments associated with current position. */
-    public final CommentInfo getComments() {
+    public final synchronized CommentInfo getComments() {
         Node cur = game.tree.currentNode;
         CommentInfo ret = new CommentInfo();
         ret.move = cur.moveStr;
@@ -579,7 +579,7 @@ public class DroidChessController {
     }
 
     /** Set comments associated with current position. */
-    public final void setComments(CommentInfo commInfo) {
+    public final synchronized void setComments(CommentInfo commInfo) {
         Node cur = game.tree.currentNode;
         cur.preComment = commInfo.preComment;
         cur.postComment = commInfo.postComment;
