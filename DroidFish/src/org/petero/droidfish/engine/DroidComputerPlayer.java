@@ -101,27 +101,16 @@ public class DroidComputerPlayer {
     }
 
     /** Get engine reported name, including strength setting. */
-    public synchronized String getEngineName() {
+    public final synchronized String getEngineName() {
         String ret = engineName;
         if (strength < 1000)
             ret += String.format(" (%.1f%%)", strength * 0.1);
         return ret;
     }
 
-    /** Clear transposition table. */
-    public final void clearTT() {
+    /** Clear transposition table. Takes effect when next search started. */
+    public final synchronized void clearTT() {
         newGame = true;
-    }
-
-    /** Sends "ucinewgame" to engine if clearTT() has previously been called. */
-    public final void maybeNewGame() {
-        if (newGame) {
-            newGame = false;
-            if (uciEngine != null) {
-                uciEngine.writeLineToEngine("ucinewgame");
-                syncReady();
-            }
-        }
     }
 
     /** Sends "ponderhit" command to engine. */
@@ -320,7 +309,18 @@ public class DroidComputerPlayer {
         }
     }
 
-    private static int getNumCPUs() {
+    /** Sends "ucinewgame" to engine if clearTT() has previously been called. */
+    private final void maybeNewGame() {
+        if (newGame) {
+            newGame = false;
+            if (uciEngine != null) {
+                uciEngine.writeLineToEngine("ucinewgame");
+                syncReady();
+            }
+        }
+    }
+
+    private static final int getNumCPUs() {
         int nCPUsFromProc = 1;
         try {
             FileReader fr = new FileReader("/proc/stat");
@@ -428,7 +428,7 @@ public class DroidComputerPlayer {
      * @param move The move that may have to be made before claiming draw.
      * @return The draw string that claims the draw, or empty string if draw claim not valid.
      */
-    private String canClaimDraw(Position pos, long[] posHashList, int posHashListSize, Move move) {
+    private final String canClaimDraw(Position pos, long[] posHashList, int posHashListSize, Move move) {
         String drawStr = "";
         if (canClaimDraw50(pos)) {
             drawStr = "draw 50";

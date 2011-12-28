@@ -66,6 +66,8 @@ public final class DroidBook {
     private BookOptions options = null;
 
     private static final DroidBook INSTANCE = new DroidBook();
+
+    /** Get singleton instance. */
     public static DroidBook getInstance() {
         return INSTANCE;
     }
@@ -75,7 +77,7 @@ public final class DroidBook {
     }
 
     /** Set opening book options. */
-    public final void setOptions(BookOptions options) {
+    public final synchronized void setOptions(BookOptions options) {
         this.options = options;
         if (CtgBook.canHandle(options))
             externalBook = new CtgBook();
@@ -88,7 +90,7 @@ public final class DroidBook {
     }
 
     /** Return a random book move for a position, or null if out of book. */
-    public final Move getBookMove(Position pos) {
+    public final synchronized Move getBookMove(Position pos) {
         if ((options != null) && (pos.fullMoveCounter > options.maxLength))
             return null;
         List<BookEntry> bookMoves = getBook().getBookEntries(pos);
@@ -121,28 +123,12 @@ public final class DroidBook {
         return bookMoves.get(nMoves-1).move;
     }
 
-    private final double scaleWeight(double w) {
-        if (w <= 0)
-            return 0;
-        if (options == null)
-            return w;
-        return Math.pow(w, Math.exp(-options.random));
-    }
-
-    final private IOpeningBook getBook() {
-        if (externalBook.enabled()) {
-            return externalBook;
-        } else {
-            return internalBook;
-        }
-    }
-
     /** Return all book moves, both as a formatted string and as a list of moves. */
-    public final Pair<String,ArrayList<Move>> getAllBookMoves(Position pos) {
+    public final synchronized Pair<String,ArrayList<Move>> getAllBookMoves(Position pos) {
         StringBuilder ret = new StringBuilder();
         ArrayList<Move> bookMoveList = new ArrayList<Move>();
         List<BookEntry> bookMoves = getBook().getBookEntries(pos);
-
+    
         // Check legality
         if (bookMoves != null) {
             ArrayList<Move> legalMoves = new MoveGen().pseudoLegalMoves(pos);
@@ -155,7 +141,7 @@ public final class DroidBook {
                 }
             }
         }
-
+    
         if (bookMoves != null) {
             Collections.sort(bookMoves, new Comparator<BookEntry>() {
                 public int compare(BookEntry arg0, BookEntry arg1) {
@@ -184,6 +170,22 @@ public final class DroidBook {
         return new Pair<String, ArrayList<Move>>(ret.toString(), bookMoveList);
     }
 
+    private final double scaleWeight(double w) {
+        if (w <= 0)
+            return 0;
+        if (options == null)
+            return w;
+        return Math.pow(w, Math.exp(-options.random));
+    }
+
+    private final IOpeningBook getBook() {
+        if (externalBook.enabled()) {
+            return externalBook;
+        } else {
+            return internalBook;
+        }
+    }
+
     /** Creates the book.bin file. */
     public static void main(String[] args) throws IOException {
         List<Byte> binBook = createBinBook();
@@ -196,7 +198,7 @@ public final class DroidBook {
         out.close();
     }
 
-    public static List<Byte> createBinBook() {
+    private static final List<Byte> createBinBook() {
         List<Byte> binBook = new ArrayList<Byte>(0);
         try {
             InputStream inStream = new Object().getClass().getResourceAsStream("/book.txt");
@@ -225,7 +227,7 @@ public final class DroidBook {
     }
 
     /** Add a sequence of moves, starting from the initial position, to the binary opening book. */
-    private static boolean addBookLine(String line, List<Byte> binBook) throws ChessParseError {
+    private static final boolean addBookLine(String line, List<Byte> binBook) throws ChessParseError {
         Position pos = TextIO.readFEN(TextIO.startPosFEN);
         UndoInfo ui = new UndoInfo();
         String[] strMoves = line.split(" ");
@@ -251,7 +253,7 @@ public final class DroidBook {
         return true;
     }
 
-    private static int pieceToProm(int p) {
+    private static final int pieceToProm(int p) {
         switch (p) {
         case Piece.WQUEEN: case Piece.BQUEEN:
             return 1;
