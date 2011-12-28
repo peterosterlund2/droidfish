@@ -149,7 +149,7 @@ public class Position {
         return (x & 1) == (y & 1);
     }
 
-    /** Return piece occuping a square. */
+    /** Return piece occupying a square. */
     public final int getPiece(int square) {
         return squares[square];
     }

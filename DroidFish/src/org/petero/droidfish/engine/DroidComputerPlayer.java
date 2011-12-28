@@ -44,7 +44,9 @@ public class DroidComputerPlayer {
     private UCIEngine uciEngine = null;
     private SearchListener listener;
     private DroidBook book;
+    /** Set when "ucinewgame" needs to be sent. */
     private boolean newGame = false;
+    /** Engine identifier, "cuckoochess" or "stockfish". */
     private String engine = "";
     /** >1 if multiPV mode is supported. */
     private int maxPV = 1;

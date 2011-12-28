@@ -23,7 +23,7 @@ import java.util.List;
 
 
 /**
- * Used to get various search information during search
+ * Used to get various search information during search.
  */
 public interface SearchListener {
     public final static class PvInfo {

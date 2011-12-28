@@ -509,8 +509,8 @@ public class ChessBoard extends View {
 
     private Rect labelBounds = null;
 
-    private void drawLabel(Canvas canvas, int xCrd, int yCrd, boolean right,
-                           boolean bottom, char c) {
+    private final void drawLabel(Canvas canvas, int xCrd, int yCrd, boolean right,
+                                 boolean bottom, char c) {
         String s = "";
         s += c;
         if (labelBounds == null) {
