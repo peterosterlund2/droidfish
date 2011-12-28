@@ -18,12 +18,6 @@
 
 package org.petero.droidfish.engine;
 
-import java.io.BufferedReader;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,15 +26,11 @@ import java.util.List;
 import java.util.Random;
 
 import org.petero.droidfish.BookOptions;
-import org.petero.droidfish.gamelogic.ChessParseError;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.MoveGen;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gamelogic.Pair;
-import org.petero.droidfish.gamelogic.UndoInfo;
-
-import chess.Piece;
 
 /**
  * Implements an opening book.
@@ -183,88 +173,6 @@ public final class DroidBook {
             return externalBook;
         } else {
             return internalBook;
-        }
-    }
-
-    /** Creates the book.bin file. */
-    public static void main(String[] args) throws IOException {
-        List<Byte> binBook = createBinBook();
-        FileOutputStream out = new FileOutputStream("../src/book.bin");
-        int bookLen = binBook.size();
-        byte[] binBookA = new byte[bookLen];
-        for (int i = 0; i < bookLen; i++)
-            binBookA[i] = binBook.get(i);
-        out.write(binBookA);
-        out.close();
-    }
-
-    private static final List<Byte> createBinBook() {
-        List<Byte> binBook = new ArrayList<Byte>(0);
-        try {
-            InputStream inStream = new Object().getClass().getResourceAsStream("/book.txt");
-            InputStreamReader inFile = new InputStreamReader(inStream);
-            BufferedReader inBuf = new BufferedReader(inFile, 8192);
-            LineNumberReader lnr = new LineNumberReader(inBuf);
-            String line;
-            while ((line = lnr.readLine()) != null) {
-                if (line.startsWith("#") || (line.length() == 0)) {
-                    continue;
-                }
-                if (!addBookLine(line, binBook)) {
-                    System.out.printf("Book parse error, line:%d\n", lnr.getLineNumber());
-                    throw new RuntimeException();
-                }
-//              System.out.printf("no:%d line:%s%n", lnr.getLineNumber(), line);
-            }
-            lnr.close();
-        } catch (ChessParseError ex) {
-            throw new RuntimeException();
-        } catch (IOException ex) {
-            System.out.println("Can't read opening book resource");
-            throw new RuntimeException();
-        }
-        return binBook;
-    }
-
-    /** Add a sequence of moves, starting from the initial position, to the binary opening book. */
-    private static final boolean addBookLine(String line, List<Byte> binBook) throws ChessParseError {
-        Position pos = TextIO.readFEN(TextIO.startPosFEN);
-        UndoInfo ui = new UndoInfo();
-        String[] strMoves = line.split(" ");
-        for (String strMove : strMoves) {
-//            System.out.printf("Adding move:%s\n", strMove);
-            int bad = 0;
-            if (strMove.endsWith("?")) {
-                strMove = strMove.substring(0, strMove.length() - 1);
-                bad = 1;
-            }
-            Move m = TextIO.stringToMove(pos, strMove);
-            if (m == null) {
-                return false;
-            }
-            int prom = pieceToProm(m.promoteTo);
-            int val = m.from + (m.to << 6) + (prom << 12) + (bad << 15);
-            binBook.add((byte)(val >> 8));
-            binBook.add((byte)(val & 255));
-            pos.makeMove(m, ui);
-        }
-        binBook.add((byte)0);
-        binBook.add((byte)0);
-        return true;
-    }
-
-    private static final int pieceToProm(int p) {
-        switch (p) {
-        case Piece.WQUEEN: case Piece.BQUEEN:
-            return 1;
-        case Piece.WROOK: case Piece.BROOK:
-            return 2;
-        case Piece.WBISHOP: case Piece.BBISHOP:
-            return 3;
-        case Piece.WKNIGHT: case Piece.BKNIGHT:
-            return 4;
-        default:
-            return 0;
         }
     }
 }
