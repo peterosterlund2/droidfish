@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 import org.petero.droidfish.BookOptions;
 import org.petero.droidfish.engine.cuckoochess.CuckooChessEngine;
+import org.petero.droidfish.gamelogic.Game;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.MoveGen;
 import org.petero.droidfish.gamelogic.Pair;
@@ -63,31 +64,9 @@ public class DroidComputerPlayer {
         book = DroidBook.getInstance();
     }
 
-    /** Set engine and engine strength.
-     * @param engine Name of engine.
-     * @param strength Engine strength, 0 - 1000. */
-    public final synchronized void setEngineStrength(String engine, int strength) {
-        if (!engine.equals(this.engine)) {
-            shutdownEngine();
-            this.engine = engine;
-            startEngine();
-        }
-        this.strength = strength;
-        if (uciEngine != null)
-            uciEngine.setStrength(strength);
-    }
-
     /** Return maximum number of PVs supported by engine. */
     public final synchronized int getMaxPV() {
         return maxPV;
-    }
-
-    /** Set engine multi-PV mode. */
-    public final synchronized void setNumPV(int numPV) {
-        if ((uciEngine != null) && (maxPV > 1)) {
-            int num = Math.min(maxPV, numPV);
-            uciEngine.setOption("MultiPV", num);
-        }
     }
 
     /** Set opening book options. */
@@ -141,15 +120,18 @@ public class DroidComputerPlayer {
      * @param ponderEnabled True if pondering is enabled in the GUI. Can affect time management.
      * @param ponderMove Move to ponder, or null for non-ponder search.
      * @param engineThreads  Number of engine threads to use, if supported by engine.
-     * @return The computer player command, and the next ponder move.
+     * @param engine Chess engine to use for searching.
+     * @param strength Engine strength setting.
      */
-    public final Pair<String,Move> doSearch(Position prevPos, ArrayList<Move> mList,
-                                            Position currPos, boolean drawOffer,
-                                            int wTime, int bTime, int inc, int movesToGo,
-                                            boolean ponderEnabled, Move ponderMove,
-                                            int engineThreads) {
-        if (listener != null)
-            listener.notifyBookInfo("", null);
+    public final void doSearch(Position prevPos, ArrayList<Move> mList,
+                               Position currPos, boolean drawOffer,
+                               int wTime, int bTime, int inc, int movesToGo,
+                               boolean ponderEnabled, Move ponderMove,
+                               int engineThreads,
+                               String engine, int strength, Game g) {
+        setEngineStrength(engine, strength);
+        setNumPV(1);
+        listener.notifyBookInfo("", null);
     
         if (ponderMove != null)
             mList.add(ponderMove);
@@ -171,7 +153,8 @@ public class DroidComputerPlayer {
             Move bookMove = book.getBookMove(currPos);
             if (bookMove != null) {
                 if (canClaimDraw(currPos, posHashList, posHashListSize, bookMove) == "") {
-                    return new Pair<String,Move>(TextIO.moveToString(currPos, bookMove, false), null);
+                    listener.notifySearchResult(g, TextIO.moveToString(currPos, bookMove, false), null);
+                    return;
                 }
             }
     
@@ -179,12 +162,14 @@ public class DroidComputerPlayer {
             ArrayList<Move> moves = new MoveGen().pseudoLegalMoves(currPos);
             moves = MoveGen.removeIllegal(currPos, moves);
             if (moves.size() == 0) {
-                return new Pair<String,Move>("", null); // User set up a position where computer has no valid moves.
+                listener.notifySearchResult(g, "", null); // User set up a position where computer has no valid moves.
+                return;
             }
             if (moves.size() == 1) {
                 Move bestMove = moves.get(0);
                 if (canClaimDraw(currPos, posHashList, posHashListSize, bestMove) == "") {
-                    return new Pair<String,Move>(TextIO.moveToUCIString(bestMove), null);
+                    listener.notifySearchResult(g, TextIO.moveToUCIString(bestMove), null);
+                    return;
                 }
             }
         }
@@ -231,7 +216,7 @@ public class DroidComputerPlayer {
         if (drawOffer && !statIsMate && (statScore <= -300)) {
             bestMove = "draw accept";
         }
-        return new Pair<String,Move>(bestMove, nextPonderMove);
+        listener.notifySearchResult(g, bestMove, nextPonderMove);
     }
 
     public boolean shouldStop = false;
@@ -250,16 +235,21 @@ public class DroidComputerPlayer {
      * @param currPos Position to analyze.
      * @param drawOffer True if other side have offered draw.
      * @param engineThreads Number of threads to use, or 0 for default value.
+     * @param engine Chess engine to use for searching
+     * @param numPV    Multi-PV mode.
      */
     public final void analyze(Position prevPos, ArrayList<Move> mList, Position currPos,
-                              boolean drawOffer, int engineThreads) {
+                              boolean drawOffer, int engineThreads,
+                              String engine, int numPV) {
+        setEngineStrength(engine, 1000);
+        setNumPV(numPV);
         if (shouldStop)
             return;
-        if (listener != null) {
+        {
             Pair<String, ArrayList<Move>> bi = getBookHints(currPos);
             listener.notifyBookInfo(bi.first, bi.second);
         }
-    
+
         // If no legal moves, there is nothing to analyze
         ArrayList<Move> moves = new MoveGen().pseudoLegalMoves(currPos);
         moves = MoveGen.removeIllegal(currPos, moves);
@@ -285,6 +275,28 @@ public class DroidComputerPlayer {
         uciEngine.writeLineToEngine(goStr);
     
         monitorEngine(currPos, null);
+    }
+
+    /** Set engine and engine strength.
+     * @param engine Name of engine.
+     * @param strength Engine strength, 0 - 1000. */
+    private final synchronized void setEngineStrength(String engine, int strength) {
+        if (!engine.equals(this.engine)) {
+            shutdownEngine();
+            this.engine = engine;
+            startEngine();
+        }
+        this.strength = strength;
+        if (uciEngine != null)
+            uciEngine.setStrength(strength);
+    }
+
+    /** Set engine multi-PV mode. */
+    private final synchronized void setNumPV(int numPV) {
+        if ((uciEngine != null) && (maxPV > 1)) {
+            int num = Math.min(maxPV, numPV);
+            uciEngine.setOption("MultiPV", num);
+        }
     }
 
     private final synchronized void startEngine() {
@@ -572,8 +584,6 @@ public class DroidComputerPlayer {
 
     /** Notify GUI about search statistics. */
     private final synchronized void notifyGUI(Position pos, Move ponderMove) {
-        if (listener == null)
-            return;
         if (depthModified) {
             listener.notifyDepth(statCurrDepth);
             depthModified = false;

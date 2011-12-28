@@ -713,6 +713,11 @@ public class DroidChessController {
         public void prefsChanged() {
             setSearchInfo();
         }
+
+        @Override
+        public void notifySearchResult(Game g, String cmd, Move ponder) {
+            makeComputerMove(g, cmd, ponder);
+        }
     }
 
     private final void updateBookHints() {
@@ -927,42 +932,41 @@ public class DroidChessController {
             final Move fPonderMove = ponder ? ponderMove : null;
             computerThread = new Thread(new Runnable() {
                 public void run() {
-                    computerPlayer.setEngineStrength(engine, strength);
-                    computerPlayer.setNumPV(1);
-                    final Pair<String,Move> pair =
-                        computerPlayer.doSearch(ph.first, ph.second, currPos, haveDrawOffer,
-                                                wTime, bTime, inc, fMovesToGo,
-                                                gui.ponderMode(), fPonderMove,
-                                                gui.engineThreads());
-                    final String cmd = pair.first;
-                    final Move ponder = pair.second;
-                    final SearchStatus localSS = ss;
-                    gui.runOnUIThread(new Runnable() {
-                        public void run() {
-                            synchronized (shutdownEngineLock) {
-                                if (!localSS.searchResultWanted)
-                                    return;
-                                Position oldPos = new Position(g.currPos());
-                                g.processString(cmd);
-                                ponderMove = ponder;
-                                updateGameMode();
-                                gui.computerMoveMade();
-                                listener.clearSearchInfo();
-                                stopComputerThinking();
-                                stopAnalysis(); // To force analysis to restart for new position
-                                updateComputeThreads(true);
-                                setSelection();
-                                setAnimMove(oldPos, g.getLastMove(), true);
-                                updateGUI();
-                            }
-                        }
-                    });
+                    computerPlayer.doSearch(ph.first, ph.second, currPos, haveDrawOffer,
+                                            wTime, bTime, inc, fMovesToGo,
+                                            gui.ponderMode(), fPonderMove,
+                                            gui.engineThreads(),
+                                            engine, strength, g);
                 }
             });
             listener.clearSearchInfo();
             computerPlayer.shouldStop = false;
             computerThread.start();
         }
+    }
+
+    private final void makeComputerMove(final Game g, final String cmd, final Move ponder) {
+        final SearchStatus localSS = ss;
+        gui.runOnUIThread(new Runnable() {
+            public void run() {
+                synchronized (shutdownEngineLock) {
+                    if (!localSS.searchResultWanted)
+                        return;
+                    Position oldPos = new Position(g.currPos());
+                    g.processString(cmd);
+                    ponderMove = ponder;
+                    updateGameMode();
+                    gui.computerMoveMade();
+                    listener.clearSearchInfo();
+                    stopComputerThinking();
+                    stopAnalysis(); // To force analysis to restart for new position
+                    updateComputeThreads(true);
+                    setSelection();
+                    setAnimMove(oldPos, g.getLastMove(), true);
+                    updateGUI();
+                }
+            }
+        });
     }
 
     private final synchronized boolean stopComputerThinking() {
@@ -990,12 +994,9 @@ public class DroidChessController {
                 final boolean alive = game.tree.getGameState() == GameState.ALIVE;
                 analysisThread = new Thread(new Runnable() {
                     public void run() {
-                        if (alive) {
-                            computerPlayer.setEngineStrength(engine, 1000);
-                            computerPlayer.setNumPV(numPV);
+                        if (alive)
                             computerPlayer.analyze(ph.first, ph.second, currPos, haveDrawOffer,
-                                                   gui.engineThreads());
-                        }
+                                                   gui.engineThreads(), engine, numPV);
                     }
                 });
                 listener.clearSearchInfo();

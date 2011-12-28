@@ -77,4 +77,6 @@ public interface SearchListener {
     public void notifyPV(Position pos, ArrayList<PvInfo> pvInfo, boolean isPonder);
     public void notifyStats(int nodes, int nps, int time);
     public void notifyBookInfo(String bookInfo, List<Move> moveList);
+
+    public void notifySearchResult(Game g, String cmd, Move ponder);
 }
