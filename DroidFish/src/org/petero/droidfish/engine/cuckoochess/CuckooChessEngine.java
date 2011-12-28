@@ -68,7 +68,6 @@ public class CuckooChessEngine extends UCIEngineBase {
 
     @Override
     public void setStrength(int strength) {
-        this.strength = strength;
         setOption("strength", strength);
     }
 

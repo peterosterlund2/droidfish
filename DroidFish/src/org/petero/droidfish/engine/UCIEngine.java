@@ -41,9 +41,6 @@ public interface UCIEngine {
     /** Set the engine strength, allowed values 0 - 1000. */
     public void setStrength(int strength);
 
-    /** Add strength information to the engine name. */
-    public String addStrengthToName();
-
     /** Set an engine integer option. */
     public void setOption(String name, int value);
 

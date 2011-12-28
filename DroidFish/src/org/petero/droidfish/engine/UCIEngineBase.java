@@ -5,7 +5,6 @@ import java.util.HashMap;
 public abstract class UCIEngineBase implements UCIEngine {
 
     private boolean processAlive;
-    protected int strength = 1000;
 
     protected UCIEngineBase() {
         processAlive = false;
@@ -27,11 +26,6 @@ public abstract class UCIEngineBase implements UCIEngine {
             writeLineToEngine("quit");
             processAlive = false;
         }
-    }
-
-    @Override
-    public String addStrengthToName() {
-        return strength < 1000 ? String.format(" (%.1f%%)", strength * 0.1) : "";
     }
 
     @Override

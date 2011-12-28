@@ -25,7 +25,6 @@ public class NativePipedProcess extends UCIEngineBase {
 
     @Override
     public void setStrength(int strength) {
-        this.strength = strength;
         setOption("Skill Level", strength/50);
     }
 

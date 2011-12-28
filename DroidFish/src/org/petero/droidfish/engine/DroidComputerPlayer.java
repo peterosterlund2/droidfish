@@ -51,6 +51,7 @@ public class DroidComputerPlayer {
     /** >1 if multiPV mode is supported. */
     private int maxPV = 1;
     private int numCPUs = 1;
+    private int strength = 1000;
 
     private boolean havePonderHit = false;
 
@@ -71,6 +72,7 @@ public class DroidComputerPlayer {
             this.engine = engine;
             startEngine();
         }
+        this.strength = strength;
         if (uciEngine != null)
             uciEngine.setStrength(strength);
     }
@@ -105,10 +107,10 @@ public class DroidComputerPlayer {
 
     /** Get engine reported name, including strength setting. */
     public synchronized String getEngineName() {
-        if (uciEngine != null)
-            return engineName + uciEngine.addStrengthToName();
-        else
-            return engineName;
+        String ret = engineName;
+        if (strength < 1000)
+            ret += String.format(" (%.1f%%)", strength * 0.1);
+        return ret;
     }
 
     /** Clear transposition table. */
