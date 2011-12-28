@@ -81,8 +81,7 @@ public class DroidChessController {
         this.gameMode = gameMode;
         ponderMove = null;
         if (computerPlayer == null) {
-            computerPlayer = new DroidComputerPlayer(engine);
-            computerPlayer.setListener(listener);
+            computerPlayer = new DroidComputerPlayer(engine, listener);
             computerPlayer.setBookOptions(bookOptions);
         }
         game = new Game(gameTextListener, timeControl, movesPerSession, timeIncrement);

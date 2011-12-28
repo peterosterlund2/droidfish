@@ -42,8 +42,8 @@ public class DroidComputerPlayer {
     private String engineName = "";
 
     private UCIEngine uciEngine = null;
-    private SearchListener listener;
-    private DroidBook book;
+    private final SearchListener listener;
+    private final DroidBook book;
     /** Set when "ucinewgame" needs to be sent. */
     private boolean newGame = false;
     /** Engine identifier, "cuckoochess" or "stockfish". */
@@ -56,10 +56,10 @@ public class DroidComputerPlayer {
     private boolean havePonderHit = false;
 
     /** Constructor. Starts engine process if not already started. */
-    public DroidComputerPlayer(String engine) {
+    public DroidComputerPlayer(String engine, SearchListener listener) {
         this.engine = engine;
         startEngine();
-        listener = null;
+        this.listener = listener;
         book = DroidBook.getInstance();
     }
 
@@ -75,11 +75,6 @@ public class DroidComputerPlayer {
         this.strength = strength;
         if (uciEngine != null)
             uciEngine.setStrength(strength);
-    }
-
-    /** Set search listener. */
-    public final void setListener(SearchListener listener) {
-        this.listener = listener;
     }
 
     /** Return maximum number of PVs supported by engine. */
