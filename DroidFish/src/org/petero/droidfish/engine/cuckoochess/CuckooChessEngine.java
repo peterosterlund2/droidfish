@@ -80,6 +80,10 @@ public class CuckooChessEngine extends UCIEngineBase {
                 mainLoop(in, out);
             }
         });
+        int pMin = Thread.MIN_PRIORITY;
+        int pNorm = Thread.NORM_PRIORITY;
+        int prio = pMin + (pNorm - pMin) / 2;
+        engineThread.setPriority(prio);
         engineThread.start();
     }
 
