@@ -400,6 +400,7 @@ you are not actively using the program.\
     <string name="before_selected">Before Selected</string>
     <string name="after_selected">After Selected</string>
     <string name="replace_selected">Replace Selected</string>
+    <string name="engine">Engine</string>
 
     <string name="err_too_few_spaces">Too few spaces</string>
     <string name="err_invalid_piece">Invalid piece</string>

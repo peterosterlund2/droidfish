@@ -64,6 +64,9 @@ public interface GUIInterface {
     /** Report that user attempted to make an invalid move. */
     public void reportInvalidMove(Move m);
 
+    /** Report UCI engine name. */
+    public void reportEngineName(String engine);
+
     /** Called when computer made a move. GUI can notify user, for example by playing a sound. */
     public void computerMoveMade();
 

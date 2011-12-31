@@ -1766,6 +1766,13 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     @Override
+    public void reportEngineName(String engine) {
+        String msg = String.format("%s: %s",
+                getString(R.string.engine), engine);
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void computerMoveMade() {
         if (soundEnabled) {
             if (moveSound != null)

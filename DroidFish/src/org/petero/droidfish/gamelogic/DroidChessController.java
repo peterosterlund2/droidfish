@@ -697,6 +697,7 @@ public class DroidChessController {
             gui.runOnUIThread(new Runnable() {
                 public void run() {
                     updatePlayerNames(engineName);
+                    gui.reportEngineName(engineName);
                 }
             });
         }
