@@ -347,7 +347,7 @@ public class EditBoard extends Activity {
                         checkValid();
                         dialog.cancel();
                     }
-				}
+                }
             });
             AlertDialog alert = builder.create();
             return alert;
@@ -406,9 +406,9 @@ public class EditBoard extends Activity {
             return alert;
         }
         case MOVCNT_DIALOG: {
-        	View content = View.inflate(this, R.layout.edit_move_counters, null);
+            View content = View.inflate(this, R.layout.edit_move_counters, null);
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            
+
             builder.setView(content);
             builder.setTitle(R.string.edit_move_counters);
             final EditText halfMoveClock = (EditText)content.findViewById(R.id.ed_cnt_halfmove);
@@ -428,14 +428,14 @@ public class EditBoard extends Activity {
                 }
             };
             builder.setPositiveButton("Ok", new Dialog.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					setCounters.run();
-				}
+                public void onClick(DialogInterface dialog, int which) {
+                    setCounters.run();
+                }
             });
             builder.setNegativeButton("Cancel", null);
-            
+
             final Dialog dialog = builder.create();
-            
+
             fullMoveCounter.setOnKeyListener(new OnKeyListener() {
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
                     if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {

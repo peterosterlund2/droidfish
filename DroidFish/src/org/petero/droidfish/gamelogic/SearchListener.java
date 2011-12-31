@@ -65,18 +65,29 @@ public interface SearchListener {
             this.lowerBound = lowerBound;
             this.pv = pv;
         }
-
-        public final void removeFirstMove() {
-            if (!pv.isEmpty())
-                pv.remove(0);
-        }
     }
 
-    public void notifyDepth(int depth);
-    public void notifyCurrMove(Position pos, Move m, int moveNr);
-    public void notifyPV(Position pos, ArrayList<PvInfo> pvInfo, boolean isPonder);
-    public void notifyStats(int nodes, int nps, int time);
-    public void notifyBookInfo(String bookInfo, List<Move> moveList);
+    /** Report current engine search depth. */
+    public void notifyDepth(int id, int depth);
 
-    public void notifySearchResult(Game g, String cmd, Move ponder);
+    /** Report the move, valid in position pos, that the engine is currently searching. */
+    public void notifyCurrMove(int id, Position pos, Move m, int moveNr);
+
+    /**
+     * Report PV information. If ponderMove is non-null, ponderMove is the first move
+     * to play from position pos.
+     */
+    public void notifyPV(int id, Position pos, ArrayList<PvInfo> pvInfo, Move ponderMove);
+
+    /** Report search statistics. */
+    public void notifyStats(int id, int nodes, int nps, int time);
+
+    /** Report opening book information. */
+    public void notifyBookInfo(int id, String bookInfo, List<Move> moveList);
+
+    /** Report move (or command, such as "resign") played by the engine. */
+    public void notifySearchResult(int id, String cmd, Move ponder);
+
+    /** Report engine name. */
+    public void notifyEngineName(String engineName);
 }

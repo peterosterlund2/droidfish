@@ -118,7 +118,7 @@ public final class DroidBook {
         StringBuilder ret = new StringBuilder();
         ArrayList<Move> bookMoveList = new ArrayList<Move>();
         List<BookEntry> bookMoves = getBook().getBookEntries(pos);
-    
+
         // Check legality
         if (bookMoves != null) {
             ArrayList<Move> legalMoves = new MoveGen().pseudoLegalMoves(pos);
@@ -131,7 +131,7 @@ public final class DroidBook {
                 }
             }
         }
-    
+
         if (bookMoves != null) {
             Collections.sort(bookMoves, new Comparator<BookEntry>() {
                 public int compare(BookEntry arg0, BookEntry arg1) {

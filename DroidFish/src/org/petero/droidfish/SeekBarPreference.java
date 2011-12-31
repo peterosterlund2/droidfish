@@ -86,7 +86,7 @@ public class SeekBarPreference extends Preference
         currValBox.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-            	View content = View.inflate(SeekBarPreference.this.getContext(), R.layout.select_percentage, null);
+                View content = View.inflate(SeekBarPreference.this.getContext(), R.layout.select_percentage, null);
                 final AlertDialog.Builder builder = new AlertDialog.Builder(SeekBarPreference.this.getContext());
                 builder.setView(content);
                 String title = "";
@@ -121,9 +121,9 @@ public class SeekBarPreference extends Preference
                     }
                 });
                 builder.setPositiveButton("Ok", new Dialog.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						selectValue.run();
-					}
+                    public void onClick(DialogInterface dialog, int which) {
+                        selectValue.run();
+                    }
                 });
                 builder.setNegativeButton("Cancel", null);
 

@@ -73,20 +73,26 @@ static std::deque<char> inBuf;
 
 static bool getNextChar(int& c, int timeoutMillis) {
 	if (inBuf.empty()) {
-	    fd_set readfds, writefds;
+	    fd_set readfds, exceptfds;
 		FD_ZERO(&readfds);
 		FD_SET(fdFromChild, &readfds);
+		FD_ZERO(&exceptfds);
+		FD_SET(fdFromChild, &exceptfds);
 		struct timeval tv;
 		tv.tv_sec = timeoutMillis / 1000;
 		tv.tv_usec = (timeoutMillis % 1000) * 1000;
-		int ret = select(fdFromChild + 1, &readfds, NULL, NULL, &tv);
-		if (ret < 0)
+		int ret = select(fdFromChild + 1, &readfds, NULL, &exceptfds, &tv);
+		if ((ret < 0) || FD_ISSET(fdFromChild, &exceptfds))
 			return false;
 
-		static char buf[4096];
-		int len = read(fdFromChild, &buf[0], sizeof(buf));
-		for (int i = 0; i < len; i++)
-			inBuf.push_back(buf[i]);
+		if (FD_ISSET(fdFromChild, &readfds)) {
+		    static char buf[4096];
+		    int len = read(fdFromChild, &buf[0], sizeof(buf));
+		    if (len == 0)
+		        return false; // EOF
+		    for (int i = 0; i < len; i++)
+		        inBuf.push_back(buf[i]);
+		}
 	}
 	if (inBuf.empty()) {
 		c = -1;

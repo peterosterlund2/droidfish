@@ -27,6 +27,8 @@ import org.petero.droidfish.GUIInterface;
 import org.petero.droidfish.GameMode;
 import org.petero.droidfish.PGNOptions;
 import org.petero.droidfish.engine.DroidComputerPlayer;
+import org.petero.droidfish.engine.DroidComputerPlayer.SearchRequest;
+import org.petero.droidfish.engine.DroidComputerPlayer.SearchType;
 import org.petero.droidfish.gamelogic.Game.GameState;
 import org.petero.droidfish.gamelogic.GameTree.Node;
 
@@ -43,8 +45,6 @@ public class DroidChessController {
     private GUIInterface gui;
     private GameMode gameMode;
     private PGNOptions pgnOptions;
-    private Thread computerThread;
-    private Thread analysisThread;
 
     private String engine = "";
     private int strength = 1000;
@@ -60,30 +60,30 @@ public class DroidChessController {
     /** Partial move that needs promotion choice to be completed. */
     private Move promoteMove;
 
-    private Object shutdownEngineLock = new Object();
-
+    private int searchId;
 
     /** Constructor. */
     public DroidChessController(GUIInterface gui, PgnToken.PgnTokenReceiver gameTextListener, PGNOptions options) {
         this.gui = gui;
         this.gameTextListener = gameTextListener;
+        gameMode = new GameMode(GameMode.TWO_PLAYERS);
         pgnOptions = options;
         listener = new SearchListener();
+        searchId = 0;
     }
 
     /** Start a new game. */
     public final synchronized void newGame(GameMode gameMode) {
-        ss.searchResultWanted = false;
-        boolean updateGui = stopComputerThinking();
-        updateGui |= stopAnalysis();
+        boolean updateGui = abortSearch();
         if (updateGui)
             updateGUI();
         this.gameMode = gameMode;
-        ponderMove = null;
         if (computerPlayer == null) {
-            computerPlayer = new DroidComputerPlayer(engine, listener);
+            computerPlayer = new DroidComputerPlayer(listener);
             computerPlayer.setBookOptions(bookOptions);
         }
+        computerPlayer.queueStartEngine(searchId, engine);
+        searchId++;
         game = new Game(gameTextListener, timeControl, movesPerSession, timeIncrement);
         computerPlayer.clearTT();
         setPlayerNames(game);
@@ -92,7 +92,7 @@ public class DroidChessController {
 
     /** Start playing a new game. Should be called after newGame(). */
     public final synchronized void startGame() {
-        updateComputeThreads(true);
+        updateComputeThreads();
         setSelection();
         updateGUI();
         updateGameMode();
@@ -117,15 +117,13 @@ public class DroidChessController {
     public final synchronized void setGameMode(GameMode newMode) {
         if (!gameMode.equals(newMode)) {
             if (newMode.humansTurn(game.currPos().whiteMove))
-                ss.searchResultWanted = false;
+                searchId++;
             gameMode = newMode;
             if (!gameMode.playerWhite() || !gameMode.playerBlack())
                 setPlayerNames(game); // If computer player involved, set player names
             updateGameMode();
-            ponderMove = null;
-            ss.searchResultWanted = false;
-            stopComputerThinking();
-            updateComputeThreads(true);
+            abortSearch();
+            updateComputeThreads();
             updateGUI();
         }
     }
@@ -136,12 +134,6 @@ public class DroidChessController {
             bookOptions = options;
             if (computerPlayer != null) {
                 computerPlayer.setBookOptions(bookOptions);
-                if (analysisThread != null) {
-                    boolean updateGui = stopAnalysis();
-                    updateGui |= startAnalysis();
-                    if (updateGui)
-                        updateGUI();
-                }
                 updateBookHints();
             }
         }
@@ -157,9 +149,9 @@ public class DroidChessController {
         if (newEngine || (strength != this.strength)) {
             this.engine = engine;
             this.strength = strength;
-            if (newEngine && ((analysisThread != null) || (computerThread != null))) {
-                stopAnalysis();
-                updateComputeThreads(true);
+            if (game != null) {
+                abortSearch();
+                updateComputeThreads();
                 updateGUI();
             }
         }
@@ -169,7 +161,7 @@ public class DroidChessController {
     public final synchronized void prefsChanged() {
         updateBookHints();
         updateMoveList();
-        listener.prefsChanged();
+        listener.prefsChanged(searchId);
     }
 
     /** De-serialize from byte array. */
@@ -204,29 +196,27 @@ public class DroidChessController {
             if (!newGame.readPGN(fenPgn, pgnOptions))
                 throw e;
         }
-        ss.searchResultWanted = false;
+        searchId++;
         game = newGame;
-        if (computerPlayer != null)
-            computerPlayer.clearTT();
         gameTextListener.clear();
         updateGameMode();
-        stopAnalysis();
-        stopComputerThinking();
+        abortSearch();
         computerPlayer.clearTT();
-        ponderMove = null;
-        updateComputeThreads(true);
+        updateComputeThreads();
         gui.setSelection(-1);
         updateGUI();
     }
 
     /** True if human's turn to make a move. (True in analysis mode.) */
     public final synchronized boolean humansTurn() {
+        if (game == null)
+            return false;
         return gameMode.humansTurn(game.currPos().whiteMove);
     }
 
     /** Return true if computer player is using CPU power. */
     public final synchronized boolean computerBusy() {
-        return (computerThread != null) || (analysisThread != null);
+        return (computerPlayer != null) && computerPlayer.computerBusy();
     }
 
     /** Make a move for a human player. */
@@ -235,13 +225,12 @@ public class DroidChessController {
             Position oldPos = new Position(game.currPos());
             if (doMove(m)) {
                 if (m.equals(ponderMove) && !gameMode.analysisMode() &&
-                    (analysisThread == null) && (computerThread != null)) {
-                    computerPlayer.ponderHit(oldPos, ponderMove);
+                    (computerPlayer.getSearchType() == SearchType.PONDER)) {
+                    computerPlayer.ponderHit(searchId);
+                    ponderMove = null;
                 } else {
-                    ss.searchResultWanted = false;
-                    stopAnalysis();
-                    stopComputerThinking();
-                    updateComputeThreads(true);
+                    abortSearch();
+                    updateComputeThreads();
                 }
                 setAnimMove(oldPos, m, true);
                 updateGUI();
@@ -251,7 +240,7 @@ public class DroidChessController {
         }
     }
 
-    /** Report promotion choice for incomplete move. 
+    /** Report promotion choice for incomplete move.
      * @param choice 0=queen, 1=rook, 2=bishop, 3=knight. */
     public final synchronized void reportPromotePiece(int choice) {
         if (promoteMove == null)
@@ -283,11 +272,8 @@ public class DroidChessController {
         if (humansTurn()) {
             int varNo = game.tree.addMove("--", "", 0, "", "");
             game.tree.goForward(varNo);
-            ss.searchResultWanted = false;
-            stopAnalysis();
-            stopComputerThinking();
-            ponderMove = null;
-            updateComputeThreads(true);
+            abortSearch();
+            updateComputeThreads();
             updateGUI();
             gui.setSelection(-1);
         }
@@ -312,11 +298,9 @@ public class DroidChessController {
     /** Undo last move. Does not truncate game tree. */
     public final synchronized void undoMove() {
         if (game.getLastMove() != null) {
-            ss.searchResultWanted = false;
-            stopAnalysis();
-            stopComputerThinking();
+            abortSearch();
             boolean didUndo = undoMoveNoUpdate();
-            updateComputeThreads(true);
+            updateComputeThreads();
             setSelection();
             if (didUndo)
                 setAnimMove(game.currPos(), game.getNextMove(), false);
@@ -327,11 +311,9 @@ public class DroidChessController {
     /** Redo last move. Follows default variation. */
     public final synchronized void redoMove() {
         if (game.canRedoMove()) {
-            ss.searchResultWanted = false;
-            stopAnalysis();
-            stopComputerThinking();
+            abortSearch();
             redoMoveNoUpdate();
-            updateComputeThreads(true);
+            updateComputeThreads();
             setSelection();
             setAnimMove(game.prevPos(), game.getLastMove(), true);
             updateGUI();
@@ -359,11 +341,8 @@ public class DroidChessController {
             needUpdate = true;
         }
         if (needUpdate) {
-            ss.searchResultWanted = false;
-            stopAnalysis();
-            stopComputerThinking();
-            ponderMove = null;
-            updateComputeThreads(true);
+            abortSearch();
+            updateComputeThreads();
             setSelection();
             updateGUI();
         }
@@ -380,11 +359,8 @@ public class DroidChessController {
                 break;
         }
         if (needUpdate) {
-            ss.searchResultWanted = false;
-            stopAnalysis();
-            stopComputerThinking();
-            ponderMove = null;
-            updateComputeThreads(true);
+            abortSearch();
+            updateComputeThreads();
             setSelection();
             updateGUI();
         }
@@ -396,7 +372,6 @@ public class DroidChessController {
             return;
         if (!game.goNode(node))
             return;
-        ponderMove = null;
         if (!humansTurn()) {
             if (game.getLastMove() != null) {
                 game.undoMove();
@@ -404,11 +379,8 @@ public class DroidChessController {
                     game.redoMove();
             }
         }
-        ss.searchResultWanted = false;
-        stopAnalysis();
-        stopComputerThinking();
-        ponderMove = null;
-        updateComputeThreads(true);
+        abortSearch();
+        updateComputeThreads();
         setSelection();
         updateGUI();
     }
@@ -426,12 +398,9 @@ public class DroidChessController {
     /** Go to a new variation in the game tree. */
     public final synchronized void changeVariation(int delta) {
         if (game.numVariations() > 1) {
-            ss.searchResultWanted = false;
-            stopAnalysis();
-            stopComputerThinking();
+            abortSearch();
             game.changeVariation(delta);
-            ponderMove = null;
-            updateComputeThreads(true);
+            updateComputeThreads();
             setSelection();
             updateGUI();
         }
@@ -439,12 +408,9 @@ public class DroidChessController {
 
     /** Delete whole game sub-tree rooted at current position. */
     public final synchronized void removeSubTree() {
-        ss.searchResultWanted = false;
-        stopAnalysis();
-        stopComputerThinking();
+        abortSearch();
         game.removeSubTree();
-        ponderMove = null;
-        updateComputeThreads(true);
+        updateComputeThreads();
         setSelection();
         updateGUI();
     }
@@ -459,7 +425,7 @@ public class DroidChessController {
 
     /** Add a variation to the game tree.
      * @param preComment Comment to add before first move.
-     * @param pvMoves List of moves in variation. 
+     * @param pvMoves List of moves in variation.
      * @param updateDefault If true, make this the default variation. */
     public final synchronized void addVariation(String preComment, List<Move> pvMoves, boolean updateDefault) {
         for (int i = 0; i < pvMoves.size(); i++) {
@@ -508,43 +474,34 @@ public class DroidChessController {
         if (numPV > maxPV()) numPV = maxPV();
         if (numPV != this.numPV) {
             this.numPV = numPV;
-            if (analysisThread != null) {
-                stopAnalysis();
-                ponderMove = null;
-                updateComputeThreads(true);
-                updateGUI();
-            }
+            abortSearch();
+            updateComputeThreads();
+            updateGUI();
         }
     }
 
     /** Request computer player to make a move immediately. */
     public final synchronized void stopSearch() {
-        if (computerThread != null) {
+        if (!humansTurn() && (computerPlayer != null))
             computerPlayer.stopSearch();
-        }
     }
 
     /** Stop ponder search. */
     public final synchronized void stopPonder() {
-        if ((computerThread != null) && humansTurn()) {
-            boolean updateGui = stopComputerThinking();
-            if (updateGui)
-                updateGUI();
+        if (humansTurn() && (computerPlayer != null)) {
+            if (computerPlayer.getSearchType() == SearchType.PONDER) {
+                boolean updateGui = abortSearch();
+                if (updateGui)
+                    updateGUI();
+            }
         }
     }
 
     /** Shut down chess engine process. */
     public final synchronized void shutdownEngine() {
-        synchronized (shutdownEngineLock) {
-            gameMode = new GameMode(GameMode.TWO_PLAYERS);
-            ss.searchResultWanted = false;
-            boolean updateGui = stopComputerThinking();
-            updateGui |= stopAnalysis();
-            if (updateGui)
-                updateGUI();
-            ponderMove = null;
-            computerPlayer.shutdownEngine();
-        }
+        gameMode = new GameMode(GameMode.TWO_PLAYERS);
+        abortSearch();
+        computerPlayer.shutdownEngine();
     }
 
     /** Get PGN header tags and values. */
@@ -600,17 +557,19 @@ public class DroidChessController {
         private String bookInfo = "";
         private List<Move> bookMoves = null;
 
+        private Move ponderMove = null;
         private ArrayList<PvInfo> pvInfoV = new ArrayList<PvInfo>();
 
-        public final void clearSearchInfo() {
+        public final void clearSearchInfo(int id) {
+            ponderMove = null;
             pvInfoV.clear();
             currDepth = 0;
             bookInfo = "";
             bookMoves = null;
-            setSearchInfo();
+            setSearchInfo(id);
         }
 
-        private final void setSearchInfo() {
+        private final void setSearchInfo(final int id) {
             StringBuilder buf = new StringBuilder();
             for (int i = 0; i < pvInfoV.size(); i++) {
                 PvInfo pvi = pvInfoV.get(i);
@@ -639,35 +598,42 @@ public class DroidChessController {
                     : "";
             final String newPV = buf.toString();
             final String newBookInfo = bookInfo;
-            final SearchStatus localSS = ss;
+            final ArrayList<ArrayList<Move>> pvMoves = new ArrayList<ArrayList<Move>>();
+            for (int i = 0; i < pvInfoV.size(); i++) {
+                if (ponderMove != null) {
+                    ArrayList<Move> tmp = new ArrayList<Move>();
+                    tmp.add(ponderMove);
+                    for (Move m : pvInfoV.get(i).pv)
+                        tmp.add(m);
+                    pvMoves.add(tmp);
+                } else {
+                    pvMoves.add(pvInfoV.get(i).pv);
+                }
+            }
             gui.runOnUIThread(new Runnable() {
                 public void run() {
-                    if (!localSS.searchResultWanted && (bookMoves != null))
-                        return;
-                    ArrayList<ArrayList<Move>> pvMoves = new ArrayList<ArrayList<Move>>();
-                    for (int i = 0; i < pvInfoV.size(); i++)
-                        pvMoves.add(pvInfoV.get(i).pv);
-                    gui.setThinkingInfo(newPV, statStr, newBookInfo, pvMoves, bookMoves);
+                    setThinkingInfo(id, pvMoves, newPV, statStr, newBookInfo, bookMoves);
                 }
             });
         }
 
         @Override
-        public void notifyDepth(int depth) {
+        public void notifyDepth(int id, int depth) {
             currDepth = depth;
-            setSearchInfo();
+            setSearchInfo(id);
         }
 
         @Override
-        public void notifyCurrMove(Position pos, Move m, int moveNr) {
+        public void notifyCurrMove(int id, Position pos, Move m, int moveNr) {
             currMove = TextIO.moveToString(pos, m, false);
             currMoveNr = moveNr;
-            setSearchInfo();
+            setSearchInfo(id);
         }
 
         @SuppressWarnings("unchecked")
         @Override
-        public void notifyPV(Position pos, ArrayList<PvInfo> pvInfo, boolean isPonder) {
+        public void notifyPV(int id, Position pos, ArrayList<PvInfo> pvInfo, Move ponderMove) {
+            this.ponderMove = ponderMove;
             pvInfoV = (ArrayList<PvInfo>) pvInfo.clone();
             for (PvInfo pv : pvInfo) {
                 currTime = pv.time;
@@ -677,64 +643,84 @@ public class DroidChessController {
                 StringBuilder buf = new StringBuilder();
                 Position tmpPos = new Position(pos);
                 UndoInfo ui = new UndoInfo();
-                boolean first = true;
+                if (ponderMove != null) {
+                    String moveStr = TextIO.moveToString(tmpPos, ponderMove, false);
+                    buf.append(String.format(" [%s]", moveStr));
+                    tmpPos.makeMove(ponderMove, ui);
+                }
                 for (Move m : pv.pv) {
                     String moveStr = TextIO.moveToString(tmpPos, m, false);
-                    if (first && isPonder) {
-                        buf.append(String.format(" [%s]", moveStr));
-                        first = false;
-                    } else {
-                        buf.append(String.format(" %s", moveStr));
-                    }
+                    buf.append(String.format(" %s", moveStr));
                     tmpPos.makeMove(m, ui);
                 }
                 pv.pvStr = buf.toString();
             }
-            whiteMove = pos.whiteMove ^ isPonder;
+            whiteMove = pos.whiteMove ^ (ponderMove != null);
 
-            setSearchInfo();
+            setSearchInfo(id);
         }
 
         @Override
-        public void notifyStats(int nodes, int nps, int time) {
+        public void notifyStats(int id, int nodes, int nps, int time) {
             currNodes = nodes;
             currNps = nps;
             currTime = time;
-            setSearchInfo();
+            setSearchInfo(id);
         }
 
         @Override
-        public void notifyBookInfo(String bookInfo, List<Move> moveList) {
+        public void notifyBookInfo(int id, String bookInfo, List<Move> moveList) {
             this.bookInfo = bookInfo;
             bookMoves = moveList;
-            setSearchInfo();
+            setSearchInfo(id);
         }
 
-        public void prefsChanged() {
-            setSearchInfo();
+        public void prefsChanged(int id) {
+            setSearchInfo(id);
         }
 
         @Override
-        public void notifySearchResult(Game g, String cmd, Move ponder) {
-            makeComputerMove(g, cmd, ponder);
+        public void notifySearchResult(final int id, final String cmd, final Move ponder) {
+            new Thread(new Runnable() {
+                public void run() {
+                    gui.runOnUIThread(new Runnable() {
+                        public void run() {
+                            makeComputerMove(id, cmd, ponder);
+                        }
+                    });
+                }
+            }).start();
         }
+
+        @Override
+        public void notifyEngineName(final String engineName) {
+            gui.runOnUIThread(new Runnable() {
+                public void run() {
+                    updatePlayerNames(engineName);
+                }
+            });
+        }
+    }
+
+    /** Discard current search. Return true if GUI update needed. */
+    private final boolean abortSearch() {
+        ponderMove = null;
+        searchId++;
+        if (computerPlayer == null)
+            return false;
+        if (computerPlayer.stopSearch()) {
+            listener.clearSearchInfo(searchId);
+            return true;
+        }
+        return false;
     }
 
     private final void updateBookHints() {
-        if (gameMode != null) {
-            boolean analysis = gameMode.analysisMode();
-            if (!analysis && humansTurn()) {
-                ss = new SearchStatus();
-                Pair<String, ArrayList<Move>> bi = computerPlayer.getBookHints(game.currPos());
-                listener.notifyBookInfo(bi.first, bi.second);
-            }
+        if (humansTurn()) {
+            Pair<String, ArrayList<Move>> bi = computerPlayer.getBookHints(game.currPos());
+            listener.notifyBookInfo(searchId, bi.first, bi.second);
         }
     }
-
-    private final static class SearchStatus {
-        boolean searchResultWanted = true;
-    }
-    private SearchStatus ss = new SearchStatus();
 
     private final void updateGameMode() {
         if (game != null) {
@@ -747,40 +733,98 @@ public class DroidChessController {
     }
 
     /** Start/stop computer thinking/analysis as appropriate. */
-    private final void updateComputeThreads(boolean clearPV) {
-        boolean analysis = gameMode.analysisMode();
-        boolean computersTurn = !humansTurn();
-        boolean ponder = gui.ponderMode() && !analysis && !computersTurn && (ponderMove != null);
-        if (!analysis)
-            stopAnalysis();
-        if (!(computersTurn || ponder))
-            stopComputerThinking();
-        if (clearPV) {
-            listener.clearSearchInfo();
-            updateBookHints();
+    private final void updateComputeThreads() {
+        boolean alive = game.tree.getGameState() == GameState.ALIVE;
+        boolean analysis = gameMode.analysisMode() && alive;
+        boolean computersTurn = !humansTurn() && alive;
+        boolean ponder = gui.ponderMode() && !analysis && !computersTurn && (ponderMove != null) && alive;
+        if (!analysis && !(computersTurn || ponder))
+            computerPlayer.stopSearch();
+        listener.clearSearchInfo(searchId);
+        updateBookHints();
+        if (!computerPlayer.sameSearchId(searchId)) {
+            if (analysis) {
+                Pair<Position, ArrayList<Move>> ph = game.getUCIHistory();
+                SearchRequest sr = DroidComputerPlayer.SearchRequest.analyzeRequest(
+                        searchId, ph.first, ph.second,
+                        new Position(game.currPos()),
+                        game.haveDrawOffer(), engine,
+                        gui.engineThreads(), numPV);
+                computerPlayer.queueAnalyzeRequest(sr);
+            } else if (computersTurn || ponder) {
+                listener.clearSearchInfo(searchId);
+                listener.notifyBookInfo(searchId, "", null);
+                final Pair<Position, ArrayList<Move>> ph = game.getUCIHistory();
+                Position currPos = new Position(game.currPos());
+                long now = System.currentTimeMillis();
+                int wTime = game.timeController.getRemainingTime(true, now);
+                int bTime = game.timeController.getRemainingTime(false, now);
+                int inc = game.timeController.getIncrement();
+                int movesToGo = game.timeController.getMovesToTC();
+                if (ponder && !currPos.whiteMove && (movesToGo > 0)) {
+                    movesToGo--;
+                    if (movesToGo <= 0)
+                        movesToGo += game.timeController.getMovesPerSession();
+                }
+                final Move fPonderMove = ponder ? ponderMove : null;
+                SearchRequest sr = DroidComputerPlayer.SearchRequest.searchRequest(
+                        searchId, now, ph.first, ph.second, currPos,
+                        game.haveDrawOffer(),
+                        wTime, bTime, inc, movesToGo,
+                        gui.ponderMode(), fPonderMove,
+                        engine, gui.engineThreads(),
+                        strength);
+                computerPlayer.queueSearchRequest(sr);
+            }
         }
-        if (analysis)
-            startAnalysis();
-        if (computersTurn || ponder)
-            startComputerThinking(ponder);
+    }
+
+    private final synchronized void makeComputerMove(int id, final String cmd, final Move ponder) {
+        if (searchId != id)
+            return;
+        searchId++;
+        Position oldPos = new Position(game.currPos());
+        game.processString(cmd);
+        ponderMove = ponder;
+        updateGameMode();
+        gui.computerMoveMade();
+        listener.clearSearchInfo(searchId);
+        updateComputeThreads();
+        setSelection();
+        setAnimMove(oldPos, game.getLastMove(), true);
+        updateGUI();
     }
 
     private final void setPlayerNames(Game game) {
         if (game != null) {
-            String engine = (computerPlayer != null) ? computerPlayer.getEngineName() :
-                                                       "Computer";
+            String engine = "Computer";
+            if (computerPlayer != null) {
+                engine = computerPlayer.getEngineName();
+                if (strength < 1000)
+                    engine += String.format(" (%.1f%%)", strength * 0.1);
+            }
             String white = gameMode.playerWhite() ? "Player" : engine;
             String black = gameMode.playerBlack() ? "Player" : engine;
             game.tree.setPlayerNames(white, black);
         }
     }
 
+    private final synchronized void updatePlayerNames(String engineName) {
+        if (game != null) {
+            if (strength < 1000)
+                engineName += String.format(" (%.1f%%)", strength * 0.1);
+            String white = gameMode.playerWhite() ? game.tree.white : engineName;
+            String black = gameMode.playerBlack() ? game.tree.black : engineName;
+            game.tree.setPlayerNames(white, black);
+            updateMoveList();
+        }
+    }
+
     private final boolean undoMoveNoUpdate() {
         if (game.getLastMove() == null)
             return false;
-        ss.searchResultWanted = false;
+        searchId++;
         game.undoMove();
-        ponderMove = null;
         if (!humansTurn()) {
             if (game.getLastMove() != null) {
                 game.undoMove();
@@ -802,9 +846,8 @@ public class DroidChessController {
 
     private final void redoMoveNoUpdate() {
         if (game.canRedoMove()) {
-            ss.searchResultWanted = false;
+            searchId++;
             game.redoMove();
-            ponderMove = null;
             if (!humansTurn() && game.canRedoMove()) {
                 game.redoMove();
                 if (!humansTurn())
@@ -846,13 +889,14 @@ public class DroidChessController {
         if (s.state == Game.GameState.ALIVE) {
             s.moveNr = game.currPos().fullMoveCounter;
             s.white = game.currPos().whiteMove;
-            if (computerThread != null)
-                if (humansTurn())
-                    s.ponder = true;
-                else
-                    s.thinking = true;
-            if (analysisThread != null)
-                s.analyzing = true;
+            DroidComputerPlayer.SearchType st = SearchType.NONE;
+            if (computerPlayer != null)
+                st = computerPlayer.getSearchType();
+            switch (st) {
+            case SEARCH:  s.thinking  = true; break;
+            case PONDER:  s.ponder    = true; break;
+            case ANALYZE: s.analyzing = true; break;
+            }
         } else {
             if ((s.state == GameState.DRAW_REP) || (s.state == GameState.DRAW_50))
                 s.drawInfo = game.getDrawInfo();
@@ -878,6 +922,12 @@ public class DroidChessController {
         gui.setPosition(game.currPos(), sb.toString(), game.tree.variations());
 
         updateRemainingTime();
+    }
+
+    private final synchronized void setThinkingInfo(int id, ArrayList<ArrayList<Move>> pvMoves, String pvStr,
+                                                    String statStr, String bookInfo, List<Move> bookMoves) {
+        if (id == searchId)
+            gui.setThinkingInfo(pvStr, statStr, bookInfo, pvMoves, bookMoves);
     }
 
     private final void updateMoveList() {
@@ -907,120 +957,6 @@ public class DroidChessController {
 
     private void setAnimMove(Position sourcePos, Move move, boolean forward) {
         gui.setAnimMove(sourcePos, move, forward);
-    }
-
-    private final synchronized void startComputerThinking(boolean ponder) {
-        if (analysisThread != null) return;
-        if (game.getGameState() != GameState.ALIVE) return;
-        if (computerThread == null) {
-            ss = new SearchStatus();
-            final Pair<Position, ArrayList<Move>> ph = game.getUCIHistory();
-            final Game g = game;
-            final boolean haveDrawOffer = g.haveDrawOffer();
-            final Position currPos = new Position(g.currPos());
-            long now = System.currentTimeMillis();
-            final int wTime = game.timeController.getRemainingTime(true, now);
-            final int bTime = game.timeController.getRemainingTime(false, now);
-            final int inc = game.timeController.getIncrement();
-            int movesToGo = game.timeController.getMovesToTC();
-            if (ponder && !currPos.whiteMove && (movesToGo > 0)) {
-                movesToGo--;
-                if (movesToGo <= 0)
-                    movesToGo += game.timeController.getMovesPerSession();
-            }
-            final int fMovesToGo = movesToGo;
-            final Move fPonderMove = ponder ? ponderMove : null;
-            computerThread = new Thread(new Runnable() {
-                public void run() {
-                    computerPlayer.doSearch(ph.first, ph.second, currPos, haveDrawOffer,
-                                            wTime, bTime, inc, fMovesToGo,
-                                            gui.ponderMode(), fPonderMove,
-                                            gui.engineThreads(),
-                                            engine, strength, g);
-                }
-            });
-            listener.clearSearchInfo();
-            computerPlayer.shouldStop = false;
-            computerThread.start();
-        }
-    }
-
-    private final void makeComputerMove(final Game g, final String cmd, final Move ponder) {
-        final SearchStatus localSS = ss;
-        gui.runOnUIThread(new Runnable() {
-            public void run() {
-                synchronized (shutdownEngineLock) {
-                    if (!localSS.searchResultWanted)
-                        return;
-                    Position oldPos = new Position(g.currPos());
-                    g.processString(cmd);
-                    ponderMove = ponder;
-                    updateGameMode();
-                    gui.computerMoveMade();
-                    listener.clearSearchInfo();
-                    stopComputerThinking();
-                    stopAnalysis(); // To force analysis to restart for new position
-                    updateComputeThreads(true);
-                    setSelection();
-                    setAnimMove(oldPos, g.getLastMove(), true);
-                    updateGUI();
-                }
-            }
-        });
-    }
-
-    private final synchronized boolean stopComputerThinking() {
-        if (computerThread != null) {
-            computerPlayer.stopSearch();
-            try {
-                computerThread.join();
-            } catch (InterruptedException ex) {
-                System.out.printf("Could not stop computer thread%n");
-            }
-            computerThread = null;
-            return true;
-        }
-        return false;
-    }
-
-    private final synchronized boolean startAnalysis() {
-        if (gameMode.analysisMode()) {
-            if (computerThread != null) return false;
-            if (analysisThread == null) {
-                ss = new SearchStatus();
-                final Pair<Position, ArrayList<Move>> ph = game.getUCIHistory();
-                final boolean haveDrawOffer = game.haveDrawOffer();
-                final Position currPos = new Position(game.currPos());
-                final boolean alive = game.tree.getGameState() == GameState.ALIVE;
-                analysisThread = new Thread(new Runnable() {
-                    public void run() {
-                        if (alive)
-                            computerPlayer.analyze(ph.first, ph.second, currPos, haveDrawOffer,
-                                                   gui.engineThreads(), engine, numPV);
-                    }
-                });
-                listener.clearSearchInfo();
-                computerPlayer.shouldStop = false;
-                analysisThread.start();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private final synchronized boolean stopAnalysis() {
-        if (analysisThread != null) {
-            computerPlayer.stopSearch();
-            try {
-                analysisThread.join();
-            } catch (InterruptedException ex) {
-                System.out.printf("Could not stop analysis thread%n");
-            }
-            analysisThread = null;
-            listener.clearSearchInfo();
-            return true;
-        }
-        return false;
     }
 
     private final boolean findValidDrawClaim() {

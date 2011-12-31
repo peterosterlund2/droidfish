@@ -49,6 +49,7 @@ public class CuckooChessEngine extends UCIEngineBase {
     private Pipe guiToEngine;
     private Pipe engineToGui;
     private NioInputStream inFromEngine;
+    private Thread engineThread;
 
     public CuckooChessEngine() {
         try {
@@ -72,13 +73,14 @@ public class CuckooChessEngine extends UCIEngineBase {
     }
 
     protected final void startProcess() {
-        new Thread(new Runnable() {
+        engineThread = new Thread(new Runnable() {
             public void run() {
                 NioInputStream in = new NioInputStream(guiToEngine);
                 NioPrintStream out = new NioPrintStream(engineToGui);
                 mainLoop(in, out);
             }
-        }).start();
+        });
+        engineThread.start();
     }
 
     private final void mainLoop(NioInputStream is, NioPrintStream os) {
@@ -93,6 +95,8 @@ public class CuckooChessEngine extends UCIEngineBase {
 
     @Override
     public final String readLineFromEngine(int timeoutMillis) {
+        if ((engineThread != null) && !engineThread.isAlive())
+            return null;
         String ret = inFromEngine.readLine(timeoutMillis);
         if (ret == null)
             return null;

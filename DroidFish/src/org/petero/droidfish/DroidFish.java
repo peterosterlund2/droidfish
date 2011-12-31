@@ -108,6 +108,7 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! Remove invalid playerActions in PGN import (should be done in verifyChildren)
     // FIXME!!! Implement bookmark mechanism for positions in pgn files
     // FIXME!!! Display chess notation in local language
+    // FIXME!!! Add support for "Chess Leipzig" font
 
     // FIXME!!! Computer clock should stop if phone turned off (computer stops thinking if unplugged)
     // FIXME!!! Add support for all time controls defined by the PGN standard
@@ -117,8 +118,6 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! Online play on FICS
     // FIXME!!! Add chess960 support
     // FIXME!!! Implement "hint" feature
-
-    // FIXME!!! Don't send "stop" command when engine is already stopped
 
     // FIXME!!! Show extended book info. (Win percent, number of games, performance rating, etc.)
     // FIXME!!! Green color for "main move". Red color for "don't play in tournaments" moves.
@@ -542,7 +541,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
         mEngineThreads = getIntSetting("threads", 0);
 
-        String engine = settings.getString("engine", "");
+        String engine = settings.getString("engine", "stockfish");
         int strength = settings.getInt("strength", 1000);
         setEngineStrength(engine, strength);
 
@@ -1142,7 +1141,7 @@ public class DroidFish extends Activity implements GUIInterface {
             return alert;
         }
         case SELECT_MOVE_DIALOG: {
-        	View content = View.inflate(this, R.layout.select_move_number, null);
+            View content = View.inflate(this, R.layout.select_move_number, null);
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setView(content);
             builder.setTitle(R.string.goto_move);
@@ -1159,14 +1158,14 @@ public class DroidFish extends Activity implements GUIInterface {
                 }
             };
             builder.setPositiveButton(R.string.ok, new Dialog.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					gotoMove.run();
-				}
+                public void onClick(DialogInterface dialog, int which) {
+                    gotoMove.run();
+                }
             });
             builder.setNegativeButton(R.string.cancel, null);
-            
+
             final AlertDialog dialog = builder.create();
-            
+
             moveNrView.setOnKeyListener(new OnKeyListener() {
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
                     if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
@@ -1297,7 +1296,7 @@ public class DroidFish extends Activity implements GUIInterface {
             return alert;
         }
         case SELECT_PGN_SAVE_NEWFILE_DIALOG: {
-        	View content = View.inflate(this, R.layout.create_pgn_file, null);
+            View content = View.inflate(this, R.layout.create_pgn_file, null);
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setView(content);
             builder.setTitle(R.string.select_pgn_file_save);
@@ -1312,12 +1311,12 @@ public class DroidFish extends Activity implements GUIInterface {
                 }
             };
             builder.setPositiveButton(R.string.ok, new Dialog.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					savePGN.run();
-				}
+                public void onClick(DialogInterface dialog, int which) {
+                    savePGN.run();
+                }
             });
             builder.setNegativeButton(R.string.cancel, null);
-            
+
             final Dialog dialog = builder.create();
             fileNameView.setOnKeyListener(new OnKeyListener() {
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -1419,57 +1418,57 @@ public class DroidFish extends Activity implements GUIInterface {
                         final TreeMap<String,String> headers = new TreeMap<String,String>();
                         ctrl.getHeaders(headers);
 
-                    	AlertDialog.Builder builder = new AlertDialog.Builder(DroidFish.this);
-                    	builder.setTitle(R.string.edit_headers);
-                    	View content = View.inflate(DroidFish.this, R.layout.edit_headers, null);
-                    	builder.setView(content);
-                    	
-                    	final TextView event, site, date, round, white, black;
-                    	
-                    	event = (TextView)content.findViewById(R.id.ed_header_event);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(DroidFish.this);
+                        builder.setTitle(R.string.edit_headers);
+                        View content = View.inflate(DroidFish.this, R.layout.edit_headers, null);
+                        builder.setView(content);
+
+                        final TextView event, site, date, round, white, black;
+
+                        event = (TextView)content.findViewById(R.id.ed_header_event);
                         site = (TextView)content.findViewById(R.id.ed_header_site);
                         date = (TextView)content.findViewById(R.id.ed_header_date);
                         round = (TextView)content.findViewById(R.id.ed_header_round);
                         white = (TextView)content.findViewById(R.id.ed_header_white);
                         black = (TextView)content.findViewById(R.id.ed_header_black);
-                        
+
                         event.setText(headers.get("Event"));
                         site .setText(headers.get("Site"));
                         date .setText(headers.get("Date"));
                         round.setText(headers.get("Round"));
                         white.setText(headers.get("White"));
                         black.setText(headers.get("Black"));
-                    	
-                    	builder.setNegativeButton(R.string.cancel, null);
-                    	builder.setPositiveButton(R.string.ok, new Dialog.OnClickListener() {
-							public void onClick(DialogInterface dialog, int which) {
-								headers.put("Event", event.getText().toString().trim());
-						        headers.put("Site",  site .getText().toString().trim());
-						        headers.put("Date",  date .getText().toString().trim());
-						        headers.put("Round", round.getText().toString().trim());
-						        headers.put("White", white.getText().toString().trim());
-						        headers.put("Black", black.getText().toString().trim());
-				                ctrl.setHeaders(headers);
-							}
-                    	});
 
-                    	builder.show();
+                        builder.setNegativeButton(R.string.cancel, null);
+                        builder.setPositiveButton(R.string.ok, new Dialog.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                headers.put("Event", event.getText().toString().trim());
+                                headers.put("Site",  site .getText().toString().trim());
+                                headers.put("Date",  date .getText().toString().trim());
+                                headers.put("Round", round.getText().toString().trim());
+                                headers.put("White", white.getText().toString().trim());
+                                headers.put("Black", black.getText().toString().trim());
+                                ctrl.setHeaders(headers);
+                            }
+                        });
+
+                        builder.show();
                         break;
                     }
                     case EDIT_COMMENTS: {
                         AlertDialog.Builder builder = new AlertDialog.Builder(DroidFish.this);
-                    	builder.setTitle(R.string.edit_comments);
-                    	View content = View.inflate(DroidFish.this, R.layout.edit_comments, null);
-                    	builder.setView(content);
-                    	
-                    	DroidChessController.CommentInfo commInfo = ctrl.getComments();
-                    	
-                    	final TextView preComment, moveView, nag, postComment;
-                    	preComment = (TextView)content.findViewById(R.id.ed_comments_pre);
+                        builder.setTitle(R.string.edit_comments);
+                        View content = View.inflate(DroidFish.this, R.layout.edit_comments, null);
+                        builder.setView(content);
+
+                        DroidChessController.CommentInfo commInfo = ctrl.getComments();
+
+                        final TextView preComment, moveView, nag, postComment;
+                        preComment = (TextView)content.findViewById(R.id.ed_comments_pre);
                         moveView = (TextView)content.findViewById(R.id.ed_comments_move);
                         nag = (TextView)content.findViewById(R.id.ed_comments_nag);
                         postComment = (TextView)content.findViewById(R.id.ed_comments_post);
-                        
+
                         preComment.setText(commInfo.preComment);
                         postComment.setText(commInfo.postComment);
                         moveView.setText(commInfo.move);
@@ -1477,22 +1476,22 @@ public class DroidFish extends Activity implements GUIInterface {
                         if ((nagStr.length() == 0) && (commInfo.nag > 0))
                             nagStr = String.format("%d", commInfo.nag);
                         nag.setText(nagStr);
-                        
+
                         builder.setNegativeButton(R.string.cancel, null);
                         builder.setPositiveButton(R.string.ok, new Dialog.OnClickListener() {
-							public void onClick(DialogInterface dialog, int which) {
-								String pre = preComment.getText().toString().trim();
-						        String post = postComment.getText().toString().trim();
-						        int nagVal = Node.strToNag(nag.getText().toString());
-						        
-						        DroidChessController.CommentInfo commInfo = new DroidChessController.CommentInfo();
-				                commInfo.preComment = pre;
-				                commInfo.postComment = post;
-				                commInfo.nag = nagVal;
-				                ctrl.setComments(commInfo);
-							}
+                            public void onClick(DialogInterface dialog, int which) {
+                                String pre = preComment.getText().toString().trim();
+                                String post = postComment.getText().toString().trim();
+                                int nagVal = Node.strToNag(nag.getText().toString());
+
+                                DroidChessController.CommentInfo commInfo = new DroidChessController.CommentInfo();
+                                commInfo.preComment = pre;
+                                commInfo.postComment = post;
+                                commInfo.nag = nagVal;
+                                ctrl.setComments(commInfo);
+                            }
                         });
-                        
+
                         builder.show();
                         break;
                     }
