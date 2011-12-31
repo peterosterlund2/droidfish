@@ -947,11 +947,15 @@ public class DroidFish extends Activity implements GUIInterface {
             String s = "";
             if (mShowThinking || gameMode.analysisMode()) {
                 s = thinkingStr1;
-                if (mShowStats)
-                    s += "\n" + thinkingStr2;
+                if (s.length() > 0) thinkingEmpty = false;
+                if (mShowStats) {
+                    if (!thinkingEmpty)
+                        s += "\n";
+                    s += thinkingStr2;
+                    if (s.length() > 0) thinkingEmpty = false;
+                }
             }
             thinking.setText(s, TextView.BufferType.SPANNABLE);
-            if (s.length() > 0) thinkingEmpty = false;
         }
         if (mShowBookHints && (bookInfoStr.length() > 0)) {
             String s = "";
