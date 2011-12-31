@@ -24,7 +24,7 @@
             android:summary="@string/prefs_engine_summary"
             android:entryValues="@array/engine_values"
             android:entries="@array/engine_texts"
-            android:defaultValue="stockfish">
+            android:defaultValue="@string/engine_default">
         </ListPreference>
         <org.petero.droidfish.SeekBarPreference
             android:key="strength"
@@ -43,7 +43,7 @@
             android:summary="@string/prefs_threads_summary"
             android:entryValues="@array/engine_threads_values"
             android:entries="@array/engine_threads_texts"
-            android:defaultValue="0">
+            android:defaultValue="@string/engine_threads_default">
         </ListPreference>
     </PreferenceCategory>
     <PreferenceCategory
@@ -54,7 +54,7 @@
             android:summary="@string/prefs_movesPerSession_summary"
             android:entryValues="@array/moves_per_session_values"
             android:entries="@array/moves_per_session_texts"
-            android:defaultValue="60">
+            android:defaultValue="@string/moves_per_session_default">
         </ListPreference>
         <ListPreference
             android:key="timeControl"
@@ -62,7 +62,7 @@
             android:summary="@string/prefs_timeControl_summary"
             android:entryValues="@array/time_control_values"
             android:entries="@array/time_control_texts"
-            android:defaultValue="300000">
+            android:defaultValue="@string/time_control_default">
         </ListPreference>
         <ListPreference
             android:key="timeIncrement"
@@ -70,7 +70,7 @@
             android:summary="@string/prefs_timeIncrement_summary"
             android:entryValues="@array/time_increment_values"
             android:entries="@array/time_increment_texts"
-            android:defaultValue="0">
+            android:defaultValue="@string/time_increment_default">
         </ListPreference>
     </PreferenceCategory>
     <PreferenceCategory
@@ -99,7 +99,7 @@
             android:summary="@string/prefs_thinkingArrows_summary"
             android:entryValues="@array/thinking_arrows_values"
             android:entries="@array/thinking_arrows_texts"
-            android:defaultValue="2">
+            android:defaultValue="@string/thinking_arrows_default">
         </ListPreference>
     </PreferenceCategory>
     <PreferenceCategory
@@ -145,7 +145,7 @@
             android:summary="@string/prefs_scrollSensitivity_summary"
             android:entryValues="@array/scroll_sensitivity_values"
             android:entries="@array/scroll_sensitivity_texts"
-            android:defaultValue="2">
+            android:defaultValue="@string/scroll_sensitivity_default">
         </ListPreference>
         <CheckBoxPreference
             android:key="invertScrollDirection"
@@ -159,7 +159,7 @@
             android:summary="@string/prefs_fontSize_summary"
             android:entryValues="@array/font_size_values"
             android:entries="@array/font_size_texts"
-            android:defaultValue="12">
+            android:defaultValue="@string/font_size_default">
         </ListPreference>
         <CheckBoxPreference
             android:key="largeButtons"
@@ -261,7 +261,7 @@
                 android:summary="@string/prefs_bookMaxLength_summary"
                 android:entryValues="@array/book_line_length_values"
                 android:entries="@array/book_line_length_texts"
-                android:defaultValue="1000000">
+                android:defaultValue="@string/book_line_length_default">
             </ListPreference>
             <CheckBoxPreference
                 android:key="bookPreferMainLines"

@@ -9,6 +9,8 @@
        <item>stockfish</item>
        <item>cuckoochess</item>
     </string-array>
+    <string name="engine_default">stockfish</string>
+
     <string-array name="engine_threads_texts">
         <item>Automatic</item>
         <item>1</item>
@@ -23,6 +25,8 @@
         <item>3</item>
         <item>4</item>
     </string-array>
+    <string name="engine_threads_default">0</string>
+
     <string-array name="moves_per_session_texts">
         <item>Whole Game</item>
         <item>1 move</item>
@@ -43,6 +47,8 @@
         <item>50</item>
         <item>60</item>
     </string-array>
+    <string name="moves_per_session_default">60</string>
+
     <string-array name="time_control_texts">
         <item>15 seconds</item>
         <item>30 seconds</item>
@@ -73,6 +79,8 @@
         <item>5400000</item>
         <item>7200000</item>
     </string-array>
+    <string name="time_control_default">300000</string>
+
     <string-array name="time_increment_texts">
         <item>0s</item>
         <item>1s</item>
@@ -99,6 +107,8 @@
         <item>30000</item>
         <item>60000</item>
     </string-array>
+    <string name="time_increment_default">0</string>
+
     <string-array name="font_size_texts">
         <item>Small</item>
         <item>Medium</item>
@@ -111,6 +121,8 @@
         <item>16</item>
         <item>21</item>
     </string-array>
+    <string name="font_size_default">12</string>
+
     <string-array name="thinking_arrows_texts">
         <item>No arrows</item>
         <item>Max 1 Arrow</item>
@@ -129,6 +141,8 @@
         <item>5</item>
         <item>6</item>
     </string-array>
+    <string name="thinking_arrows_default">2</string>
+
     <string-array name="scroll_sensitivity_texts">
         <item>Off</item>
         <item>Slowest</item>
@@ -145,15 +159,8 @@
         <item>1</item>
         <item>0.5</item>
     </string-array>
-    <string-array name="book_line_length_values">
-        <item>5</item>
-        <item>10</item>
-        <item>15</item>
-        <item>20</item>
-        <item>30</item>
-        <item>50</item>
-        <item>1000000</item>
-    </string-array>
+    <string name="scroll_sensitivity_default">2</string>
+
     <string-array name="book_line_length_texts">
         <item>5 moves</item>
         <item>10 moves</item>
@@ -163,6 +170,17 @@
         <item>50 moves</item>
         <item>Unlimited</item>
     </string-array>
+        <string-array name="book_line_length_values">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>30</item>
+        <item>50</item>
+        <item>1000000</item>
+    </string-array>
+    <string name="book_line_length_default">1000000</string>
+
     <string name="about_info">\
 <b>About</b>\n\
 <i>DroidFish</i> is an Android port of the famous <i>stockfish 2.1.1</i> chess engine. \
