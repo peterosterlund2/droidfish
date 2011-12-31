@@ -31,6 +31,8 @@ int main(int argc, char* argv[]);
 static int fdFromChild = -1;
 static int fdToChild = -1;
 
+static int childpid = -1;
+
 /*
  * Class:     org_petero_droidfish_engine_NativePipedProcess
  * Method:    startProcess
@@ -39,13 +41,16 @@ static int fdToChild = -1;
 extern "C" JNIEXPORT void JNICALL Java_org_petero_droidfish_engine_NativePipedProcess_startProcess
 		(JNIEnv* env, jobject obj)
 {
+    if (childpid != -1)
+        kill(childpid, SIGKILL);
+
 	int fd1[2];		/* parent -> child */
     int fd2[2];		/* child -> parent */
     if (pipe(fd1) < 0)
     	exit(1);
     if (pipe(fd2) < 0)
     	exit(1);
-    int childpid = fork();
+    childpid = fork();
     if (childpid == -1) {
         exit(1);
     }

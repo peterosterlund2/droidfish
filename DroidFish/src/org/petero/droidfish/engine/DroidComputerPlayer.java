@@ -302,6 +302,7 @@ public class DroidComputerPlayer {
     /** Start an engine, if not already started.
      * Will shut down old engine first, if needed. */
     public final synchronized void queueStartEngine(int id, String engine) {
+        killOldEngine(engine);
         stopSearch();
         searchRequest = SearchRequest.startRequest(id, engine);
         handleQueue();
@@ -314,6 +315,7 @@ public class DroidComputerPlayer {
      * command, such as "draw" and "resign".
      */
     public final synchronized void queueSearchRequest(SearchRequest sr) {
+        killOldEngine(sr.engine);
         stopSearch();
 
         if (sr.ponderMove != null)
@@ -364,6 +366,7 @@ public class DroidComputerPlayer {
 
     /** Start analyzing a position. */
     public final synchronized void queueAnalyzeRequest(SearchRequest sr) {
+        killOldEngine(sr.engine);
         stopSearch();
 
         // If no legal moves, there is nothing to analyze
@@ -383,6 +386,12 @@ public class DroidComputerPlayer {
         }
         if (engineState.state == MainState.IDLE)
             handleIdleState();
+    }
+
+    private void killOldEngine(String engine) {
+        if (engine.equals(engineState.engine))
+            return;
+        shutdownEngine();
     }
 
     /** Tell engine to stop searching. */
@@ -562,7 +571,10 @@ public class DroidComputerPlayer {
     private final void monitorLoop() {
         while (true) {
             int timeout = getReadTimeout();
-            String s = uciEngine.readLineFromEngine(timeout);
+            UCIEngine uci = uciEngine;
+            if (uci == null)
+                return;
+            String s = uci.readLineFromEngine(timeout);
             if (Thread.currentThread().isInterrupted())
                 return;
             processEngineOutput(s);
