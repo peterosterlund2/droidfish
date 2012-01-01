@@ -371,7 +371,8 @@ public class PGNFile {
             copyData(fileReader, fileWriter, fileReader.length() - gi.endPos);
             fileReader.close();
             fileWriter.close();
-            tmpFile.renameTo(fileName);
+            if (!tmpFile.renameTo(fileName))
+                throw new IOException();
             Toast.makeText(context, R.string.game_saved, Toast.LENGTH_SHORT).show();
             return true;
         } catch (IOException e) {
