@@ -16,6 +16,8 @@
         <item>3</item>
         <item>4</item>
     </string-array>
+    <string name="engine_threads_default">0</string>
+
     <string-array name="moves_per_session_texts">
         <item>Ganzes Spiel</item>
         <item>1 Zug</item>
@@ -36,6 +38,8 @@
         <item>50</item>
         <item>60</item>
     </string-array>
+    <string name="moves_per_session_default">60</string>
+
     <string-array name="time_control_texts">
         <item>15 Sekunden</item>
         <item>30 Sekunden</item>
@@ -66,6 +70,8 @@
         <item>5400000</item>
         <item>7200000</item>
     </string-array>
+    <string name="time_control_default">120000</string>
+
     <string-array name="time_increment_texts">
         <item>0s</item>
         <item>1s</item>
@@ -92,6 +98,8 @@
         <item>30000</item>
         <item>60000</item>
     </string-array>
+    <string name="time_increment_default">0</string>
+
     <string-array name="font_size_texts">
         <item>Klein</item>
         <item>Mittel</item>
@@ -104,6 +112,8 @@
         <item>16</item>
         <item>21</item>
     </string-array>
+    <string name="font_size_default">12</string>
+
     <string-array name="thinking_arrows_texts">
         <item>Keine Pfeile</item>
         <item>Max. 1 Pfeil</item>
@@ -122,6 +132,8 @@
         <item>5</item>
         <item>6</item>
     </string-array>
+    <string name="thinking_arrows_default">2</string>
+
     <string-array name="scroll_sensitivity_texts">
         <item>Aus</item>
         <item>Sehr langsam</item>
@@ -138,15 +150,8 @@
         <item>1</item>
         <item>0.5</item>
     </string-array>
-    <string-array name="book_line_length_values">
-        <item>5</item>
-        <item>10</item>
-        <item>15</item>
-        <item>20</item>
-        <item>30</item>
-        <item>50</item>
-        <item>1000000</item>
-    </string-array>
+    <string name="scroll_sensitivity_default">2</string>
+
     <string-array name="book_line_length_texts">
         <item>5 Züge</item>
         <item>10 Züge</item>
@@ -156,6 +161,17 @@
         <item>50 Züge</item>
         <item>Unbegrenzt</item>
     </string-array>
+    <string-array name="book_line_length_values">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>30</item>
+        <item>50</item>
+        <item>1000000</item>
+    </string-array>
+    <string name="book_line_length_default">1000000</string>
+
     <string name="about_info">\
 <b>Information</b>\n\
 <i>DroidFish</i> ist eine Android-Version von <i>Stockfish 2.2</i>, \
@@ -365,7 +381,6 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="delete_file">Datei löschen</string>
     <string name="delete_file_question">Datei löschen?</string>
     <string name="delete_named_file">Datei %s löschen?</string>
-
     <string name="game_saved">Partie gespeichert</string>
     <string name="failed_to_save_game">Speichern der Partie nicht möglich</string>
     <string name="failed_to_delete_game">Löschen der Partie nicht möglich</string>
@@ -374,6 +389,8 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="before_selected">Vor der Auswahl</string>
     <string name="after_selected">Nach der Auswahl</string>
     <string name="replace_selected">Auswahl ersetzen</string>
+    <string name="stockfish_engine">Stockfish</string>
+    <string name="cuckoochess_engine">CuckooChess</string>
 
     <string name="err_too_few_spaces">Zuwenig Felder</string>
     <string name="err_invalid_piece">Unzulässige Figur</string>
