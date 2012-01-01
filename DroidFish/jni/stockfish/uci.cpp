@@ -1,7 +1,7 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2010 Marco Costalba, Joona Kiiski, Tord Romstad
+  Copyright (C) 2008-2012 Marco Costalba, Joona Kiiski, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -17,97 +17,112 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cassert>
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include "evaluate.h"
 #include "misc.h"
-#include "move.h"
 #include "position.h"
 #include "search.h"
+#include "thread.h"
 #include "ucioption.h"
 
 using namespace std;
 
 namespace {
 
-  // FEN string for the initial position
-  const string StartPositionFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+  // FEN string of the initial position, normal chess
+  const char* StartFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
-  // UCIParser is a class for parsing UCI input. The class
-  // is actually a string stream built on a given input string.
-  typedef istringstream UCIParser;
+  // Keep track of position keys along the setup moves (from start position to the
+  // position just before to start searching). This is needed by draw detection
+  // where, due to 50 moves rule, we need to check at most 100 plies back.
+  StateInfo StateRingBuf[102], *SetupState = StateRingBuf;
 
-  void set_option(UCIParser& up);
-  void set_position(Position& pos, UCIParser& up);
-  bool go(Position& pos, UCIParser& up);
-  void perft(Position& pos, UCIParser& up);
+  void set_option(istringstream& up);
+  void set_position(Position& pos, istringstream& up);
+  void go(Position& pos, istringstream& up);
+  void perft(Position& pos, istringstream& up);
 }
 
 
-/// execute_uci_command() takes a string as input, uses a UCIParser
-/// object to parse this text string as a UCI command, and calls
-/// the appropriate functions. In addition to the UCI commands,
-/// the function also supports a few debug commands.
+/// Wait for a command from the user, parse this text string as an UCI command,
+/// and call the appropriate functions. Also intercepts EOF from stdin to ensure
+/// that we exit gracefully if the GUI dies unexpectedly. In addition to the UCI
+/// commands, the function also supports a few debug commands.
 
-bool execute_uci_command(const string& cmd) {
+void uci_loop() {
 
-  static Position pos(StartPositionFEN, false, 0); // The root position
+  Position pos(StartFEN, false, 0); // The root position
+  string cmd, token;
 
-  UCIParser up(cmd);
-  string token;
-
-  up >> token; // operator>>() skips any whitespace
-
-  if (token == "quit")
-      return false;
-
-  if (token == "go")
-      return go(pos, up);
-
-  if (token == "ucinewgame")
-      pos.from_fen(StartPositionFEN, false);
-
-  else if (token == "isready")
-      cout << "readyok" << endl;
-
-  else if (token == "position")
-      set_position(pos, up);
-
-  else if (token == "setoption")
-      set_option(up);
-
-  else if (token == "perft")
-      perft(pos, up);
-
-  else if (token == "d")
-      pos.print();
-
-  else if (token == "flip")
-      pos.flip();
-
-  else if (token == "eval")
+  while (token != "quit")
   {
-      read_evaluation_uci_options(pos.side_to_move());
-      cout << trace_evaluate(pos) << endl;
+      if (!getline(cin, cmd)) // Block here waiting for input
+          cmd = "quit";
+
+      istringstream is(cmd);
+
+      is >> skipws >> token;
+
+      if (token == "quit" || token == "stop")
+          Threads.stop_thinking();
+
+      else if (token == "ponderhit")
+      {
+          // The opponent has played the expected move. GUI sends "ponderhit" if
+          // we were told to ponder on the same move the opponent has played. We
+          // should continue searching but switching from pondering to normal search.
+          Search::Limits.ponder = false;
+
+          if (Search::Signals.stopOnPonderhit)
+              Threads.stop_thinking();
+      }
+
+      else if (token == "go")
+          go(pos, is);
+
+      else if (token == "ucinewgame")
+          pos.from_fen(StartFEN, false);
+
+      else if (token == "isready")
+          cout << "readyok" << endl;
+
+      else if (token == "position")
+          set_position(pos, is);
+
+      else if (token == "setoption")
+          set_option(is);
+
+      else if (token == "perft")
+          perft(pos, is);
+
+      else if (token == "d")
+          pos.print();
+
+      else if (token == "flip")
+          pos.flip_me();
+
+      else if (token == "eval")
+      {
+          read_evaluation_uci_options(pos.side_to_move());
+          cout << trace_evaluate(pos) << endl;
+      }
+
+      else if (token == "key")
+          cout << "key: " << hex     << pos.key()
+               << "\nmaterial key: " << pos.material_key()
+               << "\npawn key: "     << pos.pawn_key() << endl;
+
+      else if (token == "uci")
+          cout << "id name "     << engine_info(true)
+               << "\n"           << Options
+               << "\nuciok"      << endl;
+      else
+          cout << "Unknown command: " << cmd << endl;
   }
-
-  else if (token == "key")
-      cout << "key: " << hex     << pos.get_key()
-           << "\nmaterial key: " << pos.get_material_key()
-           << "\npawn key: "     << pos.get_pawn_key() << endl;
-
-  else if (token == "uci")
-      cout << "id name "     << engine_name()
-           << "\nid author " << engine_authors()
-           << "\n"           << Options.print_all()
-           << "\nuciok"      << endl;
-  else
-      cout << "Unknown command: " << cmd << endl;
-
-  return true;
 }
 
 
@@ -118,127 +133,127 @@ namespace {
   // fen string ("fen") or the starting position ("startpos") and then
   // makes the moves given in the following move list ("moves").
 
-  void set_position(Position& pos, UCIParser& up) {
+  void set_position(Position& pos, istringstream& is) {
 
+    Move m;
     string token, fen;
 
-    up >> token; // operator>>() skips any whitespace
+    is >> token;
 
     if (token == "startpos")
     {
-        pos.from_fen(StartPositionFEN, false);
-        up >> token; // Consume "moves" token if any
+        fen = StartFEN;
+        is >> token; // Consume "moves" token if any
     }
     else if (token == "fen")
-    {
-        while (up >> token && token != "moves")
+        while (is >> token && token != "moves")
             fen += token + " ";
+    else
+        return;
 
-        pos.from_fen(fen, Options["UCI_Chess960"].value<bool>());
-    }
-    else return;
+    pos.from_fen(fen, Options["UCI_Chess960"]);
 
     // Parse move list (if any)
-    while (up >> token)
-        pos.do_setup_move(move_from_uci(pos, token));
+    while (is >> token && (m = move_from_uci(pos, token)) != MOVE_NONE)
+    {
+        pos.do_move(m, *SetupState);
+
+        // Increment pointer to StateRingBuf circular buffer
+        if (++SetupState - StateRingBuf >= 102)
+            SetupState = StateRingBuf;
+    }
   }
 
 
-  // set_option() is called when engine receives the "setoption" UCI
-  // command. The function updates the corresponding UCI option ("name")
-  // to the given value ("value").
+  // set_option() is called when engine receives the "setoption" UCI command. The
+  // function updates the UCI option ("name") to the given value ("value").
 
-  void set_option(UCIParser& up) {
+  void set_option(istringstream& is) {
 
-    string token, name;
-    string value = "true"; // UCI buttons don't have a "value" field
+    string token, name, value;
 
-    up >> token; // Consume "name" token
-    up >> name;  // Read option name
+    is >> token; // Consume "name" token
 
-    // Handle names with included spaces
-    while (up >> token && token != "value")
-        name += " " + token;
+    // Read option name (can contain spaces)
+    while (is >> token && token != "value")
+        name += string(" ", !name.empty()) + token;
 
-    up >> value; // Read option value
+    // Read option value (can contain spaces)
+    while (is >> token)
+        value += string(" ", !value.empty()) + token;
 
-    // Handle values with included spaces
-    while (up >> token)
-        value += " " + token;
-
-    if (Options.find(name) != Options.end())
-        Options[name].set_value(value);
-    else
+    if (!Options.count(name))
         cout << "No such option: " << name << endl;
+
+    else if (value.empty()) // UCI buttons don't have a value
+        Options[name] = true;
+
+    else
+        Options[name] = value;
   }
 
 
-  // go() is called when engine receives the "go" UCI command. The
-  // function sets the thinking time and other parameters from the input
-  // string, and then calls think(). Returns false if a quit command
-  // is received while thinking, true otherwise.
+  // go() is called when engine receives the "go" UCI command. The function sets
+  // the thinking time and other parameters from the input string, and then starts
+  // the main searching thread.
 
-  bool go(Position& pos, UCIParser& up) {
+  void go(Position& pos, istringstream& is) {
 
     string token;
-    SearchLimits limits;
-    Move searchMoves[MAX_MOVES], *cur = searchMoves;
+    Search::LimitsType limits;
+    std::vector<Move> searchMoves;
     int time[] = { 0, 0 }, inc[] = { 0, 0 };
 
-    while (up >> token)
+    while (is >> token)
     {
         if (token == "infinite")
             limits.infinite = true;
         else if (token == "ponder")
             limits.ponder = true;
         else if (token == "wtime")
-            up >> time[WHITE];
+            is >> time[WHITE];
         else if (token == "btime")
-            up >> time[BLACK];
+            is >> time[BLACK];
         else if (token == "winc")
-            up >> inc[WHITE];
+            is >> inc[WHITE];
         else if (token == "binc")
-            up >> inc[BLACK];
+            is >> inc[BLACK];
         else if (token == "movestogo")
-            up >> limits.movesToGo;
+            is >> limits.movesToGo;
         else if (token == "depth")
-            up >> limits.maxDepth;
+            is >> limits.maxDepth;
         else if (token == "nodes")
-            up >> limits.maxNodes;
+            is >> limits.maxNodes;
         else if (token == "movetime")
-            up >> limits.maxTime;
+            is >> limits.maxTime;
         else if (token == "searchmoves")
-            while (up >> token)
-                *cur++ = move_from_uci(pos, token);
+            while (is >> token)
+                searchMoves.push_back(move_from_uci(pos, token));
     }
 
-    *cur = MOVE_NONE;
     limits.time = time[pos.side_to_move()];
     limits.increment = inc[pos.side_to_move()];
 
-    assert(pos.is_ok());
-
-    return think(pos, limits, searchMoves);
+    Threads.start_thinking(pos, limits, searchMoves, true);
   }
 
 
-  // perft() is called when engine receives the "perft" command.
-  // The function calls perft() passing the required search depth
-  // then prints counted leaf nodes and elapsed time.
+  // perft() is called when engine receives the "perft" command. The function
+  // calls perft() with the required search depth then prints counted leaf nodes
+  // and elapsed time.
 
-  void perft(Position& pos, UCIParser& up) {
+  void perft(Position& pos, istringstream& is) {
 
     int depth, time;
-    int64_t n;
 
-    if (!(up >> depth))
+    if (!(is >> depth))
         return;
 
-    time = get_system_time();
+    time = system_time();
 
-    n = perft(pos, depth * ONE_PLY);
+    int64_t n = Search::perft(pos, depth * ONE_PLY);
 
-    time = get_system_time() - time;
+    time = system_time() - time;
 
     std::cout << "\nNodes " << n
               << "\nTime (ms) " << time

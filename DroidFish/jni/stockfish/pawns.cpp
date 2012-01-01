@@ -1,7 +1,7 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2010 Marco Costalba, Joona Kiiski, Tord Romstad
+  Copyright (C) 2008-2012 Marco Costalba, Joona Kiiski, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -72,16 +72,14 @@ namespace {
 }
 
 
-/// PawnInfoTable::get_pawn_info() takes a position object as input, computes
+/// PawnInfoTable::pawn_info() takes a position object as input, computes
 /// a PawnInfo object, and returns a pointer to it. The result is also stored
 /// in an hash table, so we don't have to recompute everything when the same
 /// pawn structure occurs again.
 
-PawnInfo* PawnInfoTable::get_pawn_info(const Position& pos) const {
+PawnInfo* PawnInfoTable::pawn_info(const Position& pos) const {
 
-  assert(pos.is_ok());
-
-  Key key = pos.get_pawn_key();
+  Key key = pos.pawn_key();
   PawnInfo* pi = probe(key);
 
   // If pi->key matches the position's pawn hash key, it means that we
@@ -118,7 +116,6 @@ template<Color Us>
 Score PawnInfoTable::evaluate_pawns(const Position& pos, Bitboard ourPawns,
                                     Bitboard theirPawns, PawnInfo* pi) {
 
-  const BitCountType Max15 = CpuIs64Bit ? CNT64_MAX15 : CNT32_MAX15;
   const Color Them = (Us == WHITE ? BLACK : WHITE);
 
   Bitboard b;
@@ -127,15 +124,15 @@ Score PawnInfoTable::evaluate_pawns(const Position& pos, Bitboard ourPawns,
   Rank r;
   bool passed, isolated, doubled, opposed, chain, backward, candidate;
   Score value = SCORE_ZERO;
-  const Square* ptr = pos.piece_list_begin(Us, PAWN);
+  const Square* pl = pos.piece_list(Us, PAWN);
 
   // Loop through all pawns of the current color and score each pawn
-  while ((s = *ptr++) != SQ_NONE)
+  while ((s = *pl++) != SQ_NONE)
   {
       assert(pos.piece_on(s) == make_piece(Us, PAWN));
 
-      f = square_file(s);
-      r = square_rank(s);
+      f = file_of(s);
+      r = rank_of(s);
 
       // This file cannot be half open
       pi->halfOpenFiles[Us] &= ~(1 << f);
@@ -184,8 +181,8 @@ Score PawnInfoTable::evaluate_pawns(const Position& pos, Bitboard ourPawns,
       // pawn on neighboring files is higher or equal than the number of
       // enemy pawns in the forward direction on the neighboring files.
       candidate =   !(opposed | passed | backward | isolated)
-                 && (b = attack_span_mask(Them, s + pawn_push(Us)) & ourPawns) != EmptyBoardBB
-                 &&  count_1s<Max15>(b) >= count_1s<Max15>(attack_span_mask(Us, s) & theirPawns);
+                 && (b = attack_span_mask(Them, s + pawn_push(Us)) & ourPawns) != 0
+                 &&  popcount<Max15>(b) >= popcount<Max15>(attack_span_mask(Us, s) & theirPawns);
 
       // Passed pawns will be properly scored in evaluation because we need
       // full attack info to evaluate passed pawns. Only the frontmost passed
@@ -225,12 +222,12 @@ Score PawnInfo::updateShelter(const Position& pos, Square ksq) {
 
   if (relative_rank(Us, ksq) <= RANK_4)
   {
-      pawns = pos.pieces(PAWN, Us) & this_and_neighboring_files_bb(ksq);
+      pawns = pos.pieces(PAWN, Us) & this_and_neighboring_files_bb(file_of(ksq));
       r = ksq & (7 << 3);
       for (int i = 0; i < 3; i++)
       {
           r += Shift;
-          shelter += BitCount8Bit[(pawns >> r) & 0xFF] * (64 >> i);
+          shelter += BitCount8Bit[(pawns >> r) & 0xFF] << (6 - i);
       }
   }
   kingSquares[Us] = ksq;

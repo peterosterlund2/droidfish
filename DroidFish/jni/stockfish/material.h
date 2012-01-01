@@ -1,7 +1,7 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2010 Marco Costalba, Joona Kiiski, Tord Romstad
+  Copyright (C) 2008-2012 Marco Costalba, Joona Kiiski, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -26,6 +26,13 @@
 #include "types.h"
 
 const int MaterialTableSize = 8192;
+
+/// Game phase
+enum Phase {
+  PHASE_ENDGAME = 0,
+  PHASE_MIDGAME = 128
+};
+
 
 /// MaterialInfo is a class which contains various information about a
 /// material configuration. It contains a material balance evaluation,
@@ -61,13 +68,13 @@ private:
 
 
 /// The MaterialInfoTable class represents a pawn hash table. The most important
-/// method is get_material_info, which returns a pointer to a MaterialInfo object.
+/// method is material_info(), which returns a pointer to a MaterialInfo object.
 
 class MaterialInfoTable : public SimpleHash<MaterialInfo, MaterialTableSize> {
 public:
   ~MaterialInfoTable();
   void init();
-  MaterialInfo* get_material_info(const Position& pos) const;
+  MaterialInfo* material_info(const Position& pos) const;
   static Phase game_phase(const Position& pos);
 
 private:
@@ -90,12 +97,12 @@ inline ScaleFactor MaterialInfo::scale_factor(const Position& pos, Color c) cons
   if (!scalingFunction[c])
       return ScaleFactor(factor[c]);
 
-  ScaleFactor sf = scalingFunction[c]->apply(pos);
+  ScaleFactor sf = (*scalingFunction[c])(pos);
   return sf == SCALE_FACTOR_NONE ? ScaleFactor(factor[c]) : sf;
 }
 
 inline Value MaterialInfo::evaluate(const Position& pos) const {
-  return evaluationFunction->apply(pos);
+  return (*evaluationFunction)(pos);
 }
 
 inline Score MaterialInfo::material_value() const {

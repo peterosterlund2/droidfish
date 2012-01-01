@@ -1,7 +1,7 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2010 Marco Costalba, Joona Kiiski, Tord Romstad
+  Copyright (C) 2008-2012 Marco Costalba, Joona Kiiski, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 
 #include <cassert>
 #include <cstring>
+#include <algorithm>
 
 #include "material.h"
 
@@ -49,13 +50,13 @@ namespace {
 
   // Endgame evaluation and scaling functions accessed direcly and not through
   // the function maps because correspond to more then one material hash key.
-  Endgame<Value, KmmKm> EvaluateKmmKm[] = { Endgame<Value, KmmKm>(WHITE), Endgame<Value, KmmKm>(BLACK) };
-  Endgame<Value, KXK>   EvaluateKXK[]   = { Endgame<Value, KXK>(WHITE),   Endgame<Value, KXK>(BLACK) };
+  Endgame<KmmKm> EvaluateKmmKm[] = { Endgame<KmmKm>(WHITE), Endgame<KmmKm>(BLACK) };
+  Endgame<KXK>   EvaluateKXK[]   = { Endgame<KXK>(WHITE),   Endgame<KXK>(BLACK) };
 
-  Endgame<ScaleFactor, KBPsK>  ScaleKBPsK[]  = { Endgame<ScaleFactor, KBPsK>(WHITE),  Endgame<ScaleFactor, KBPsK>(BLACK) };
-  Endgame<ScaleFactor, KQKRPs> ScaleKQKRPs[] = { Endgame<ScaleFactor, KQKRPs>(WHITE), Endgame<ScaleFactor, KQKRPs>(BLACK) };
-  Endgame<ScaleFactor, KPsK>   ScaleKPsK[]   = { Endgame<ScaleFactor, KPsK>(WHITE),   Endgame<ScaleFactor, KPsK>(BLACK) };
-  Endgame<ScaleFactor, KPKP>   ScaleKPKP[]   = { Endgame<ScaleFactor, KPKP>(WHITE),   Endgame<ScaleFactor, KPKP>(BLACK) };
+  Endgame<KBPsK>  ScaleKBPsK[]  = { Endgame<KBPsK>(WHITE),  Endgame<KBPsK>(BLACK) };
+  Endgame<KQKRPs> ScaleKQKRPs[] = { Endgame<KQKRPs>(WHITE), Endgame<KQKRPs>(BLACK) };
+  Endgame<KPsK>   ScaleKPsK[]   = { Endgame<KPsK>(WHITE),   Endgame<KPsK>(BLACK) };
+  Endgame<KPKP>   ScaleKPKP[]   = { Endgame<KPKP>(WHITE),   Endgame<KPKP>(BLACK) };
 
   // Helper templates used to detect a given material distribution
   template<Color Us> bool is_KXK(const Position& pos) {
@@ -89,15 +90,15 @@ void MaterialInfoTable::init() { Base::init(); if (!funcs) funcs = new Endgames(
 MaterialInfoTable::~MaterialInfoTable() { delete funcs; }
 
 
-/// MaterialInfoTable::get_material_info() takes a position object as input,
+/// MaterialInfoTable::material_info() takes a position object as input,
 /// computes or looks up a MaterialInfo object, and returns a pointer to it.
 /// If the material configuration is not already present in the table, it
 /// is stored there, so we don't have to recompute everything when the
 /// same material configuration occurs again.
 
-MaterialInfo* MaterialInfoTable::get_material_info(const Position& pos) const {
+MaterialInfo* MaterialInfoTable::material_info(const Position& pos) const {
 
-  Key key = pos.get_material_key();
+  Key key = pos.material_key();
   MaterialInfo* mi = probe(key);
 
   // If mi->key matches the position's material hash key, it means that we
@@ -117,7 +118,7 @@ MaterialInfo* MaterialInfoTable::get_material_info(const Position& pos) const {
   // Let's look if we have a specialized evaluation function for this
   // particular material configuration. First we look for a fixed
   // configuration one, then a generic one if previous search failed.
-  if ((mi->evaluationFunction = funcs->get<EndgameBase<Value> >(key)) != NULL)
+  if ((mi->evaluationFunction = funcs->get<Value>(key)) != NULL)
       return mi;
 
   if (is_KXK<WHITE>(pos))
@@ -142,7 +143,7 @@ MaterialInfo* MaterialInfoTable::get_material_info(const Position& pos) const {
       if (   pos.piece_count(WHITE, BISHOP) + pos.piece_count(WHITE, KNIGHT) <= 2
           && pos.piece_count(BLACK, BISHOP) + pos.piece_count(BLACK, KNIGHT) <= 2)
       {
-          mi->evaluationFunction = &EvaluateKmmKm[WHITE];
+          mi->evaluationFunction = &EvaluateKmmKm[pos.side_to_move()];
           return mi;
       }
   }
@@ -154,7 +155,7 @@ MaterialInfo* MaterialInfoTable::get_material_info(const Position& pos) const {
   // scaling functions and we need to decide which one to use.
   EndgameBase<ScaleFactor>* sf;
 
-  if ((sf = funcs->get<EndgameBase<ScaleFactor> >(key)) != NULL)
+  if ((sf = funcs->get<ScaleFactor>(key)) != NULL)
   {
       mi->scalingFunction[sf->color()] = sf;
       return mi;
@@ -203,13 +204,13 @@ MaterialInfo* MaterialInfoTable::get_material_info(const Position& pos) const {
   if (pos.piece_count(WHITE, PAWN) == 0 && npm_w - npm_b <= BishopValueMidgame)
   {
       mi->factor[WHITE] = uint8_t
-      (npm_w == npm_b || npm_w < RookValueMidgame ? 0 : NoPawnsSF[Min(pos.piece_count(WHITE, BISHOP), 2)]);
+      (npm_w == npm_b || npm_w < RookValueMidgame ? 0 : NoPawnsSF[std::min(pos.piece_count(WHITE, BISHOP), 2)]);
   }
 
   if (pos.piece_count(BLACK, PAWN) == 0 && npm_b - npm_w <= BishopValueMidgame)
   {
       mi->factor[BLACK] = uint8_t
-      (npm_w == npm_b || npm_b < RookValueMidgame ? 0 : NoPawnsSF[Min(pos.piece_count(BLACK, BISHOP), 2)]);
+      (npm_w == npm_b || npm_b < RookValueMidgame ? 0 : NoPawnsSF[std::min(pos.piece_count(BLACK, BISHOP), 2)]);
   }
 
   // Compute the space weight
@@ -253,7 +254,7 @@ int MaterialInfoTable::imbalance(const int pieceCount[][8]) {
               + RedundantQueenPenalty * pieceCount[Us][QUEEN];
 
   // Second-degree polynomial material imbalance by Tord Romstad
-  for (pt1 = PIECE_TYPE_NONE; pt1 <= QUEEN; pt1++)
+  for (pt1 = NO_PIECE_TYPE; pt1 <= QUEEN; pt1++)
   {
       pc = pieceCount[Us][pt1];
       if (!pc)
@@ -261,7 +262,7 @@ int MaterialInfoTable::imbalance(const int pieceCount[][8]) {
 
       v = LinearCoefficients[pt1];
 
-      for (pt2 = PIECE_TYPE_NONE; pt2 <= pt1; pt2++)
+      for (pt2 = NO_PIECE_TYPE; pt2 <= pt1; pt2++)
           v +=  QuadraticCoefficientsSameColor[pt1][pt2] * pieceCount[Us][pt2]
               + QuadraticCoefficientsOppositeColor[pt1][pt2] * pieceCount[Them][pt2];
 

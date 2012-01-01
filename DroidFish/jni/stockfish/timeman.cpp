@@ -1,7 +1,7 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2010 Marco Costalba, Joona Kiiski, Tord Romstad
+  Copyright (C) 2008-2012 Marco Costalba, Joona Kiiski, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 */
 
 #include <cmath>
+#include <algorithm>
 
 #include "misc.h"
 #include "search.h"
@@ -64,7 +65,7 @@ namespace {
     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 2, 2, 2, 2,
     2, 1, 1, 1, 1, 1, 1, 1 };
 
-  int move_importance(int ply) { return MoveImportance[Min(ply, 511)]; }
+  int move_importance(int ply) { return MoveImportance[std::min(ply, 511)]; }
 
 
   /// Function Prototypes
@@ -72,18 +73,18 @@ namespace {
   enum TimeType { OptimumTime, MaxTime };
 
   template<TimeType>
-  int remaining(int myTime, int movesToGo, int currentPly);
+  int remaining(int myTime, int movesToGo, int fullMoveNumber);
 }
 
 
 void TimeManager::pv_instability(int curChanges, int prevChanges) {
 
-    unstablePVExtraTime =  curChanges  * (optimumSearchTime / 2)
-                         + prevChanges * (optimumSearchTime / 3);
+  unstablePVExtraTime =  curChanges  * (optimumSearchTime / 2)
+                       + prevChanges * (optimumSearchTime / 3);
 }
 
 
-void TimeManager::init(const SearchLimits& limits, int currentPly)
+void TimeManager::init(const Search::LimitsType& limits, int currentPly)
 {
   /* We support four different kind of time controls:
 
@@ -103,10 +104,10 @@ void TimeManager::init(const SearchLimits& limits, int currentPly)
   int hypMTG, hypMyTime, t1, t2;
 
   // Read uci parameters
-  int emergencyMoveHorizon = Options["Emergency Move Horizon"].value<int>();
-  int emergencyBaseTime    = Options["Emergency Base Time"].value<int>();
-  int emergencyMoveTime    = Options["Emergency Move Time"].value<int>();
-  int minThinkingTime      = Options["Minimum Thinking Time"].value<int>();
+  int emergencyMoveHorizon = Options["Emergency Move Horizon"];
+  int emergencyBaseTime    = Options["Emergency Base Time"];
+  int emergencyMoveTime    = Options["Emergency Move Time"];
+  int minThinkingTime      = Options["Minimum Thinking Time"];
 
   // Initialize to maximum values but unstablePVExtraTime that is reset
   unstablePVExtraTime = 0;
@@ -114,28 +115,28 @@ void TimeManager::init(const SearchLimits& limits, int currentPly)
 
   // We calculate optimum time usage for different hypothetic "moves to go"-values and choose the
   // minimum of calculated search time values. Usually the greatest hypMTG gives the minimum values.
-  for (hypMTG = 1; hypMTG <= (limits.movesToGo ? Min(limits.movesToGo, MoveHorizon) : MoveHorizon); hypMTG++)
+  for (hypMTG = 1; hypMTG <= (limits.movesToGo ? std::min(limits.movesToGo, MoveHorizon) : MoveHorizon); hypMTG++)
   {
       // Calculate thinking time for hypothetic "moves to go"-value
       hypMyTime =  limits.time
                  + limits.increment * (hypMTG - 1)
                  - emergencyBaseTime
-                 - emergencyMoveTime * Min(hypMTG, emergencyMoveHorizon);
+                 - emergencyMoveTime * std::min(hypMTG, emergencyMoveHorizon);
 
-      hypMyTime = Max(hypMyTime, 0);
+      hypMyTime = std::max(hypMyTime, 0);
 
       t1 = minThinkingTime + remaining<OptimumTime>(hypMyTime, hypMTG, currentPly);
       t2 = minThinkingTime + remaining<MaxTime>(hypMyTime, hypMTG, currentPly);
 
-      optimumSearchTime = Min(optimumSearchTime, t1);
-      maximumSearchTime = Min(maximumSearchTime, t2);
+      optimumSearchTime = std::min(optimumSearchTime, t1);
+      maximumSearchTime = std::min(maximumSearchTime, t2);
   }
 
-  if (Options["Ponder"].value<bool>())
+  if (Options["Ponder"])
       optimumSearchTime += optimumSearchTime / 4;
 
   // Make sure that maxSearchTime is not over absoluteMaxSearchTime
-  optimumSearchTime = Min(optimumSearchTime, maximumSearchTime);
+  optimumSearchTime = std::min(optimumSearchTime, maximumSearchTime);
 }
 
 
@@ -156,6 +157,6 @@ namespace {
     float ratio1 = (TMaxRatio * thisMoveImportance) / float(TMaxRatio * thisMoveImportance + otherMovesImportance);
     float ratio2 = (thisMoveImportance + TStealRatio * otherMovesImportance) / float(thisMoveImportance + otherMovesImportance);
 
-    return int(floor(myTime * Min(ratio1, ratio2)));
+    return int(floor(myTime * std::min(ratio1, ratio2)));
   }
 }

@@ -1,7 +1,7 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2010 Marco Costalba, Joona Kiiski, Tord Romstad
+  Copyright (C) 2008-2012 Marco Costalba, Joona Kiiski, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -23,27 +23,6 @@
 
 #include "types.h"
 
-const Bitboard EmptyBoardBB = 0;
-
-const Bitboard FileABB = 0x0101010101010101ULL;
-const Bitboard FileBBB = FileABB << 1;
-const Bitboard FileCBB = FileABB << 2;
-const Bitboard FileDBB = FileABB << 3;
-const Bitboard FileEBB = FileABB << 4;
-const Bitboard FileFBB = FileABB << 5;
-const Bitboard FileGBB = FileABB << 6;
-const Bitboard FileHBB = FileABB << 7;
-
-const Bitboard Rank1BB = 0xFF;
-const Bitboard Rank2BB = Rank1BB << (8 * 1);
-const Bitboard Rank3BB = Rank1BB << (8 * 2);
-const Bitboard Rank4BB = Rank1BB << (8 * 3);
-const Bitboard Rank5BB = Rank1BB << (8 * 4);
-const Bitboard Rank6BB = Rank1BB << (8 * 5);
-const Bitboard Rank7BB = Rank1BB << (8 * 6);
-const Bitboard Rank8BB = Rank1BB << (8 * 7);
-
-extern Bitboard SquaresByColorBB[2];
 extern Bitboard FileBB[8];
 extern Bitboard NeighboringFilesBB[8];
 extern Bitboard ThisAndNeighboringFilesBB[8];
@@ -60,17 +39,15 @@ extern Bitboard SquaresInFrontMask[2][64];
 extern Bitboard PassedPawnMask[2][64];
 extern Bitboard AttackSpanMask[2][64];
 
-extern const uint64_t RMult[64];
-extern const int RShift[64];
-extern Bitboard RMask[64];
-extern int RAttackIndex[64];
-extern Bitboard RAttacks[0x19000];
+extern uint64_t RMagics[64];
+extern int RShifts[64];
+extern Bitboard RMasks[64];
+extern Bitboard* RAttacks[64];
 
-extern const uint64_t BMult[64];
-extern const int BShift[64];
-extern Bitboard BMask[64];
-extern int BAttackIndex[64];
-extern Bitboard BAttacks[0x1480];
+extern uint64_t BMagics[64];
+extern int BShifts[64];
+extern Bitboard BMasks[64];
+extern Bitboard* BAttacks[64];
 
 extern Bitboard BishopPseudoAttacks[64];
 extern Bitboard RookPseudoAttacks[64];
@@ -86,11 +63,11 @@ inline Bitboard bit_is_set(Bitboard b, Square s) {
   return b & SetMaskBB[s];
 }
 
-inline void set_bit(Bitboard *b, Square s) {
+inline void set_bit(Bitboard* b, Square s) {
   *b |= SetMaskBB[s];
 }
 
-inline void clear_bit(Bitboard *b, Square s) {
+inline void clear_bit(Bitboard* b, Square s) {
   *b &= ClearMaskBB[s];
 }
 
@@ -102,7 +79,7 @@ inline Bitboard make_move_bb(Square from, Square to) {
   return SetMaskBB[from] | SetMaskBB[to];
 }
 
-inline void do_move_bb(Bitboard *b, Bitboard move_bb) {
+inline void do_move_bb(Bitboard* b, Bitboard move_bb) {
   *b ^= move_bb;
 }
 
@@ -115,7 +92,7 @@ inline Bitboard rank_bb(Rank r) {
 }
 
 inline Bitboard rank_bb(Square s) {
-  return RankBB[square_rank(s)];
+  return RankBB[rank_of(s)];
 }
 
 inline Bitboard file_bb(File f) {
@@ -123,31 +100,23 @@ inline Bitboard file_bb(File f) {
 }
 
 inline Bitboard file_bb(Square s) {
-  return FileBB[square_file(s)];
+  return FileBB[file_of(s)];
 }
 
 
-/// neighboring_files_bb takes a file or a square as input and returns a
-/// bitboard representing all squares on the neighboring files.
+/// neighboring_files_bb takes a file as input and returns a bitboard representing
+/// all squares on the neighboring files.
 
 inline Bitboard neighboring_files_bb(File f) {
   return NeighboringFilesBB[f];
 }
 
-inline Bitboard neighboring_files_bb(Square s) {
-  return NeighboringFilesBB[square_file(s)];
-}
 
-
-/// this_and_neighboring_files_bb takes a file or a square as input and returns
-/// a bitboard representing all squares on the given and neighboring files.
+/// this_and_neighboring_files_bb takes a file as input and returns a bitboard
+/// representing all squares on the given and neighboring files.
 
 inline Bitboard this_and_neighboring_files_bb(File f) {
   return ThisAndNeighboringFilesBB[f];
-}
-
-inline Bitboard this_and_neighboring_files_bb(Square s) {
-  return ThisAndNeighboringFilesBB[square_file(s)];
 }
 
 
@@ -162,7 +131,7 @@ inline Bitboard in_front_bb(Color c, Rank r) {
 }
 
 inline Bitboard in_front_bb(Color c, Square s) {
-  return InFrontBB[c][square_rank(s)];
+  return InFrontBB[c][rank_of(s)];
 }
 
 
@@ -173,31 +142,34 @@ inline Bitboard in_front_bb(Color c, Square s) {
 
 #if defined(IS_64BIT)
 
-inline Bitboard rook_attacks_bb(Square s, Bitboard blockers) {
-  Bitboard b = blockers & RMask[s];
-  return RAttacks[RAttackIndex[s] + ((b * RMult[s]) >> RShift[s])];
+FORCE_INLINE unsigned rook_index(Square s, Bitboard occ) {
+  return unsigned(((occ & RMasks[s]) * RMagics[s]) >> RShifts[s]);
 }
 
-inline Bitboard bishop_attacks_bb(Square s, Bitboard blockers) {
-  Bitboard b = blockers & BMask[s];
-  return BAttacks[BAttackIndex[s] + ((b * BMult[s]) >> BShift[s])];
+FORCE_INLINE unsigned bishop_index(Square s, Bitboard occ) {
+  return unsigned(((occ & BMasks[s]) * BMagics[s]) >> BShifts[s]);
 }
 
 #else // if !defined(IS_64BIT)
 
-inline Bitboard rook_attacks_bb(Square s, Bitboard blockers) {
-  Bitboard b = blockers & RMask[s];
-  return RAttacks[RAttackIndex[s] +
-        (unsigned(int(b) * int(RMult[s]) ^ int(b >> 32) * int(RMult[s] >> 32)) >> RShift[s])];
+FORCE_INLINE unsigned rook_index(Square s, Bitboard occ) {
+  Bitboard b = occ & RMasks[s];
+  return unsigned(int(b) * int(RMagics[s]) ^ int(b >> 32) * int(RMagics[s] >> 32)) >> RShifts[s];
 }
 
-inline Bitboard bishop_attacks_bb(Square s, Bitboard blockers) {
-  Bitboard b = blockers & BMask[s];
-  return BAttacks[BAttackIndex[s] +
-        (unsigned(int(b) * int(BMult[s]) ^ int(b >> 32) * int(BMult[s] >> 32)) >> BShift[s])];
+FORCE_INLINE unsigned bishop_index(Square s, Bitboard occ) {
+  Bitboard b = occ & BMasks[s];
+  return unsigned(int(b) * int(BMagics[s]) ^ int(b >> 32) * int(BMagics[s] >> 32)) >> BShifts[s];
 }
-
 #endif
+
+inline Bitboard rook_attacks_bb(Square s, Bitboard occ) {
+  return RAttacks[s][rook_index(s, occ)];
+}
+
+inline Bitboard bishop_attacks_bb(Square s, Bitboard occ) {
+  return BAttacks[s][bishop_index(s, occ)];
+}
 
 inline Bitboard queen_attacks_bb(Square s, Bitboard blockers) {
   return rook_attacks_bb(s, blockers) | bishop_attacks_bb(s, blockers);
@@ -249,7 +221,16 @@ inline Bitboard attack_span_mask(Color c, Square s) {
 
 inline bool squares_aligned(Square s1, Square s2, Square s3) {
   return  (BetweenBB[s1][s2] | BetweenBB[s1][s3] | BetweenBB[s2][s3])
-        & ((1ULL << s1) | (1ULL << s2) | (1ULL << s3));
+        & (    SetMaskBB[s1] |     SetMaskBB[s2] |     SetMaskBB[s3]);
+}
+
+
+/// same_color_squares() returns a bitboard representing all squares with
+/// the same color of the given square.
+
+inline Bitboard same_color_squares(Square s) {
+  return bit_is_set(0xAA55AA55AA55AA55ULL, s) ?  0xAA55AA55AA55AA55ULL
+                                              : ~0xAA55AA55AA55AA55ULL;
 }
 
 
@@ -290,6 +271,6 @@ extern Square pop_1st_bit(Bitboard* b);
 
 
 extern void print_bitboard(Bitboard b);
-extern void init_bitboards();
+extern void bitboards_init();
 
 #endif // !defined(BITBOARD_H_INCLUDED)

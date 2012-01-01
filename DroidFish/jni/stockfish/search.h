@@ -1,7 +1,7 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2010 Marco Costalba, Joona Kiiski, Tord Romstad
+  Copyright (C) 2008-2012 Marco Costalba, Joona Kiiski, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -21,53 +21,62 @@
 #define SEARCH_H_INCLUDED
 
 #include <cstring>
+#include <vector>
 
-#include "move.h"
 #include "types.h"
 
 class Position;
 struct SplitPoint;
 
-/// The SearchStack struct keeps track of the information we need to remember
-/// from nodes shallower and deeper in the tree during the search.  Each
-/// search thread has its own array of SearchStack objects, indexed by the
-/// current ply.
+namespace Search {
 
-struct SearchStack {
+/// The Stack struct keeps track of the information we need to remember from
+/// nodes shallower and deeper in the tree during the search. Each search thread
+/// has its own array of Stack objects, indexed by the current ply.
+
+struct Stack {
+  SplitPoint* sp;
   int ply;
   Move currentMove;
-  Move mateKiller;
   Move excludedMove;
   Move bestMove;
   Move killers[2];
   Depth reduction;
   Value eval;
   Value evalMargin;
-  bool skipNullMove;
-  SplitPoint* sp;
+  int skipNullMove;
 };
 
 
-/// The SearchLimits struct stores information sent by GUI about available time
+/// The LimitsType struct stores information sent by GUI about available time
 /// to search the current move, maximum depth/time, if we are in analysis mode
 /// or if we have to ponder while is our opponent's side to move.
 
-struct SearchLimits {
+struct LimitsType {
 
-  SearchLimits() { memset(this, 0, sizeof(SearchLimits)); }
+  LimitsType() {  memset(this, 0, sizeof(LimitsType)); }
+  bool useTimeManagement() const { return !(maxTime | maxDepth | maxNodes | infinite); }
 
-  SearchLimits(int t, int i, int mtg, int mt, int md, int mn, bool inf, bool pon)
-              : time(t), increment(i), movesToGo(mtg), maxTime(mt), maxDepth(md),
-                maxNodes(mn), infinite(inf), ponder(pon) {}
-
-  bool useTimeManagement() const { return !(maxTime | maxDepth | maxNodes | int(infinite)); }
-
-  int time, increment, movesToGo, maxTime, maxDepth, maxNodes;
-  bool infinite, ponder;
+  int time, increment, movesToGo, maxTime, maxDepth, maxNodes, infinite, ponder;
 };
 
-extern void init_search();
+
+/// The SignalsType struct stores volatile flags updated during the search
+/// typically in an async fashion, for instance to stop the search by the GUI.
+
+struct SignalsType {
+  bool stopOnPonderhit, firstRootMove, stop, failedLowAtRoot;
+};
+
+extern volatile SignalsType Signals;
+extern LimitsType Limits;
+extern std::vector<Move> SearchMoves;
+extern Position RootPosition;
+
+extern void init();
 extern int64_t perft(Position& pos, Depth depth);
-extern bool think(Position& pos, const SearchLimits& limits, Move searchMoves[]);
+extern void think();
+
+} // namespace
 
 #endif // !defined(SEARCH_H_INCLUDED)

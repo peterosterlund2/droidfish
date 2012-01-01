@@ -1,7 +1,7 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2010 Marco Costalba, Joona Kiiski, Tord Romstad
+  Copyright (C) 2008-2012 Marco Costalba, Joona Kiiski, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -20,22 +20,31 @@
 #if !defined(MISC_H_INCLUDED)
 #define MISC_H_INCLUDED
 
+#include <fstream>
 #include <string>
+
+#include "lock.h"
 #include "types.h"
 
-extern const std::string engine_name();
-extern const std::string engine_authors();
-extern int get_system_time();
+extern const std::string engine_info(bool to_uci = false);
+extern int system_time();
 extern int cpu_count();
-extern int input_available();
+extern void timed_wait(WaitCondition*, Lock*, int);
 extern void prefetch(char* addr);
 
 extern void dbg_hit_on(bool b);
 extern void dbg_hit_on_c(bool c, bool b);
-extern void dbg_before();
-extern void dbg_after();
 extern void dbg_mean_of(int v);
-extern void dbg_print_hit_rate();
-extern void dbg_print_mean();
+extern void dbg_print();
+
+class Position;
+extern Move move_from_uci(const Position& pos, const std::string& str);
+extern const std::string move_to_uci(Move m, bool chess960);
+extern const std::string move_to_san(Position& pos, Move m);
+
+struct Log : public std::ofstream {
+  Log(const std::string& f = "log.txt") : std::ofstream(f.c_str(), std::ios::out | std::ios::app) {}
+ ~Log() { if (is_open()) close(); }
+};
 
 #endif // !defined(MISC_H_INCLUDED)

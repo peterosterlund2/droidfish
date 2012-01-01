@@ -1,7 +1,7 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2010 Marco Costalba, Joona Kiiski, Tord Romstad
+  Copyright (C) 2008-2012 Marco Costalba, Joona Kiiski, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -20,8 +20,7 @@
 #if !defined(MOVEGEN_H_INCLUDED)
 #define MOVEGEN_H_INCLUDED
 
-#include "move.h"
-#include "position.h"
+#include "types.h"
 
 enum MoveType {
   MV_CAPTURE,
@@ -30,11 +29,28 @@ enum MoveType {
   MV_NON_CAPTURE_CHECK,
   MV_EVASION,
   MV_NON_EVASION,
-  MV_LEGAL,
-  MV_PSEUDO_LEGAL
+  MV_LEGAL
 };
+
+class Position;
 
 template<MoveType>
 MoveStack* generate(const Position& pos, MoveStack* mlist);
+
+/// The MoveList struct is a simple wrapper around generate(), sometimes comes
+/// handy to use this class instead of the low level generate() function.
+template<MoveType T>
+struct MoveList {
+
+  explicit MoveList(const Position& pos) : cur(mlist), last(generate<T>(pos, mlist)) {}
+  void operator++() { cur++; }
+  bool end() const { return cur == last; }
+  Move move() const { return cur->move; }
+  int size() const { return int(last - mlist); }
+
+private:
+  MoveStack mlist[MAX_MOVES];
+  MoveStack *cur, *last;
+};
 
 #endif // !defined(MOVEGEN_H_INCLUDED)

@@ -1,7 +1,7 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2010 Marco Costalba, Joona Kiiski, Tord Romstad
+  Copyright (C) 2008-2012 Marco Costalba, Joona Kiiski, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -35,12 +35,15 @@ typedef pthread_cond_t WaitCondition;
 #  define cond_init(x) pthread_cond_init(x, NULL)
 #  define cond_signal(x) pthread_cond_signal(x)
 #  define cond_wait(x,y) pthread_cond_wait(x,y)
+#  define cond_timedwait(x,y,z) pthread_cond_timedwait(x,y,z)
 
 #else
 
+#define NOMINMAX // disable macros min() and max()
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #undef WIN32_LEAN_AND_MEAN
+#undef NOMINMAX
 
 // Default fast and race free locks and condition variables
 #if !defined(OLD_LOCKS)
@@ -55,7 +58,8 @@ typedef CONDITION_VARIABLE WaitCondition;
 #  define cond_destroy(x) (x)
 #  define cond_init(x) InitializeConditionVariable(x)
 #  define cond_signal(x) WakeConditionVariable(x)
-#  define cond_wait(x,y) SleepConditionVariableSRW(x, y, INFINITE,0)
+#  define cond_wait(x,y) SleepConditionVariableSRW(x,y,INFINITE,0)
+#  define cond_timedwait(x,y,z) SleepConditionVariableSRW(x,y,z,0)
 
 // Fallback solution to build for Windows XP and older versions, note that
 // cond_wait() is racy between lock_release() and WaitForSingleObject().
@@ -71,7 +75,9 @@ typedef HANDLE WaitCondition;
 #  define cond_init(x) { *x = CreateEvent(0, FALSE, FALSE, 0); }
 #  define cond_destroy(x) CloseHandle(*x)
 #  define cond_signal(x) SetEvent(*x)
-#  define cond_wait(x,y) { lock_release(y); WaitForSingleObject(*x, INFINITE); lock_grab(y); }
+#  define cond_wait(x,y) { ResetEvent(*x); lock_release(y); WaitForSingleObject(*x, INFINITE); lock_grab(y); }
+#  define cond_timedwait(x,y,z) { ResetEvent(*x); lock_release(y); WaitForSingleObject(*x,z); lock_grab(y); }
+
 #endif
 
 #endif

@@ -1,7 +1,7 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2010 Marco Costalba, Joona Kiiski, Tord Romstad
+  Copyright (C) 2008-2012 Marco Costalba, Joona Kiiski, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 #include <iostream>
 
 #include "book.h"
+#include "misc.h"
 #include "movegen.h"
 
 using namespace std;
@@ -35,7 +36,7 @@ using namespace std;
 namespace {
 
   // Random numbers from PolyGlot, used to compute book hash keys
-  const uint64_t Random64[781] = {
+  const Key PolyGlotRandoms[781] = {
     0x9D39247E33776D41ULL, 0x2AF7398005AAA5C7ULL, 0x44DB015024623547ULL,
     0x9C15F73E62A76AE2ULL, 0x75834465489C0C89ULL, 0x3290AC3A203001BFULL,
     0x0FBBAD1F61042279ULL, 0xE83A908FF2FB60CAULL, 0x0D7E765D58755C10ULL,
@@ -299,18 +300,19 @@ namespace {
     0xF8D626AAAF278509ULL
   };
 
-  // Indices to the Random64[] array
-  const int PieceIdx     = 0;
-  const int CastleIdx    = 768;
-  const int EnPassantIdx = 772;
-  const int TurnIdx      = 780;
+  // Offsets to the PolyGlotRandoms[] array of zobrist keys
+  const Key* ZobPiece     = PolyGlotRandoms +   0;
+  const Key* ZobCastle    = PolyGlotRandoms + 768;
+  const Key* ZobEnPassant = PolyGlotRandoms + 772;
+  const Key* ZobTurn      = PolyGlotRandoms + 780;
+
+  // Piece offset is calculated as 64 * (PolyPiece ^ 1) where
+  // PolyPiece is: BP = 0, WP = 1, BN = 2, WN = 3 ... BK = 10, WK = 11
+  const int PieceOfs[] = { 0, 64, 192, 320, 448, 576, 704, 0,
+                           0,  0, 128, 256, 384, 512, 640 };
 
   // book_key() builds up a PolyGlot hash key out of a position
   uint64_t book_key(const Position& pos) {
-
-    // Piece offset is calculated as (64 * PolyPieceType + square), where
-    // PolyPieceType is: BP = 0, WP = 1, BN = 2, WN = 3 .... BK = 10, WK = 11
-    static const int PieceToPoly[] = { 0, 1, 3, 5, 7, 9, 11, 0, 0, 0, 2, 4, 6, 8, 10 };
 
     uint64_t result = 0;
     Bitboard b = pos.occupied_squares();
@@ -318,38 +320,36 @@ namespace {
     while (b)
     {
         Square s = pop_1st_bit(&b);
-        int p = PieceToPoly[int(pos.piece_on(s))];
-        result ^= Random64[PieceIdx + 64 * p + int(s)];
+        result ^= ZobPiece[PieceOfs[pos.piece_on(s)] + s];
     }
 
-    if (pos.can_castle_kingside(WHITE))
-        result ^= Random64[CastleIdx + 0];
+    if (pos.can_castle(WHITE_OO))
+        result ^= ZobCastle[0];
 
-    if (pos.can_castle_queenside(WHITE))
-        result ^= Random64[CastleIdx + 1];
+    if (pos.can_castle(WHITE_OOO))
+        result ^= ZobCastle[1];
 
-    if (pos.can_castle_kingside(BLACK))
-        result ^= Random64[CastleIdx + 2];
+    if (pos.can_castle(BLACK_OO))
+        result ^= ZobCastle[2];
 
-    if (pos.can_castle_queenside(BLACK))
-        result ^= Random64[CastleIdx + 3];
+    if (pos.can_castle(BLACK_OOO))
+        result ^= ZobCastle[3];
 
     if (pos.ep_square() != SQ_NONE)
-        result ^= Random64[EnPassantIdx + square_file(pos.ep_square())];
+        result ^= ZobEnPassant[file_of(pos.ep_square())];
 
     if (pos.side_to_move() == WHITE)
-        result ^= Random64[TurnIdx];
+        result ^= ZobTurn[0];
 
     return result;
   }
-
 }
 
 
 /// Book c'tor. Make random number generation less deterministic, for book moves
-Book::Book() {
+Book::Book() : bookSize(0) {
 
-  for (int i = abs(get_system_time() % 10000); i > 0; i--)
+  for (int i = abs(system_time() % 10000); i > 0; i--)
       RKiss.rand<unsigned>();
 }
 
@@ -362,8 +362,8 @@ Book::~Book() {
 }
 
 
-/// Book::close() closes the file only if it is open, otherwise
-/// we can end up in a little mess due to how std::ifstream works.
+/// Book::close() closes the file only if it is open, otherwise the call fails
+/// and the failbit internal state flag is set.
 
 void Book::close() {
 
@@ -371,24 +371,24 @@ void Book::close() {
       bookFile.close();
 
   bookName = "";
+  bookSize = 0;
 }
 
 
-/// Book::open() opens a book file with a given file name
+/// Book::open() opens a book file with a given name
 
 void Book::open(const string& fileName) {
 
   // Close old file before opening the new
   close();
 
-  bookFile.open(fileName.c_str(), ifstream::in | ifstream::binary);
+  bookFile.open(fileName.c_str(), ifstream::in | ifstream::binary |ios::ate);
 
   // Silently return when asked to open a non-exsistent file
   if (!bookFile.is_open())
       return;
 
-  // Get the book size in number of entries
-  bookFile.seekg(0, ios::end);
+  // Get the book size in number of entries, we are already at the file end
   bookSize = long(bookFile.tellg()) / sizeof(BookEntry);
 
   if (!bookFile.good())
@@ -402,45 +402,38 @@ void Book::open(const string& fileName) {
 }
 
 
-/// Book::get_move() gets a book move for a given position. Returns
-/// MOVE_NONE if no book move is found. If findBestMove is true then
-/// return always the highest rated book move.
+/// Book::probe() gets a book move for a given position. Returns MOVE_NONE
+/// if no book move is found. If findBest is true then returns always the
+/// highest rated move otherwise chooses randomly based on the move score.
 
-Move Book::get_move(const Position& pos, bool findBestMove) {
+Move Book::probe(const Position& pos, bool findBest) {
 
-  if (!bookFile.is_open() || bookSize == 0)
+  if (!bookSize || !bookFile.is_open())
       return MOVE_NONE;
 
   BookEntry entry;
-  int bookMove = MOVE_NONE;
-  unsigned score, scoresSum = 0, bestScore = 0;
+  unsigned scoresSum = 0, bestScore = 0, bookMove = 0;
   uint64_t key = book_key(pos);
+  int idx = first_entry(key) - 1;
 
   // Choose a book move among the possible moves for the given position
-  for (int idx = find_entry(key); idx < bookSize; idx++)
+  while (++idx < bookSize && (entry = read_entry(idx), entry.key == key))
   {
-      entry = read_entry(idx);
+      scoresSum += entry.count;
 
-      if (entry.key != key)
-          break;
-
-      score = entry.count;
-
-      if (!findBestMove)
-      {
-          // Choose book move according to its score. If a move has a very
-          // high score it has more probability to be choosen then a one with
-          // lower score. Note that first entry is always chosen.
-          scoresSum += score;
-          if (RKiss.rand<unsigned>() % scoresSum < score)
-              bookMove = entry.move;
-      }
-      else if (score > bestScore)
-      {
-          bestScore = score;
+      // Choose book move according to its score. If a move has a very
+      // high score it has higher probability to be choosen than a move
+      // with lower score. Note that first entry is always chosen.
+      if (   RKiss.rand<unsigned>() % scoresSum < entry.count
+          || (findBest && entry.count > bestScore))
           bookMove = entry.move;
-      }
+
+      if (entry.count > bestScore)
+          bestScore = entry.count;
   }
+
+  if (!bookMove)
+      return MOVE_NONE;
 
   // A PolyGlot book move is encoded as follows:
   //
@@ -452,33 +445,31 @@ Move Book::get_move(const Position& pos, bool findBestMove) {
   // book move is a promotion we have to convert to our representation, in
   // all other cases we can directly compare with a Move after having
   // masked out special Move's flags that are not supported by PolyGlot.
-  int p = (bookMove >> 12) & 7;
+  int promotion = (bookMove >> 12) & 7;
 
-  if (p)
-      bookMove = int(make_promotion_move(move_from(Move(bookMove)),
-                 move_to(Move(bookMove)), PieceType(p + 1)));
-
-  // Verify the book move (if any) is legal
-  MoveStack mlist[MAX_MOVES];
-  MoveStack* last = generate<MV_LEGAL>(pos, mlist);
-  for (MoveStack* cur = mlist; cur != last; cur++)
-      if ((int(cur->move) & ~(3 << 14)) == bookMove) // Mask out special flags
-          return cur->move;
+  if (promotion)
+      bookMove = make_promotion_move(move_from(Move(bookMove)),
+                                     move_to(Move(bookMove)),
+                                     PieceType(promotion + 1));
+  // Verify the book move is legal
+  for (MoveList<MV_LEGAL> ml(pos); !ml.end(); ++ml)
+      if (unsigned(ml.move() & ~(3 << 14)) == bookMove) // Mask out special flags
+          return ml.move();
 
   return MOVE_NONE;
 }
 
 
-/// Book::find_entry() takes a book key as input, and does a binary search
-/// through the book file for the given key. The index to the first book
-/// entry with the same key as the input is returned. When the key is not
+/// Book::first_entry() takes a book key as input, and does a binary search
+/// through the book file for the given key. The index to the first (leftmost)
+/// book entry with the same key as the input is returned. When the key is not
 /// found in the book file, bookSize is returned.
 
-int Book::find_entry(uint64_t key) {
+int Book::first_entry(uint64_t key) {
 
   int left, right, mid;
 
-  // Binary search (finds the leftmost entry)
+  // Binary search (finds the leftmost entry with given key)
   left = 0;
   right = bookSize - 1;
 
@@ -502,15 +493,17 @@ int Book::find_entry(uint64_t key) {
 }
 
 
-/// Book::get_number() reads sizeof(T) chars from the file's binary byte
+/// Book::operator>>() reads sizeof(T) chars from the file's binary byte
 /// stream and converts them in a number of type T.
 template<typename T>
-void Book::get_number(T& n) {
+Book& Book::operator>>(T& n) {
 
   n = 0;
 
   for (size_t i = 0; i < sizeof(T); i++)
-      n = (n << 8) + (T)bookFile.get();
+      n = T((n << 8) + bookFile.get());
+
+  return *this;
 }
 
 
@@ -526,10 +519,7 @@ BookEntry Book::read_entry(int idx) {
 
   bookFile.seekg(idx * sizeof(BookEntry), ios_base::beg);
 
-  get_number(e.key);
-  get_number(e.move);
-  get_number(e.count);
-  get_number(e.learn);
+  *this >> e.key >> e.move >> e.count >> e.learn;
 
   if (!bookFile.good())
   {

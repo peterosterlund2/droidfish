@@ -1,7 +1,7 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2010 Marco Costalba, Joona Kiiski, Tord Romstad
+  Copyright (C) 2008-2012 Marco Costalba, Joona Kiiski, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -23,14 +23,13 @@
 #include <fstream>
 #include <string>
 
-#include "move.h"
 #include "position.h"
 #include "rkiss.h"
 
 
-// A Polyglot book is a series of "entries" of 16 bytes. All integers are
-// stored highest byte first (regardless of size). The entries are ordered
-// according to key. Lowest key first.
+/// A Polyglot book is a series of "entries" of 16 bytes. All integers are
+/// stored highest byte first (regardless of size). The entries are ordered
+/// according to key. Lowest key first.
 struct BookEntry {
   uint64_t key;
   uint16_t move;
@@ -44,19 +43,19 @@ public:
   ~Book();
   void open(const std::string& fileName);
   void close();
-  Move get_move(const Position& pos, bool findBestMove);
+  Move probe(const Position& pos, bool findBestMove);
   const std::string name() const { return bookName; }
 
 private:
-  template<typename T> void get_number(T& n);
+  template<typename T> Book& operator>>(T& n);
 
   BookEntry read_entry(int idx);
-  int find_entry(uint64_t key);
+  int first_entry(uint64_t key);
 
+  RKISS RKiss;
   std::ifstream bookFile;
   std::string bookName;
   int bookSize;
-  RKISS RKiss;
 };
 
 #endif // !defined(BOOK_H_INCLUDED)

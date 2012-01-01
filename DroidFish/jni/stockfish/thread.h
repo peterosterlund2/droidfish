@@ -1,7 +1,7 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2010 Marco Costalba, Joona Kiiski, Tord Romstad
+  Copyright (C) 2008-2012 Marco Costalba, Joona Kiiski, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 #include "movepick.h"
 #include "pawns.h"
 #include "position.h"
+#include "search.h"
 
 const int MAX_THREADS = 32;
 const int MAX_ACTIVE_SPLIT_POINTS = 8;
@@ -37,15 +38,15 @@ struct SplitPoint {
   SplitPoint* parent;
   const Position* pos;
   Depth depth;
-  bool pvNode;
   Value beta;
+  int nodeType;
   int ply;
   int master;
   Move threatMove;
 
   // Const pointers to shared data
   MovePicker* mp;
-  SearchStack* ss;
+  Search::Stack* ss;
 
   // Shared data
   Lock lock;
@@ -58,42 +59,44 @@ struct SplitPoint {
 };
 
 
-/// Thread struct is used to keep together all the thread related stuff like locks,
-/// state and especially split points. We also use per-thread pawn and material hash
-/// tables so that once we get a pointer to an entry its life time is unlimited and
-/// we don't have to care about someone changing the entry under our feet.
+/// Thread struct keeps together all the thread related stuff like locks, state
+/// and especially split points. We also use per-thread pawn and material hash
+/// tables so that once we get a pointer to an entry its life time is unlimited
+/// and we don't have to care about someone changing the entry under our feet.
 
 struct Thread {
-
-  enum ThreadState
-  {
-    INITIALIZING,  // Thread is initializing itself
-    SEARCHING,     // Thread is performing work
-    AVAILABLE,     // Thread is waiting for work
-    BOOKED,        // Other thread (master) has booked us as a slave
-    WORKISWAITING, // Master has ordered us to start
-    TERMINATED     // We are quitting and thread is terminated
-  };
 
   void wake_up();
   bool cutoff_occurred() const;
   bool is_available_to(int master) const;
+  void idle_loop(SplitPoint* sp);
+  void main_loop();
+  void timer_loop();
 
+  SplitPoint splitPoints[MAX_ACTIVE_SPLIT_POINTS];
   MaterialInfoTable materialTable;
   PawnInfoTable pawnTable;
+  int threadID;
   int maxPly;
   Lock sleepLock;
   WaitCondition sleepCond;
-  volatile ThreadState state;
   SplitPoint* volatile splitPoint;
   volatile int activeSplitPoints;
-  SplitPoint splitPoints[MAX_ACTIVE_SPLIT_POINTS];
+  volatile bool is_searching;
+  volatile bool do_sleep;
+  volatile bool do_terminate;
+
+#if defined(_MSC_VER)
+  HANDLE handle;
+#else
+  pthread_t handle;
+#endif
 };
 
 
-/// ThreadsManager class is used to handle all the threads related stuff like init,
-/// starting, parking and, the most important, launching a slave thread at a split
-/// point. All the access to shared thread data is done through this class.
+/// ThreadsManager class handles all the threads related stuff like init, starting,
+/// parking and, the most important, launching a slave thread at a split point.
+/// All the access to shared thread data is done through this class.
 
 class ThreadsManager {
   /* As long as the single ThreadsManager object is defined as a global we don't
@@ -104,27 +107,34 @@ public:
   Thread& operator[](int threadID) { return threads[threadID]; }
   void init();
   void exit();
-  void init_hash_tables();
 
+  bool use_sleeping_threads() const { return useSleepingThreads; }
   int min_split_depth() const { return minimumSplitDepth; }
   int size() const { return activeThreads; }
-  void set_size(int cnt) { activeThreads = cnt; }
 
+  void set_size(int cnt);
   void read_uci_options();
   bool available_slave_exists(int master) const;
-  void idle_loop(int threadID, SplitPoint* sp);
+  bool split_point_finished(SplitPoint* sp) const;
+  void set_timer(int msec);
+  void wait_for_stop_or_ponderhit();
+  void stop_thinking();
+  void start_thinking(const Position& pos, const Search::LimitsType& limits,
+                      const std::vector<Move>& searchMoves, bool asyncMode);
 
   template <bool Fake>
-  void split(Position& pos, SearchStack* ss, Value* alpha, const Value beta, Value* bestValue,
-             Depth depth, Move threatMove, int moveCount, MovePicker* mp, bool pvNode);
+  Value split(Position& pos, Search::Stack* ss, Value alpha, Value beta, Value bestValue,
+              Depth depth, Move threatMove, int moveCount, MovePicker* mp, int nodeType);
 private:
-  Lock mpLock;
+  friend struct Thread;
+
+  Thread threads[MAX_THREADS + 1]; // Last one is used as a timer
+  Lock threadsLock;
   Depth minimumSplitDepth;
   int maxThreadsPerSplitPoint;
-  bool useSleepingThreads;
   int activeThreads;
-  volatile bool allThreadsShouldExit;
-  Thread threads[MAX_THREADS];
+  bool useSleepingThreads;
+  WaitCondition sleepCond;
 };
 
 extern ThreadsManager Threads;

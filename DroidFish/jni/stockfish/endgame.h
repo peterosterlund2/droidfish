@@ -1,7 +1,7 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2010 Marco Costalba, Joona Kiiski, Tord Romstad
+  Copyright (C) 2008-2012 Marco Costalba, Joona Kiiski, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -20,8 +20,8 @@
 #if !defined(ENDGAME_H_INCLUDED)
 #define ENDGAME_H_INCLUDED
 
-#include <string>
 #include <map>
+#include <string>
 
 #include "position.h"
 #include "types.h"
@@ -46,6 +46,7 @@ enum EndgameType {
 
 
   // Scaling functions
+  SCALE_FUNS,
 
   KBPsK,   // KB+pawns vs K
   KQKRPs,  // KQ vs KR+pawns
@@ -60,25 +61,30 @@ enum EndgameType {
 };
 
 
+/// Some magic to detect family type of endgame from its enum value
+
+template<bool> struct bool_to_type { typedef Value type; };
+template<> struct bool_to_type<true> { typedef ScaleFactor type; };
+template<EndgameType E> struct eg_family : public bool_to_type<(E > SCALE_FUNS)> {};
+
+
 /// Base and derived templates for endgame evaluation and scaling functions
 
 template<typename T>
 struct EndgameBase {
 
-  typedef EndgameBase<T> Base;
-
   virtual ~EndgameBase() {}
   virtual Color color() const = 0;
-  virtual T apply(const Position&) const = 0;
+  virtual T operator()(const Position&) const = 0;
 };
 
 
-template<typename T, EndgameType>
+template<EndgameType E, typename T = typename eg_family<E>::type>
 struct Endgame : public EndgameBase<T> {
 
-  explicit Endgame(Color c) : strongerSide(c), weakerSide(opposite_color(c)) {}
+  explicit Endgame(Color c) : strongerSide(c), weakerSide(flip(c)) {}
   Color color() const { return strongerSide; }
-  T apply(const Position&) const;
+  T operator()(const Position&) const;
 
 private:
   Color strongerSide, weakerSide;
@@ -87,26 +93,28 @@ private:
 
 /// Endgames class stores in two std::map the pointers to endgame evaluation
 /// and scaling base objects. Then we use polymorphism to invoke the actual
-/// endgame function calling its apply() method that is virtual.
+/// endgame function calling its operator() method that is virtual.
 
 class Endgames {
 
-  typedef std::map<Key, EndgameBase<Value>* > EFMap;
-  typedef std::map<Key, EndgameBase<ScaleFactor>* > SFMap;
+  typedef std::map<Key, EndgameBase<Value>*> M1;
+  typedef std::map<Key, EndgameBase<ScaleFactor>*> M2;
+
+  M1 m1;
+  M2 m2;
+
+  M1& map(Value*) { return m1; }
+  M2& map(ScaleFactor*) { return m2; }
+
+  template<EndgameType E> void add(const std::string& code);
 
 public:
   Endgames();
   ~Endgames();
-  template<class T> T* get(Key key) const;
 
-private:
-  template<class T> void add(const std::string& keyCode);
-
-  // Here we store two maps, for evaluate and scaling functions...
-  std::pair<EFMap, SFMap> maps;
-
-  // ...and here is the accessing template function
-  template<typename T> const std::map<Key, T*>& get() const;
+  template<typename T> EndgameBase<T>* get(Key key) {
+    return map((T*)0).count(key) ? map((T*)0)[key] : NULL;
+  }
 };
 
 #endif // !defined(ENDGAME_H_INCLUDED)
