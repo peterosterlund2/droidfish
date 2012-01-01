@@ -188,6 +188,7 @@ The Android version can often search 15 ply or deeper on a 1GHz Snapdragon CPU.\
 * Setup positions\n\
 * Extensive PGN support\n\
 * Adjustable playing strength\n\
+* Third party UCI engines\n\
 \n\
 <b>Hints</b>\n\
 * In game mode, long press chess board to activate copy/paste menu.\n\
@@ -234,6 +235,12 @@ reading chess programs.\n\
 If you have <i>Scid on the go</i> installed, you can read Scid database files \
 directly from DroidFish. Long press the chess board and select <i>Load game from \
 Scid file</i>.\n\
+\n\
+<b>UCI engines</b>\n\
+DroidFish can use third party UCI engines. To use this feature:\n\
+1. Create a directory <i>DroidFish/uci</i> on the SD card.\n\
+2. Copy one or more UCI engine binaries to the <i>DroidFish/uci</i> directory.\n\
+3. From the menu, choose <i>Select Chess Engine</i> and select the engine to use.\n\
 \n\
 <b>License</b>\n\
 GNU GPL v3\n\
