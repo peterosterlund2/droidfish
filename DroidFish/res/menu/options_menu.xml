@@ -44,6 +44,10 @@
         android:title="@string/option_select_book">
     </item>
     <item
+        android:id="@+id/select_engine"
+        android:title="@string/option_select_engine">
+    </item>
+        <item
         android:id="@+id/set_color_theme"
         android:title="@string/option_color_theme">
     </item>

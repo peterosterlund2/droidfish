@@ -18,14 +18,6 @@
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/prefs_engine_settings">
-        <ListPreference
-            android:key="engine"
-            android:title="@string/prefs_engine_title"
-            android:summary="@string/prefs_engine_summary"
-            android:entryValues="@array/engine_values"
-            android:entries="@array/engine_texts"
-            android:defaultValue="@string/engine_default">
-        </ListPreference>
         <org.petero.droidfish.SeekBarPreference
             android:key="strength"
             android:defaultValue="1000"

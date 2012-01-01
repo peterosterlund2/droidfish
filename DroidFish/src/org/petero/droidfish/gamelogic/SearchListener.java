@@ -90,4 +90,7 @@ public interface SearchListener {
 
     /** Report engine name. */
     public void notifyEngineName(String engineName);
+
+    /** Report engine error. */
+    public void reportEngineError(String errMsg);
 }

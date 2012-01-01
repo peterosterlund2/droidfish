@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DroidFish</string>
-    <string-array name="engine_texts">
-        <item>Stockfish</item>
-        <item>CuckooChess</item>
-    </string-array>
-    <string-array name="engine_values">
-       <item>stockfish</item>
-       <item>cuckoochess</item>
-    </string-array>
-    <string name="engine_default">stockfish</string>
 
     <string-array name="engine_threads_texts">
         <item>Automatic</item>
@@ -305,6 +296,7 @@ you are not actively using the program.\
     <string name="edit_move_counters">Edit Move Counters</string>
     <string name="internal_book">&lt;Internal Book&gt;</string>
     <string name="select_opening_book_file">Select opening book file</string>
+    <string name="select_chess_engine">Select Chess Engine</string>
     <string name="select_pgn_file">Select PGN file to open</string>
     <string name="select_pgn_file_save">Save to PGN file</string>
     <string name="select_scid_file">Select Scid file to open</string>
@@ -401,6 +393,9 @@ you are not actively using the program.\
     <string name="after_selected">After Selected</string>
     <string name="replace_selected">Replace Selected</string>
     <string name="engine">Engine</string>
+    <string name="engine_error">Engine error</string>
+    <string name="stockfish_engine">Stockfish</string>
+    <string name="cuckoochess_engine">CuckooChess</string>
 
     <string name="err_too_few_spaces">Too few spaces</string>
     <string name="err_invalid_piece">Invalid piece</string>
@@ -425,6 +420,7 @@ you are not actively using the program.\
     <string name="option_force_computer_move">Force Computer Move</string>
     <string name="option_draw">Claim/Offer/Accept Draw</string>
     <string name="option_select_book">Select Opening Book</string>
+    <string name="option_select_engine">Select Chess Engine</string>
     <string name="option_color_theme">Set Color Theme</string>
     <string name="option_about">About / Help</string>
 
@@ -434,8 +430,6 @@ you are not actively using the program.\
     <string name="prefs_autoSwapSides_title">Auto Swap Sides</string>
     <string name="prefs_autoSwapSides_summary">Automatically swap sides when new game started. Also overrides Flip Board setting</string>
     <string name="prefs_engine_settings">Engine Settings</string>
-    <string name="prefs_engine_title">Engine</string>
-    <string name="prefs_engine_summary">Chess Engine</string>
     <string name="prefs_strength_title">Strength</string>
     <string name="prefs_ponderMode_title">Pondering</string>
     <string name="prefs_ponderMode_summary">Let engine think while waiting for opponent\'s move</string>

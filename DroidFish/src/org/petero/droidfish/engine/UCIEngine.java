@@ -20,15 +20,24 @@ package org.petero.droidfish.engine;
 
 public interface UCIEngine {
 
+    /** For reporting engine error messages. */
+    public interface Report {
+        /** Report error message to GUI. */
+        void reportError(String errMsg);
+    }
+
     /** Start engine. */
     public void initialize();
+
+    /** Initialize default options. */
+    public void initOptions();
 
     /** Shut down engine. */
     public void shutDown();
 
     /**
      * Read a line from the engine.
-     * @param timeoutMillis Maximum time to wait for data
+     * @param timeoutMillis Maximum time to wait for data.
      * @return The line, without terminating newline characters,
      *         or empty string if no data available,
      *         or null if I/O error.

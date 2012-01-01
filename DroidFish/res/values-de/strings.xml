@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DroidFish</string>
-    <string-array name="engine_texts">
-        <item>Stockfish</item>
-        <item>CuckooChess</item>
-    </string-array>
-    <string-array name="engine_values">
-       <item>stockfish</item>
-       <item>cuckoochess</item>
-    </string-array>
+
     <string-array name="engine_threads_texts">
         <item>Automatisch</item>
         <item>1</item>
@@ -414,8 +407,6 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="prefs_autoSwapSides_title">Automatischer Seitenwechsel</string>
     <string name="prefs_autoSwapSides_summary">Seiten beim Start einer neuen Partie automatisch wechseln (Einstellung <i>Ansicht drehen</i> ignorieren)</string>
     <string name="prefs_engine_settings">Engine-Einstellungen</string>
-    <string name="prefs_engine_title">Schach-Engine</string>
-    <string name="prefs_engine_summary">Auswahl der Schach-Engine</string>
     <string name="prefs_strength_title">Spielstärke</string>
     <string name="prefs_ponderMode_title">Vorausberechnung</string>
     <string name="prefs_ponderMode_summary">Vorausberechnung von Zügen durch die Engine, wenn der Spieler am Zug ist</string>

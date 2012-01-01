@@ -23,18 +23,19 @@ public class StockFishJNI extends UCIEngineBase {
         System.loadLibrary("stockfishjni");
     }
 
+    /** @inheritDoc */
     @Override
-    public void setStrength(int strength) {
+    public final void initOptions() {
+        setOption("Hash", 16);
+    }
+
+    /** @inheritDoc */
+    @Override
+    public final void setStrength(int strength) {
         setOption("Skill Level", strength/50);
     }
 
-    /**
-     * Read a line from the process.
-     * @param timeoutMillis Maximum time to wait for data
-     * @return The line, without terminating newline characters,
-     *         or empty string if no data available,
-     *         or null if I/O error.
-     */
+    /** @inheritDoc */
     @Override
     public final String readLineFromEngine(int timeoutMillis) {
         String ret = readFromProcess(timeoutMillis);
@@ -46,14 +47,15 @@ public class StockFishJNI extends UCIEngineBase {
         return ret;
     }
 
-    /** Write a line to the process. \n will be added automatically. */
+    /** @inheritDoc */
     @Override
     public final synchronized void writeLineToEngine(String data) {
 //      System.out.printf("GUI -> Engine: %s\n", data);
         writeToProcess(data + "\n");
     }
 
-    /** Start the child process. */
+    /** @inheritDoc */
+    @Override
     protected final native void startProcess();
 
     /**

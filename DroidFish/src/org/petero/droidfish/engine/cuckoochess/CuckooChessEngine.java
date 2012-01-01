@@ -51,12 +51,8 @@ public class CuckooChessEngine extends UCIEngineBase {
     private NioInputStream inFromEngine;
     private Thread engineThread;
 
-    public CuckooChessEngine() {
-        try {
-            pos = TextIO.readFEN(TextIO.startPosFEN);
-        } catch (ChessParseError ex) {
-            throw new RuntimeException();
-        }
+    public CuckooChessEngine(Report report) {
+        pos = null;
         moves = new ArrayList<Move>();
         quit = false;
         try {
@@ -64,14 +60,12 @@ public class CuckooChessEngine extends UCIEngineBase {
             engineToGui = Pipe.open();
             inFromEngine = new NioInputStream(engineToGui);
         } catch (IOException e) {
+            report.reportError(e.getMessage());
         }
     }
 
+    /** @inheritDoc */
     @Override
-    public void setStrength(int strength) {
-        setOption("strength", strength);
-    }
-
     protected final void startProcess() {
         engineThread = new Thread(new Runnable() {
             public void run() {
@@ -87,6 +81,17 @@ public class CuckooChessEngine extends UCIEngineBase {
         engineThread.start();
     }
 
+    /** @inheritDoc */
+    @Override
+    public final void initOptions() {
+    }
+
+    /** @inheritDoc */
+    @Override
+    public final void setStrength(int strength) {
+        setOption("strength", strength);
+    }
+
     private final void mainLoop(NioInputStream is, NioPrintStream os) {
         String line;
         while ((line = is.readLine()) != null) {
@@ -97,6 +102,7 @@ public class CuckooChessEngine extends UCIEngineBase {
         }
     }
 
+    /** @inheritDoc */
     @Override
     public final String readLineFromEngine(int timeoutMillis) {
         if ((engineThread != null) && !engineThread.isAlive())
@@ -110,6 +116,7 @@ public class CuckooChessEngine extends UCIEngineBase {
         return ret;
     }
 
+    /** @inheritDoc */
     @Override
     public final synchronized void writeLineToEngine(String data) {
 //        System.out.printf("GUI -> Engine: %s\n", data);
@@ -222,6 +229,13 @@ public class CuckooChessEngine extends UCIEngineBase {
                         sPar.moveTime = Integer.parseInt(tokens[idx++]);
                     } else if (subCmd.equals("infinite")) {
                         sPar.infinite = true;
+                    }
+                }
+                if (pos == null) {
+                    try {
+                        pos = TextIO.readFEN(TextIO.startPosFEN);
+                    } catch (ChessParseError ex) {
+                        throw new RuntimeException();
                     }
                 }
                 if (ponder) {

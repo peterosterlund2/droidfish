@@ -67,6 +67,9 @@ public interface GUIInterface {
     /** Report UCI engine name. */
     public void reportEngineName(String engine);
 
+    /** Report UCI engine error message. */
+    public void reportEngineError(String errMsg);
+
     /** Called when computer made a move. GUI can notify user, for example by playing a sound. */
     public void computerMoveMade();
 

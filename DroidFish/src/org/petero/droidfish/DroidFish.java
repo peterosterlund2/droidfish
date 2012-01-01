@@ -160,6 +160,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
     private final static String bookDir = "DroidFish";
     private final static String pgnDir = "DroidFish" + File.separator + "pgn";
+    private final static String engineDir = "DroidFish" + File.separator + "uci";
     private BookOptions bookOptions = new BookOptions();
     private PGNOptions pgnOptions = new PGNOptions();
 
@@ -732,6 +733,10 @@ public class DroidFish extends Activity implements GUIInterface {
             removeDialog(SELECT_BOOK_DIALOG);
             showDialog(SELECT_BOOK_DIALOG);
             return true;
+        case R.id.select_engine:
+            removeDialog(SELECT_ENGINE_DIALOG);
+            showDialog(SELECT_ENGINE_DIALOG);
+            return true;
         case R.id.set_color_theme:
             showDialog(SET_COLOR_THEME_DIALOG);
             return true;
@@ -1004,16 +1009,17 @@ public class DroidFish extends Activity implements GUIInterface {
     static private final int ABOUT_DIALOG = 2;
     static private final int SELECT_MOVE_DIALOG = 3;
     static private final int SELECT_BOOK_DIALOG = 4;
-    static private final int SELECT_PGN_FILE_DIALOG = 5;
-    static private final int SELECT_PGN_FILE_SAVE_DIALOG = 6;
-    static private final int SET_COLOR_THEME_DIALOG = 7;
-    static private final int GAME_MODE_DIALOG = 8;
-    static private final int SELECT_PGN_SAVE_NEWFILE_DIALOG = 9;
-    static private final int MOVELIST_MENU_DIALOG = 10;
-    static private final int THINKING_MENU_DIALOG = 11;
-    static private final int GO_BACK_MENU_DIALOG = 12;
-    static private final int GO_FORWARD_MENU_DIALOG = 13;
-    static private final int FILE_MENU_DIALOG = 14;
+    static private final int SELECT_ENGINE_DIALOG = 5;
+    static private final int SELECT_PGN_FILE_DIALOG = 6;
+    static private final int SELECT_PGN_FILE_SAVE_DIALOG = 7;
+    static private final int SET_COLOR_THEME_DIALOG = 8;
+    static private final int GAME_MODE_DIALOG = 9;
+    static private final int SELECT_PGN_SAVE_NEWFILE_DIALOG = 10;
+    static private final int MOVELIST_MENU_DIALOG = 11;
+    static private final int THINKING_MENU_DIALOG = 12;
+    static private final int GO_BACK_MENU_DIALOG = 13;
+    static private final int GO_FORWARD_MENU_DIALOG = 14;
+    static private final int FILE_MENU_DIALOG = 15;
 
     @Override
     protected Dialog onCreateDialog(int id) {
@@ -1220,6 +1226,45 @@ public class DroidFish extends Activity implements GUIInterface {
                     bookOptions.filename = bookFile;
                     setBookOptions();
                     dialog.dismiss();
+                }
+            });
+            AlertDialog alert = builder.create();
+            return alert;
+        }
+        case SELECT_ENGINE_DIALOG: {
+            String[] fileNames = findFilesInDirectory(engineDir, null);
+            final int numFiles = fileNames.length;
+            final String[] items = new String[numFiles + 2];
+            final String[] ids = new String[numFiles + 2];
+            ids[0] = "stockfish";   items[0] = getString(R.string.stockfish_engine);
+            ids[1] = "cuckoochess"; items[1] = getString(R.string.cuckoochess_engine);
+            String sep = File.separator;
+            String base = Environment.getExternalStorageDirectory() + sep + engineDir + sep;
+            for (int i = 0; i < numFiles; i++) {
+                ids[i+2] = base + fileNames[i];
+                items[i+2] = fileNames[i];
+            }
+            String currEngine = ctrl.getEngine();
+            int defaultItem = 0;
+            for (int i = 0; i < ids.length; i++) {
+                if (ids[i].equals(currEngine)) {
+                    defaultItem = i;
+                    break;
+                }
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.select_chess_engine);
+            builder.setSingleChoiceItems(items, defaultItem, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
+                    if ((item < 0) || (item >= ids.length))
+                        return;
+                    Editor editor = settings.edit();
+                    String engine = ids[item];
+                    editor.putString("engine", engine);
+                    editor.commit();
+                    dialog.dismiss();
+                    int strength = settings.getInt("strength", 1000);
+                    setEngineStrength(engine, strength);
                 }
             });
             AlertDialog alert = builder.create();
@@ -1771,6 +1816,13 @@ public class DroidFish extends Activity implements GUIInterface {
         String msg = String.format("%s: %s",
                 getString(R.string.engine), engine);
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void reportEngineError(String errMsg) {
+        String msg = String.format("%s: %s",
+                getString(R.string.engine_error), errMsg);
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
     }
 
     @Override

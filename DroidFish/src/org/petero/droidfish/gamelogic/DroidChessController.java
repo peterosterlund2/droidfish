@@ -157,6 +157,11 @@ public class DroidChessController {
         }
     }
 
+    /** Return current engine identifier. */
+    public final synchronized String getEngine() {
+        return engine;
+    }
+
     /** Notify controller that preferences has changed. */
     public final synchronized void prefsChanged() {
         updateBookHints();
@@ -649,6 +654,8 @@ public class DroidChessController {
                     tmpPos.makeMove(ponderMove, ui);
                 }
                 for (Move m : pv.pv) {
+                    if (m == null)
+                        break;
                     String moveStr = TextIO.moveToString(tmpPos, m, false);
                     buf.append(String.format(" %s", moveStr));
                     tmpPos.makeMove(m, ui);
@@ -698,6 +705,15 @@ public class DroidChessController {
                 public void run() {
                     updatePlayerNames(engineName);
                     gui.reportEngineName(engineName);
+                }
+            });
+        }
+        
+        @Override
+        public void reportEngineError(final String errMsg) {
+            gui.runOnUIThread(new Runnable() {
+                public void run() {
+                    gui.reportEngineError(errMsg);
                 }
             });
         }

@@ -2,9 +2,20 @@ package org.petero.droidfish.engine;
 
 import java.util.HashMap;
 
+import org.petero.droidfish.engine.cuckoochess.CuckooChessEngine;
+
 public abstract class UCIEngineBase implements UCIEngine {
 
     private boolean processAlive;
+
+    public static UCIEngine getEngine(String engine, Report report) {
+        if ("cuckoochess".equals(engine))
+            return new CuckooChessEngine(report);
+        else if ("stockfish".equals(engine))
+            return new StockFishJNI();
+        else
+            return new ExternalEngine(engine, report);
+    }
 
     protected UCIEngineBase() {
         processAlive = false;
@@ -21,7 +32,7 @@ public abstract class UCIEngineBase implements UCIEngine {
     }
 
     @Override
-    public final void shutDown() {
+    public void shutDown() {
         if (processAlive) {
             writeLineToEngine("quit");
             processAlive = false;

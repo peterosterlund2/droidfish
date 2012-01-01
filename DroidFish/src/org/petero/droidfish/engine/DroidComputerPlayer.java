@@ -25,7 +25,6 @@ import java.util.ArrayList;
 
 import org.petero.droidfish.book.BookOptions;
 import org.petero.droidfish.book.DroidBook;
-import org.petero.droidfish.engine.cuckoochess.CuckooChessEngine;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.MoveGen;
 import org.petero.droidfish.gamelogic.Pair;
@@ -292,10 +291,10 @@ public class DroidComputerPlayer {
     /** Stop the engine process. */
     public final synchronized void shutdownEngine() {
         if (uciEngine != null) {
-            uciEngine.shutDown();
-            uciEngine = null;
             engineMonitor.interrupt();
             engineMonitor = null;
+            uciEngine.shutDown();
+            uciEngine = null;
         }
         engineState.state = MainState.DEAD;
     }
@@ -543,15 +542,20 @@ public class DroidComputerPlayer {
         myAssert(searchRequest != null);
 
         engineName = "Computer";
-        if ("cuckoochess".equals(searchRequest.engine))
-            uciEngine = new CuckooChessEngine();
-        else
-            uciEngine = new StockFishJNI();
+        uciEngine = UCIEngineBase.getEngine(searchRequest.engine, new UCIEngine.Report() {
+            @Override
+            public void reportError(String errMsg) {
+                if (errMsg != null) {
+                    listener.reportEngineError(errMsg);
+                }
+            }
+        });
         uciEngine.initialize();
 
+        final UCIEngine uci = uciEngine;
         engineMonitor = new Thread(new Runnable() {
             public void run() {
-                monitorLoop();
+                monitorLoop(uci);
             }
         });
         engineMonitor.start();
@@ -569,16 +573,17 @@ public class DroidComputerPlayer {
     private final static long guiUpdateInterval = 100;
     private long lastGUIUpdate = 0;
 
-    private final void monitorLoop() {
+    private final void monitorLoop(UCIEngine uci) {
         while (true) {
             int timeout = getReadTimeout();
-            UCIEngine uci = uciEngine;
-            if (uci == null)
-                return;
-            String s = uci.readLineFromEngine(timeout);
             if (Thread.currentThread().isInterrupted())
                 return;
-            processEngineOutput(s);
+            String s = uci.readLineFromEngine(timeout);
+            if ((s == null) || Thread.currentThread().isInterrupted())
+                return;
+            processEngineOutput(uci, s);
+            if (Thread.currentThread().isInterrupted())
+                return;
             notifyGUI();
             if (Thread.currentThread().isInterrupted())
                 return;
@@ -586,7 +591,10 @@ public class DroidComputerPlayer {
     }
 
     /** Process one line of data from the engine. */
-    private final synchronized void processEngineOutput(String s) {
+    private final synchronized void processEngineOutput(UCIEngine uci, String s) {
+        if (Thread.currentThread().isInterrupted())
+            return;
+
         if (s == null) {
             shutdownEngine();
             return;
@@ -595,17 +603,13 @@ public class DroidComputerPlayer {
         if (s.length() == 0)
             return;
 
-        UCIEngine uci = uciEngine;
-        if (uci == null)
-            return;
         switch (engineState.state) {
         case READ_OPTIONS: {
             if (readUCIOption(s)) {
-                if (!"cuckoochess".equals(engineState.engine))
-                    uci.setOption("Hash", 16);
+                uci.initOptions();
                 uci.setOption("Ponder", false);
                 uci.writeLineToEngine("ucinewgame");
-                uciEngine.writeLineToEngine("isready");
+                uci.writeLineToEngine("isready");
                 engineState.state = MainState.WAIT_READY;
             }
             break;
@@ -642,7 +646,7 @@ public class DroidComputerPlayer {
         case STOP_SEARCH: {
             String[] tokens = tokenize(s);
             if (tokens[0].equals("bestmove")) {
-                uciEngine.writeLineToEngine("isready");
+                uci.writeLineToEngine("isready");
                 engineState.state = MainState.WAIT_READY;
             }
             break;
@@ -860,6 +864,9 @@ public class DroidComputerPlayer {
 
     /** Notify GUI about search statistics. */
     private final synchronized void notifyGUI() {
+        if (Thread.currentThread().isInterrupted())
+            return;
+
         long now = System.currentTimeMillis();
         if (now < lastGUIUpdate + guiUpdateInterval)
             return;
