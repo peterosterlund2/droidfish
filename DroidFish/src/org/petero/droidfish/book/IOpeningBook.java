@@ -20,7 +20,6 @@ package org.petero.droidfish.book;
 
 import java.util.List;
 
-import org.petero.droidfish.BookOptions;
 import org.petero.droidfish.book.DroidBook.BookEntry;
 import org.petero.droidfish.gamelogic.Position;
 

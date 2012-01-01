@@ -22,10 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.petero.droidfish.BookOptions;
 import org.petero.droidfish.GUIInterface;
 import org.petero.droidfish.GameMode;
 import org.petero.droidfish.PGNOptions;
+import org.petero.droidfish.book.BookOptions;
 import org.petero.droidfish.engine.DroidComputerPlayer;
 import org.petero.droidfish.engine.DroidComputerPlayer.SearchRequest;
 import org.petero.droidfish.engine.DroidComputerPlayer.SearchType;

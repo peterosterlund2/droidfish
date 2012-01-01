@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package org.petero.droidfish;
+package org.petero.droidfish.book;
 
 /** Settings controlling opening book usage */
 public class BookOptions {

@@ -23,7 +23,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.petero.droidfish.BookOptions;
+import org.petero.droidfish.book.BookOptions;
 import org.petero.droidfish.book.DroidBook;
 import org.petero.droidfish.engine.cuckoochess.CuckooChessEngine;
 import org.petero.droidfish.gamelogic.Move;

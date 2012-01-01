@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.petero.droidfish.BookOptions;
 import org.petero.droidfish.book.DroidBook.BookEntry;
 import org.petero.droidfish.gamelogic.ChessParseError;
 import org.petero.droidfish.gamelogic.Move;

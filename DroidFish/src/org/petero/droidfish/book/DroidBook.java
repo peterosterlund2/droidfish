@@ -25,7 +25,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
-import org.petero.droidfish.BookOptions;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.MoveGen;
 import org.petero.droidfish.gamelogic.Position;

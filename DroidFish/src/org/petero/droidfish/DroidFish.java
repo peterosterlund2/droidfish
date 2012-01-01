@@ -34,6 +34,7 @@ import org.petero.droidfish.activities.EditPGNLoad;
 import org.petero.droidfish.activities.EditPGNSave;
 import org.petero.droidfish.activities.LoadScid;
 import org.petero.droidfish.activities.Preferences;
+import org.petero.droidfish.book.BookOptions;
 import org.petero.droidfish.gamelogic.DroidChessController;
 import org.petero.droidfish.gamelogic.ChessParseError;
 import org.petero.droidfish.gamelogic.Move;
