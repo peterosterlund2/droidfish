@@ -23,7 +23,7 @@ import java.util.List;
 import org.petero.droidfish.book.DroidBook.BookEntry;
 import org.petero.droidfish.gamelogic.Position;
 
-public class NullBook implements IOpeningBook {
+class NullBook implements IOpeningBook {
 
     @Override
     public boolean enabled() {

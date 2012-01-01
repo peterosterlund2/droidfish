@@ -33,7 +33,7 @@ import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gamelogic.UndoInfo;
 
-public final class InternalBook implements IOpeningBook {
+final class InternalBook implements IOpeningBook {
     private static Map<Long, List<BookEntry>> bookMap;
     private static int numBookMoves = -1;
 

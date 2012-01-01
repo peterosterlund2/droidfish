@@ -31,7 +31,7 @@ import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gamelogic.UndoInfo;
 
-public class CtgBook implements IOpeningBook {
+class CtgBook implements IOpeningBook {
     private BookOptions options = new BookOptions();
     private File ctgFile;
     private File ctbFile;

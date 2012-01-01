@@ -30,7 +30,7 @@ import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
 
-public class PolyglotBook implements IOpeningBook {
+class PolyglotBook implements IOpeningBook {
     private File bookFile;
 
     PolyglotBook() {
