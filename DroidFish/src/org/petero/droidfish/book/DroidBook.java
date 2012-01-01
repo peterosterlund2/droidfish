@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package org.petero.droidfish.engine;
+package org.petero.droidfish.book;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;

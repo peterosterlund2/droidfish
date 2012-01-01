@@ -16,11 +16,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package org.petero.droidfish.engine;
+package org.petero.droidfish.book;
 
 
 import junit.framework.TestCase;
 
+import org.petero.droidfish.book.PolyglotBook;
 import org.petero.droidfish.gamelogic.ChessParseError;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
