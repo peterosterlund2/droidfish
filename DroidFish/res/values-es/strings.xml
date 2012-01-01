@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DroidFish</string>
+
+    <string-array name="engine_threads_texts">
+        <item>Automático</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string-array name="engine_threads_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string name="engine_threads_default">0</string>
+
+    <string-array name="moves_per_session_texts">
+        <item>Toda la partida</item>
+        <item>1 jugada</item>
+        <item>10 jugadas</item>
+        <item>20 jugadas</item>
+        <item>30 jugadas</item>
+        <item>40 jugadas</item>
+        <item>50 jugadas</item>
+        <item>60 jugadas</item>
+    </string-array>
+    <string-array name="moves_per_session_values">
+        <item>0</item>
+        <item>1</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+    </string-array>
+    <string name="moves_per_session_default">60</string>
+
+    <string-array name="time_control_texts">
+        <item>15 segundos</item>
+        <item>30 segundos</item>
+        <item>1 minuto</item>
+        <item>2 minutos</item>
+        <item>3 minutos</item>
+        <item>5 minutos</item>
+        <item>10 minutos</item>
+        <item>15 minutos</item>
+        <item>30 minutos</item>
+        <item>45 minutos</item>
+        <item>60 minutos</item>
+        <item>90 minutos</item>
+        <item>120 minutos</item>
+    </string-array>
+    <string-array name="time_control_values">
+        <item>15000</item>
+        <item>30000</item>
+        <item>60000</item>
+        <item>120000</item>
+        <item>180000</item>
+        <item>300000</item>
+        <item>600000</item>
+        <item>900000</item>
+        <item>1800000</item>
+        <item>2700000</item>
+        <item>3600000</item>
+        <item>5400000</item>
+        <item>7200000</item>
+    </string-array>
+    <string name="time_control_default">120000</string>
+
+    <string-array name="time_increment_texts">
+        <item>0s</item>
+        <item>1s</item>
+        <item>2s</item>
+        <item>3s</item>
+        <item>4s</item>
+        <item>5s</item>
+        <item>10s</item>
+        <item>12s</item>
+        <item>15s</item>
+        <item>30s</item>
+        <item>60s</item>
+    </string-array>
+    <string-array name="time_increment_values">
+        <item>0</item>
+        <item>1000</item>
+        <item>2000</item>
+        <item>3000</item>
+        <item>4000</item>
+        <item>5000</item>
+        <item>10000</item>
+        <item>12000</item>
+        <item>15000</item>
+        <item>30000</item>
+        <item>60000</item>
+    </string-array>
+    <string name="time_increment_default">0</string>
+
+    <string-array name="font_size_texts">
+        <item>Pequeño</item>
+        <item>Mediano</item>
+        <item>Grande</item>
+        <item>Más grande</item>
+    </string-array>
+    <string-array name="font_size_values">
+        <item>10</item>
+        <item>12</item>
+        <item>16</item>
+        <item>21</item>
+    </string-array>
+    <string name="font_size_default">12</string>
+
+    <string-array name="thinking_arrows_texts">
+        <item>Sin Flechas</item>
+        <item>Máx. 1 Flecha</item>
+        <item>Máx. 2 Flechas</item>
+        <item>Máx. 3 Flechas</item>
+        <item>Máx. 4 Flechas</item>
+        <item>Máx. 5 Flechas</item>
+        <item>Máx. 6 Flechas</item>
+    </string-array>
+    <string-array name="thinking_arrows_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+    <string name="thinking_arrows_default">2</string>
+
+    <string-array name="scroll_sensitivity_texts">
+        <item>Desconectado</item>
+        <item>Más Lento</item>
+        <item>Lento</item>
+        <item>Normal</item>
+        <item>Rápido</item>
+        <item>Más Rápido</item>
+    </string-array>
+    <string-array name="scroll_sensitivity_values">
+        <item>0</item>
+        <item>6</item>
+        <item>3</item>
+        <item>2</item>
+        <item>1</item>
+        <item>0.5</item>
+    </string-array>
+    <string name="scroll_sensitivity_default">2</string>
+
+    <string-array name="book_line_length_texts">
+        <item>5 Jugadas</item>
+        <item>10 Jugadas</item>
+        <item>15 Jugadas</item>
+        <item>20 Jugadas</item>
+        <item>30 Jugadas</item>
+        <item>50 Jugadas</item>
+        <item>Ilimitado</item>
+    </string-array>
+    <string-array name="book_line_length_values">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>30</item>
+        <item>50</item>
+        <item>1000000</item>
+    </string-array>
+    <string name="book_line_length_default">1000000</string>
+
+    <string name="about_info">\
+<b>About</b>\n\
+<i>DroidFish</i> es un derivado Android del famoso motor de ajedrez <i>stockfish 2.1.1</i> . \
+<i>Stockfish</i> es uno de los motores de ajedrez más fuertes del mundo. \
+En su versión Android, a menudo profundiza 15 ply e incluso más, con un procesador Snapdragon a 1GHz.\n\
+\n\
+<b>Características</b>\n\
+* Libro de Aperturas\n\
+* Avance/ Retroceso ilimitado\n\
+* Copiar/pegar a/desde el portapapeles\n\
+* Modo Análisis \n\
+* Modo Dos jugadores \n\
+* Modo Programa contra Programa \n\
+* Introducir Posición \n\  
+* Amplio soporte PGN \n\
+* Niveles de juego ajustables
+\n\
+<b>Indicaciones </b>\n\
+* En modo partida, mantenga pulsado el tablero para activar el menú copiar/ pegar.\n\
+* En modo editar tablero, mantenga pulsado el mismo, para activar el menú editar.\n\
+* Desplazarse a la izquierda/derecha en el tablero, para retroceder/ avanzar jugadas.\n\
+* Si la partida incluye varias líneas, desplazarse arriba/abajo sobre el tablero,para acceder a la línea anterior/posterior.\n\
+* Mantenga pulsados los botones izquierda/derecha para acceder a los botones de navegación adicionales de la partida.\n\
+\n\
+<b>Libros de Aperturas</b>\n\
+DroidFish incluye un pequeño libro de aperturas interno. Si quiere utilizar un libro más grande, puede configurar DroidFish para utilizar archivos de libros <i>Polyglot</i> \ o <i>CTG</i> :\n\
+1. Crear un directorio denominado <i>DroidFish</i> en la tarjeta SD.\n\
+2a. Copiar uno o más archivos de libro Polyglot en el directorio <i>DroidFish</i>.\
+Los archivos de los libros Polyglot deben tener la extensión .bin.\n\
+2b. Copiar uno o más archivos de libro CTG al directorio <i>DroidFish</i>. Un libro CTG \ incluye tres archivos, con extensiones .ctg, .ctb and .cto. \
+Debe copiar los tres archivos.\n\
+3. Desde el menú programa, active la función <i> Seleccionar libro de aperturas</i>.\n\
+4. Seleccione el archivo de libro de aperturas que desee utilizar.\n\
+\n\
+<b>Archivos PGN</b>\n\
+DroidFish puede cargar partidas desde archivos PGN. Para utilizar esta opción:\n\
+1. Crear un directorio denominado<i> DroidFish/pgn</i> en la tarjeta SD. \n\
+2. Copiar uno o más archivos PGN en el directorio <i>DroidFish/pgn</i> .\n\
+3. Mantener pulsado el tablero y seleccionar <i>Cargar partida desde el archivo PGN </i>.\n\
+4. Seleccionar el archivo, y a continuación la partida incluída en el archivo que usted quiera cargar .\n\
+\n\
+Para editar los datos de la partida, tales como los nombres de los jugadores, mantenga pulsada la lista de jugadas y seleccione \
+<i>Editar Datos</i>.Para editar comentarios de jugadas, mantenga pulsada la lista de jugadas y seleccione \
+<i>Editar Comentarios</i>.Para guardar su partida editada, mantenga pulsado el tablero, y seleccione \
+<i>Guardar partida, al archivo PGN </i>.\n\
+\n\
+Para incorporar los análisis del programa a las variantes de la partida, mantenga pulsada la información del análisis mientras el programa está calculando y seleccione <i> Añadir Análisis</i>. La Variante principal actual se añadirá como una variante al árbol de variantes de la partida.\n\
+\n\
+En modo análisis, se pueden añadir movimientos nulos al árbol de variantes. Tenga muy en cuenta que los movimientos nulos no están en PGN estándar, y puede que no funcionen en otros programas de ajedrez que lean PGN.\n\
+\n\
+<b>Archivos Scid </b>\n\
+Si usted tiene instalado <i>Scid on the go</i>, podrá leer archivos de bases de datos Scid \
+directamente desde el DroidFish. Mantenga pulsado el tablero y seleccione <i>Cargar partida desde el archivo Scid</i>.\n\
+\n\
+<b>Licencia</b>\n\
+GNU GPL v3\n\
+\n\
+<b>Autores/Desarrolladores</b>\n\
+* <i>Stockfish</i> ha sido desarrollado por Tord Romstad, Marco Costalba y Joona Kiiski.\n\
+* <i>Droidfish</i> ha sido desarrollado por Peter Österlund.\n\
+* Mejoras en la interfaz de usuario de Aaro Korhonen.\n\
+    </string>
+    <string name="cpu_warning">\
+<b>Utilización de la CPU </b>\n\
+Si deja a DroidFish analizando en segundo plano, y el<i> Modo Partida</i> está ajustado en \
+<i>Análisis</i> o <i>Computadora vs Computadora </i>, o si <i> Tiempo de Cálculo</i> \
+está ajustado a mucho tiempo, o si <i>Pensar siempre</i> está activado, DroidFish puede utilizar \
+mucha potencia del procesador (CPU) .\n\
+\n\
+Si está usted utilizando la batería, se recomienda que cambie los ajustes para \ ahorrar batería, o que salga de <i>DroidFish</i> utilizando el botón de retroceso cuando \no esté haciendo uso del programa.\
+    </string>
+    <string name="offer_draw">Ofrecer Tablas</string>
+    <string name="queen">Dama</string>
+    <string name="rook">Torre</string>
+    <string name="bishop">Alfil</string>
+    <string name="knight">Caballo</string>
+    <string name="promote_pawn_to">Promocionar/coronar peón en/a?</string>
+    <string name="copy_game">Copiar Partida al Portapapeles</string>
+    <string name="copy_position">Copiar Posición al Portapapeles</string>
+    <string name="paste">Pegar desde el Portapapeles</string>
+    <string name="load_game">Cargar partida desde archivo PGN</string>
+    <string name="load_scid_game">Cargar partida desde archivo Scid</string>
+    <string name="save_game">Guardar partida en archivo PGN</string>
+    <string name="truncate_gametree">Podar Arbol de Variantes</string>
+    <string name="move_var_up">Subir Variante </string>
+    <string name="move_var_down">Bajar Variante </string>
+    <string name="add_null_move">Añadir Movimiento Nulo</string>
+    <string name="tools_menu">Herramientas</string>
+    <string name="load_save_menu">Cargar/Guardar Partida</string>
+    <string name="goto_move">Ir a la jugada</string>
+    <string name="edit_strength">Editar Fuerza de juego</string>
+    <string name="edit_randomization">Editar Aleatoriedad</string>
+    <string name="invalid_number_format"> Formato de número no válido</string>
+    <string name="side_to_move">Turno de juego</string>
+    <string name="clear_board">Limpiar Tablero</string>
+    <string name="initial_position">Posición Inicial</string>
+    <string name="castling_flags">Opciones de Enroque</string>
+    <string name="en_passant_file">Comer Al Paso</string>
+    <string name="move_counters">Contador de Jugadas</string>
+    <string name="paste_position">Pegar Posición</string>
+    <string name="edit_board">Editat Tablero</string>
+    <string name="select_side_to_move_first">Seleccionar quién mueve primero</string>
+    <string name="white">Blancas</string>
+    <string name="black">Negras</string>
+    <string name="white_king_castle">Enroque corto Blanco</string>
+    <string name="white_queen_castle">Enroque largo Blanco</string>
+    <string name="black_king_castle">Enroque corto Negro</string>
+    <string name="black_queen_castle">Enroque largo Negro</string>
+    <string name="none">Ninguno</string>
+    <string name="select_en_passant_file">Seleccionar Comer al Paso</string>
+    <string name="edit_move_counters">Editar Contadores de Jugadas</string>
+    <string name="internal_book">&lt;Libro Interno;</string>
+    <string name="select_opening_book_file">Seleccionar archivo de Libro de Aperturas</string>
+    <string name="select_pgn_file">Seleccionar archivo PGN para abrir</string>
+    <string name="select_pgn_file_save">Grabar en archivo PGN </string>
+    <string name="select_scid_file">Seleccionar archivo Scid para abrir</string>
+    <string name="select_pgn_game">Seleccionar partida para abrir</string>
+    <string name="reading_pgn_file">Leyendo archivo PGN </string>
+    <string name="reading_scid_file">Leyendo archivo Scid </string>
+    <string name="new_file">&lt;Archivo Nuevo</string>
+    <string name="please_wait">Espere, por favor;</string>
+    <string name="no_pgn_files">No se han encontrado archivos en el directorio DroidFish/pgn de la tarjeta SD </string>
+    <string name="no_scid_files">No se han encontrado archivos en el directorio scid de la tarjeta SD </string>
+    <string name="select_color_theme">Seleccionar Colores</string>
+    <string name="select_game_mode">Seleccionar Modo Partida</string>
+    <string name="edit_replay_game">Editar/reproducir partida</string>
+    <string name="analysis_mode">Modo Análisis</string>
+    <string name="play_white">Juegan Blancas</string>
+    <string name="play_black">Juegan Negras</string>
+    <string name="two_players">Dos Jugadores</string>
+    <string name="comp_vs_comp">Computadora vs Computadora</string>
+    <string name="analysis">Análisis</string>
+    <string name="edit_game">Editar Partida</string>
+    <string name="edit_headers">Editar Datos de Partida</string>
+    <string name="edit_comments">Editar Comentarios</string>
+    <string name="go_back">Retroceder</string>
+    <string name="go_forward">Avanzar</string>
+    <string name="goto_start_game">Ir al inicio de la Partida</string>
+    <string name="goto_start_variation">Ir al Inicio de la Variante</string>
+    <string name="goto_prev_variation">Ir a la Variante anterior</string>
+    <string name="load_prev_game">Cargar Partida Anterior</string>
+    <string name="goto_end_variation">Ir al final de la Variante</string>
+    <string name="goto_next_variation">Ir a Variante Siguiente </string>
+    <string name="load_next_game">Cargar Siguiente Partida</string>
+    <string name="no_prev_game">No hay Partida Anterior</string>
+    <string name="no_next_game">No hay Partida Siguiente</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancelar</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="move_number">Número de jugada:</string>
+    <string name="filename">Nombre de archivo:</string>
+    <string name="halfmove">Reloj de media jugada:</string>
+    <string name="fullmove">Contador de movimientos completos:</string>
+    <string name="filter_text">Filtrar Texto</string>
+    <string name="value_percent">Valor(en porcentaje):</string>
+    <string name="header_event">Evento:</string>
+    <string name="header_site">Lugar:</string>
+    <string name="header_date">Fecha:</string>
+    <string name="header_round">Ronda:</string>
+    <string name="header_white">Blancas:</string>
+    <string name="header_black">Negras:</string>
+    <string name="comment_before">Antes:</string>
+    <string name="comment_move">Jugada:</string>
+    <string name="comment_after">Después:</string>
+    <string name="whites_move">Jugada de Blancas</string>
+    <string name="blacks_move">Jugada de Negras</string>
+    <string name="ponder">Pensar siempre(Permanent Brain)</string>
+    <string name="thinking">Calculando</string>
+    <string name="analyzing">Analizando</string>
+    <string name="white_mate">Fin de la partida, las Blancas dan mate!</string>
+    <string name="black_mate">Fin de la partida, las Negras dan mate!</string>
+    <string name="stalemate">Fin de la partida, tablas por ahogado!</string>
+    <string name="draw_rep">Fin de la partida, tablas por repetición!</string>
+    <string name="draw_50">Fin de la partida, tablas por la regla de las 50 jugadas!</string>
+    <string name="draw_no_mate">Fin de la partida, tablas por imposibilidad material de dar mate!</string>
+    <string name="draw_agree">Fin de la partida, tablas por acuerdo mutuo!</string>
+    <string name="resign_white">Fin de la partida, blancas rinden!</string>
+    <string name="resign_black">Fin de la partida, negras rinden!</string>
+    <string name="book">Libro:</string>
+    <string name="invalid_move">Jugada no válida</string>
+    <string name="preferences">Preferencias</string>
+    <string name="load_game_title">Editar Archivo / Cargar Partida</string>
+    <string name="save_game_title">Editar Archivo / Guardar Partida</string>
+    <string name="load_scid_game_title">Cargar Partida Scid </string>
+    <string name="cpu_warning_title">Advertencia del procesador/CPU </string>
+    <string name="failed_to_read_pgn_data">Fallo al leer datos PGN</string>
+    <string name="variation">Variante:</string>
+    <string name="add_analysis">Añadir Análisis</string>
+    <string name="fewer_variations">Menos Variantes</string>
+    <string name="more_variations">Más Variantes</string>
+    <string name="hide_statistics">Ocultar Estadísticas</string>
+    <string name="show_statistics">Mostrar Estadísticas</string>
+    <string name="heavy_cpu_usage">Procesador/CPU muy cargado</string>
+    <string name="background_processing">Proceso en segundo plano</string>
+    <string name="lot_cpu_power">DroidFish está utilizando mucha potencia del procesador/CPU</string>
+    <string name="delete_game">Borrar partida?</string>
+    <string name="delete_file">Borrar archivo</string>
+    <string name="delete_file_question">Borrar archivo?</string>
+    <string name="delete_named_file">Borrar archivo %s?</string>
+    <string name="game_saved">Partida Guardada</string>
+    <string name="failed_to_save_game">No se ha podido guardar partida</string>
+    <string name="failed_to_delete_game">No se ha podido borrar partida</string>
+    <string name="file_too_large">Archivo demasiado grande</string>
+    <string name="save_game_question">Guardar partida?</string>
+    <string name="before_selected">Antes de la seleccionada</string>
+    <string name="after_selected">Después de la seleccionada</string>
+    <string name="replace_selected">Sustituir la seleccionada</string>
+    <string name="stockfish_engine">Stockfish</string>
+    <string name="cuckoochess_engine">CuckooChess</string>
+
+    <string name="err_too_few_spaces">Pocos espacios</string>
+    <string name="err_invalid_piece">Pieza incorrecta</string>
+    <string name="err_invalid_side">Lado incorrecto</string>
+    <string name="err_invalid_castling_flags">Opciones de Enroque incorrectas</string>
+    <string name="err_invalid_en_passant_square">Casilla de Comer al Paso incorrecta</string>
+    <string name="err_white_num_kings">Blancas tienen que tener solo un Rey</string>
+    <string name="err_black_num_kings">Negras tienen que tener solo un Rey</string>
+    <string name="err_king_capture_possible">Es posible la captura del Rey</string>
+    <string name="err_too_many_rows">Demasiadas filas</string>
+    <string name="err_too_many_columns">Demasiadas columnas</string>
+    <string name="err_pawn_on_first_last_rank">Peón en la  primera/última fila</string>
+    <string name="err_too_many_white_pieces">Demasiadas piezas blancas</string>
+    <string name="err_too_many_black_pieces">Demasiadas piezas negras</string>
+
+    <string name="option_new_game">Nueva Partida</string>
+    <string name="option_file">Archivo</string>
+    <string name="option_resign_game">Rendir partida</string>
+    <string name="option_edit_board">Editar Posición</string>
+    <string name="option_settings">Ajustes/Opciones</string>
+    <string name="option_goto_move">Ir a la jugada</string>
+    <string name="option_force_computer_move">Obligar a jugar a la Computadora</string>
+    <string name="option_draw">Reclamar/Ofrecer/Aceptar  Tablas</string>
+    <string name="option_select_book">Seleccionar Libro de Aperturas</string>
+    <string name="option_color_theme">Ajustar rango de Colores</string>
+    <string name="option_about"> Información  / Ayuda</string>
+
+    <string name="prefs_playing_options">Opciones de juego</string>
+    <string name="prefs_boardFlipped_title">Invertir Tablero</string>
+    <string name="prefs_boardFlipped_summary">Ver el tablero desde el lado de las Negras</string>
+    <string name="prefs_autoSwapSides_title">Cambio de lados automático</string>
+    <string name="prefs_autoSwapSides_summary">Cambio automático de lados al iniciar una nueva partida. También anula el ajuste de Inversión del Tablero </string>
+    <string name="prefs_engine_settings">Ajustes del Motor/Programa</string>
+    <string name="prefs_strength_title">Fuerza/Nivel de Juego</string>
+    <string name="prefs_ponderMode_title">Pensar siempre(Permanent Brain)</string>
+    <string name="prefs_ponderMode_summary">Dejar calcular al motor  mientras espera la jugada del oponente</string>
+    <string name="prefs_threads_title">Núcleos</string>
+    <string name="prefs_threads_summary">Número de núcleos del motor en uso</string>
+    <string name="prefs_time_control">Control de Tiempos</string>
+    <string name="prefs_movesPerSession_title">Jugadas</string>
+    <string name="prefs_movesPerSession_summary">Número de jugadas entre controles de tiempo</string>
+    <string name="prefs_timeControl_title">Tiempos</string>
+    <string name="prefs_timeControl_summary">Máximo tiempo de cálculo entre controles de tiempo</string>
+    <string name="prefs_timeIncrement_title">Incremento</string>
+    <string name="prefs_timeIncrement_summary">Tiempo extra de cálculo por cada jugada hecha</string>
+    <string name="prefs_hints">Consejos</string>
+    <string name="prefs_showThinking_title">Mostrar cálculos de la computadora</string>
+    <string name="prefs_showThinking_summary">Mostrar en pantalla información del algoritmo del programa durante la búsqueda</string>
+    <string name="prefs_whiteBasedScores_title">Valoración desde el punto de vista de las Blancas</string>
+    <string name="prefs_whiteBasedScores_summary">Las valoraciones de análisis positivas son buenas para las Blancas</string>
+    <string name="prefs_bookHints_title">Mostrar las jugadas del Libro</string>
+    <string name="prefs_bookHints_summary">Muestra en pantalla los movimientos del Libro de Aperturas al jugador humano</string>
+    <string name="prefs_thinkingArrows_title">Usar Flechas</string>
+    <string name="prefs_thinkingArrows_summary">Utilización de Flechas para mostrar las jugadas en el tablero</string>
+    <string name="prefs_user_interface">Interfaz del Usuario</string>
+    <string name="prefs_animateMoves_title">Animación de Jugadas</string>
+    <string name="prefs_animateMoves_summary">Anima los movimientos de las piezas</string>
+    <string name="prefs_oneTouchMoves_title">Jugada de un solo toque</string>
+    <string name="prefs_oneTouchMoves_summary">Pulsando la casilla  correspondiente a una única jugada posible, hace esa jugada inmediatamente</string>
+    <string name="prefs_soundEnabled_title">Permitir Sonidos</string>
+    <string name="prefs_soundEnabled_summary">Suena cuando la computadora efectúa una jugada</string>
+    <string name="prefs_fullScreenMode_title">Modo Pantalla Completa</string>
+    <string name="prefs_fullScreenMode_summary">El Modo pantalla completa oculta la barra de situación</string>
+    <string name="prefs_wakeLock_title">Desconectar el Tiempo Muerto de la Pantalla</string>
+    <string name="prefs_drawSquareLabels_title">Coordenadas</string>
+    <string name="prefs_drawSquareLabels_summary">Muestra coordenadas en pantalla: a-h y 1-8</string>
+    <string name="prefs_scrollSensitivity_title">Velocidad de Desplazamiento</string>
+    <string name="prefs_scrollSensitivity_summary">Velocidad de desplazamiento de la información durante la partida </string>
+    <string name="prefs_invertScrollDirection_title">Invertir la dirección de desplazamiento</string>
+    <string name="prefs_invertScrollDirection_summary">Permitirlo si usted piensa que el desplazamiento de jugadas se hace en la dirección equivocada.</string>
+    <string name="prefs_fontSize_title">Tamaño del Texto</string>
+    <string name="prefs_fontSize_summary">Tamaño de las Fuentes para la lista de jugadas e información de la partida</string>
+    <string name="prefs_largeButtons_title">Botones Grandes</string>
+    <string name="prefs_largeButtons_summary">Utilizar grandes  botones /teclas para navegar por la partida y ajustar los Modos</string>
+    <string name="prefs_colors_title">Ajustes de Color</string>
+    <string name="prefs_colors_summary">Cambia los colores individuales</string>
+    <string name="prefs_chess_board">Tablero de Ajedrez</string>
+    <string name="prefs_color_brightSquare_title">Casillas Blancas</string>
+    <string name="prefs_color_darkSquare_title">Casillas Negras</string>
+    <string name="prefs_color_selectedSquare_title">Casilla elegida</string>
+    <string name="prefs_color_cursorSquare_title">Cursor</string>
+    <string name="prefs_color_brightPiece_title">Piezas Blancas</string>
+    <string name="prefs_color_darkPiece_title">Piezas Negras</string>
+    <string name="prefs_color_arrow0_title">Flecha 1</string>
+    <string name="prefs_color_arrow1_title">Flecha 2</string>
+    <string name="prefs_color_arrow2_title">Flecha 3</string>
+    <string name="prefs_color_arrow3_title">Flecha 4</string>
+    <string name="prefs_color_arrow4_title">Flecha 5</string>
+    <string name="prefs_color_arrow5_title">Flecha 6</string>
+    <string name="prefs_color_squareLabel_title">Coordenadas</string>
+    <string name="prefs_move_list">Lista de Jugadas</string>
+    <string name="prefs_color_currentMove_title">Jugada actual</string>
+    <string name="prefs_other">Otros</string>
+    <string name="prefs_bookSettings_title">Ajustes del Libro de Aperturas</string>
+    <string name="prefs_bookSettings_summary">Ajusta los parámetros para la utilización del Libro de Aperturas</string>
+    <string name="prefs_bookMaxLength_title">Longitud/Profundidad del Libro</string>
+    <string name="prefs_bookMaxLength_summary">Extensión máxima de la línea en el Libro de Aperturas</string>
+    <string name="prefs_bookPreferMainLines_title">Preferir líneas principales</string>
+    <string name="prefs_bookPreferMainLines_summary">Selecciona jugadas del libro marcadas como variantes principales</string>
+    <string name="prefs_bookTournamentMode_title">Modo Torneo</string>
+    <string name="prefs_bookTournamentMode_summary">Ignora todas aquellas jugadas no seleccionadas como de torneo</string>
+    <string name="prefs_bookRandom_title">Aleatoriedad del Libro de Aperturas</string>
+    <string name="prefs_bookFile_title">Nombre del archivo del Libro de Aperturas</string>
+    <string name="prefs_bookFile_summary">Archivo de Libro Polyglot o CTG en el directorio DroidFish de la Tarjeta SD </string>
+    <string name="prefs_pgnSettings_title">Ajustes PGN</string>
+    <string name="prefs_pgnSettings_summary">Ajustes para importar y exportar datos PGN</string>
+    <string name="prefs_pgn_viewer">Visualizador PGN </string>
+    <string name="prefs_viewVariations_title">Variantes</string>
+    <string name="prefs_viewVariations_summary">Incluye jugadas secundarias</string>
+    <string name="prefs_viewComments_title">Comentarios</string>
+    <string name="prefs_viewComments_summary">Incluye los comentarios escritos del usuario</string>
+    <string name="prefs_viewNAG_title">Anotaciones</string>
+    <string name="prefs_viewNAG_summary">Incluye la Notación Numérica de Glifos (NNG), tales como ! y ?</string>
+    <string name="prefs_viewHeaders_title">Cabeceras/Encabezamientos</string>
+    <string name="prefs_viewHeaders_summary">Muestran las líneas de cabecera en PGN</string>
+    <string name="prefs_pgn_import">Importar de PGN</string>
+    <string name="prefs_importVariations_title">Variantes</string>
+    <string name="prefs_importVariations_summary">Incluye jugadas secundarias</string>
+    <string name="prefs_importComments_title">Comentarios</string>
+    <string name="prefs_importComments_summary">Incluye comentarios escritos del usuario</string>
+    <string name="prefs_importNAG_title">Anotaciones</string>
+    <string name="prefs_importNAG_summary">Incluye la Notación Numérica de Glifos (NNG), tales como ! y ?</string>
+    <string name="prefs_pgn_export">Exportar a PGN</string>
+    <string name="prefs_exportVariations_title">Variantes</string>
+    <string name="prefs_exportVariations_summary">Incluye jugadas secundarias</string>
+    <string name="prefs_exportComments_title">Comentarios</string>
+    <string name="prefs_exportComments_summary">Incluye comentarios escritos del usuario</string>
+    <string name="prefs_exportNAG_title">Anotaciones</string>
+    <string name="prefs_exportNAG_summary">Incluye la Notación Numérica de Glifos (NNG), tales como ! y ?</string>
+    <string name="prefs_exportPlayerAction_title">Acciones del Jugador</string>
+    <string name="prefs_exportPlayerAction_summary">Incluye información sobre acciones como tablas o rendir</string>
+    <string name="prefs_exportTime_title">Reloj</string>
+    <string name="prefs_exportTime_summary">Incluye información del tiempo para cada jugada</string>
+</resources>
