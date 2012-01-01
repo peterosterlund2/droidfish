@@ -2,8 +2,8 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE    := jni
-LOCAL_SRC_FILES := jni.cpp
+LOCAL_MODULE    := stockfishjni
+LOCAL_SRC_FILES := stockfishjni.cpp
 
 LOCAL_CFLAGS    := \
 	 -mandroid \

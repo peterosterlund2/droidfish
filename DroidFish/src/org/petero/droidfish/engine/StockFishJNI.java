@@ -18,9 +18,9 @@
 
 package org.petero.droidfish.engine;
 
-public class NativePipedProcess extends UCIEngineBase {
+public class StockFishJNI extends UCIEngineBase {
     static {
-        System.loadLibrary("jni");
+        System.loadLibrary("stockfishjni");
     }
 
     @Override

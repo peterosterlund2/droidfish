@@ -34,11 +34,11 @@ static int fdToChild = -1;
 static int childpid = -1;
 
 /*
- * Class:     org_petero_droidfish_engine_NativePipedProcess
+ * Class:     org_petero_droidfish_engine_StockFishJNI
  * Method:    startProcess
  * Signature: ()V
  */
-extern "C" JNIEXPORT void JNICALL Java_org_petero_droidfish_engine_NativePipedProcess_startProcess
+extern "C" JNIEXPORT void JNICALL Java_org_petero_droidfish_engine_StockFishJNI_startProcess
 		(JNIEnv* env, jobject obj)
 {
     if (childpid != -1)
@@ -110,11 +110,11 @@ static bool getNextChar(int& c, int timeoutMillis) {
 
 static std::vector<char> lineBuf;
 /*
- * Class:     org_petero_droidfish_engine_NativePipedProcess
+ * Class:     org_petero_droidfish_engine_StockFishJNI
  * Method:    readFromProcess
  * Signature: (I)Ljava/lang/String;
  */
-extern "C" JNIEXPORT jstring JNICALL Java_org_petero_droidfish_engine_NativePipedProcess_readFromProcess
+extern "C" JNIEXPORT jstring JNICALL Java_org_petero_droidfish_engine_StockFishJNI_readFromProcess
 		(JNIEnv* env, jobject obj, jint timeoutMillis)
 {
 	struct timeval tv0, tv1;
@@ -147,11 +147,11 @@ extern "C" JNIEXPORT jstring JNICALL Java_org_petero_droidfish_engine_NativePipe
 }
 
 /*
- * Class:     org_petero_droidfish_engine_NativePipedProcess
+ * Class:     org_petero_droidfish_engine_StockFishJNI
  * Method:    writeToProcess
  * Signature: (Ljava/lang/String;)V
  */
-extern "C" JNIEXPORT void JNICALL Java_org_petero_droidfish_engine_NativePipedProcess_writeToProcess
+extern "C" JNIEXPORT void JNICALL Java_org_petero_droidfish_engine_StockFishJNI_writeToProcess
 		(JNIEnv* env, jobject obj, jstring msg)
 {
     const char* str = (*env).GetStringUTFChars(msg, NULL);
@@ -169,11 +169,11 @@ extern "C" JNIEXPORT void JNICALL Java_org_petero_droidfish_engine_NativePipedPr
 }
 
 /*
- * Class:     org_petero_droidfish_engine_NativePipedProcess
+ * Class:     org_petero_droidfish_engine_StockFishJNI
  * Method:    getNPhysicalProcessors
  * Signature: ()I
  */
-extern "C" JNIEXPORT jint JNICALL Java_org_petero_droidfish_engine_NativePipedProcess_getNPhysicalProcessors
+extern "C" JNIEXPORT jint JNICALL Java_org_petero_droidfish_engine_StockFishJNI_getNPhysicalProcessors
 		(JNIEnv *, jclass)
 {
 	return sysconf(_SC_NPROCESSORS_ONLN);

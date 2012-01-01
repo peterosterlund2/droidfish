@@ -546,7 +546,7 @@ public class DroidComputerPlayer {
         if ("cuckoochess".equals(searchRequest.engine))
             uciEngine = new CuckooChessEngine();
         else
-            uciEngine = new NativePipedProcess();
+            uciEngine = new StockFishJNI();
         uciEngine.initialize();
 
         engineMonitor = new Thread(new Runnable() {
@@ -911,7 +911,7 @@ public class DroidComputerPlayer {
             nCPUsFromProc = nCPUs;
         } catch (IOException e) {
         }
-        int nCPUsFromOS = NativePipedProcess.getNPhysicalProcessors();
+        int nCPUsFromOS = StockFishJNI.getNPhysicalProcessors();
         return Math.max(nCPUsFromProc, nCPUsFromOS);
     }
 
