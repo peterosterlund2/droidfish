@@ -549,7 +549,7 @@ public class DroidFish extends Activity implements GUIInterface {
         if (!mPonderMode)
             ctrl.stopPonder();
 
-        int timeControl = getIntSetting("timeControl", 300000);
+        int timeControl = getIntSetting("timeControl", 120000);
         int movesPerSession = getIntSetting("movesPerSession", 60);
         int timeIncrement = getIntSetting("timeIncrement", 0);
         ctrl.setTimeLimit(timeControl, movesPerSession, timeIncrement);

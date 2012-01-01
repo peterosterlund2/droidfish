@@ -79,7 +79,7 @@
         <item>5400000</item>
         <item>7200000</item>
     </string-array>
-    <string name="time_control_default">300000</string>
+    <string name="time_control_default">120000</string>
 
     <string-array name="time_increment_texts">
         <item>0s</item>
