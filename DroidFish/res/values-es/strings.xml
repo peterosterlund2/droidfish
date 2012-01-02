@@ -174,25 +174,26 @@
 
     <string name="about_info">\
 <b>About</b>\n\
-<i>DroidFish</i> es un derivado Android del famoso motor de ajedrez <i>stockfish 2.1.1</i> . \
+<i>DroidFish</i> es un derivado Android del famoso motor de ajedrez <i>stockfish 2.2</i> . \
 <i>Stockfish</i> es uno de los motores de ajedrez más fuertes del mundo. \
 En su versión Android, a menudo profundiza 15 ply e incluso más, con un procesador Snapdragon a 1GHz.\n\
 \n\
 <b>Características</b>\n\
 * Libro de Aperturas\n\
-* Avance/ Retroceso ilimitado\n\
+* Avance/Retroceso ilimitado\n\
 * Copiar/pegar a/desde el portapapeles\n\
 * Modo Análisis \n\
 * Modo Dos jugadores \n\
 * Modo Programa contra Programa \n\
 * Introducir Posición \n\  
 * Amplio soporte PGN \n\
-* Niveles de juego ajustables
+* Niveles de juego ajustables\n\
+* Motores UCI de terceros\n\
 \n\
 <b>Indicaciones </b>\n\
-* En modo partida, mantenga pulsado el tablero para activar el menú copiar/ pegar.\n\
+* En modo partida, mantenga pulsado el tablero para activar el menú copiar/pegar.\n\
 * En modo editar tablero, mantenga pulsado el mismo, para activar el menú editar.\n\
-* Desplazarse a la izquierda/derecha en el tablero, para retroceder/ avanzar jugadas.\n\
+* Desplazarse a la izquierda/derecha en el tablero, para retroceder/avanzar jugadas.\n\
 * Si la partida incluye varias líneas, desplazarse arriba/abajo sobre el tablero,para acceder a la línea anterior/posterior.\n\
 * Mantenga pulsados los botones izquierda/derecha para acceder a los botones de navegación adicionales de la partida.\n\
 \n\
@@ -226,6 +227,13 @@ En modo análisis, se pueden añadir movimientos nulos al árbol de variantes. T
 Si usted tiene instalado <i>Scid on the go</i>, podrá leer archivos de bases de datos Scid \
 directamente desde el DroidFish. Mantenga pulsado el tablero y seleccione <i>Cargar partida desde el archivo Scid</i>.\n\
 \n\
+<b>Motores UCI</b>\n\
+DroidFish puede incorporar motores UCI de terceros. Para utilizar estaopción : \n\
+\n\
+1. Crear un directorio <i>DroidFish/uci</i> en la tarjeta SD.\n\
+2. Copiar uno o más códigos de motores UCI al directorio <i>DroidFish/uci</i>\n\
+3. Desde el menú, acceder a <i>Seleccionar Motor de Ajedrez</i> y elegir el motor que se va a utilizar.\n\
+\n\
 <b>Licencia</b>\n\
 GNU GPL v3\n\
 \n\
@@ -233,6 +241,10 @@ GNU GPL v3\n\
 * <i>Stockfish</i> ha sido desarrollado por Tord Romstad, Marco Costalba y Joona Kiiski.\n\
 * <i>Droidfish</i> ha sido desarrollado por Peter Österlund.\n\
 * Mejoras en la interfaz de usuario de Aaro Korhonen.\n\
+\n\
+<b>Traducciones</b>\n\
+Traducción al alemán de Uwe Walschus.\n\
+Traducción al español de Amador Cuesta.\n\
     </string>
     <string name="cpu_warning">\
 <b>Utilización de la CPU </b>\n\
@@ -285,6 +297,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="edit_move_counters">Editar Contadores de Jugadas</string>
     <string name="internal_book">&lt;Libro Interno;</string>
     <string name="select_opening_book_file">Seleccionar archivo de Libro de Aperturas</string>
+    <string name="select_chess_engine">Seleccionar motor de ajedrez</string>
     <string name="select_pgn_file">Seleccionar archivo PGN para abrir</string>
     <string name="select_pgn_file_save">Grabar en archivo PGN </string>
     <string name="select_scid_file">Seleccionar archivo Scid para abrir</string>
@@ -337,9 +350,9 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="comment_before">Antes:</string>
     <string name="comment_move">Jugada:</string>
     <string name="comment_after">Después:</string>
-    <string name="whites_move">Jugada de Blancas</string>
-    <string name="blacks_move">Jugada de Negras</string>
-    <string name="ponder">Pensar siempre(Permanent Brain)</string>
+    <string name="whites_move">Juegan Blancas</string>
+    <string name="blacks_move">Juegan Negras</string>
+    <string name="ponder">Pensar siempre</string>
     <string name="thinking">Calculando</string>
     <string name="analyzing">Analizando</string>
     <string name="white_mate">Fin de la partida, las Blancas dan mate!</string>
@@ -380,6 +393,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="before_selected">Antes de la seleccionada</string>
     <string name="after_selected">Después de la seleccionada</string>
     <string name="replace_selected">Sustituir la seleccionada</string>
+    <string name="engine">Motor</string>
+    <string name="engine_error">Error del Motor</string>
     <string name="stockfish_engine">Stockfish</string>
     <string name="cuckoochess_engine">CuckooChess</string>
 
@@ -403,9 +418,10 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="option_edit_board">Editar Posición</string>
     <string name="option_settings">Ajustes/Opciones</string>
     <string name="option_goto_move">Ir a la jugada</string>
-    <string name="option_force_computer_move">Obligar a jugar a la Computadora</string>
-    <string name="option_draw">Reclamar/Ofrecer/Aceptar  Tablas</string>
+    <string name="option_force_computer_move">Obligar a jugar al Programa</string>
+    <string name="option_draw">Ofrecer / Aceptar Tablas</string>
     <string name="option_select_book">Seleccionar Libro de Aperturas</string>
+    <string name="option_select_engine">Seleccionar Motor</string>
     <string name="option_color_theme">Ajustar rango de Colores</string>
     <string name="option_about"> Información  / Ayuda</string>
 
@@ -416,7 +432,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="prefs_autoSwapSides_summary">Cambio automático de lados al iniciar una nueva partida. También anula el ajuste de Inversión del Tablero </string>
     <string name="prefs_engine_settings">Ajustes del Motor/Programa</string>
     <string name="prefs_strength_title">Fuerza/Nivel de Juego</string>
-    <string name="prefs_ponderMode_title">Pensar siempre(Permanent Brain)</string>
+    <string name="prefs_ponderMode_title">Pensar siempre</string>
     <string name="prefs_ponderMode_summary">Dejar calcular al motor  mientras espera la jugada del oponente</string>
     <string name="prefs_threads_title">Núcleos</string>
     <string name="prefs_threads_summary">Número de núcleos del motor en uso</string>
@@ -427,10 +443,10 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="prefs_timeControl_summary">Máximo tiempo de cálculo entre controles de tiempo</string>
     <string name="prefs_timeIncrement_title">Incremento</string>
     <string name="prefs_timeIncrement_summary">Tiempo extra de cálculo por cada jugada hecha</string>
-    <string name="prefs_hints">Consejos</string>
-    <string name="prefs_showThinking_title">Mostrar cálculos de la computadora</string>
+    <string name="prefs_hints">Indicaciones / Información</string>
+    <string name="prefs_showThinking_title">Mostrar cálculos del programa</string>
     <string name="prefs_showThinking_summary">Mostrar en pantalla información del algoritmo del programa durante la búsqueda</string>
-    <string name="prefs_whiteBasedScores_title">Valoración desde el punto de vista de las Blancas</string>
+    <string name="prefs_whiteBasedScores_title">Valoración de las blancas</string>
     <string name="prefs_whiteBasedScores_summary">Las valoraciones de análisis positivas son buenas para las Blancas</string>
     <string name="prefs_bookHints_title">Mostrar las jugadas del Libro</string>
     <string name="prefs_bookHints_summary">Muestra en pantalla los movimientos del Libro de Aperturas al jugador humano</string>
@@ -450,7 +466,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="prefs_drawSquareLabels_summary">Muestra coordenadas en pantalla: a-h y 1-8</string>
     <string name="prefs_scrollSensitivity_title">Velocidad de Desplazamiento</string>
     <string name="prefs_scrollSensitivity_summary">Velocidad de desplazamiento de la información durante la partida </string>
-    <string name="prefs_invertScrollDirection_title">Invertir la dirección de desplazamiento</string>
+    <string name="prefs_invertScrollDirection_title">Invertir dirección desplazamiento</string>
     <string name="prefs_invertScrollDirection_summary">Permitirlo si usted piensa que el desplazamiento de jugadas se hace en la dirección equivocada.</string>
     <string name="prefs_fontSize_title">Tamaño del Texto</string>
     <string name="prefs_fontSize_summary">Tamaño de las Fuentes para la lista de jugadas e información de la partida</string>
