@@ -98,7 +98,7 @@ public class SeekBarPreference extends Preference
                 }
                 builder.setTitle(title);
                 final EditText valueView = (EditText)content.findViewById(R.id.selpercentage_number);
-                valueView.setText(currValBox.getText().toString().replaceAll("%", ""));
+                valueView.setText(currValBox.getText().toString().replaceAll("%", "").replaceAll(",", "."));
                 final Runnable selectValue = new Runnable() {
                     public void run() {
                         try {
