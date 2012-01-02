@@ -249,6 +249,10 @@ GNU GPL v3\n\
 * <i>Stockfish</i> is developed by Tord Romstad, Marco Costalba and Joona Kiiski.\n\
 * <i>Droidfish</i> is developed by Peter Österlund.\n\
 * User interface improvements by Aaro Korhonen.\n\
+\n\
+<b>Translations</b>\n\
+* German translation by Uwe Walschus.\n\
+* Spanish translation by Amador Cuesta.\n\
     </string>
     <string name="cpu_warning">\
 <b>CPU Usage</b>\n\
