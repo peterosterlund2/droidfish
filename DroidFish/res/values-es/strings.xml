@@ -228,7 +228,7 @@ Si usted tiene instalado <i>Scid on the go</i>, podrá leer archivos de bases de
 directamente desde el DroidFish. Mantenga pulsado el tablero y seleccione <i>Cargar partida desde el archivo Scid</i>.\n\
 \n\
 <b>Motores UCI</b>\n\
-DroidFish puede incorporar motores UCI de terceros. Para utilizar estaopción : \n\
+DroidFish puede incorporar motores UCI de terceros. Para utilizar esta opción : \n\
 \n\
 1. Crear un directorio <i>DroidFish/uci</i> en la tarjeta SD.\n\
 2. Copiar uno o más códigos de motores UCI al directorio <i>DroidFish/uci</i>\n\
@@ -296,7 +296,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="select_en_passant_file">Seleccionar Comer al Paso</string>
     <string name="edit_move_counters">Editar Contadores de Jugadas</string>
     <string name="internal_book">&lt;Libro Interno;</string>
-    <string name="select_opening_book_file">Seleccionar archivo de Libro de Aperturas</string>
+    <string name="select_opening_book_file">Seleccionar Libro</string>
     <string name="select_chess_engine">Seleccionar motor de ajedrez</string>
     <string name="select_pgn_file">Seleccionar archivo PGN para abrir</string>
     <string name="select_pgn_file_save">Grabar en archivo PGN </string>
