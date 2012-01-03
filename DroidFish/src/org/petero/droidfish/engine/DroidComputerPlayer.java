@@ -409,6 +409,12 @@ public class DroidComputerPlayer {
         }
     }
 
+    /** Tell engine to move now. */
+    public void moveNow() {
+        if (engineState.state == MainState.SEARCH)
+            uciEngine.writeLineToEngine("stop");
+    }
+
     /** Return true if current search job is equal to id. */
     public final synchronized boolean sameSearchId(int id) {
         return (searchRequest != null) && (searchRequest.searchId == id);

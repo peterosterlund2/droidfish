@@ -488,7 +488,7 @@ public class DroidChessController {
     /** Request computer player to make a move immediately. */
     public final synchronized void stopSearch() {
         if (!humansTurn() && (computerPlayer != null))
-            computerPlayer.stopSearch();
+            computerPlayer.moveNow();
     }
 
     /** Stop ponder search. */
