@@ -178,6 +178,8 @@ public class DroidFish extends Activity implements GUIInterface {
         super.onCreate(savedInstanceState);
 
         String pgn = getPgnIntent();
+        
+        createDirectories();
 
         settings = PreferenceManager.getDefaultSharedPreferences(this);
         settings.registerOnSharedPreferenceChangeListener(new OnSharedPreferenceChangeListener() {
@@ -222,6 +224,15 @@ public class DroidFish extends Activity implements GUIInterface {
             } catch (ChessParseError e) {
             }
         }
+    }
+
+    /** Create directory structure on SD card. */
+    private void createDirectories() {
+        File extDir = Environment.getExternalStorageDirectory();
+        String sep = File.separator;
+        new File(extDir + sep + bookDir).mkdirs();
+        new File(extDir + sep + pgnDir).mkdirs();
+        new File(extDir + sep + engineDir).mkdirs();
     }
 
     private String getPgnIntent() {
