@@ -1,6 +1,6 @@
 /*
     DroidFish - An Android chess program.
-    Copyright (C) 2011  Peter Österlund, peterosterlund2@gmail.com
+    Copyright (C) 2011-2012  Peter Österlund, peterosterlund2@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@ import java.util.List;
 import org.petero.droidfish.gamelogic.Game;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.Position;
+
+import android.content.Context;
 
 /** Interface between the GUI and the ChessController. */
 public interface GUIInterface {
@@ -87,4 +89,7 @@ public interface GUIInterface {
 
     /** Return the number of engine threads to use. */
     int engineThreads();
+
+    /** Return application context. */
+    public Context getContext();
 }

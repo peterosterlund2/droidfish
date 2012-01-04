@@ -1,3 +1,21 @@
+/*
+    DroidFish - An Android chess program.
+    Copyright (C) 2011-2012  Peter Österlund, peterosterlund2@gmail.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package org.petero.droidfish.engine;
 
 import java.io.BufferedReader;
@@ -11,8 +29,10 @@ import java.nio.channels.FileChannel;
 import java.util.LinkedList;
 import java.util.List;
 
+/** Engine running as a process started from an external resource. */
 public class ExternalEngine extends UCIEngineBase {
     private File engineFileName;
+    protected static final String intSfPath = "/data/data/org.petero.droidfish/internal_sf";
     private static final String exePath = "/data/data/org.petero.droidfish/engine.exe";
     private final Report report;
     private Process engineProc;
@@ -170,7 +190,8 @@ public class ExternalEngine extends UCIEngineBase {
             stdErrThread.interrupt();
     }
 
-    private final static void copyFile(File from, File to) throws IOException {
+    protected void copyFile(File from, File to) throws IOException {
+        new File(intSfPath).delete();
         if (to.exists() && (from.length() == to.length()) && (from.lastModified() == to.lastModified()))
             return;
         if (to.exists())

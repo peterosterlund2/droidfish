@@ -1,6 +1,6 @@
 /*
     DroidFish - An Android chess program.
-    Copyright (C) 2011  Peter Österlund, peterosterlund2@gmail.com
+    Copyright (C) 2011-2012  Peter Österlund, peterosterlund2@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -34,12 +34,15 @@ import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gamelogic.UndoInfo;
 import org.petero.droidfish.gamelogic.SearchListener.PvInfo;
 
+import android.content.Context;
+
 /**
  * A computer algorithm player.
  * @author petero
  */
 public class DroidComputerPlayer {
     private UCIEngine uciEngine = null;
+    private final Context context;
     private final SearchListener listener;
     private final DroidBook book;
 
@@ -224,7 +227,8 @@ public class DroidComputerPlayer {
     private Thread engineMonitor;
 
     /** Constructor. Starts engine process if not already started. */
-    public DroidComputerPlayer(SearchListener listener) {
+    public DroidComputerPlayer(Context context, SearchListener listener) {
+        this.context = context;
         this.listener = listener;
         book = DroidBook.getInstance();
         engineState = new EngineState();
@@ -548,7 +552,7 @@ public class DroidComputerPlayer {
         myAssert(searchRequest != null);
 
         engineName = "Computer";
-        uciEngine = UCIEngineBase.getEngine(searchRequest.engine, new UCIEngine.Report() {
+        uciEngine = UCIEngineBase.getEngine(context, searchRequest.engine, new UCIEngine.Report() {
             @Override
             public void reportError(String errMsg) {
                 if (errMsg != null) {
@@ -924,7 +928,7 @@ public class DroidComputerPlayer {
             nCPUsFromProc = nCPUs;
         } catch (IOException e) {
         }
-        int nCPUsFromOS = StockFishJNI.getNPhysicalProcessors();
+        int nCPUsFromOS = NativeUtil.getNPhysicalProcessors();
         return Math.max(nCPUsFromProc, nCPUsFromOS);
     }
 

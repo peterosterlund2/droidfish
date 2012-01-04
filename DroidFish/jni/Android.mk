@@ -2,15 +2,13 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE    := stockfishjni
-LOCAL_SRC_FILES := stockfishjni.cpp
+LOCAL_MODULE    := nativeutil
+LOCAL_SRC_FILES := nativeutil.cpp
 
 LOCAL_CFLAGS    := \
 	 -mandroid \
 	-DTARGET_OS=android -D__ANDROID__ \
 	-isystem $(SYSROOT)/usr/include
-
-LOCAL_STATIC_LIBRARIES := stockfish
 
 include $(BUILD_SHARED_LIBRARY)
 

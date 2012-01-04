@@ -19,4 +19,4 @@ LOCAL_CFLAGS    := -I$(LOCAL_PATH)/../stlport/stlport \
 
 LOCAL_STATIC_LIBRARIES := stlport
 
-include $(BUILD_STATIC_LIBRARY)
+include $(BUILD_EXECUTABLE)

@@ -1,6 +1,6 @@
 /*
     DroidFish - An Android chess program.
-    Copyright (C) 2011  Peter Österlund, peterosterlund2@gmail.com
+    Copyright (C) 2011-2012  Peter Österlund, peterosterlund2@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -178,7 +178,7 @@ public class DroidFish extends Activity implements GUIInterface {
         super.onCreate(savedInstanceState);
 
         String pgn = getPgnIntent();
-        
+
         createDirectories();
 
         settings = PreferenceManager.getDefaultSharedPreferences(this);
@@ -915,6 +915,11 @@ public class DroidFish extends Activity implements GUIInterface {
     @Override
     public int engineThreads() {
         return mEngineThreads;
+    }
+
+    @Override
+    public Context getContext() {
+        return getApplicationContext();
     }
 
     /** Report a move made that is a candidate for GUI animation. */
