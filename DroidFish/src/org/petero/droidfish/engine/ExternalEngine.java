@@ -16,17 +16,21 @@ public class ExternalEngine extends UCIEngineBase {
     private static final String exePath = "/data/data/org.petero.droidfish/engine.exe";
     private final Report report;
     private Process engineProc;
+    private Thread exitThread;
     private Thread stdInThread;
     private Thread stdErrThread;
     private List<String> inLines;
+    private boolean startedOk;
 
     public ExternalEngine(String engine, Report report) {
         this.report = report;
         engineFileName = new File(engine);
         engineProc = null;
+        exitThread = null;
         stdInThread = null;
         stdErrThread = null;
         inLines = new LinkedList<String>();
+        startedOk = false;
     }
 
     /** @inheritDoc */
@@ -38,6 +42,19 @@ public class ExternalEngine extends UCIEngineBase {
             ProcessBuilder pb = new ProcessBuilder(exePath);
             engineProc = pb.start();
 
+            exitThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        engineProc.waitFor();
+                        if (!startedOk)
+                            report.reportError("Failed to start engine");
+                    } catch (InterruptedException e) {
+                    }
+                }
+            });
+            exitThread.start();
+            
             // Start a thread to read stdin
             stdInThread = new Thread(new Runnable() {
                 @Override
@@ -56,6 +73,7 @@ public class ExternalEngine extends UCIEngineBase {
                             synchronized (inLines) {
                                 inLines.add(line);
                                 inLines.notify();
+                                startedOk = true;
                             }
                         }
                     } catch (IOException e) {
@@ -144,6 +162,8 @@ public class ExternalEngine extends UCIEngineBase {
         if (engineProc != null)
             engineProc.destroy();
         engineProc = null;
+        if (exitThread != null)
+            exitThread.interrupt();
         if (stdInThread != null)
             stdInThread.interrupt();
         if (stdErrThread != null)
