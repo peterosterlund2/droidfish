@@ -34,7 +34,7 @@ public abstract class UCIEngineBase implements UCIEngine {
         else if ("stockfish".equals(engine))
             return new InternalStockFish(context, report);
         else
-            return new ExternalEngine(engine, report);
+            return new ExternalEngine(context, engine, report);
     }
 
     protected UCIEngineBase() {

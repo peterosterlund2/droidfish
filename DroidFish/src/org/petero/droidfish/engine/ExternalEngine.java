@@ -29,8 +29,13 @@ import java.nio.channels.FileChannel;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.petero.droidfish.R;
+import android.content.Context;
+
 /** Engine running as a process started from an external resource. */
 public class ExternalEngine extends UCIEngineBase {
+    protected final Context context;
+
     private File engineFileName;
     protected static final String intSfPath = "/data/data/org.petero.droidfish/internal_sf";
     private static final String exePath = "/data/data/org.petero.droidfish/engine.exe";
@@ -42,7 +47,8 @@ public class ExternalEngine extends UCIEngineBase {
     private List<String> inLines;
     private boolean startedOk;
 
-    public ExternalEngine(String engine, Report report) {
+    public ExternalEngine(Context context, String engine, Report report) {
+        this.context = context;
         this.report = report;
         engineFileName = new File(engine);
         engineProc = null;
@@ -68,7 +74,7 @@ public class ExternalEngine extends UCIEngineBase {
                     try {
                         engineProc.waitFor();
                         if (!startedOk)
-                            report.reportError("Failed to start engine");
+                            report.reportError(context.getString(R.string.failed_to_start_engine));
                     } catch (InterruptedException e) {
                     }
                 }

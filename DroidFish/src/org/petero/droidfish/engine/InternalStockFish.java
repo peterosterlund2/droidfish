@@ -29,12 +29,9 @@ import android.os.Build;
 
 /** Stockfish engine running as process, started from assets resource. */
 public class InternalStockFish extends ExternalEngine {
-    private Context context;
 
     public InternalStockFish(Context context, Report report) {
-        super("", report);
-        this.context = context;
-
+        super(context, "", report);
     }
 
     /** @inheritDoc */
