@@ -296,7 +296,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="select_en_passant_file">Seleccionar Comer al Paso</string>
     <string name="edit_move_counters">Editar Contadores de Jugadas</string>
     <string name="internal_book">&lt;Libro Interno;</string>
-    <string name="select_opening_book_file">Seleccionar Libro</string>
+    <string name="select_opening_book_file">Seleccionar archivo de Libro de Aperturas</string>
     <string name="select_chess_engine">Seleccionar motor de ajedrez</string>
     <string name="select_pgn_file">Seleccionar archivo PGN para abrir</string>
     <string name="select_pgn_file_save">Grabar en archivo PGN </string>
@@ -372,6 +372,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="load_scid_game_title">Cargar Partida Scid </string>
     <string name="cpu_warning_title">Advertencia del procesador/CPU </string>
     <string name="failed_to_read_pgn_data">Fallo al leer datos PGN</string>
+    <string name="failed_to_start_engine">Fallo de arranque del motor</string>
     <string name="variation">Variante:</string>
     <string name="add_analysis">Añadir Análisis</string>
     <string name="fewer_variations">Menos Variantes</string>
@@ -420,7 +421,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="option_goto_move">Ir a la jugada</string>
     <string name="option_force_computer_move">Obligar a jugar al Programa</string>
     <string name="option_draw">Ofrecer / Aceptar Tablas</string>
-    <string name="option_select_book">Seleccionar Libro de Aperturas</string>
+    <string name="option_select_book">Seleccionar Libro</string>
     <string name="option_select_engine">Seleccionar Motor</string>
     <string name="option_color_theme">Ajustar rango de Colores</string>
     <string name="option_about"> Información  / Ayuda</string>
