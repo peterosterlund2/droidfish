@@ -235,6 +235,12 @@ Wenn Sie das Programm <i>Scid on the go</i> installiert haben, können Sie in Dr
 Scid-Datenbank-Dateien direkt einlesen. Drücken Sie dazu länger auf das Spielfeld und wählen Sie \
 die Funktion <i>Partie aus einer Scid-Datei laden</i>.\n\
 \n\
+<b>UCI-Engines</b>\n\
+DroidFish kann UCI-Engines von Drittanbietern einbinden. Zur Nutzung dieser Funktion gehen Sie folgendermaßen vor:\n\
+1. Erstellen Sie ein Verzeichnis mit dem Namen <i>DroidFish/uci</i> auf der SD-Karte.\n\
+2. Kopieren Sie eine oder mehrere UCI-Engines als ausführbare Dateien in das Verzeichnis.\n\
+3. Wählen Sie im Programm-Menu die Funktion <i>Schach-Engine auswählen</i>, um die gewünschte Engine zu aktivieren.\n\
+\n\
 <b>Lizenz</b>\n\
 GNU GPL v3\n\
 \n\
@@ -242,6 +248,10 @@ GNU GPL v3\n\
 * Das Schachprogramm <i>Stockfish</i> wird entwickelt von Tord Romstad, Marco Costalba und Joona Kiiski.\n\
 * Die Android-Version <i>Droidfish</i> wird entwickelt von Peter Österlund.\n\
 * Von Aaro Korhonen stammen Verbesserungen der Benutzeroberfläche.\n\
+\n\
+<b>Lokalisierung</b>\n\
+* Die deutsche Übersetzung erfolgte durch Uwe Walschus.\n\
+* Die spanische Übersetzung erfolgte durch Amador Cuesta.\n\
     </string>
     <string name="cpu_warning">\
 <b>Prozessor-Nutzung</b>\n\
@@ -296,6 +306,7 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="edit_move_counters">Zug-Zähler einstellen</string>
     <string name="internal_book">&lt;Internes Buch&gt;</string>
     <string name="select_opening_book_file">Eröffnungsbuch wählen</string>
+    <string name="select_chess_engine">Schach-Engine auswählen</string>
     <string name="select_pgn_file">PGN-Datei zum Öffnen wählen</string>
     <string name="select_pgn_file_save">In eine PGN-Datei speichern</string>
     <string name="select_scid_file">Scid-Datei zum Öffnen wählen</string>
@@ -374,6 +385,8 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="add_analysis">Analyse hinzufügen</string>
     <string name="fewer_variations">Weniger Varianten</string>
     <string name="more_variations">Mehr Varianten</string>
+    <string name="hide_statistics">Statistik verbergen</string>
+    <string name="show_statistics">Statistik anzeigen</string>
     <string name="heavy_cpu_usage">Starke Prozessor-Nutzung</string>
     <string name="background_processing">Verarbeitung im Hintergrund</string>
     <string name="lot_cpu_power">DroidFish nutzt viel Prozessor-Rechenzeit</string>
@@ -389,8 +402,11 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="before_selected">Vor der Auswahl</string>
     <string name="after_selected">Nach der Auswahl</string>
     <string name="replace_selected">Auswahl ersetzen</string>
+    <string name="engine">Schach-Engine</string>
+    <string name="engine_error">Engine-Fehler</string>
     <string name="stockfish_engine">Stockfish</string>
     <string name="cuckoochess_engine">CuckooChess</string>
+    <string name="failed_to_start_engine">Fehler beim Starten der Engine</string>
 
     <string name="err_too_few_spaces">Zuwenig Felder</string>
     <string name="err_invalid_piece">Unzulässige Figur</string>
@@ -415,6 +431,7 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="option_force_computer_move">Computerzug erzwingen</string>
     <string name="option_draw">Remis anbieten/annehmen</string>
     <string name="option_select_book">Eröffnungsbuch auswählen</string>
+    <string name="option_select_engine">Schach-Engine auswählen</string>
     <string name="option_color_theme">Farbschema auswählen</string>
     <string name="option_about">Information/Hinweise</string>
 
