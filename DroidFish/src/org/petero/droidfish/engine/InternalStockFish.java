@@ -46,6 +46,10 @@ public class InternalStockFish extends ExternalEngine {
         setOption("Skill Level", strength/50);
     }
 
+    private static final class CpuAbi {
+        final String get() { return Build.CPU_ABI; }
+    }
+
     @Override
     protected void copyFile(File from, File to) throws IOException {
         if (new File(intSfPath).exists())
@@ -55,7 +59,9 @@ public class InternalStockFish extends ExternalEngine {
             to.delete();
         to.createNewFile();
 
-        InputStream is = context.getAssets().open("stockfish-" + Build.CPU_ABI);
+        final int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
+        String abi = (sdkVersion < 4) ? "armeabi" : new CpuAbi().get();
+        InputStream is = context.getAssets().open("stockfish-" + abi);
         OutputStream os = new FileOutputStream(to);
 
         try {
