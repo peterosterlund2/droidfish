@@ -90,7 +90,7 @@ public class ExternalEngine extends UCIEngineBase {
                         return;
                     InputStream is = ep.getInputStream();
                     InputStreamReader isr = new InputStreamReader(is);
-                    BufferedReader br = new BufferedReader(isr);
+                    BufferedReader br = new BufferedReader(isr, 8192);
                     String line;
                     try {
                         while ((line = br.readLine()) != null) {
