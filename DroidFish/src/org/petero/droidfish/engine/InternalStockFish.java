@@ -18,11 +18,16 @@
 
 package org.petero.droidfish.engine;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import android.content.Context;
 import android.os.Build;
@@ -50,18 +55,76 @@ public class InternalStockFish extends ExternalEngine {
         final String get() { return Build.CPU_ABI; }
     }
 
+    private final long readCheckSum(File f) {
+        InputStream is = null;
+        try {
+            is = new FileInputStream(f);
+            DataInputStream dis = new DataInputStream(is);
+            return dis.readLong();
+        } catch (IOException e) {
+            return 0;
+        } finally {
+            if (is != null) try { is.close(); } catch (IOException ex) {}
+        }
+    }
+
+    private final void writeCheckSum(File f, long checkSum) {
+        OutputStream os = null;
+        try {
+            os = new FileOutputStream(f);
+            DataOutputStream dos = new DataOutputStream(os);
+            dos.writeLong(checkSum);
+        } catch (IOException e) {
+        } finally {
+            if (os != null) try { os.close(); } catch (IOException ex) {}
+        }
+    }
+
+    private final long computeAssetsCheckSum(String sfExe) {
+        InputStream is = null;
+        try {
+            is = context.getAssets().open(sfExe);
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            byte[] buf = new byte[8192];
+            while (true) {
+                int len = is.read(buf);
+                if (len <= 0)
+                    break;
+                md.update(buf, 0, len);
+            }
+            byte[] digest = md.digest(new byte[]{0});
+            long ret = 0;
+            for (int i = 0; i < 8; i++) {
+                ret ^= ((long)digest[i]) << (i * 8);
+            }
+            return ret;
+        } catch (IOException e) {
+            return -1;
+        } catch (NoSuchAlgorithmException e) {
+            return -1;
+        } finally {
+            if (is != null) try { is.close(); } catch (IOException ex) {}
+        }
+    }
+
     @Override
     protected void copyFile(File from, File to) throws IOException {
-        if (new File(intSfPath).exists())
+        final int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
+        final String abi = (sdkVersion < 4) ? "armeabi" : new CpuAbi().get();
+        final String sfExe = "stockfish-" + abi;
+
+        // The checksum test is to avoid writing to /data unless necessary,
+        // on the assumption that it will reduce memory wear.
+        long oldCSum = readCheckSum(new File(intSfPath));
+        long newCSum = computeAssetsCheckSum(sfExe);
+        if (oldCSum == newCSum)
             return;
 
         if (to.exists())
             to.delete();
         to.createNewFile();
 
-        final int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
-        String abi = (sdkVersion < 4) ? "armeabi" : new CpuAbi().get();
-        InputStream is = context.getAssets().open("stockfish-" + abi);
+        InputStream is = context.getAssets().open(sfExe);
         OutputStream os = new FileOutputStream(to);
 
         try {
@@ -77,6 +140,6 @@ public class InternalStockFish extends ExternalEngine {
             if (os != null) try { os.close(); } catch (IOException ex) {}
         }
 
-        new File(intSfPath).createNewFile();
+        writeCheckSum(new File(intSfPath), newCSum);
     }
 }

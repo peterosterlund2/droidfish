@@ -110,6 +110,7 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! Implement bookmark mechanism for positions in pgn files
     // FIXME!!! Display chess notation in local language
     // FIXME!!! Add support for "Chess Leipzig" font
+    // FIXME!!! Implement figurine notation
 
     // FIXME!!! Computer clock should stop if phone turned off (computer stops thinking if unplugged)
     // FIXME!!! Add support for all time controls defined by the PGN standard
