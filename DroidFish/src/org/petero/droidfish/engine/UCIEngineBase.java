@@ -19,6 +19,7 @@
 package org.petero.droidfish.engine;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 import org.petero.droidfish.engine.cuckoochess.CuckooChessEngine;
 
@@ -27,6 +28,8 @@ import android.content.Context;
 public abstract class UCIEngineBase implements UCIEngine {
 
     private boolean processAlive;
+    private HashSet<String> allOptions;
+    private HashMap<String, String> currOptions;
 
     public static UCIEngine getEngine(Context context, String engine, Report report) {
         if ("stockfish".equals(engine) && (EngineUtil.internalStockFishName() == null))
@@ -41,6 +44,8 @@ public abstract class UCIEngineBase implements UCIEngine {
 
     protected UCIEngineBase() {
         processAlive = false;
+        allOptions = new HashSet<String>();
+        currOptions = new HashMap<String, String>();
     }
 
     protected abstract void startProcess();
@@ -62,6 +67,16 @@ public abstract class UCIEngineBase implements UCIEngine {
     }
 
     @Override
+    public void clearOptions() {
+        allOptions.clear();
+    }
+    
+    @Override
+    public void registerOption(String optName) {
+        allOptions.add(optName);
+    }
+
+    @Override
     public void setOption(String name, int value) {
         setOption(name, String.format("%d", value));
     }
@@ -71,14 +86,15 @@ public abstract class UCIEngineBase implements UCIEngine {
         setOption(name, value ? "true" : "false");
     }
 
-    private HashMap<String, String> options = new HashMap<String, String>();
-
     @Override
     public void setOption(String name, String value) {
-        String currVal = options.get(name.toLowerCase());
+        String lcName = name.toLowerCase();
+        if (!allOptions.contains(lcName))
+            return;
+        String currVal = currOptions.get(lcName);
         if (value.equals(currVal))
             return;
         writeLineToEngine(String.format("setoption name %s value %s", name, value));
-        options.put(name.toLowerCase(), value);
+        currOptions.put(lcName, value);
     }
 }

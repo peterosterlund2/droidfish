@@ -570,6 +570,7 @@ public class DroidComputerPlayer {
         });
         engineMonitor.start();
 
+        uciEngine.clearOptions();
         uciEngine.writeLineToEngine("uci");
         int nThreads = getNumCPUs();
         if (nThreads > 8) nThreads = 8;
@@ -615,9 +616,8 @@ public class DroidComputerPlayer {
 
         switch (engineState.state) {
         case READ_OPTIONS: {
-            if (readUCIOption(s)) {
+            if (readUCIOption(uci, s)) {
                 uci.initOptions();
-                uci.setOption("Ponder", false);
                 uci.writeLineToEngine("ucinewgame");
                 uci.writeLineToEngine("isready");
                 engineState.state = MainState.WAIT_READY;
@@ -666,7 +666,7 @@ public class DroidComputerPlayer {
     }
 
     /** Handle reading of UCI options. Return true when finished. */
-    private final boolean readUCIOption(String s) {
+    private final boolean readUCIOption(UCIEngine uci, String s) {
         String[] tokens = tokenize(s);
         if (tokens[0].equals("uciok"))
             return true;
@@ -681,15 +681,19 @@ public class DroidComputerPlayer {
                 }
                 listener.notifyEngineName(engineName);
             }
-        } else if ((tokens.length > 2) && tokens[2].toLowerCase().equals("multipv")) {
-            try {
-                for (int i = 3; i < tokens.length; i++) {
-                    if (tokens[i].equals("max") && (i+1 < tokens.length)) {
-                        maxPV = Math.max(maxPV, Integer.parseInt(tokens[i+1]));
-                        break;
+        } else if (tokens.length > 2) {
+            String optName = tokens[2].toLowerCase();
+            uci.registerOption(optName);
+            if (optName.equals("multipv")) {
+                try {
+                    for (int i = 3; i < tokens.length; i++) {
+                        if (tokens[i].equals("max") && (i+1 < tokens.length)) {
+                            maxPV = Math.max(maxPV, Integer.parseInt(tokens[i+1]));
+                            break;
+                        }
                     }
-                }
-            } catch (NumberFormatException nfe) { }
+                } catch (NumberFormatException nfe) { }
+            }
         }
         return false;
     }
@@ -882,7 +886,7 @@ public class DroidComputerPlayer {
             return;
         lastGUIUpdate = now;
 
-        if (searchRequest == null)
+        if ((searchRequest == null) || (searchRequest.currPos == null))
             return;
 
         int id = engineState.searchId;

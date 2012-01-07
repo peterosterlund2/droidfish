@@ -59,4 +59,10 @@ public interface UCIEngine {
 
     /** Set an engine string option. */
     public void setOption(String name, String value);
+
+    /** Clear list of supported options. */
+    public void clearOptions();
+
+    /** Register an option as supported by the engine. */
+    public void registerOption(String optName);
 }
