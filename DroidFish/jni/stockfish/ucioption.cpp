@@ -19,12 +19,14 @@
 
 #include <algorithm>
 #include <sstream>
+#include <ctype.h>
 
 #include "misc.h"
 #include "thread.h"
 #include "ucioption.h"
 
 using std::string;
+using std::lexicographical_compare;
 
 OptionsMap Options; // Global object
 
@@ -33,7 +35,7 @@ OptionsMap Options; // Global object
 static bool ci_less(char c1, char c2) { return tolower(c1) < tolower(c2); }
 
 bool CaseInsensitiveLess::operator() (const string& s1, const string& s2) const {
-  return std::lexicographical_compare(s1.begin(), s1.end(), s2.begin(), s2.end(), ci_less);
+  return lexicographical_compare(s1.begin(), s1.end(), s2.begin(), s2.end(), ci_less);
 }
 
 

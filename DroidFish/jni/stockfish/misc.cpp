@@ -55,8 +55,8 @@ using namespace std;
 /// Version number. If Version is left empty, then Tag plus current
 /// date (in the format YYMMDD) is used as a version number.
 
-static const string Version = "2.2";
-static const string Tag  = "";
+static const string Version = "2.2.1";
+static const string Tag = "";
 
 
 /// engine_info() returns the full name of the current Stockfish version.

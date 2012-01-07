@@ -174,7 +174,7 @@
 
     <string name="about_info">\
 <b>About</b>\n\
-<i>DroidFish</i> is an Android port of the famous <i>stockfish 2.2</i> chess engine. \
+<i>DroidFish</i> is an Android port of the famous <i>stockfish 2.2.1</i> chess engine. \
 <i>Stockfish</i> is one of the strongest chess engines in the world. \
 The Android version can often search 15 ply or deeper on a 1GHz Snapdragon CPU.\n\
 \n\

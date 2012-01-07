@@ -174,7 +174,7 @@
 
     <string name="about_info">\
 <b>About</b>\n\
-<i>DroidFish</i> es un derivado Android del famoso motor de ajedrez <i>stockfish 2.2</i> . \
+<i>DroidFish</i> es un derivado Android del famoso motor de ajedrez <i>stockfish 2.2.1</i> . \
 <i>Stockfish</i> es uno de los motores de ajedrez más fuertes del mundo. \
 En su versión Android, a menudo profundiza 15 ply e incluso más, con un procesador Snapdragon a 1GHz.\n\
 \n\

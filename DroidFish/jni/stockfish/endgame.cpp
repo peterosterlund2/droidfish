@@ -19,12 +19,14 @@
 
 #include <algorithm>
 #include <cassert>
+#include <ctype.h>
 
 #include "bitcount.h"
 #include "endgame.h"
 #include "pawns.h"
 
 using std::string;
+using std::transform;
 
 extern uint32_t probe_kpk_bitbase(Square wksq, Square wpsq, Square bksq, Color stm);
 
@@ -72,7 +74,7 @@ namespace {
     string sides[] = { code.substr(code.find('K', 1)),      // Weaker
                        code.substr(0, code.find('K', 1)) }; // Stronger
 
-    std::transform(sides[c].begin(), sides[c].end(), sides[c].begin(), tolower);
+    transform(sides[c].begin(), sides[c].end(), sides[c].begin(), tolower);
 
     string fen =  sides[0] + char('0' + int(8 - code.length()))
                 + sides[1] + "/8/8/8/8/8/8/8 w - - 0 10";

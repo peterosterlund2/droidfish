@@ -172,7 +172,7 @@ void ThreadsManager::init() {
   for (int i = 0; i <= MAX_THREADS; i++)
   {
       threads[i].is_searching = false;
-      threads[i].do_sleep = true;
+      threads[i].do_sleep = (i != 0); // Avoid a race with start_thinking()
       threads[i].threadID = i;
 
 #if defined(_MSC_VER)
@@ -202,7 +202,7 @@ void ThreadsManager::exit() {
 
       // Wait for thread termination
 #if defined(_MSC_VER)
-      WaitForSingleObject(threads[i].handle, 0);
+      WaitForSingleObject(threads[i].handle, INFINITE);
       CloseHandle(threads[i].handle);
 #else
       pthread_join(threads[i].handle, NULL);
@@ -367,7 +367,7 @@ template Value ThreadsManager::split<true>(Position&, Stack*, Value, Value, Valu
 
 // Thread::timer_loop() is where the timer thread waits maxPly milliseconds and
 // then calls do_timer_event(). If maxPly is 0 thread sleeps until is woken up.
-extern void do_timer_event();
+extern void check_time();
 
 void Thread::timer_loop() {
 
@@ -376,7 +376,7 @@ void Thread::timer_loop() {
       lock_grab(&sleepLock);
       timed_wait(&sleepCond, &sleepLock, maxPly ? maxPly : INT_MAX);
       lock_release(&sleepLock);
-      do_timer_event();
+      check_time();
   }
 }
 
@@ -452,7 +452,8 @@ void ThreadsManager::start_thinking(const Position& pos, const LimitsType& limit
   cond_signal(&main.sleepCond); // Wake up main thread and start searching
 
   if (!asyncMode)
-      cond_wait(&sleepCond, &main.sleepLock);
+      while (!main.do_sleep)
+          cond_wait(&sleepCond, &main.sleepLock);
 
   lock_release(&main.sleepLock);
 }

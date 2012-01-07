@@ -101,8 +101,6 @@ namespace {
   FORCE_INLINE MoveStack* generate_piece_moves(const Position& p, MoveStack* m, Color us, Bitboard t) {
 
     assert(Pt == PAWN);
-    assert(Type == MV_CAPTURE || Type == MV_NON_CAPTURE || Type == MV_EVASION);
-
     return (us == WHITE ? generate_pawn_moves<WHITE, Type>(p, m, t, SQ_NONE)
                         : generate_pawn_moves<BLACK, Type>(p, m, t, SQ_NONE));
   }
@@ -151,27 +149,22 @@ namespace {
 template<MoveType Type>
 MoveStack* generate(const Position& pos, MoveStack* mlist) {
 
+  assert(Type == MV_CAPTURE || Type == MV_NON_CAPTURE || Type == MV_NON_EVASION);
   assert(!pos.in_check());
 
   Color us = pos.side_to_move();
   Bitboard target;
 
-  if (Type == MV_CAPTURE || Type == MV_NON_EVASION)
+  if (Type == MV_CAPTURE)
       target = pos.pieces(flip(us));
+
   else if (Type == MV_NON_CAPTURE)
       target = pos.empty_squares();
-  else
-      assert(false);
 
-  if (Type == MV_NON_EVASION)
-  {
-      mlist = generate_piece_moves<PAWN, MV_CAPTURE>(pos, mlist, us, target);
-      mlist = generate_piece_moves<PAWN, MV_NON_CAPTURE>(pos, mlist, us, pos.empty_squares());
-      target |= pos.empty_squares();
-  }
-  else
-      mlist = generate_piece_moves<PAWN, Type>(pos, mlist, us, target);
+  else if (Type == MV_NON_EVASION)
+      target = pos.pieces(flip(us)) | pos.empty_squares();
 
+  mlist = generate_piece_moves<PAWN, Type>(pos, mlist, us, target);
   mlist = generate_piece_moves<KNIGHT>(pos, mlist, us, target);
   mlist = generate_piece_moves<BISHOP>(pos, mlist, us, target);
   mlist = generate_piece_moves<ROOK>(pos, mlist, us, target);
@@ -339,7 +332,7 @@ namespace {
            Delta == DELTA_NW ? p << 7 : Delta == DELTA_SW ? p >> 9 : p;
   }
 
-  template<MoveType Type, Square Delta>
+  template<Square Delta>
   inline MoveStack* generate_pawn_captures(MoveStack* mlist, Bitboard pawns, Bitboard target) {
 
     const Bitboard TFileABB = (Delta == DELTA_NE || Delta == DELTA_SE ? FileABB : FileHBB);
@@ -371,21 +364,21 @@ namespace {
     {
         to = pop_1st_bit(&b);
 
-        if (Type == MV_CAPTURE || Type == MV_EVASION)
-            (*mlist++).move = make_promotion_move(to - Delta, to, QUEEN);
+        if (Type == MV_CAPTURE || Type == MV_EVASION || Type == MV_NON_EVASION)
+            (*mlist++).move = make_promotion(to - Delta, to, QUEEN);
 
-        if (Type == MV_NON_CAPTURE || Type == MV_EVASION)
+        if (Type == MV_NON_CAPTURE || Type == MV_EVASION || Type == MV_NON_EVASION)
         {
-            (*mlist++).move = make_promotion_move(to - Delta, to, ROOK);
-            (*mlist++).move = make_promotion_move(to - Delta, to, BISHOP);
-            (*mlist++).move = make_promotion_move(to - Delta, to, KNIGHT);
+            (*mlist++).move = make_promotion(to - Delta, to, ROOK);
+            (*mlist++).move = make_promotion(to - Delta, to, BISHOP);
+            (*mlist++).move = make_promotion(to - Delta, to, KNIGHT);
         }
 
         // This is the only possible under promotion that can give a check
         // not already included in the queen-promotion.
         if (   Type == MV_CHECK
             && bit_is_set(pos.attacks_from<KNIGHT>(to), pos.king_square(Delta > 0 ? BLACK : WHITE)))
-            (*mlist++).move = make_promotion_move(to - Delta, to, KNIGHT);
+            (*mlist++).move = make_promotion(to - Delta, to, KNIGHT);
         else (void)pos; // Silence a warning under MSVC
     }
     return mlist;
@@ -435,10 +428,10 @@ namespace {
     }
 
     // Standard captures
-    if (Type == MV_CAPTURE || Type == MV_EVASION)
+    if (Type == MV_CAPTURE || Type == MV_EVASION || Type == MV_NON_EVASION)
     {
-        mlist = generate_pawn_captures<Type, RIGHT_UP>(mlist, pawns, enemyPieces);
-        mlist = generate_pawn_captures<Type, LEFT_UP>(mlist, pawns, enemyPieces);
+        mlist = generate_pawn_captures<RIGHT_UP>(mlist, pawns, enemyPieces);
+        mlist = generate_pawn_captures<LEFT_UP>(mlist, pawns, enemyPieces);
     }
 
     // Single and double pawn pushes
@@ -470,7 +463,8 @@ namespace {
     }
 
     // En passant captures
-    if ((Type == MV_CAPTURE || Type == MV_EVASION) && pos.ep_square() != SQ_NONE)
+    if (  (Type == MV_CAPTURE || Type == MV_EVASION || Type == MV_NON_EVASION)
+        && pos.ep_square() != SQ_NONE)
     {
         assert(Us != WHITE || rank_of(pos.ep_square()) == RANK_6);
         assert(Us != BLACK || rank_of(pos.ep_square()) == RANK_3);
@@ -488,7 +482,7 @@ namespace {
         while (b1)
         {
             to = pop_1st_bit(&b1);
-            (*mlist++).move = make_enpassant_move(to, pos.ep_square());
+            (*mlist++).move = make_enpassant(to, pos.ep_square());
         }
     }
     return mlist;
@@ -535,7 +529,7 @@ namespace {
             return mlist;
     }
 
-    (*mlist++).move = make_castle_move(kfrom, rfrom);
+    (*mlist++).move = make_castle(kfrom, rfrom);
 
     return mlist;
   }
