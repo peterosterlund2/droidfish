@@ -648,7 +648,7 @@ public class DroidFish extends Activity implements GUIInterface {
             String eName = engine.substring(idx + 1);
             titleText.setText(eName);
         } else {
-            String eName = getString((engine == "cuckoochess") ?
+            String eName = getString(engine.equals("cuckoochess") ?
                                      R.string.cuckoochess_engine :
                                      R.string.stockfish_engine);
             if (strength < 1000) {
