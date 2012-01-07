@@ -555,9 +555,9 @@ public class DroidComputerPlayer {
         uciEngine = UCIEngineBase.getEngine(context, searchRequest.engine, new UCIEngine.Report() {
             @Override
             public void reportError(String errMsg) {
-                if (errMsg != null) {
-                    listener.reportEngineError(errMsg);
-                }
+                if (errMsg == null)
+                    errMsg = "";
+                listener.reportEngineError(errMsg);
             }
         });
         uciEngine.initialize();
