@@ -35,6 +35,7 @@ import org.petero.droidfish.activities.EditPGNSave;
 import org.petero.droidfish.activities.LoadScid;
 import org.petero.droidfish.activities.Preferences;
 import org.petero.droidfish.book.BookOptions;
+import org.petero.droidfish.engine.EngineUtil;
 import org.petero.droidfish.gamelogic.DroidChessController;
 import org.petero.droidfish.gamelogic.ChessParseError;
 import org.petero.droidfish.gamelogic.Move;
@@ -1251,19 +1252,25 @@ public class DroidFish extends Activity implements GUIInterface {
         case SELECT_ENGINE_DIALOG: {
             String[] fileNames = findFilesInDirectory(engineDir, null);
             final int numFiles = fileNames.length;
-            final String[] items = new String[numFiles + 2];
-            final String[] ids = new String[numFiles + 2];
-            ids[0] = "stockfish";   items[0] = getString(R.string.stockfish_engine);
-            ids[1] = "cuckoochess"; items[1] = getString(R.string.cuckoochess_engine);
+            boolean haveSf = EngineUtil.internalStockFishName() != null;
+            final int nEngines = numFiles + (haveSf ? 2 : 1);
+            final String[] items = new String[nEngines];
+            final String[] ids = new String[nEngines];
+            int idx = 0;
+            if (haveSf) {
+                ids[idx] = "stockfish"; items[idx] = getString(R.string.stockfish_engine); idx++;
+            }
+            ids[idx] = "cuckoochess"; items[idx] = getString(R.string.cuckoochess_engine); idx++;
             String sep = File.separator;
             String base = Environment.getExternalStorageDirectory() + sep + engineDir + sep;
             for (int i = 0; i < numFiles; i++) {
-                ids[i+2] = base + fileNames[i];
-                items[i+2] = fileNames[i];
+                ids[idx] = base + fileNames[i];
+                items[idx] = fileNames[i];
+                idx++;
             }
             String currEngine = ctrl.getEngine();
             int defaultItem = 0;
-            for (int i = 0; i < ids.length; i++) {
+            for (int i = 0; i < nEngines; i++) {
                 if (ids[i].equals(currEngine)) {
                     defaultItem = i;
                     break;
@@ -1273,7 +1280,7 @@ public class DroidFish extends Activity implements GUIInterface {
             builder.setTitle(R.string.select_chess_engine);
             builder.setSingleChoiceItems(items, defaultItem, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
-                    if ((item < 0) || (item >= ids.length))
+                    if ((item < 0) || (item >= nEngines))
                         return;
                     Editor editor = settings.edit();
                     String engine = ids[item];

@@ -21,11 +21,11 @@
 #include <stdlib.h>
 
 /*
- * Class:     org_petero_droidfish_engine_NativeUtil
+ * Class:     org_petero_droidfish_engine_EngineUtil
  * Method:    getNPhysicalProcessors
  * Signature: ()I
  */
-extern "C" JNIEXPORT jint JNICALL Java_org_petero_droidfish_engine_NativeUtil_getNPhysicalProcessors
+extern "C" JNIEXPORT jint JNICALL Java_org_petero_droidfish_engine_EngineUtil_getNPhysicalProcessors
 		(JNIEnv *, jclass)
 {
 	return sysconf(_SC_NPROCESSORS_ONLN);

@@ -30,7 +30,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import android.content.Context;
-import android.os.Build;
 
 /** Stockfish engine running as process, started from assets resource. */
 public class InternalStockFish extends ExternalEngine {
@@ -49,10 +48,6 @@ public class InternalStockFish extends ExternalEngine {
     @Override
     public final void setStrength(int strength) {
         setOption("Skill Level", strength/50);
-    }
-
-    private static final class CpuAbi {
-        final String get() { return Build.CPU_ABI; }
     }
 
     private final long readCheckSum(File f) {
@@ -109,9 +104,7 @@ public class InternalStockFish extends ExternalEngine {
 
     @Override
     protected void copyFile(File from, File to) throws IOException {
-        final int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
-        final String abi = (sdkVersion < 4) ? "armeabi" : new CpuAbi().get();
-        final String sfExe = "stockfish-" + abi;
+        final String sfExe = EngineUtil.internalStockFishName();
 
         // The checksum test is to avoid writing to /data unless necessary,
         // on the assumption that it will reduce memory wear.

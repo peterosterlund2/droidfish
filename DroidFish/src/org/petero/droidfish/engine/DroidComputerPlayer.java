@@ -928,7 +928,7 @@ public class DroidComputerPlayer {
             nCPUsFromProc = nCPUs;
         } catch (IOException e) {
         }
-        int nCPUsFromOS = NativeUtil.getNPhysicalProcessors();
+        int nCPUsFromOS = EngineUtil.getNPhysicalProcessors();
         return Math.max(nCPUsFromProc, nCPUsFromOS);
     }
 

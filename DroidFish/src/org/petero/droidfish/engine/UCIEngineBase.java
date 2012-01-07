@@ -29,6 +29,8 @@ public abstract class UCIEngineBase implements UCIEngine {
     private boolean processAlive;
 
     public static UCIEngine getEngine(Context context, String engine, Report report) {
+        if ("stockfish".equals(engine) && (EngineUtil.internalStockFishName() == null))
+            engine = "cuckoochess";
         if ("cuckoochess".equals(engine))
             return new CuckooChessEngine(report);
         else if ("stockfish".equals(engine))
