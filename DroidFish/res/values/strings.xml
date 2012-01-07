@@ -443,10 +443,11 @@ you are not actively using the program.\
     <string name="prefs_autoSwapSides_summary">Automatically swap sides when new game started. Also overrides Flip Board setting</string>
     <string name="prefs_engine_settings">Engine Settings</string>
     <string name="prefs_strength_title">Strength</string>
+    <string name="prefs_strength_summary">Only supported by internal engines</string>
     <string name="prefs_ponderMode_title">Pondering</string>
-    <string name="prefs_ponderMode_summary">Let engine think while waiting for opponent\'s move</string>
+    <string name="prefs_ponderMode_summary">Let engine think while waiting for opponent\'s move. Supported by most engines.</string>
     <string name="prefs_threads_title">Threads</string>
-    <string name="prefs_threads_summary">Number of engine threads (CPU cores) to use</string>
+    <string name="prefs_threads_summary">Number of engine threads (CPU cores) to use. Not supported by all engines.</string>
     <string name="prefs_time_control">Time Control</string>
     <string name="prefs_movesPerSession_title">Moves</string>
     <string name="prefs_movesPerSession_summary">Number of moves between time controls</string>

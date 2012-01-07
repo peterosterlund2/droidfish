@@ -94,11 +94,28 @@ public class SeekBarPreference extends Preference
         lp.gravity = Gravity.RIGHT;
         bar.setLayoutParams(lp);
 
+        CharSequence summaryCharSeq = getSummary();
+        boolean haveSummary = (summaryCharSeq != null) && (summaryCharSeq.length() > 0);
+        TextView summary = null;
+        if (haveSummary) {
+            summary = new TextView(getContext());
+            summary.setText(getSummary());
+//            summary.setTextAppearance(getContext(), android.R.style.TextAppearance_Large);
+            summary.setGravity(Gravity.LEFT);
+            lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                                               LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.gravity = Gravity.LEFT;
+            lp.weight  = 1.0f;
+            summary.setLayoutParams(lp);
+        }
+
         LinearLayout layout = new LinearLayout(getContext());
         layout.setPadding(25, 5, 25, 5);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.addView(row1);
         layout.addView(bar);
+        if (summary != null)
+            layout.addView(summary);
         layout.setId(android.R.id.widget_frame);
 
         currValBox.setOnClickListener(new OnClickListener() {

@@ -643,10 +643,19 @@ public class DroidFish extends Activity implements GUIInterface {
 
     private final void setEngineStrength(String engine, int strength) {
         ctrl.setEngineStrength(engine, strength);
-        if (strength < 1000) {
-            titleText.setText(String.format("%s: %d%%", getString(R.string.app_name), strength / 10));
+        if (engine.contains("/")) {
+            int idx = engine.lastIndexOf('/');
+            String eName = engine.substring(idx + 1);
+            titleText.setText(eName);
         } else {
-            titleText.setText(getString(R.string.app_name));
+            String eName = getString((engine == "cuckoochess") ?
+                                     R.string.cuckoochess_engine :
+                                     R.string.stockfish_engine);
+            if (strength < 1000) {
+                titleText.setText(String.format("%s:%d%%", eName, strength / 10));
+            } else {
+                titleText.setText(eName);
+            }
         }
     }
 
