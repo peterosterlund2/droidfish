@@ -188,10 +188,31 @@ public class Search {
         totalNodes = 0;
         if (scMovesIn.size <= 0)
             return null; // No moves to search
-        MoveInfo[] scMoves = new MoveInfo[scMovesIn.size];
-        for (int mi = 0, len = 0; mi < scMovesIn.size; mi++) {
-            Move m = scMovesIn.m[mi];
-            scMoves[len++] = new MoveInfo(m, 0);
+
+        MoveInfo[] scMoves;
+        {
+            // If strength is < 10%, only include a subset of the root moves.
+            // At least one move is always included though.
+            boolean[] includedMoves = new boolean[scMovesIn.size];
+            long rndL = pos.zobristHash() ^ randomSeed;
+            includedMoves[(int)(Math.abs(rndL) % scMovesIn.size)] = true;
+            int nIncludedMoves = 1;
+            double pIncl = (strength < 100) ? strength * strength * 1e-4 : 1.0;
+            for (int mi = 0; mi < scMovesIn.size; mi++) {
+                rndL = 6364136223846793005L * rndL + 1442695040888963407L;
+                double rnd = ((rndL & 0x7fffffffffffffffL) % 1000000000) / 1e9;
+                if (!includedMoves[mi] && (rnd < pIncl)) {
+                    includedMoves[mi] = true;
+                    nIncludedMoves++;
+                }
+            }
+            scMoves = new MoveInfo[nIncludedMoves];
+            for (int mi = 0, len = 0; mi < scMovesIn.size; mi++) {
+                if (includedMoves[mi]) {
+                    Move m = scMovesIn.m[mi];
+                    scMoves[len++] = new MoveInfo(m, 0);
+                }
+            }
         }
         maxNodes = initialMaxNodes;
         nodesToGo = 0;
@@ -873,7 +894,7 @@ public class Search {
         double rnd = ((rndL & 0x7fffffffffffffffL) % 1000000000) / 1e9;
 
         double s = strength * 1e-3;
-        double offs = 4 - 15 * s;
+        double offs = (17 - 50 * s) / 3;
         double effPly = ply * Evaluate.interpolate(pos.wMtrl + pos.bMtrl, 0, 30, Evaluate.qV * 4, 100) * 1e-2;
         double t = effPly + offs;
         double p = 1/(1+Math.exp(t)); // Probability to "see" move
