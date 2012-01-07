@@ -75,6 +75,9 @@ public class ExternalEngine extends UCIEngineBase {
                         engineProc.waitFor();
                         if (!startedOk)
                             report.reportError(context.getString(R.string.failed_to_start_engine));
+                        else {
+                            report.reportError(context.getString(R.string.engine_terminated));
+                        }
                     } catch (InterruptedException e) {
                     }
                 }
@@ -184,12 +187,12 @@ public class ExternalEngine extends UCIEngineBase {
     /** @inheritDoc */
     @Override
     public void shutDown() {
+        if (exitThread != null)
+            exitThread.interrupt();
         super.shutDown();
         if (engineProc != null)
             engineProc.destroy();
         engineProc = null;
-        if (exitThread != null)
-            exitThread.interrupt();
         if (stdInThread != null)
             stdInThread.interrupt();
         if (stdErrThread != null)
