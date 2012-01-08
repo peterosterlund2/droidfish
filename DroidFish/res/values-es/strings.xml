@@ -400,8 +400,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="stockfish_engine">Stockfish</string>
     <string name="cuckoochess_engine">CuckooChess</string>
     <string name="failed_to_start_engine">Fallo de arranque del motor</string>
-    <string name="engine_terminated">Ruptura del motor</string>
-    <string name="uci_protocol_error">Fallo en el protocolo UCI</string>
+    <string name="engine_terminated">Ruptura del motor</string>
+    <string name="uci_protocol_error">Fallo en el protocolo UCI</string>
 
     <string name="err_too_few_spaces">Pocos espacios</string>
     <string name="err_invalid_piece">Pieza incorrecta</string>
