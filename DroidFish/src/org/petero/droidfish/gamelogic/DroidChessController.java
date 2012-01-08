@@ -792,6 +792,8 @@ public class DroidChessController {
                         engine, gui.engineThreads(),
                         strength);
                 computerPlayer.queueSearchRequest(sr);
+            } else {
+                computerPlayer.queueStartEngine(searchId, engine);
             }
         }
     }
