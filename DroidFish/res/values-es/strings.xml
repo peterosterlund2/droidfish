@@ -437,7 +437,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="prefs_autoSwapSides_summary">Cambio automático de lados al iniciar una nueva partida. También anula el ajuste de Inversión del Tablero </string>
     <string name="prefs_engine_settings">Ajustes del Motor/Programa</string>
     <string name="prefs_strength_title">Fuerza/Nivel de Juego</string>
-    <string name="prefs_strength_summary">Solo lo incorporan los motores internos</string>
+    <string name="prefs_strength_summary">Solo lo incorporan los motores internos</string>
     <string name="prefs_ponderMode_title">Pensar siempre</string>
     <string name="prefs_ponderMode_summary">Dejar calcular al motor mientras espera la jugada del oponente. Lo incorporan la mayoría de los motores.</string>
     <string name="prefs_threads_title">Núcleos</string>
