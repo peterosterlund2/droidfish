@@ -1155,7 +1155,7 @@ public class GameTree {
 
         private final void addExtendedInfo(PgnToken.PgnTokenReceiver out,
                                                   String extCmd, String extData) {
-            out.processToken(this, PgnToken.COMMENT, "{[%" + extCmd + " " + extData + "]}");
+            out.processToken(this, PgnToken.COMMENT, "[%" + extCmd + " " + extData + "]");
         }
 
         private static final String getTimeStr(int remainingTime) {

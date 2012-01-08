@@ -576,6 +576,7 @@ public class GameTreeTest extends TestCase {
         options.exp.playerAction = true;
         pgn = gt.toPGN(options);
         assertTrue(pgn.indexOf("--") >= 0);
+        assertTrue(pgn.indexOf("1. -- {[%playeraction resign]} 0-1") >= 0);
 
         gt = new GameTree(null);
         gt.readPGN(pgn, options);
