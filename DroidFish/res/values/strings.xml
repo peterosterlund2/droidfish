@@ -409,6 +409,7 @@ you are not actively using the program.\
     <string name="cuckoochess_engine">CuckooChess</string>
     <string name="failed_to_start_engine">Failed to start engine</string>
     <string name="engine_terminated">Engine terminated</string>
+    <string name="uci_protocol_error">UCI protocol error</string>
 
     <string name="err_too_few_spaces">Too few spaces</string>
     <string name="err_invalid_piece">Invalid piece</string>

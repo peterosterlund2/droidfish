@@ -84,6 +84,7 @@ public class CuckooChessEngine extends UCIEngineBase {
     /** @inheritDoc */
     @Override
     public final void initOptions() {
+        super.initOptions();
     }
 
     /** @inheritDoc */

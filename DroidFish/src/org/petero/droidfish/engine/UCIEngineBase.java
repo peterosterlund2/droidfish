@@ -30,6 +30,7 @@ public abstract class UCIEngineBase implements UCIEngine {
     private boolean processAlive;
     private HashSet<String> allOptions;
     private HashMap<String, String> currOptions;
+    protected boolean isUCI;
 
     public static UCIEngine getEngine(Context context, String engine, Report report) {
         if ("stockfish".equals(engine) && (EngineUtil.internalStockFishName() == null))
@@ -46,6 +47,7 @@ public abstract class UCIEngineBase implements UCIEngine {
         processAlive = false;
         allOptions = new HashSet<String>();
         currOptions = new HashMap<String, String>();
+        isUCI = false;
     }
 
     protected abstract void startProcess();
@@ -56,6 +58,11 @@ public abstract class UCIEngineBase implements UCIEngine {
             startProcess();
             processAlive = true;
         }
+    }
+
+    @Override
+    public void initOptions() {
+        isUCI = true;
     }
 
     @Override

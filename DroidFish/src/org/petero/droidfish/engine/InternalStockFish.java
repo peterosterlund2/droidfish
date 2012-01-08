@@ -40,12 +40,6 @@ public class InternalStockFish extends ExternalEngine {
 
     /** @inheritDoc */
     @Override
-    public final void initOptions() {
-        setOption("Hash", 16);
-    }
-
-    /** @inheritDoc */
-    @Override
     public final void setStrength(int strength) {
         setOption("Skill Level", strength/50);
     }

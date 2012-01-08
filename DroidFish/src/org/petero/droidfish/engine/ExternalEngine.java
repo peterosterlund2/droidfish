@@ -41,22 +41,26 @@ public class ExternalEngine extends UCIEngineBase {
     private static final String exePath = "/data/data/org.petero.droidfish/engine.exe";
     private final Report report;
     private Process engineProc;
+    private Thread startupThread;
     private Thread exitThread;
     private Thread stdInThread;
     private Thread stdErrThread;
     private List<String> inLines;
     private boolean startedOk;
+    private boolean isRunning;
 
     public ExternalEngine(Context context, String engine, Report report) {
         this.context = context;
         this.report = report;
         engineFileName = new File(engine);
         engineProc = null;
+        startupThread = null;
         exitThread = null;
         stdInThread = null;
         stdErrThread = null;
         inLines = new LinkedList<String>();
         startedOk = false;
+        isRunning = false;
     }
 
     /** @inheritDoc */
@@ -68,11 +72,26 @@ public class ExternalEngine extends UCIEngineBase {
             ProcessBuilder pb = new ProcessBuilder(exePath);
             engineProc = pb.start();
 
+            startupThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        return;
+                    }
+                    if (startedOk && isRunning && !isUCI)
+                        report.reportError(context.getString(R.string.uci_protocol_error));
+                }
+            });
+            startupThread.start();
+
             exitThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         engineProc.waitFor();
+                        isRunning = false;
                         if (!startedOk)
                             report.reportError(context.getString(R.string.failed_to_start_engine));
                         else {
@@ -96,13 +115,18 @@ public class ExternalEngine extends UCIEngineBase {
                     BufferedReader br = new BufferedReader(isr, 8192);
                     String line;
                     try {
+                        boolean first = true;
                         while ((line = br.readLine()) != null) {
                             if ((ep == null) || Thread.currentThread().isInterrupted())
                                 return;
                             synchronized (inLines) {
                                 inLines.add(line);
                                 inLines.notify();
-                                startedOk = true;
+                                if (first) {
+                                    startedOk = true;
+                                    isRunning = true;
+                                    first = false;
+                                }
                             }
                         }
                     } catch (IOException e) {
@@ -138,6 +162,7 @@ public class ExternalEngine extends UCIEngineBase {
     /** @inheritDoc */
     @Override
     public void initOptions() {
+        super.initOptions();
         setOption("Hash", 16);
     }
 
@@ -187,6 +212,8 @@ public class ExternalEngine extends UCIEngineBase {
     /** @inheritDoc */
     @Override
     public void shutDown() {
+        if (startupThread != null)
+            startupThread.interrupt();
         if (exitThread != null)
             exitThread.interrupt();
         super.shutDown();
