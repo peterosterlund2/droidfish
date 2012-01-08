@@ -146,7 +146,9 @@ public class ExternalEngine extends UCIEngineBase {
                         if ((ep == null) || Thread.currentThread().isInterrupted())
                             return;
                         try {
-                            ep.getErrorStream().read(buffer);
+                            int len = ep.getErrorStream().read(buffer, 0, 1);
+                            if (len < 0)
+                                break;
                         } catch (IOException e) {
                             return;
                         }
