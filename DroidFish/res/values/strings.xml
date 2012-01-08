@@ -174,9 +174,8 @@
 
     <string name="about_info">\
 <b>About</b>\n\
-<i>DroidFish</i> is an Android port of the famous <i>stockfish 2.2.1</i> chess engine. \
-<i>Stockfish</i> is one of the strongest chess engines in the world. \
-The Android version can often search 15 ply or deeper on a 1GHz Snapdragon CPU.\n\
+<i>DroidFish</i> is a feature-rich graphical chess user interface, \
+combined with the very strong <i>Stockfish 2.2.1</i> chess engine.\n\
 \n\
 <b>Features</b>\n\
 * Opening book\n\
@@ -202,26 +201,28 @@ go to the previous/next variation.\n\
 DroidFish contains a small internal opening book. If you want to use \
 a larger book, you can configure DroidFish to use external <i>polyglot</i> \
 or <i>CTG</i> book files:\n\
-1. Create a directory called <i>DroidFish</i> on the SD card.\n\
-2a. Copy one or more polyglot book files to the <i>DroidFish</i> directory. \
-Polyglot books must have the file extension .bin.\n\
-2b. Copy one more more CTG book files to the <i>DroidFish</i> directory. A CTG \
+1a. Copy one or more polyglot book files to the <i>DroidFish</i> directory on the SD card. \
+Polyglot books must have the file extension .bin. <b>Note!</b> The Android file system is \
+case sensitive, so the extension must be .bin, not .Bin or .BIN.\n\
+1b. Copy one or more CTG book files to the <i>DroidFish</i> directory. A CTG \
 book consists of three files with file extensions .ctg, .ctb and .cto. \
 You must copy all three files.\n\
-3. From the program menu, activate the <i>Select opening book</i> function.\n\
-4. Select the opening book file you want to use.\n\
+2. From the program menu, activate the <i>Select opening book</i> function.\n\
+3. Select the opening book file you want to use.\n\
 \n\
 <b>PGN files</b>\n\
 DroidFish can load games from PGN files. To use this feature:\n\
-1. Create a directory called <i>DroidFish/pgn</i> on the SD card.\n\
-2. Copy one or more PGN files to the <i>DroidFish/pgn</i> directory.\n\
-3. Long press the chess board and select <i>Load game from PGN file</i>.\n\
-4. Select the file, then the game within the file you want to load.\n\
+1. Copy one or more PGN files to the <i>DroidFish/pgn</i> directory on the SD card.\n\
+2. Long press the chess board and select <i>Load game from PGN file</i>.\n\
+3. Select the file, then the game within the file you want to load.\n\
 \n\
 To edit game headers such as player names, long press the move list and select \
 <i>Edit Headers</i>. To edit comments for a move, long press the move list and \
-select <i>Edit Comments</i>. To save your edited game, long press the chess board \
-and select <i>Save game to PGN file</i>.\n\
+select <i>Edit Comments</i>.\n\
+\n\
+To save your edited game, long press the chess board and select <i>Save game to \
+PGN file</i>. Select the file to save to, then select the position in the file \
+where the new game will be saved.\n\
 \n\
 To add computer analysis to the game tree, long press the analysis information \
 when the computer is thinking and select <i>Add Analysis</i>. The current PV is \
@@ -238,9 +239,8 @@ Scid file</i>.\n\
 \n\
 <b>UCI engines</b>\n\
 DroidFish can use third party UCI engines. To use this feature:\n\
-1. Create a directory <i>DroidFish/uci</i> on the SD card.\n\
-2. Copy one or more UCI engine binaries to the <i>DroidFish/uci</i> directory.\n\
-3. From the menu, choose <i>Select Chess Engine</i> and select the engine to use.\n\
+1. Copy one or more UCI engine binaries to the <i>DroidFish/uci</i> directory on the SD card.\n\
+2. From the menu, choose <i>Select Chess Engine</i> and select the engine to use.\n\
 \n\
 <b>License</b>\n\
 GNU GPL v3\n\
