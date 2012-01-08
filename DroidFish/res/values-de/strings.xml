@@ -188,6 +188,7 @@ Die Android-Version erreicht auf einem 1GHz-Snapdragon-Prozessor oft eine Rechen
 * Stellungseingabe\n\
 * Umfangreiche PGN-Unterstützung\n\
 * Einstellbare Spielstärke\n\
+* Unterstützung für UCI-Engines von Drittanbietern\n\
 \n\
 <b>Hinweise</b>\n\
 * Längeres Drücken auf das Spielfeld während einer Partie aktiviert ein Menu mit Funktionen zum Kopieren und Einfügen sowie zum Laden und Speichern von PGN-Dateien.\n\
