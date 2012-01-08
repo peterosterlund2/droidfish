@@ -79,8 +79,15 @@ public class DroidComputerPlayer {
         /** Default constructor. */
         EngineState() {
             engine = "";
-            state = MainState.DEAD;
+            setState(MainState.DEAD);
             searchId = -1;
+        }
+
+        final void setState(MainState s) {
+//            System.out.printf("state: %s -> %s\n",
+//                              (state != null) ? state.toString() : "(null)",
+//                              s.toString());
+            state = s;
         }
     }
 
@@ -286,7 +293,7 @@ public class DroidComputerPlayer {
 
         if (engineState.state == MainState.PONDER) {
             uciEngine.writeLineToEngine("ponderhit");
-            engineState.state = MainState.SEARCH;
+            engineState.setState(MainState.SEARCH);
             pvModified = true;
             notifyGUI();
         }
@@ -300,7 +307,7 @@ public class DroidComputerPlayer {
             uciEngine.shutDown();
             uciEngine = null;
         }
-        engineState.state = MainState.DEAD;
+        engineState.setState(MainState.DEAD);
     }
 
     /** Start an engine, if not already started.
@@ -386,7 +393,7 @@ public class DroidComputerPlayer {
     private final void handleQueue() {
         if (engineState.state == MainState.DEAD) {
             engineState.engine = "";
-            engineState.state = MainState.IDLE;
+            engineState.setState(MainState.IDLE);
         }
         if (engineState.state == MainState.IDLE)
             handleIdleState();
@@ -406,7 +413,7 @@ public class DroidComputerPlayer {
         case PONDER:
         case ANALYZE:
             uciEngine.writeLineToEngine("stop");
-            engineState.state = MainState.STOP_SEARCH;
+            engineState.setState(MainState.STOP_SEARCH);
             return true;
         default:
             return false;
@@ -463,7 +470,7 @@ public class DroidComputerPlayer {
         if (newGame) {
             uciEngine.writeLineToEngine("ucinewgame");
             uciEngine.writeLineToEngine("isready");
-            engineState.state = MainState.WAIT_READY;
+            engineState.setState(MainState.WAIT_READY);
             newGame = false;
             return;
         }
@@ -524,7 +531,7 @@ public class DroidComputerPlayer {
             if (sr.ponderMove != null)
                 goStr.append(" ponder");
             uciEngine.writeLineToEngine(goStr.toString());
-            engineState.state = (sr.ponderMove == null) ? MainState.SEARCH : MainState.PONDER;
+            engineState.setState((sr.ponderMove == null) ? MainState.SEARCH : MainState.PONDER);
         } else { // Analyze
             StringBuilder posStr = new StringBuilder();
             posStr.append("position fen ");
@@ -541,7 +548,7 @@ public class DroidComputerPlayer {
             uciEngine.setOption("UCI_AnalyseMode", true);
             uciEngine.setOption("Threads", sr.engineThreads > 0 ? sr.engineThreads : numCPUs);
             uciEngine.writeLineToEngine("go infinite");
-            engineState.state = MainState.ANALYZE;
+            engineState.setState(MainState.ANALYZE);
         }
     }
 
@@ -577,7 +584,7 @@ public class DroidComputerPlayer {
         numCPUs = nThreads;
         maxPV = 1;
         engineState.engine = searchRequest.engine;
-        engineState.state = MainState.READ_OPTIONS;
+        engineState.setState(MainState.READ_OPTIONS);
     }
 
 
@@ -620,13 +627,13 @@ public class DroidComputerPlayer {
                 uci.initOptions();
                 uci.writeLineToEngine("ucinewgame");
                 uci.writeLineToEngine("isready");
-                engineState.state = MainState.WAIT_READY;
+                engineState.setState(MainState.WAIT_READY);
             }
             break;
         }
         case WAIT_READY: {
             if ("readyok".equals(s)) {
-                engineState.state = MainState.IDLE;
+                engineState.setState(MainState.IDLE);
                 handleIdleState();
             }
             break;
@@ -647,7 +654,7 @@ public class DroidComputerPlayer {
                 if (engineState.state == MainState.SEARCH)
                     reportMove(bestMove, nextPonderMove);
 
-                engineState.state = MainState.IDLE;
+                engineState.setState(MainState.IDLE);
                 searchRequest = null;
                 handleIdleState();
             }
@@ -657,7 +664,7 @@ public class DroidComputerPlayer {
             String[] tokens = tokenize(s);
             if (tokens[0].equals("bestmove")) {
                 uci.writeLineToEngine("isready");
-                engineState.state = MainState.WAIT_READY;
+                engineState.setState(MainState.WAIT_READY);
             }
             break;
         }
