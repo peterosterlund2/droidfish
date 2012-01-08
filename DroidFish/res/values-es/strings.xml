@@ -199,20 +199,18 @@ En su versión Android, a menudo profundiza 15 ply e incluso más, con un proces
 \n\
 <b>Libros de Aperturas</b>\n\
 DroidFish incluye un pequeño libro de aperturas interno. Si quiere utilizar un libro más grande, puede configurar DroidFish para utilizar archivos de libros <i>Polyglot</i> \ o <i>CTG</i> :\n\
-1. Crear un directorio denominado <i>DroidFish</i> en la tarjeta SD.\n\
-2a. Copiar uno o más archivos de libro Polyglot en el directorio <i>DroidFish</i>.\
+1a. Copiar uno o más archivos de libro Polyglot en el directorio <i>DroidFish</i> en la tarjeta SD.\
 Los archivos de los libros Polyglot deben tener la extensión .bin.\n\
-2b. Copiar uno o más archivos de libro CTG al directorio <i>DroidFish</i>. Un libro CTG \ incluye tres archivos, con extensiones .ctg, .ctb and .cto. \
+1b. Copiar uno o más archivos de libro CTG al directorio <i>DroidFish</i>. Un libro CTG \ incluye tres archivos, con extensiones .ctg, .ctb and .cto. \
 Debe copiar los tres archivos.\n\
-3. Desde el menú programa, active la función <i> Seleccionar libro de aperturas</i>.\n\
-4. Seleccione el archivo de libro de aperturas que desee utilizar.\n\
+2. Desde el menú programa, active la función <i> Seleccionar libro de aperturas</i>.\n\
+3. Seleccione el archivo de libro de aperturas que desee utilizar.\n\
 \n\
 <b>Archivos PGN</b>\n\
 DroidFish puede cargar partidas desde archivos PGN. Para utilizar esta opción:\n\
-1. Crear un directorio denominado<i> DroidFish/pgn</i> en la tarjeta SD. \n\
-2. Copiar uno o más archivos PGN en el directorio <i>DroidFish/pgn</i> .\n\
-3. Mantener pulsado el tablero y seleccionar <i>Cargar partida desde el archivo PGN </i>.\n\
-4. Seleccionar el archivo, y a continuación la partida incluída en el archivo que usted quiera cargar .\n\
+1. Copiar uno o más archivos PGN en el directorio <i>DroidFish/pgn</i> en la tarjeta SD.\n\
+2. Mantener pulsado el tablero y seleccionar <i>Cargar partida desde el archivo PGN </i>.\n\
+3. Seleccionar el archivo, y a continuación la partida incluída en el archivo que usted quiera cargar.\n\
 \n\
 Para editar los datos de la partida, tales como los nombres de los jugadores, mantenga pulsada la lista de jugadas y seleccione \
 <i>Editar Datos</i>.Para editar comentarios de jugadas, mantenga pulsada la lista de jugadas y seleccione \
@@ -230,9 +228,8 @@ directamente desde el DroidFish. Mantenga pulsado el tablero y seleccione <i>Car
 <b>Motores UCI</b>\n\
 DroidFish puede incorporar motores UCI de terceros. Para utilizar esta opción : \n\
 \n\
-1. Crear un directorio <i>DroidFish/uci</i> en la tarjeta SD.\n\
-2. Copiar uno o más códigos de motores UCI al directorio <i>DroidFish/uci</i>\n\
-3. Desde el menú, acceder a <i>Seleccionar Motor de Ajedrez</i> y elegir el motor que se va a utilizar.\n\
+1. Copiar uno o más códigos de motores UCI al directorio <i>DroidFish/uci</i> en la tarjeta SD.\n\
+2. Desde el menú, acceder a <i>Seleccionar Motor de Ajedrez</i> y elegir el motor que se va a utilizar.\n\
 \n\
 <b>Licencia</b>\n\
 GNU GPL v3\n\

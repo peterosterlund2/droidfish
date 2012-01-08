@@ -202,21 +202,19 @@ nach oben oder unten zur vorherigen oder nächsten Variante.\n\
 DroidFish enthält ein kleines internes Eröffnungsbuch. Wenn Sie ein größeres Eröffnungsbuch \
 verwenden möchten, können Sie die Verwendung externer Eröffnungsbücher (<i>Polyglot</i> \
 oder <i>CTG</i>) folgendermaßen konfigurieren:\n\
-1. Erstellen Sie ein Verzeichnis mit dem Namen <i>DroidFish</i> auf der SD-Karte.\n\
-2a. Kopieren Sie eines oder mehrere Polyglot-Eröffnungsbücher in das Verzeichnis. \
+1a. Kopieren Sie eines oder mehrere Polyglot-Eröffnungsbücher in das Verzeichnis auf der SD-Karte. \
 Diese müssen die Dateiendung <i>.bin</i> aufweisen.\n\
-2b. Kopieren Sie eines oder mehrere CTG-Eröffnungsbücher in das Verzeichnis. \
+1b. Kopieren Sie eines oder mehrere CTG-Eröffnungsbücher in das Verzeichnis. \
 Diese bestehen aus drei Dateien mit den Endungen <i>.ctg</i>, <i>.ctb</i> und <i>.cto</i>. \
 Sie müssen alle drei Dateien kopieren.\n\
-3. Aktivieren Sie im Programm-Menu die Funktion <i>Eröffnungsbuch auswählen</i>.\n\
-4. Wählen Sie das Eröffnungsbuch aus, das Sie benutzen möchten.\n\
+2. Aktivieren Sie im Programm-Menu die Funktion <i>Eröffnungsbuch auswählen</i>.\n\
+3. Wählen Sie das Eröffnungsbuch aus, das Sie benutzen möchten.\n\
 \n\
 <b>PGN-Dateien</b>\n\
 DroidFish kann Partien aus PGN-Dateien laden. Diese Funktion nutzen Sie folgendermaßen:\n\
-1. Erstellen Sie ein Verzeichnis mit dem Namen <i>DroidFish/pgn</i> auf der SD-Karte.\n\
-2. Kopieren Sie eine oder mehrere PGN-Dateien in dieses Verzeichnis.\n\
-3. Drücken Sie länger auf das Spielfeld und wählen Sie aus dem darauf folgenden Menu die Funktion <i>Partie aus einer PGN-Datei laden</i>.\n\
-4. Wählen Sie die Datei und anschließend innerhalb der Datei die Partie, die Sie laden möchten.\n\
+1. Kopieren Sie eine oder mehrere PGN-Dateien in dieses Verzeichnis auf der SD-Karte.\n\
+2. Drücken Sie länger auf das Spielfeld und wählen Sie aus dem darauf folgenden Menu die Funktion <i>Partie aus einer PGN-Datei laden</i>.\n\
+3. Wählen Sie die Datei und anschließend innerhalb der Datei die Partie, die Sie laden möchten.\n\
 \n\
 Um Partie-Informationen wie die Spielernamen zu ändern, drücken Sie länger auf die Zugliste und wählen \
 <i>Partie-Informationen</i>. Um Komentare für einen Zug zu bearbeiten, drücken Sie länger auf die Zugliste und wählen \
@@ -238,9 +236,8 @@ die Funktion <i>Partie aus einer Scid-Datei laden</i>.\n\
 \n\
 <b>UCI-Engines</b>\n\
 DroidFish kann UCI-Engines von Drittanbietern einbinden. Zur Nutzung dieser Funktion gehen Sie folgendermaßen vor:\n\
-1. Erstellen Sie ein Verzeichnis mit dem Namen <i>DroidFish/uci</i> auf der SD-Karte.\n\
-2. Kopieren Sie eine oder mehrere UCI-Engines als ausführbare Dateien in das Verzeichnis.\n\
-3. Wählen Sie im Programm-Menu die Funktion <i>Schach-Engine auswählen</i>, um die gewünschte Engine zu aktivieren.\n\
+1. Kopieren Sie eine oder mehrere UCI-Engines als ausführbare Dateien in das Verzeichnis auf der SD-Karte.\n\
+2. Wählen Sie im Programm-Menu die Funktion <i>Schach-Engine auswählen</i>, um die gewünschte Engine zu aktivieren.\n\
 \n\
 <b>Lizenz</b>\n\
 GNU GPL v3\n\
