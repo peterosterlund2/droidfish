@@ -174,9 +174,8 @@
 
     <string name="about_info">\
 <b>Information</b>\n\
-<i>DroidFish</i> ist eine Android-Version von <i>Stockfish 2.2.1</i>, \
-das zu den spielstärksten Schachprogrammen der Welt zählt. \
-Die Android-Version erreicht auf einem 1GHz-Snapdragon-Prozessor oft eine Rechentiefe von 15 oder mehr Halbzügen.\n\
+<i>DroidFish</i> ist ein Schachprogramm mit vielfältigen Funktionen \
+und der sehr spielstarken Schach-Engine <i>Stockfish 2.2.1</i>. \n\
 \n\
 <b>Funktionen</b>\n\
 * Eröffnungsbuch\n\
@@ -202,9 +201,10 @@ nach oben oder unten zur vorherigen oder nächsten Variante.\n\
 DroidFish enthält ein kleines internes Eröffnungsbuch. Wenn Sie ein größeres Eröffnungsbuch \
 verwenden möchten, können Sie die Verwendung externer Eröffnungsbücher (<i>Polyglot</i> \
 oder <i>CTG</i>) folgendermaßen konfigurieren:\n\
-1a. Kopieren Sie eines oder mehrere Polyglot-Eröffnungsbücher in das Verzeichnis auf der SD-Karte. \
-Diese müssen die Dateiendung <i>.bin</i> aufweisen.\n\
-1b. Kopieren Sie eines oder mehrere CTG-Eröffnungsbücher in das Verzeichnis. \
+1a. Kopieren Sie eines oder mehrere Polyglot-Eröffnungsbücher in das Verzeichnis <i>DroidFish</i> auf der SD-Karte.\n\
+Diese müssen die Dateiendung <i>.bin</i> aufweisen. Beachten Sie dabei bitte, dass das Android-Dateisystem zwischen \
+Groß- und Kleinbuchstaben unterscheidet. Die Datei muss also mit <i>.bin</i> enden, nicht mit <i>.Bin</i> oder <i>.BIN</i>.\n\
+1b. Kopieren Sie eines oder mehrere CTG-Eröffnungsbücher in das Verzeichnis <i>DroidFish</i>. \
 Diese bestehen aus drei Dateien mit den Endungen <i>.ctg</i>, <i>.ctb</i> und <i>.cto</i>. \
 Sie müssen alle drei Dateien kopieren.\n\
 2. Aktivieren Sie im Programm-Menu die Funktion <i>Eröffnungsbuch auswählen</i>.\n\
@@ -212,14 +212,16 @@ Sie müssen alle drei Dateien kopieren.\n\
 \n\
 <b>PGN-Dateien</b>\n\
 DroidFish kann Partien aus PGN-Dateien laden. Diese Funktion nutzen Sie folgendermaßen:\n\
-1. Kopieren Sie eine oder mehrere PGN-Dateien in dieses Verzeichnis auf der SD-Karte.\n\
-2. Drücken Sie länger auf das Spielfeld und wählen Sie aus dem darauf folgenden Menu die Funktion <i>Partie aus einer PGN-Datei laden</i>.\n\
-3. Wählen Sie die Datei und anschließend innerhalb der Datei die Partie, die Sie laden möchten.\n\
+1. Kopieren Sie eine oder mehrere PGN-Dateien in das Verzeichnis <i>DroidFish/pgn</i> auf der SD-Karte.\n\
+2. Drücken Sie länger auf das Spielfeld und aktivieren Sie im darauf folgenden Menu die Funktion <i>Partie aus einer PGN-Datei laden</i>.\n\
+3. Wählen Sie die Datei und anschließend innerhalb der Datei die Partie aus, die Sie laden möchten.\n\
 \n\
-Um Partie-Informationen wie die Spielernamen zu ändern, drücken Sie länger auf die Zugliste und wählen \
-<i>Partie-Informationen</i>. Um Komentare für einen Zug zu bearbeiten, drücken Sie länger auf die Zugliste und wählen \
-<i>Kommentare</i>. Um eine veränderte Partei zu speichern, drücken Sie länger auf das Spielfeld und wählen dann \
-<i>Partie in eine PGN-Datei speichern</i>.\n\
+Um Partie-Informationen wie die Spielernamen zu ändern, drücken Sie länger auf die Zugliste und wählen <i>Partie-Informationen</i>. \
+Um Kommentare für einen Zug zu bearbeiten, drücken Sie länger auf die Zugliste und wählen <i>Kommentare</i>.\n\
+\n\
+Um eine veränderte Partie zu speichern, drücken Sie länger auf das Spielfeld und aktivieren im darauf folgenden Menu die Funktion \
+<i>Partie in eine PGN-Datei speichern</i>. Wählen Sie anschließend die Datei und dann innerhalb der Datei die Position aus, \
+an der die neue Partie gespeichert werden soll.\n\
 \n\
 Um die Computer-Analyse zum Spielbaum hinzuzufügen, drücken Sie auf die Analyse-Informationen, \
 während der Computer rechnet, und wählen <i>Analyse hinzufügen</i>. Die aktuelle Hauptvariante \
@@ -236,7 +238,7 @@ die Funktion <i>Partie aus einer Scid-Datei laden</i>.\n\
 \n\
 <b>UCI-Engines</b>\n\
 DroidFish kann UCI-Engines von Drittanbietern einbinden. Zur Nutzung dieser Funktion gehen Sie folgendermaßen vor:\n\
-1. Kopieren Sie eine oder mehrere UCI-Engines als ausführbare Dateien in das Verzeichnis auf der SD-Karte.\n\
+1. Kopieren Sie eine oder mehrere UCI-Engines als ausführbare Dateien in das Verzeichnis <i>DroidFish/uci</i> auf der SD-Karte.\n\
 2. Wählen Sie im Programm-Menu die Funktion <i>Schach-Engine auswählen</i>, um die gewünschte Engine zu aktivieren.\n\
 \n\
 <b>Lizenz</b>\n\
@@ -244,7 +246,7 @@ GNU GPL v3\n\
 \n\
 <b>Entwickler</b>\n\
 * Das Schachprogramm <i>Stockfish</i> wird entwickelt von Tord Romstad, Marco Costalba und Joona Kiiski.\n\
-* Die Android-Version <i>Droidfish</i> wird entwickelt von Peter Österlund.\n\
+* <i>Droidfish</i> wird entwickelt von Peter Österlund.\n\
 * Von Aaro Korhonen stammen Verbesserungen der Benutzeroberfläche.\n\
 \n\
 <b>Lokalisierung</b>\n\
@@ -405,6 +407,8 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="stockfish_engine">Stockfish</string>
     <string name="cuckoochess_engine">CuckooChess</string>
     <string name="failed_to_start_engine">Fehler beim Starten der Engine</string>
+    <string name="engine_terminated">Engine beendet</string>
+    <string name="uci_protocol_error">UCI-Protokollfehler</string>
 
     <string name="err_too_few_spaces">Zuwenig Felder</string>
     <string name="err_invalid_piece">Unzulässige Figur</string>
@@ -440,10 +444,11 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="prefs_autoSwapSides_summary">Seiten beim Start einer neuen Partie automatisch wechseln (Einstellung <i>Ansicht drehen</i> ignorieren)</string>
     <string name="prefs_engine_settings">Engine-Einstellungen</string>
     <string name="prefs_strength_title">Spielstärke</string>
+    <string name="prefs_strength_summary">Nur von den internen Engines unterstützt</string>
     <string name="prefs_ponderMode_title">Vorausberechnung</string>
-    <string name="prefs_ponderMode_summary">Vorausberechnung von Zügen durch die Engine, wenn der Spieler am Zug ist</string>
+    <string name="prefs_ponderMode_summary">Vorausberechnung von Zügen durch die Engine, wenn der Spieler am Zug ist (von den meisten Engines unterstützt)</string>
     <string name="prefs_threads_title">Parallelberechnung</string>
-    <string name="prefs_threads_summary">Zahl der zu nutzenden parallelen Engine-Stränge (Prozessorkerne)</string>
+    <string name="prefs_threads_summary">Zahl der zu nutzenden parallelen Engine-Stränge bzw. Prozessorkerne (nicht von allen Engines unterstützt)</string>
     <string name="prefs_time_control">Zeitvorgabe</string>
     <string name="prefs_movesPerSession_title">Züge</string>
     <string name="prefs_movesPerSession_summary">Zahl der Züge innerhalb der Zeitvorgabe</string>
