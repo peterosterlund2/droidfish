@@ -26,8 +26,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.channels.FileChannel;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.petero.droidfish.R;
 import android.content.Context;
@@ -45,7 +43,7 @@ public class ExternalEngine extends UCIEngineBase {
     private Thread exitThread;
     private Thread stdInThread;
     private Thread stdErrThread;
-    private List<String> inLines;
+    private LocalPipe inLines;
     private boolean startedOk;
     private boolean isRunning;
 
@@ -58,7 +56,7 @@ public class ExternalEngine extends UCIEngineBase {
         exitThread = null;
         stdInThread = null;
         stdErrThread = null;
-        inLines = new LinkedList<String>();
+        inLines = new LocalPipe();
         startedOk = false;
         isRunning = false;
     }
@@ -120,8 +118,7 @@ public class ExternalEngine extends UCIEngineBase {
                             if ((ep == null) || Thread.currentThread().isInterrupted())
                                 return;
                             synchronized (inLines) {
-                                inLines.add(line);
-                                inLines.notify();
+                                inLines.addLine(line);
                                 if (first) {
                                     startedOk = true;
                                     isRunning = true;
@@ -130,8 +127,8 @@ public class ExternalEngine extends UCIEngineBase {
                             }
                         }
                     } catch (IOException e) {
-                        return;
                     }
+                    inLines.close();
                 }
             });
             stdInThread.start();
@@ -176,26 +173,13 @@ public class ExternalEngine extends UCIEngineBase {
     /** @inheritDoc */
     @Override
     public String readLineFromEngine(int timeoutMillis) {
-        try {
-            synchronized (inLines) {
-                if (inLines.size() == 0) {
-                    Thread inThread = stdInThread;
-                    if ((inThread == null) || !inThread.isAlive())
-                        return null;
-                    inLines.wait(timeoutMillis);
-                }
-            }
-            synchronized (inLines) {
-                if (inLines.size() > 0) {
-                    String ret = inLines.get(0);
-                    inLines.remove(0);
-//                    System.out.printf("Engine -> GUI: %s\n", ret);
-                    return ret;
-                }
-            }
-        } catch (InterruptedException e) {
+        String ret = inLines.readLine(timeoutMillis);
+        if (ret == null)
+            return null;
+        if (ret.length() > 0) {
+//            System.out.printf("Engine -> GUI: %s\n", ret);
         }
-        return "";
+        return ret;
     }
 
     /** @inheritDoc */

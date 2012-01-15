@@ -23,11 +23,9 @@ import chess.ComputerPlayer;
 import chess.Move;
 import chess.Position;
 import chess.TextIO;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.Pipe;
 import java.util.ArrayList;
 
+import org.petero.droidfish.engine.LocalPipe;
 import org.petero.droidfish.engine.UCIEngineBase;
 
 /**
@@ -46,22 +44,16 @@ public class CuckooChessEngine extends UCIEngineBase {
     // Set to true to break out of main loop
     private boolean quit;
 
-    private Pipe guiToEngine;
-    private Pipe engineToGui;
-    private NioInputStream inFromEngine;
+    private LocalPipe guiToEngine;
+    private LocalPipe engineToGui;
     private Thread engineThread;
 
     public CuckooChessEngine(Report report) {
         pos = null;
         moves = new ArrayList<Move>();
         quit = false;
-        try {
-            guiToEngine = Pipe.open();
-            engineToGui = Pipe.open();
-            inFromEngine = new NioInputStream(engineToGui);
-        } catch (IOException e) {
-            report.reportError(e.getMessage());
-        }
+        guiToEngine = new LocalPipe();
+        engineToGui = new LocalPipe();
     }
 
     /** @inheritDoc */
@@ -69,9 +61,7 @@ public class CuckooChessEngine extends UCIEngineBase {
     protected final void startProcess() {
         engineThread = new Thread(new Runnable() {
             public void run() {
-                NioInputStream in = new NioInputStream(guiToEngine);
-                NioPrintStream out = new NioPrintStream(engineToGui);
-                mainLoop(in, out);
+                mainLoop(guiToEngine, engineToGui);
             }
         });
         int pMin = Thread.MIN_PRIORITY;
@@ -93,7 +83,7 @@ public class CuckooChessEngine extends UCIEngineBase {
         setOption("strength", strength);
     }
 
-    private final void mainLoop(NioInputStream is, NioPrintStream os) {
+    private final void mainLoop(LocalPipe is, LocalPipe os) {
         String line;
         while ((line = is.readLine()) != null) {
             handleCommand(line, os);
@@ -103,12 +93,18 @@ public class CuckooChessEngine extends UCIEngineBase {
         }
     }
 
+    @Override
+    public void shutDown() {
+        super.shutDown();
+        guiToEngine.close();
+    }
+
     /** @inheritDoc */
     @Override
     public final String readLineFromEngine(int timeoutMillis) {
         if ((engineThread != null) && !engineThread.isAlive())
             return null;
-        String ret = inFromEngine.readLine(timeoutMillis);
+        String ret = engineToGui.readLine(timeoutMillis);
         if (ret == null)
             return null;
         if (ret.length() > 0) {
@@ -121,25 +117,21 @@ public class CuckooChessEngine extends UCIEngineBase {
     @Override
     public final synchronized void writeLineToEngine(String data) {
 //        System.out.printf("GUI -> Engine: %s\n", data);
-        try {
-            String s = data + "\n";
-            guiToEngine.sink().write(ByteBuffer.wrap(s.getBytes()));
-        } catch (IOException e) {
-        }
+        guiToEngine.addLine(data);
     }
 
-    private final void handleCommand(String cmdLine, NioPrintStream os) {
+    private final void handleCommand(String cmdLine, LocalPipe os) {
         String[] tokens = tokenize(cmdLine);
         try {
             String cmd = tokens[0];
             if (cmd.equals("uci")) {
-                os.printf("id name %s%n", ComputerPlayer.engineName);
-                os.printf("id author Peter Osterlund%n");
+                os.printLine("id name %s", ComputerPlayer.engineName);
+                os.printLine("id author Peter Osterlund");
                 DroidEngineControl.printOptions(os);
-                os.printf("uciok%n");
+                os.printLine("uciok");
             } else if (cmd.equals("isready")) {
                 initEngine(os);
-                os.printf("readyok%n");
+                os.printLine("readyok");
             } else if (cmd.equals("setoption")) {
                 initEngine(os);
                 StringBuilder optionName = new StringBuilder();
@@ -260,7 +252,7 @@ public class CuckooChessEngine extends UCIEngineBase {
         }
     }
 
-    private final void initEngine(NioPrintStream os) {
+    private final void initEngine(LocalPipe os) {
         if (engine == null) {
             engine = new DroidEngineControl(os);
         }

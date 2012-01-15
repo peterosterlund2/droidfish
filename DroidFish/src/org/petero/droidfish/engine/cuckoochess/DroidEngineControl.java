@@ -35,12 +35,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import org.petero.droidfish.engine.LocalPipe;
+
 /**
  * Control the search thread.
  * @author petero
  */
 public class DroidEngineControl {
-    NioPrintStream os;
+    LocalPipe os;
 
     Thread engineThread;
     private final Object threadMutex;
@@ -76,18 +78,18 @@ public class DroidEngineControl {
      * This class is responsible for sending "info" strings during search.
      */
     static class SearchListener implements Search.Listener {
-        NioPrintStream os;
+        LocalPipe os;
 
-        SearchListener(NioPrintStream os) {
+        SearchListener(LocalPipe os) {
             this.os = os;
         }
 
         public void notifyDepth(int depth) {
-            os.printf("info depth %d%n", depth);
+            os.printLine("info depth %d", depth);
         }
 
         public void notifyCurrMove(Move m, int moveNr) {
-            os.printf("info currmove %s currmovenumber %d%n", moveToString(m), moveNr);
+            os.printLine("info currmove %s currmovenumber %d", moveToString(m), moveNr);
         }
 
         public void notifyPV(int depth, int score, int time, long nodes, int nps, boolean isMate,
@@ -103,16 +105,16 @@ public class DroidEngineControl {
             } else if (lowerBound) {
                 bound = " lowerbound";
             }
-            os.printf("info depth %d score %s %d%s time %d nodes %d nps %d pv%s%n",
+            os.printLine("info depth %d score %s %d%s time %d nodes %d nps %d pv%s",
                     depth, isMate ? "mate" : "cp", score, bound, time, nodes, nps, pvBuf.toString());
         }
 
         public void notifyStats(long nodes, int nps, int time) {
-            os.printf("info nodes %d nps %d time %d%n", nodes, nps, time);
+            os.printLine("info nodes %d nps %d time %d", nodes, nps, time);
         }
     }
 
-    public DroidEngineControl(NioPrintStream os) {
+    public DroidEngineControl(LocalPipe os) {
         this.os = os;
         threadMutex = new Object();
         setupTT();
@@ -260,9 +262,9 @@ public class DroidEngineControl {
                 Move ponderMove = getPonderMove(pos, m);
                 synchronized (threadMutex) {
                     if (ponderMove != null) {
-                        os.printf("bestmove %s ponder %s%n", moveToString(m), moveToString(ponderMove));
+                        os.printLine("bestmove %s ponder %s", moveToString(m), moveToString(ponderMove));
                     } else {
-                        os.printf("bestmove %s%n", moveToString(m));
+                        os.printLine("bestmove %s", moveToString(m));
                     }
                     engineThread = null;
                     sc = null;
@@ -362,14 +364,14 @@ public class DroidEngineControl {
         return ret;
     }
 
-    static void printOptions(NioPrintStream os) {
-        os.printf("option name Hash type spin default 2 min 1 max 2048%n");
-        os.printf("option name OwnBook type check default false%n");
-        os.printf("option name Ponder type check default true%n");
-        os.printf("option name UCI_AnalyseMode type check default false%n");
-        os.printf("option name UCI_EngineAbout type string default %s by Peter Osterlund, see http://web.comhem.se/petero2home/javachess/index.html%n",
+    static void printOptions(LocalPipe os) {
+        os.printLine("option name Hash type spin default 2 min 1 max 2048");
+        os.printLine("option name OwnBook type check default false");
+        os.printLine("option name Ponder type check default true");
+        os.printLine("option name UCI_AnalyseMode type check default false");
+        os.printLine("option name UCI_EngineAbout type string default %s by Peter Osterlund, see http://web.comhem.se/petero2home/javachess/index.html",
                 ComputerPlayer.engineName);
-        os.printf("option name Strength type spin default 1000 min 0 max 1000\n");
+        os.printLine("option name Strength type spin default 1000 min 0 max 1000");
     }
 
     final void setOption(String optionName, String optionValue) {

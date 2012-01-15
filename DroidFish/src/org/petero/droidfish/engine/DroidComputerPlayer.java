@@ -803,7 +803,7 @@ public class DroidComputerPlayer {
 
     private final synchronized int getReadTimeout() {
         boolean needGuiUpdate = depthModified || currMoveModified || pvModified || statsModified;
-        int timeout = 1000;
+        int timeout = 2000000000;
         if (needGuiUpdate) {
             long now = System.currentTimeMillis();
             timeout = (int)(lastGUIUpdate + guiUpdateInterval - now + 1);
