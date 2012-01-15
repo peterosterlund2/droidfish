@@ -37,7 +37,7 @@ public class EngineUtil {
     public static String internalStockFishName() {
         final int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
         if (sdkVersion < 4)
-            return null;
+            return "stockfish15.mygz";
         return "stockfish-" + CpuAbi.get();
     }
 }

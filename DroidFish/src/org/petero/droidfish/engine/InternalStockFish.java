@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.zip.GZIPInputStream;
 
 import android.content.Context;
 
@@ -73,6 +74,8 @@ public class InternalStockFish extends ExternalEngine {
         InputStream is = null;
         try {
             is = context.getAssets().open(sfExe);
+            if (sfExe.endsWith(".mygz"))
+                is = new GZIPInputStream(is);
             MessageDigest md = MessageDigest.getInstance("SHA-1");
             byte[] buf = new byte[8192];
             while (true) {
@@ -112,6 +115,8 @@ public class InternalStockFish extends ExternalEngine {
         to.createNewFile();
 
         InputStream is = context.getAssets().open(sfExe);
+        if (sfExe.endsWith(".mygz"))
+            is = new GZIPInputStream(is);
         OutputStream os = new FileOutputStream(to);
 
         try {
