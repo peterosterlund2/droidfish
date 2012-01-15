@@ -652,7 +652,7 @@ public class DroidFish extends Activity implements GUIInterface {
                                      R.string.cuckoochess_engine :
                                      R.string.stockfish_engine);
             if (strength < 1000) {
-                titleText.setText(String.format("%s:%d%%", eName, strength / 10));
+                titleText.setText(String.format("%s: %d%%", eName, strength / 10));
             } else {
                 titleText.setText(eName);
             }
