@@ -37,6 +37,7 @@ struct CheckInfo {
   Bitboard dcCandidates;
   Bitboard pinned;
   Bitboard checkSq[8];
+  Square ksq;
 };
 
 
@@ -100,6 +101,7 @@ public:
 
   // The piece on a given square
   Piece piece_on(Square s) const;
+  Piece piece_moved(Move m) const;
   bool square_is_empty(Square s) const;
 
   // Side to move
@@ -183,14 +185,9 @@ public:
   Value non_pawn_material(Color c) const;
   Score pst_delta(Piece piece, Square from, Square to) const;
 
-  // Game termination checks
-  bool is_mate() const;
-  template<bool SkipRepetition> bool is_draw() const;
-
-  // Plies from start position to the beginning of search
-  int startpos_ply_counter() const;
-
   // Other properties of the position
+  template<bool SkipRepetition> bool is_draw() const;
+  int startpos_ply_counter() const;
   bool opposite_colored_bishops() const;
   bool has_pawn_on_7th(Color c) const;
   bool is_chess960() const;
@@ -213,7 +210,7 @@ private:
   // Initialization helper functions (used while setting up a position)
   void clear();
   void put_piece(Piece p, Square s);
-  void set_castle_right(Square ksq, Square rsq);
+  void set_castle_right(Color c, Square rsq);
   bool move_is_legal(const Move m) const;
 
   // Helper template functions
@@ -275,6 +272,10 @@ inline void Position::set_nodes_searched(int64_t n) {
 
 inline Piece Position::piece_on(Square s) const {
   return board[s];
+}
+
+inline Piece Position::piece_moved(Move m) const {
+  return board[from_sq(m)];
 }
 
 inline bool Position::square_is_empty(Square s) const {
@@ -391,7 +392,7 @@ inline Bitboard Position::pinned_pieces() const {
 }
 
 inline bool Position::pawn_is_passed(Color c, Square s) const {
-  return !(pieces(PAWN, flip(c)) & passed_pawn_mask(c, s));
+  return !(pieces(PAWN, ~c) & passed_pawn_mask(c, s));
 }
 
 inline Key Position::key() const {

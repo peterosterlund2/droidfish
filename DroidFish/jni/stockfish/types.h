@@ -34,14 +34,10 @@
 /// -DUSE_POPCNT  | Add runtime support for use of popcnt asm-instruction. Works
 ///               | only in 64-bit mode. For compiling requires hardware with
 ///               | popcnt support.
-///
-/// -DOLD_LOCKS   | Under Windows are used the fast Slim Reader/Writer (SRW)
-///               | Locks and Condition Variables: these are not supported by
-///               | Windows XP and older, to compile for those platforms you
-///               | should enable OLD_LOCKS.
 
 #include <climits>
 #include <cstdlib>
+#include <ctype.h>
 
 #if defined(_MSC_VER)
 
@@ -339,6 +335,14 @@ extern const Value PieceValueMidgame[17];
 extern const Value PieceValueEndgame[17];
 extern int SquareDistance[64][64];
 
+inline Color operator~(Color c) {
+  return Color(c ^ 1);
+}
+
+inline Square operator~(Square s) {
+  return Square(s ^ 56);
+}
+
 inline Value mate_in(int ply) {
   return VALUE_MATE - ply;
 }
@@ -359,10 +363,6 @@ inline Color color_of(Piece p) {
   return Color(p >> 3);
 }
 
-inline Color flip(Color c) {
-  return Color(c ^ 1);
-}
-
 inline Square make_square(File f, Rank r) {
   return Square((r << 3) | f);
 }
@@ -377,10 +377,6 @@ inline File file_of(Square s) {
 
 inline Rank rank_of(Square s) {
   return Rank(s >> 3);
-}
-
-inline Square flip(Square s) {
-  return Square(s ^ 56);
 }
 
 inline Square mirror(Square s) {

@@ -19,14 +19,13 @@
 
 #include <algorithm>
 #include <sstream>
-#include <ctype.h>
 
 #include "misc.h"
 #include "thread.h"
 #include "ucioption.h"
 
 using std::string;
-using std::lexicographical_compare;
+using namespace std;
 
 OptionsMap Options; // Global object
 

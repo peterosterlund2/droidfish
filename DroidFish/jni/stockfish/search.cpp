@@ -24,7 +24,6 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
-#include <vector>
 
 #include "book.h"
 #include "evaluate.h"
@@ -42,15 +41,14 @@ namespace Search {
 
   volatile SignalsType Signals;
   LimitsType Limits;
-  std::vector<Move> SearchMoves;
+  std::vector<RootMove> RootMoves;
   Position RootPosition;
 }
 
 using std::string;
 using std::cout;
 using std::endl;
-using std::count;
-using std::find;
+using namespace std;
 using namespace Search;
 
 namespace {
@@ -60,33 +58,6 @@ namespace {
 
   // Different node types, used as template parameter
   enum NodeType { Root, PV, NonPV, SplitPointRoot, SplitPointPV, SplitPointNonPV };
-
-  // RootMove struct is used for moves at the root of the tree. For each root
-  // move we store a score, a node count, and a PV (really a refutation in the
-  // case of moves which fail low). Score is normally set at -VALUE_INFINITE for
-  // all non-pv moves.
-  struct RootMove {
-
-    RootMove(){}
-    RootMove(Move m) {
-      score = prevScore = -VALUE_INFINITE;
-      pv.push_back(m);
-      pv.push_back(MOVE_NONE);
-    }
-
-    bool operator<(const RootMove& m) const { return score < m.score; }
-    bool operator==(const Move& m) const { return pv[0] == m; }
-
-    void extract_pv_from_tt(Position& pos);
-    void insert_pv_in_tt(Position& pos);
-
-    Value score;
-    Value prevScore;
-    std::vector<Move> pv;
-  };
-
-
-  /// Constants
 
   // Lookup table to check if a Piece is a slider and its access function
   const bool Slidings[18] = { 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1 };
@@ -137,17 +108,14 @@ namespace {
     return (Depth) Reductions[PvNode][std::min(int(d) / ONE_PLY, 63)][std::min(mn, 63)];
   }
 
-  // Easy move margin. An easy move candidate must be at least this much
-  // better than the second best move.
+  // Easy move margin. An easy move candidate must be at least this much better
+  // than the second best move.
   const Value EasyMoveMargin = Value(0x150);
 
   // This is the minimum interval in msec between two check_time() calls
   const int TimerResolution = 5;
 
 
-  /// Namespace variables
-
-  std::vector<RootMove> RootMoves;
   size_t MultiPV, UCIMultiPV, PVIdx;
   TimeManager TimeMgr;
   int BestMoveChanges;
@@ -155,8 +123,6 @@ namespace {
   bool SkillLevelEnabled, Chess960;
   History H;
 
-
-  /// Local functions
 
   template <NodeType NT>
   Value search(Position& pos, Stack* ss, Value alpha, Value beta, Depth depth);
@@ -202,7 +168,7 @@ namespace {
   FORCE_INLINE bool is_dangerous(const Position& pos, Move m, bool captureOrPromotion) {
 
     // Test for a pawn pushed to 7th or a passed pawn move
-    if (type_of(pos.piece_on(from_sq(m))) == PAWN)
+    if (type_of(pos.piece_moved(m)) == PAWN)
     {
         Color c = pos.side_to_move();
         if (   relative_rank(c, to_sq(m)) == RANK_7
@@ -284,29 +250,29 @@ void Search::think() {
 
   static Book book; // Defined static to initialize the PRNG only once
 
+  Move bm;
   Position& pos = RootPosition;
   Chess960 = pos.is_chess960();
   elapsed_time(true);
   TimeMgr.init(Limits, pos.startpos_ply_counter());
   TT.new_search();
   H.clear();
-  RootMoves.clear();
 
-  // Populate RootMoves with all the legal moves (default) or, if a SearchMoves
-  // is given, with the subset of legal moves to search.
-  for (MoveList<MV_LEGAL> ml(pos); !ml.end(); ++ml)
-      if (SearchMoves.empty() || count(SearchMoves.begin(), SearchMoves.end(), ml.move()))
-          RootMoves.push_back(RootMove(ml.move()));
-
-  if (Options["OwnBook"])
+  if (RootMoves.empty())
   {
-      Move bookMove = book.probe(pos, Options["Book File"], Options["Best Book Move"]);
+      cout << "info depth 0 score "
+           << score_to_uci(pos.in_check() ? -VALUE_MATE : VALUE_DRAW) << endl;
 
-      if (bookMove && count(RootMoves.begin(), RootMoves.end(), bookMove))
-      {
-          std::swap(RootMoves[0], *find(RootMoves.begin(), RootMoves.end(), bookMove));
-          goto finalize;
-      }
+      RootMoves.push_back(MOVE_NONE);
+      goto finalize;
+  }
+
+  if (   Options["OwnBook"]
+      && (bm = book.probe(pos, Options["Book File"], Options["Best Book Move"])) != MOVE_NONE
+      && count(RootMoves.begin(), RootMoves.end(), bm))
+  {
+      std::swap(RootMoves[0], *find(RootMoves.begin(), RootMoves.end(), bm));
+      goto finalize;
   }
 
   // Read UCI options: GUI could change UCI parameters during the game
@@ -377,9 +343,9 @@ void Search::think() {
 
 finalize:
 
-  // When we reach max depth we arrive here even without a StopRequest, but if
-  // we are pondering or in infinite search, we shouldn't print the best move
-  // before we are told to do so.
+  // When we reach max depth we arrive here even without Signals.stop is raised,
+  // but if we are pondering or in infinite search, we shouldn't print the best
+  // move before we are told to do so.
   if (!Signals.stop && (Limits.ponder || Limits.infinite))
       Threads.wait_for_stop_or_ponderhit();
 
@@ -407,16 +373,6 @@ namespace {
     depth = BestMoveChanges = 0;
     bestValue = delta = -VALUE_INFINITE;
     ss->currentMove = MOVE_NULL; // Hack to skip update gains
-
-    // Handle the special case of a mated/stalemate position
-    if (RootMoves.empty())
-    {
-        cout << "info depth 0 score "
-             << score_to_uci(pos.in_check() ? -VALUE_MATE : VALUE_DRAW) << endl;
-
-        RootMoves.push_back(MOVE_NONE);
-        return;
-    }
 
     // Iterative deepening loop until requested to stop or target depth reached
     while (!Signals.stop && ++depth <= MAX_PLY && (!Limits.maxDepth || depth <= Limits.maxDepth))
@@ -533,15 +489,15 @@ namespace {
                 stop = true;
 
             // Stop search early if one move seems to be much better than others
-            if (   depth >= 10
+            if (    depth >= 12
                 && !stop
-                && (   bestMoveNeverChanged
+                && (   (bestMoveNeverChanged &&  pos.captured_piece_type())
                     || elapsed_time() > (TimeMgr.available_time() * 40) / 100))
             {
                 Value rBeta = bestValue - EasyMoveMargin;
                 (ss+1)->excludedMove = RootMoves[0].pv[0];
                 (ss+1)->skipNullMove = true;
-                Value v = search<NonPV>(pos, ss+1, rBeta - 1, rBeta, (depth * ONE_PLY) / 2);
+                Value v = search<NonPV>(pos, ss+1, rBeta - 1, rBeta, (depth - 3) * ONE_PLY);
                 (ss+1)->skipNullMove = false;
                 (ss+1)->excludedMove = MOVE_NONE;
 
@@ -703,7 +659,7 @@ namespace {
     if (   (move = (ss-1)->currentMove) != MOVE_NULL
         && (ss-1)->eval != VALUE_NONE
         && ss->eval != VALUE_NONE
-        && pos.captured_piece_type() == NO_PIECE_TYPE
+        && !pos.captured_piece_type()
         && !is_special(move))
     {
         Square to = to_sq(move);
@@ -972,7 +928,7 @@ split_point_start: // At split points actual search starts from here
           // but fixing this made program slightly weaker.
           Depth predictedDepth = newDepth - reduction<PvNode>(depth, moveCount);
           futilityValue =  futilityBase + futility_margin(predictedDepth, moveCount)
-                         + H.gain(pos.piece_on(from_sq(move)), to_sq(move));
+                         + H.gain(pos.piece_moved(move), to_sq(move));
 
           if (futilityValue < beta)
           {
@@ -1156,13 +1112,13 @@ split_point_start: // At split points actual search starts from here
 
             // Increase history value of the cut-off move
             Value bonus = Value(int(depth) * int(depth));
-            H.add(pos.piece_on(from_sq(move)), to_sq(move), bonus);
+            H.add(pos.piece_moved(move), to_sq(move), bonus);
 
             // Decrease history of all the other played non-capture moves
             for (int i = 0; i < playedMoveCount - 1; i++)
             {
                 Move m = movesSearched[i];
-                H.add(pos.piece_on(from_sq(m)), to_sq(m), -bonus);
+                H.add(pos.piece_moved(m), to_sq(m), -bonus);
             }
         }
     }
@@ -1395,7 +1351,7 @@ split_point_start: // At split points actual search starts from here
 
     from = from_sq(move);
     to = to_sq(move);
-    them = flip(pos.side_to_move());
+    them = ~pos.side_to_move();
     ksq = pos.king_square(them);
     kingAtt = pos.attacks_from<KING>(ksq);
     pc = pos.piece_on(from);
@@ -1803,74 +1759,74 @@ split_point_start: // At split points actual search starts from here
     return best;
   }
 
-
-  // extract_pv_from_tt() builds a PV by adding moves from the transposition table.
-  // We consider also failing high nodes and not only VALUE_TYPE_EXACT nodes. This
-  // allow to always have a ponder move even when we fail high at root and also a
-  // long PV to print that is important for position analysis.
-
-  void RootMove::extract_pv_from_tt(Position& pos) {
-
-    StateInfo state[MAX_PLY_PLUS_2], *st = state;
-    TTEntry* tte;
-    int ply = 1;
-    Move m = pv[0];
-
-    assert(m != MOVE_NONE && pos.is_pseudo_legal(m));
-
-    pv.clear();
-    pv.push_back(m);
-    pos.do_move(m, *st++);
-
-    while (   (tte = TT.probe(pos.key())) != NULL
-           && tte->move() != MOVE_NONE
-           && pos.is_pseudo_legal(tte->move())
-           && pos.pl_move_is_legal(tte->move(), pos.pinned_pieces())
-           && ply < MAX_PLY
-           && (!pos.is_draw<false>() || ply < 2))
-    {
-        pv.push_back(tte->move());
-        pos.do_move(tte->move(), *st++);
-        ply++;
-    }
-    pv.push_back(MOVE_NONE);
-
-    do pos.undo_move(pv[--ply]); while (ply);
-  }
-
-
-  // insert_pv_in_tt() is called at the end of a search iteration, and inserts
-  // the PV back into the TT. This makes sure the old PV moves are searched
-  // first, even if the old TT entries have been overwritten.
-
-  void RootMove::insert_pv_in_tt(Position& pos) {
-
-    StateInfo state[MAX_PLY_PLUS_2], *st = state;
-    TTEntry* tte;
-    Key k;
-    Value v, m = VALUE_NONE;
-    int ply = 0;
-
-    assert(pv[ply] != MOVE_NONE && pos.is_pseudo_legal(pv[ply]));
-
-    do {
-        k = pos.key();
-        tte = TT.probe(k);
-
-        // Don't overwrite existing correct entries
-        if (!tte || tte->move() != pv[ply])
-        {
-            v = (pos.in_check() ? VALUE_NONE : evaluate(pos, m));
-            TT.store(k, VALUE_NONE, VALUE_TYPE_NONE, DEPTH_NONE, pv[ply], v, m);
-        }
-        pos.do_move(pv[ply], *st++);
-
-    } while (pv[++ply] != MOVE_NONE);
-
-    do pos.undo_move(pv[--ply]); while (ply);
-  }
-
 } // namespace
+
+
+/// RootMove::extract_pv_from_tt() builds a PV by adding moves from the TT table.
+/// We consider also failing high nodes and not only VALUE_TYPE_EXACT nodes so
+/// to allow to always have a ponder move even when we fail high at root, and
+/// a long PV to print that is important for position analysis.
+
+void RootMove::extract_pv_from_tt(Position& pos) {
+
+  StateInfo state[MAX_PLY_PLUS_2], *st = state;
+  TTEntry* tte;
+  int ply = 1;
+  Move m = pv[0];
+
+  assert(m != MOVE_NONE && pos.is_pseudo_legal(m));
+
+  pv.clear();
+  pv.push_back(m);
+  pos.do_move(m, *st++);
+
+  while (   (tte = TT.probe(pos.key())) != NULL
+         && tte->move() != MOVE_NONE
+         && pos.is_pseudo_legal(tte->move())
+         && pos.pl_move_is_legal(tte->move(), pos.pinned_pieces())
+         && ply < MAX_PLY
+         && (!pos.is_draw<false>() || ply < 2))
+  {
+      pv.push_back(tte->move());
+      pos.do_move(tte->move(), *st++);
+      ply++;
+  }
+  pv.push_back(MOVE_NONE);
+
+  do pos.undo_move(pv[--ply]); while (ply);
+}
+
+
+/// RootMove::insert_pv_in_tt() is called at the end of a search iteration, and
+/// inserts the PV back into the TT. This makes sure the old PV moves are searched
+/// first, even if the old TT entries have been overwritten.
+
+void RootMove::insert_pv_in_tt(Position& pos) {
+
+  StateInfo state[MAX_PLY_PLUS_2], *st = state;
+  TTEntry* tte;
+  Key k;
+  Value v, m = VALUE_NONE;
+  int ply = 0;
+
+  assert(pv[ply] != MOVE_NONE && pos.is_pseudo_legal(pv[ply]));
+
+  do {
+      k = pos.key();
+      tte = TT.probe(k);
+
+      // Don't overwrite existing correct entries
+      if (!tte || tte->move() != pv[ply])
+      {
+          v = (pos.in_check() ? VALUE_NONE : evaluate(pos, m));
+          TT.store(k, VALUE_NONE, VALUE_TYPE_NONE, DEPTH_NONE, pv[ply], v, m);
+      }
+      pos.do_move(pv[ply], *st++);
+
+  } while (pv[++ply] != MOVE_NONE);
+
+  do pos.undo_move(pv[--ply]); while (ply);
+}
 
 
 /// Thread::idle_loop() is where the thread is parked when it has no work to do.
