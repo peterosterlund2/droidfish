@@ -18,6 +18,8 @@
 
 package chess;
 
+import java.util.List;
+
 /**
  *
  * @author petero
@@ -34,6 +36,13 @@ public final class MoveGen {
         MoveList() {
             m = new Move[MAX_MOVES];
             this.size = 0;
+        }
+        public final void filter(List<Move> searchMoves) {
+            int used = 0;
+            for (int i = 0; i < size; i++)
+                if (searchMoves.contains(m[i]))
+                    m[used++] = m[i];
+            size = used;
         }
     }
 

@@ -129,8 +129,8 @@ public class EngineControl {
         computeTimeLimit(sPar);
         ponder = false;
         infinite = (maxTimeLimit < 0) && (maxDepth < 0) && (maxNodes < 0);
-        startThread(minTimeLimit, maxTimeLimit, maxDepth, maxNodes);
         searchMoves = sPar.searchMoves;
+        startThread(minTimeLimit, maxTimeLimit, maxDepth, maxNodes);
     }
 
     final public void startPonder(Position pos, List<Move> moves, SearchParams sPar) {
@@ -229,9 +229,8 @@ public class EngineControl {
         sc.setStrength(strength, randomSeed);
         MoveGen.MoveList moves = moveGen.pseudoLegalMoves(pos);
         MoveGen.removeIllegal(pos, moves);
-        if ((searchMoves != null) && (searchMoves.size() > 0)) {
-            Arrays.asList(moves.m).retainAll(searchMoves);
-        }
+        if ((searchMoves != null) && (searchMoves.size() > 0))
+            moves.filter(searchMoves);
         final MoveGen.MoveList srchMoves = moves;
         onePossibleMove = false;
         if ((srchMoves.size < 2) && !infinite) {
