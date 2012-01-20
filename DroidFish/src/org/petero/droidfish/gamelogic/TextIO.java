@@ -321,7 +321,7 @@ public class TextIO {
     }
     private static final String moveToString(Position pos, Move move, boolean longForm,
                                              List<Move> moves) {
-        if (move.equals(new Move(0, 0, 0)))
+        if ((move == null) || move.equals(new Move(0, 0, 0)))
             return "--";
         StringBuilder ret = new StringBuilder();
         int wKingOrigPos = Position.getSquare(4, 0);
