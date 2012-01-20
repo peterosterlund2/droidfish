@@ -231,7 +231,12 @@
                     android:title="@string/prefs_color_squareLabel_title"
                     android:defaultValue="#FFFF0000">
                 </EditTextPreference>
-            </PreferenceCategory>
+                <EditTextPreference
+                    android:key="color_decoration"
+                    android:title="@string/prefs_color_decoration_title"
+                    android:defaultValue="#FF808080">
+                </EditTextPreference>
+                </PreferenceCategory>
             <PreferenceCategory
                 android:title="@string/prefs_move_list">
                 <EditTextPreference
@@ -365,6 +370,40 @@
                     android:defaultValue="false">
                 </CheckBoxPreference>
             </PreferenceCategory>
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:key="egtbSettings"
+            android:title="@string/prefs_egtbSettings_title">
+            <CheckBoxPreference
+                android:key="tbHints"
+                android:title="@string/prefs_tbHints_title"
+                android:summary="@string/prefs_tbHints_summary"
+                android:defaultValue="false">
+            </CheckBoxPreference>
+            <CheckBoxPreference
+                android:key="tbHintsEdit"
+                android:title="@string/prefs_tbHintsEdit_title"
+                android:summary="@string/prefs_tbHintsEdit_summary"
+                android:defaultValue="false">
+            </CheckBoxPreference>
+            <CheckBoxPreference
+                android:key="tbRootProbe"
+                android:title="@string/prefs_tbRootProbe_title"
+                android:summary="@string/prefs_tbRootProbe_summary"
+                android:defaultValue="false">
+            </CheckBoxPreference>
+            <CheckBoxPreference
+                android:key="tbEngineProbe"
+                android:title="@string/prefs_tbEngineProbe_title"
+                android:summary="@string/prefs_tbEngineProbe_summary"
+                android:defaultValue="true">
+            </CheckBoxPreference>
+            <EditTextPreference
+                android:key="gtbPath"
+                android:title="@string/prefs_gtbPath_title"
+                android:summary="@string/prefs_gtbPath_summary"
+                android:defaultValue="">
+            </EditTextPreference>
         </PreferenceScreen>
     </PreferenceCategory>
 </PreferenceScreen>

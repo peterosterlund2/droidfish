@@ -188,6 +188,7 @@ combined with the very strong <i>Stockfish 2.2.2</i> chess engine.\n\
 * Extensive PGN support\n\
 * Adjustable playing strength\n\
 * Third party UCI engines\n\
+* Gaviota endgame tablebases\n\
 \n\
 <b>Hints</b>\n\
 * In game mode, long press chess board to activate copy/paste menu.\n\
@@ -243,6 +244,11 @@ DroidFish can use third party UCI engines. To use this feature:\n\
 <b>Note!</b> The binaries must be compiled for Android.\n\
 2. From the menu, choose <i>Select Chess Engine</i> and select the engine to use.\n\
 \n\
+<b>Gaviota endgame tablebases</b>\n\
+To use Gaviota endgame tablebases:\n\
+1. Copy .gtb files to the <i>DroidFish/gtb</i> directory on the SD card.\n\
+2. Use the <i>Endgame Tablebases</i> preferences screen to control how the tablebases are used.\n\
+\n\
 <b>License</b>\n\
 GNU GPL v3\n\
 \n\
@@ -250,6 +256,11 @@ GNU GPL v3\n\
 * <i>Stockfish</i> is developed by Tord Romstad, Marco Costalba and Joona Kiiski.\n\
 * <i>Droidfish</i> is developed by Peter Österlund.\n\
 * User interface improvements by Aaro Korhonen.\n\
+\n\
+* Gaviota Tablebases Probing Code API, Copyright \u00a9 2010 Miguel A. Ballicora.\n\
+* LZMA compression by Igor Pavlov.\n\
+* ZLIB compression, Copyright \u00a9 1995-2005 Jean-loup Gailly and Mark Adler.\n\
+* LZF compression, Copyright \u00a9 2000-2007 Marc Alexander Lehmann.\n\
 \n\
 <b>Translations</b>\n\
 * German translation by Uwe Walschus.\n\
@@ -503,6 +514,7 @@ you are not actively using the program.\
     <string name="prefs_color_arrow4_title">Arrow 5</string>
     <string name="prefs_color_arrow5_title">Arrow 6</string>
     <string name="prefs_color_squareLabel_title">Square Labels</string>
+    <string name="prefs_color_decoration_title">Tablebase hints</string>
     <string name="prefs_move_list">Move List</string>
     <string name="prefs_color_currentMove_title">Current Move</string>
     <string name="prefs_other">Other</string>
@@ -546,4 +558,15 @@ you are not actively using the program.\
     <string name="prefs_exportPlayerAction_summary">Include information about draw and resign actions</string>
     <string name="prefs_exportTime_title">Clock</string>
     <string name="prefs_exportTime_summary">Include time information for each move</string>
+    <string name="prefs_egtbSettings_title">Endgame Tablebases</string>
+    <string name="prefs_tbHints_title">Show Hints</string>
+    <string name="prefs_tbHints_summary">When touching a piece, show EGTB value for all possible moves by that piece</string>
+    <string name="prefs_tbHintsEdit_title">Edit Board Hints</string>
+    <string name="prefs_tbHintsEdit_summary">When touching a piece, show EGTB value for all possible alternate positions of that piece</string>
+    <string name="prefs_tbRootProbe_title">Probe at Root</string>
+    <string name="prefs_tbRootProbe_summary">Filter out non-optimal moves before starting search</string>
+    <string name="prefs_tbEngineProbe_title">Engine Probing</string>
+    <string name="prefs_tbEngineProbe_summary">Enable EGTB probing in engine, when supported. Takes effect next time engine is started</string>
+    <string name="prefs_gtbPath_title">GTB Directory</string>
+    <string name="prefs_gtbPath_summary">Directory where Gaviota tablebases are installed. Leave blank to use default directory</string>
 </resources>

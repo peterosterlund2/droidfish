@@ -19,7 +19,6 @@
 package org.petero.droidfish;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.petero.droidfish.gamelogic.Game;
 import org.petero.droidfish.gamelogic.Move;
@@ -31,7 +30,7 @@ import android.content.Context;
 public interface GUIInterface {
 
     /** Update the displayed board position. */
-    public void setPosition(Position pos, String variantInfo, List<Move> variantMoves);
+    public void setPosition(Position pos, String variantInfo, ArrayList<Move> variantMoves);
 
     /** Mark square sq as selected. Set to -1 to clear selection. */
     public void setSelection(int sq);
@@ -55,7 +54,7 @@ public interface GUIInterface {
 
     /** Update the computer thinking information. */
     public void setThinkingInfo(String pvStr, String statStr, String bookInfo,
-                                ArrayList<ArrayList<Move>> pvMoves, List<Move> bookMoves);
+                                ArrayList<ArrayList<Move>> pvMoves, ArrayList<Move> bookMoves);
 
     /** Ask what to promote a pawn to. Should call reportPromotePiece() when done. */
     public void requestPromotePiece();

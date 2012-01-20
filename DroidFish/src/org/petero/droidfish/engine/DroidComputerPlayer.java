@@ -23,6 +23,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.petero.droidfish.EGTBOptions;
 import org.petero.droidfish.book.BookOptions;
 import org.petero.droidfish.book.DroidBook;
 import org.petero.droidfish.gamelogic.Move;
@@ -33,6 +34,8 @@ import org.petero.droidfish.gamelogic.SearchListener;
 import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gamelogic.UndoInfo;
 import org.petero.droidfish.gamelogic.SearchListener.PvInfo;
+import org.petero.droidfish.gtb.Probe;
+import org.petero.droidfish.gtb.Probe.ProbeResult;
 
 import android.content.Context;
 
@@ -45,6 +48,8 @@ public class DroidComputerPlayer {
     private final Context context;
     private final SearchListener listener;
     private final DroidBook book;
+    private EGTBOptions egtbOptions;
+    private final Probe gtbProbe;
 
     /** Set when "ucinewgame" needs to be sent. */
     private boolean newGame = false;
@@ -118,6 +123,7 @@ public class DroidComputerPlayer {
 
         long[] posHashList;     // For draw decision after completed search
         int posHashListSize;    // For draw decision after completed search
+        ArrayList<Move> searchMoves; // Moves to search, or null to search all moves
 
         /**
          * Create a request to start an engine.
@@ -238,6 +244,8 @@ public class DroidComputerPlayer {
         this.context = context;
         this.listener = listener;
         book = DroidBook.getInstance();
+        egtbOptions = new EGTBOptions();
+        gtbProbe = Probe.getInstance();
         engineState = new EngineState();
         searchRequest = null;
     }
@@ -264,10 +272,19 @@ public class DroidComputerPlayer {
     public final void setBookOptions(BookOptions options) {
         book.setOptions(options);
     }
+    
+    public final void setEgtbOptions(EGTBOptions options) {
+        egtbOptions = options;
+        gtbProbe.setPath(options.gtbPath);
+    }
 
     /** Return all book moves, both as a formatted string and as a list of moves. */
     public final Pair<String, ArrayList<Move>> getBookHints(Position pos) {
         return book.getAllBookMoves(pos);
+    }
+
+    public final ProbeResult egtbProbe(Position pos) {
+        return gtbProbe.probeHard(pos);
     }
 
     /** Get engine reported name. */
@@ -319,6 +336,22 @@ public class DroidComputerPlayer {
         handleQueue();
     }
 
+    /** Decide what moves to search. Filters out non-optimal moves if tablebases are used. */
+    private final ArrayList<Move> movesToSearch(SearchRequest sr) {
+        ArrayList<Move> moves = null;
+        if (egtbOptions.rootProbe) {
+            moves = gtbProbe.findOptimal(sr.currPos);
+        }
+        if (moves != null) {
+            sr.searchMoves = moves;
+        } else {
+            moves = new MoveGen().pseudoLegalMoves(sr.currPos);
+            moves = MoveGen.removeIllegal(sr.currPos, moves);
+            sr.searchMoves = null;
+        }
+        return moves;
+    }
+
     /**
      * Start a search. Search result is returned to the search listener object.
      * The result can be a valid move string, in which case the move is played
@@ -352,9 +385,8 @@ public class DroidComputerPlayer {
                 }
             }
 
-            // If only one legal move, play it without searching
-            ArrayList<Move> moves = new MoveGen().pseudoLegalMoves(sr.currPos);
-            moves = MoveGen.removeIllegal(sr.currPos, moves);
+            // If only one move to search, play it without searching
+            ArrayList<Move> moves = movesToSearch(sr);
             if (moves.size() == 0) {
                 listener.notifySearchResult(sr.searchId, "", null); // User set up a position where computer has no valid moves.
                 return;
@@ -381,8 +413,7 @@ public class DroidComputerPlayer {
         stopSearch();
 
         // If no legal moves, there is nothing to analyze
-        ArrayList<Move> moves = new MoveGen().pseudoLegalMoves(sr.currPos);
-        moves = MoveGen.removeIllegal(sr.currPos, moves);
+        ArrayList<Move> moves = movesToSearch(sr);
         if (moves.size() == 0)
             return;
 
@@ -485,7 +516,7 @@ public class DroidComputerPlayer {
 
         engineState.searchId = searchRequest.searchId;
 
-        // Reduce remaining time there was an engine delay
+        // Reduce remaining time if there was an engine delay
         if (isSearch) {
             long now = System.currentTimeMillis();
             int delay = (int)(now - searchRequest.startTime);
@@ -530,6 +561,13 @@ public class DroidComputerPlayer {
                 goStr.append(String.format(" movestogo %d", sr.movesToGo));
             if (sr.ponderMove != null)
                 goStr.append(" ponder");
+            if (sr.searchMoves != null) {
+                goStr.append(" searchmoves");
+                for (Move m : sr.searchMoves) {
+                    goStr.append(' ');
+                    goStr.append(TextIO.moveToUCIString(m));
+                }
+            }
             uciEngine.writeLineToEngine(goStr.toString());
             engineState.setState((sr.ponderMove == null) ? MainState.SEARCH : MainState.PONDER);
         } else { // Analyze
@@ -547,7 +585,16 @@ public class DroidComputerPlayer {
             uciEngine.writeLineToEngine(posStr.toString());
             uciEngine.setOption("UCI_AnalyseMode", true);
             uciEngine.setOption("Threads", sr.engineThreads > 0 ? sr.engineThreads : numCPUs);
-            uciEngine.writeLineToEngine("go infinite");
+            StringBuilder goStr = new StringBuilder(96);
+            goStr.append("go infinite");
+            if (sr.searchMoves != null) {
+                goStr.append(" searchmoves");
+                for (Move m : sr.searchMoves) {
+                    goStr.append(' ');
+                    goStr.append(TextIO.moveToUCIString(m));
+                }
+            }
+            uciEngine.writeLineToEngine(goStr.toString());
             engineState.setState(MainState.ANALYZE);
         }
     }
@@ -624,7 +671,7 @@ public class DroidComputerPlayer {
         switch (engineState.state) {
         case READ_OPTIONS: {
             if (readUCIOption(uci, s)) {
-                uci.initOptions();
+                uci.initOptions(egtbOptions);
                 uci.writeLineToEngine("ucinewgame");
                 uci.writeLineToEngine("isready");
                 engineState.setState(MainState.WAIT_READY);

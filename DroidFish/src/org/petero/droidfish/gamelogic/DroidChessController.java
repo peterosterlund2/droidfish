@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.petero.droidfish.EGTBOptions;
 import org.petero.droidfish.GUIInterface;
 import org.petero.droidfish.GameMode;
 import org.petero.droidfish.PGNOptions;
@@ -40,6 +41,7 @@ public class DroidChessController {
     private DroidComputerPlayer computerPlayer = null;
     private PgnToken.PgnTokenReceiver gameTextListener = null;
     private BookOptions bookOptions = new BookOptions();
+    private EGTBOptions egtbOptions = new EGTBOptions();
     private Game game = null;
     private Move ponderMove = null;
     private GUIInterface gui;
@@ -81,6 +83,7 @@ public class DroidChessController {
         if (computerPlayer == null) {
             computerPlayer = new DroidComputerPlayer(gui.getContext(), listener);
             computerPlayer.setBookOptions(bookOptions);
+            computerPlayer.setEgtbOptions(egtbOptions);
         }
         computerPlayer.queueStartEngine(searchId, engine);
         searchId++;
@@ -136,6 +139,14 @@ public class DroidChessController {
                 computerPlayer.setBookOptions(bookOptions);
                 updateBookHints();
             }
+        }
+    }
+
+    public final synchronized void setEgtbOptions(EGTBOptions options) {
+        if (!egtbOptions.equals(options)) {
+            egtbOptions = options;
+            if (computerPlayer != null)
+                computerPlayer.setEgtbOptions(egtbOptions);
         }
     }
 
@@ -560,7 +571,7 @@ public class DroidChessController {
 
         private boolean whiteMove = true;
         private String bookInfo = "";
-        private List<Move> bookMoves = null;
+        private ArrayList<Move> bookMoves = null;
 
         private Move ponderMove = null;
         private ArrayList<PvInfo> pvInfoV = new ArrayList<PvInfo>();
@@ -676,7 +687,7 @@ public class DroidChessController {
         }
 
         @Override
-        public void notifyBookInfo(int id, String bookInfo, List<Move> moveList) {
+        public void notifyBookInfo(int id, String bookInfo, ArrayList<Move> moveList) {
             this.bookInfo = bookInfo;
             bookMoves = moveList;
             setSearchInfo(id);
@@ -944,7 +955,7 @@ public class DroidChessController {
     }
 
     private final synchronized void setThinkingInfo(int id, ArrayList<ArrayList<Move>> pvMoves, String pvStr,
-                                                    String statStr, String bookInfo, List<Move> bookMoves) {
+                                                    String statStr, String bookInfo, ArrayList<Move> bookMoves) {
         if (id == searchId)
             gui.setThinkingInfo(pvStr, statStr, bookInfo, pvMoves, bookMoves);
     }

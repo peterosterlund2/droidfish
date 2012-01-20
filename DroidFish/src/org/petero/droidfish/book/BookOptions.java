@@ -19,7 +19,7 @@
 package org.petero.droidfish.book;
 
 /** Settings controlling opening book usage */
-public class BookOptions {
+public final class BookOptions {
     public String filename = "";
 
     public int maxLength = 1000000;

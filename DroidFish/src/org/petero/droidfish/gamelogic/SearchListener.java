@@ -19,7 +19,6 @@
 package org.petero.droidfish.gamelogic;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -83,7 +82,7 @@ public interface SearchListener {
     public void notifyStats(int id, int nodes, int nps, int time);
 
     /** Report opening book information. */
-    public void notifyBookInfo(int id, String bookInfo, List<Move> moveList);
+    public void notifyBookInfo(int id, String bookInfo, ArrayList<Move> moveList);
 
     /** Report move (or command, such as "resign") played by the engine. */
     public void notifySearchResult(int id, String cmd, Move ponder);

@@ -25,6 +25,7 @@ import chess.Position;
 import chess.TextIO;
 import java.util.ArrayList;
 
+import org.petero.droidfish.EGTBOptions;
 import org.petero.droidfish.engine.LocalPipe;
 import org.petero.droidfish.engine.UCIEngineBase;
 
@@ -73,8 +74,8 @@ public class CuckooChessEngine extends UCIEngineBase {
 
     /** @inheritDoc */
     @Override
-    public final void initOptions() {
-        super.initOptions();
+    public final void initOptions(EGTBOptions egtbOptions) {
+        super.initOptions(egtbOptions);
     }
 
     /** @inheritDoc */

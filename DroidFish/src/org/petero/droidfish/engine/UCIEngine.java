@@ -18,6 +18,8 @@
 
 package org.petero.droidfish.engine;
 
+import org.petero.droidfish.EGTBOptions;
+
 public interface UCIEngine {
 
     /** For reporting engine error messages. */
@@ -30,7 +32,7 @@ public interface UCIEngine {
     public void initialize();
 
     /** Initialize default options. */
-    public void initOptions();
+    public void initOptions(EGTBOptions egtbOptions);
 
     /** Shut down engine. */
     public void shutDown();

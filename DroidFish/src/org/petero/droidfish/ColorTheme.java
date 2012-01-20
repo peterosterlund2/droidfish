@@ -46,13 +46,14 @@ public class ColorTheme {
     final static int ARROW_4 = 11;
     final static int ARROW_5 = 12;
     final static int SQUARE_LABEL = 13;
-    private final static int numColors = 14;
+    final static int DECORATION = 14;
+    private final static int numColors = 15;
 
     private int colorTable[] = new int[numColors];
 
     private static final String[] prefNames = {
         "darkSquare", "brightSquare", "selectedSquare", "cursorSquare", "darkPiece", "brightPiece", "currentMove",
-        "arrow0", "arrow1", "arrow2", "arrow3", "arrow4", "arrow5", "squareLabel"
+        "arrow0", "arrow1", "arrow2", "arrow3", "arrow4", "arrow5", "squareLabel", "decoration"
     };
     private static final String prefPrefix = "color_";
 
@@ -61,19 +62,23 @@ public class ColorTheme {
     private final static String themeColors[][] = {
     {
         "#FF808080", "#FFBEBE5A", "#FFFF0000", "#FF00FF00", "#FF000000", "#FFFFFFFF", "#FF888888",
-        "#A01F1FFF", "#A0FF1F1F", "#501F1FFF", "#50FF1F1F", "#1E1F1FFF", "#28FF1F1F", "#FFFF0000"
+        "#A01F1FFF", "#A0FF1F1F", "#501F1FFF", "#50FF1F1F", "#1E1F1FFF", "#28FF1F1F", "#FFFF0000",
+        "#FF9F9F66"
     },
     {
         "#FF77A26D", "#FFC8C365", "#FFFFFF00", "#FF00FF00", "#FF202020", "#FFFFFFCC", "#FF6B9262",
-        "#A01F1FFF", "#A0FF1F1F", "#501F1FFF", "#50FF1F1F", "#1E1F1FFF", "#28FF1F1F", "#FFFF0000"
+        "#A01F1FFF", "#A0FF1F1F", "#501F1FFF", "#50FF1F1F", "#1E1F1FFF", "#28FF1F1F", "#FFFF0000",
+        "#FF808080"
     },
     {
         "#FF83A5D2", "#FFFFFFFA", "#FF3232D1", "#FF5F5FFD", "#FF282828", "#FFF0F0F0", "#FF3333FF",
-        "#A01F1FFF", "#A01FFF1F", "#501F1FFF", "#501FFF1F", "#1E1F1FFF", "#281FFF1F", "#FFFF0000"
+        "#A01F1FFF", "#A01FFF1F", "#501F1FFF", "#501FFF1F", "#1E1F1FFF", "#281FFF1F", "#FFFF0000",
+        "#FF808080"
     },
     {
         "#FF666666", "#FFDDDDDD", "#FFFF0000", "#FF0000FF", "#FF000000", "#FFFFFFFF", "#FF888888",
-        "#A01F1FFF", "#A0FF1F1F", "#501F1FFF", "#50FF1F1F", "#1E1F1FFF", "#28FF1F1F", "#FFFF0000"
+        "#A01F1FFF", "#A0FF1F1F", "#501F1FFF", "#50FF1F1F", "#1E1F1FFF", "#28FF1F1F", "#FFFF0000",
+        "#FF909090"
     }
     };
 

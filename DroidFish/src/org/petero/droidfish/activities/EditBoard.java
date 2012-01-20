@@ -18,21 +18,28 @@
 
 package org.petero.droidfish.activities;
 
+import java.util.ArrayList;
+
 import org.petero.droidfish.ChessBoard;
 import org.petero.droidfish.R;
+import org.petero.droidfish.ChessBoard.SquareDecoration;
 import org.petero.droidfish.gamelogic.ChessParseError;
 import org.petero.droidfish.gamelogic.Move;
+import org.petero.droidfish.gamelogic.Pair;
 import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
+import org.petero.droidfish.gtb.Probe;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -53,11 +60,16 @@ public class EditBoard extends Activity {
     private Button okButton;
     private Button cancelButton;
 
+    boolean egtbHints;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         initUI();
+
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        egtbHints = settings.getBoolean("tbHintsEdit", false);
 
         Intent i = getIntent();
         Position pos;
@@ -78,7 +90,7 @@ public class EditBoard extends Activity {
         cb.cursorY = oldCB.cursorY;
         cb.cursorVisible = oldCB.cursorVisible;
         cb.setPosition(oldCB.pos);
-        cb.setSelection(oldCB.selectedSquare);
+        setSelection(oldCB.selectedSquare);
         status.setText(statusStr);
     }
 
@@ -128,6 +140,7 @@ public class EditBoard extends Activity {
                 Move m = cb.mousePressed(sq);
                 if (m != null)
                     doMove(m);
+                setEgtbHints(cb.getSelectedSquare());
             }
         });
         cb.setOnTouchListener(new OnTouchListener() {
@@ -138,9 +151,9 @@ public class EditBoard extends Activity {
         cb.setOnTrackballListener(new ChessBoard.OnTrackballListener() {
             public void onTrackballEvent(MotionEvent event) {
                 Move m = cb.handleTrackballEvent(event);
-                if (m != null) {
+                if (m != null)
                     doMove(m);
-                }
+                setEgtbHints(cb.getSelectedSquare());
             }
         });
         cb.setOnLongClickListener(new OnLongClickListener() {
@@ -152,10 +165,34 @@ public class EditBoard extends Activity {
         });
     }
 
+    private final void setSelection(int sq) {
+        cb.setSelection(sq);
+        setEgtbHints(sq);
+    }
+
+    private final void setEgtbHints(int sq) {
+        if (!egtbHints || (sq < 0)) {
+            cb.setSquareDecorations(null);
+            return;
+        }
+
+        Probe gtbProbe = Probe.getInstance();
+        ArrayList<Pair<Integer, Integer>> x = gtbProbe.relocatePieceProbe(cb.pos, sq);
+        if (x == null) {
+            cb.setSquareDecorations(null);
+            return;
+        }
+
+        ArrayList<SquareDecoration> sd = new ArrayList<SquareDecoration>();
+        for (Pair<Integer,Integer> p : x)
+            sd.add(new SquareDecoration(p.first, p.second));
+        cb.setSquareDecorations(sd);
+    }
+
     private void doMove(Move m) {
         if (m.to < 0) {
             if ((m.from < 0) || (cb.pos.getPiece(m.from) == Piece.EMPTY)) {
-                cb.setSelection(m.to);
+                setSelection(m.to);
                 return;
             }
         }
@@ -172,9 +209,9 @@ public class EditBoard extends Activity {
             pos.setPiece(m.from, Piece.EMPTY);
         cb.setPosition(pos);
         if (m.from >= 0)
-            cb.setSelection(-1);
+            setSelection(-1);
         else
-            cb.setSelection(m.from);
+            setSelection(m.from);
         checkValid();
     }
 
@@ -263,13 +300,13 @@ public class EditBoard extends Activity {
                     switch (item) {
                     case 0: // Edit side to move
                         showDialog(SIDE_DIALOG);
-                        cb.setSelection(-1);
+                        setSelection(-1);
                         checkValid();
                         break;
                     case 1: { // Clear board
                         Position pos = new Position();
                         cb.setPosition(pos);
-                        cb.setSelection(-1);
+                        setSelection(-1);
                         checkValid();
                         break;
                     }
@@ -277,7 +314,7 @@ public class EditBoard extends Activity {
                         try {
                             Position pos = TextIO.readFEN(TextIO.startPosFEN);
                             cb.setPosition(pos);
-                            cb.setSelection(-1);
+                            setSelection(-1);
                             checkValid();
                         } catch (ChessParseError e) {
                         }
@@ -286,19 +323,19 @@ public class EditBoard extends Activity {
                     case 3: // Edit castling flags
                         removeDialog(CASTLE_DIALOG);
                         showDialog(CASTLE_DIALOG);
-                        cb.setSelection(-1);
+                        setSelection(-1);
                         checkValid();
                         break;
                     case 4: // Edit en passant file
                         removeDialog(EP_DIALOG);
                         showDialog(EP_DIALOG);
-                        cb.setSelection(-1);
+                        setSelection(-1);
                         checkValid();
                         break;
                     case 5: // Edit move counters
                         removeDialog(MOVCNT_DIALOG);
                         showDialog(MOVCNT_DIALOG);
-                        cb.setSelection(-1);
+                        setSelection(-1);
                         checkValid();
                         break;
                     case 6: { // Copy position
@@ -306,7 +343,7 @@ public class EditBoard extends Activity {
                         String fen = TextIO.toFEN(cb.pos) + "\n";
                         ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
                         clipboard.setText(fen);
-                        cb.setSelection(-1);
+                        setSelection(-1);
                         break;
                     }
                     case 7: { // Paste position
@@ -321,7 +358,7 @@ public class EditBoard extends Activity {
                                     cb.setPosition(e.pos);
                                 Toast.makeText(getApplicationContext(), getParseErrString(e), Toast.LENGTH_SHORT).show();
                             }
-                            cb.setSelection(-1);
+                            setSelection(-1);
                             checkValid();
                         }
                         break;

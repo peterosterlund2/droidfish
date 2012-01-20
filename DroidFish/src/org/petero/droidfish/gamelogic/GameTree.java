@@ -674,10 +674,10 @@ public class GameTree {
     }
 
     /** List of possible continuation moves. */
-    public final List<Move> variations() {
+    public final ArrayList<Move> variations() {
         if (currentNode.verifyChildren(currentPos))
             updateListener();
-        List<Move> ret = new ArrayList<Move>();
+        ArrayList<Move> ret = new ArrayList<Move>();
         for (Node child : currentNode.children)
             ret.add(child.move);
         return ret;

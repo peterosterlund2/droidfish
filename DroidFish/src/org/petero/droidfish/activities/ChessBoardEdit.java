@@ -58,7 +58,7 @@ public class ChessBoardEdit extends ChessBoard {
         y0 = (height - (sqSize * 10 + gap)) / 2;
     }
 
-    int extraPieces(int x, int y) {
+    private final int extraPieces(int x, int y) {
         if (y == -1) { // White pieces
             switch (x) {
             case 0: return Piece.WKING;

@@ -53,6 +53,17 @@ public class ChessBoard extends View {
 
     List<Move> moveHints;
 
+    /** Decoration for a square. Currently the only possible decoration is a number. */
+    public final static class SquareDecoration {
+        int sq;
+        int number;
+        public SquareDecoration(int sq, int number) {
+            this.sq = sq;
+            this.number = number;
+        }
+    }
+    private ArrayList<SquareDecoration> decorations;
+
     protected Paint darkPaint;
     protected Paint brightPaint;
     private Paint selectedSquarePaint;
@@ -60,6 +71,7 @@ public class ChessBoard extends View {
     private Paint whitePiecePaint;
     private Paint blackPiecePaint;
     private Paint labelPaint;
+    private Paint decorationPaint;
     private ArrayList<Paint> moveMarkPaint;
 
     public ChessBoard(Context context, AttributeSet attrs) {
@@ -93,6 +105,9 @@ public class ChessBoard extends View {
 
         labelPaint = new Paint();
         labelPaint.setAntiAlias(true);
+        
+        decorationPaint = new Paint();
+        decorationPaint.setAntiAlias(true);
 
         moveMarkPaint = new ArrayList<Paint>();
         for (int i = 0; i < 6; i++) {
@@ -122,6 +137,7 @@ public class ChessBoard extends View {
         whitePiecePaint.setColor(ct.getColor(ColorTheme.BRIGHT_PIECE));
         blackPiecePaint.setColor(ct.getColor(ColorTheme.DARK_PIECE));
         labelPaint.setColor(ct.getColor(ColorTheme.SQUARE_LABEL));
+        decorationPaint.setColor(ct.getColor(ColorTheme.DECORATION));
         for (int i = 0; i < 6; i++)
             moveMarkPaint.get(i).setColor(ct.getColor(ColorTheme.ARROW_0 + i));
 
@@ -130,7 +146,7 @@ public class ChessBoard extends View {
 
     private Handler handlerTimer = new Handler();
 
-    final class AnimInfo {
+    private final class AnimInfo {
         AnimInfo() { startTime = -1; }
         boolean paused;
         long posHash;   // Position the animation is valid for
@@ -183,7 +199,7 @@ public class ChessBoard extends View {
             drawPiece(canvas, xCrd, yCrd, piece);
         }
     }
-    AnimInfo anim = new AnimInfo();
+    private AnimInfo anim = new AnimInfo();
 
     /**
      * Set up move animation. The animation will start the next time setPosition is called.
@@ -191,7 +207,7 @@ public class ChessBoard extends View {
      * @param move      The move leading to the target position.
      * @param forward   True if forward direction, false for undo move.
      */
-    public void setAnimMove(Position sourcePos, Move move, boolean forward) {
+    public final void setAnimMove(Position sourcePos, Move move, boolean forward) {
         anim.startTime = -1;
         anim.paused = true; // Animation starts at next position update
         if (forward) {
@@ -366,6 +382,7 @@ public class ChessBoard extends View {
         blackPiecePaint.setTextSize(sqSize);
         whitePiecePaint.setTextSize(sqSize);
         labelPaint.setTextSize(sqSize/4.0f);
+        decorationPaint.setTextSize(sqSize/3.0f);
         computeOrigin(width, height);
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
@@ -406,8 +423,10 @@ public class ChessBoard extends View {
             cursorSquarePaint.setStrokeWidth(sqSize/(float)16);
             canvas.drawRect(x0, y0, x0 + sqSize, y0 + sqSize, cursorSquarePaint);
         }
-        if (!animActive)
+        if (!animActive) {
             drawMoveHints(canvas);
+            drawDecorations(canvas);
+        }
 
         anim.draw(canvas);
 //      long t1 = System.currentTimeMillis();
@@ -511,8 +530,7 @@ public class ChessBoard extends View {
 
     private final void drawLabel(Canvas canvas, int xCrd, int yCrd, boolean right,
                                  boolean bottom, char c) {
-        String s = "";
-        s += c;
+        String s = Character.toString(c);
         if (labelBounds == null) {
             labelBounds = new Rect();
             labelPaint.getTextBounds("f", 0, 1, labelBounds);
@@ -556,7 +574,7 @@ public class ChessBoard extends View {
         return sq;
     }
 
-    final private boolean myColor(int piece) {
+    private final boolean myColor(int piece) {
         return (piece != Piece.EMPTY) && (Piece.isWhite(piece) == pos.whiteMove);
     }
 
@@ -666,5 +684,49 @@ public class ChessBoard extends View {
             this.moveHints = moveHints;
             invalidate();
         }
+    }
+
+    public final void setSquareDecorations(ArrayList<SquareDecoration> decorations) {
+        boolean equal = false;
+        if ((this.decorations == null) || (decorations == null)) {
+            equal = this.decorations == decorations;
+        } else {
+            equal = this.decorations.equals(decorations);
+        }
+        if (!equal) {
+            this.decorations = decorations;
+            invalidate();
+        }
+    }
+
+    private final void drawDecorations(Canvas canvas) {
+        if (decorations == null)
+            return;
+        for (SquareDecoration sd : decorations) {
+            int sq = sd.sq;
+            if ((sd.sq < 0) || (sd.sq >= 64))
+                continue;
+            int xCrd = getXCrd(Position.getX(sq));
+            int yCrd = getYCrd(Position.getY(sq));
+
+            int num = sd.number;
+            String s;
+            if (num > 0)
+                s = "+" + String.valueOf(num);
+            else if (num < 0)
+                s = String.valueOf(num);
+            else
+                s = "0";
+
+            Rect bounds = new Rect();
+            decorationPaint.getTextBounds(s, 0, s.length(), bounds);
+            xCrd += (sqSize - (bounds.left + bounds.right)) / 2;
+            yCrd += (sqSize - (bounds.top + bounds.bottom)) / 2;
+            canvas.drawText(s, xCrd, yCrd, decorationPaint);
+        }
+    }
+
+    public final int getSelectedSquare() {
+        return selectedSquare;
     }
 }

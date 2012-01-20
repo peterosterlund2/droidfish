@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
+import org.petero.droidfish.ChessBoard.SquareDecoration;
 import org.petero.droidfish.activities.CPUWarning;
 import org.petero.droidfish.activities.EditBoard;
 import org.petero.droidfish.activities.EditPGNLoad;
@@ -39,10 +40,12 @@ import org.petero.droidfish.engine.EngineUtil;
 import org.petero.droidfish.gamelogic.DroidChessController;
 import org.petero.droidfish.gamelogic.ChessParseError;
 import org.petero.droidfish.gamelogic.Move;
+import org.petero.droidfish.gamelogic.Pair;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gamelogic.PgnToken;
 import org.petero.droidfish.gamelogic.GameTree.Node;
+import org.petero.droidfish.gtb.Probe;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -163,8 +166,10 @@ public class DroidFish extends Activity implements GUIInterface {
     private final static String bookDir = "DroidFish";
     private final static String pgnDir = "DroidFish" + File.separator + "pgn";
     private final static String engineDir = "DroidFish" + File.separator + "uci";
+    private final static String gtbDefaultDir = "DroidFish" + File.separator + "gtb";
     private BookOptions bookOptions = new BookOptions();
     private PGNOptions pgnOptions = new PGNOptions();
+    private EGTBOptions egtbOptions = new EGTBOptions();
 
     private long lastVisibleMillis; // Time when GUI became invisible. 0 if currently visible.
     private long lastComputationMillis; // Time when engine last showed that it was computing.
@@ -235,6 +240,7 @@ public class DroidFish extends Activity implements GUIInterface {
         new File(extDir + sep + bookDir).mkdirs();
         new File(extDir + sep + pgnDir).mkdirs();
         new File(extDir + sep + engineDir).mkdirs();
+        new File(extDir + sep + gtbDefaultDir).mkdirs();
     }
 
     private String getPgnIntent() {
@@ -404,6 +410,7 @@ public class DroidFish extends Activity implements GUIInterface {
                     Move m = cb.mousePressed(sq);
                     if (m != null)
                         ctrl.makeHumanMove(m);
+                    setEgtbHints(cb.getSelectedSquare());
                 }
             }
         });
@@ -416,9 +423,9 @@ public class DroidFish extends Activity implements GUIInterface {
             public void onTrackballEvent(MotionEvent event) {
                 if (ctrl.humansTurn()) {
                     Move m = cb.handleTrackballEvent(event);
-                    if (m != null) {
+                    if (m != null)
                         ctrl.makeHumanMove(m);
-                    }
+                    setEgtbHints(cb.getSelectedSquare());
                 }
             }
         });
@@ -609,6 +616,20 @@ public class DroidFish extends Activity implements GUIInterface {
         bookOptions.random = (settings.getInt("bookRandom", 500) - 500) * (3.0 / 500);
         setBookOptions();
 
+        egtbOptions.hints = settings.getBoolean("tbHints", false);
+        egtbOptions.hintsEdit = settings.getBoolean("tbHintsEdit", false);
+        egtbOptions.rootProbe = settings.getBoolean("tbRootProbe", false);
+        egtbOptions.engineProbe = settings.getBoolean("tbEngineProbe", true);
+        String gtbPath = settings.getString("gtbPath", "");
+        if (gtbPath.length() == 0) {
+            File extDir = Environment.getExternalStorageDirectory();
+            String sep = File.separator;
+            gtbPath = extDir.getAbsolutePath() + sep + gtbDefaultDir;
+        }
+        egtbOptions.gtbPath = gtbPath;
+        setEgtbOptions();
+        setEgtbHints(cb.getSelectedSquare());
+
         updateThinkingInfo();
 
         pgnOptions.view.variations  = settings.getBoolean("viewVariations",     true);
@@ -677,6 +698,29 @@ public class DroidFish extends Activity implements GUIInterface {
             options.filename = extDir.getAbsolutePath() + sep + bookDir + sep + options.filename;
         }
         ctrl.setBookOptions(options);
+    }
+
+    private final void setEgtbOptions() {
+        ctrl.setEgtbOptions(new EGTBOptions(egtbOptions));
+    }
+
+    private final void setEgtbHints(int sq) {
+        if (!egtbOptions.hints || (sq < 0)) {
+            cb.setSquareDecorations(null);
+            return;
+        }
+
+        Probe gtbProbe = Probe.getInstance();
+        ArrayList<Pair<Integer, Integer>> x = gtbProbe.movePieceProbe(cb.pos, sq);
+        if (x == null) {
+            cb.setSquareDecorations(null);
+            return;
+        }
+
+        ArrayList<SquareDecoration> sd = new ArrayList<SquareDecoration>();
+        for (Pair<Integer,Integer> p : x)
+            sd.add(new SquareDecoration(p.first, p.second));
+        cb.setSquareDecorations(sd);
     }
 
     @Override
@@ -841,6 +885,7 @@ public class DroidFish extends Activity implements GUIInterface {
     @Override
     public void setSelection(int sq) {
         cb.setSelection(sq);
+        setEgtbHints(sq);
     }
 
     @Override
@@ -940,12 +985,13 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     @Override
-    public void setPosition(Position pos, String variantInfo, List<Move> variantMoves) {
+    public void setPosition(Position pos, String variantInfo, ArrayList<Move> variantMoves) {
         variantStr = variantInfo;
         this.variantMoves = variantMoves;
         cb.setPosition(pos);
         setBoardFlip();
         updateThinkingInfo();
+        setEgtbHints(cb.getSelectedSquare());
     }
 
     private String thinkingStr1 = "";
@@ -953,12 +999,12 @@ public class DroidFish extends Activity implements GUIInterface {
     private String bookInfoStr = "";
     private String variantStr = "";
     private ArrayList<ArrayList<Move>> pvMoves = new ArrayList<ArrayList<Move>>();
-    private List<Move> bookMoves = null;
-    private List<Move> variantMoves = null;
+    private ArrayList<Move> bookMoves = null;
+    private ArrayList<Move> variantMoves = null;
 
     @Override
     public void setThinkingInfo(String pvStr, String statStr, String bookInfo,
-                                ArrayList<ArrayList<Move>> pvMoves, List<Move> bookMoves) {
+                                ArrayList<ArrayList<Move>> pvMoves, ArrayList<Move> bookMoves) {
         thinkingStr1 = pvStr;
         thinkingStr2 = statStr;
         bookInfoStr = bookInfo;

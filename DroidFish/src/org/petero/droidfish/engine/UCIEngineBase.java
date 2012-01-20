@@ -21,6 +21,7 @@ package org.petero.droidfish.engine;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import org.petero.droidfish.EGTBOptions;
 import org.petero.droidfish.engine.cuckoochess.CuckooChessEngine;
 
 import android.content.Context;
@@ -61,7 +62,7 @@ public abstract class UCIEngineBase implements UCIEngine {
     }
 
     @Override
-    public void initOptions() {
+    public void initOptions(EGTBOptions egtbOptions) {
         isUCI = true;
     }
 
