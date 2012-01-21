@@ -560,13 +560,13 @@ you are not actively using the program.\
     <string name="prefs_exportTime_summary">Include time information for each move</string>
     <string name="prefs_egtbSettings_title">Endgame Tablebases</string>
     <string name="prefs_tbHints_title">Show Hints</string>
-    <string name="prefs_tbHints_summary">When touching a piece, show EGTB value for all possible moves by that piece</string>
+    <string name="prefs_tbHints_summary">When touching a piece, show tablebase value for all possible moves by that piece</string>
     <string name="prefs_tbHintsEdit_title">Edit Board Hints</string>
-    <string name="prefs_tbHintsEdit_summary">When touching a piece, show EGTB value for all possible alternate positions of that piece</string>
+    <string name="prefs_tbHintsEdit_summary">When touching a piece in edit board mode, show tablebase value for all possible alternate positions of that piece</string>
     <string name="prefs_tbRootProbe_title">Probe at Root</string>
     <string name="prefs_tbRootProbe_summary">Filter out non-optimal moves before starting search</string>
     <string name="prefs_tbEngineProbe_title">Engine Probing</string>
-    <string name="prefs_tbEngineProbe_summary">Enable EGTB probing in engine, when supported. Takes effect next time engine is started</string>
+    <string name="prefs_tbEngineProbe_summary">Enable tablebase probing in engine, when supported. Takes effect next time engine is started</string>
     <string name="prefs_gtbPath_title">GTB Directory</string>
     <string name="prefs_gtbPath_summary">Directory where Gaviota tablebases are installed. Leave blank to use default directory</string>
 </resources>
