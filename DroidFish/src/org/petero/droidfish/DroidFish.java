@@ -507,9 +507,9 @@ public class DroidFish extends Activity implements GUIInterface {
     @Override
     protected void onResume() {
         lastVisibleMillis = 0;
-        if (ctrl != null) {
+        if (ctrl != null)
             ctrl.setGuiPaused(false);
-        }
+        notificationActive = true;
         updateNotification();
         setWakeLock(useWakeLock);
         super.onResume();
