@@ -513,6 +513,8 @@ public class DroidFish extends Activity implements GUIInterface {
         notificationActive = true;
         updateNotification();
         setWakeLock(useWakeLock);
+        egtbForceReload = true;
+        setEgtbOptions();
         super.onResume();
     }
 
