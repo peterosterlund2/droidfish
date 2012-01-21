@@ -208,6 +208,7 @@ public class DroidFish extends Activity implements GUIInterface {
         if (ctrl != null)
             ctrl.shutdownEngine();
         ctrl = new DroidChessController(this, gameTextListener, pgnOptions);
+        egtbForceReload = true;
         readPrefs();
         ctrl.newGame(gameMode);
         {
@@ -700,8 +701,12 @@ public class DroidFish extends Activity implements GUIInterface {
         ctrl.setBookOptions(options);
     }
 
+    private boolean egtbForceReload = false;
+
     private final void setEgtbOptions() {
         ctrl.setEgtbOptions(new EGTBOptions(egtbOptions));
+        Probe.getInstance().setPath(egtbOptions.gtbPath, egtbForceReload);
+        egtbForceReload = false;
     }
 
     private final void setEgtbHints(int sq) {

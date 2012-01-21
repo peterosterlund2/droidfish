@@ -35,7 +35,6 @@ import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gamelogic.UndoInfo;
 import org.petero.droidfish.gamelogic.SearchListener.PvInfo;
 import org.petero.droidfish.gtb.Probe;
-import org.petero.droidfish.gtb.Probe.ProbeResult;
 
 import android.content.Context;
 
@@ -49,7 +48,6 @@ public class DroidComputerPlayer {
     private final SearchListener listener;
     private final DroidBook book;
     private EGTBOptions egtbOptions;
-    private final Probe gtbProbe;
 
     /** Set when "ucinewgame" needs to be sent. */
     private boolean newGame = false;
@@ -245,7 +243,6 @@ public class DroidComputerPlayer {
         this.listener = listener;
         book = DroidBook.getInstance();
         egtbOptions = new EGTBOptions();
-        gtbProbe = Probe.getInstance();
         engineState = new EngineState();
         searchRequest = null;
     }
@@ -272,19 +269,14 @@ public class DroidComputerPlayer {
     public final void setBookOptions(BookOptions options) {
         book.setOptions(options);
     }
-    
+
     public final void setEgtbOptions(EGTBOptions options) {
         egtbOptions = options;
-        gtbProbe.setPath(options.gtbPath);
     }
 
     /** Return all book moves, both as a formatted string and as a list of moves. */
     public final Pair<String, ArrayList<Move>> getBookHints(Position pos) {
         return book.getAllBookMoves(pos);
-    }
-
-    public final ProbeResult egtbProbe(Position pos) {
-        return gtbProbe.probeHard(pos);
     }
 
     /** Get engine reported name. */
@@ -339,9 +331,8 @@ public class DroidComputerPlayer {
     /** Decide what moves to search. Filters out non-optimal moves if tablebases are used. */
     private final ArrayList<Move> movesToSearch(SearchRequest sr) {
         ArrayList<Move> moves = null;
-        if (egtbOptions.rootProbe) {
-            moves = gtbProbe.findOptimal(sr.currPos);
-        }
+        if (egtbOptions.rootProbe)
+            moves = Probe.getInstance().findOptimal(sr.currPos);
         if (moves != null) {
             sr.searchMoves = moves;
         } else {

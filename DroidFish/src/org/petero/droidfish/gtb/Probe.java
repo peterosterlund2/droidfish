@@ -50,9 +50,9 @@ public class Probe {
         whitePieces = new byte[65];
         blackPieces = new byte[65];
     }
-    
-    public void setPath(String tbPath) {
-        gtb.setPath(tbPath);
+
+    public void setPath(String tbPath, boolean forceReload) {
+        gtb.setPath(tbPath, forceReload);
     }
 
     public static final class ProbeResult {

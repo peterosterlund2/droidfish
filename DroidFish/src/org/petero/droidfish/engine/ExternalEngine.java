@@ -101,7 +101,7 @@ public class ExternalEngine extends UCIEngineBase {
                 }
             });
             exitThread.start();
-            
+
             // Start a thread to read stdin
             stdInThread = new Thread(new Runnable() {
                 @Override

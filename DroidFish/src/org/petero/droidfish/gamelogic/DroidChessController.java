@@ -719,7 +719,7 @@ public class DroidChessController {
                 }
             });
         }
-        
+
         @Override
         public void reportEngineError(final String errMsg) {
             gui.runOnUIThread(new Runnable() {

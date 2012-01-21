@@ -29,8 +29,8 @@ class GtbProbe {
     GtbProbe() {
     }
 
-    final synchronized void setPath(String tbPath) {
-        if (!currTbPath.equals(tbPath)) {
+    final synchronized void setPath(String tbPath, boolean forceReload) {
+        if (forceReload || !currTbPath.equals(tbPath)) {
             currTbPath = tbPath;
             init(tbPath);
         }

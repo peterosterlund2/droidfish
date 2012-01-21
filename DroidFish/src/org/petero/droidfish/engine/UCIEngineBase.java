@@ -78,7 +78,7 @@ public abstract class UCIEngineBase implements UCIEngine {
     public void clearOptions() {
         allOptions.clear();
     }
-    
+
     @Override
     public void registerOption(String optName) {
         allOptions.add(optName);

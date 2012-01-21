@@ -105,7 +105,7 @@ public class ChessBoard extends View {
 
         labelPaint = new Paint();
         labelPaint.setAntiAlias(true);
-        
+
         decorationPaint = new Paint();
         decorationPaint.setAntiAlias(true);
 
