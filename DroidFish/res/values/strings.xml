@@ -246,7 +246,7 @@ DroidFish can use third party UCI engines. To use this feature:\n\
 \n\
 <b>Gaviota endgame tablebases</b>\n\
 To use Gaviota endgame tablebases:\n\
-1. Copy .gtb files to the <i>DroidFish/gtb</i> directory on the SD card.\n\
+1. Copy .gtb.cp4 files to the <i>DroidFish/gtb</i> directory on the SD card.\n\
 2. Use the <i>Endgame Tablebases</i> preferences screen to control how the tablebases are used.\n\
 \n\
 <b>License</b>\n\

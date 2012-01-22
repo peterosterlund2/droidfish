@@ -188,6 +188,7 @@ combinada con el muy potente motor de ajedrez <i>Stockfish 2.2.2</i>.
 * Amplio soporte PGN \n\
 * Niveles de juego ajustables\n\
 * Motores UCI de terceros\n\
+* Tablas de finales Gaviota\n\
 \n\
 <b>Indicaciones </b>\n\
 * En modo partida, mantenga pulsado el tablero para activar el menú copiar/pegar.\n\
@@ -236,6 +237,11 @@ DroidFish puede incorporar motores UCI de terceros. Para utilizar esta opción :
 1. Copiar uno o más códigos de motores UCI al directorio <i>DroidFish/uci</i> en la tarjeta SD.\n\
 2. Desde el menú, acceder a <i>Seleccionar Motor de Ajedrez</i> y elegir el motor que se va a utilizar.\n\
 \n\
+<b>Tablas de finales Gaviota</b>\n\
+Para utilizar las tablas de finales Gaviota :\n\
+1. Copiar los archivos .gtb.cp4 en el directorio <i>DroidFish/gtb</i> de la tarjeta SD.\n\
+2. Utilizar la pantalla de opciones de las <i>Tablas de finales</i> para controlar el uso de las mismas.\n\
+\n\
 <b>Licencia</b>\n\
 GNU GPL v3\n\
 \n\
@@ -243,6 +249,11 @@ GNU GPL v3\n\
 * <i>Stockfish</i> ha sido desarrollado por Tord Romstad, Marco Costalba y Joona Kiiski.\n\
 * <i>Droidfish</i> ha sido desarrollado por Peter Österlund.\n\
 * Mejoras en la interfaz de usuario de Aaro Korhonen.\n\
+\n\
+* Código de Prueba API de las Tablas Gaviota , Copyright \u00a9 2010 Miguel A. Ballicora.\n\
+* Compresión LZMA, de Igor Pavlov.\n\
+* Compresión ZLIB , Copyright \u00a9 1995-2005 Jean-loup Gailly y Mark Adler.\n\
+* Compresión LZF , Copyright \u00a9 2000-2007 Marc Alexander Lehmann.\n\
 \n\
 <b>Traducciones</b>\n\
 Traducción al alemán de Uwe Walschus.\n\
@@ -494,6 +505,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="prefs_color_arrow4_title">Flecha 5</string>
     <string name="prefs_color_arrow5_title">Flecha 6</string>
     <string name="prefs_color_squareLabel_title">Coordenadas</string>
+    <string name="prefs_color_decoration_title">Recomendaciones de las Tablas</string>
     <string name="prefs_move_list">Lista de Jugadas</string>
     <string name="prefs_color_currentMove_title">Jugada actual</string>
     <string name="prefs_other">Otros</string>
@@ -537,4 +549,15 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="prefs_exportPlayerAction_summary">Incluye información sobre acciones como tablas o rendir</string>
     <string name="prefs_exportTime_title">Reloj</string>
     <string name="prefs_exportTime_summary">Incluye información del tiempo para cada jugada</string>
+    <string name="prefs_egtbSettings_title">Tablas de Finales</string>
+    <string name="prefs_tbHints_title">Mostrar recomendaciones</string>
+    <string name="prefs_tbHints_summary">Al tocar una pieza, muestra los valores de todos los movimientos posibles de la misma  incluídos en la base.</string>
+    <string name="prefs_tbHintsEdit_title">Editar Recomendaciones en el Tablero</string>
+    <string name="prefs_tbHintsEdit_summary">Al tocar una pieza en modo editar tablero, muestra los valores de todas las posibles posiciones alternativas de esa pieza incluídas en la base.</string>
+    <string name="prefs_tbRootProbe_title">Prueba en la (posición) Base.</string>
+    <string name="prefs_tbRootProbe_summary">Filtra y obliga a todos los motores a considerar sólo las jugadas óptimas, si la posición que están analizando se encuentra en las tablas, antes de iniciar la búsqueda.</string>
+    <string name="prefs_tbEngineProbe_title">Prueba con el Motor.</string>
+    <string name="prefs_tbEngineProbe_summary">Permite saber al motor dónde se ubican los archivos de las tablas de finales , cuando aquél lo permite. Funciona cuando el motor vuelve a activarse.</string>
+    <string name="prefs_gtbPath_title">Directorio GTB </string>
+    <string name="prefs_gtbPath_summary"> Es el directorio donde se instalan las tablas Gaviota. Se puede dejar el espacio en blanco y el programa lo utilizará como directorio por defecto.</string>
 </resources>
