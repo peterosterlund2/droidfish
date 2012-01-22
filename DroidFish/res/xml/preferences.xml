@@ -390,7 +390,7 @@
                 android:key="tbRootProbe"
                 android:title="@string/prefs_tbRootProbe_title"
                 android:summary="@string/prefs_tbRootProbe_summary"
-                android:defaultValue="false">
+                android:defaultValue="true">
             </CheckBoxPreference>
             <CheckBoxPreference
                 android:key="tbEngineProbe"

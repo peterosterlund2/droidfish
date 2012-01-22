@@ -621,7 +621,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
         egtbOptions.hints = settings.getBoolean("tbHints", false);
         egtbOptions.hintsEdit = settings.getBoolean("tbHintsEdit", false);
-        egtbOptions.rootProbe = settings.getBoolean("tbRootProbe", false);
+        egtbOptions.rootProbe = settings.getBoolean("tbRootProbe", true);
         egtbOptions.engineProbe = settings.getBoolean("tbEngineProbe", true);
         String gtbPath = settings.getString("gtbPath", "");
         if (gtbPath.length() == 0) {
