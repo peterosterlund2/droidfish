@@ -172,93 +172,6 @@
     </string-array>
     <string name="book_line_length_default">1000000</string>
 
-    <string name="about_info">\
-<b>About</b>\n\
-<i>DroidFish</i> incorpora una interfaz gráfica de ajedrez de usuario muy completa, \
-combinada con el muy potente motor de ajedrez <i>Stockfish 2.2.2</i>.
-\n\
-<b>Características</b>\n\
-* Libro de Aperturas\n\
-* Avance/Retroceso ilimitado\n\
-* Copiar/pegar a/desde el portapapeles\n\
-* Modo Análisis \n\
-* Modo Dos jugadores \n\
-* Modo Programa contra Programa \n\
-* Introducir Posición \n\  
-* Amplio soporte PGN \n\
-* Niveles de juego ajustables\n\
-* Motores UCI de terceros\n\
-* Tablas de finales Gaviota\n\
-\n\
-<b>Indicaciones </b>\n\
-* En modo partida, mantenga pulsado el tablero para activar el menú copiar/pegar.\n\
-* En modo editar tablero, mantenga pulsado el mismo, para activar el menú editar.\n\
-* Desplazarse a la izquierda/derecha en el tablero, para retroceder/avanzar jugadas.\n\
-* Si la partida incluye varias líneas, desplazarse arriba/abajo sobre el tablero,para acceder a la línea anterior/posterior.\n\
-* Mantenga pulsados los botones izquierda/derecha para acceder a los botones de navegación adicionales de la partida.\n\
-\n\
-<b>Libros de Aperturas</b>\n\
-DroidFish incluye un pequeño libro de aperturas interno. Si quiere utilizar un libro más grande, puede configurar DroidFish para utilizar archivos de libros <i>Polyglot</i> \ o <i>CTG</i> :\n\
-1a. Copiar uno o más archivos de libro Polyglot en el directorio <i>DroidFish</i> en la tarjeta SD.\
-Los archivos de los libros Polyglot deben tener la extensión .bin.\n\
-1b. Copiar uno o más archivos de libro CTG al directorio <i>DroidFish</i>. Un libro CTG \ incluye tres archivos, con extensiones .ctg, .ctb and .cto. \
-Debe copiar los tres archivos.\n\
-2. Desde el menú programa, active la función <i> Seleccionar libro de aperturas</i>.\n\
-3. Seleccione el archivo de libro de aperturas que desee utilizar.\n\
-\n\
-<b>Archivos PGN</b>\n\
-DroidFish puede cargar partidas desde archivos PGN. Para utilizar esta opción:\n\
-1. Copiar uno o más archivos PGN en el directorio <i>DroidFish/pgn</i> en la tarjeta SD.\n\
-2. Mantener pulsado el tablero y seleccionar <i>Cargar partida desde el archivo PGN </i>.\n\
-3. Seleccionar el archivo, y a continuación la partida incluída en el archivo que usted quiera cargar.\n\
-\n\
-Para editar los datos de la partida, tales como los nombres de los jugadores, mantenga pulsada la lista de jugadas y seleccione \
-<i>Editar Datos</i>.Para editar comentarios de jugadas, mantenga pulsada la lista de jugadas y seleccione \
-<i>Editar Comentarios</i>.\
-\n\
-Para guardar una partida editada, mantener presionado el tablero y seleccionar \
-<i>Guardar partida en archivo PGN</i>. Seleccionar el archivo donde guardar la partida, \
-y a continuación seleccionar la posición en el archivo donde se vaya a guardar la nueva partida.\
-\n\
-Para incorporar los análisis del programa a las variantes de la partida, mantenga pulsada la \
-información del análisis mientras el programa está calculando y seleccione <i> Añadir Análisis</i>. \
-La Variante principal actual se añadirá como una variante al árbol de variantes de la partida.\n\
-\n\
-En modo análisis, se pueden añadir movimientos nulos al árbol de variantes. Tenga muy en cuenta \
-que los movimientos nulos no están en PGN estándar, y puede que no funcionen en otros programas de ajedrez que lean PGN.\n\
-\n\
-<b>Archivos Scid </b>\n\
-Si usted tiene instalado <i>Scid on the go</i>, podrá leer archivos de bases de datos Scid \
-directamente desde el DroidFish. Mantenga pulsado el tablero y seleccione <i>Cargar partida desde el archivo Scid</i>.\n\
-\n\
-<b>Motores UCI</b>\n\
-DroidFish puede incorporar motores UCI de terceros. Para utilizar esta opción : \n\
-\n\
-1. Copiar uno o más códigos de motores UCI al directorio <i>DroidFish/uci</i> en la tarjeta SD.\n\
-2. Desde el menú, acceder a <i>Seleccionar Motor de Ajedrez</i> y elegir el motor que se va a utilizar.\n\
-\n\
-<b>Tablas de finales Gaviota</b>\n\
-Para utilizar las tablas de finales Gaviota :\n\
-1. Copiar los archivos .gtb.cp4 en el directorio <i>DroidFish/gtb</i> de la tarjeta SD.\n\
-2. Utilizar la pantalla de opciones de las <i>Tablas de finales</i> para controlar el uso de las mismas.\n\
-\n\
-<b>Licencia</b>\n\
-GNU GPL v3\n\
-\n\
-<b>Autores/Desarrolladores</b>\n\
-* <i>Stockfish</i> ha sido desarrollado por Tord Romstad, Marco Costalba y Joona Kiiski.\n\
-* <i>Droidfish</i> ha sido desarrollado por Peter Österlund.\n\
-* Mejoras en la interfaz de usuario de Aaro Korhonen.\n\
-\n\
-* Código de Prueba API de las Tablas Gaviota , Copyright \u00a9 2010 Miguel A. Ballicora.\n\
-* Compresión LZMA, de Igor Pavlov.\n\
-* Compresión ZLIB , Copyright \u00a9 1995-2005 Jean-loup Gailly y Mark Adler.\n\
-* Compresión LZF , Copyright \u00a9 2000-2007 Marc Alexander Lehmann.\n\
-\n\
-<b>Traducciones</b>\n\
-Traducción al alemán de Uwe Walschus.\n\
-Traducción al español de Amador Cuesta.\n\
-    </string>
     <string name="cpu_warning">\
 <b>Utilización de la CPU </b>\n\
 Si deja a DroidFish analizando en segundo plano, y el<i> Modo Partida</i> está ajustado en \
@@ -551,7 +464,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="prefs_exportTime_summary">Incluye información del tiempo para cada jugada</string>
     <string name="prefs_egtbSettings_title">Tablas de Finales</string>
     <string name="prefs_tbHints_title">Mostrar recomendaciones</string>
-    <string name="prefs_tbHints_summary">Al tocar una pieza, muestra los valores de todos los movimientos posibles de la misma  incluídos en la base.</string>
+    <string name="prefs_tbHints_summary">Al tocar una pieza, muestra los valores de todos los movimientos posibles de la misma incluídos en la base.</string>
     <string name="prefs_tbHintsEdit_title">Editar Recomendaciones en el Tablero</string>
     <string name="prefs_tbHintsEdit_summary">Al tocar una pieza en modo editar tablero, muestra los valores de todas las posibles posiciones alternativas de esa pieza incluídas en la base.</string>
     <string name="prefs_tbRootProbe_title">Prueba en la (posición) Base.</string>

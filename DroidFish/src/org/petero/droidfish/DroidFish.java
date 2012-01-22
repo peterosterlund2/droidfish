@@ -18,10 +18,13 @@
 
 package org.petero.droidfish;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -99,6 +102,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -1222,12 +1226,33 @@ public class DroidFish extends Activity implements GUIInterface {
         case ABOUT_DIALOG: {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             String title = getString(R.string.app_name);
+            WebView wv = new WebView(this);
+            builder.setView(wv);
+            String data = "";
+            try {
+                InputStream is = getResources().openRawResource(R.raw.about);
+                InputStreamReader isr = new InputStreamReader(is, "UTF-8");
+                BufferedReader br = new BufferedReader(isr);
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                    sb.append('\n');
+                }
+                br.close();
+                data = sb.toString();
+            } catch (UnsupportedEncodingException e1) {
+            } catch (IOException e) {
+            }
+            System.out.printf("%.3f DroidFish.onCreateDialog(): data:%s\n",
+                    System.currentTimeMillis() * 1e-3, data);
+            wv.loadData(data, "text/html", null);
             try {
                 PackageInfo pi = getPackageManager().getPackageInfo("org.petero.droidfish", 0);
                 title += " " + pi.versionName;
             } catch (NameNotFoundException e) {
             }
-            builder.setTitle(title).setMessage(R.string.about_info);
+            builder.setTitle(title);
             AlertDialog alert = builder.create();
             return alert;
         }

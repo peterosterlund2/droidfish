@@ -1,0 +1,189 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+
+<h2>About</h2>
+<i>DroidFish</i> incorpora una interfaz gráfica de ajedrez de usuario muy completa,
+combinada con el muy potente motor de ajedrez <i>Stockfish 2.2.2</i>.
+
+<h3>Características</h3>
+<ul>
+  <li>Libro de Aperturas</li>
+  <li>Avance/Retroceso ilimitado</li>
+  <li>Copiar/pegar a/desde el portapapeles</li>
+  <li>Modo Análisis </li>
+  <li>Modo Dos jugadores </li>
+  <li>Modo Programa contra Programa </li>
+  <li>Introducir Posición   </li>
+  <li>Amplio soporte PGN </li>
+  <li>Niveles de juego ajustables</li>
+  <li>Motores UCI de terceros</li>
+  <li>Tablas de finales Gaviota</li>
+</ul>
+
+<h3>Indicaciones </h3>
+<ul>
+  <li>
+    En modo partida, mantenga pulsado el tablero para activar el menú
+    copiar/pegar.
+  </li>
+  <li>
+    En modo editar tablero, mantenga pulsado el mismo, para activar el
+    menú editar.
+  </li>
+  <li>
+    Desplazarse a la izquierda/derecha en el tablero, para
+    retroceder/avanzar jugadas.
+  </li>
+  <li>
+    Si la partida incluye varias líneas, desplazarse arriba/abajo
+    sobre el tablero,para acceder a la línea anterior/posterior.
+  </li>
+  <li>
+    Mantenga pulsados los botones izquierda/derecha para acceder a los
+    botones de navegación adicionales de la partida.
+  </li>
+</ul>
+
+<h3>Libros de Aperturas</h3>
+
+DroidFish incluye un pequeño libro de aperturas interno. Si quiere
+utilizar un libro más grande, puede configurar DroidFish para utilizar
+archivos de libros <i>Polyglot</i> o <i>CTG</i> :
+<ol>
+  <li>
+    Copiar uno o más archivos de libro Polyglot en el directorio
+    <i>DroidFish</i> en la tarjeta SD. Los archivos de los libros Polyglot deben
+    tener la extensión .bin.
+  </li>
+  <li>
+    Copiar uno o más archivos de libro CTG al directorio <i>DroidFish</i>. Un
+    libro CTG  incluye tres archivos, con extensiones .ctg, .ctb and .cto.
+    Debe copiar los tres archivos.
+  </li>
+  <li>
+    Desde el menú programa, active la función <i> Seleccionar libro de
+    aperturas</i>.
+  </li>
+  <li>
+    Seleccione el archivo de libro de aperturas que desee utilizar.
+  </li>
+</ol>
+
+<h3>Archivos PGN</h3>
+DroidFish puede cargar partidas desde archivos PGN. Para utilizar esta opción:
+<ol>
+  <li>
+    Copiar uno o más archivos PGN en el directorio <i>DroidFish/pgn</i> en la
+    tarjeta SD.
+  </li>
+  <li>
+    Mantener pulsado el tablero y seleccionar <i>Cargar partida desde el archivo
+    PGN </i>.
+  </li>
+  <li>
+    Seleccionar el archivo, y a continuación la partida incluída en el archivo
+    que usted quiera cargar.
+  </li>
+</ol>
+<p>
+  Para editar los datos de la partida, tales como los nombres de los jugadores,
+  mantenga pulsada la lista de jugadas y seleccione <i>Editar Datos</i>. Para
+  editar comentarios de jugadas, mantenga pulsada la lista de jugadas y
+  seleccione <i>Editar Comentarios</i>.
+</p>
+<p>
+  Para guardar una partida editada, mantener presionado el tablero y seleccionar
+  <i>Guardar partida en archivo PGN</i>. Seleccionar el archivo donde guardar la
+  partida, y a continuación seleccionar la posición en el archivo donde se vaya
+  a guardar la nueva partida.
+</p>
+<p>
+  Para incorporar los análisis del programa a las variantes de la partida,
+  mantenga pulsada la información del análisis mientras el programa está
+  calculando y seleccione <i> Añadir Análisis</i>. La Variante principal actual
+  se añadirá como una variante al árbol de variantes de la partida.
+</p>
+<p>
+  En modo análisis, se pueden añadir movimientos nulos al árbol de variantes.
+  Tenga muy en cuenta que los movimientos nulos no están en PGN estándar, y
+  puede que no funcionen en otros programas de ajedrez que lean PGN.
+</p>
+
+<h3>Archivos Scid </h3>
+Si usted tiene instalado <i>Scid on the go</i>, podrá leer archivos de bases de
+datos Scid directamente desde el DroidFish. Mantenga pulsado el tablero y
+seleccione <i>Cargar partida desde el archivo Scid</i>.
+
+<h3>Motores UCI</h3>
+DroidFish puede incorporar motores UCI de terceros. Para utilizar esta opción :
+<ol>
+  <li>
+    Copiar uno o más códigos de motores UCI al directorio <i>DroidFish/uci</i>
+    en la tarjeta SD.
+  </li>
+  <li>
+    Desde el menú, acceder a <i>Seleccionar Motor de Ajedrez</i> y elegir el
+    motor que se va a utilizar.
+  </li>
+</ol>
+
+<h3>Tablas de finales Gaviota</h3>
+Para utilizar las tablas de finales Gaviota :
+<ol>
+  <li>
+    Copiar los archivos .gtb.cp4 en el directorio <i>DroidFish/gtb</i> de la
+    tarjeta SD.
+  </li>
+  <li>
+    Utilizar la pantalla de opciones de las <i>Tablas de finales</i> para
+    controlar el uso de las mismas.
+  </li>
+</ol>
+
+<h3>Licencia</h3>
+GNU GPL v3
+
+<h3>Autores/Desarrolladores</h3>
+<ul>
+  <li>
+    <i>Stockfish</i> ha sido desarrollado por Tord Romstad, Marco Costalba y
+    Joona Kiiski.
+  </li>
+  <li>
+    <i>Droidfish</i> ha sido desarrollado por Peter Österlund.
+  </li>
+  <li>
+    Mejoras en la interfaz de usuario de Aaro Korhonen.
+  </li>
+</ul>
+<ul>
+  <li>
+    Código de Prueba API de las Tablas Gaviota , Copyright © 2010 Miguel
+    A. Ballicora.
+  </li>
+  <li>
+    Compresión LZMA, de Igor Pavlov.
+  </li>
+  <li>
+    Compresión ZLIB , Copyright © 1995-2005 Jean-loup Gailly y Mark Adler.
+  </li>
+  <li>
+    Compresión LZF , Copyright © 2000-2007 Marc Alexander Lehmann.
+  </li>
+</ul>
+
+<h3>Traducciones</h3>
+<ul>
+  <li>
+    Traducción al alemán de Uwe Walschus.
+  </li>
+  <li>
+    Traducción al español de Amador Cuesta.
+  </li>
+</ul>
+
+  </body>
+</html>
