@@ -56,7 +56,7 @@ public class EditPGN extends ListActivity {
     static boolean cacheValid = false;
     PGNFile pgnFile;
     ProgressDialog progress;
-    GameInfo selectedGi = null;
+    private GameInfo selectedGi = null;
     ArrayAdapter<GameInfo> aa = null;
     EditText filterText = null;
 
@@ -241,6 +241,8 @@ public class EditPGN extends ListActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
                 selectedGi = aa.getItem(pos);
+                if (selectedGi == null)
+                    return;
                 if (loadGame) {
                     defaultItem = pos;
                     sendBackResult(selectedGi);
