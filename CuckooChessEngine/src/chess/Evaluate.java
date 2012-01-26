@@ -860,6 +860,7 @@ public class Evaluate {
     }
 
     private final int kingSafetyKPPart(Position pos) {
+        // FIXME!!! Try non-linear king safety
         final long key = pos.pawnZobristHash() ^ pos.kingZobristHash();
         KingSafetyHashData ksh = kingSafetyHash[(int)key & (kingSafetyHash.length - 1)];
         if (ksh.key != key) {

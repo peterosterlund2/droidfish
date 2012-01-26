@@ -117,6 +117,7 @@ e4 c5 Nf3 e6 d4 cxd4 Nxd4 Nf6 Nc3 d6 Be2 a6 O-O Be7 f4 O-O
 e4 c5 Nf3 e6 d4 cxd4 Nxd4 Nc6 Nc3 Qc7 Be3 a6 Bd3 Nf6 O-O Ne5 h3 Bc5 Qe2 d6
 e4 c5 Nf3 e6? Nc3 Nc6 d4 cxd4 Nxd4 Qc7 Be3 a6 Qd2 Nf6 O-O-O Be7
 e4 c5 Nc3 Nc6 Nge2 g6 d4 cxd4 Nxd4 Bg7 Be3 Nf6 Bc4 O-O Bb3 d6
+e4 c5 Nc3 Nc6 f4 d6 Nf3 g6 Bb5 Bd7 O-O Bg7 d3 a6 Bc4 Na5 e5 Nxc4 dxc4 Be6
 e4 c5 Nc3? Nc6 g3 g6 Bg2 Bg7 d3 d6 f4 e6 Nf3 Nge7 O-O O-O
 e4 c5 Nc3? e6 Nf3 Nc6 d4 cxd4 Nxd4 Qc7 Be2 a6 O-O Nf6 Be3 Bb4
 e4 c5 Nc3? a6 Nf3 d6 d4 cxd4 Nxd4 Nf6
