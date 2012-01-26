@@ -203,8 +203,12 @@ public class EditBoard extends Activity {
         } else {
             piece = -(m.from + 2);
         }
-        if (m.to >= 0)
-            pos.setPiece(m.to, piece);
+        if (m.to >= 0) {
+            if ((m.from < 0) && (pos.getPiece(m.to) == piece))
+                pos.setPiece(m.to, Piece.EMPTY);
+            else
+                pos.setPiece(m.to, piece);
+        }
         if (m.from >= 0)
             pos.setPiece(m.from, Piece.EMPTY);
         cb.setPosition(pos);
