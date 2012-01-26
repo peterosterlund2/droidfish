@@ -19,6 +19,7 @@
 package org.petero.droidfish;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.petero.droidfish.gamelogic.Move;
@@ -54,12 +55,21 @@ public class ChessBoard extends View {
     List<Move> moveHints;
 
     /** Decoration for a square. Currently the only possible decoration is a number. */
-    public final static class SquareDecoration {
+    public final static class SquareDecoration implements Comparable<SquareDecoration> {
         int sq;
         int number;
         public SquareDecoration(int sq, int number) {
             this.sq = sq;
             this.number = number;
+        }
+        @Override
+        public int compareTo(SquareDecoration another) {
+            int M0 = 100000;
+            int n = number;
+            int s1 = (n > 0) ? M0 - n : ((n == 0) ? 0 : -M0-n);
+            n = another.number;
+            int s2 = (n > 0) ? M0 - n : ((n == 0) ? 0 : -M0-n);
+            return s2 - s1;
         }
     }
     private ArrayList<SquareDecoration> decorations;
@@ -695,6 +705,8 @@ public class ChessBoard extends View {
         }
         if (!equal) {
             this.decorations = decorations;
+            if (this.decorations != null)
+                Collections.sort(this.decorations);
             invalidate();
         }
     }
@@ -702,10 +714,14 @@ public class ChessBoard extends View {
     private final void drawDecorations(Canvas canvas) {
         if (decorations == null)
             return;
+        long decorated = 0;
         for (SquareDecoration sd : decorations) {
             int sq = sd.sq;
             if ((sd.sq < 0) || (sd.sq >= 64))
                 continue;
+            if (((1L << sq) & decorated) != 0)
+                continue;
+            decorated |= 1L << sq;
             int xCrd = getXCrd(Position.getX(sq));
             int yCrd = getYCrd(Position.getY(sq));
 
