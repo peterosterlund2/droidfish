@@ -420,6 +420,7 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="prefs_color_arrow4_title">Pfeil 5</string>
     <string name="prefs_color_arrow5_title">Pfeil 6</string>
     <string name="prefs_color_squareLabel_title">Feldbeschriftung</string>
+    <string name="prefs_color_decoration_title">Datenbank-Hinweise</string>
     <string name="prefs_move_list">Zugliste</string>
     <string name="prefs_color_currentMove_title">Aktueller Zug</string>
     <string name="prefs_other">Sonstige Optionen</string>
@@ -463,4 +464,15 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="prefs_exportPlayerAction_summary">Spieler-Aktionen wie Remis-Angebote und Partie-Aufgabe exportieren</string>
     <string name="prefs_exportTime_title">Zeit</string>
     <string name="prefs_exportTime_summary">Zeit-Informationen für jeden Zug exportieren</string>
+    <string name="prefs_egtbSettings_title">Endspiel-Datenbanken</string>
+    <string name="prefs_tbHints_title">Hinweise anzeigen</string>
+    <string name="prefs_tbHints_summary">Bei Berührung einer Figur Datenbankeintrag für alle mit dieser Figur möglichen Züge anzeigen</string>
+    <string name="prefs_tbHintsEdit_title">Hinweise bei Stellungseingabe</string>
+    <string name="prefs_tbHintsEdit_summary">Bei Berührung einer Figur wührend der Eingabe einer Stellung Datenbankeintrag für alle alternativ möglichen Positionen dieser Figur anzeigen</string>
+    <string name="prefs_tbRootProbe_title">Probe at Root</string>
+    <string name="prefs_tbRootProbe_summary">Filter out non-optimal moves before starting search</string>
+    <string name="prefs_tbEngineProbe_title">Engine-Zugriff</string>
+    <string name="prefs_tbEngineProbe_summary">Zugriff auf die Gaviota-Datenbanken durch die Engine aktivieren, sofern unterstützt. Diese Einstellung wirkt sich beim nüchsten Start der Engine aus.</string>
+    <string name="prefs_gtbPath_title">GTB-Verzeichnis</string>
+    <string name="prefs_gtbPath_summary">Verzeichnis, in dem die Gaviota-Endspieldatenbanken installiert sind (zur Nutzung des Standard-Verzeichnisses freilassen)</string>
 </resources>
