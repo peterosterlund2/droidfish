@@ -139,6 +139,8 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! Use high-res buttons from Scid on the go.
     // FIXME!!! Auto-swap sides is not good in combination with analysis mode.
 
+    // FIXME!!! Better behavior if engine is terminated. How exactly?
+
     private ChessBoard cb;
     private static DroidChessController ctrl = null;
     private boolean mShowThinking;
@@ -628,6 +630,7 @@ public class DroidFish extends Activity implements GUIInterface {
         egtbOptions.rootProbe = settings.getBoolean("tbRootProbe", true);
         egtbOptions.engineProbe = settings.getBoolean("tbEngineProbe", true);
         String gtbPath = settings.getString("gtbPath", "");
+        gtbPath = gtbPath.trim();
         if (gtbPath.length() == 0) {
             File extDir = Environment.getExternalStorageDirectory();
             String sep = File.separator;
