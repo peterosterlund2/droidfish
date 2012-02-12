@@ -140,6 +140,7 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! Auto-swap sides is not good in combination with analysis mode.
 
     // FIXME!!! Better behavior if engine is terminated. How exactly?
+    // FIXME!!! Handle PGN intents with more than one game.
 
     private ChessBoard cb;
     private static DroidChessController ctrl = null;
