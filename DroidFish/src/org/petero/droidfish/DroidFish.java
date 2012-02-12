@@ -1253,7 +1253,7 @@ public class DroidFish extends Activity implements GUIInterface {
             }
             System.out.printf("%.3f DroidFish.onCreateDialog(): data:%s\n",
                     System.currentTimeMillis() * 1e-3, data);
-            wv.loadData(data, "text/html", null);
+            wv.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
             try {
                 PackageInfo pi = getPackageManager().getPackageInfo("org.petero.droidfish", 0);
                 title += " " + pi.versionName;
