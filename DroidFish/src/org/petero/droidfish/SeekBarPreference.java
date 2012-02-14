@@ -176,10 +176,12 @@ public class SeekBarPreference extends Preference
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
         if (!callChangeListener(progress)) {
-            seekBar.setProgress(currVal);
+            if (currVal != seekBar.getProgress())
+                seekBar.setProgress(currVal);
             return;
         }
-        seekBar.setProgress(progress);
+        if (progress != seekBar.getProgress())
+            seekBar.setProgress(progress);
         currVal = progress;
         currValBox.setText(valToString());
         SharedPreferences.Editor editor =  getEditor();
