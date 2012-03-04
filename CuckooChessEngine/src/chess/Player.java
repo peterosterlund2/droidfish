@@ -53,7 +53,7 @@ public interface Player {
 
     /** 
      * Inform player that the transposition table should be cleared.
-     * Of coarse, a human player has a hard time implementing this.
+     * Of course, a human player has a hard time implementing this.
      */
     public void clearTT();
 }

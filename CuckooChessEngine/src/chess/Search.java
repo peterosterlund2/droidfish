@@ -734,14 +734,16 @@ public class Search {
             boolean givesCheck = MoveGen.givesCheck(pos, m); 
             boolean doFutility = false;
             if (mayReduce && haveLegalMoves && !givesCheck && !passedPawnPush(pos, m)) {
-                int moveCountLimit;
-                if (depth <= plyScale)          moveCountLimit = 3;
-                else if (depth <= 2 * plyScale) moveCountLimit = 6;
-                else if (depth <= 3 * plyScale) moveCountLimit = 12;
-                else if (depth <= 4 * plyScale) moveCountLimit = 24;
-                else moveCountLimit = 256;
-                if (mi >= moveCountLimit)
-                    continue; // Late move pruning
+                if ((Math.abs(alpha) <= MATE0 / 2) && (Math.abs(beta) <= MATE0 / 2)) {
+                    int moveCountLimit;
+                    if (depth <= plyScale)          moveCountLimit = 3;
+                    else if (depth <= 2 * plyScale) moveCountLimit = 6;
+                    else if (depth <= 3 * plyScale) moveCountLimit = 12;
+                    else if (depth <= 4 * plyScale) moveCountLimit = 24;
+                    else moveCountLimit = 256;
+                    if (mi >= moveCountLimit)
+                        continue; // Late move pruning
+                }
                 if (futilityPrune)
                     doFutility = true;
             }

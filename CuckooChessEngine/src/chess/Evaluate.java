@@ -756,6 +756,7 @@ public class Evaluate {
     }
 
     private int threatBonus(Position pos) {
+        // FIXME!! Try higher weight for attacks on more valuable pieces.
         int score = 0;
 
         // Sum values for all black pieces under attack

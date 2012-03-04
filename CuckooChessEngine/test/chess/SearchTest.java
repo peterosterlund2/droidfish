@@ -204,7 +204,18 @@ public class SearchTest {
         Move bestM = idSearch(sc, 28);
         assertEquals(TextIO.stringToMove(pos, "Kb1"), new Move(bestM));
     }
-    
+
+    /**
+     * Late move pruning must not be used in mate search.
+     */
+    @Test
+    public void testLMP() throws ChessParseError {
+        Position pos = TextIO.readFEN("2r2rk1/6p1/p3pq1p/1p1b1p2/3P1n2/PP3N2/3N1PPP/1Q2RR1K b");  // WAC 174
+        Search sc = new Search(pos, nullHist, 0, tt);
+        Move bestM = idSearch(sc, 2);
+        assertTrue(bestM.score < Search.MATE0 / 2);
+    }
+
     @Test
     public void testCheckEvasion() throws ChessParseError {
         System.out.println("check evasion");
@@ -234,7 +245,7 @@ public class SearchTest {
         System.out.println("kqkrNullMove");
         Position pos = TextIO.readFEN("7K/6R1/5k2/3q4/8/8/8/8 b - - 0 1");
         Search sc = new Search(pos, nullHist, 0, tt);
-        Move bestM = idSearch(sc, 9);
+        Move bestM = idSearch(sc, 10);
         assertEquals(Search.MATE0-18, bestM.score);
     }
 
