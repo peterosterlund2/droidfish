@@ -334,7 +334,7 @@ public class TextIO {
                 ret.append("O-O-O");
             }
         } else if (move.from == bKingOrigPos && pos.getPiece(bKingOrigPos) == Piece.BKING) {
-            // Check white castle
+            // Check black castle
             if (move.to == Position.getSquare(6, 7)) {
                 ret.append("O-O");
             } else if (move.to == Position.getSquare(2, 7)) {

@@ -141,6 +141,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
     // FIXME!!! Better behavior if engine is terminated. How exactly?
     // FIXME!!! Handle PGN intents with more than one game.
+    // FIXME!!! Make engine hash size configurable.
 
     private ChessBoard cb;
     private static DroidChessController ctrl = null;
