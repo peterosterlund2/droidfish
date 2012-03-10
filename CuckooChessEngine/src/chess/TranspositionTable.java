@@ -166,9 +166,9 @@ public class TranspositionTable {
         if ((ent.key == key) && (ent.getDepth() > depth) && (ent.type == type)) {
             if (type == TTEntry.T_EXACT) {
                 doStore = false;
-            } else if ((type == TTEntry.T_GE) && (sm.score <= ent.score)) {
+            } else if ((type == TTEntry.T_GE) && (sm.score <= ent.getScore(ply))) {
                 doStore = false;
-            } else if ((type == TTEntry.T_LE) && (sm.score >= ent.score)) {
+            } else if ((type == TTEntry.T_LE) && (sm.score >= ent.getScore(ply))) {
                 doStore = false;
             }
         }
