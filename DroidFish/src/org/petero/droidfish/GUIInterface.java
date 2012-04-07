@@ -91,4 +91,7 @@ public interface GUIInterface {
 
     /** Return application context. */
     public Context getContext();
+
+    /** Get the default player name. */
+    public String playerName();
 }

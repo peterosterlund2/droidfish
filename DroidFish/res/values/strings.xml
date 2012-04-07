@@ -357,10 +357,14 @@ you are not actively using the program.\
     <string name="option_about">About / Help</string>
 
     <string name="prefs_playing_options">Playing Options</string>
+    <string name="prefs_playerName_title">Player Name</string>
+    <string name="prefs_playerName_summary">Default player name in new games</string>
     <string name="prefs_boardFlipped_title">Flip Board</string>
     <string name="prefs_boardFlipped_summary">View board from black side</string>
     <string name="prefs_autoSwapSides_title">Auto Swap Sides</string>
     <string name="prefs_autoSwapSides_summary">Automatically swap sides when new game started. Also overrides Flip Board setting</string>
+    <string name="prefs_playerNameFlip_title">Flip Board: Player</string>
+    <string name="prefs_playerNameFlip_summary">Use Player Name to flip board automatically</string>
     <string name="prefs_engine_settings">Engine Settings</string>
     <string name="prefs_strength_title">Strength</string>
     <string name="prefs_strength_summary">Only supported by internal engines</string>

@@ -522,7 +522,8 @@ public class DroidChessController {
 
     /** Get PGN header tags and values. */
     public final synchronized void getHeaders(Map<String,String> headers) {
-        game.tree.getHeaders(headers);
+        if (game != null)
+            game.tree.getHeaders(headers);
     }
 
     /** Set PGN header tags and values. */
@@ -833,8 +834,9 @@ public class DroidChessController {
                 if (strength < 1000)
                     engine += String.format(" (%.1f%%)", strength * 0.1);
             }
-            String white = gameMode.playerWhite() ? "Player" : engine;
-            String black = gameMode.playerBlack() ? "Player" : engine;
+            String player = gui.playerName();
+            String white = gameMode.playerWhite() ? player : engine;
+            String black = gameMode.playerBlack() ? player : engine;
             game.tree.setPlayerNames(white, black);
         }
     }

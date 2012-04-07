@@ -3,6 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
         android:title="@string/prefs_playing_options">
+        <EditTextPreference
+            android:key="playerName"
+            android:title="@string/prefs_playerName_title"
+            android:summary="@string/prefs_playerName_summary"
+            android:defaultValue="Player">
+        </EditTextPreference>
         <CheckBoxPreference
             android:key="boardFlipped"
             android:title="@string/prefs_boardFlipped_title"
@@ -15,7 +21,13 @@
             android:summary="@string/prefs_autoSwapSides_summary"
             android:defaultValue="false">
         </CheckBoxPreference>
-    </PreferenceCategory>
+        <CheckBoxPreference
+            android:key="playerNameFlip"
+            android:title="@string/prefs_playerNameFlip_title"
+            android:summary="@string/prefs_playerNameFlip_summary"
+            android:defaultValue="false">
+        </CheckBoxPreference>
+        </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/prefs_engine_settings">
         <org.petero.droidfish.SeekBarPreference

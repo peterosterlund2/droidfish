@@ -154,8 +154,10 @@ public class DroidFish extends Activity implements GUIInterface {
     private GameMode gameMode;
     private boolean mPonderMode;
     private int mEngineThreads;
+    private String playerName;
     private boolean boardFlipped;
     private boolean autoSwapSides;
+    private boolean playerNameFlip;
 
     private TextView status;
     private ScrollView moveListScroll;
@@ -239,6 +241,7 @@ public class DroidFish extends Activity implements GUIInterface {
         if (pgn != null) {
             try {
                 ctrl.setFENOrPGN(pgn);
+                setBoardFlip(true);
             } catch (ChessParseError e) {
             }
         }
@@ -566,9 +569,11 @@ public class DroidFish extends Activity implements GUIInterface {
     private final void readPrefs() {
         int modeNr = getIntSetting("gameMode", 1);
         gameMode = new GameMode(modeNr);
+        playerName = settings.getString("playerName", "Player");
         boardFlipped = settings.getBoolean("boardFlipped", false);
         autoSwapSides = settings.getBoolean("autoSwapSides", false);
-        setBoardFlip();
+        playerNameFlip = settings.getBoolean("playerNameFlip", false);
+        setBoardFlip(true);
         boolean drawSquareLabels = settings.getBoolean("drawSquareLabels", false);
         cb.setDrawSquareLabels(drawSquareLabels);
         cb.oneTouchMoves = settings.getBoolean("oneTouchMoves", false);
@@ -849,6 +854,7 @@ public class DroidFish extends Activity implements GUIInterface {
                 try {
                     String fen = data.getAction();
                     ctrl.setFENOrPGN(fen);
+                    setBoardFlip(true);
                 } catch (ChessParseError e) {
                 }
             }
@@ -858,6 +864,7 @@ public class DroidFish extends Activity implements GUIInterface {
                 try {
                     String pgn = data.getAction();
                     ctrl.setFENOrPGN(pgn);
+                    setBoardFlip(true);
                 } catch (ChessParseError e) {
                     Toast.makeText(getApplicationContext(), getParseErrString(e), Toast.LENGTH_SHORT).show();
                 }
@@ -888,8 +895,46 @@ public class DroidFish extends Activity implements GUIInterface {
             return getString(e.resourceId);
     }
 
+    private final int nameMatchScore(String name, String match) {
+        if (name == null)
+            return 0;
+        String lName = name.toLowerCase();
+        String lMatch = match.toLowerCase();
+        if (name.equals(match))
+            return 6;
+        if (lName.equals(lMatch))
+            return 5;
+        if (name.startsWith(match))
+            return 4;
+        if (lName.startsWith(lMatch))
+            return 3;
+        if (name.contains(match))
+            return 2;
+        if (lName.contains(lMatch))
+            return 1;
+        return 0;
+    }
+
     private final void setBoardFlip() {
+        setBoardFlip(false);
+    }
+
+    private final void setBoardFlip(boolean matchPlayerNames) {
         boolean flipped = boardFlipped;
+        if (playerNameFlip && matchPlayerNames && (ctrl != null)) {
+            final TreeMap<String,String> headers = new TreeMap<String,String>();
+            ctrl.getHeaders(headers);
+            int whiteMatch = nameMatchScore(headers.get("White"), playerName);
+            int blackMatch = nameMatchScore(headers.get("Black"), playerName);
+            if (( flipped && (whiteMatch > blackMatch)) ||
+                (!flipped && (whiteMatch < blackMatch))) {
+                flipped = !flipped;
+                boardFlipped = flipped;
+                Editor editor = settings.edit();
+                editor.putBoolean("boardFlipped", boardFlipped);
+                editor.commit();
+            }
+        }
         if (autoSwapSides) {
             if (gameMode.analysisMode()) {
                 flipped = !cb.pos.whiteMove;
@@ -1000,6 +1045,11 @@ public class DroidFish extends Activity implements GUIInterface {
     @Override
     public Context getContext() {
         return getApplicationContext();
+    }
+
+    @Override
+    public String playerName() {
+        return playerName;
     }
 
     /** Report a move made that is a candidate for GUI animation. */
@@ -1178,6 +1228,7 @@ public class DroidFish extends Activity implements GUIInterface {
                             String fenPgn = clipboard.getText().toString();
                             try {
                                 ctrl.setFENOrPGN(fenPgn);
+                                setBoardFlip(true);
                             } catch (ChessParseError e) {
                                 Toast.makeText(getApplicationContext(), getParseErrString(e), Toast.LENGTH_SHORT).show();
                             }
@@ -1550,6 +1601,7 @@ public class DroidFish extends Activity implements GUIInterface {
                         editor.commit();
                         gameMode = new GameMode(gameModeType);
                         ctrl.setGameMode(gameMode);
+                        setBoardFlip(true);
                     }
                 }
             });
