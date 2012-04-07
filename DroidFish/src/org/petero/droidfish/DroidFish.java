@@ -163,7 +163,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private ScrollView moveListScroll;
     private TextView moveList;
     private TextView thinking;
-    private ImageButton modeButton, undoButton, redoButton;
+    private ImageButton flipButton, modeButton, undoButton, redoButton;
     private TextView whiteClock, blackClock, titleText;
 
     SharedPreferences settings;
@@ -475,6 +475,14 @@ public class DroidFish extends Activity implements GUIInterface {
             }
         });
 
+        flipButton = (ImageButton)findViewById(R.id.flipButton);
+        flipButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setBoardFlipPrefs(!boardFlipped);
+                setBoardFlip(false);
+            }
+        });
         modeButton = (ImageButton)findViewById(R.id.modeButton);
         modeButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -621,14 +629,17 @@ public class DroidFish extends Activity implements GUIInterface {
         if (largeButtons) {
             bWidth  = bWidth  * 3 / 2;
             bHeight = bHeight * 3 / 2;
+            flipButton.setImageResource(R.drawable.flip_large);
             modeButton.setImageResource(R.drawable.mode_large);
             undoButton.setImageResource(R.drawable.left_large);
             redoButton.setImageResource(R.drawable.right_large);
         } else {
+            flipButton.setImageResource(R.drawable.flip);
             modeButton.setImageResource(R.drawable.mode);
             undoButton.setImageResource(R.drawable.left);
             redoButton.setImageResource(R.drawable.right);
         }
+        flipButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
         modeButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
         undoButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
         redoButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
@@ -919,6 +930,13 @@ public class DroidFish extends Activity implements GUIInterface {
         setBoardFlip(false);
     }
 
+    private final void setBoardFlipPrefs(boolean flipped) {
+        boardFlipped = flipped;
+        Editor editor = settings.edit();
+        editor.putBoolean("boardFlipped", boardFlipped);
+        editor.commit();
+    }
+
     private final void setBoardFlip(boolean matchPlayerNames) {
         boolean flipped = boardFlipped;
         if (playerNameFlip && matchPlayerNames && (ctrl != null)) {
@@ -929,10 +947,7 @@ public class DroidFish extends Activity implements GUIInterface {
             if (( flipped && (whiteMatch > blackMatch)) ||
                 (!flipped && (whiteMatch < blackMatch))) {
                 flipped = !flipped;
-                boardFlipped = flipped;
-                Editor editor = settings.edit();
-                editor.putBoolean("boardFlipped", boardFlipped);
-                editor.commit();
+                setBoardFlipPrefs(flipped);
             }
         }
         if (autoSwapSides) {

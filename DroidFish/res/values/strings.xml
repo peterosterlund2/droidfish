@@ -359,8 +359,6 @@ you are not actively using the program.\
     <string name="prefs_playing_options">Playing Options</string>
     <string name="prefs_playerName_title">Player Name</string>
     <string name="prefs_playerName_summary">Default player name in new games</string>
-    <string name="prefs_boardFlipped_title">Flip Board</string>
-    <string name="prefs_boardFlipped_summary">View board from black side</string>
     <string name="prefs_autoSwapSides_title">Auto Swap Sides</string>
     <string name="prefs_autoSwapSides_summary">Automatically swap sides when new game started. Also overrides Flip Board setting</string>
     <string name="prefs_playerNameFlip_title">Flip Board: Player</string>
@@ -482,6 +480,7 @@ you are not actively using the program.\
     <string name="prefs_tbEngineProbe_summary">Enable tablebase probing in engine, when supported. Takes effect next time engine is started</string>
     <string name="prefs_gtbPath_title">GTB Directory</string>
     <string name="prefs_gtbPath_summary">Directory where Gaviota tablebases are installed. Leave blank to use default directory</string>
+    <string name="buttonDesc_flip">Flip board button</string>
     <string name="buttonDesc_mode">Mode button</string>
     <string name="buttonDesc_back">Backward button</string>
     <string name="buttonDesc_forward">Forward button</string>

@@ -10,12 +10,6 @@
             android:defaultValue="Player">
         </EditTextPreference>
         <CheckBoxPreference
-            android:key="boardFlipped"
-            android:title="@string/prefs_boardFlipped_title"
-            android:summary="@string/prefs_boardFlipped_summary"
-            android:defaultValue="false">
-        </CheckBoxPreference>
-        <CheckBoxPreference
             android:key="autoSwapSides"
             android:title="@string/prefs_autoSwapSides_title"
             android:summary="@string/prefs_autoSwapSides_summary"

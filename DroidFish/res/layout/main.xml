@@ -20,7 +20,14 @@
 		    android:includeFontPadding="true"
     		android:typeface="monospace"
 		    android:textSize="10dip"/>
-		<ImageButton
+        <ImageButton
+            android:id="@+id/flipButton"
+            android:contentDescription="@string/buttonDesc_flip"
+            android:layout_width="36dp"
+            android:layout_height="32dp"
+            android:src="@drawable/flip">
+        </ImageButton>
+        <ImageButton
             android:id="@+id/modeButton"
             android:contentDescription="@string/buttonDesc_mode"
             android:layout_width="36dp"
