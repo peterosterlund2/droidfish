@@ -423,6 +423,7 @@ you are not actively using the program.\
     <string name="prefs_color_decoration_title">Tablebase hints</string>
     <string name="prefs_move_list">Move List</string>
     <string name="prefs_color_currentMove_title">Current Move</string>
+    <string name="prefs_color_pgnComment_title">Comments</string>
     <string name="prefs_other">Other</string>
     <string name="prefs_bookSettings_title">Opening Book Settings</string>
     <string name="prefs_bookSettings_summary">Settings for opening book usage</string>

@@ -244,7 +244,12 @@
                     android:title="@string/prefs_color_currentMove_title"
                     android:defaultValue="#FF3333FF">
                 </EditTextPreference>
-            </PreferenceCategory>
+                <EditTextPreference
+                    android:key="color_pgnComment"
+                    android:title="@string/prefs_color_pgnComment_title"
+                    android:defaultValue="#FFC0C000">
+                </EditTextPreference>
+                </PreferenceCategory>
         </PreferenceScreen>
     </PreferenceCategory>
     <PreferenceCategory

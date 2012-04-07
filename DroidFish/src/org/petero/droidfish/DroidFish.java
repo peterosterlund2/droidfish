@@ -87,6 +87,7 @@ import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.LeadingMarginSpan;
 import android.text.style.StyleSpan;
 import android.util.TypedValue;
@@ -1507,8 +1508,8 @@ public class DroidFish extends Activity implements GUIInterface {
                 public void onClick(DialogInterface dialog, int item) {
                     ColorTheme.instance().setTheme(settings, item);
                     cb.setColors();
-                    gameTextListener.setCurrent(gameTextListener.currNode);
-                    moveListUpdated();
+                    gameTextListener.clear();
+                    ctrl.prefsChanged();
                     dialog.dismiss();
                 }
             });
@@ -2193,7 +2194,11 @@ public class DroidFish extends Activity implements GUIInterface {
                         sb.append(' ');
                     }
                 }
+                int l0 = sb.length();
                 sb.append(token.replaceAll("[ \t\r\n]+", " ").trim());
+                int l1 = sb.length();
+                int color = ColorTheme.instance().getColor(ColorTheme.PGN_COMMENT);
+                sb.setSpan(new ForegroundColorSpan(color), l0, l1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 col0 = false;
                 if (nestLevel == 0)
                     newLine();
