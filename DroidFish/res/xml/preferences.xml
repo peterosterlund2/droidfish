@@ -19,7 +19,7 @@
             android:key="playerNameFlip"
             android:title="@string/prefs_playerNameFlip_title"
             android:summary="@string/prefs_playerNameFlip_summary"
-            android:defaultValue="false">
+            android:defaultValue="true">
         </CheckBoxPreference>
         </PreferenceCategory>
     <PreferenceCategory

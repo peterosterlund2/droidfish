@@ -580,7 +580,7 @@ public class DroidFish extends Activity implements GUIInterface {
         playerName = settings.getString("playerName", "Player");
         boardFlipped = settings.getBoolean("boardFlipped", false);
         autoSwapSides = settings.getBoolean("autoSwapSides", false);
-        playerNameFlip = settings.getBoolean("playerNameFlip", false);
+        playerNameFlip = settings.getBoolean("playerNameFlip", true);
         setBoardFlip(true);
         boolean drawSquareLabels = settings.getBoolean("drawSquareLabels", false);
         cb.setDrawSquareLabels(drawSquareLabels);
