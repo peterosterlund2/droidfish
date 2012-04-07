@@ -146,6 +146,12 @@
             android:summary="@string/prefs_invertScrollDirection_summary"
             android:defaultValue="false">
         </CheckBoxPreference>
+        <CheckBoxPreference
+            android:key="leftHanded"
+            android:title="@string/prefs_leftHanded_title"
+            android:summary="@string/prefs_leftHanded_summary"
+            android:defaultValue="false">
+        </CheckBoxPreference>
         <ListPreference
             android:key="fontSize"
             android:title="@string/prefs_fontSize_title"

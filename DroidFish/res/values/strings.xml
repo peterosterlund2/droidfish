@@ -400,6 +400,8 @@ you are not actively using the program.\
     <string name="prefs_scrollSensitivity_summary">Scrolling speed for game navigation</string>
     <string name="prefs_invertScrollDirection_title">Invert Scroll Direction</string>
     <string name="prefs_invertScrollDirection_summary">Enable this if you think scrolling moves in the wrong direction</string>
+    <string name="prefs_leftHanded_title">Left-handed mode</string>
+    <string name="prefs_leftHanded_summary">Controls on left side in landscape mode</string>
     <string name="prefs_fontSize_title">Text Size</string>
     <string name="prefs_fontSize_summary">Font size for move list and game information</string>
     <string name="prefs_largeButtons_title">Large Buttons</string>

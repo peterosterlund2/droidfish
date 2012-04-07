@@ -168,6 +168,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
     private float scrollSensitivity;
     private boolean invertScrollDirection;
+    private boolean leftHanded;
     private boolean soundEnabled;
     private MediaPlayer moveSound;
     private boolean animateMoves;
@@ -327,7 +328,9 @@ public class DroidFish extends Activity implements GUIInterface {
     private final void initUI(boolean initTitle) {
         if (initTitle)
             requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-        setContentView(R.layout.main);
+        Configuration config = getResources().getConfiguration();
+        boolean leftHanded = this.leftHanded && (config.orientation == Configuration.ORIENTATION_LANDSCAPE);
+        setContentView(leftHanded ? R.layout.main_left_handed : R.layout.main);
         if (initTitle) {
             getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title);
             whiteClock = (TextView)findViewById(R.id.white_clock);
@@ -593,6 +596,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
         scrollSensitivity = Float.parseFloat(settings.getString("scrollSensitivity", "2"));
         invertScrollDirection = settings.getBoolean("invertScrollDirection", false);
+        leftHanded = settings.getBoolean("leftHanded", false);
         boolean fullScreenMode = settings.getBoolean("fullScreenMode", false);
         setFullScreenMode(fullScreenMode);
         useWakeLock = settings.getBoolean("wakeLock", false);
