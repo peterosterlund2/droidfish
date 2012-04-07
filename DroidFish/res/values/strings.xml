@@ -328,6 +328,7 @@ you are not actively using the program.\
     <string name="failed_to_start_engine">Failed to start engine</string>
     <string name="engine_terminated">Engine terminated</string>
     <string name="uci_protocol_error">UCI protocol error</string>
+    <string name="start_new_game">Start New Game?</string>
 
     <string name="err_too_few_spaces">Too few spaces</string>
     <string name="err_invalid_piece">Invalid piece</string>
@@ -359,8 +360,8 @@ you are not actively using the program.\
     <string name="prefs_playing_options">Playing Options</string>
     <string name="prefs_playerName_title">Player Name</string>
     <string name="prefs_playerName_summary">Default player name in new games</string>
-    <string name="prefs_autoSwapSides_title">Auto Swap Sides</string>
-    <string name="prefs_autoSwapSides_summary">Automatically swap sides when new game started. Also overrides Flip Board setting</string>
+    <string name="prefs_autoSwapSides_title">Flip Board: Auto</string>
+    <string name="prefs_autoSwapSides_summary">Use side to move to flip board automatically</string>
     <string name="prefs_playerNameFlip_title">Flip Board: Player</string>
     <string name="prefs_playerNameFlip_summary">Use Player Name to flip board automatically</string>
     <string name="prefs_engine_settings">Engine Settings</string>
@@ -480,6 +481,7 @@ you are not actively using the program.\
     <string name="prefs_tbEngineProbe_summary">Enable tablebase probing in engine, when supported. Takes effect next time engine is started</string>
     <string name="prefs_gtbPath_title">GTB Directory</string>
     <string name="prefs_gtbPath_summary">Directory where Gaviota tablebases are installed. Leave blank to use default directory</string>
+
     <string name="buttonDesc_flip">Flip board button</string>
     <string name="buttonDesc_mode">Mode button</string>
     <string name="buttonDesc_back">Backward button</string>

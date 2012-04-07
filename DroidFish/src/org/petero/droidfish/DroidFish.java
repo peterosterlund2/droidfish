@@ -138,7 +138,6 @@ public class DroidFish extends Activity implements GUIInterface {
 
     // FIXME!!! Remember multi-PV analysis setting when program restarted.
     // FIXME!!! Use high-res buttons from Scid on the go.
-    // FIXME!!! Auto-swap sides is not good in combination with analysis mode.
 
     // FIXME!!! Better behavior if engine is terminated. How exactly?
     // FIXME!!! Handle PGN intents with more than one game.
@@ -479,8 +478,8 @@ public class DroidFish extends Activity implements GUIInterface {
         flipButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                setBoardFlipPrefs(!boardFlipped);
-                setBoardFlip(false);
+                setBoardFlipPrefs(!cb.flipped);
+                cb.setFlipped(boardFlipped);
             }
         });
         modeButton = (ImageButton)findViewById(R.id.modeButton);
@@ -581,7 +580,7 @@ public class DroidFish extends Activity implements GUIInterface {
         boardFlipped = settings.getBoolean("boardFlipped", false);
         autoSwapSides = settings.getBoolean("autoSwapSides", false);
         playerNameFlip = settings.getBoolean("playerNameFlip", true);
-        setBoardFlip(true);
+        setBoardFlip(false);
         boolean drawSquareLabels = settings.getBoolean("drawSquareLabels", false);
         cb.setDrawSquareLabels(drawSquareLabels);
         cb.oneTouchMoves = settings.getBoolean("oneTouchMoves", false);
@@ -778,22 +777,7 @@ public class DroidFish extends Activity implements GUIInterface {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.item_new_game:
-            if (autoSwapSides && (gameMode.playerWhite() != gameMode.playerBlack())) {
-                int gameModeType;
-                if (gameMode.playerWhite()) {
-                    gameModeType = GameMode.PLAYER_BLACK;
-                } else {
-                    gameModeType = GameMode.PLAYER_WHITE;
-                }
-                Editor editor = settings.edit();
-                String gameModeStr = String.format("%d", gameModeType);
-                editor.putString("gameMode", gameModeStr);
-                editor.commit();
-                gameMode = new GameMode(gameModeType);
-            }
-//            savePGNToFile(ctrl.getPGN(), ".autosave.pgn", true);
-            ctrl.newGame(gameMode);
-            ctrl.startGame();
+            showDialog(NEW_GAME_DIALOG);
             return true;
         case R.id.item_editboard: {
             Intent i = new Intent(DroidFish.this, EditBoard.class);
@@ -865,7 +849,7 @@ public class DroidFish extends Activity implements GUIInterface {
                 try {
                     String fen = data.getAction();
                     ctrl.setFENOrPGN(fen);
-                    setBoardFlip(true);
+                    setBoardFlip(false);
                 } catch (ChessParseError e) {
                 }
             }
@@ -1166,6 +1150,21 @@ public class DroidFish extends Activity implements GUIInterface {
         cb.setMoveHints(hints);
     }
 
+    private final void startNewGame(int type) {
+        if (type != 2) {
+            int gameModeType = (type == 0) ? GameMode.PLAYER_WHITE : GameMode.PLAYER_BLACK;
+            Editor editor = settings.edit();
+            String gameModeStr = String.format("%d", gameModeType);
+            editor.putString("gameMode", gameModeStr);
+            editor.commit();
+            gameMode = new GameMode(gameModeType);
+        }
+//        savePGNToFile(ctrl.getPGN(), ".autosave.pgn", true);
+        ctrl.newGame(gameMode);
+        ctrl.startGame();
+        setBoardFlip(true);
+    }
+
     static private final int PROMOTE_DIALOG = 0;
     static private final int BOARD_MENU_DIALOG = 1;
     static private final int ABOUT_DIALOG = 2;
@@ -1182,10 +1181,35 @@ public class DroidFish extends Activity implements GUIInterface {
     static private final int GO_BACK_MENU_DIALOG = 13;
     static private final int GO_FORWARD_MENU_DIALOG = 14;
     static private final int FILE_MENU_DIALOG = 15;
+    static private final int NEW_GAME_DIALOG = 16;
 
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
+        case NEW_GAME_DIALOG: {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.option_new_game);
+            builder.setMessage(R.string.start_new_game);
+            builder.setPositiveButton(R.string.yes, new Dialog.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    startNewGame(2);
+                }
+            });
+            builder.setNeutralButton(R.string.white, new Dialog.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    startNewGame(0);
+                }
+            });
+            builder.setNegativeButton(R.string.black, new Dialog.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    startNewGame(1);
+                }
+            });
+            return builder.create();
+        }
         case PROMOTE_DIALOG: {
             final CharSequence[] items = {
                 getString(R.string.queen), getString(R.string.rook),
