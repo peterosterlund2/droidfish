@@ -16,7 +16,7 @@
         <item>3</item>
         <item>4</item>
     </string-array>
-    <string name="engine_threads_default">0</string>
+    <string name="engine_threads_default">1</string>
 
     <string-array name="moves_per_session_texts">
         <item>Ganzes Spiel</item>
