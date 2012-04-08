@@ -132,12 +132,14 @@ public class DroidFish extends Activity implements GUIInterface {
 
     // FIXME!!! Show extended book info. (Win percent, number of games, performance rating, etc.)
     // FIXME!!! Green color for "main move". Red color for "don't play in tournaments" moves.
-
-    // FIXME!!! Add anti-lamer test: 8/8/8/8/8/8/3R3r/k3K2R w K - 0 1 bm O-O
-    // FIXME!!! Add anti-lamer test: 4kr2/8/8/4PpN1/8/8/4Q3/3RK3 w - f6 0 2 bm exf6
+    // FIXME!!! ECO opening codes
 
     // FIXME!!! Remember multi-PV analysis setting when program restarted.
     // FIXME!!! Use high-res buttons from Scid on the go.
+
+    // FIXME!!! Option to display coordinates in border outside chess board.
+    // FIXME!!! Hard to understand how to undo a single half-move.
+    // FIXME!!! Hard to understand how "save game" works.
 
     // FIXME!!! Better behavior if engine is terminated. How exactly?
     // FIXME!!! Handle PGN intents with more than one game.

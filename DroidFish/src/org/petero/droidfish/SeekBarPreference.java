@@ -26,6 +26,7 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -38,6 +39,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Toast;
 
 /** Lets user enter a percentage value using a seek bar. */
 public class SeekBarPreference extends Preference
@@ -46,6 +48,7 @@ public class SeekBarPreference extends Preference
     private final static int DEFAULT_VALUE = 1000;
     private int currVal = DEFAULT_VALUE;
     private TextView currValBox;
+    private boolean showStrengthHint = true;
 
     public SeekBarPreference(Context context) {
         super(context);
@@ -187,6 +190,16 @@ public class SeekBarPreference extends Preference
         SharedPreferences.Editor editor =  getEditor();
         editor.putInt(getKey(), progress);
         editor.commit();
+        if ((progress == 0) && showStrengthHint) {
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getContext());
+            String engine = settings.getString("engine", "stockfish");
+            if ("stockfish".equals(engine)) {
+                showStrengthHint = false;
+                if (getKey().equals("strength"))
+                    Toast.makeText(getContext(), R.string.strength_cuckoo_hint,
+                                   Toast.LENGTH_LONG).show();
+            }
+        }
     }
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {

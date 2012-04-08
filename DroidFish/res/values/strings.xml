@@ -329,6 +329,7 @@ you are not actively using the program.\
     <string name="engine_terminated">Engine terminated</string>
     <string name="uci_protocol_error">UCI protocol error</string>
     <string name="start_new_game">Start New Game?</string>
+    <string name="strength_cuckoo_hint">Use the CuckooChess engine for even lower strength.</string>
 
     <string name="err_too_few_spaces">Too few spaces</string>
     <string name="err_invalid_piece">Invalid piece</string>
