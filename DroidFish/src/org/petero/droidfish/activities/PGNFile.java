@@ -183,6 +183,7 @@ public class PGNFile {
     public static enum GameInfoResult {
         OK,
         CANCEL,
+        NOT_PGN,
         OUT_OF_MEMORY;
     }
 
@@ -190,11 +191,12 @@ public class PGNFile {
     public final Pair<GameInfoResult,ArrayList<GameInfo>> getGameInfo(Activity activity,
                                                                       final ProgressDialog progress) {
         ArrayList<GameInfo> gamesInFile = new ArrayList<GameInfo>();
+        long fileLen = 0;
         try {
             int percent = -1;
             gamesInFile.clear();
             BufferedRandomAccessFileReader f = new BufferedRandomAccessFileReader(fileName.getAbsolutePath());
-            long fileLen = f.length();
+            fileLen = f.length();
             GameInfo gi = null;
             HeaderInfo hi = null;
             boolean inHeader = false;
@@ -289,6 +291,8 @@ public class PGNFile {
             gamesInFile = null;
             return new Pair<GameInfoResult,ArrayList<GameInfo>>(GameInfoResult.OUT_OF_MEMORY, null);
         }
+        if ((gamesInFile.size() == 0) && (fileLen > 0))
+            return new Pair<GameInfoResult,ArrayList<GameInfo>>(GameInfoResult.NOT_PGN, null);
 
         return new Pair<GameInfoResult,ArrayList<GameInfo>>(GameInfoResult.OK, gamesInFile);
     }

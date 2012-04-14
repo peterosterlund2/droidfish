@@ -56,6 +56,7 @@ import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -71,6 +72,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -258,13 +260,13 @@ public class DroidFish extends Activity implements GUIInterface {
         new File(extDir + sep + gtbDefaultDir).mkdirs();
     }
 
-    private String getPgnIntent() {
+    private final String getPgnIntent() {
         String pgn = null;
         try {
             Intent intent = getIntent();
             if (intent.getData() != null) {
                 if ("content".equals(intent.getScheme()) ||
-                        "file".equals(intent.getScheme())) {
+                    "file".equals(intent.getScheme())) {
                     ContentResolver resolver = getContentResolver();
                     InputStream in = resolver.openInputStream(intent.getData());
                     StringBuilder sb = new StringBuilder();
@@ -774,6 +776,8 @@ public class DroidFish extends Activity implements GUIInterface {
     static private final int RESULT_SETTINGS = 1;
     static private final int RESULT_LOAD_PGN = 2;
     static private final int RESULT_SELECT_SCID = 3;
+    static private final int RESULT_OI_PGN_SAVE = 4;
+    static private final int RESULT_OI_PGN_LOAD = 5;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -882,7 +886,30 @@ public class DroidFish extends Activity implements GUIInterface {
                 }
             }
             break;
+        case RESULT_OI_PGN_LOAD:
+            if (resultCode == RESULT_OK) {
+                String pathName = getFilePathFromUri(data.getData());
+                if (pathName != null)
+                    loadPGNFromFile(pathName);
+            }
+            break;
+        case RESULT_OI_PGN_SAVE:
+            if (resultCode == RESULT_OK) {
+                String pathName = getFilePathFromUri(data.getData());
+                if (pathName != null) {
+                    if ((pathName.length() > 0) && !pathName.contains("."))
+                        pathName += ".pgn";
+                    savePGNToFile(pathName, false);
+                }
+            }
+            break;
         }
+    }
+
+    private static String getFilePathFromUri(Uri uri) {
+        if (uri == null)
+            return null;
+        return uri.getPath();
     }
 
     private final String getParseErrString(ChessParseError e) {
@@ -1161,7 +1188,7 @@ public class DroidFish extends Activity implements GUIInterface {
             editor.commit();
             gameMode = new GameMode(gameModeType);
         }
-//        savePGNToFile(ctrl.getPGN(), ".autosave.pgn", true);
+//        savePGNToFile(".autosave.pgn", true);
         ctrl.newGame(gameMode);
         ctrl.startGame();
         setBoardFlip(true);
@@ -1277,15 +1304,13 @@ public class DroidFish extends Activity implements GUIInterface {
                         break;
                     }
                     case LOAD_GAME:
-                        removeDialog(SELECT_PGN_FILE_DIALOG);
-                        showDialog(SELECT_PGN_FILE_DIALOG);
+                        selectPgnFile(false);
                         break;
                     case LOAD_SCID_GAME:
                         selectScidFile();
                         break;
                     case SAVE_GAME:
-                        removeDialog(SELECT_PGN_FILE_SAVE_DIALOG);
-                        showDialog(SELECT_PGN_FILE_SAVE_DIALOG);
+                        selectPgnFile(true);
                         break;
                     }
                 }
@@ -1312,12 +1337,10 @@ public class DroidFish extends Activity implements GUIInterface {
                 public void onClick(DialogInterface dialog, int item) {
                     switch (finalActions.get(item)) {
                     case LOAD_GAME:
-                        removeDialog(SELECT_PGN_FILE_DIALOG);
-                        showDialog(SELECT_PGN_FILE_DIALOG);
+                        selectPgnFile(false);
                         break;
                     case SAVE_GAME:
-                        removeDialog(SELECT_PGN_FILE_SAVE_DIALOG);
-                        showDialog(SELECT_PGN_FILE_SAVE_DIALOG);
+                        selectPgnFile(true);
                         break;
                     case LOAD_SCID_GAME:
                         selectScidFile();
@@ -1497,6 +1520,7 @@ public class DroidFish extends Activity implements GUIInterface {
             }
             int defaultItem = 0;
             String currentPGNFile = settings.getString("currentPGNFile", "");
+            currentPGNFile = new File(currentPGNFile).getName();
             for (int i = 0; i < numFiles; i++) {
                 if (currentPGNFile.equals(fileNames[i])) {
                     defaultItem = i;
@@ -1507,18 +1531,11 @@ public class DroidFish extends Activity implements GUIInterface {
             builder.setTitle(R.string.select_pgn_file);
             builder.setSingleChoiceItems(fileNames, defaultItem, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
-                    Editor editor = settings.edit();
-                    String pgnFile = fileNames[item].toString();
-                    editor.putString("currentPGNFile", pgnFile);
-                    editor.putInt("currFT", FT_PGN);
-                    editor.commit();
-                    String sep = File.separator;
-                    String pathName = Environment.getExternalStorageDirectory() + sep + pgnDir + sep + pgnFile;
-                    Intent i = new Intent(DroidFish.this, EditPGNLoad.class);
-                    i.setAction("org.petero.droidfish.loadFile");
-                    i.putExtra("org.petero.droidfish.pathname", pathName);
-                    startActivityForResult(i, RESULT_LOAD_PGN);
                     dialog.dismiss();
+                    String sep = File.separator;
+                    String pgnFile = fileNames[item].toString();
+                    String pathName = Environment.getExternalStorageDirectory() + sep + pgnDir + sep + pgnFile;
+                    loadPGNFromFile(pathName);
                 }
             });
             AlertDialog alert = builder.create();
@@ -1529,6 +1546,7 @@ public class DroidFish extends Activity implements GUIInterface {
             final int numFiles = fileNames.length;
             int defaultItem = 0;
             String currentPGNFile = settings.getString("currentPGNFile", "");
+            currentPGNFile = new File(currentPGNFile).getName();
             for (int i = 0; i < numFiles; i++) {
                 if (currentPGNFile.equals(fileNames[i])) {
                     defaultItem = i;
@@ -1549,12 +1567,11 @@ public class DroidFish extends Activity implements GUIInterface {
                         dialog.dismiss();
                         showDialog(SELECT_PGN_SAVE_NEWFILE_DIALOG);
                     } else {
-                        Editor editor = settings.edit();
-                        pgnFile = fileNames[item].toString();
-                        editor.putString("currentPGNFile", pgnFile);
-                        editor.commit();
                         dialog.dismiss();
-                        savePGNToFile(ctrl.getPGN(), pgnFile, false);
+                        pgnFile = fileNames[item].toString();
+                        String sep = File.separator;
+                        String pathName = Environment.getExternalStorageDirectory() + sep + pgnDir + sep + pgnFile;
+                        savePGNToFile(pathName, false);
                     }
                 }
             });
@@ -1573,7 +1590,9 @@ public class DroidFish extends Activity implements GUIInterface {
                     String pgnFile = fileNameView.getText().toString();
                     if ((pgnFile.length() > 0) && !pgnFile.contains("."))
                         pgnFile += ".pgn";
-                    savePGNToFile(ctrl.getPGN(), pgnFile, false);
+                    String sep = File.separator;
+                    String pathName = Environment.getExternalStorageDirectory() + sep + pgnDir + sep + pgnFile;
+                    savePGNToFile(pathName, false);
                 }
             };
             builder.setPositiveButton(R.string.ok, new Dialog.OnClickListener() {
@@ -1868,7 +1887,7 @@ public class DroidFish extends Activity implements GUIInterface {
                 lst.add(getString(R.string.goto_prev_variation)); actions.add(GOTO_PREV_VAR);
             }
             final int currFT = currFileType();
-            final String currFileName = currFileName();
+            final String currPathName = currPathName();
             if (currFT != FT_NONE) {
                 lst.add(getString(R.string.load_prev_game)); actions.add(LOAD_PREV_GAME);
             }
@@ -1882,17 +1901,15 @@ public class DroidFish extends Activity implements GUIInterface {
                     case GOTO_START_VAR:  ctrl.gotoStartOfVariation(); break;
                     case GOTO_PREV_VAR:   ctrl.changeVariation(-1); break;
                     case LOAD_PREV_GAME:
-                        String sep = File.separator;
-                        String pathName = Environment.getExternalStorageDirectory() + sep;
                         Intent i;
                         if (currFT == FT_PGN) {
                             i = new Intent(DroidFish.this, EditPGNLoad.class);
                             i.setAction("org.petero.droidfish.loadFilePrevGame");
-                            i.putExtra("org.petero.droidfish.pathname", pathName + pgnDir + sep + currFileName);
+                            i.putExtra("org.petero.droidfish.pathname", currPathName);
                         } else {
                             i = new Intent(DroidFish.this, LoadScid.class);
                             i.setAction("org.petero.droidfish.loadScidPrevGame");
-                            i.putExtra("org.petero.droidfish.pathname", currFileName);
+                            i.putExtra("org.petero.droidfish.pathname", currPathName);
                         }
                         startActivityForResult(i, RESULT_LOAD_PGN);
                         break;
@@ -1914,7 +1931,7 @@ public class DroidFish extends Activity implements GUIInterface {
                 lst.add(getString(R.string.goto_next_variation)); actions.add(GOTO_NEXT_VAR);
             }
             final int currFT = currFileType();
-            final String currFileName = currFileName();
+            final String currPathName = currPathName();
             if (currFT != FT_NONE) {
                 lst.add(getString(R.string.load_next_game)); actions.add(LOAD_NEXT_GAME);
             }
@@ -1927,17 +1944,15 @@ public class DroidFish extends Activity implements GUIInterface {
                     case GOTO_END_VAR:  ctrl.gotoMove(Integer.MAX_VALUE); break;
                     case GOTO_NEXT_VAR: ctrl.changeVariation(1); break;
                     case LOAD_NEXT_GAME:
-                        String sep = File.separator;
-                        String pathName = Environment.getExternalStorageDirectory() + sep;
                         Intent i;
                         if (currFT == FT_PGN) {
                             i = new Intent(DroidFish.this, EditPGNLoad.class);
                             i.setAction("org.petero.droidfish.loadFileNextGame");
-                            i.putExtra("org.petero.droidfish.pathname", pathName + pgnDir + sep + currFileName);
+                            i.putExtra("org.petero.droidfish.pathname", currPathName);
                         } else {
                             i = new Intent(DroidFish.this, LoadScid.class);
                             i.setAction("org.petero.droidfish.loadScidNextGame");
-                            i.putExtra("org.petero.droidfish.pathname", currFileName);
+                            i.putExtra("org.petero.droidfish.pathname", currPathName);
                         }
                         startActivityForResult(i, RESULT_LOAD_PGN);
                         break;
@@ -1949,6 +1964,31 @@ public class DroidFish extends Activity implements GUIInterface {
         }
         }
         return null;
+    }
+
+    /** Open a load/save file dialog. Uses OI file manager if available. */
+    private void selectPgnFile(boolean save) {
+        String action = "org.openintents.action.PICK_FILE";
+        String title = getString(save ? R.string.select_pgn_file_save : R.string.select_pgn_file);
+        String button = getString(save ? R.string.pgn_save : R.string.pgn_load);
+        int result = save ? RESULT_OI_PGN_SAVE : RESULT_OI_PGN_LOAD;
+        int dialog = save ? SELECT_PGN_FILE_SAVE_DIALOG : SELECT_PGN_FILE_DIALOG;
+
+        Intent i = new Intent(action);
+        String currentPGNFile = settings.getString("currentPGNFile", "");
+        String sep = File.separator;
+        if (!currentPGNFile.contains(sep))
+            currentPGNFile = Environment.getExternalStorageDirectory() +
+                             sep + pgnDir + sep + currentPGNFile;
+        i.setData(Uri.fromFile(new File(currentPGNFile)));
+        i.putExtra("org.openintents.extra.TITLE", title);
+        i.putExtra("org.openintents.extra.BUTTON_TEXT", button);
+        try {
+            startActivityForResult(i, result);
+        } catch (ActivityNotFoundException e) {
+            removeDialog(dialog);
+            showDialog(dialog);
+        }
     }
 
     private final void selectScidFile() {
@@ -1970,12 +2010,21 @@ public class DroidFish extends Activity implements GUIInterface {
         return ft;
     }
 
-    private final String currFileName() {
+    /** Return path name for the last used PGN or SCID file. */
+    private final String currPathName() {
         int ft = settings.getInt("currFT", FT_NONE);
         switch (ft) {
-        case FT_PGN:  return settings.getString("currentPGNFile", "");
-        case FT_SCID: return settings.getString("currentScidFile", "");
-        default: return "";
+        case FT_PGN: {
+            String ret = settings.getString("currentPGNFile", "");
+            String sep = File.separator;
+            if (!ret.contains(sep))
+                ret = Environment.getExternalStorageDirectory() + sep + pgnDir + sep + ret;
+            return ret;
+        }
+        case FT_SCID:
+            return settings.getString("currentScidFile", "");
+        default:
+            return "";
         }
     }
 
@@ -2004,15 +2053,31 @@ public class DroidFish extends Activity implements GUIInterface {
         return fileNames;
     }
 
-    private final void savePGNToFile(String pgn, String filename, boolean silent) {
-        String sep = File.separator;
-        String pathName = Environment.getExternalStorageDirectory() + sep + pgnDir + sep + filename;
+    /** Save current game to a PGN file. */
+    private final void savePGNToFile(String pathName, boolean silent) {
+        String pgn = ctrl.getPGN();
+        Editor editor = settings.edit();
+        editor.putString("currentPGNFile", pathName);
+        editor.putInt("currFT", FT_PGN);
+        editor.commit();
         Intent i = new Intent(DroidFish.this, EditPGNSave.class);
         i.setAction("org.petero.droidfish.saveFile");
         i.putExtra("org.petero.droidfish.pathname", pathName);
         i.putExtra("org.petero.droidfish.pgn", pgn);
         i.putExtra("org.petero.droidfish.silent", silent);
         startActivity(i);
+    }
+
+    /** Load a PGN game from a file. */
+    private final void loadPGNFromFile(String pathName) {
+        Editor editor = settings.edit();
+        editor.putString("currentPGNFile", pathName);
+        editor.putInt("currFT", FT_PGN);
+        editor.commit();
+        Intent i = new Intent(DroidFish.this, EditPGNLoad.class);
+        i.setAction("org.petero.droidfish.loadFile");
+        i.putExtra("org.petero.droidfish.pathname", pathName);
+        startActivityForResult(i, RESULT_LOAD_PGN);
     }
 
     @Override

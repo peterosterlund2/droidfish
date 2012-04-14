@@ -392,13 +392,23 @@ public class EditPGN extends ListActivity {
         Pair<GameInfoResult, ArrayList<GameInfo>> p = pgnFile.getGameInfo(this, progress);
         if (p.first != GameInfoResult.OK) {
             gamesInFile = new ArrayList<GameInfo>();
-            if (p.first == GameInfoResult.OUT_OF_MEMORY) {
+            switch (p.first) {
+            case OUT_OF_MEMORY:
                 runOnUiThread(new Runnable() {
                     public void run() {
                         Toast.makeText(getApplicationContext(), R.string.file_too_large,
                                        Toast.LENGTH_SHORT).show();
                     }
                 });
+                break;
+            case NOT_PGN:
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), R.string.not_a_pgn_file,
+                                       Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
             }
             setResult(RESULT_CANCELED);
             finish();

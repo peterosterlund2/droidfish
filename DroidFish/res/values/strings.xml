@@ -226,8 +226,10 @@ you are not actively using the program.\
     <string name="internal_book">&lt;Internal Book&gt;</string>
     <string name="select_opening_book_file">Select opening book file</string>
     <string name="select_chess_engine">Select Chess Engine</string>
-    <string name="select_pgn_file">Select PGN file to open</string>
+    <string name="select_pgn_file">Open PGN file</string>
     <string name="select_pgn_file_save">Save to PGN file</string>
+    <string name="pgn_load">Load</string>
+    <string name="pgn_save">Save</string>
     <string name="select_scid_file">Select Scid file to open</string>
     <string name="select_pgn_game">Select game to open</string>
     <string name="reading_pgn_file">Reading PGN file</string>
@@ -317,6 +319,7 @@ you are not actively using the program.\
     <string name="failed_to_save_game">Failed to save game</string>
     <string name="failed_to_delete_game">Failed to delete game</string>
     <string name="file_too_large">File too large</string>
+    <string name="not_a_pgn_file">Not a PGN file</string>
     <string name="save_game_question">Save game?</string>
     <string name="before_selected">Before Selected</string>
     <string name="after_selected">After Selected</string>
