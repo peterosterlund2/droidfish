@@ -47,6 +47,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -58,6 +59,7 @@ public class EditPGN extends ListActivity {
     ProgressDialog progress;
     private GameInfo selectedGi = null;
     ArrayAdapter<GameInfo> aa = null;
+    TextView hintText = null;
     EditText filterText = null;
 
     SharedPreferences settings;
@@ -278,6 +280,12 @@ public class EditPGN extends ListActivity {
             }
         });
         filterText.setText(lastSearchString);
+        hintText = (TextView)findViewById(R.id.select_game_hint);
+        if (loadGame) {
+            hintText.setVisibility(View.GONE);
+        } else {
+            hintText.setText(R.string.save_game_hint);
+        }
         lv.requestFocus();
     }
 

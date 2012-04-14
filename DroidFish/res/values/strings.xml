@@ -269,7 +269,7 @@ you are not actively using the program.\
     <string name="filename">Filename:</string>
     <string name="halfmove">Halfmove clock:</string>
     <string name="fullmove">Fullmove counter:</string>
-    <string name="filter_text">Filter text</string>
+    <string name="filter_text">Search…</string>
     <string name="value_percent">Value (%):</string>
     <string name="header_event">Event:</string>
     <string name="header_site">Site:</string>
@@ -299,6 +299,7 @@ you are not actively using the program.\
     <string name="preferences">Preferences</string>
     <string name="load_game_title">Edit File / Load Game</string>
     <string name="save_game_title">Edit File / Save Game</string>
+    <string name="save_game_hint">Select an existing game to control where to save the game. Long press an existing game to delete it.</string>
     <string name="load_scid_game_title">Load Scid Game</string>
     <string name="cpu_warning_title">CPU Warning</string>
     <string name="failed_to_read_pgn_data">Failed to read pgn data</string>

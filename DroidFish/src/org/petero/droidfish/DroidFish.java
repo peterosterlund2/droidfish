@@ -141,7 +141,6 @@ public class DroidFish extends Activity implements GUIInterface {
 
     // FIXME!!! Option to display coordinates in border outside chess board.
     // FIXME!!! Hard to understand how to undo a single half-move.
-    // FIXME!!! Hard to understand how "save game" works.
 
     // FIXME!!! Better behavior if engine is terminated. How exactly?
     // FIXME!!! Handle PGN intents with more than one game.

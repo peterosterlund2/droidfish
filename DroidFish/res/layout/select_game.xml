@@ -4,6 +4,12 @@
   android:layout_width="fill_parent"
   android:layout_height="fill_parent"
   android:orientation="vertical">
+  <TextView
+      android:id="@+id/select_game_hint"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:includeFontPadding="true">
+  </TextView>
   <EditText
   	android:id="@+id/select_game_filter"
   	android:hint="@string/filter_text"
