@@ -138,9 +138,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
     // FIXME!!! Remember multi-PV analysis setting when program restarted.
     // FIXME!!! Use high-res buttons from Scid on the go.
-
     // FIXME!!! Option to display coordinates in border outside chess board.
-    // FIXME!!! Hard to understand how to undo a single half-move.
 
     // FIXME!!! Better behavior if engine is terminated. How exactly?
     // FIXME!!! Handle PGN intents with more than one game.
