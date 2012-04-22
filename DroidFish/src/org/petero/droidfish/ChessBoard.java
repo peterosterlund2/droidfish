@@ -346,10 +346,10 @@ public class ChessBoard extends View {
         }
     }
 
-    protected int getWidth(int sqSize) { return sqSize * 8 + 4; }
-    protected int getHeight(int sqSize) { return sqSize * 8 + 4; }
-    protected int getSqSizeW(int width) { return (width - 4) / 8; }
-    protected int getSqSizeH(int height) { return (height - 4) / 8; }
+    protected int getWidth(int sqSize) { return sqSize * 8; }
+    protected int getHeight(int sqSize) { return sqSize * 8; }
+    protected int getSqSizeW(int width) { return (width) / 8; }
+    protected int getSqSizeH(int height) { return (height) / 8; }
 
     protected int getMaxHeightPercentage() { return 75; }
 

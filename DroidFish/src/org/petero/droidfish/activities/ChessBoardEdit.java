@@ -39,16 +39,16 @@ public class ChessBoardEdit extends ChessBoard {
         drawSquareLabels = true;
     }
 
-    private final static int gap = 2;
+    private final static int gap = 4;
 
     @Override
-    protected int getWidth(int sqSize) { return sqSize * 8 + 4; }
+    protected int getWidth(int sqSize) { return sqSize * 8; }
     @Override
-    protected int getHeight(int sqSize) { return sqSize * 10 + 4 + gap; }
+    protected int getHeight(int sqSize) { return sqSize * 10 + gap; }
     @Override
-    protected int getSqSizeW(int width) { return (width - 4) / 8; }
+    protected int getSqSizeW(int width) { return (width) / 8; }
     @Override
-    protected int getSqSizeH(int height) { return (height - 4 - gap) / 10; }
+    protected int getSqSizeH(int height) { return (height - gap) / 10; }
     @Override
     protected int getMaxHeightPercentage() { return 85; }
 
