@@ -359,8 +359,6 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="prefs_playing_options">Spieloptionen</string>
     <string name="prefs_boardFlipped_title">Ansicht drehen</string>
     <string name="prefs_boardFlipped_summary">Spielfeld aus der Perspektive von Schwarz darstellen</string>
-    <string name="prefs_autoSwapSides_title">Automatischer Seitenwechsel</string>
-    <string name="prefs_autoSwapSides_summary">Seiten beim Start einer neuen Partie automatisch wechseln (Einstellung <i>Ansicht drehen</i> ignorieren)</string>
     <string name="prefs_engine_settings">Engine-Einstellungen</string>
     <string name="prefs_strength_title">Spielstärke</string>
     <string name="prefs_strength_summary">Nur von den internen Engines unterstützt</string>
