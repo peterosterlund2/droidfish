@@ -330,7 +330,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="failed_to_start_engine">Fallo de arranque del motor</string>
     <string name="engine_terminated">Ruptura del motor</string>
     <string name="uci_protocol_error">Fallo en el protocolo UCI</string>
-    <string name="start_new_game">¿Empezar otra/nueva partida?</string>
+    <string name="start_new_game">¿Empezar nueva partida?</string>
     <string name="strength_cuckoo_hint">Utilice el motor CuckooChess para rebajar aún más el nivel de juego.</string>
 
     <string name="err_too_few_spaces">Pocos espacios</string>
@@ -407,7 +407,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="prefs_invertScrollDirection_title">Invertir dirección desplazamiento</string>
     <string name="prefs_invertScrollDirection_summary">Permitirlo si usted piensa que el desplazamiento de jugadas se hace en la dirección equivocada.</string>
     <string name="prefs_leftHanded_title">Modo zurdo</string>
-    <string name="prefs_leftHanded_summary">Controles en el lado izquierdo en modo horizontal/apaisado</string>
+    <string name="prefs_leftHanded_summary">Controles en el lado izquierdo en modo horizontal</string>
     <string name="prefs_fontSize_title">Tamaño del Texto</string>
     <string name="prefs_fontSize_summary">Tamaño de las Fuentes para la lista de jugadas e información de la partida</string>
     <string name="prefs_largeButtons_title">Botones Grandes</string>
