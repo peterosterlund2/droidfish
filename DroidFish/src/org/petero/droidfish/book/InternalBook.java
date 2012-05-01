@@ -84,6 +84,8 @@ final class InternalBook implements IOpeningBook {
         numBookMoves = 0;
         try {
             InputStream inStream = getClass().getResourceAsStream("/book.bin");
+            if (inStream == null)
+                throw new IOException();
             List<Byte> buf = new ArrayList<Byte>(8192);
             byte[] tmpBuf = new byte[1024];
             while (true) {
