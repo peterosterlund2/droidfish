@@ -1404,7 +1404,7 @@ public class DroidFish extends Activity implements GUIInterface {
                     }
                 }
             };
-            builder.setPositiveButton(R.string.ok, new Dialog.OnClickListener() {
+            builder.setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     gotoMove.run();
                 }
@@ -1598,7 +1598,7 @@ public class DroidFish extends Activity implements GUIInterface {
                     savePGNToFile(pathName, false);
                 }
             };
-            builder.setPositiveButton(R.string.ok, new Dialog.OnClickListener() {
+            builder.setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     savePGN.run();
                 }
@@ -1729,7 +1729,7 @@ public class DroidFish extends Activity implements GUIInterface {
                         black.setText(headers.get("Black"));
 
                         builder.setNegativeButton(R.string.cancel, null);
-                        builder.setPositiveButton(R.string.ok, new Dialog.OnClickListener() {
+                        builder.setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 headers.put("Event", event.getText().toString().trim());
                                 headers.put("Site",  site .getText().toString().trim());
@@ -1767,7 +1767,7 @@ public class DroidFish extends Activity implements GUIInterface {
                         nag.setText(nagStr);
 
                         builder.setNegativeButton(R.string.cancel, null);
-                        builder.setPositiveButton(R.string.ok, new Dialog.OnClickListener() {
+                        builder.setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 String pre = preComment.getText().toString().trim();
                                 String post = postComment.getText().toString().trim();

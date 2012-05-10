@@ -259,7 +259,6 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="load_next_game">Cargar Siguiente Partida</string>
     <string name="no_prev_game">No hay Partida Anterior</string>
     <string name="no_next_game">No hay Partida Siguiente</string>
-    <string name="ok">OK</string>
     <string name="cancel">Cancelar</string>
     <string name="yes">Sí</string>
     <string name="no">No</string>

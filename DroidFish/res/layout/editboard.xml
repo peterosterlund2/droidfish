@@ -23,7 +23,7 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content">
 		<Button
-			android:text="@string/ok"
+			android:text="@android:string/ok"
 			android:id="@+id/eb_ok"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
