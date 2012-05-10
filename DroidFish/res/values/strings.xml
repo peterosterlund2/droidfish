@@ -399,6 +399,8 @@ you are not actively using the program.\
     <string name="prefs_oneTouchMoves_summary">Touching a square that corresponds to one unique move makes that move immediately</string>
     <string name="prefs_soundEnabled_title">Enable Sounds</string>
     <string name="prefs_soundEnabled_summary">Play sound when computer makes a move</string>
+    <string name="prefs_vibrateEnabled_title">Enable Vibration</string>
+    <string name="prefs_vibrateEnabled_summary">Vibrate when computer makes a move</string>
     <string name="prefs_fullScreenMode_title">Fullscreen Mode</string>
     <string name="prefs_fullScreenMode_summary">Fullscreen mode hides the status bar</string>
     <string name="prefs_wakeLock_title">Disable Screen Timeout</string>

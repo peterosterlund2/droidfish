@@ -8,6 +8,7 @@
                       android:anyDensity="true" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-sdk android:minSdkVersion="3"
               android:targetSdkVersion="10"/>
     <application android:icon="@drawable/icon"

@@ -78,6 +78,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
 import android.text.Html;
@@ -144,6 +145,8 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! Handle PGN intents with more than one game.
     // FIXME!!! File load/save of FEN data
     // FIXME!!! Make engine hash size configurable.
+    // FIXME!!! Startup slow when all GTB files installed.
+    // FIXME!!! Nicer looking icons.
 
     private ChessBoard cb;
     private static DroidChessController ctrl = null;
@@ -174,6 +177,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private boolean leftHanded;
     private boolean soundEnabled;
     private MediaPlayer moveSound;
+    private boolean vibrateEnabled;
     private boolean animateMoves;
 
     private final static String bookDir = "DroidFish";
@@ -621,6 +625,7 @@ public class DroidFish extends Activity implements GUIInterface {
         moveList.setTextSize(fontSize);
         thinking.setTextSize(fontSize);
         soundEnabled = settings.getBoolean("soundEnabled", false);
+        vibrateEnabled = settings.getBoolean("vibrateEnabled", false);
         animateMoves = settings.getBoolean("animateMoves", true);
 
         boolean largeButtons = settings.getBoolean("largeButtons", false);
@@ -2112,6 +2117,10 @@ public class DroidFish extends Activity implements GUIInterface {
                 moveSound.release();
             moveSound = MediaPlayer.create(this, R.raw.movesound);
             moveSound.start();
+        }
+        if (vibrateEnabled) {
+            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            v.vibrate(500);
         }
     }
 
