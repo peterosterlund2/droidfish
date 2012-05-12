@@ -69,7 +69,9 @@ public class ExternalEngine extends UCIEngineBase {
             copyFile(engineFileName, new File(exePath));
             chmod(exePath);
             ProcessBuilder pb = new ProcessBuilder(exePath);
-            engineProc = pb.start();
+            synchronized (EngineUtil.nativeLock) {
+                engineProc = pb.start();
+            }
 
             startupThread = new Thread(new Runnable() {
                 @Override

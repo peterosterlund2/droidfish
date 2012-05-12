@@ -46,4 +46,7 @@ public class EngineUtil {
 
     /** Executes chmod 744 exePath. */
     final static native boolean chmod(String exePath);
+
+    /** For synchronizing non thread safe native calls. */
+    public static Object nativeLock = new Object();
 }

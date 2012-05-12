@@ -20,6 +20,8 @@ package org.petero.droidfish.gtb;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.petero.droidfish.engine.EngineUtil;
+
 /** Interface to native gtb probing code. */
 class GtbProbe {
     static {
@@ -38,6 +40,9 @@ class GtbProbe {
             Thread t = new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    // Sleep 0.5s to increase probability that engine
+                    // is initialized before TB.
+                    try { Thread.sleep(500); } catch (InterruptedException e) { }
                     initIfNeeded();
                 }
             });
@@ -52,7 +57,9 @@ class GtbProbe {
             path = tbPathQueue.poll();
         if (path != null) {
             currTbPath = path;
-            init(currTbPath);
+            synchronized (EngineUtil.nativeLock) {
+                init(currTbPath);
+            }
         }
     }
 
