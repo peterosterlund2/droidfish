@@ -1,177 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DroidFish</string>
-
-    <string-array name="engine_threads_texts">
-        <item>Automatic</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
-    <string-array name="engine_threads_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
     <string name="engine_threads_default">1</string>
-
-    <string-array name="moves_per_session_texts">
-        <item>Whole Game</item>
-        <item>1 move</item>
-        <item>10 moves</item>
-        <item>20 moves</item>
-        <item>30 moves</item>
-        <item>40 moves</item>
-        <item>50 moves</item>
-        <item>60 moves</item>
-    </string-array>
-    <string-array name="moves_per_session_values">
-        <item>0</item>
-        <item>1</item>
-        <item>10</item>
-        <item>20</item>
-        <item>30</item>
-        <item>40</item>
-        <item>50</item>
-        <item>60</item>
-    </string-array>
     <string name="moves_per_session_default">60</string>
-
-    <string-array name="time_control_texts">
-        <item>15 seconds</item>
-        <item>30 seconds</item>
-        <item>1 minute</item>
-        <item>2 minutes</item>
-        <item>3 minutes</item>
-        <item>5 minutes</item>
-        <item>10 minutes</item>
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>45 minutes</item>
-        <item>60 minutes</item>
-        <item>90 minutes</item>
-        <item>120 minutes</item>
-    </string-array>
-    <string-array name="time_control_values">
-        <item>15000</item>
-        <item>30000</item>
-        <item>60000</item>
-        <item>120000</item>
-        <item>180000</item>
-        <item>300000</item>
-        <item>600000</item>
-        <item>900000</item>
-        <item>1800000</item>
-        <item>2700000</item>
-        <item>3600000</item>
-        <item>5400000</item>
-        <item>7200000</item>
-    </string-array>
     <string name="time_control_default">120000</string>
-
-    <string-array name="time_increment_texts">
-        <item>0s</item>
-        <item>1s</item>
-        <item>2s</item>
-        <item>3s</item>
-        <item>4s</item>
-        <item>5s</item>
-        <item>10s</item>
-        <item>12s</item>
-        <item>15s</item>
-        <item>30s</item>
-        <item>60s</item>
-    </string-array>
-    <string-array name="time_increment_values">
-        <item>0</item>
-        <item>1000</item>
-        <item>2000</item>
-        <item>3000</item>
-        <item>4000</item>
-        <item>5000</item>
-        <item>10000</item>
-        <item>12000</item>
-        <item>15000</item>
-        <item>30000</item>
-        <item>60000</item>
-    </string-array>
     <string name="time_increment_default">0</string>
-
-    <string-array name="font_size_texts">
-        <item>Small</item>
-        <item>Medium</item>
-        <item>Large</item>
-        <item>Larger</item>
-    </string-array>
-    <string-array name="font_size_values">
-        <item>10</item>
-        <item>12</item>
-        <item>16</item>
-        <item>21</item>
-    </string-array>
     <string name="font_size_default">12</string>
-
-    <string-array name="thinking_arrows_texts">
-        <item>No arrows</item>
-        <item>Max 1 Arrow</item>
-        <item>Max 2 Arrows</item>
-        <item>Max 3 Arrows</item>
-        <item>Max 4 Arrows</item>
-        <item>Max 5 Arrows</item>
-        <item>Max 6 Arrows</item>
-    </string-array>
-    <string-array name="thinking_arrows_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-    </string-array>
     <string name="thinking_arrows_default">2</string>
-
-    <string-array name="scroll_sensitivity_texts">
-        <item>Off</item>
-        <item>Slowest</item>
-        <item>Slow</item>
-        <item>Normal</item>
-        <item>Fast</item>
-        <item>Fastest</item>
-    </string-array>
-    <string-array name="scroll_sensitivity_values">
-        <item>0</item>
-        <item>6</item>
-        <item>3</item>
-        <item>2</item>
-        <item>1</item>
-        <item>0.5</item>
-    </string-array>
     <string name="scroll_sensitivity_default">2</string>
-
-    <string-array name="book_line_length_texts">
-        <item>5 moves</item>
-        <item>10 moves</item>
-        <item>15 moves</item>
-        <item>20 moves</item>
-        <item>30 moves</item>
-        <item>50 moves</item>
-        <item>Unlimited</item>
-    </string-array>
-        <string-array name="book_line_length_values">
-        <item>5</item>
-        <item>10</item>
-        <item>15</item>
-        <item>20</item>
-        <item>30</item>
-        <item>50</item>
-        <item>1000000</item>
-    </string-array>
     <string name="book_line_length_default">1000000</string>
-
     <string name="cpu_warning">\
 <b>CPU Usage</b>\n\
 If you leave DroidFish running in the background and <i>GameMode</i> is set to \
@@ -235,7 +72,7 @@ you are not actively using the program.\
     <string name="reading_pgn_file">Reading PGN file</string>
     <string name="reading_scid_file">Reading Scid file</string>
     <string name="new_file">&lt;New File&gt;</string>
-    <string name="please_wait">Please wait&#8230;</string>
+    <string name="please_wait">Please wait…</string>
     <string name="no_pgn_files">No files found in directory DroidFish/pgn on the SD card</string>
     <string name="no_scid_files">No files found in directory scid on the SD card</string>
     <string name="select_color_theme">Select Color Theme</string>
@@ -333,7 +170,6 @@ you are not actively using the program.\
     <string name="uci_protocol_error">UCI protocol error</string>
     <string name="start_new_game">Start New Game?</string>
     <string name="strength_cuckoo_hint">Use the CuckooChess engine for even lower strength.</string>
-
     <string name="err_too_few_spaces">Too few spaces</string>
     <string name="err_invalid_piece">Invalid piece</string>
     <string name="err_invalid_side">Invalid side</string>
@@ -347,7 +183,6 @@ you are not actively using the program.\
     <string name="err_pawn_on_first_last_rank">Pawn on first/last rank</string>
     <string name="err_too_many_white_pieces">Too many white pieces</string>
     <string name="err_too_many_black_pieces">Too many black pieces</string>
-
     <string name="option_new_game">New Game</string>
     <string name="option_file">File</string>
     <string name="option_resign_game">Resign game</string>
@@ -360,7 +195,6 @@ you are not actively using the program.\
     <string name="option_select_engine">Select Chess Engine</string>
     <string name="option_color_theme">Set Color Theme</string>
     <string name="option_about">About / Help</string>
-
     <string name="prefs_playing_options">Playing Options</string>
     <string name="prefs_playerName_title">Player Name</string>
     <string name="prefs_playerName_summary">Default player name in new games</string>
@@ -487,9 +321,162 @@ you are not actively using the program.\
     <string name="prefs_tbEngineProbe_summary">Enable tablebase probing in engine, when supported. Takes effect next time engine is started</string>
     <string name="prefs_gtbPath_title">GTB Directory</string>
     <string name="prefs_gtbPath_summary">Directory where Gaviota tablebases are installed. Leave blank to use default directory</string>
-
     <string name="buttonDesc_flip">Flip board button</string>
     <string name="buttonDesc_mode">Mode button</string>
     <string name="buttonDesc_back">Backward button</string>
     <string name="buttonDesc_forward">Forward button</string>
+    <string-array name="engine_threads_texts">
+        <item>Automatic</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string-array name="engine_threads_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string-array name="moves_per_session_texts">
+        <item>Whole Game</item>
+        <item>1 move</item>
+        <item>10 moves</item>
+        <item>20 moves</item>
+        <item>30 moves</item>
+        <item>40 moves</item>
+        <item>50 moves</item>
+        <item>60 moves</item>
+    </string-array>
+    <string-array name="moves_per_session_values">
+        <item>0</item>
+        <item>1</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+    </string-array>
+    <string-array name="time_control_texts">
+        <item>15 seconds</item>
+        <item>30 seconds</item>
+        <item>1 minute</item>
+        <item>2 minutes</item>
+        <item>3 minutes</item>
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>45 minutes</item>
+        <item>60 minutes</item>
+        <item>90 minutes</item>
+        <item>120 minutes</item>
+    </string-array>
+    <string-array name="time_control_values">
+        <item>15000</item>
+        <item>30000</item>
+        <item>60000</item>
+        <item>120000</item>
+        <item>180000</item>
+        <item>300000</item>
+        <item>600000</item>
+        <item>900000</item>
+        <item>1800000</item>
+        <item>2700000</item>
+        <item>3600000</item>
+        <item>5400000</item>
+        <item>7200000</item>
+    </string-array>
+    <string-array name="time_increment_texts">
+        <item>0s</item>
+        <item>1s</item>
+        <item>2s</item>
+        <item>3s</item>
+        <item>4s</item>
+        <item>5s</item>
+        <item>10s</item>
+        <item>12s</item>
+        <item>15s</item>
+        <item>30s</item>
+        <item>60s</item>
+    </string-array>
+    <string-array name="time_increment_values">
+        <item>0</item>
+        <item>1000</item>
+        <item>2000</item>
+        <item>3000</item>
+        <item>4000</item>
+        <item>5000</item>
+        <item>10000</item>
+        <item>12000</item>
+        <item>15000</item>
+        <item>30000</item>
+        <item>60000</item>
+    </string-array>
+    <string-array name="font_size_texts">
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Large</item>
+        <item>Larger</item>
+    </string-array>
+    <string-array name="font_size_values">
+        <item>10</item>
+        <item>12</item>
+        <item>16</item>
+        <item>21</item>
+    </string-array>
+    <string-array name="thinking_arrows_texts">
+        <item>No arrows</item>
+        <item>Max 1 Arrow</item>
+        <item>Max 2 Arrows</item>
+        <item>Max 3 Arrows</item>
+        <item>Max 4 Arrows</item>
+        <item>Max 5 Arrows</item>
+        <item>Max 6 Arrows</item>
+    </string-array>
+    <string-array name="thinking_arrows_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+    <string-array name="scroll_sensitivity_texts">
+        <item>Off</item>
+        <item>Slowest</item>
+        <item>Slow</item>
+        <item>Normal</item>
+        <item>Fast</item>
+        <item>Fastest</item>
+    </string-array>
+    <string-array name="scroll_sensitivity_values">
+        <item>0</item>
+        <item>6</item>
+        <item>3</item>
+        <item>2</item>
+        <item>1</item>
+        <item>0.5</item>
+    </string-array>
+    <string-array name="book_line_length_texts">
+        <item>5 moves</item>
+        <item>10 moves</item>
+        <item>15 moves</item>
+        <item>20 moves</item>
+        <item>30 moves</item>
+        <item>50 moves</item>
+        <item>Unlimited</item>
+    </string-array>
+        <string-array name="book_line_length_values">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>30</item>
+        <item>50</item>
+        <item>1000000</item>
+    </string-array>
 </resources>
