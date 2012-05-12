@@ -18,6 +18,8 @@
 
 package org.petero.droidfish.gtb;
 
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 /** Interface to native gtb probing code. */
 class GtbProbe {
     static {
@@ -25,14 +27,32 @@ class GtbProbe {
     }
 
     private String currTbPath = "";
+    private ConcurrentLinkedQueue<String> tbPathQueue = new ConcurrentLinkedQueue<String>();
 
     GtbProbe() {
     }
 
-    final synchronized void setPath(String tbPath, boolean forceReload) {
-        if (forceReload || !currTbPath.equals(tbPath)) {
-            currTbPath = tbPath;
-            init(tbPath);
+    public final void setPath(String tbPath, boolean forceReload) {
+        if (forceReload || !tbPathQueue.isEmpty() || !currTbPath.equals(tbPath)) {
+            tbPathQueue.add(tbPath);
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    initIfNeeded();
+                }
+            });
+            t.setPriority(Thread.MIN_PRIORITY);
+            t.start();
+        }
+    }
+
+    public final synchronized void initIfNeeded() {
+        String path = tbPathQueue.poll();
+        while (!tbPathQueue.isEmpty())
+            path = tbPathQueue.poll();
+        if (path != null) {
+            currTbPath = path;
+            init(currTbPath);
         }
     }
 

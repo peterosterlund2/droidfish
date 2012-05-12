@@ -143,9 +143,13 @@ public class Probe {
             epSquare = GtbProbe.NOSQUARE;
 
         int[] result = new int[2];
-        boolean res = gtb.probeHard(pos.whiteMove, epSquare, castleMask,
-                                    whiteSquares, blackSquares, whitePieces, blackPieces,
-                                    result);
+        boolean res = false;
+        if (nWhite + nBlack <= 5) {
+            gtb.initIfNeeded();
+            res = gtb.probeHard(pos.whiteMove, epSquare, castleMask,
+                                whiteSquares, blackSquares, whitePieces, blackPieces,
+                                result);
+        }
         ProbeResult ret = new ProbeResult();
         if (res) {
             switch (result[0]) {
