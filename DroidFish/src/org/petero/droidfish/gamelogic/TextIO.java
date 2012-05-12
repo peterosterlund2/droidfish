@@ -59,16 +59,16 @@ public class TextIO {
                 case '/': row--; col = 0; break;
                 case 'P': safeSetPiece(pos, col, row, Piece.WPAWN);   col++; break;
                 case 'N': safeSetPiece(pos, col, row, Piece.WKNIGHT); col++; break;
-        case 'B': safeSetPiece(pos, col, row, Piece.WBISHOP); col++; break;
-        case 'R': safeSetPiece(pos, col, row, Piece.WROOK);   col++; break;
-        case 'Q': safeSetPiece(pos, col, row, Piece.WQUEEN);  col++; break;
-        case 'K': safeSetPiece(pos, col, row, Piece.WKING);   col++; break;
-        case 'p': safeSetPiece(pos, col, row, Piece.BPAWN);   col++; break;
-        case 'n': safeSetPiece(pos, col, row, Piece.BKNIGHT); col++; break;
-        case 'b': safeSetPiece(pos, col, row, Piece.BBISHOP); col++; break;
-        case 'r': safeSetPiece(pos, col, row, Piece.BROOK);   col++; break;
-        case 'q': safeSetPiece(pos, col, row, Piece.BQUEEN);  col++; break;
-        case 'k': safeSetPiece(pos, col, row, Piece.BKING);   col++; break;
+                case 'B': safeSetPiece(pos, col, row, Piece.WBISHOP); col++; break;
+                case 'R': safeSetPiece(pos, col, row, Piece.WROOK);   col++; break;
+                case 'Q': safeSetPiece(pos, col, row, Piece.WQUEEN);  col++; break;
+                case 'K': safeSetPiece(pos, col, row, Piece.WKING);   col++; break;
+                case 'p': safeSetPiece(pos, col, row, Piece.BPAWN);   col++; break;
+                case 'n': safeSetPiece(pos, col, row, Piece.BKNIGHT); col++; break;
+                case 'b': safeSetPiece(pos, col, row, Piece.BBISHOP); col++; break;
+                case 'r': safeSetPiece(pos, col, row, Piece.BROOK);   col++; break;
+                case 'q': safeSetPiece(pos, col, row, Piece.BQUEEN);  col++; break;
+                case 'k': safeSetPiece(pos, col, row, Piece.BKING);   col++; break;
                 default: throw new ChessParseError(R.string.err_invalid_piece, pos);
             }
         }

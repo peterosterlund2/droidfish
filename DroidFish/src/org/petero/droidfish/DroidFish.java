@@ -145,7 +145,6 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! Handle PGN intents with more than one game.
     // FIXME!!! File load/save of FEN data
     // FIXME!!! Make engine hash size configurable.
-    // FIXME!!! Startup slow when all GTB files installed.
     // FIXME!!! Nicer looking icons.
 
     private ChessBoard cb;
