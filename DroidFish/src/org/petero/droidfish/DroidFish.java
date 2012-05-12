@@ -167,7 +167,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private ScrollView moveListScroll;
     private TextView moveList;
     private TextView thinking;
-    private ImageButton flipButton, modeButton, undoButton, redoButton;
+    private ImageButton custButton, flipButton, modeButton, undoButton, redoButton;
     private TextView whiteClock, blackClock, titleText;
 
     SharedPreferences settings;
@@ -480,6 +480,12 @@ public class DroidFish extends Activity implements GUIInterface {
             }
         });
 
+        custButton = (ImageButton)findViewById(R.id.customButton);
+        custButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
         flipButton = (ImageButton)findViewById(R.id.flipButton);
         flipButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -635,21 +641,26 @@ public class DroidFish extends Activity implements GUIInterface {
         if (largeButtons) {
             bWidth  = bWidth  * 3 / 2;
             bHeight = bHeight * 3 / 2;
+            custButton.setImageResource(R.drawable.custom_large);
             flipButton.setImageResource(R.drawable.flip_large);
             modeButton.setImageResource(R.drawable.mode_large);
             undoButton.setImageResource(R.drawable.left_large);
             redoButton.setImageResource(R.drawable.right_large);
         } else {
+            custButton.setImageResource(R.drawable.custom);
             flipButton.setImageResource(R.drawable.flip);
             modeButton.setImageResource(R.drawable.mode);
             undoButton.setImageResource(R.drawable.left);
             redoButton.setImageResource(R.drawable.right);
         }
+        custButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
         flipButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
         modeButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
         undoButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
         redoButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
 
+        custButton.setVisibility(true ? View.GONE : View.VISIBLE);
+        
         bookOptions.filename = settings.getString("bookFile", "");
         bookOptions.maxLength = getIntSetting("bookMaxLength", 1000000);
         bookOptions.preferMainLines = settings.getBoolean("bookPreferMainLines", false);
