@@ -43,4 +43,7 @@ public class EngineUtil {
             abi = "armeabi"; // Unknown ABI, assume original ARM
         return "stockfish-" + abi;
     }
+
+    /** Executes chmod 744 exePath. */
+    final static native boolean chmod(String exePath);
 }

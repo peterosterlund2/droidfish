@@ -240,12 +240,7 @@ public class ExternalEngine extends UCIEngineBase {
     }
 
     private final void chmod(String exePath) throws IOException {
-        Process proc = Runtime.getRuntime().exec(new String[]{"chmod", "744", exePath});
-        try {
-            proc.waitFor();
-        } catch (InterruptedException e) {
-            proc.destroy();
+        if (!EngineUtil.chmod(exePath))
             throw new IOException("chmod failed");
-        }
     }
 }

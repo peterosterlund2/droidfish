@@ -19,6 +19,7 @@
 #include <jni.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 
 /*
  * Class:     org_petero_droidfish_engine_EngineUtil
@@ -29,4 +30,20 @@ extern "C" JNIEXPORT jint JNICALL Java_org_petero_droidfish_engine_EngineUtil_ge
 		(JNIEnv *, jclass)
 {
 	return sysconf(_SC_NPROCESSORS_ONLN);
+}
+
+/*
+ * Class:     org_petero_droidfish_engine_EngineUtil
+ * Method:    chmod
+ * Signature: (Ljava/lang/String;)Z
+ */
+extern "C" JNIEXPORT jboolean JNICALL Java_org_petero_droidfish_engine_EngineUtil_chmod
+  (JNIEnv *env, jclass, jstring jExePath)
+{
+    const char* exePath = (*env).GetStringUTFChars(jExePath, NULL);
+    if (!exePath)
+        return false;
+    bool ret = chmod(exePath, 0744) == 0;
+    (*env).ReleaseStringUTFChars(jExePath, exePath);
+    return ret;
 }
