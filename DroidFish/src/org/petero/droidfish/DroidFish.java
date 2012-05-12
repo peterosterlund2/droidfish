@@ -603,7 +603,7 @@ public class DroidFish extends Activity implements GUIInterface {
         maxNumArrows = getIntSetting("thinkingArrows", 2);
         mShowBookHints = settings.getBoolean("bookHints", false);
 
-        mEngineThreads = getIntSetting("threads", 0);
+        mEngineThreads = getIntSetting("threads", 1);
 
         String engine = settings.getString("engine", "stockfish");
         int strength = settings.getInt("strength", 1000);
