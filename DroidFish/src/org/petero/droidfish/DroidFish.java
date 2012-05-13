@@ -1289,7 +1289,8 @@ public class DroidFish extends Activity implements GUIInterface {
         }
         if ((hints == null) && mShowBookHints)
             hints = bookMoves;
-        if ((variantMoves != null) && variantMoves.size() > 1) {
+        if (((hints == null) || hints.isEmpty()) &&
+            (variantMoves != null) && variantMoves.size() > 1) {
             hints = variantMoves;
         }
         if ((hints != null) && (hints.size() > maxNumArrows)) {
