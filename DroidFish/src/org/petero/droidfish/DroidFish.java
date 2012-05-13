@@ -272,6 +272,22 @@ public class DroidFish extends Activity implements GUIInterface {
                     ctrl.prefsChanged();
                 }
             });
+            addAction(new UIAction() {
+                public String getId() { return "toggleAnalysis"; }
+                public int getName() { return R.string.toggle_analysis; }
+                public int getIcon(boolean large) { return -1; }
+                public boolean enabled() { return true; }
+                public void run() {
+                    int gameModeType = ctrl.analysisMode() ? GameMode.EDIT_GAME : GameMode.ANALYSIS;
+                    Editor editor = settings.edit();
+                    String gameModeStr = String.format("%d", gameModeType);
+                    editor.putString("gameMode", gameModeStr);
+                    editor.commit();
+                    gameMode = new GameMode(gameModeType);
+                    ctrl.setGameMode(gameMode);
+                    setBoardFlip(true);
+                }
+            });
         }
 
         @Override

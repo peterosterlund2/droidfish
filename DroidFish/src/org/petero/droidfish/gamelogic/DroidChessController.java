@@ -131,6 +131,11 @@ public class DroidChessController {
         }
     }
 
+    /** Return true if game mode is analysis. */
+    public final boolean analysisMode() {
+        return gameMode.analysisMode();
+    }
+
     /** Set engine book options. */
     public final synchronized void setBookOptions(BookOptions options) {
         if (!bookOptions.equals(options)) {
