@@ -57,6 +57,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="select_chess_engine">Schach-Engine auswählen</string>
   <string name="select_pgn_file">PGN-Datei zum Öffnen wählen</string>
   <string name="select_pgn_file_save">In eine PGN-Datei speichern</string>
+  <string name="pgn_load">Laden</string>
+  <string name="pgn_save">Speichern</string>
   <string name="select_scid_file">Scid-Datei zum Öffnen wählen</string>
   <string name="select_pgn_game">Partie zum Öffnen auswählen</string>
   <string name="reading_pgn_file">PGN-Datei wird gelesen</string>
@@ -125,6 +127,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="preferences">Einstellungen</string>
   <string name="load_game_title">Datei bearbeiten/Partie laden</string>
   <string name="save_game_title">Datei bearbeiten/Partie speichern</string>
+  <string name="save_game_hint">Bestehende Partie auswählen, um Speicherort festzulegen. Durch langes Drücken wird die entsprechende Partie gelöscht.</string>
   <string name="load_scid_game_title">Scid-Partie laden</string>
   <string name="cpu_warning_title">Prozessor-Warnung</string>
   <string name="failed_to_read_pgn_data">PGN-Daten konnten nicht gelesen werden</string>
@@ -145,6 +148,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="failed_to_save_game">Speichern der Partie nicht möglich</string>
   <string name="failed_to_delete_game">Löschen der Partie nicht möglich</string>
   <string name="file_too_large">Datei zu groß</string>
+  <string name="not_a_pgn_file">Keine PGN-Datei</string>
   <string name="save_game_question">Partie speichern?</string>
   <string name="before_selected">Vor der Auswahl</string>
   <string name="after_selected">Nach der Auswahl</string>
@@ -154,6 +158,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="failed_to_start_engine">Fehler beim Starten der Engine</string>
   <string name="engine_terminated">Engine beendet</string>
   <string name="uci_protocol_error">UCI-Protokollfehler</string>
+  <string name="start_new_game">Neues Spiel starten?</string>
+  <string name="strength_cuckoo_hint">Nutzen Sie die CuckooChess-Engine für eine noch geringere Spielstärke.</string>
   <string name="err_too_few_spaces">Zuwenig Felder</string>
   <string name="err_invalid_piece">Unzulässige Figur</string>
   <string name="err_invalid_side">Unzulässige Seite</string>
@@ -180,6 +186,12 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="option_color_theme">Farbschema auswählen</string>
   <string name="option_about">Information/Hinweise</string>
   <string name="prefs_playing_options">Spieloptionen</string>
+  <string name="prefs_playerName_title">Spielername</string>
+  <string name="prefs_playerName_summary">Standard-Spielername in neuen Partien</string>
+  <string name="prefs_autoSwapSides_title">Spielfeld drehen: Automatisch</string>
+  <string name="prefs_autoSwapSides_summary">Seite am Zug verwenden, um das Spielfeld automatisch zu drehen</string>
+  <string name="prefs_playerNameFlip_title">Spielfeld drehen: Spieler</string>
+  <string name="prefs_playerNameFlip_summary">Spielernamen verwenden, um das Spielfeld automatisch zu drehen</string>
   <string name="prefs_engine_settings">Engine-Einstellungen</string>
   <string name="prefs_strength_title">Spielstärke</string>
   <string name="prefs_strength_summary">Nur von den internen Engines unterstützt</string>
@@ -210,6 +222,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_oneTouchMoves_summary">Bei Berührung eines Feldes, von dem genau ein Zug möglich ist, diesen Zug sofort ausführen</string>
   <string name="prefs_soundEnabled_title">Töne</string>
   <string name="prefs_soundEnabled_summary">Ton bei Computer-Zug ausgeben</string>
+  <string name="prefs_vibrateEnabled_title">Vibration aktivieren</string>
+  <string name="prefs_vibrateEnabled_summary">Vibrieren bei Zug des Computers</string>
   <string name="prefs_fullScreenMode_title">Vollbildanzeige</string>
   <string name="prefs_fullScreenMode_summary">Vollbildanzeige mit verdeckter Statuszeile aktivieren</string>
   <string name="prefs_wakeLock_title">Bildschirmabschaltung deaktivieren</string>
@@ -219,6 +233,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_scrollSensitivity_summary">Wischgeschwindigkeit für Partie-Navigation einstellen</string>
   <string name="prefs_invertScrollDirection_title">Wischrichtung</string>
   <string name="prefs_invertScrollDirection_summary">Wischrichtung für Partie-Navigation umkehren</string>
+  <string name="prefs_leftHanded_title">Linkshänder-Modus</string>
+  <string name="prefs_leftHanded_summary">Steuerelemente auf der linken Seite im Querformat</string>
   <string name="prefs_fontSize_title">Schriftgröße</string>
   <string name="prefs_fontSize_summary">Schriftgröße für Zugliste und Partie-Informationen einstellen</string>
   <string name="prefs_largeButtons_title">Größe der Schaltflächen</string>
@@ -242,6 +258,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_color_decoration_title">Datenbank-Hinweise</string>
   <string name="prefs_move_list">Zugliste</string>
   <string name="prefs_color_currentMove_title">Aktueller Zug</string>
+  <string name="prefs_color_pgnComment_title">Kommentare</string>
   <string name="prefs_other">Sonstige Optionen</string>
   <string name="prefs_bookSettings_title">Eröffnungsbuch</string>
   <string name="prefs_bookSettings_summary">Einstellungen für die Verwendung von Eröffnungsbüchern</string>
@@ -294,6 +311,10 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_tbEngineProbe_summary">Zugriff auf die Gaviota-Datenbanken durch die Engine aktivieren, sofern unterstützt. Diese Einstellung wirkt sich beim nächsten Start der Engine aus.</string>
   <string name="prefs_gtbPath_title">GTB-Verzeichnis</string>
   <string name="prefs_gtbPath_summary">Verzeichnis, in dem die Gaviota-Endspieldatenbanken installiert sind (zur Nutzung des Standard-Verzeichnisses freilassen)</string>
+  <string name="buttonDesc_flip">Taste zum Drehen des Spielfelds</string>
+  <string name="buttonDesc_mode">Modus-Taste</string>
+  <string name="buttonDesc_back">Zurück-Taste</string>
+  <string name="buttonDesc_forward">Vorwärts-Taste</string>
   <string-array name="engine_threads_texts">
     <item>Automatisch</item>
     <item>1</item>
