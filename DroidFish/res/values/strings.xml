@@ -98,6 +98,13 @@ you are not actively using the program.\
     <string name="load_next_game">Load Next Game</string>
     <string name="no_prev_game">No previous game</string>
     <string name="no_next_game">No next game</string>
+    <string name="select_action">Select Action</string>
+    <string name="flip_board">Flip Board</string>
+    <string name="toggle_show_thinking">Toggle Show Thinking</string>
+    <string name="toggle_book_hints">Toggle Book Hints</string>
+    <string name="toggle_pgn_variations">Toggle Variations</string>
+    <string name="toggle_pgn_comments">Toggle Comments</string>
+    <string name="toggle_pgn_headers">Toggle Headers</string>
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -249,6 +256,17 @@ you are not actively using the program.\
     <string name="prefs_fontSize_summary">Font size for move list and game information</string>
     <string name="prefs_largeButtons_title">Large Buttons</string>
     <string name="prefs_largeButtons_summary">Use large buttons for game navigation and mode setting</string>
+    <string name="prefs_buttonSettings_title">Configure Buttons</string>
+    <string name="prefs_buttonSettings_summary">Configure button size and button actions.</string>
+    <string name="prefs_button_action_0_title">Main Action</string>
+    <string name="prefs_button_action_1_title">Menu Action 1</string>
+    <string name="prefs_button_action_2_title">Menu Action 2</string>
+    <string name="prefs_button_action_3_title">Menu Action 3</string>
+    <string name="prefs_button_action_4_title">Menu Action 4</string>
+    <string name="prefs_button_action_5_title">Menu Action 5</string>
+    <string name="prefs_button_action_6_title">Menu Action 6</string>
+    <string name="prefs_custom_button_1">Custom Button 1</string>
+    <string name="prefs_custom_button_2">Custom Button 2</string>
     <string name="prefs_colors_title">Color Settings</string>
     <string name="prefs_colors_summary">Change individual colors</string>
     <string name="prefs_chess_board">Chess Board</string>
@@ -321,8 +339,8 @@ you are not actively using the program.\
     <string name="prefs_tbEngineProbe_summary">Enable tablebase probing in engine, when supported. Takes effect next time engine is started</string>
     <string name="prefs_gtbPath_title">GTB Directory</string>
     <string name="prefs_gtbPath_summary">Directory where Gaviota tablebases are installed. Leave blank to use default directory</string>
-    <string name="buttonDesc_custom">Custom button</string>
-    <string name="buttonDesc_flip">Flip board button</string>
+    <string name="buttonDesc_custom1">Custom button 1</string>
+    <string name="buttonDesc_custom2">Custom button 2</string>
     <string name="buttonDesc_mode">Mode button</string>
     <string name="buttonDesc_back">Backward button</string>
     <string name="buttonDesc_forward">Forward button</string>
@@ -479,5 +497,23 @@ you are not actively using the program.\
         <item>30</item>
         <item>50</item>
         <item>1000000</item>
+    </string-array>
+    <string-array name="button_action_texts">
+        <item>Disabled</item>
+        <item>Flip Board</item>
+        <item>@string/toggle_show_thinking</item>
+        <item>@string/toggle_book_hints</item>
+        <item>@string/toggle_pgn_variations</item>
+        <item>@string/toggle_pgn_comments</item>
+        <item>@string/toggle_pgn_headers</item>
+    </string-array>
+    <string-array name="button_action_values">
+        <item></item>
+        <item>flipboard</item>
+        <item>showThinking</item>
+        <item>bookHints</item>
+        <item>viewVariations</item>
+        <item>viewComments</item>
+        <item>viewHeaders</item>
     </string-array>
 </resources>

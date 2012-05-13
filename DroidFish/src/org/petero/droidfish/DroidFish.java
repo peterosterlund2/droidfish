@@ -28,6 +28,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -166,7 +167,9 @@ public class DroidFish extends Activity implements GUIInterface {
     private ScrollView moveListScroll;
     private TextView moveList;
     private TextView thinking;
-    private ImageButton custButton, flipButton, modeButton, undoButton, redoButton;
+    private ImageButton custom1Button, custom2Button;
+    private ImageButton modeButton, undoButton, redoButton;
+    private ButtonActions custom1ButtonActions, custom2ButtonActions;
     private TextView whiteClock, blackClock, titleText;
 
     SharedPreferences settings;
@@ -195,6 +198,88 @@ public class DroidFish extends Activity implements GUIInterface {
     private WakeLock wakeLock = null;
     private boolean useWakeLock = false;
 
+    /** Defines all configurable button actions. */
+    private ActionFactory actionFactory = new ActionFactory() {
+        private HashMap<String, UIAction> actions;
+
+        private void addAction(UIAction a) {
+            actions.put(a.getId(), a);
+        }
+
+        {
+            actions = new HashMap<String, UIAction>();
+            addAction(new UIAction() {
+                public String getId() { return "flipboard"; }
+                public int getName() { return R.string.flip_board; }
+                public int getIcon(boolean large) { return large ? R.drawable.flip_large : R.drawable.flip; }
+                public boolean enabled() { return true; }
+                public void run() {
+                    boardFlipped = !cb.flipped;
+                    setBooleanPref("boardFlipped", boardFlipped);
+                    cb.setFlipped(boardFlipped);
+                }
+            });
+            addAction(new UIAction() {
+                public String getId() { return "showThinking"; }
+                public int getName() { return R.string.toggle_show_thinking; }
+                public int getIcon(boolean large) { return -1; }
+                public boolean enabled() { return true; }
+                public void run() {
+                    mShowThinking = toggleBooleanPref("showThinking");
+                    updateThinkingInfo();
+                }
+            });
+            addAction(new UIAction() {
+                public String getId() { return "bookHints"; }
+                public int getName() { return R.string.toggle_book_hints; }
+                public int getIcon(boolean large) { return -1; }
+                public boolean enabled() { return true; }
+                public void run() {
+                    mShowBookHints = toggleBooleanPref("bookHints");
+                    updateThinkingInfo();
+                }
+            });
+            addAction(new UIAction() {
+                public String getId() { return "viewVariations"; }
+                public int getName() { return R.string.toggle_pgn_variations; }
+                public int getIcon(boolean large) { return -1; }
+                public boolean enabled() { return true; }
+                public void run() {
+                    pgnOptions.view.variations = toggleBooleanPref("viewVariations");
+                    gameTextListener.clear();
+                    ctrl.prefsChanged();
+                }
+            });
+            addAction(new UIAction() {
+                public String getId() { return "viewComments"; }
+                public int getName() { return R.string.toggle_pgn_comments; }
+                public int getIcon(boolean large) { return -1; }
+                public boolean enabled() { return true; }
+                public void run() {
+                    pgnOptions.view.comments = toggleBooleanPref("viewComments");
+                    gameTextListener.clear();
+                    ctrl.prefsChanged();
+                }
+            });
+            addAction(new UIAction() {
+                public String getId() { return "viewHeaders"; }
+                public int getName() { return R.string.toggle_pgn_headers; }
+                public int getIcon(boolean large) { return -1; }
+                public boolean enabled() { return true; }
+                public void run() {
+                    pgnOptions.view.headers = toggleBooleanPref("viewHeaders");
+                    gameTextListener.clear();
+                    ctrl.prefsChanged();
+                }
+            });
+        }
+
+        @Override
+        public UIAction getAction(String actionId) {
+            return actions.get(actionId);
+        }
+    };
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -204,6 +289,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
         createDirectories();
 
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         settings = PreferenceManager.getDefaultSharedPreferences(this);
         settings.registerOnSharedPreferenceChangeListener(new OnSharedPreferenceChangeListener() {
             @Override
@@ -217,6 +303,11 @@ public class DroidFish extends Activity implements GUIInterface {
         setWakeLock(false);
         wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "droidfish");
         wakeLock.setReferenceCounted(false);
+
+        custom1ButtonActions = new ButtonActions("custom1", CUSTOM1_BUTTON_DIALOG,
+                                                 R.string.select_action);
+        custom2ButtonActions = new ButtonActions("custom2", CUSTOM2_BUTTON_DIALOG,
+                                                 R.string.select_action);
 
         initUI(true);
 
@@ -479,20 +570,12 @@ public class DroidFish extends Activity implements GUIInterface {
             }
         });
 
-        custButton = (ImageButton)findViewById(R.id.customButton);
-        custButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-        flipButton = (ImageButton)findViewById(R.id.flipButton);
-        flipButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setBoardFlipPrefs(!cb.flipped);
-                cb.setFlipped(boardFlipped);
-            }
-        });
+        custom1Button = (ImageButton)findViewById(R.id.custom1Button);
+        custom1ButtonActions.setImageButton(custom1Button, this);
+
+        custom2Button = (ImageButton)findViewById(R.id.custom2Button);
+        custom2ButtonActions.setImageButton(custom2Button, this);
+
         modeButton = (ImageButton)findViewById(R.id.modeButton);
         modeButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -631,6 +714,9 @@ public class DroidFish extends Activity implements GUIInterface {
         vibrateEnabled = settings.getBoolean("vibrateEnabled", false);
         animateMoves = settings.getBoolean("animateMoves", true);
 
+        custom1ButtonActions.readPrefs(settings, actionFactory);
+        custom2ButtonActions.readPrefs(settings, actionFactory);
+
         boolean largeButtons = settings.getBoolean("largeButtons", false);
         Resources r = getResources();
         int bWidth  = (int)Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, r.getDisplayMetrics()));
@@ -638,26 +724,24 @@ public class DroidFish extends Activity implements GUIInterface {
         if (largeButtons) {
             bWidth  = bWidth  * 3 / 2;
             bHeight = bHeight * 3 / 2;
-            custButton.setImageResource(R.drawable.custom_large);
-            flipButton.setImageResource(R.drawable.flip_large);
+            custom1Button.setImageResource(custom1ButtonActions.getIcon(true));
+            custom2Button.setImageResource(custom2ButtonActions.getIcon(true));
             modeButton.setImageResource(R.drawable.mode_large);
             undoButton.setImageResource(R.drawable.left_large);
             redoButton.setImageResource(R.drawable.right_large);
         } else {
-            custButton.setImageResource(R.drawable.custom);
-            flipButton.setImageResource(R.drawable.flip);
+            custom1Button.setImageResource(custom1ButtonActions.getIcon(false));
+            custom2Button.setImageResource(custom2ButtonActions.getIcon(false));
             modeButton.setImageResource(R.drawable.mode);
             undoButton.setImageResource(R.drawable.left);
             redoButton.setImageResource(R.drawable.right);
         }
-        custButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
-        flipButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
+        custom1Button.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
+        custom2Button.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
         modeButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
         undoButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
         redoButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
 
-        custButton.setVisibility(true ? View.GONE : View.VISIBLE);
-        
         bookOptions.filename = settings.getString("bookFile", "");
         bookOptions.maxLength = getIntSetting("bookMaxLength", 1000000);
         bookOptions.preferMainLines = settings.getBoolean("bookPreferMainLines", false);
@@ -954,11 +1038,18 @@ public class DroidFish extends Activity implements GUIInterface {
         setBoardFlip(false);
     }
 
-    private final void setBoardFlipPrefs(boolean flipped) {
-        boardFlipped = flipped;
+    /** Set a boolean preference setting. */
+    private final void setBooleanPref(String name, boolean value) {
         Editor editor = settings.edit();
-        editor.putBoolean("boardFlipped", boardFlipped);
+        editor.putBoolean(name, value);
         editor.commit();
+    }
+
+    /** Toggle a boolean preference setting. Return new value. */
+    private final boolean toggleBooleanPref(String name) {
+        boolean value = !settings.getBoolean(name, false);
+        setBooleanPref(name, value);
+        return value;
     }
 
     private final void setBoardFlip(boolean matchPlayerNames) {
@@ -971,7 +1062,8 @@ public class DroidFish extends Activity implements GUIInterface {
             if (( flipped && (whiteMatch > blackMatch)) ||
                 (!flipped && (whiteMatch < blackMatch))) {
                 flipped = !flipped;
-                setBoardFlipPrefs(flipped);
+                boardFlipped = flipped;
+                setBooleanPref("boardFlipped", flipped);
             }
         }
         if (autoSwapSides) {
@@ -1222,6 +1314,8 @@ public class DroidFish extends Activity implements GUIInterface {
     static private final int GO_FORWARD_MENU_DIALOG = 14;
     static private final int FILE_MENU_DIALOG = 15;
     static private final int NEW_GAME_DIALOG = 16;
+    static private final int CUSTOM1_BUTTON_DIALOG = 17;
+    static private final int CUSTOM2_BUTTON_DIALOG = 18;
 
     @Override
     protected Dialog onCreateDialog(int id) {
@@ -1973,8 +2067,35 @@ public class DroidFish extends Activity implements GUIInterface {
             AlertDialog alert = builder.create();
             return alert;
         }
+        case CUSTOM1_BUTTON_DIALOG:
+            return makeButtonDialog(custom1ButtonActions);
+        case CUSTOM2_BUTTON_DIALOG:
+            return makeButtonDialog(custom2ButtonActions);
         }
         return null;
+    }
+
+    private Dialog makeButtonDialog(ButtonActions buttonActions) {
+        List<CharSequence> names = new ArrayList<CharSequence>();
+        final List<UIAction> actions = new ArrayList<UIAction>();
+
+        HashSet<String> used = new HashSet<String>();
+        for (UIAction a : buttonActions.getMenuActions()) {
+            if ((a != null) && a.enabled() && !used.contains(a.getId())) {
+                names.add(getString(a.getName()));
+                actions.add(a);
+                used.add(a.getId());
+            }
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(buttonActions.getMenuTitle());
+        builder.setItems(names.toArray(new CharSequence[names.size()]), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                UIAction a = actions.get(item);
+                a.run();
+            }
+        });
+        return builder.create();
     }
 
     /** Open a load/save file dialog. Uses OI file manager if available. */
