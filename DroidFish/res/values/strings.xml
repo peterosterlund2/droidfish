@@ -501,7 +501,7 @@ you are not actively using the program.\
     </string-array>
     <string-array name="button_action_texts">
         <item>Disabled</item>
-        <item>Flip Board</item>
+        <item>@string/flip_board</item>
         <item>@string/toggle_analysis</item>
         <item>@string/toggle_show_thinking</item>
         <item>@string/toggle_book_hints</item>
