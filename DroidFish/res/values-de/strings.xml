@@ -90,6 +90,14 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="load_next_game">Nächste Partie laden</string>
   <string name="no_prev_game">Keine vorherige Partie</string>
   <string name="no_next_game">Keine nächste Partie</string>
+  <string name="select_action">Aktion auswählen</string>
+  <string name="flip_board">Spielfeld drehen</string>
+  <string name="toggle_show_thinking">Berechnungen an/aus</string>
+  <string name="toggle_book_hints">Eröffnungsbuch-Hinweise an/aus</string>
+  <string name="toggle_pgn_variations">Varianten an/aus</string>
+  <string name="toggle_pgn_comments">Kommentare an/aus</string>
+  <string name="toggle_pgn_headers">Partie-Informationen an/aus</string>
+  <string name="toggle_analysis">Engine-Analyse an/aus</string>
   <string name="cancel">Abbrechen</string>
   <string name="yes">Ja</string>
   <string name="no">Nein</string>
@@ -158,7 +166,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="failed_to_start_engine">Fehler beim Starten der Engine</string>
   <string name="engine_terminated">Engine beendet</string>
   <string name="uci_protocol_error">UCI-Protokollfehler</string>
-  <string name="start_new_game">Neues Spiel starten?</string>
+  <string name="start_new_game">Neue Partie starten?</string>
   <string name="strength_cuckoo_hint">Nutzen Sie die CuckooChess-Engine für eine noch geringere Spielstärke.</string>
   <string name="err_too_few_spaces">Zuwenig Felder</string>
   <string name="err_invalid_piece">Unzulässige Figur</string>
@@ -239,6 +247,17 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_fontSize_summary">Schriftgröße für Zugliste und Partie-Informationen einstellen</string>
   <string name="prefs_largeButtons_title">Größe der Schaltflächen</string>
   <string name="prefs_largeButtons_summary">Große Schaltflächen für Partie-Navigation und Spielmodus-Einstellung verwenden</string>
+  <string name="prefs_buttonSettings_title">Tasten konfigurieren</string>
+  <string name="prefs_buttonSettings_summary">Tastengröße und -aktionen festlegen</string>
+  <string name="prefs_button_action_0_title">Hauptaktion</string>
+  <string name="prefs_button_action_1_title">Menuaktion 1</string>
+  <string name="prefs_button_action_2_title">Menuaktion 2</string>
+  <string name="prefs_button_action_3_title">Menuaktion 3</string>
+  <string name="prefs_button_action_4_title">Menuaktion 4</string>
+  <string name="prefs_button_action_5_title">Menuaktion 5</string>
+  <string name="prefs_button_action_6_title">Menuaktion 6</string>
+  <string name="prefs_custom_button_1">Benutzerdefinierte Taste 1</string>
+  <string name="prefs_custom_button_2">Benutzerdefinierte Taste 2</string>
   <string name="prefs_colors_title">Farbeinstellungen</string>
   <string name="prefs_colors_summary">Einzelne Farben ändern</string>
   <string name="prefs_chess_board">Spielfeld</string>
@@ -311,7 +330,6 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_tbEngineProbe_summary">Zugriff auf die Gaviota-Datenbanken durch die Engine aktivieren, sofern unterstützt. Diese Einstellung wirkt sich beim nächsten Start der Engine aus.</string>
   <string name="prefs_gtbPath_title">GTB-Verzeichnis</string>
   <string name="prefs_gtbPath_summary">Verzeichnis, in dem die Gaviota-Endspieldatenbanken installiert sind (zur Nutzung des Standard-Verzeichnisses freilassen)</string>
-  <string name="buttonDesc_flip">Taste zum Drehen des Spielfelds</string>
   <string name="buttonDesc_mode">Modus-Taste</string>
   <string name="buttonDesc_back">Zurück-Taste</string>
   <string name="buttonDesc_forward">Vorwärts-Taste</string>
@@ -468,5 +486,25 @@ wenn Sie es nicht aktiv nutzen.\
     <item>30</item>
     <item>50</item>
     <item>1000000</item>
+  </string-array>
+  <string-array name="button_action_texts">
+    <item>Deaktiviert</item>
+    <item>@string/flip_board</item>
+    <item>@string/toggle_analysis</item>
+    <item>@string/toggle_show_thinking</item>
+    <item>@string/toggle_book_hints</item>
+    <item>@string/toggle_pgn_variations</item>
+    <item>@string/toggle_pgn_comments</item>
+    <item>@string/toggle_pgn_headers</item>
+  </string-array>
+  <string-array name="button_action_values">
+    <item></item>
+    <item>flipboard</item>
+    <item>toggleAnalysis</item>
+    <item>showThinking</item>
+    <item>bookHints</item>
+    <item>viewVariations</item>
+    <item>viewComments</item>
+    <item>viewHeaders</item>
   </string-array>
 </resources>
