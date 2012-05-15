@@ -684,11 +684,12 @@ public class DroidFish extends Activity implements GUIInterface {
     private final void readPrefs() {
         int modeNr = getIntSetting("gameMode", 1);
         gameMode = new GameMode(modeNr);
+        String oldPlayerName = playerName;
         playerName = settings.getString("playerName", "Player");
         boardFlipped = settings.getBoolean("boardFlipped", false);
         autoSwapSides = settings.getBoolean("autoSwapSides", false);
         playerNameFlip = settings.getBoolean("playerNameFlip", true);
-        setBoardFlip(false);
+        setBoardFlip(!playerName.equals(oldPlayerName));
         boolean drawSquareLabels = settings.getBoolean("drawSquareLabels", false);
         cb.setDrawSquareLabels(drawSquareLabels);
         cb.oneTouchMoves = settings.getBoolean("oneTouchMoves", false);
@@ -1857,6 +1858,7 @@ public class DroidFish extends Activity implements GUIInterface {
                                 headers.put("White", white.getText().toString().trim());
                                 headers.put("Black", black.getText().toString().trim());
                                 ctrl.setHeaders(headers);
+                                setBoardFlip(true);
                             }
                         });
 
