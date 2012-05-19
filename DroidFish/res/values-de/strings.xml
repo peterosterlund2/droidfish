@@ -196,10 +196,10 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_playing_options">Spieloptionen</string>
   <string name="prefs_playerName_title">Spielername</string>
   <string name="prefs_playerName_summary">Standard-Spielername in neuen Partien</string>
-  <string name="prefs_autoSwapSides_title">Spielfeld drehen: Automatisch</string>
-  <string name="prefs_autoSwapSides_summary">Seite am Zug verwenden, um das Spielfeld automatisch zu drehen</string>
-  <string name="prefs_playerNameFlip_title">Spielfeld drehen: Spieler</string>
-  <string name="prefs_playerNameFlip_summary">Spielernamen verwenden, um das Spielfeld automatisch zu drehen</string>
+  <string name="prefs_autoSwapSides_title">Spielfeld automatisch drehen</string>
+  <string name="prefs_autoSwapSides_summary">Spielfeld entsprechend Seite am Zug automatisch zu drehen</string>
+  <string name="prefs_playerNameFlip_title">Spielfeld nach Namen drehen</string>
+  <string name="prefs_playerNameFlip_summary">Spielfeld in Abhängigkeit vom Spielernamen drehen</string>
   <string name="prefs_engine_settings">Engine-Einstellungen</string>
   <string name="prefs_strength_title">Spielstärke</string>
   <string name="prefs_strength_summary">Nur von den internen Engines unterstützt</string>
