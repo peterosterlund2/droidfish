@@ -1,3 +1,3 @@
-APP_ABI := armeabi armeabi-v7a x86
+APP_ABI := armeabi armeabi-v7a x86 mips
 APP_STL := stlport_static
 APP_OPTIM := release

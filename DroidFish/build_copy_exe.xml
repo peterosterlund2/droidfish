@@ -4,5 +4,6 @@
         <copy file="${basedir}/libs/armeabi/stockfish"     tofile="${basedir}/assets/stockfish-armeabi"/>
         <copy file="${basedir}/libs/armeabi-v7a/stockfish" tofile="${basedir}/assets/stockfish-armeabi-v7a"/>
         <copy file="${basedir}/libs/x86/stockfish"         tofile="${basedir}/assets/stockfish-x86"/>
+        <copy file="${basedir}/libs/mips/stockfish"        tofile="${basedir}/assets/stockfish-mips"/>
     </target>
 </project>

@@ -39,7 +39,9 @@ public class EngineUtil {
         if (sdkVersion < 4)
             return "stockfish15.mygz";
         String abi = CpuAbi.get();
-        if (!abi.equals("x86") && !abi.equals("armeabi-v7a"))
+        if (!abi.equals("x86") &&
+            !abi.equals("armeabi-v7a") &&
+            !abi.equals("mips"))
             abi = "armeabi"; // Unknown ABI, assume original ARM
         return "stockfish-" + abi;
     }
