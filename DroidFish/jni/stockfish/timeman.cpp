@@ -20,7 +20,6 @@
 #include <cmath>
 #include <algorithm>
 
-#include "misc.h"
 #include "search.h"
 #include "timeman.h"
 #include "ucioption.h"
@@ -73,7 +72,7 @@ namespace {
   enum TimeType { OptimumTime, MaxTime };
 
   template<TimeType>
-  int remaining(int myTime, int movesToGo, int fullMoveNumber);
+  int remaining(int myTime, int movesToGo, int fullMoveNumber, int slowMover);
 }
 
 
@@ -84,7 +83,7 @@ void TimeManager::pv_instability(int curChanges, int prevChanges) {
 }
 
 
-void TimeManager::init(const Search::LimitsType& limits, int currentPly)
+void TimeManager::init(const Search::LimitsType& limits, int currentPly, Color us)
 {
   /* We support four different kind of time controls:
 
@@ -108,25 +107,26 @@ void TimeManager::init(const Search::LimitsType& limits, int currentPly)
   int emergencyBaseTime    = Options["Emergency Base Time"];
   int emergencyMoveTime    = Options["Emergency Move Time"];
   int minThinkingTime      = Options["Minimum Thinking Time"];
+  int slowMover            = Options["Slow Mover"];
 
   // Initialize to maximum values but unstablePVExtraTime that is reset
   unstablePVExtraTime = 0;
-  optimumSearchTime = maximumSearchTime = limits.time;
+  optimumSearchTime = maximumSearchTime = limits.time[us];
 
   // We calculate optimum time usage for different hypothetic "moves to go"-values and choose the
   // minimum of calculated search time values. Usually the greatest hypMTG gives the minimum values.
-  for (hypMTG = 1; hypMTG <= (limits.movesToGo ? std::min(limits.movesToGo, MoveHorizon) : MoveHorizon); hypMTG++)
+  for (hypMTG = 1; hypMTG <= (limits.movestogo ? std::min(limits.movestogo, MoveHorizon) : MoveHorizon); hypMTG++)
   {
       // Calculate thinking time for hypothetic "moves to go"-value
-      hypMyTime =  limits.time
-                 + limits.increment * (hypMTG - 1)
+      hypMyTime =  limits.time[us]
+                 + limits.inc[us] * (hypMTG - 1)
                  - emergencyBaseTime
                  - emergencyMoveTime * std::min(hypMTG, emergencyMoveHorizon);
 
       hypMyTime = std::max(hypMyTime, 0);
 
-      t1 = minThinkingTime + remaining<OptimumTime>(hypMyTime, hypMTG, currentPly);
-      t2 = minThinkingTime + remaining<MaxTime>(hypMyTime, hypMTG, currentPly);
+      t1 = minThinkingTime + remaining<OptimumTime>(hypMyTime, hypMTG, currentPly, slowMover);
+      t2 = minThinkingTime + remaining<MaxTime>(hypMyTime, hypMTG, currentPly, slowMover);
 
       optimumSearchTime = std::min(optimumSearchTime, t1);
       maximumSearchTime = std::min(maximumSearchTime, t2);
@@ -143,12 +143,12 @@ void TimeManager::init(const Search::LimitsType& limits, int currentPly)
 namespace {
 
   template<TimeType T>
-  int remaining(int myTime, int movesToGo, int currentPly)
+  int remaining(int myTime, int movesToGo, int currentPly, int slowMover)
   {
     const float TMaxRatio   = (T == OptimumTime ? 1 : MaxRatio);
     const float TStealRatio = (T == OptimumTime ? 0 : StealRatio);
 
-    int thisMoveImportance = move_importance(currentPly);
+    int thisMoveImportance = move_importance(currentPly) * slowMover / 100;
     int otherMovesImportance = 0;
 
     for (int i = 1; i < movesToGo; i++)

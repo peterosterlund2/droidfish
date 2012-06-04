@@ -22,15 +22,15 @@
 
 #include <fstream>
 #include <string>
+#include <vector>
 
-#include "lock.h"
 #include "types.h"
 
 extern const std::string engine_info(bool to_uci = false);
-extern int system_time();
 extern int cpu_count();
-extern void timed_wait(WaitCondition*, Lock*, int);
+extern void timed_wait(WaitCondition&, Lock&, int);
 extern void prefetch(char* addr);
+extern void start_logger(bool b);
 
 extern void dbg_hit_on(bool b);
 extern void dbg_hit_on_c(bool c, bool b);
@@ -38,13 +38,36 @@ extern void dbg_mean_of(int v);
 extern void dbg_print();
 
 class Position;
-extern Move move_from_uci(const Position& pos, const std::string& str);
+extern Move move_from_uci(const Position& pos, std::string& str);
 extern const std::string move_to_uci(Move m, bool chess960);
 extern const std::string move_to_san(Position& pos, Move m);
+
 
 struct Log : public std::ofstream {
   Log(const std::string& f = "log.txt") : std::ofstream(f.c_str(), std::ios::out | std::ios::app) {}
  ~Log() { if (is_open()) close(); }
+};
+
+
+struct Time {
+  void restart() { system_time(&t); }
+  uint64_t msec() const { return time_to_msec(t); }
+  int elapsed() const { return int(current_time().msec() - time_to_msec(t)); }
+
+  static Time current_time() { Time t; t.restart(); return t; }
+
+private:
+  sys_time_t t;
+};
+
+
+template<class Entry, int Size>
+struct HashTable {
+  HashTable() : e(Size, Entry()) { memset(&e[0], 0, sizeof(Entry) * Size); }
+  Entry* operator[](Key k) { return &e[(uint32_t)k & (Size - 1)]; }
+
+private:
+  std::vector<Entry> e;
 };
 
 #endif // !defined(MISC_H_INCLUDED)

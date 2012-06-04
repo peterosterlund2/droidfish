@@ -21,37 +21,32 @@
 #include <string>
 
 #include "bitboard.h"
-#include "misc.h"
+#include "evaluate.h"
 #include "position.h"
 #include "search.h"
 #include "thread.h"
+#include "tt.h"
+#include "ucioption.h"
 
-using namespace std;
-
-extern void uci_loop();
-extern void benchmark(int argc, char* argv[]);
+extern void uci_loop(const std::string&);
 extern void kpk_bitbase_init();
 
 int main(int argc, char* argv[]) {
 
-  bitboards_init();
+  std::cout << engine_info() << std::endl;
+
+  Bitboards::init();
   Position::init();
   kpk_bitbase_init();
   Search::init();
   Threads.init();
+  Eval::init();
+  TT.set_size(Options["Hash"]);
 
-  cout << engine_info() << endl;
+  std::string args;
 
-  if (argc == 1)
-      uci_loop();
+  for (int i = 1; i < argc; i++)
+      args += std::string(argv[i]) + " ";
 
-  else if (string(argv[1]) == "bench")
-      benchmark(argc, argv);
-
-  else
-      cerr << "\nUsage: stockfish bench [hash size = 128] [threads = 1] "
-           << "[limit = 12] [fen positions file = default] "
-           << "[limited by depth, time, nodes or perft = depth]" << endl;
-
-  Threads.exit();
+  uci_loop(args);
 }

@@ -20,16 +20,16 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <vector>
 
 #include "evaluate.h"
-#include "misc.h"
 #include "position.h"
 #include "search.h"
 #include "thread.h"
 #include "ucioption.h"
 
 using namespace std;
+
+extern void benchmark(const Position& pos, istream& is);
 
 namespace {
 
@@ -44,7 +44,6 @@ namespace {
   void set_option(istringstream& up);
   void set_position(Position& pos, istringstream& up);
   void go(Position& pos, istringstream& up);
-  void perft(Position& pos, istringstream& up);
 }
 
 
@@ -53,14 +52,17 @@ namespace {
 /// that we exit gracefully if the GUI dies unexpectedly. In addition to the UCI
 /// commands, the function also supports a few debug commands.
 
-void uci_loop() {
+void uci_loop(const string& args) {
 
-  Position pos(StartFEN, false, 0); // The root position
+  Position pos(StartFEN, false, Threads.main_thread()); // The root position
   string cmd, token;
 
   while (token != "quit")
   {
-      if (!getline(cin, cmd)) // Block here waiting for input
+      if (!args.empty())
+          cmd = args;
+
+      else if (!getline(cin, cmd)) // Block here waiting for input
           cmd = "quit";
 
       istringstream is(cmd);
@@ -68,7 +70,10 @@ void uci_loop() {
       is >> skipws >> token;
 
       if (token == "quit" || token == "stop")
-          Threads.stop_thinking();
+      {
+          Search::Signals.stop = true;
+          Threads.wait_for_search_finished(); // Cannot quit while threads are running
+      }
 
       else if (token == "ponderhit")
       {
@@ -78,14 +83,17 @@ void uci_loop() {
           Search::Limits.ponder = false;
 
           if (Search::Signals.stopOnPonderhit)
-              Threads.stop_thinking();
+          {
+              Search::Signals.stop = true;
+              Threads.main_thread()->wake_up(); // Could be sleeping
+          }
       }
 
       else if (token == "go")
           go(pos, is);
 
       else if (token == "ucinewgame")
-          pos.from_fen(StartFEN, false);
+      { /* Avoid returning "Unknown command" */ }
 
       else if (token == "isready")
           cout << "readyok" << endl;
@@ -96,20 +104,17 @@ void uci_loop() {
       else if (token == "setoption")
           set_option(is);
 
-      else if (token == "perft")
-          perft(pos, is);
-
       else if (token == "d")
           pos.print();
 
       else if (token == "flip")
-          pos.flip_me();
+          pos.flip();
 
       else if (token == "eval")
-      {
-          read_evaluation_uci_options(pos.side_to_move());
-          cout << trace_evaluate(pos) << endl;
-      }
+          cout << Eval::trace(pos) << endl;
+
+      else if (token == "bench")
+          benchmark(pos, is);
 
       else if (token == "key")
           cout << "key: " << hex     << pos.key()
@@ -120,8 +125,25 @@ void uci_loop() {
           cout << "id name "     << engine_info(true)
                << "\n"           << Options
                << "\nuciok"      << endl;
+
+      else if (token == "perft" && (is >> token)) // Read depth
+      {
+          stringstream ss;
+
+          ss << Options["Hash"]    << " "
+             << Options["Threads"] << " " << token << " current perft";
+
+          benchmark(pos, ss);
+      }
+
       else
           cout << "Unknown command: " << cmd << endl;
+
+      if (!args.empty()) // Command line arguments have one-shot behaviour
+      {
+          Threads.wait_for_search_finished();
+          break;
+      }
   }
 }
 
@@ -151,7 +173,7 @@ namespace {
     else
         return;
 
-    pos.from_fen(fen, Options["UCI_Chess960"]);
+    pos.from_fen(fen, Options["UCI_Chess960"], Threads.main_thread());
 
     // Parse move list (if any)
     while (is >> token && (m = move_from_uci(pos, token)) != MOVE_NONE)
@@ -182,81 +204,50 @@ namespace {
     while (is >> token)
         value += string(" ", !value.empty()) + token;
 
-    if (!Options.count(name))
-        cout << "No such option: " << name << endl;
-
-    else if (value.empty()) // UCI buttons don't have a value
-        Options[name] = true;
-
-    else
+    if (Options.count(name))
         Options[name] = value;
+    else
+        cout << "No such option: " << name << endl;
   }
 
 
   // go() is called when engine receives the "go" UCI command. The function sets
   // the thinking time and other parameters from the input string, and then starts
-  // the main searching thread.
+  // the search.
 
   void go(Position& pos, istringstream& is) {
 
-    string token;
     Search::LimitsType limits;
-    std::set<Move> searchMoves;
-    int time[] = { 0, 0 }, inc[] = { 0, 0 };
+    vector<Move> searchMoves;
+    string token;
 
     while (is >> token)
     {
-        if (token == "infinite")
+        if (token == "wtime")
+            is >> limits.time[WHITE];
+        else if (token == "btime")
+            is >> limits.time[BLACK];
+        else if (token == "winc")
+            is >> limits.inc[WHITE];
+        else if (token == "binc")
+            is >> limits.inc[BLACK];
+        else if (token == "movestogo")
+            is >> limits.movestogo;
+        else if (token == "depth")
+            is >> limits.depth;
+        else if (token == "nodes")
+            is >> limits.nodes;
+        else if (token == "movetime")
+            is >> limits.movetime;
+        else if (token == "infinite")
             limits.infinite = true;
         else if (token == "ponder")
             limits.ponder = true;
-        else if (token == "wtime")
-            is >> time[WHITE];
-        else if (token == "btime")
-            is >> time[BLACK];
-        else if (token == "winc")
-            is >> inc[WHITE];
-        else if (token == "binc")
-            is >> inc[BLACK];
-        else if (token == "movestogo")
-            is >> limits.movesToGo;
-        else if (token == "depth")
-            is >> limits.maxDepth;
-        else if (token == "nodes")
-            is >> limits.maxNodes;
-        else if (token == "movetime")
-            is >> limits.maxTime;
         else if (token == "searchmoves")
             while (is >> token)
-                searchMoves.insert(move_from_uci(pos, token));
+                searchMoves.push_back(move_from_uci(pos, token));
     }
 
-    limits.time = time[pos.side_to_move()];
-    limits.increment = inc[pos.side_to_move()];
-
-    Threads.start_thinking(pos, limits, searchMoves, true);
-  }
-
-
-  // perft() is called when engine receives the "perft" command. The function
-  // calls perft() with the required search depth then prints counted leaf nodes
-  // and elapsed time.
-
-  void perft(Position& pos, istringstream& is) {
-
-    int depth, time;
-
-    if (!(is >> depth))
-        return;
-
-    time = system_time();
-
-    int64_t n = Search::perft(pos, depth * ONE_PLY);
-
-    time = system_time() - time;
-
-    std::cout << "\nNodes " << n
-              << "\nTime (ms) " << time
-              << "\nNodes/second " << int(n / (time / 1000.0)) << std::endl;
+    Threads.start_searching(pos, limits, searchMoves);
   }
 }

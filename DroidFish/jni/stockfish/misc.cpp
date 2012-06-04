@@ -17,45 +17,23 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#if defined(_MSC_VER)
-
-#define _CRT_SECURE_NO_DEPRECATE
-#define NOMINMAX // disable macros min() and max()
-#include <windows.h>
-#include <sys/timeb.h>
-
-#else
-
-#  include <sys/time.h>
-#  include <sys/types.h>
-#  include <unistd.h>
-#  if defined(__hpux)
-#     include <sys/pstat.h>
-#  endif
-
-#endif
-
-#if !defined(NO_PREFETCH)
-#  include <xmmintrin.h>
-#endif
-
-#include <algorithm>
-#include <cassert>
-#include <cstdio>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
 
-#include "bitcount.h"
 #include "misc.h"
 #include "thread.h"
+
+#if defined(__hpux)
+#    include <sys/pstat.h>
+#endif
 
 using namespace std;
 
 /// Version number. If Version is left empty, then Tag plus current
 /// date (in the format YYMMDD) is used as a version number.
 
-static const string Version = "2.2.2";
+static const string Version = "";
 static const string Tag = "";
 
 
@@ -73,19 +51,17 @@ const string engine_info(bool to_uci) {
   string month, day, year;
   stringstream s, date(__DATE__); // From compiler, format is "Sep 21 2008"
 
+  s << "Stockfish " << Version;
+
   if (Version.empty())
   {
       date >> month >> day >> year;
 
-      s << "Stockfish " << Tag
-        << setfill('0') << " " << year.substr(2)
-        << setw(2) << (1 + months.find(month) / 4)
-        << setw(2) << day << cpu64 << popcnt;
+      s << Tag << setfill('0') << " " << year.substr(2)
+        << setw(2) << (1 + months.find(month) / 4) << setw(2) << day;
   }
-  else
-      s << "Stockfish " << Version << cpu64 << popcnt;
 
-  s << (to_uci ? "\nid author ": " by ")
+  s << cpu64 << popcnt << (to_uci ? "\nid author ": " by ")
     << "Tord Romstad, Marco Costalba and Joona Kiiski";
 
   return s.str();
@@ -112,39 +88,85 @@ void dbg_print() {
 }
 
 
-/// system_time() returns the current system time, measured in milliseconds
+/// Our fancy logging facility. The trick here is to replace cin.rdbuf() and
+/// cout.rdbuf() with two Tie objects that tie cin and cout to a file stream. We
+/// can toggle the logging of std::cout and std:cin at runtime while preserving
+/// usual i/o functionality and without changing a single line of code!
+/// Idea from http://groups.google.com/group/comp.lang.c++/msg/1d941c0f26ea0d81
 
-int system_time() {
+class Logger {
 
-#if defined(_MSC_VER)
-  struct _timeb t;
-  _ftime(&t);
-  return int(t.time * 1000 + t.millitm);
-#else
-  struct timeval t;
-  gettimeofday(&t, NULL);
-  return t.tv_sec * 1000 + t.tv_usec / 1000;
-#endif
-}
+  Logger() : in(cin.rdbuf(), file), out(cout.rdbuf(), file) {}
+  ~Logger() { start(false); }
+
+  struct Tie: public streambuf { // MSVC requires splitted streambuf for cin and cout
+
+    Tie(streambuf* b, ofstream& f) : buf(b), file(f) {}
+
+    int sync() { return file.rdbuf()->pubsync(), buf->pubsync(); }
+    int overflow(int c) { return log(buf->sputc((char)c), "<< "); }
+    int underflow() { return buf->sgetc(); }
+    int uflow() { return log(buf->sbumpc(), ">> "); }
+
+    int log(int c, const char* prefix) {
+
+      static int last = '\n';
+
+      if (last == '\n')
+          file.rdbuf()->sputn(prefix, 3);
+
+      return last = file.rdbuf()->sputc((char)c);
+    }
+
+    streambuf* buf;
+    ofstream& file;
+  };
+
+  ofstream file;
+  Tie in, out;
+
+public:
+  static void start(bool b) {
+
+    static Logger l;
+
+    if (b && !l.file.is_open())
+    {
+        l.file.open("io_log.txt", ifstream::out | ifstream::app);
+        cin.rdbuf(&l.in);
+        cout.rdbuf(&l.out);
+    }
+    else if (!b && l.file.is_open())
+    {
+        cout.rdbuf(l.out.buf);
+        cin.rdbuf(l.in.buf);
+        l.file.close();
+    }
+  }
+};
+
+
+/// Trampoline helper to avoid moving Logger to misc.h
+void start_logger(bool b) { Logger::start(b); }
 
 
 /// cpu_count() tries to detect the number of CPU cores
 
 int cpu_count() {
 
-#if defined(_MSC_VER)
+#if defined(_WIN32) || defined(_WIN64)
   SYSTEM_INFO s;
   GetSystemInfo(&s);
-  return std::min(int(s.dwNumberOfProcessors), MAX_THREADS);
+  return s.dwNumberOfProcessors;
 #else
 
 #  if defined(_SC_NPROCESSORS_ONLN)
-  return std::min((int)sysconf(_SC_NPROCESSORS_ONLN), MAX_THREADS);
+  return sysconf(_SC_NPROCESSORS_ONLN);
 #  elif defined(__hpux)
   struct pst_dynamic psd;
   if (pstat_getdynamic(&psd, sizeof(psd), (size_t)1, 0) == -1)
       return 1;
-  return std::min((int)psd.psd_proc_cnt, MAX_THREADS);
+  return psd.psd_proc_cnt;
 #  else
   return 1;
 #  endif
@@ -156,24 +178,16 @@ int cpu_count() {
 /// timed_wait() waits for msec milliseconds. It is mainly an helper to wrap
 /// conversion from milliseconds to struct timespec, as used by pthreads.
 
-void timed_wait(WaitCondition* sleepCond, Lock* sleepLock, int msec) {
+void timed_wait(WaitCondition& sleepCond, Lock& sleepLock, int msec) {
 
-#if defined(_MSC_VER)
+#if defined(_WIN32) || defined(_WIN64)
   int tm = msec;
 #else
-  struct timeval t;
-  struct timespec abstime, *tm = &abstime;
+  timespec ts, *tm = &ts;
+  uint64_t ms = Time::current_time().msec() + msec;
 
-  gettimeofday(&t, NULL);
-
-  abstime.tv_sec = t.tv_sec + (msec / 1000);
-  abstime.tv_nsec = (t.tv_usec + (msec % 1000) * 1000) * 1000;
-
-  if (abstime.tv_nsec > 1000000000LL)
-  {
-      abstime.tv_sec += 1;
-      abstime.tv_nsec -= 1000000000LL;
-  }
+  ts.tv_sec = ms / 1000;
+  ts.tv_nsec = (ms % 1000) * 1000000LL;
 #endif
 
   cond_timedwait(sleepCond, sleepLock, tm);
@@ -188,6 +202,8 @@ void timed_wait(WaitCondition* sleepCond, Lock* sleepLock, int msec) {
 void prefetch(char*) {}
 
 #else
+
+#   include <xmmintrin.h>
 
 void prefetch(char* addr) {
 

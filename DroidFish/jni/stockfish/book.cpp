@@ -306,25 +306,23 @@ namespace {
   const Key* ZobEnPassant = PolyGlotRandoms + 772;
   const Key* ZobTurn      = PolyGlotRandoms + 780;
 
-  // PieceOffset is calculated as 64 * (PolyPiece ^ 1) where PolyPiece
-  // is: BP = 0, WP = 1, BN = 2, WN = 3 ... BK = 10, WK = 11
-  const int PieceOffset[] = { 0, 64, 192, 320, 448, 576, 704, 0,
-                              0,  0, 128, 256, 384, 512, 640 };
-
   // book_key() returns the PolyGlot hash key of the given position
   uint64_t book_key(const Position& pos) {
 
     uint64_t key = 0;
-    Bitboard b = pos.occupied_squares();
+    Bitboard b = pos.pieces();
 
     while (b)
     {
+        // Piece offset is at 64 * polyPiece where polyPiece is defined as:
+        // BP = 0, WP = 1, BN = 2, WN = 3, ... BK = 10, WK = 11
         Square s = pop_1st_bit(&b);
-        key ^= ZobPiece[PieceOffset[pos.piece_on(s)] + s];
+        Piece p = pos.piece_on(s);
+        int polyPiece = 2 * (type_of(p) - 1) + (color_of(p) == WHITE);
+        key ^= ZobPiece[64 * polyPiece + s];
     }
 
-    b =  (pos.can_castle(WHITE_OO) << 0) | (pos.can_castle(WHITE_OOO) << 1)
-       | (pos.can_castle(BLACK_OO) << 2) | (pos.can_castle(BLACK_OOO) << 3);
+    b = pos.can_castle(ALL_CASTLES);
 
     while (b)
         key ^= ZobCastle[pop_1st_bit(&b)];
@@ -342,7 +340,7 @@ namespace {
 
 Book::Book() : size(0) {
 
-  for (int i = abs(system_time() % 10000); i > 0; i--)
+  for (int i = Time::current_time().msec() % 10000; i > 0; i--)
       RKiss.rand<unsigned>(); // Make random number generation less deterministic
 }
 
@@ -380,10 +378,13 @@ bool Book::open(const char* fName) {
   ifstream::open(fName, ifstream::in | ifstream::binary | ios::ate);
 
   if (!is_open())
+  {
+      clear();
       return false; // Silently fail if the file is not found
+  }
 
   // Get the book size in number of entries, we are already at the end of file
-  size = tellg() / sizeof(BookEntry);
+  size = (size_t)tellg() / sizeof(BookEntry);
 
   if (!good())
   {
@@ -421,7 +422,7 @@ Move Book::probe(const Position& pos, const string& fName, bool pickBest) {
       // Choose book move according to its score. If a move has a very
       // high score it has higher probability to be choosen than a move
       // with lower score. Note that first entry is always chosen.
-      if (   (RKiss.rand<unsigned>() % sum < e.count)
+      if (   (sum && RKiss.rand<unsigned>() % sum < e.count)
           || (pickBest && e.count == best))
           move = Move(e.move);
   }

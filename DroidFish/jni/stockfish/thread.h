@@ -20,10 +20,8 @@
 #if !defined(THREAD_H_INCLUDED)
 #define THREAD_H_INCLUDED
 
-#include <cstring>
-#include <set>
+#include <vector>
 
-#include "lock.h"
 #include "material.h"
 #include "movepick.h"
 #include "pawns.h"
@@ -31,32 +29,34 @@
 #include "search.h"
 
 const int MAX_THREADS = 32;
-const int MAX_ACTIVE_SPLIT_POINTS = 8;
+const int MAX_SPLITPOINTS_PER_THREAD = 8;
+
+class Thread;
 
 struct SplitPoint {
 
-  // Const data after splitPoint has been setup
-  SplitPoint* parent;
+  // Const data after split point has been setup
   const Position* pos;
+  const Search::Stack* ss;
   Depth depth;
   Value beta;
   int nodeType;
-  int ply;
-  int master;
+  Thread* master;
   Move threatMove;
 
   // Const pointers to shared data
   MovePicker* mp;
-  Search::Stack* ss;
+  SplitPoint* parent;
 
   // Shared data
   Lock lock;
+  volatile uint64_t slavesMask;
   volatile int64_t nodes;
   volatile Value alpha;
   volatile Value bestValue;
+  volatile Move bestMove;
   volatile int moveCount;
-  volatile bool is_betaCutoff;
-  volatile bool is_slave[MAX_THREADS];
+  volatile bool cutoff;
 };
 
 
@@ -65,33 +65,40 @@ struct SplitPoint {
 /// tables so that once we get a pointer to an entry its life time is unlimited
 /// and we don't have to care about someone changing the entry under our feet.
 
-struct Thread {
+class Thread {
+
+  Thread(const Thread&);            // Only declared to disable the default ones
+  Thread& operator=(const Thread&); // that are not suitable in this case.
+
+  typedef void (Thread::* Fn) ();
+
+public:
+  Thread(Fn fn);
+  ~Thread();
 
   void wake_up();
   bool cutoff_occurred() const;
-  bool is_available_to(int master) const;
-  void idle_loop(SplitPoint* sp);
+  bool is_available_to(Thread* master) const;
+  void idle_loop(SplitPoint* sp_master);
+  void idle_loop() { idle_loop(NULL); } // Hack to allow storing in start_fn
   void main_loop();
   void timer_loop();
+  void wait_for_stop_or_ponderhit();
 
-  SplitPoint splitPoints[MAX_ACTIVE_SPLIT_POINTS];
-  MaterialInfoTable materialTable;
-  PawnInfoTable pawnTable;
-  int threadID;
+  SplitPoint splitPoints[MAX_SPLITPOINTS_PER_THREAD];
+  MaterialTable materialTable;
+  PawnTable pawnTable;
+  int idx;
   int maxPly;
   Lock sleepLock;
   WaitCondition sleepCond;
-  SplitPoint* volatile splitPoint;
-  volatile int activeSplitPoints;
+  NativeHandle handle;
+  Fn start_fn;
+  SplitPoint* volatile curSplitPoint;
+  volatile int splitPointsCnt;
   volatile bool is_searching;
   volatile bool do_sleep;
-  volatile bool do_terminate;
-
-#if defined(_MSC_VER)
-  HANDLE handle;
-#else
-  pthread_t handle;
-#endif
+  volatile bool do_exit;
 };
 
 
@@ -105,37 +112,37 @@ class ThreadsManager {
      static storage duration are automatically set to zero before enter main()
   */
 public:
-  Thread& operator[](int threadID) { return threads[threadID]; }
-  void init();
-  void exit();
+  void init(); // No c'tor becuase Threads is static and we need engine initialized
+  ~ThreadsManager();
 
+  Thread& operator[](int id) { return *threads[id]; }
   bool use_sleeping_threads() const { return useSleepingThreads; }
   int min_split_depth() const { return minimumSplitDepth; }
-  int size() const { return activeThreads; }
+  int size() const { return (int)threads.size(); }
+  Thread* main_thread() { return threads[0]; }
 
-  void set_size(int cnt);
+  void wake_up() const;
+  void sleep() const;
   void read_uci_options();
-  bool available_slave_exists(int master) const;
-  bool split_point_finished(SplitPoint* sp) const;
+  bool available_slave_exists(Thread* master) const;
   void set_timer(int msec);
-  void wait_for_stop_or_ponderhit();
-  void stop_thinking();
-  void start_thinking(const Position& pos, const Search::LimitsType& limits,
-                      const std::set<Move>& = std::set<Move>(), bool async = false);
+  void wait_for_search_finished();
+  void start_searching(const Position& pos, const Search::LimitsType& limits,
+                       const std::vector<Move>& searchMoves);
 
   template <bool Fake>
-  Value split(Position& pos, Search::Stack* ss, Value alpha, Value beta, Value bestValue,
+  Value split(Position& pos, Search::Stack* ss, Value alpha, Value beta, Value bestValue, Move* bestMove,
               Depth depth, Move threatMove, int moveCount, MovePicker* mp, int nodeType);
 private:
-  friend struct Thread;
+  friend class Thread;
 
-  Thread threads[MAX_THREADS + 1]; // Last one is used as a timer
-  Lock threadsLock;
+  std::vector<Thread*> threads;
+  Thread* timer;
+  Lock splitLock;
+  WaitCondition sleepCond;
   Depth minimumSplitDepth;
   int maxThreadsPerSplitPoint;
-  int activeThreads;
   bool useSleepingThreads;
-  WaitCondition sleepCond;
 };
 
 extern ThreadsManager Threads;

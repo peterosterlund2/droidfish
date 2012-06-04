@@ -25,30 +25,29 @@
 #include "bitcount.h"
 #include "rkiss.h"
 
+CACHE_LINE_ALIGNMENT
+
 Bitboard RMasks[64];
 Bitboard RMagics[64];
 Bitboard* RAttacks[64];
-int RShifts[64];
+unsigned RShifts[64];
 
 Bitboard BMasks[64];
 Bitboard BMagics[64];
 Bitboard* BAttacks[64];
-int BShifts[64];
+unsigned BShifts[64];
 
-Bitboard SetMaskBB[65];
-Bitboard ClearMaskBB[65];
-
+Bitboard SquareBB[64];
 Bitboard FileBB[8];
 Bitboard RankBB[8];
-Bitboard NeighboringFilesBB[8];
-Bitboard ThisAndNeighboringFilesBB[8];
+Bitboard AdjacentFilesBB[8];
+Bitboard ThisAndAdjacentFilesBB[8];
 Bitboard InFrontBB[2][8];
 Bitboard StepAttacksBB[16][64];
 Bitboard BetweenBB[64][64];
-Bitboard SquaresInFrontMask[2][64];
+Bitboard ForwardBB[2][64];
 Bitboard PassedPawnMask[2][64];
 Bitboard AttackSpanMask[2][64];
-
 Bitboard PseudoAttacks[6][64];
 
 uint8_t BitCount8Bit[256];
@@ -59,30 +58,15 @@ namespace {
   CACHE_LINE_ALIGNMENT
 
   int BSFTable[64];
-  Bitboard RookTable[0x19000];  // Storage space for rook attacks
-  Bitboard BishopTable[0x1480]; // Storage space for bishop attacks
+  int MS1BTable[256];
+  Bitboard RTable[0x19000]; // Storage space for rook attacks
+  Bitboard BTable[0x1480];  // Storage space for bishop attacks
 
-  void init_magic_bitboards(PieceType pt, Bitboard* attacks[], Bitboard magics[],
-                            Bitboard masks[], int shifts[]);
+  typedef unsigned (Fn)(Square, Bitboard);
+
+  void init_magics(Bitboard table[], Bitboard* attacks[], Bitboard magics[],
+                   Bitboard masks[], unsigned shifts[], Square deltas[], Fn index);
 }
-
-
-/// print_bitboard() prints a bitboard in an easily readable format to the
-/// standard output. This is sometimes useful for debugging.
-
-void print_bitboard(Bitboard b) {
-
-  for (Rank r = RANK_8; r >= RANK_1; r--)
-  {
-      std::cout << "+---+---+---+---+---+---+---+---+" << '\n';
-      for (File f = FILE_A; f <= FILE_H; f++)
-          std::cout << "| " << (bit_is_set(b, make_square(f, r)) ? "X " : "  ");
-
-      std::cout << "|\n";
-  }
-  std::cout << "+---+---+---+---+---+---+---+---+" << std::endl;
-}
-
 
 /// first_1() finds the least significant nonzero bit in a nonzero bitboard.
 /// pop_1st_bit() finds and clears the least significant nonzero bit in a
@@ -108,87 +92,103 @@ Square first_1(Bitboard b) {
   return Square(BSFTable[(fold * 0x783A9B23) >> 26]);
 }
 
-// Use type-punning
-union b_union {
+Square pop_1st_bit(Bitboard* b) {
 
-    Bitboard b;
-    struct {
-#if defined (BIGENDIAN)
-        uint32_t h;
-        uint32_t l;
-#else
-        uint32_t l;
-        uint32_t h;
-#endif
-    } dw;
-};
+  Bitboard bb = *b;
+  *b = bb & (bb - 1);
+  bb ^= (bb - 1);
+  uint32_t fold = unsigned(bb) ^ unsigned(bb >> 32);
+  return Square(BSFTable[(fold * 0x783A9B23) >> 26]);
+}
 
-Square pop_1st_bit(Bitboard* bb) {
+Square last_1(Bitboard b) {
 
-   b_union u;
-   Square ret;
+  unsigned b32;
+  int result = 0;
 
-   u.b = *bb;
+  if (b > 0xFFFFFFFF)
+  {
+      b >>= 32;
+      result = 32;
+  }
 
-   if (u.dw.l)
-   {
-       ret = Square(BSFTable[((u.dw.l ^ (u.dw.l - 1)) * 0x783A9B23) >> 26]);
-       u.dw.l &= (u.dw.l - 1);
-       *bb = u.b;
-       return ret;
-   }
-   ret = Square(BSFTable[((~(u.dw.h ^ (u.dw.h - 1))) * 0x783A9B23) >> 26]);
-   u.dw.h &= (u.dw.h - 1);
-   *bb = u.b;
-   return ret;
+  b32 = unsigned(b);
+
+  if (b32 > 0xFFFF)
+  {
+      b32 >>= 16;
+      result += 16;
+  }
+
+  if (b32 > 0xFF)
+  {
+      b32 >>= 8;
+      result += 8;
+  }
+
+  return Square(result + MS1BTable[b32]);
 }
 
 #endif // !defined(USE_BSFQ)
 
 
-/// bitboards_init() initializes various bitboard arrays. It is called during
+/// Bitboards::print() prints a bitboard in an easily readable format to the
+/// standard output. This is sometimes useful for debugging.
+
+void Bitboards::print(Bitboard b) {
+
+  for (Rank rank = RANK_8; rank >= RANK_1; rank--)
+  {
+      std::cout << "+---+---+---+---+---+---+---+---+" << '\n';
+
+      for (File file = FILE_A; file <= FILE_H; file++)
+          std::cout << "| " << ((b & make_square(file, rank)) ? "X " : "  ");
+
+      std::cout << "|\n";
+  }
+  std::cout << "+---+---+---+---+---+---+---+---+" << std::endl;
+}
+
+
+/// Bitboards::init() initializes various bitboard arrays. It is called during
 /// program initialization.
 
-void bitboards_init() {
+void Bitboards::init() {
+
+  for (int k = 0, i = 0; i < 8; i++)
+      while (k < (2 << i))
+          MS1BTable[k++] = i;
 
   for (Bitboard b = 0; b < 256; b++)
       BitCount8Bit[b] = (uint8_t)popcount<Max15>(b);
 
   for (Square s = SQ_A1; s <= SQ_H8; s++)
-  {
-      SetMaskBB[s] = 1ULL << s;
-      ClearMaskBB[s] = ~SetMaskBB[s];
-  }
-
-  ClearMaskBB[SQ_NONE] = ~0ULL;
+      SquareBB[s] = 1ULL << s;
 
   FileBB[FILE_A] = FileABB;
   RankBB[RANK_1] = Rank1BB;
 
-  for (int f = FILE_B; f <= FILE_H; f++)
+  for (int i = 1; i < 8; i++)
   {
-      FileBB[f] = FileBB[f - 1] << 1;
-      RankBB[f] = RankBB[f - 1] << 8;
+      FileBB[i] = FileBB[i - 1] << 1;
+      RankBB[i] = RankBB[i - 1] << 8;
   }
 
-  for (int f = FILE_A; f <= FILE_H; f++)
+  for (File f = FILE_A; f <= FILE_H; f++)
   {
-      NeighboringFilesBB[f] = (f > FILE_A ? FileBB[f - 1] : 0) | (f < FILE_H ? FileBB[f + 1] : 0);
-      ThisAndNeighboringFilesBB[f] = FileBB[f] | NeighboringFilesBB[f];
+      AdjacentFilesBB[f] = (f > FILE_A ? FileBB[f - 1] : 0) | (f < FILE_H ? FileBB[f + 1] : 0);
+      ThisAndAdjacentFilesBB[f] = FileBB[f] | AdjacentFilesBB[f];
   }
 
-  for (int rw = RANK_7, rb = RANK_2; rw >= RANK_1; rw--, rb++)
-  {
-      InFrontBB[WHITE][rw] = InFrontBB[WHITE][rw + 1] | RankBB[rw + 1];
-      InFrontBB[BLACK][rb] = InFrontBB[BLACK][rb - 1] | RankBB[rb - 1];
-  }
+  for (Rank r = RANK_1; r < RANK_8; r++)
+      InFrontBB[WHITE][r] = ~(InFrontBB[BLACK][r + 1] = InFrontBB[BLACK][r] | RankBB[r]);
 
   for (Color c = WHITE; c <= BLACK; c++)
       for (Square s = SQ_A1; s <= SQ_H8; s++)
       {
-          SquaresInFrontMask[c][s] = in_front_bb(c, s) & file_bb(s);
-          PassedPawnMask[c][s]     = in_front_bb(c, s) & this_and_neighboring_files_bb(file_of(s));
-          AttackSpanMask[c][s]     = in_front_bb(c, s) & neighboring_files_bb(file_of(s));
+          ForwardBB[c][s]      = InFrontBB[c][rank_of(s)] & FileBB[file_of(s)];
+          PassedPawnMask[c][s] = InFrontBB[c][rank_of(s)] & ThisAndAdjacentFilesBB[file_of(s)];
+          AttackSpanMask[c][s] = InFrontBB[c][rank_of(s)] & AdjacentFilesBB[file_of(s)];
       }
 
   for (Square s1 = SQ_A1; s1 <= SQ_H8; s1++)
@@ -216,56 +216,52 @@ void bitboards_init() {
               {
                   Square to = s + Square(c == WHITE ? steps[pt][k] : -steps[pt][k]);
 
-                  if (square_is_ok(to) && square_distance(s, to) < 3)
-                      set_bit(&StepAttacksBB[make_piece(c, pt)][s], to);
+                  if (is_ok(to) && square_distance(s, to) < 3)
+                      StepAttacksBB[make_piece(c, pt)][s] |= to;
               }
 
-  init_magic_bitboards(ROOK, RAttacks, RMagics, RMasks, RShifts);
-  init_magic_bitboards(BISHOP, BAttacks, BMagics, BMasks, BShifts);
+  Square RDeltas[] = { DELTA_N,  DELTA_E,  DELTA_S,  DELTA_W  };
+  Square BDeltas[] = { DELTA_NE, DELTA_SE, DELTA_SW, DELTA_NW };
+
+  init_magics(RTable, RAttacks, RMagics, RMasks, RShifts, RDeltas, magic_index<ROOK>);
+  init_magics(BTable, BAttacks, BMagics, BMasks, BShifts, BDeltas, magic_index<BISHOP>);
 
   for (Square s = SQ_A1; s <= SQ_H8; s++)
   {
-      PseudoAttacks[BISHOP][s] = bishop_attacks_bb(s, 0);
-      PseudoAttacks[ROOK][s]   = rook_attacks_bb(s, 0);
-      PseudoAttacks[QUEEN][s]  = queen_attacks_bb(s, 0);
+      PseudoAttacks[QUEEN][s]  = PseudoAttacks[BISHOP][s] = attacks_bb<BISHOP>(s, 0);
+      PseudoAttacks[QUEEN][s] |= PseudoAttacks[  ROOK][s] = attacks_bb<  ROOK>(s, 0);
   }
 
   for (Square s1 = SQ_A1; s1 <= SQ_H8; s1++)
       for (Square s2 = SQ_A1; s2 <= SQ_H8; s2++)
-          if (bit_is_set(PseudoAttacks[QUEEN][s1], s2))
+          if (PseudoAttacks[QUEEN][s1] & s2)
           {
               Square delta = (s2 - s1) / square_distance(s1, s2);
 
               for (Square s = s1 + delta; s != s2; s += delta)
-                  set_bit(&BetweenBB[s1][s2], s);
+                  BetweenBB[s1][s2] |= s;
           }
 }
 
 
 namespace {
 
-  Bitboard sliding_attacks(PieceType pt, Square sq, Bitboard occupied) {
+  Bitboard sliding_attack(Square deltas[], Square sq, Bitboard occupied) {
 
-    Square deltas[][4] = { { DELTA_N,  DELTA_E,  DELTA_S,  DELTA_W  },
-                           { DELTA_NE, DELTA_SE, DELTA_SW, DELTA_NW } };
-    Bitboard attacks = 0;
-    Square* delta = (pt == ROOK ? deltas[0] : deltas[1]);
+    Bitboard attack = 0;
 
     for (int i = 0; i < 4; i++)
-    {
-        Square s = sq + delta[i];
-
-        while (square_is_ok(s) && square_distance(s, s - delta[i]) == 1)
+        for (Square s = sq + deltas[i];
+             is_ok(s) && square_distance(s, s - deltas[i]) == 1;
+             s += deltas[i])
         {
-            set_bit(&attacks, s);
+            attack |= s;
 
-            if (bit_is_set(occupied, s))
+            if (occupied & s)
                 break;
-
-            s += delta[i];
         }
-    }
-    return attacks;
+
+    return attack;
   }
 
 
@@ -291,22 +287,22 @@ namespace {
   }
 
 
-  // init_magic_bitboards() computes all rook and bishop magics at startup.
-  // Magic bitboards are used to look up attacks of sliding pieces. As reference
-  // see chessprogramming.wikispaces.com/Magic+Bitboards. In particular, here we
+  // init_magics() computes all rook and bishop attacks at startup. Magic
+  // bitboards are used to look up attacks of sliding pieces. As a reference see
+  // chessprogramming.wikispaces.com/Magic+Bitboards. In particular, here we
   // use the so called "fancy" approach.
 
-  void init_magic_bitboards(PieceType pt, Bitboard* attacks[], Bitboard magics[],
-                            Bitboard masks[], int shifts[]) {
+  void init_magics(Bitboard table[], Bitboard* attacks[], Bitboard magics[],
+                   Bitboard masks[], unsigned shifts[], Square deltas[], Fn index) {
 
     int MagicBoosters[][8] = { { 3191, 2184, 1310, 3618, 2091, 1308, 2452, 3996 },
                                { 1059, 3608,  605, 3234, 3326,   38, 2029, 3043 } };
     RKISS rk;
     Bitboard occupancy[4096], reference[4096], edges, b;
-    int i, size, index, booster;
+    int i, size, booster;
 
     // attacks[s] is a pointer to the beginning of the attacks table for square 's'
-    attacks[SQ_A1] = (pt == ROOK ? RookTable : BishopTable);
+    attacks[SQ_A1] = table;
 
     for (Square s = SQ_A1; s <= SQ_H8; s++)
     {
@@ -318,15 +314,15 @@ namespace {
         // all the attacks for each possible subset of the mask and so is 2 power
         // the number of 1s of the mask. Hence we deduce the size of the shift to
         // apply to the 64 or 32 bits word to get the index.
-        masks[s]  = sliding_attacks(pt, s, 0) & ~edges;
+        masks[s]  = sliding_attack(deltas, s, 0) & ~edges;
         shifts[s] = (Is64Bit ? 64 : 32) - popcount<Max15>(masks[s]);
 
         // Use Carry-Rippler trick to enumerate all subsets of masks[s] and
-        // store the corresponding sliding attacks bitboard in reference[].
+        // store the corresponding sliding attack bitboard in reference[].
         b = size = 0;
         do {
             occupancy[size] = b;
-            reference[size++] = sliding_attacks(pt, s, b);
+            reference[size++] = sliding_attack(deltas, s, b);
             b = (b - masks[s]) & masks[s];
         } while (b);
 
@@ -349,14 +345,12 @@ namespace {
             // effect of verifying the magic.
             for (i = 0; i < size; i++)
             {
-                index = (pt == ROOK ? rook_index(s, occupancy[i])
-                                    : bishop_index(s, occupancy[i]));
+                Bitboard& attack = attacks[s][index(s, occupancy[i])];
 
-                if (!attacks[s][index])
-                    attacks[s][index] = reference[i];
-
-                else if (attacks[s][index] != reference[i])
+                if (attack && attack != reference[i])
                     break;
+
+                attack = reference[i];
             }
         } while (i != size);
     }

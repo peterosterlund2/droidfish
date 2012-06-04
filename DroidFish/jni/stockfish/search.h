@@ -23,6 +23,7 @@
 #include <cstring>
 #include <vector>
 
+#include "misc.h"
 #include "types.h"
 
 class Position;
@@ -39,7 +40,6 @@ struct Stack {
   int ply;
   Move currentMove;
   Move excludedMove;
-  Move bestMove;
   Move killers[2];
   Depth reduction;
   Value eval;
@@ -78,9 +78,9 @@ struct RootMove {
 struct LimitsType {
 
   LimitsType() { memset(this, 0, sizeof(LimitsType)); }
-  bool use_time_management() const { return !(maxTime | maxDepth | maxNodes | infinite); }
+  bool use_time_management() const { return !(movetime | depth | nodes | infinite); }
 
-  int time, increment, movesToGo, maxTime, maxDepth, maxNodes, infinite, ponder;
+  int time[2], inc[2], movestogo, depth, nodes, movetime, infinite, ponder;
 };
 
 
@@ -95,6 +95,7 @@ extern volatile SignalsType Signals;
 extern LimitsType Limits;
 extern std::vector<RootMove> RootMoves;
 extern Position RootPosition;
+extern Time SearchTime;
 
 extern void init();
 extern int64_t perft(Position& pos, Depth depth);

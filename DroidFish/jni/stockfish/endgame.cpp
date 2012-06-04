@@ -22,10 +22,9 @@
 
 #include "bitcount.h"
 #include "endgame.h"
-#include "pawns.h"
+#include "movegen.h"
 
 using std::string;
-using namespace std;
 
 extern uint32_t probe_kpk_bitbase(Square wksq, Square wpsq, Square bksq, Color stm);
 
@@ -73,12 +72,12 @@ namespace {
     string sides[] = { code.substr(code.find('K', 1)),      // Weaker
                        code.substr(0, code.find('K', 1)) }; // Stronger
 
-    transform(sides[c].begin(), sides[c].end(), sides[c].begin(), tolower);
+    std::transform(sides[c].begin(), sides[c].end(), sides[c].begin(), tolower);
 
     string fen =  sides[0] + char('0' + int(8 - code.length()))
                 + sides[1] + "/8/8/8/8/8/8/8 w - - 0 10";
 
-    return Position(fen, false, 0).material_key();
+    return Position(fen, false, NULL).material_key();
   }
 
   template<typename M>
@@ -117,10 +116,8 @@ Endgames::~Endgames() {
 template<EndgameType E>
 void Endgames::add(const string& code) {
 
-  typedef typename eg_family<E>::type T;
-
-  map((T*)0)[key(code, WHITE)] = new Endgame<E>(WHITE);
-  map((T*)0)[key(code, BLACK)] = new Endgame<E>(BLACK);
+  map((Endgame<E>*)0)[key(code, WHITE)] = new Endgame<E>(WHITE);
+  map((Endgame<E>*)0)[key(code, BLACK)] = new Endgame<E>(BLACK);
 }
 
 
@@ -134,6 +131,13 @@ Value Endgame<KXK>::operator()(const Position& pos) const {
   assert(pos.non_pawn_material(weakerSide) == VALUE_ZERO);
   assert(pos.piece_count(weakerSide, PAWN) == VALUE_ZERO);
 
+  // Stalemate detection with lone king
+  if (    pos.side_to_move() == weakerSide
+      && !pos.in_check()
+      && !MoveList<MV_LEGAL>(pos).size()) {
+    return VALUE_DRAW;
+  }
+
   Square winnerKSq = pos.king_square(strongerSide);
   Square loserKSq = pos.king_square(weakerSide);
 
@@ -144,9 +148,9 @@ Value Endgame<KXK>::operator()(const Position& pos) const {
 
   if (   pos.piece_count(strongerSide, QUEEN)
       || pos.piece_count(strongerSide, ROOK)
-      || pos.piece_count(strongerSide, BISHOP) > 1)
-      // TODO: check for two equal-colored bishops!
-      result += VALUE_KNOWN_WIN;
+      || pos.bishop_pair(strongerSide)) {
+    result += VALUE_KNOWN_WIN;
+  }
 
   return strongerSide == pos.side_to_move() ? result : -result;
 }
@@ -402,11 +406,11 @@ ScaleFactor Endgame<KBPsK>::operator()(const Position& pos) const {
   // No assertions about the material of weakerSide, because we want draws to
   // be detected even when the weaker side has some pawns.
 
-  Bitboard pawns = pos.pieces(PAWN, strongerSide);
+  Bitboard pawns = pos.pieces(strongerSide, PAWN);
   File pawnFile = file_of(pos.piece_list(strongerSide, PAWN)[0]);
 
   // All pawns are on a single rook file ?
-  if (   (pawnFile == FILE_A || pawnFile == FILE_H)
+  if (    (pawnFile == FILE_A || pawnFile == FILE_H)
       && !(pawns & ~file_bb(pawnFile)))
   {
       Square bishopSq = pos.piece_list(strongerSide, BISHOP)[0];
@@ -417,7 +421,7 @@ ScaleFactor Endgame<KBPsK>::operator()(const Position& pos) const {
           && abs(file_of(kingSq) - pawnFile) <= 1)
       {
           // The bishop has the wrong color, and the defending king is on the
-          // file of the pawn(s) or the neighboring file. Find the rank of the
+          // file of the pawn(s) or the adjacent file. Find the rank of the
           // frontmost pawn.
           Rank rank;
           if (strongerSide == WHITE)
@@ -456,12 +460,12 @@ ScaleFactor Endgame<KQKRPs>::operator()(const Position& pos) const {
   Square kingSq = pos.king_square(weakerSide);
   if (   relative_rank(weakerSide, kingSq) <= RANK_2
       && relative_rank(weakerSide, pos.king_square(strongerSide)) >= RANK_4
-      && (pos.pieces(ROOK, weakerSide) & rank_bb(relative_rank(weakerSide, RANK_3)))
-      && (pos.pieces(PAWN, weakerSide) & rank_bb(relative_rank(weakerSide, RANK_2)))
-      && (pos.attacks_from<KING>(kingSq) & pos.pieces(PAWN, weakerSide)))
+      && (pos.pieces(weakerSide, ROOK) & rank_bb(relative_rank(weakerSide, RANK_3)))
+      && (pos.pieces(weakerSide, PAWN) & rank_bb(relative_rank(weakerSide, RANK_2)))
+      && (pos.attacks_from<KING>(kingSq) & pos.pieces(weakerSide, PAWN)))
   {
       Square rsq = pos.piece_list(weakerSide, ROOK)[0];
-      if (pos.attacks_from<PAWN>(rsq, strongerSide) & pos.pieces(PAWN, weakerSide))
+      if (pos.attacks_from<PAWN>(rsq, strongerSide) & pos.pieces(weakerSide, PAWN))
           return SCALE_FACTOR_DRAW;
   }
   return SCALE_FACTOR_NONE;
@@ -639,14 +643,14 @@ ScaleFactor Endgame<KPsK>::operator()(const Position& pos) const {
   assert(pos.piece_count(weakerSide, PAWN) == 0);
 
   Square ksq = pos.king_square(weakerSide);
-  Bitboard pawns = pos.pieces(PAWN, strongerSide);
+  Bitboard pawns = pos.pieces(strongerSide, PAWN);
 
   // Are all pawns on the 'a' file?
   if (!(pawns & ~FileABB))
   {
       // Does the defending king block the pawns?
       if (   square_distance(ksq, relative_square(strongerSide, SQ_A8)) <= 1
-          || (   file_of(ksq) == FILE_A
+          || (    file_of(ksq) == FILE_A
               && !in_front_bb(strongerSide, ksq) & pawns))
           return SCALE_FACTOR_DRAW;
   }
@@ -655,7 +659,7 @@ ScaleFactor Endgame<KPsK>::operator()(const Position& pos) const {
   {
     // Does the defending king block the pawns?
     if (   square_distance(ksq, relative_square(strongerSide, SQ_H8)) <= 1
-        || (   file_of(ksq) == FILE_H
+        || (    file_of(ksq) == FILE_H
             && !in_front_bb(strongerSide, ksq) & pawns))
         return SCALE_FACTOR_DRAW;
   }
@@ -706,9 +710,9 @@ ScaleFactor Endgame<KBPKB>::operator()(const Position& pos) const {
           return SCALE_FACTOR_DRAW;
       else
       {
-          Bitboard path = squares_in_front_of(strongerSide, pawnSq);
+          Bitboard path = forward_bb(strongerSide, pawnSq);
 
-          if (path & pos.pieces(KING, weakerSide))
+          if (path & pos.pieces(weakerSide, KING))
               return SCALE_FACTOR_DRAW;
 
           if (  (pos.attacks_from<BISHOP>(weakerBishopSq) & path)
@@ -769,20 +773,20 @@ ScaleFactor Endgame<KBPPKB>::operator()(const Position& pos) const {
         return SCALE_FACTOR_NONE;
 
   case 1:
-    // Pawns on neighboring files. Draw if defender firmly controls the square
+    // Pawns on adjacent files. Draw if defender firmly controls the square
     // in front of the frontmost pawn's path, and the square diagonally behind
     // this square on the file of the other pawn.
     if (   ksq == blockSq1
         && opposite_colors(ksq, wbsq)
         && (   bbsq == blockSq2
-            || (pos.attacks_from<BISHOP>(blockSq2) & pos.pieces(BISHOP, weakerSide))
+            || (pos.attacks_from<BISHOP>(blockSq2) & pos.pieces(weakerSide, BISHOP))
             || abs(r1 - r2) >= 2))
         return SCALE_FACTOR_DRAW;
 
     else if (   ksq == blockSq2
              && opposite_colors(ksq, wbsq)
              && (   bbsq == blockSq1
-                 || (pos.attacks_from<BISHOP>(blockSq1) & pos.pieces(BISHOP, weakerSide))))
+                 || (pos.attacks_from<BISHOP>(blockSq1) & pos.pieces(weakerSide, BISHOP))))
         return SCALE_FACTOR_DRAW;
     else
         return SCALE_FACTOR_NONE;

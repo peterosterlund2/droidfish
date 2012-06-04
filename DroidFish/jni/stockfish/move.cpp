@@ -18,7 +18,6 @@
 */
 
 #include <cassert>
-#include <cstring>
 #include <string>
 
 #include "movegen.h"
@@ -47,7 +46,7 @@ const string move_to_uci(Move m, bool chess960) {
       to = from + (file_of(to) == FILE_H ? Square(2) : -Square(2));
 
   if (is_promotion(m))
-      promotion = char(tolower(piece_type_to_char(promotion_piece_type(m))));
+      promotion = char(tolower(piece_type_to_char(promotion_type(m))));
 
   return square_to_string(from) + square_to_string(to) + promotion;
 }
@@ -57,7 +56,10 @@ const string move_to_uci(Move m, bool chess960) {
 /// simple coordinate notation and returns an equivalent Move if any.
 /// Moves are guaranteed to be legal.
 
-Move move_from_uci(const Position& pos, const string& str) {
+Move move_from_uci(const Position& pos, string& str) {
+
+  if (str.length() == 5) // Junior could send promotion in uppercase
+      str[4] = char(tolower(str[4]));
 
   for (MoveList<MV_LEGAL> ml(pos); !ml.end(); ++ml)
       if (str == move_to_uci(ml.move(), pos.is_chess960()))
@@ -85,7 +87,7 @@ const string move_to_san(Position& pos, Move m) {
   bool ambiguousMove, ambiguousFile, ambiguousRank;
   Square sq, from = from_sq(m);
   Square to = to_sq(m);
-  PieceType pt = type_of(pos.piece_on(from));
+  PieceType pt = type_of(pos.piece_moved(m));
   string san;
 
   if (is_castle(m))
@@ -98,8 +100,8 @@ const string move_to_san(Position& pos, Move m) {
 
           // Disambiguation if we have more then one piece with destination 'to'
           // note that for pawns is not needed because starting file is explicit.
-          attackers = pos.attackers_to(to) & pos.pieces(pt, pos.side_to_move());
-          clear_bit(&attackers, from);
+          attackers = pos.attackers_to(to) & pos.pieces(pos.side_to_move(), pt);
+          attackers ^= from;
           ambiguousMove = ambiguousFile = ambiguousRank = false;
 
           while (attackers)
@@ -143,7 +145,7 @@ const string move_to_san(Position& pos, Move m) {
       if (is_promotion(m))
       {
           san += '=';
-          san += piece_type_to_char(promotion_piece_type(m));
+          san += piece_type_to_char(promotion_type(m));
       }
   }
 

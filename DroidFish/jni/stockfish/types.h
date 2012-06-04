@@ -35,30 +35,11 @@
 ///               | only in 64-bit mode. For compiling requires hardware with
 ///               | popcnt support.
 
+#include <cctype>
 #include <climits>
 #include <cstdlib>
-#include <ctype.h>
 
-#if defined(_MSC_VER)
-
-// Disable some silly and noisy warning from MSVC compiler
-#pragma warning(disable: 4127) // Conditional expression is constant
-#pragma warning(disable: 4146) // Unary minus operator applied to unsigned type
-#pragma warning(disable: 4800) // Forcing value to bool 'true' or 'false'
-
-// MSVC does not support <inttypes.h>
-typedef   signed __int8    int8_t;
-typedef unsigned __int8   uint8_t;
-typedef   signed __int16  int16_t;
-typedef unsigned __int16 uint16_t;
-typedef   signed __int32  int32_t;
-typedef unsigned __int32 uint32_t;
-typedef   signed __int64  int64_t;
-typedef unsigned __int64 uint64_t;
-
-#else
-#  include <inttypes.h>
-#endif
+#include "platform.h"
 
 #if defined(_WIN64)
 #  include <intrin.h> // MSVC popcnt and bsfq instrinsics
@@ -99,7 +80,7 @@ const bool Is64Bit = false;
 typedef uint64_t Key;
 typedef uint64_t Bitboard;
 
-const int MAX_MOVES      = 256;
+const int MAX_MOVES      = 192;
 const int MAX_PLY        = 100;
 const int MAX_PLY_PLUS_2 = MAX_PLY + 2;
 
@@ -147,13 +128,18 @@ inline bool operator<(const MoveStack& f, const MoveStack& s) {
   return f.score < s.score;
 }
 
-enum CastleRight {
+enum CastleRight {  // Defined as in PolyGlot book hash key
   CASTLES_NONE = 0,
   WHITE_OO     = 1,
-  BLACK_OO     = 2,
-  WHITE_OOO    = 4,
+  WHITE_OOO    = 2,
+  BLACK_OO     = 4,
   BLACK_OOO    = 8,
   ALL_CASTLES  = 15
+};
+
+enum CastlingSide {
+  KING_SIDE,
+  QUEEN_SIDE
 };
 
 enum ScaleFactor {
@@ -163,11 +149,11 @@ enum ScaleFactor {
   SCALE_FACTOR_NONE   = 255
 };
 
-enum ValueType {
-  VALUE_TYPE_NONE  = 0,
-  VALUE_TYPE_UPPER = 1,
-  VALUE_TYPE_LOWER = 2,
-  VALUE_TYPE_EXACT = VALUE_TYPE_UPPER | VALUE_TYPE_LOWER
+enum Bound {
+  BOUND_NONE  = 0,
+  BOUND_UPPER = 1,
+  BOUND_LOWER = 2,
+  BOUND_EXACT = BOUND_UPPER | BOUND_LOWER
 };
 
 enum Value {
@@ -186,7 +172,7 @@ enum Value {
 };
 
 enum PieceType {
-  NO_PIECE_TYPE = 0,
+  NO_PIECE_TYPE = 0, ALL_PIECES = 0,
   PAWN = 1, KNIGHT = 2, BISHOP = 3, ROOK = 4, QUEEN = 5, KING = 6
 };
 
@@ -207,7 +193,7 @@ enum Depth {
   DEPTH_ZERO          =  0 * ONE_PLY,
   DEPTH_QS_CHECKS     = -1 * ONE_PLY,
   DEPTH_QS_NO_CHECKS  = -2 * ONE_PLY,
-  DEPTH_QS_RECAPTURES = -4 * ONE_PLY,
+  DEPTH_QS_RECAPTURES = -5 * ONE_PLY,
 
   DEPTH_NONE = -127 * ONE_PLY
 };
@@ -317,21 +303,27 @@ inline Score operator/(Score s, int i) {
   return make_score(mg_value(s) / i, eg_value(s) / i);
 }
 
+/// Weight score v by score w trying to prevent overflow
+inline Score apply_weight(Score v, Score w) {
+  return make_score((int(mg_value(v)) * mg_value(w)) / 0x100,
+                    (int(eg_value(v)) * eg_value(w)) / 0x100);
+}
+
 #undef ENABLE_OPERATORS_ON
 #undef ENABLE_SAFE_OPERATORS_ON
 
-const Value PawnValueMidgame   = Value(0x0C6);
-const Value PawnValueEndgame   = Value(0x102);
-const Value KnightValueMidgame = Value(0x331);
-const Value KnightValueEndgame = Value(0x34E);
-const Value BishopValueMidgame = Value(0x344);
-const Value BishopValueEndgame = Value(0x359);
-const Value RookValueMidgame   = Value(0x4F6);
-const Value RookValueEndgame   = Value(0x4FE);
-const Value QueenValueMidgame  = Value(0x9D9);
-const Value QueenValueEndgame  = Value(0x9FE);
+const Value PawnValueMidgame   = Value(198);
+const Value PawnValueEndgame   = Value(258);
+const Value KnightValueMidgame = Value(817);
+const Value KnightValueEndgame = Value(846);
+const Value BishopValueMidgame = Value(836);
+const Value BishopValueEndgame = Value(857);
+const Value RookValueMidgame   = Value(1270);
+const Value RookValueEndgame   = Value(1278);
+const Value QueenValueMidgame  = Value(2521);
+const Value QueenValueEndgame  = Value(2558);
 
-extern const Value PieceValueMidgame[17];
+extern const Value PieceValueMidgame[17]; // Indexed by Piece or PieceType
 extern const Value PieceValueEndgame[17];
 extern int SquareDistance[64][64];
 
@@ -340,7 +332,7 @@ inline Color operator~(Color c) {
 }
 
 inline Square operator~(Square s) {
-  return Square(s ^ 56);
+  return Square(s ^ 56); // Vertical flip SQ_A1 -> SQ_A8
 }
 
 inline Value mate_in(int ply) {
@@ -355,6 +347,10 @@ inline Piece make_piece(Color c, PieceType pt) {
   return Piece((c << 3) | pt);
 }
 
+inline CastleRight make_castle_right(Color c, CastlingSide s) {
+  return CastleRight(WHITE_OO << ((s == QUEEN_SIDE) + 2 * c));
+}
+
 inline PieceType type_of(Piece p)  {
   return PieceType(p & 7);
 }
@@ -367,7 +363,7 @@ inline Square make_square(File f, Rank r) {
   return Square((r << 3) | f);
 }
 
-inline bool square_is_ok(Square s) {
+inline bool is_ok(Square s) {
   return s >= SQ_A1 && s <= SQ_H8;
 }
 
@@ -380,7 +376,7 @@ inline Rank rank_of(Square s) {
 }
 
 inline Square mirror(Square s) {
-  return Square(s ^ 7);
+  return Square(s ^ 7); // Horizontal flip SQ_A1 -> SQ_H1
 }
 
 inline Square relative_square(Color c, Square s) {
@@ -396,7 +392,7 @@ inline Rank relative_rank(Color c, Square s) {
 }
 
 inline bool opposite_colors(Square s1, Square s2) {
-  int s = s1 ^ s2;
+  int s = int(s1) ^ int(s2);
   return ((s >> 3) ^ s) & 1;
 }
 
@@ -452,7 +448,7 @@ inline int is_castle(Move m) {
   return (m & (3 << 14)) == (3 << 14);
 }
 
-inline PieceType promotion_piece_type(Move m) {
+inline PieceType promotion_type(Move m) {
   return PieceType(((m >> 12) & 3) + 2);
 }
 
@@ -486,23 +482,18 @@ inline const std::string square_to_string(Square s) {
 /// Our insertion sort implementation, works with pointers and iterators and is
 /// guaranteed to be stable, as is needed.
 template<typename T, typename K>
-void sort(K firstMove, K lastMove)
+void sort(K first, K last)
 {
-  T value;
-  K cur, p, d;
+  T tmp;
+  K p, q;
 
-  if (firstMove != lastMove)
-      for (cur = firstMove + 1; cur != lastMove; cur++)
-      {
-          p = d = cur;
-          value = *p--;
-          if (*p < value)
-          {
-              do *d = *p;
-              while (--d != firstMove && *--p < value);
-              *d = value;
-          }
-      }
+  for (p = first + 1; p < last; p++)
+  {
+      tmp = *p;
+      for (q = p; q != first && *(q-1) < tmp; --q)
+          *q = *(q-1);
+      *q = tmp;
+  }
 }
 
 #endif // !defined(TYPES_H_INCLUDED)
