@@ -77,7 +77,7 @@ public class ExternalEngine extends UCIEngineBase {
                 @Override
                 public void run() {
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(10000);
                     } catch (InterruptedException e) {
                         return;
                     }
