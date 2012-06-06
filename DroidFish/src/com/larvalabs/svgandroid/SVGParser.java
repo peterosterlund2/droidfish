@@ -3,7 +3,6 @@ package com.larvalabs.svgandroid;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.*;
-import android.graphics.drawable.PictureDrawable;
 import android.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -176,7 +175,7 @@ public class SVGParser {
     private static SVG parse(InputStream in, Integer searchColor, Integer replaceColor, boolean whiteMode) throws SVGParseException {
 //        Util.debug("Parsing SVG...");
         try {
-            long start = System.currentTimeMillis();
+//            long start = System.currentTimeMillis();
             SAXParserFactory spf = SAXParserFactory.newInstance();
             SAXParser sp = spf.newSAXParser();
             XMLReader xr = sp.getXMLReader();
@@ -606,6 +605,7 @@ public class SVGParser {
         }
     }
 
+    /*
     private static Integer getHexAttr(String name, Attributes attributes) {
         String v = getStringAttr(name, attributes);
         //Util.debug("Hex parsing '" + name + "=" + v + "'");
@@ -620,24 +620,28 @@ public class SVGParser {
             }
         }
     }
+    */
 
     private static class NumberParse {
         private ArrayList<Float> numbers;
-        private int nextCmd;
+//        private int nextCmd;
 
         public NumberParse(ArrayList<Float> numbers, int nextCmd) {
             this.numbers = numbers;
-            this.nextCmd = nextCmd;
+//            this.nextCmd = nextCmd;
         }
 
+        /*
         public int getNextCmd() {
             return nextCmd;
         }
+        */
 
+        /*
         public float getNumber(int index) {
             return numbers.get(index);
         }
-
+        */
     }
 
     private static class Gradient {
@@ -737,6 +741,7 @@ public class SVGParser {
             }
         }
 
+        /*
         public Float getFloat(String name, float defaultValue) {
             Float v = getFloat(name);
             if (v == null) {
@@ -745,6 +750,7 @@ public class SVGParser {
                 return v;
             }
         }
+        */
 
         public Float getFloat(String name) {
             String v = getAttr(name);
