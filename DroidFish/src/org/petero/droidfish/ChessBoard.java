@@ -455,7 +455,7 @@ public class ChessBoard extends View {
         int n = Math.min(moveMarkPaint.size(), moveHints.size());
         for (int i = 0; i < n; i++) {
             Move m = moveHints.get(i);
-            if (m.from == m.to)
+            if ((m == null) || (m.from == m.to))
                 continue;
             float x0 = getXCrd(Position.getX(m.from)) + h;
             float y0 = getYCrd(Position.getY(m.from)) + h;
