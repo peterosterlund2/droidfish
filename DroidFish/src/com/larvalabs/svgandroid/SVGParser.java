@@ -752,12 +752,15 @@ public class SVGParser {
         }
         */
 
-        public Float getFloat(String name) {
+        public Float getFloat(String name, boolean handleUnits) {
             String v = getAttr(name);
             if (v == null) {
                 return null;
             } else {
                 try {
+                    if (handleUnits)
+                        if (v.endsWith("px") || v.endsWith("pt"))
+                            v = v.substring(0, v.length() - 2);
                     return Float.parseFloat(v);
                 } catch (NumberFormatException nfe) {
                     return null;
@@ -862,7 +865,7 @@ public class SVGParser {
             if (color != null) {
                 doColor(atts, color, false);
                 // Check for other stroke attributes
-                Float width = atts.getFloat("stroke-width");
+                Float width = atts.getFloat("stroke-width", true);
                 // Set defaults
 
                 if (width != null) {
@@ -924,9 +927,9 @@ public class SVGParser {
                 c = replaceColor;
             }
             paint.setColor(c);
-            Float opacity = atts.getFloat("opacity");
+            Float opacity = atts.getFloat("opacity", false);
             if (opacity == null) {
-                opacity = atts.getFloat(fillMode ? "fill-opacity" : "stroke-opacity");
+                opacity = atts.getFloat(fillMode ? "fill-opacity" : "stroke-opacity", false);
             }
             if (opacity == null) {
                 paint.setAlpha(255);
