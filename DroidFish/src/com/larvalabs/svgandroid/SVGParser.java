@@ -1196,7 +1196,7 @@ public class SVGParser {
                 }
                 popTransform();
             } else if (!hidden) {
-                Log.d(TAG, "UNRECOGNIZED SVG COMMAND: " + localName);
+//                Log.d(TAG, "UNRECOGNIZED SVG COMMAND: " + localName);
             }
         }
 
@@ -1225,9 +1225,6 @@ public class SVGParser {
                     float[] positions = new float[gradient.positions.size()];
                     for (int i = 0; i < positions.length; i++) {
                         positions[i] = gradient.positions.get(i);
-                    }
-                    if (colors.length == 0) {
-                        Log.d("BAD", "BAD");
                     }
                     LinearGradient g = new LinearGradient(gradient.x1, gradient.y1, gradient.x2, gradient.y2, colors, positions, Shader.TileMode.CLAMP);
                     if (gradient.matrix != null) {
