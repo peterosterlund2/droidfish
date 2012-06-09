@@ -1063,14 +1063,33 @@ public class SVGParser {
                 }
                 Float width = getFloatAttr("width", atts);
                 Float height = getFloatAttr("height", atts);
+                Float rx = getFloatAttr("rx", atts);
+                Float ry = getFloatAttr("ry", atts);
+                if (rx == null) {
+                    if (ry == null)
+                        rx = ry = 0f;
+                    else
+                        rx = ry;
+                } else {
+                    if (ry == null)
+                        ry = rx;
+                }
+                if (rx > width / 2) rx = width * 0.5f;
+                if (ry > height / 2) ry = height * 0.5f;
                 pushTransform(atts);
                 Properties props = new Properties(atts);
                 if (doFill(props, gradientMap)) {
                     doLimits(x, y, width, height);
-                    canvas.drawRect(x, y, x + width, y + height, paint);
+                    if (rx > 0 && ry > 0)
+                        canvas.drawRoundRect(new RectF(x, y, x + width, y + height), rx, ry, paint);
+                    else
+                        canvas.drawRect(x, y, x + width, y + height, paint);
                 }
                 if (doStroke(props)) {
-                    canvas.drawRect(x, y, x + width, y + height, paint);
+                    if (rx > 0 && ry > 0)
+                        canvas.drawRoundRect(new RectF(x, y, x + width, y + height), rx, ry, paint);
+                    else
+                        canvas.drawRect(x, y, x + width, y + height, paint);
                 }
                 popTransform();
             } else if (!hidden && localName.equals("line")) {
