@@ -145,15 +145,19 @@ public final class DroidBook {
             for (BookEntry be : bookMoves)
                 totalWeight += scaleWeight(be.weight);
             if (totalWeight <= 0) totalWeight = 1;
+            boolean first = true;
             for (BookEntry be : bookMoves) {
                 Move m = be.move;
                 bookMoveList.add(m);
                 String moveStr = TextIO.moveToString(pos, m, false);
+                if (first)
+                    first = false;
+                else
+                    ret.append(' ');
                 ret.append(moveStr);
                 ret.append(':');
                 int percent = (int)Math.round(scaleWeight(be.weight) * 100 / totalWeight);
                 ret.append(percent);
-                ret.append(' ');
             }
         }
         return new Pair<String, ArrayList<Move>>(ret.toString(), bookMoveList);
