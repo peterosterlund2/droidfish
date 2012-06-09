@@ -852,7 +852,7 @@ public class SVGParser {
             return false;
         }
 
-        private boolean doStroke(Properties atts) {
+        private boolean doStroke(Properties atts, HashMap<String, Shader> gradients) {
             if (whiteMode) {
                 // Never stroke in white mode
                 return false;
@@ -860,36 +860,48 @@ public class SVGParser {
             if ("none".equals(atts.getString("display"))) {
                 return false;
             }
-            Integer color = atts.getHex("stroke");
-            if (color != null) {
+            String strokeString = atts.getString("stroke");
+            if (strokeString == null)
+                return false;
+            if (strokeString.startsWith("url(#")) {
+                String id = strokeString.substring("url(#".length(), strokeString.length() - 1);
+                Shader shader = gradients.get(id);
+                if (shader == null)
+                    return false;
+                paint.setShader(shader);
+            } else {
+                Integer color = atts.getHex("stroke");
+                if (color == null)
+                    return false;
+                paint.setShader(null);
                 doColor(atts, color, false);
-                // Check for other stroke attributes
-                Float width = atts.getFloat("stroke-width", true);
-                // Set defaults
-
-                if (width != null) {
-                    paint.setStrokeWidth(width);
-                }
-                String linecap = atts.getString("stroke-linecap");
-                if ("round".equals(linecap)) {
-                    paint.setStrokeCap(Paint.Cap.ROUND);
-                } else if ("square".equals(linecap)) {
-                    paint.setStrokeCap(Paint.Cap.SQUARE);
-                } else if ("butt".equals(linecap)) {
-                    paint.setStrokeCap(Paint.Cap.BUTT);
-                }
-                String linejoin = atts.getString("stroke-linejoin");
-                if ("miter".equals(linejoin)) {
-                    paint.setStrokeJoin(Paint.Join.MITER);
-                } else if ("round".equals(linejoin)) {
-                    paint.setStrokeJoin(Paint.Join.ROUND);
-                } else if ("bevel".equals(linejoin)) {
-                    paint.setStrokeJoin(Paint.Join.BEVEL);
-                }
-                paint.setStyle(Paint.Style.STROKE);
-                return true;
             }
-            return false;
+
+            // Check for other stroke attributes
+            Float width = atts.getFloat("stroke-width", true);
+            // Set defaults
+
+            if (width != null) {
+                paint.setStrokeWidth(width);
+            }
+            String linecap = atts.getString("stroke-linecap");
+            if ("round".equals(linecap)) {
+                paint.setStrokeCap(Paint.Cap.ROUND);
+            } else if ("square".equals(linecap)) {
+                paint.setStrokeCap(Paint.Cap.SQUARE);
+            } else if ("butt".equals(linecap)) {
+                paint.setStrokeCap(Paint.Cap.BUTT);
+            }
+            String linejoin = atts.getString("stroke-linejoin");
+            if ("miter".equals(linejoin)) {
+                paint.setStrokeJoin(Paint.Join.MITER);
+            } else if ("round".equals(linejoin)) {
+                paint.setStrokeJoin(Paint.Join.ROUND);
+            } else if ("bevel".equals(linejoin)) {
+                paint.setStrokeJoin(Paint.Join.BEVEL);
+            }
+            paint.setStyle(Paint.Style.STROKE);
+            return true;
         }
 
         private Gradient doGradient(boolean isLinear, Attributes atts) {
@@ -1087,7 +1099,7 @@ public class SVGParser {
                     else
                         canvas.drawRect(x, y, x + width, y + height, paint);
                 }
-                if (doStroke(props)) {
+                if (doStroke(props, gradientMap)) {
                     if (rx > 0 && ry > 0)
                         canvas.drawRoundRect(new RectF(x, y, x + width, y + height), rx, ry, paint);
                     else
@@ -1100,7 +1112,7 @@ public class SVGParser {
                 Float y1 = getFloatAttr("y1", atts);
                 Float y2 = getFloatAttr("y2", atts);
                 Properties props = new Properties(atts);
-                if (doStroke(props)) {
+                if (doStroke(props, gradientMap)) {
                     pushTransform(atts);
                     doLimits(x1, y1);
                     doLimits(x2, y2);
@@ -1119,7 +1131,7 @@ public class SVGParser {
                         doLimits(centerX + radius, centerY + radius);
                         canvas.drawCircle(centerX, centerY, radius, paint);
                     }
-                    if (doStroke(props)) {
+                    if (doStroke(props, gradientMap)) {
                         canvas.drawCircle(centerX, centerY, radius, paint);
                     }
                     popTransform();
@@ -1138,7 +1150,7 @@ public class SVGParser {
                         doLimits(centerX + radiusX, centerY + radiusY);
                         canvas.drawOval(rect, paint);
                     }
-                    if (doStroke(props)) {
+                    if (doStroke(props, gradientMap)) {
                         canvas.drawOval(rect, paint);
                     }
                     popTransform();
@@ -1165,7 +1177,7 @@ public class SVGParser {
                             doLimits(p);
                             canvas.drawPath(p, paint);
                         }
-                        if (doStroke(props)) {
+                        if (doStroke(props, gradientMap)) {
                             canvas.drawPath(p, paint);
                         }
                         popTransform();
@@ -1179,7 +1191,7 @@ public class SVGParser {
                     doLimits(p);
                     canvas.drawPath(p, paint);
                 }
-                if (doStroke(props)) {
+                if (doStroke(props, gradientMap)) {
                     canvas.drawPath(p, paint);
                 }
                 popTransform();
