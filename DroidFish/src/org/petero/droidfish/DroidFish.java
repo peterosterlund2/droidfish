@@ -225,7 +225,7 @@ public class DroidFish extends Activity implements GUIInterface {
             addAction(new UIAction() {
                 public String getId() { return "showThinking"; }
                 public int getName() { return R.string.toggle_show_thinking; }
-                public int getIcon() { return -1; }
+                public int getIcon() { return R.raw.thinking; }
                 public boolean enabled() { return true; }
                 public void run() {
                     mShowThinking = toggleBooleanPref("showThinking");
@@ -235,7 +235,7 @@ public class DroidFish extends Activity implements GUIInterface {
             addAction(new UIAction() {
                 public String getId() { return "bookHints"; }
                 public int getName() { return R.string.toggle_book_hints; }
-                public int getIcon() { return -1; }
+                public int getIcon() { return R.raw.book; }
                 public boolean enabled() { return true; }
                 public void run() {
                     mShowBookHints = toggleBooleanPref("bookHints");
@@ -245,7 +245,7 @@ public class DroidFish extends Activity implements GUIInterface {
             addAction(new UIAction() {
                 public String getId() { return "viewVariations"; }
                 public int getName() { return R.string.toggle_pgn_variations; }
-                public int getIcon() { return -1; }
+                public int getIcon() { return R.raw.variation; }
                 public boolean enabled() { return true; }
                 public void run() {
                     pgnOptions.view.variations = toggleBooleanPref("viewVariations");
@@ -256,7 +256,7 @@ public class DroidFish extends Activity implements GUIInterface {
             addAction(new UIAction() {
                 public String getId() { return "viewComments"; }
                 public int getName() { return R.string.toggle_pgn_comments; }
-                public int getIcon() { return -1; }
+                public int getIcon() { return R.raw.comment; }
                 public boolean enabled() { return true; }
                 public void run() {
                     pgnOptions.view.comments = toggleBooleanPref("viewComments");
@@ -267,7 +267,7 @@ public class DroidFish extends Activity implements GUIInterface {
             addAction(new UIAction() {
                 public String getId() { return "viewHeaders"; }
                 public int getName() { return R.string.toggle_pgn_headers; }
-                public int getIcon() { return -1; }
+                public int getIcon() { return R.raw.header; }
                 public boolean enabled() { return true; }
                 public void run() {
                     pgnOptions.view.headers = toggleBooleanPref("viewHeaders");
@@ -278,7 +278,7 @@ public class DroidFish extends Activity implements GUIInterface {
             addAction(new UIAction() {
                 public String getId() { return "toggleAnalysis"; }
                 public int getName() { return R.string.toggle_analysis; }
-                public int getIcon() { return -1; }
+                public int getIcon() { return R.raw.analyze; }
                 public boolean enabled() { return true; }
                 public void run() {
                     int gameModeType = ctrl.analysisMode() ? GameMode.EDIT_GAME : GameMode.ANALYSIS;
@@ -294,7 +294,7 @@ public class DroidFish extends Activity implements GUIInterface {
             addAction(new UIAction() {
                 public String getId() { return "largeButtons"; }
                 public int getName() { return R.string.toggle_large_buttons; }
-                public int getIcon() { return -1; }
+                public int getIcon() { return R.raw.magnify; }
                 public boolean enabled() { return true; }
                 public void run() {
                     pgnOptions.view.headers = toggleBooleanPref("largeButtons");

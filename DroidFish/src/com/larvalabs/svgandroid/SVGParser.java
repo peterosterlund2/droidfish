@@ -3,7 +3,6 @@ package com.larvalabs.svgandroid;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.*;
-import android.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!-- Converted with SVG Converter - Version 0.9.5 (Compiled Mon May 30 09:18:17 2011) - Copyright (C) 2011 Nokia -->
+<svg xmlns="http://www.w3.org/2000/svg" width="36" version="1.1" height="32" xmlns:xlink="http://www.w3.org/1999/xlink" baseProfile="tiny" id="svg3092">
+ <defs id="defs3094">
+  <radialGradient fx="17.864586" fy="15.999999" cx="17.864586" cy="15.999999" gradientTransform="matrix(1.3714287,-7.8784533e-8,6.4012425e-8,1.1142857,-6.5000057,-1.828569)" id="radialGradient7850" r="17.5" gradientUnits="userSpaceOnUse">
+   <stop offset="0" style="stop-color:#e0e0e0;stop-opacity:1;" id="stop12154"/>
+   <stop offset="0.69999999" style="stop-color:#e0e0e0;stop-opacity:0.627451;" id="stop12156"/>
+   <stop offset="1" style="stop-color:#e0e0e0;stop-opacity:0;" id="stop12158"/>
+  </radialGradient>
+  <linearGradient gradientTransform="scale(2.7809235,0.35959277)" id="linearGradient653" y1="236.83635" y2="232.12435" x1="88.033608" x2="88.033477" gradientUnits="userSpaceOnUse">
+   <stop offset="0" style="stop-color:#000;stop-opacity:1;" id="stop651"/>
+   <stop offset="1" style="stop-color:#fff;stop-opacity:1;" id="stop652"/>
+  </linearGradient>
+  <linearGradient gradientTransform="scale(0.3937145,2.5399116)" id="linearGradient654" y1="92.572312" y2="92.572312" x1="1086.3559" x2="1077.1402" gradientUnits="userSpaceOnUse">
+   <stop offset="0" style="stop-color:#000;stop-opacity:1;" id="stop12169"/>
+   <stop offset="1" style="stop-color:#fff;stop-opacity:1;" id="stop12171"/>
+  </linearGradient>
+  <linearGradient gradientTransform="scale(1.0079586,0.99210423)" id="linearGradient51" y1="222.13097" y2="225.49896" x1="402.75917" gradientUnits="userSpaceOnUse" x2="198.72546">
+   <stop offset="0" style="stop-color:#faff00;stop-opacity:1;" id="stop54"/>
+   <stop offset="1" style="stop-color:#ff6500;stop-opacity:1;" id="stop55"/>
+  </linearGradient>
+  <linearGradient id="linearGradient53">
+   <stop offset="0" style="stop-color:#faff00;stop-opacity:1;" id="stop54"/>
+   <stop offset="1" style="stop-color:#ff6500;stop-opacity:1;" id="stop55"/>
+  </linearGradient>
+  <linearGradient gradientTransform="matrix(0.1103996,0,0,0.1086631,-26.238539,-88.274322)" id="linearGradient12906" y1="222.13097" x1="402.75917" y2="225.49896" gradientUnits="userSpaceOnUse" x2="198.72546">
+   <stop offset="0" style="stop-color:#faff00;stop-opacity:1;" id="stop54"/>
+   <stop offset="1" style="stop-color:#ff6500;stop-opacity:1;" id="stop55"/>
+  </linearGradient>
+ </defs>
+ <metadata id="metadata3097"/>
+ <rect width="35" x="0.5" y="0.5" ry="7" height="31" style="fill:url(#radialGradient7850);fill-opacity:1;fill-rule:evenodd;stroke:none" id="rect3100"/>
+ <path style="font-size:12px;fill:none;stroke:#007fd2;stroke-width:2.83978367;stroke-opacity:1" id="path635" d="m 7,10.074565 13.565675,0"/>
+ <path style="font-size:12px;fill:none;stroke:#007fd2;stroke-width:2.32854366;stroke-opacity:1" id="path637" d="M 13.942133,10.074565 14.050717,22.407284 21,22.407299"/>
+ <path style="font-size:12px;fill:#dadaff;fill-opacity:1;fill-rule:evenodd;stroke:#9292ff;stroke-width:0.81171298;stroke-opacity:1" id="path632" d="m 19.942134,7 0,6.5927 L 27,13.5927 27,7 19.942134,7 z"/>
+ <path style="font-size:12px;fill:#dadaff;fill-opacity:1;fill-rule:evenodd;stroke:#9292ff;stroke-width:0.81171298;stroke-opacity:1" id="path632-7" d="m 19.942133,19 0,6.592701 7.057867,0 L 27,19 19.942133,19 z"/>
+</svg>
