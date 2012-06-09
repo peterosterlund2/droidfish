@@ -23,36 +23,31 @@
             android:id="@+id/custom2Button"
             android:contentDescription="@string/buttonDesc_custom2"
             android:layout_width="36dp"
-            android:layout_height="32dp"
-            android:src="@drawable/custom">
+            android:layout_height="32dp">
         </ImageButton>
         <ImageButton
             android:id="@+id/custom1Button"
             android:contentDescription="@string/buttonDesc_custom1"
             android:layout_width="36dp"
-            android:layout_height="32dp"
-            android:src="@drawable/custom">
+            android:layout_height="32dp">
         </ImageButton>
         <ImageButton
             android:id="@+id/modeButton"
             android:contentDescription="@string/buttonDesc_mode"
             android:layout_width="36dp"
-            android:layout_height="32dp"
-            android:src="@drawable/mode">
+            android:layout_height="32dp">
         </ImageButton>
 		<ImageButton
             android:id="@+id/undoButton"
             android:contentDescription="@string/buttonDesc_back"
             android:layout_width="36dp"
-            android:layout_height="32dp"
-            android:src="@drawable/left">
+            android:layout_height="32dp">
         </ImageButton>
 		<ImageButton
             android:id="@+id/redoButton"
             android:contentDescription="@string/buttonDesc_forward"
             android:layout_width="36dp"
-            android:layout_height="32dp"
-            android:src="@drawable/right">
+            android:layout_height="32dp">
         </ImageButton>
 	</LinearLayout>
 	<TextView

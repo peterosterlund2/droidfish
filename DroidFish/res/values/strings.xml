@@ -106,6 +106,7 @@ you are not actively using the program.\
     <string name="toggle_pgn_comments">Toggle Comments</string>
     <string name="toggle_pgn_headers">Toggle Headers</string>
     <string name="toggle_analysis">Toggle Engine Analysis</string>
+    <string name="toggle_large_buttons">Toggle Large Buttons</string>
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -508,6 +509,7 @@ you are not actively using the program.\
         <item>@string/toggle_pgn_variations</item>
         <item>@string/toggle_pgn_comments</item>
         <item>@string/toggle_pgn_headers</item>
+        <item>@string/toggle_large_buttons</item>
     </string-array>
     <string-array name="button_action_values">
         <item></item>
@@ -518,5 +520,6 @@ you are not actively using the program.\
         <item>viewVariations</item>
         <item>viewComments</item>
         <item>viewHeaders</item>
+        <item>largeButtons</item>
     </string-array>
 </resources>

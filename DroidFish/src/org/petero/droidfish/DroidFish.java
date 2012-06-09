@@ -51,6 +51,9 @@ import org.petero.droidfish.gamelogic.PgnToken;
 import org.petero.droidfish.gamelogic.GameTree.Node;
 import org.petero.droidfish.gtb.Probe;
 
+import com.larvalabs.svgandroid.SVG;
+import com.larvalabs.svgandroid.SVGParser;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -211,7 +214,7 @@ public class DroidFish extends Activity implements GUIInterface {
             addAction(new UIAction() {
                 public String getId() { return "flipboard"; }
                 public int getName() { return R.string.flip_board; }
-                public int getIcon(boolean large) { return large ? R.drawable.flip_large : R.drawable.flip; }
+                public int getIcon() { return R.raw.flip; }
                 public boolean enabled() { return true; }
                 public void run() {
                     boardFlipped = !cb.flipped;
@@ -222,7 +225,7 @@ public class DroidFish extends Activity implements GUIInterface {
             addAction(new UIAction() {
                 public String getId() { return "showThinking"; }
                 public int getName() { return R.string.toggle_show_thinking; }
-                public int getIcon(boolean large) { return -1; }
+                public int getIcon() { return -1; }
                 public boolean enabled() { return true; }
                 public void run() {
                     mShowThinking = toggleBooleanPref("showThinking");
@@ -232,7 +235,7 @@ public class DroidFish extends Activity implements GUIInterface {
             addAction(new UIAction() {
                 public String getId() { return "bookHints"; }
                 public int getName() { return R.string.toggle_book_hints; }
-                public int getIcon(boolean large) { return -1; }
+                public int getIcon() { return -1; }
                 public boolean enabled() { return true; }
                 public void run() {
                     mShowBookHints = toggleBooleanPref("bookHints");
@@ -242,7 +245,7 @@ public class DroidFish extends Activity implements GUIInterface {
             addAction(new UIAction() {
                 public String getId() { return "viewVariations"; }
                 public int getName() { return R.string.toggle_pgn_variations; }
-                public int getIcon(boolean large) { return -1; }
+                public int getIcon() { return -1; }
                 public boolean enabled() { return true; }
                 public void run() {
                     pgnOptions.view.variations = toggleBooleanPref("viewVariations");
@@ -253,7 +256,7 @@ public class DroidFish extends Activity implements GUIInterface {
             addAction(new UIAction() {
                 public String getId() { return "viewComments"; }
                 public int getName() { return R.string.toggle_pgn_comments; }
-                public int getIcon(boolean large) { return -1; }
+                public int getIcon() { return -1; }
                 public boolean enabled() { return true; }
                 public void run() {
                     pgnOptions.view.comments = toggleBooleanPref("viewComments");
@@ -264,7 +267,7 @@ public class DroidFish extends Activity implements GUIInterface {
             addAction(new UIAction() {
                 public String getId() { return "viewHeaders"; }
                 public int getName() { return R.string.toggle_pgn_headers; }
-                public int getIcon(boolean large) { return -1; }
+                public int getIcon() { return -1; }
                 public boolean enabled() { return true; }
                 public void run() {
                     pgnOptions.view.headers = toggleBooleanPref("viewHeaders");
@@ -275,7 +278,7 @@ public class DroidFish extends Activity implements GUIInterface {
             addAction(new UIAction() {
                 public String getId() { return "toggleAnalysis"; }
                 public int getName() { return R.string.toggle_analysis; }
-                public int getIcon(boolean large) { return -1; }
+                public int getIcon() { return -1; }
                 public boolean enabled() { return true; }
                 public void run() {
                     int gameModeType = ctrl.analysisMode() ? GameMode.EDIT_GAME : GameMode.ANALYSIS;
@@ -286,6 +289,16 @@ public class DroidFish extends Activity implements GUIInterface {
                     gameMode = new GameMode(gameModeType);
                     ctrl.setGameMode(gameMode);
                     setBoardFlip(true);
+                }
+            });
+            addAction(new UIAction() {
+                public String getId() { return "largeButtons"; }
+                public int getName() { return R.string.toggle_large_buttons; }
+                public int getIcon() { return -1; }
+                public boolean enabled() { return true; }
+                public void run() {
+                    pgnOptions.view.headers = toggleBooleanPref("largeButtons");
+                    updateButtons();
                 }
             });
         }
@@ -734,30 +747,7 @@ public class DroidFish extends Activity implements GUIInterface {
         custom1ButtonActions.readPrefs(settings, actionFactory);
         custom2ButtonActions.readPrefs(settings, actionFactory);
 
-        boolean largeButtons = settings.getBoolean("largeButtons", false);
-        Resources r = getResources();
-        int bWidth  = (int)Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, r.getDisplayMetrics()));
-        int bHeight = (int)Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, r.getDisplayMetrics()));
-        if (largeButtons) {
-            bWidth  = bWidth  * 3 / 2;
-            bHeight = bHeight * 3 / 2;
-            custom1Button.setImageResource(custom1ButtonActions.getIcon(true));
-            custom2Button.setImageResource(custom2ButtonActions.getIcon(true));
-            modeButton.setImageResource(R.drawable.mode_large);
-            undoButton.setImageResource(R.drawable.left_large);
-            redoButton.setImageResource(R.drawable.right_large);
-        } else {
-            custom1Button.setImageResource(custom1ButtonActions.getIcon(false));
-            custom2Button.setImageResource(custom2ButtonActions.getIcon(false));
-            modeButton.setImageResource(R.drawable.mode);
-            undoButton.setImageResource(R.drawable.left);
-            redoButton.setImageResource(R.drawable.right);
-        }
-        custom1Button.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
-        custom2Button.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
-        modeButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
-        undoButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
-        redoButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
+        updateButtons();
 
         bookOptions.filename = settings.getString("bookFile", "");
         bookOptions.maxLength = getIntSetting("bookMaxLength", 1000000);
@@ -801,6 +791,39 @@ public class DroidFish extends Activity implements GUIInterface {
 
         gameTextListener.clear();
         ctrl.prefsChanged();
+    }
+
+    private void updateButtons() {
+        boolean largeButtons = settings.getBoolean("largeButtons", false);
+        Resources r = getResources();
+        int bWidth  = (int)Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, r.getDisplayMetrics()));
+        int bHeight = (int)Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, r.getDisplayMetrics()));
+        if (largeButtons) {
+            bWidth  = bWidth  * 3 / 2;
+            bHeight = bHeight * 3 / 2;
+        }
+        SVG svg = SVGParser.getSVGFromResource(getResources(), 
+                                               custom1ButtonActions.getIcon());
+        custom1Button.setBackgroundDrawable(new SVGPictureDrawable(svg));
+
+        svg = SVGParser.getSVGFromResource(getResources(), 
+                                           custom2ButtonActions.getIcon());
+        custom2Button.setBackgroundDrawable(new SVGPictureDrawable(svg));
+
+        svg = SVGParser.getSVGFromResource(getResources(), R.raw.right);
+        redoButton.setBackgroundDrawable(new SVGPictureDrawable(svg));
+
+        svg = SVGParser.getSVGFromResource(getResources(), R.raw.left);
+        undoButton.setBackgroundDrawable(new SVGPictureDrawable(svg));
+
+        svg = SVGParser.getSVGFromResource(getResources(), R.raw.mode);
+        modeButton.setBackgroundDrawable(new SVGPictureDrawable(svg));
+
+        custom1Button.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
+        custom2Button.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
+        modeButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
+        undoButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
+        redoButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
     }
 
     private synchronized final void setWakeLock(boolean enableLock) {

@@ -26,8 +26,8 @@ public interface UIAction extends Runnable {
     /** Get name resource for the action. */
     public int getName();
 
-    /** Get icon resource or -1 for no icon. */
-    public int getIcon(boolean large);
+    /** Get icon SVG resource or -1 for no icon. */
+    public int getIcon();
 
     /** Return true if the action is currently enabled. */
     public boolean enabled();

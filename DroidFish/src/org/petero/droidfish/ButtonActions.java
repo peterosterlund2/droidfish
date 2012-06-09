@@ -121,12 +121,12 @@ public class ButtonActions {
     }
 
     /** Get icon resource for button. */
-    public int getIcon(boolean large) {
+    public int getIcon() {
         int ret = -1;
         if (mainAction != null)
-            ret = mainAction.getIcon(large);
+            ret = mainAction.getIcon();
         if (ret == -1)
-            ret = large ? R.drawable.custom_large : R.drawable.custom;
+            ret = R.raw.custom;
         return ret;
     }
 }
