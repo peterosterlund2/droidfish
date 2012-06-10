@@ -75,6 +75,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.graphics.drawable.StateListDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -114,6 +115,7 @@ import android.view.View.OnTouchListener;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView.ScaleType;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -803,38 +805,30 @@ public class DroidFish extends Activity implements GUIInterface {
             bWidth  = bWidth  * 3 / 2;
             bHeight = bHeight * 3 / 2;
         }
-        SVG svg = SVGParser.getSVGFromResource(getResources(), 
-                                               custom1ButtonActions.getIcon());
-        custom1Button.setBackgroundDrawable(new SVGPictureDrawable(svg));
-        svg = SVGParser.getSVGFromResource(getResources(), 
-                                           custom2ButtonActions.getIcon());
-        custom2Button.setBackgroundDrawable(new SVGPictureDrawable(svg));
-        svg = SVGParser.getSVGFromResource(getResources(), 
-                                           custom3ButtonActions.getIcon());
-        custom3Button.setBackgroundDrawable(new SVGPictureDrawable(svg));
-
-        svg = SVGParser.getSVGFromResource(getResources(), R.raw.right);
-        redoButton.setBackgroundDrawable(new SVGPictureDrawable(svg));
-
-        svg = SVGParser.getSVGFromResource(getResources(), R.raw.left);
-        undoButton.setBackgroundDrawable(new SVGPictureDrawable(svg));
-
-        svg = SVGParser.getSVGFromResource(getResources(), R.raw.mode);
-        modeButton.setBackgroundDrawable(new SVGPictureDrawable(svg));
-
-        setButtonSize(custom1Button, bWidth, bHeight);
-        setButtonSize(custom2Button, bWidth, bHeight);
-        setButtonSize(custom3Button, bWidth, bHeight);
-        setButtonSize(modeButton, bWidth, bHeight);
-        setButtonSize(undoButton, bWidth, bHeight);
-        setButtonSize(redoButton, bWidth, bHeight);
+        SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.touch);
+        setButtonData(custom1Button, bWidth, bHeight, custom1ButtonActions.getIcon(), svg);
+        setButtonData(custom2Button, bWidth, bHeight, custom2ButtonActions.getIcon(), svg);
+        setButtonData(custom3Button, bWidth, bHeight, custom3ButtonActions.getIcon(), svg);
+        setButtonData(modeButton, bWidth, bHeight, R.raw.mode, svg);
+        setButtonData(undoButton, bWidth, bHeight, R.raw.left, svg);
+        setButtonData(redoButton, bWidth, bHeight, R.raw.right, svg);
     }
 
-    private static void setButtonSize(ImageButton button, int bWidth, int bHeight) {
+    private void setButtonData(ImageButton button, int bWidth, int bHeight,
+                               int svgResId, SVG touched) {
+        SVG svg = SVGParser.getSVGFromResource(getResources(), svgResId);
+        button.setBackgroundDrawable(new SVGPictureDrawable(svg));
+
+        StateListDrawable sld = new StateListDrawable();
+        sld.addState(new int[]{android.R.attr.state_pressed}, new SVGPictureDrawable(touched));
+        button.setImageDrawable(sld);
+
         LayoutParams lp = button.getLayoutParams();
         lp.height = bHeight;
         lp.width = bWidth;
         button.setLayoutParams(lp);
+        button.setPadding(0,0,0,0);
+        button.setScaleType(ScaleType.FIT_XY);
     }
 
     private synchronized final void setWakeLock(boolean enableLock) {
