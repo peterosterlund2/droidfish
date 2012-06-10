@@ -104,6 +104,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
@@ -113,7 +114,6 @@ import android.view.View.OnTouchListener;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -148,7 +148,6 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! Handle PGN intents with more than one game.
     // FIXME!!! File load/save of FEN data
     // FIXME!!! Make engine hash size configurable.
-    // FIXME!!! Nicer looking icons.
 
     private ChessBoard cb;
     private static DroidChessController ctrl = null;
@@ -169,9 +168,9 @@ public class DroidFish extends Activity implements GUIInterface {
     private ScrollView moveListScroll;
     private TextView moveList;
     private TextView thinking;
-    private ImageButton custom1Button, custom2Button;
+    private ImageButton custom1Button, custom2Button, custom3Button;
     private ImageButton modeButton, undoButton, redoButton;
-    private ButtonActions custom1ButtonActions, custom2ButtonActions;
+    private ButtonActions custom1ButtonActions, custom2ButtonActions, custom3ButtonActions;
     private TextView whiteClock, blackClock, titleText;
 
     SharedPreferences settings;
@@ -335,6 +334,8 @@ public class DroidFish extends Activity implements GUIInterface {
         custom1ButtonActions = new ButtonActions("custom1", CUSTOM1_BUTTON_DIALOG,
                                                  R.string.select_action);
         custom2ButtonActions = new ButtonActions("custom2", CUSTOM2_BUTTON_DIALOG,
+                                                 R.string.select_action);
+        custom3ButtonActions = new ButtonActions("custom3", CUSTOM3_BUTTON_DIALOG,
                                                  R.string.select_action);
 
         initUI(true);
@@ -600,9 +601,10 @@ public class DroidFish extends Activity implements GUIInterface {
 
         custom1Button = (ImageButton)findViewById(R.id.custom1Button);
         custom1ButtonActions.setImageButton(custom1Button, this);
-
         custom2Button = (ImageButton)findViewById(R.id.custom2Button);
         custom2ButtonActions.setImageButton(custom2Button, this);
+        custom3Button = (ImageButton)findViewById(R.id.custom3Button);
+        custom3ButtonActions.setImageButton(custom3Button, this);
 
         modeButton = (ImageButton)findViewById(R.id.modeButton);
         modeButton.setOnClickListener(new OnClickListener() {
@@ -745,7 +747,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
         custom1ButtonActions.readPrefs(settings, actionFactory);
         custom2ButtonActions.readPrefs(settings, actionFactory);
-
+        custom3ButtonActions.readPrefs(settings, actionFactory);
         updateButtons();
 
         bookOptions.filename = settings.getString("bookFile", "");
@@ -804,10 +806,12 @@ public class DroidFish extends Activity implements GUIInterface {
         SVG svg = SVGParser.getSVGFromResource(getResources(), 
                                                custom1ButtonActions.getIcon());
         custom1Button.setBackgroundDrawable(new SVGPictureDrawable(svg));
-
         svg = SVGParser.getSVGFromResource(getResources(), 
                                            custom2ButtonActions.getIcon());
         custom2Button.setBackgroundDrawable(new SVGPictureDrawable(svg));
+        svg = SVGParser.getSVGFromResource(getResources(), 
+                                           custom3ButtonActions.getIcon());
+        custom3Button.setBackgroundDrawable(new SVGPictureDrawable(svg));
 
         svg = SVGParser.getSVGFromResource(getResources(), R.raw.right);
         redoButton.setBackgroundDrawable(new SVGPictureDrawable(svg));
@@ -818,11 +822,19 @@ public class DroidFish extends Activity implements GUIInterface {
         svg = SVGParser.getSVGFromResource(getResources(), R.raw.mode);
         modeButton.setBackgroundDrawable(new SVGPictureDrawable(svg));
 
-        custom1Button.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
-        custom2Button.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
-        modeButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
-        undoButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
-        redoButton.setLayoutParams(new LinearLayout.LayoutParams(bWidth, bHeight));
+        setButtonSize(custom1Button, bWidth, bHeight);
+        setButtonSize(custom2Button, bWidth, bHeight);
+        setButtonSize(custom3Button, bWidth, bHeight);
+        setButtonSize(modeButton, bWidth, bHeight);
+        setButtonSize(undoButton, bWidth, bHeight);
+        setButtonSize(redoButton, bWidth, bHeight);
+    }
+
+    private static void setButtonSize(ImageButton button, int bWidth, int bHeight) {
+        LayoutParams lp = button.getLayoutParams();
+        lp.height = bHeight;
+        lp.width = bWidth;
+        button.setLayoutParams(lp);
     }
 
     private synchronized final void setWakeLock(boolean enableLock) {
@@ -1356,6 +1368,7 @@ public class DroidFish extends Activity implements GUIInterface {
     static private final int NEW_GAME_DIALOG = 16;
     static private final int CUSTOM1_BUTTON_DIALOG = 17;
     static private final int CUSTOM2_BUTTON_DIALOG = 18;
+    static private final int CUSTOM3_BUTTON_DIALOG = 19;
 
     @Override
     protected Dialog onCreateDialog(int id) {
@@ -2112,6 +2125,8 @@ public class DroidFish extends Activity implements GUIInterface {
             return makeButtonDialog(custom1ButtonActions);
         case CUSTOM2_BUTTON_DIALOG:
             return makeButtonDialog(custom2ButtonActions);
+        case CUSTOM3_BUTTON_DIALOG:
+            return makeButtonDialog(custom3ButtonActions);
         }
         return null;
     }

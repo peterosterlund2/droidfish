@@ -286,7 +286,59 @@
                     android:defaultValue="">
                 </ListPreference>
             </PreferenceCategory>
-        </PreferenceScreen>
+            <PreferenceCategory
+                android:title="@string/prefs_custom_button_3">
+                <ListPreference
+                    android:key="button_action_custom3_0"
+                    android:title="@string/prefs_button_action_0_title"
+                    android:entryValues="@array/button_action_values"
+                    android:entries="@array/button_action_texts"
+                    android:defaultValue="">
+                </ListPreference>
+                <ListPreference
+                    android:key="button_action_custom3_1"
+                    android:title="@string/prefs_button_action_1_title"
+                    android:entryValues="@array/button_action_values"
+                    android:entries="@array/button_action_texts"
+                    android:defaultValue="">
+                </ListPreference>
+                <ListPreference
+                    android:key="button_action_custom3_2"
+                    android:title="@string/prefs_button_action_2_title"
+                    android:entryValues="@array/button_action_values"
+                    android:entries="@array/button_action_texts"
+                    android:defaultValue="">
+                </ListPreference>
+                <ListPreference
+                    android:key="button_action_custom3_3"
+                    android:title="@string/prefs_button_action_3_title"
+                    android:entryValues="@array/button_action_values"
+                    android:entries="@array/button_action_texts"
+                    android:defaultValue="">
+                </ListPreference>
+                <ListPreference
+                    android:key="button_action_custom3_4"
+                    android:title="@string/prefs_button_action_4_title"
+                    android:entryValues="@array/button_action_values"
+                    android:entries="@array/button_action_texts"
+                    android:defaultValue="">
+                </ListPreference>
+                <ListPreference
+                    android:key="button_action_custom3_5"
+                    android:title="@string/prefs_button_action_5_title"
+                    android:entryValues="@array/button_action_values"
+                    android:entries="@array/button_action_texts"
+                    android:defaultValue="">
+                </ListPreference>
+                <ListPreference
+                    android:key="button_action_custom3_6"
+                    android:title="@string/prefs_button_action_6_title"
+                    android:entryValues="@array/button_action_values"
+                    android:entries="@array/button_action_texts"
+                    android:defaultValue="">
+                </ListPreference>
+            </PreferenceCategory>
+            </PreferenceScreen>
         <PreferenceScreen
             android:key="colors"
             android:title="@string/prefs_colors_title"

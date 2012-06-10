@@ -269,6 +269,7 @@ you are not actively using the program.\
     <string name="prefs_button_action_6_title">Menu Action 6</string>
     <string name="prefs_custom_button_1">Custom Button 1</string>
     <string name="prefs_custom_button_2">Custom Button 2</string>
+    <string name="prefs_custom_button_3">Custom Button 3</string>
     <string name="prefs_colors_title">Color Settings</string>
     <string name="prefs_colors_summary">Change individual colors</string>
     <string name="prefs_chess_board">Chess Board</string>
@@ -343,6 +344,7 @@ you are not actively using the program.\
     <string name="prefs_gtbPath_summary">Directory where Gaviota tablebases are installed. Leave blank to use default directory</string>
     <string name="buttonDesc_custom1">@string/prefs_custom_button_1</string>
     <string name="buttonDesc_custom2">@string/prefs_custom_button_2</string>
+    <string name="buttonDesc_custom3">@string/prefs_custom_button_3</string>
     <string name="buttonDesc_mode">Mode button</string>
     <string name="buttonDesc_back">Backward button</string>
     <string name="buttonDesc_forward">Forward button</string>

@@ -22,6 +22,12 @@
     		android:typeface="monospace"
 		    android:textSize="10dip"/>
         <ImageButton
+            android:id="@+id/custom3Button"
+            android:contentDescription="@string/buttonDesc_custom3"
+            android:layout_width="36dp"
+            android:layout_height="32dp">
+        </ImageButton>
+        <ImageButton
             android:id="@+id/custom2Button"
             android:contentDescription="@string/buttonDesc_custom2"
             android:layout_width="36dp"
