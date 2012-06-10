@@ -54,4 +54,9 @@ public class Piece {
     public static int makeBlack(int pType) {
         return ((pType >= WKING) && (pType <= WPAWN)) ? pType + (BKING - WKING) : pType;
     }
+    public static int swapColor(int pType) {
+        if (pType == EMPTY)
+            return EMPTY;
+        return isWhite(pType) ? pType + (BKING - WKING) : pType - (BKING - WKING);
+    }
 }

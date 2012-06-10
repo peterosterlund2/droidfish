@@ -204,8 +204,11 @@ public class EditBoard extends Activity {
             piece = -(m.from + 2);
         }
         if (m.to >= 0) {
-            if ((m.from < 0) && (pos.getPiece(m.to) == piece))
+            int oPiece = Piece.swapColor(piece);
+            if ((m.from < 0) && (pos.getPiece(m.to) == oPiece))
                 pos.setPiece(m.to, Piece.EMPTY);
+            else if ((m.from < 0) && (pos.getPiece(m.to) == piece))
+                pos.setPiece(m.to, oPiece);
             else
                 pos.setPiece(m.to, piece);
         }

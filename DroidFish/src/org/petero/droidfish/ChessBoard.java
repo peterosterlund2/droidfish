@@ -601,14 +601,15 @@ public class ChessBoard extends View {
 
         int p = pos.getPiece(sq);
         if (selectedSquare != -1) {
-            if (sq != selectedSquare) {
-                if (!myColor(p)) {
-                    Move m = new Move(selectedSquare, sq, Piece.EMPTY);
-                    setSelection(sq);
-                    return m;
-                }
+            if (sq == selectedSquare)
+                return null;
+            if (!myColor(p)) {
+                Move m = new Move(selectedSquare, sq, Piece.EMPTY);
+                setSelection(sq);
+                return m;
+            } else {
+                setSelection(sq);
             }
-            setSelection(-1);
         } else {
             if (oneTouchMoves) {
                 ArrayList<Move> moves = new MoveGen().pseudoLegalMoves(pos);
