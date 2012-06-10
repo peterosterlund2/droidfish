@@ -154,7 +154,9 @@ public final class DroidBook {
                     first = false;
                 else
                     ret.append(' ');
+                ret.append("<b>");
                 ret.append(moveStr);
+                ret.append("</b>");
                 ret.append(':');
                 int percent = (int)Math.round(scaleWeight(be.weight) * 100 / totalWeight);
                 ret.append(percent);

@@ -142,7 +142,6 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! ECO opening codes
 
     // FIXME!!! Remember multi-PV analysis setting when program restarted.
-    // FIXME!!! Use high-res buttons from Scid on the go.
     // FIXME!!! Option to display coordinates in border outside chess board.
 
     // FIXME!!! Better behavior if engine is terminated. How exactly?
