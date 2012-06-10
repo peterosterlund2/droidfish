@@ -49,6 +49,15 @@ public class ButtonActions {
         this.menuTitle = menuTitle;
     }
 
+    public boolean isEnabled() {
+        if (mainAction != null)
+            return true;
+        for (UIAction a : menuActions)
+            if (a != null)
+                return true;
+        return false;
+    }
+
     /** Connect GUI button. */
     public void setImageButton(ImageButton button, final Activity activity) {
         this.button = button;

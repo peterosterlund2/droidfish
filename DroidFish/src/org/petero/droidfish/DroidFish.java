@@ -802,8 +802,21 @@ public class DroidFish extends Activity implements GUIInterface {
         int bWidth  = (int)Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, r.getDisplayMetrics()));
         int bHeight = (int)Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, r.getDisplayMetrics()));
         if (largeButtons) {
-            bWidth  = bWidth  * 3 / 2;
-            bHeight = bHeight * 3 / 2;
+            if (custom1ButtonActions.isEnabled() &&
+                custom2ButtonActions.isEnabled() &&
+                custom3ButtonActions.isEnabled()) {
+                Configuration config = getResources().getConfiguration();
+                if (config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    bWidth  = bWidth  * 6 / 5;
+                    bHeight = bHeight * 6 / 5;
+                } else {
+                    bWidth  = bWidth  * 5 / 4;
+                    bHeight = bHeight * 5 / 4;
+                }
+            } else {
+                bWidth  = bWidth  * 3 / 2;
+                bHeight = bHeight * 3 / 2;
+            }
         }
         SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.touch);
         setButtonData(custom1Button, bWidth, bHeight, custom1ButtonActions.getIcon(), svg);
