@@ -301,7 +301,6 @@
   <string name="prefs_tbEngineProbe_summary">Разрешить зондирование базы данных в движке, если такая функция поддерживается. Активируется при повторном запуске движка</string>
   <string name="prefs_gtbPath_title">Директория GTB</string>
   <string name="prefs_gtbPath_summary">Директория, где инсталлирована база данных Гавиоты. Оставить пустой для использования директории по умолчанию</string>
-  <string name="buttonDesc_flip">Кнопка поворота доски</string>
   <string name="buttonDesc_mode">Кнопка режима</string>
   <string name="buttonDesc_back">Кнопка перехода назад</string>
   <string name="buttonDesc_forward">Кнопка перехода вперед</string>
@@ -458,5 +457,27 @@
     <item>30</item>
     <item>50</item>
     <item>1000000</item>
+  </string-array>
+  <string-array name="button_action_texts">
+    <item>Disabled</item>
+    <item>@string/flip_board</item>
+    <item>@string/toggle_analysis</item>
+    <item>@string/toggle_show_thinking</item>
+    <item>@string/toggle_book_hints</item>
+    <item>@string/toggle_pgn_variations</item>
+    <item>@string/toggle_pgn_comments</item>
+    <item>@string/toggle_pgn_headers</item>
+    <item>@string/toggle_large_buttons</item>
+  </string-array>
+  <string-array name="button_action_values">
+    <item></item>
+    <item>flipboard</item>
+    <item>toggleAnalysis</item>
+    <item>showThinking</item>
+    <item>bookHints</item>
+    <item>viewVariations</item>
+    <item>viewComments</item>
+    <item>viewHeaders</item>
+    <item>largeButtons</item>
   </string-array>
 </resources>

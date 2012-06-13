@@ -307,7 +307,6 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="prefs_tbEngineProbe_summary">Permite saber al motor dónde se ubican los archivos de las tablas de finales , cuando aquél lo permite. Funciona cuando el motor vuelve a activarse.</string>
   <string name="prefs_gtbPath_title">Directorio GTB </string>
   <string name="prefs_gtbPath_summary"> Es el directorio donde se instalan las tablas Gaviota. Se puede dejar el espacio en blanco y el programa lo utilizará como directorio por defecto.</string>
-  <string name="buttonDesc_flip">Botón/tecla de inversión del tablero</string>
   <string name="buttonDesc_mode">Botón de modo</string>
   <string name="buttonDesc_back">Botón de retroceso</string>
   <string name="buttonDesc_forward">Botón de avance</string>
@@ -464,5 +463,27 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <item>30</item>
     <item>50</item>
     <item>1000000</item>
+  </string-array>
+  <string-array name="button_action_texts">
+    <item>Disabled</item>
+    <item>@string/flip_board</item>
+    <item>@string/toggle_analysis</item>
+    <item>@string/toggle_show_thinking</item>
+    <item>@string/toggle_book_hints</item>
+    <item>@string/toggle_pgn_variations</item>
+    <item>@string/toggle_pgn_comments</item>
+    <item>@string/toggle_pgn_headers</item>
+    <item>@string/toggle_large_buttons</item>
+  </string-array>
+  <string-array name="button_action_values">
+    <item></item>
+    <item>flipboard</item>
+    <item>toggleAnalysis</item>
+    <item>showThinking</item>
+    <item>bookHints</item>
+    <item>viewVariations</item>
+    <item>viewComments</item>
+    <item>viewHeaders</item>
+    <item>largeButtons</item>
   </string-array>
 </resources>

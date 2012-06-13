@@ -98,6 +98,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="toggle_pgn_comments">Kommentare an/aus</string>
   <string name="toggle_pgn_headers">Partie-Informationen an/aus</string>
   <string name="toggle_analysis">Engine-Analyse an/aus</string>
+  <string name="toggle_large_buttons">Große Tasten ein/aus</string>
   <string name="cancel">Abbrechen</string>
   <string name="yes">Ja</string>
   <string name="no">Nein</string>
@@ -258,6 +259,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_button_action_6_title">Menuaktion 6</string>
   <string name="prefs_custom_button_1">Benutzerdefinierte Taste 1</string>
   <string name="prefs_custom_button_2">Benutzerdefinierte Taste 2</string>
+  <string name="prefs_custom_button_3">Benutzerdefinierte Taste 3</string>
   <string name="prefs_colors_title">Farbeinstellungen</string>
   <string name="prefs_colors_summary">Einzelne Farben ändern</string>
   <string name="prefs_chess_board">Spielfeld</string>
@@ -496,6 +498,7 @@ wenn Sie es nicht aktiv nutzen.\
     <item>@string/toggle_pgn_variations</item>
     <item>@string/toggle_pgn_comments</item>
     <item>@string/toggle_pgn_headers</item>
+    <item>@string/toggle_large_buttons</item>
   </string-array>
   <string-array name="button_action_values">
     <item></item>
@@ -506,5 +509,6 @@ wenn Sie es nicht aktiv nutzen.\
     <item>viewVariations</item>
     <item>viewComments</item>
     <item>viewHeaders</item>
+    <item>largeButtons</item>
   </string-array>
 </resources>
