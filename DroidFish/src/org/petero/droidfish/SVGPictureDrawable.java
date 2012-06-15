@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.PictureDrawable;
 
 /**
@@ -52,7 +51,7 @@ public class SVGPictureDrawable extends PictureDrawable {
         if (!b.equals(cachedBounds)) {
             Bitmap bm = Bitmap.createBitmap(b.right-b.left, b.bottom-b.top, Bitmap.Config.ARGB_8888);
             Canvas bmCanvas = new Canvas(bm);
-            bmCanvas.drawPicture(getPicture(), getBounds());
+            bmCanvas.drawPicture(getPicture(), b);
             cachedBitmap = bm;
             cachedBounds = b;
         }
