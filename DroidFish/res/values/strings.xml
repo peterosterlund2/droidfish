@@ -147,7 +147,7 @@ you are not actively using the program.\
     <string name="save_game_hint">Select an existing game to control where to save the game. Long press an existing game to delete it.</string>
     <string name="load_scid_game_title">Load Scid Game</string>
     <string name="cpu_warning_title">CPU Warning</string>
-    <string name="failed_to_read_pgn_data">Failed to read pgn data</string>
+    <string name="failed_to_read_pgn_data">Failed to read PGN data</string>
     <string name="variation">Var:</string>
     <string name="add_analysis">Add Analysis</string>
     <string name="fewer_variations">Fewer Variations</string>
