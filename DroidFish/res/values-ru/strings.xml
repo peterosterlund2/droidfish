@@ -80,6 +80,15 @@
   <string name="load_next_game">Загрузить следующую партию</string>
   <string name="no_prev_game">Предыдущая партия отсутствует</string>
   <string name="no_next_game">Следующая партия отсутствует</string>
+  <string name="select_action">Выбрать действие</string>
+  <string name="flip_board">Информационное табло</string>
+  <string name="toggle_show_thinking">Переключатель вида мышления</string>
+  <string name="toggle_book_hints">Переключатель книжных подсказок</string>
+  <string name="toggle_pgn_variations">Переключатель вариаций</string>
+  <string name="toggle_pgn_comments">Переключатель комментариев</string>
+  <string name="toggle_pgn_headers">Переключатель заголовков</string>
+  <string name="toggle_analysis">Переключатель анализа движка</string>
+  <string name="toggle_large_buttons">Переключатель больших кнопок</string>
   <string name="cancel">Отмена</string>
   <string name="yes">Да</string>
   <string name="no">Нет</string>
@@ -229,6 +238,18 @@
   <string name="prefs_fontSize_summary">Размер шрифта для списка ходов и информации об игре</string>
   <string name="prefs_largeButtons_title">Крупные кнопки</string>
   <string name="prefs_largeButtons_summary">Использовать крупные кнопки для навигации в партии и в установках режима</string>
+  <string name="prefs_buttonSettings_title">Конфигурация кнопок</string>
+  <string name="prefs_buttonSettings_summary">Настройка размера кнопок и их действия.</string>
+  <string name="prefs_button_action_0_title">Основное действие</string>
+  <string name="prefs_button_action_1_title">Действие меню 1</string>
+  <string name="prefs_button_action_2_title">Действие меню 2</string>
+  <string name="prefs_button_action_3_title">Действие меню 3</string>
+  <string name="prefs_button_action_4_title">Действие меню 4</string>
+  <string name="prefs_button_action_5_title">Действие меню 5</string>
+  <string name="prefs_button_action_6_title">Действие меню 6</string>
+  <string name="prefs_custom_button_1">Пользовательская кнопка 1</string>
+  <string name="prefs_custom_button_2">Пользовательская кнопка 2</string>
+  <string name="prefs_custom_button_3">Пользовательская кнопка 3</string>
   <string name="prefs_colors_title">Настройка цвета</string>
   <string name="prefs_colors_summary">Изменить индивидуальные настройки цвета</string>
   <string name="prefs_chess_board">Шахматная доска</string>
@@ -459,7 +480,7 @@
     <item>1000000</item>
   </string-array>
   <string-array name="button_action_texts">
-    <item>Disabled</item>
+    <item>Отключен</item>
     <item>@string/flip_board</item>
     <item>@string/toggle_analysis</item>
     <item>@string/toggle_show_thinking</item>

@@ -246,8 +246,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_leftHanded_summary">Steuerelemente auf der linken Seite im Querformat</string>
   <string name="prefs_fontSize_title">Schriftgröße</string>
   <string name="prefs_fontSize_summary">Schriftgröße für Zugliste und Partie-Informationen einstellen</string>
-  <string name="prefs_largeButtons_title">Größe der Schaltflächen</string>
-  <string name="prefs_largeButtons_summary">Große Schaltflächen für Partie-Navigation und Spielmodus-Einstellung verwenden</string>
+  <string name="prefs_largeButtons_title">Größe der Tasten</string>
+  <string name="prefs_largeButtons_summary">Große Tasten für Partie-Navigation und Spielmodus-Einstellung verwenden</string>
   <string name="prefs_buttonSettings_title">Tasten konfigurieren</string>
   <string name="prefs_buttonSettings_summary">Tastengröße und -aktionen festlegen</string>
   <string name="prefs_button_action_0_title">Hauptaktion</string>
