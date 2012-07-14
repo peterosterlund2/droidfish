@@ -1,6 +1,6 @@
 /*
     DroidFish - An Android chess program.
-    Copyright (C) 2011  Peter Österlund, peterosterlund2@gmail.com
+    Copyright (C) 2011-2012  Peter Österlund, peterosterlund2@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,10 +19,7 @@
 package org.petero.droidfish;
 
 public class GameMode {
-    private final boolean playerWhite;
-    private final boolean playerBlack;
-    private final boolean analysisMode;
-    private final boolean clocksActive;
+    private final int modeNr;
 
     public static final int PLAYER_WHITE  = 1;
     public static final int PLAYER_BLACK  = 2;
@@ -32,60 +29,59 @@ public class GameMode {
     public static final int EDIT_GAME     = 6;
 
     public GameMode(int modeNr) {
+        this.modeNr = modeNr;
+    }
+
+    public int getModeNr() {
+        return modeNr;
+    }
+
+    /** Return true if white side is controlled by a human. */
+    public final boolean playerWhite() {
         switch (modeNr) {
-        case PLAYER_WHITE: default:
-            playerWhite = true;
-            playerBlack = false;
-            analysisMode = false;
-            clocksActive = true;
-            break;
-        case PLAYER_BLACK:
-            playerWhite = false;
-            playerBlack = true;
-            analysisMode = false;
-            clocksActive = true;
-            break;
+        case PLAYER_WHITE:
         case TWO_PLAYERS:
-            playerWhite = true;
-            playerBlack = true;
-            analysisMode = false;
-            clocksActive = true;
-            break;
         case ANALYSIS:
-            playerWhite = true;
-            playerBlack = true;
-            analysisMode = true;
-            clocksActive = false;
-            break;
-        case TWO_COMPUTERS:
-            playerWhite = false;
-            playerBlack = false;
-            analysisMode = false;
-            clocksActive = true;
-            break;
         case EDIT_GAME:
-            playerWhite = true;
-            playerBlack = true;
-            analysisMode = false;
-            clocksActive = false;
-            break;
+            return true;
+        default:
+            return false;
         }
     }
 
-    public final boolean playerWhite() {
-        return playerWhite;
-    }
+    /** Return true if black side is controlled by a human. */
     public final boolean playerBlack() {
-        return playerBlack;
+        switch (modeNr) {
+        case PLAYER_BLACK:
+        case TWO_PLAYERS:
+        case ANALYSIS:
+        case EDIT_GAME:
+            return true;
+        default:
+            return false;
+        }
     }
+
     public final boolean analysisMode() {
-        return analysisMode;
+        return modeNr == ANALYSIS;
     }
+    
+    /** Return true if it is a humans turn to move. */
     public final boolean humansTurn(boolean whiteMove) {
-        return (whiteMove ? playerWhite : playerBlack) || analysisMode;
+        return whiteMove ? playerWhite() : playerBlack();
     }
+
+    /** Return true if the clocks are running. */
     public final boolean clocksActive() {
-        return clocksActive;
+        switch (modeNr) {
+        case PLAYER_WHITE:
+        case PLAYER_BLACK:
+        case TWO_PLAYERS:
+        case TWO_COMPUTERS:
+            return true;
+        default:
+            return false;    
+        }
     }
 
     @Override
@@ -93,19 +89,11 @@ public class GameMode {
         if ((o == null) || (o.getClass() != this.getClass()))
             return false;
         GameMode other = (GameMode)o;
-        if (playerWhite != other.playerWhite)
-            return false;
-        if (playerBlack != other.playerBlack)
-            return false;
-        if (analysisMode != other.analysisMode)
-            return false;
-        if (clocksActive != other.clocksActive)
-            return false;
-        return true;
+        return modeNr == other.modeNr;
     }
 
     @Override
     public int hashCode() {
-        return 0;
+        return modeNr;
     }
 }

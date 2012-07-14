@@ -280,8 +280,15 @@ public class DroidFish extends Activity implements GUIInterface {
                 public int getName() { return R.string.toggle_analysis; }
                 public int getIcon() { return R.raw.analyze; }
                 public boolean enabled() { return true; }
+                private int oldGameModeType = GameMode.EDIT_GAME;
                 public void run() {
-                    int gameModeType = ctrl.analysisMode() ? GameMode.EDIT_GAME : GameMode.ANALYSIS;
+                    int gameModeType;
+                    if (ctrl.analysisMode()) {
+                        gameModeType = oldGameModeType;
+                    } else {
+                        oldGameModeType = ctrl.getGameMode().getModeNr();
+                        gameModeType = GameMode.ANALYSIS;
+                    }
                     Editor editor = settings.edit();
                     String gameModeStr = String.format("%d", gameModeType);
                     editor.putString("gameMode", gameModeStr);

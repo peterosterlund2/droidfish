@@ -131,6 +131,10 @@ public class DroidChessController {
         }
     }
 
+    public GameMode getGameMode() {
+        return gameMode;
+    }
+
     /** Return true if game mode is analysis. */
     public final boolean analysisMode() {
         return gameMode.analysisMode();
