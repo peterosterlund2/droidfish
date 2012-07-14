@@ -1,0 +1,189 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+
+<h2>Sobre</h2>
+<p>
+  <i>DroidFish</i> é uma rica interface gráfica para xadrez , combinada com o potente software de xadrez <i>StockFish</i>.
+</p>
+
+<h3>Características</h3>
+<ul>
+  <li>Livro de aberturas</li>
+  <li>Jogar/Voltar ilimitado</li>
+  <li>Copiar/colar de/para área de transferência</li>
+  <li>Modo de análise</li>
+  <li>Modo para dois jogadores</li>
+  <li>Modo computador vs computador</li>
+  <li>Definir posições</li>
+  <li>Amplo suporte a PGN</li>
+  <li>Força de jogo ajustável</li>
+  <li>Softwares UCI de terceiros</li>
+  <li>Tabelas de finais de Gaviota</li>
+</ul>
+
+<h3>Dicas</h3>
+<ul>
+  <li>
+    No modo de jogo, pressione longamente o tabuleiro para ativar o menu copiar/colar.  
+</li>
+  <li>
+    No modo de edição, pressione longamente o tabuleiropara ativar o menu Editar.  
+</li>
+  <li>
+    Deslize esquerda/direita no tabuleiro para desfazer/refazer lances.  
+</li>
+  <li>
+    Se a partida tiver múltiplas variantes, deslize para cima/baixo no tabuleiro para ir para a variante anterior/seguinte.  
+</li>
+  <li>
+    Pressione longamente os botões de modo/esquerda/direita para comandos adicionais.  
+</li>
+  <li>
+    Quando estiver jogando novamente uma prtida, altere o modo de jogo para <i>Editar/rejogar partida</i> para poder desfazer/refazer lances.  
+</li>
+</ul>
+
+<h3>Livros de aberturas</h3>
+<p>
+  DroidFish vem com um pequeno livro de aberturas. Se você quiser usar um livro maior, você pode configurar o DroidFish para usar livros externos <i>Polyglot</i> ou em formato <i>CTG</i>:
+</p>
+<ol>
+  <li>
+    Copie um ou mais arquivos de livro Polyglot para o diretório <i>DroidFish</i> no cartão SD.
+    Livros Polyglot devem ter a extensão de arquivo <i>.bin</i>.
+    <b>Nota!</b> O sistema de arquivos do Android diferencia maiúsculas de minúsculas, portanto, a extensão deve ser <i>.bin</i>, e não <i>.Bin</i> ou <i>.BIN</i>.  
+</li>
+  <li>
+    Copie um ou mais arquivos CTG para diretório <i>DroidFish</i>.
+    Um livro CTG é composto por três arquivos com extensões <i>CTG</i>, <i>CTB</i> e <i>.cto</i>.
+    Você deve copiar todos os 3 arquivos.  
+</li>
+  <li>
+    No menu do programa, ative a função <i>Selecionar livro de aberturas</i>.  
+</li>
+  <li>
+    Selecione o arquivo de aberturas que você deseja usar.  
+</li>
+</ol>
+
+<h3>Arquivos PGN</h3>
+<p>
+  DroidFish pode carregar partidas de arquivos PGN. Para usar este recurso:
+</p>
+<ol>
+  <li>
+    Copie um ou mais arquivos PGN para o diretório <i>DroidFish/pgn</i> no cartão SD.  
+</li>
+  <li>
+    Pressione longamente o tabuleiro e selecione <i>Carregar partida de arquivo PGN</i>.  
+</li>
+  <li>
+    Selecione o arquivo e depois a partida dentro do arquivo que você deseja carregar.  
+</li>
+</ol>
+<p>
+  Para editar os cabeçalhos, como nomes de jogador, pressione longamente a lista de lances e selecione <i>Editar cabeçalhos</i>. Para editar comentários de um lance, pressione longamente a lista de lances e selecione <i>Editar comentários</i>.
+</p>
+<p>
+  Para salvar a edição de sua partida, pressione longamente o tabuleiro e selecione <i>Salvar partida em arquivo PGN</i>. Selecione o arquivo para salvar e em seguida selecione a posição no arquivo onde será salva a nova partida.
+</p>
+<p>
+  <b>Nota!</b> Se o <a href="http://play.google.com/store/apps/details?id=org.openintents.filemanager">OI File Manager</a> está instalado, qualquer diretório pode ser usado para carregar/salvar partidas.
+</p>
+<p>
+  Para adicionar a análise do software para a árvore da partida, pressione longamente as informações de análise quando o computador estiver analisando e selecione <i>Adicionar análise</i>.
+  A variante principal atual é adicionada como uma variante na árvore da partida.
+</p>
+<p>
+  No modo de análise, é possível adicionar lances nulos para a árvore da partida. Esteja ciente no entanto que lances nulos não são suportados pelo padrão PGN e podem não funcionar em outros programas de leitura de arquivos PGN.
+</p>
+
+<h3>Arquivos Scid</h3>
+<p>
+  Se você tem <a href="http://play.google.com/store/apps/details?id=org.scid.android">Scid on the go</a> instalado, você pode ler arquivos de banco de dados do Scid diretamente a partir do DroidFish.
+  Pressione longamente o tabuleiro e selecione <i>Carregar partidas de arquivo Scid</i>.
+</p>
+
+<h3>Softwares UCI</h3>
+<p>
+  DroidFish pode usar softwares UCI de terceiros. Para usar este recurso:
+</p>
+<ol>
+  <li>
+    Copie um ou mais softwares UCI para o diretório <i>DroidFish/uci</i> no cartão SD.
+<b>Nota!</b> Os binários devem ser compilados para o Android.  
+</li>
+  <li>
+    No menu, escolha <i>Selecionar software de Xadrez</i> e selecione o que deseja usar.  
+</li>
+</ol>
+
+<h3>Tabelas de finais Gaviota</h3>
+<p>
+  Para usar <a href="http://sites.google.com/site/gaviotachessengine/Home/endgame-tablebases-1">Tabelas de finas Gaviota</a>:
+</p>
+<ol>
+  <li>
+    Copie arquivos .gtb e .cp4 para o diretório <i>DroidFish/gtb</i> no cartão SD.  
+</li>
+  <li>
+    Use a tela de preferências de <i>Tabelas de Finais</i> para controlar como as tabelas são usadas.  
+</li>
+</ol>
+
+<h3>Licença</h3>
+<p>
+  <a href="http://www.gnu.org/licenses/gpl.html">GNU GPL v3</a>
+</p>
+
+<h3>Desenvolvedores</h3>
+<ul>
+  <li>
+    <i>Stockfish</i> é desenvolvido por Tord Romstad, Marco Costalba e Joona Kiiski.  
+</li>
+  <li>
+    <i>Droidfish</i> é desenvolvido por Peter Österlund.  
+</li>
+  <li>
+    Melhorias na interface gráfica por Aaro Korhonen.  
+</li>
+  <li>
+    Código API de sondagem das Tabelas Gaviota, Copyright © 2010 Miguel A. Ballicora.    
+<ul>
+      <li>
+        Compressão LZMA por Igor Pavlov.      
+</li>
+      <li>
+        Compressão ZLIB, Copyright © 1995 - 2005 Jean-loup Gailly e Mark Adler.      
+</li>
+      <li>
+        Compressão LZF, Copyright © 2000-2007 Marc Alexander Lehmann.      
+</li>
+    </ul>
+  </li>
+  <li>
+    Leitor SVG do projeto <a href="http://code.google.com/p/svg-android/">svg-android</a>.  
+</li>
+</ul>
+
+<h3>Traduções</h3>
+<p>
+  Traduções gerenciadas por <a href="http://crowdin.net/project/droidfish-android-chess-app">crowdin.net</a>.
+</p>
+<ul>
+  <li>
+    Tradução para o alemão por Uwe Walschus.  
+</li>
+  <li>
+    Tradução para o espanhol por Amador Cuesta.  
+</li>
+  <li>
+    Tradução para o russo por SWEN и dfuk (allBlackBerry).  
+</li>
+</ul>
+
+  </body>
+</html>
