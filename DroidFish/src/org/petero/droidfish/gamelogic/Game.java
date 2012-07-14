@@ -124,25 +124,13 @@ public class Game {
         }
 
         Move m = TextIO.UCIstringToMove(str);
-        if (m != null) {
-            ArrayList<Move> moves = new MoveGen().pseudoLegalMoves(currPos());
-            moves = MoveGen.removeIllegal(currPos(), moves);
-            boolean legal = false;
-            for (int i = 0; i < moves.size(); i++) {
-                if (m.equals(moves.get(i))) {
-                    legal = true;
-                    break;
-                }
-            }
-            if (!legal)
+        if (m != null)
+            if (!TextIO.isValid(currPos(), m, null))
                 m = null;
-        }
-        if (m == null) {
+        if (m == null)
             m = TextIO.stringToMove(currPos(), str);
-        }
-        if (m == null) {
+        if (m == null)
             return false;
-        }
 
         addToGameTree(m, pendingDrawOffer ? "draw offer" : "");
         return true;

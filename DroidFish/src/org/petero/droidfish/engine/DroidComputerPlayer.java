@@ -745,18 +745,37 @@ public class DroidComputerPlayer {
 
     private final void reportMove(String bestMove, Move nextPonderMove) {
         SearchRequest sr = searchRequest;
+        boolean canPonder = true;
 
         // Claim draw if appropriate
         if (statScore <= 0) {
             String drawClaim = canClaimDraw(sr.currPos, sr.posHashList, sr.posHashListSize,
                                             TextIO.UCIstringToMove(bestMove));
-            if (drawClaim != "")
+            if (drawClaim != "") {
                 bestMove = drawClaim;
+                canPonder = false;
+            }
         }
         // Accept draw offer if engine is losing
         if (sr.drawOffer && !statIsMate && (statScore <= -300)) {
             bestMove = "draw accept";
+            canPonder = false;
         }
+
+        if (canPonder) {
+            Move bestM = TextIO.stringToMove(sr.currPos, bestMove);
+            if ((bestM == null) || !TextIO.isValid(sr.currPos, bestM, null))
+                canPonder = false;
+            if (canPonder) {
+                Position tmpPos = new Position(sr.currPos);
+                UndoInfo ui = new UndoInfo();
+                tmpPos.makeMove(bestM, ui);
+                if (!TextIO.isValid(tmpPos, nextPonderMove, null))
+                    canPonder = false;
+            }
+        }
+        if (!canPonder)
+            nextPonderMove = null;
         listener.notifySearchResult(sr.searchId, bestMove, nextPonderMove);
     }
 

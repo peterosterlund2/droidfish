@@ -422,6 +422,24 @@ public class TextIO {
         }
     }
 
+    /**
+     * Decide if move is valid in position pos.
+     * @param pos   Position for which to test move.
+     * @param move  The move to check for validity.
+     * @param moves If non-null, list of valid moves in position pos.
+     * @return True if move is valid in position pos, false otherwise.
+     */
+    public static final boolean isValid(Position pos, Move move, ArrayList<Move> moves) {
+        if (moves == null) {
+            moves = new MoveGen().pseudoLegalMoves(pos);
+            moves = MoveGen.removeIllegal(pos, moves);
+        }
+        for (int i = 0; i < moves.size(); i++)
+            if (move.equals(moves.get(i)))
+                return true;
+        return false;
+    }
+
     private final static class MoveInfo {
         int piece;                  // -1 for unspecified
         int fromX, fromY, toX, toY; // -1 for unspecified

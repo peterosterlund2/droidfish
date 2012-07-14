@@ -673,6 +673,8 @@ public class DroidChessController {
                 for (Move m : pv.pv) {
                     if (m == null)
                         break;
+                    if (!TextIO.isValid(tmpPos, m, null))
+                        break;
                     String moveStr = TextIO.moveToString(tmpPos, m, false);
                     buf.append(String.format(" %s", moveStr));
                     tmpPos.makeMove(m, ui);
