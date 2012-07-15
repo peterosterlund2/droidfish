@@ -277,7 +277,7 @@ public class EvaluateTest {
         score = evalWhite(pos);
         assertTrue(-score > bV * 2 + 100);
         
-        // KrpKn is win for white
+        // KRPKN is win for white
         pos = TextIO.readFEN("8/3bk3/8/8/8/3P4/3RK3/8 w - - 0 1");
         score = evalWhite(pos);
         final int pV = Evaluate.pV;
@@ -287,10 +287,14 @@ public class EvaluateTest {
         pos = TextIO.readFEN("8/8/4k3/8/8/3NK3/3N4/8 w - - 0 1");
         score = evalWhite(pos);
         assertTrue(Math.abs(score) < 50);
-        
+
+        final int nV = Evaluate.nV;
+        pos = TextIO.readFEN("8/8/8/4k3/N6N/P2K4/8/8 b - - 0 66");
+        score = evalWhite(pos);
+        assertTrue(score > nV * 2);
+
         pos = TextIO.readFEN("8/8/3k4/8/8/3NK3/2B5/8 b - - 0 1");
         score = evalWhite(pos);
-        final int nV = Evaluate.nV;
         assertTrue(score > bV + nV + 150);  // KBNK is won, should have a bonus
         score = moveScore(pos, "Kc6");
         assertTrue(score > 0);      // Black king going into wrong corner, good for white
@@ -412,6 +416,8 @@ public class EvaluateTest {
         assertTrue(evalWhite(pos) > winScore);
         pos = TextIO.readFEN("3Q4/8/8/8/K7/8/1kp5/8 w - - 0 1");
         assertTrue(evalWhite(pos) > winScore);
+        pos = TextIO.readFEN("8/8/8/8/8/1Q6/p3K3/k7 b - - 0 1");
+        assertTrue(evalWhite(pos) < drawish);
 
         // Pawn on c2
         pos = TextIO.readFEN("3Q4/8/8/8/3K4/8/1kp5/8 w - - 0 1");
@@ -443,6 +449,29 @@ public class EvaluateTest {
         int score2 = evalWhite(pos);
         assertTrue(score2 <= 0);
         assertTrue(score2 > score1);
+    }
+
+    @Test
+    public void testPawnRace() throws ChessParseError {
+        final int pV = Evaluate.pV;
+        final int winScore = 400;
+        final int drawish = 100;
+        Position pos = TextIO.readFEN("8/8/K7/1P3p2/8/6k1/8/8 w - - 0 1");
+        assertTrue(evalWhite(pos) > winScore);
+        pos = TextIO.readFEN("8/8/K7/1P3p2/8/6k1/8/8 b - - 0 1");
+        assertTrue(evalWhite(pos) > winScore);
+    
+        pos = TextIO.readFEN("8/8/K7/1P3p2/6k1/8/8/8 b - - 0 1");
+        assertTrue(Math.abs(evalWhite(pos)) < drawish);
+        pos = TextIO.readFEN("8/8/K7/1P6/5pk1/8/8/8 b - - 0 1");
+        assertTrue(evalWhite(pos) < -winScore);
+        pos = TextIO.readFEN("8/K7/8/1P6/5pk1/8/8/8 b - - 0 1");
+        assertTrue(Math.abs(evalWhite(pos)) < drawish);
+        pos = TextIO.readFEN("8/K7/8/8/1PP2p1k/8/8/8 w - - 0 1");
+        assertTrue(evalWhite(pos) < drawish + pV);
+        assertTrue(evalWhite(pos) > 0);
+        pos = TextIO.readFEN("8/K7/8/8/1PP2p1k/8/8/8 b - - 0 1");
+        assertTrue(evalWhite(pos) < -winScore + pV);
     }
 
     /** Return static evaluation score for white, regardless of whose turn it is to move. */

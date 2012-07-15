@@ -484,60 +484,87 @@ public class Evaluate {
         score -= interpolate(pos.wMtrl - pos.wMtrlPawns, 0, 2 * phd.passedBonusB, hiMtrl, phd.passedBonusB);
 
         // Passed pawns are more dangerous if enemy king is far away
-        int mtrlNoPawns;
-        final int highMtrl = qV + rV;
+        int bestWPawnDist = 8;
+        int bestWPromSq = -1;
         long m = phd.passedPawnsW;
         if (m != 0) {
-            mtrlNoPawns = pos.bMtrl - pos.bMtrlPawns;
-            if (mtrlNoPawns < highMtrl) {
+            int mtrlNoPawns = pos.bMtrl - pos.bMtrlPawns;
+            if (mtrlNoPawns < hiMtrl) {
                 int kingPos = pos.getKingSq(false);
-                int kingX = Position.getX(kingPos);
-                int kingY = Position.getY(kingPos);
                 while (m != 0) {
                     int sq = BitBoard.numberOfTrailingZeros(m);
                     int x = Position.getX(sq);
                     int y = Position.getY(sq);
                     int pawnDist = Math.min(5, 7 - y);
-                    int kingDistX = Math.abs(kingX - x);
-                    int kingDistY = Math.abs(kingY - 7);
-                    int kingDist = Math.max(kingDistX, kingDistY);
+                    int kingDist = BitBoard.getDistance(kingPos, Position.getSquare(x, 7));
                     int kScore = kingDist * 4;
                     if (kingDist > pawnDist) kScore += (kingDist - pawnDist) * (kingDist - pawnDist);
-                    score += interpolate(mtrlNoPawns, 0, kScore, highMtrl, 0);
+                    score += interpolate(mtrlNoPawns, 0, kScore, hiMtrl, 0);
                     if (!pos.whiteMove)
                         kingDist--;
-                    if ((pawnDist < kingDist) && (mtrlNoPawns == 0))
-                        score += 500; // King can't stop pawn
+                    if ((pawnDist < kingDist) && (mtrlNoPawns == 0)) {
+                        if ((BitBoard.northFill(1L<<sq) & (1L << pos.getKingSq(true))) != 0)
+                            pawnDist++; // Own king blocking pawn
+                        if (pawnDist < bestWPawnDist) {
+                            bestWPawnDist = pawnDist;
+                            bestWPromSq = Position.getSquare(x, 7);
+                        }
+                    }
                     m &= m-1;
                 }
             }
         }
+        int bestBPawnDist = 8;
+        int bestBPromSq = -1;
         m = phd.passedPawnsB;
         if (m != 0) {
-            mtrlNoPawns = pos.wMtrl - pos.wMtrlPawns;
-            if (mtrlNoPawns < highMtrl) {
+            int mtrlNoPawns = pos.wMtrl - pos.wMtrlPawns;
+            if (mtrlNoPawns < hiMtrl) {
                 int kingPos = pos.getKingSq(true);
-                int kingX = Position.getX(kingPos);
-                int kingY = Position.getY(kingPos);
                 while (m != 0) {
                     int sq = BitBoard.numberOfTrailingZeros(m);
                     int x = Position.getX(sq);
                     int y = Position.getY(sq);
                     int pawnDist = Math.min(5, y);
-                    int kingDistX = Math.abs(kingX - x);
-                    int kingDistY = Math.abs(kingY - 0);
-                    int kingDist = Math.max(kingDistX, kingDistY);
+                    int kingDist = BitBoard.getDistance(kingPos, Position.getSquare(x, 0));
                     int kScore = kingDist * 4;
                     if (kingDist > pawnDist) kScore += (kingDist - pawnDist) * (kingDist - pawnDist);
-                    score -= interpolate(mtrlNoPawns, 0, kScore, highMtrl, 0);
+                    score -= interpolate(mtrlNoPawns, 0, kScore, hiMtrl, 0);
                     if (pos.whiteMove)
                         kingDist--;
-                    if ((pawnDist < kingDist) && (mtrlNoPawns == 0))
-                        score -= 500; // King can't stop pawn
+                    if ((pawnDist < kingDist) && (mtrlNoPawns == 0)) {
+                        if ((BitBoard.southFill(1L<<sq) & (1L << pos.getKingSq(false))) != 0)
+                            pawnDist++; // Own king blocking pawn
+                        if (pawnDist < bestBPawnDist) {
+                            bestBPawnDist = pawnDist;
+                            bestBPromSq = Position.getSquare(x, 0);
+                        }
+                    }
                     m &= m-1;
                 }
             }
         }
+
+        // Evaluate pawn races in pawn end games
+        if (bestWPromSq >= 0) {
+            if (bestBPromSq >= 0) {
+                int wPly = bestWPawnDist * 2; if (pos.whiteMove) wPly--;
+                int bPly = bestBPawnDist * 2; if (!pos.whiteMove) bPly--;
+                if (wPly < bPly - 1) {
+                    score += 500;
+                } else if (wPly == bPly - 1) {
+                    if (BitBoard.getDirection(bestWPromSq, pos.getKingSq(false)) != 0)
+                        score += 500;
+                } else if (wPly == bPly + 1) {
+                    if (BitBoard.getDirection(bestBPromSq, pos.getKingSq(true)) != 0)
+                        score -= 500;
+                } else {
+                    score -= 500;
+                }
+            } else
+                score += 500;
+        } else if (bestBPromSq >= 0)
+            score -= 500;
 
         return score;
     }
@@ -585,7 +612,7 @@ public class Evaluate {
 
         // Evaluate passed pawn bonus, white
         long passedPawnsW = wPawns & ~BitBoard.southFill(bPawns | bPawnAttacks | (wPawns >>> 8));
-        final int[] ppBonus = {-1,24,26,30,36,47,64,-1};
+        final int[] ppBonus = {-1,24,26,30,36,55,100,-1};
         int passedBonusW = 0;
         if (passedPawnsW != 0) {
             long guardedPassedW = passedPawnsW & (((wPawns & BitBoard.maskBToHFiles) << 7) |
@@ -616,11 +643,19 @@ public class Evaluate {
             }
         }
 
-        // Connected passed pawn bonus. Seems logical but doesn't help in tests
-//        if (passedPawnsW != 0)
-//            passedBonusW += 15 * Long.bitCount(passedPawnsW & ((passedPawnsW & BitBoard.maskBToHFiles) >>> 1));
-//        if (passedPawnsB != 0)
-//            passedBonusB += 15 * Long.bitCount(passedPawnsB & ((passedPawnsB & BitBoard.maskBToHFiles) >>> 1));
+        // Connected passed pawn bonus. Seems logical but scored -8 elo in tests
+//        if (passedPawnsW != 0) {
+//            long mask = passedPawnsW;
+//            mask = (((mask >> 7) | (mask << 1) | (mask << 9)) & BitBoard.maskBToHFiles) |
+//                    (((mask >> 9) | (mask >> 1) | (mask << 7)) & BitBoard.maskAToGFiles);
+//            passedBonusW += 13 * Long.bitCount(passedPawnsW & mask);
+//        }
+//        if (passedPawnsB != 0) {
+//            long mask = passedPawnsB;
+//            mask = (((mask >> 7) | (mask << 1) | (mask << 9)) & BitBoard.maskBToHFiles) |
+//                    (((mask >> 9) | (mask >> 1) | (mask << 7)) & BitBoard.maskAToGFiles);
+//            passedBonusB += 13 * Long.bitCount(passedPawnsB & mask);
+//        }
 
         ph.key = pos.pawnZobristHash();
         ph.score = score;
@@ -954,7 +989,7 @@ public class Evaluate {
             int wq = BitBoard.numberOfTrailingZeros(pos.pieceTypeBB[Piece.WQUEEN]);
             int bk = BitBoard.numberOfTrailingZeros(pos.pieceTypeBB[Piece.BKING]);
             int bp = BitBoard.numberOfTrailingZeros(pos.pieceTypeBB[Piece.BPAWN]);
-            score = evalKQKP(wk, wq, bk, bp);
+            score = evalKQKP(wk, wq, bk, bp, pos.whiteMove);
             handled = true;
         }
         if (!handled && (pos.wMtrl == rV) && (pos.pieceTypeBB[Piece.WROOK] != 0)) {
@@ -981,7 +1016,7 @@ public class Evaluate {
             int bq = BitBoard.numberOfTrailingZeros(pos.pieceTypeBB[Piece.BQUEEN]);
             int wk = BitBoard.numberOfTrailingZeros(pos.pieceTypeBB[Piece.WKING]);
             int wp = BitBoard.numberOfTrailingZeros(pos.pieceTypeBB[Piece.WPAWN]);
-            score = -evalKQKP(63-bk, 63-bq, 63-wk, 63-wp);
+            score = -evalKQKP(63-bk, 63-bq, 63-wk, 63-wp, !pos.whiteMove);
             handled = true;
         }
         if (!handled && (pos.bMtrl == rV) && (pos.pieceTypeBB[Piece.BROOK] != 0)) {
@@ -1031,7 +1066,7 @@ public class Evaluate {
                 if (wMtrlNoPawns - bMtrlNoPawns > bV) {
                     int wKnights = Long.bitCount(pos.pieceTypeBB[Piece.WKNIGHT]);
                     int wBishops = Long.bitCount(pos.pieceTypeBB[Piece.WBISHOP]);
-                    if ((wKnights == 2) && (wMtrlNoPawns == 2 * nV) && (bMtrlNoPawns == 0)) {
+                    if ((wKnights == 2) && (pos.wMtrl == 2 * nV) && (bMtrlNoPawns == 0)) {
                         score /= 50;    // KNNK is a draw
                     } else if ((wKnights == 1) && (wBishops == 1) && (wMtrlNoPawns == nV + bV) && (bMtrlNoPawns == 0)) {
                         score /= 10;
@@ -1084,7 +1119,7 @@ public class Evaluate {
                 if (bMtrlNoPawns - wMtrlNoPawns > bV) {
                     int bKnights = Long.bitCount(pos.pieceTypeBB[Piece.BKNIGHT]);
                     int bBishops = Long.bitCount(pos.pieceTypeBB[Piece.BBISHOP]);
-                    if ((bKnights == 2) && (bMtrlNoPawns == 2 * nV) && (wMtrlNoPawns == 0)) {
+                    if ((bKnights == 2) && (pos.bMtrl == 2 * nV) && (wMtrlNoPawns == 0)) {
                         score /= 50;    // KNNK is a draw
                     } else if ((bKnights == 1) && (bBishops == 1) && (bMtrlNoPawns == nV + bV) && (wMtrlNoPawns == 0)) {
                         score /= 10;
@@ -1115,7 +1150,7 @@ public class Evaluate {
         // FIXME! KRBKR is very hard to draw
     }
 
-    private static final int evalKQKP(int wKing, int wQueen, int bKing, int bPawn) {
+    private static final int evalKQKP(int wKing, int wQueen, int bKing, int bPawn, boolean whiteMove) {
         boolean canWin = false;
         if (((1L << bKing) & 0xFFFF) == 0) {
             canWin = true; // King doesn't support pawn
@@ -1125,6 +1160,8 @@ public class Evaluate {
             switch (bPawn) {
             case 8:  // a2
                 canWin = ((1L << wKing) & 0x0F1F1F1F1FL) != 0;
+                if (canWin && (bKing == 0) && (Position.getX(wQueen) == 1) && !whiteMove)
+                    canWin = false; // Stale-mate
                 break;
             case 10: // c2
                 canWin = ((1L << wKing) & 0x071F1F1FL) != 0;
@@ -1134,6 +1171,8 @@ public class Evaluate {
                 break;
             case 15: // h2
                 canWin = ((1L << wKing) & 0xF0F8F8F8F8L) != 0;
+                if (canWin && (bKing == 7) && (Position.getX(wQueen) == 6) && !whiteMove)
+                    canWin = false; // Stale-mate
                 break;
             default:
                 canWin = true;
@@ -1141,8 +1180,7 @@ public class Evaluate {
             }
         }
 
-        final int dist = Math.max(Math.abs(Position.getX(wKing)-Position.getX(bPawn)),
-                                  Math.abs(Position.getY(wKing)-Position.getY(bPawn)));
+        final int dist = BitBoard.getDistance(wKing, bPawn);
         int score = qV - pV - 20 * dist;
         if (!canWin)
             score /= 50;

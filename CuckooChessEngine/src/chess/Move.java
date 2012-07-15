@@ -64,11 +64,25 @@ public class Move {
         this.score = m.score;
     }
 
-    public void copyFrom(Move m) {
+    public final void copyFrom(Move m) {
         from      = m.from;
         to        = m.to;
         promoteTo = m.promoteTo;
 //        score = m.score;
+    }
+
+    public final void clear() {
+        from      = 0;
+        to        = 0;
+        promoteTo = 0;
+        score     = 0;
+    }
+
+    public final void setMove(int from, int to, int promoteTo, int score) {
+        this.from = from;
+        this.to = to;
+        this.promoteTo = promoteTo;
+        this.score = score;
     }
 
     /** Note that score is not included in the comparison. */

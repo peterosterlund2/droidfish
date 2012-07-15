@@ -23,11 +23,15 @@ package chess;
  * @author petero
  */
 public final class History {
-    private final int countSuccess[][];
-    private final int countFail[][];
-    private final int score[][];
+    private int countSuccess[][];
+    private int countFail[][];
+    private int score[][];
 
     public History() {
+        init();
+    }
+
+    public void init() {
         countSuccess = new int[Piece.nPieceTypes][64];
         countFail = new int[Piece.nPieceTypes][64];
         score = new int[Piece.nPieceTypes][64];

@@ -30,7 +30,7 @@ public class ComputerPlayer implements Player {
     public static final String engineName;
 
     static {
-        String name = "CuckooChess 1.13a8";
+        String name = "CuckooChess 1.13a9";
         String m = System.getProperty("sun.arch.data.model");
         if ("32".equals(m))
             name += " 32-bit";
@@ -80,7 +80,8 @@ public class ComputerPlayer implements Player {
             posHashList[posHashListSize++] = p.zobristHash();
         }
         tt.nextGeneration();
-        Search sc = new Search(pos, posHashList, posHashListSize, tt);
+        History ht = new History();
+        Search sc = new Search(pos, posHashList, posHashListSize, tt, ht);
 
         // Determine all legal moves
         MoveGen.MoveList moves = new MoveGen().pseudoLegalMoves(pos);
@@ -186,7 +187,8 @@ public class ComputerPlayer implements Player {
         // Create a search object
         long[] posHashList = new long[200];
         tt.nextGeneration();
-        Search sc = new Search(pos, posHashList, 0, tt);
+        History ht = new History();
+        Search sc = new Search(pos, posHashList, 0, tt, ht);
         
         // Determine all legal moves
         MoveGen.MoveList moves = new MoveGen().pseudoLegalMoves(pos);

@@ -125,6 +125,19 @@ public class BitBoardTest {
         }
     }
 
+    private static final int computeDistance(int from, int to) {
+        int dx = Position.getX(to) - Position.getX(from);
+        int dy = Position.getY(to) - Position.getY(from);
+        return Math.max(Math.abs(dx), Math.abs(dy));
+    }
+
+    @Test
+    public void testGetDistance() {
+        for (int from = 0; from < 64; from++)
+            for (int to = 0; to < 64; to++)
+                assertEquals(computeDistance(from, to), BitBoard.getDistance(from, to));
+    }
+
     @Test
     public void testTrailingZeros() {
         System.out.println("trailingZeros");

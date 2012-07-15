@@ -20,6 +20,7 @@ package uci;
 
 import chess.Book;
 import chess.ComputerPlayer;
+import chess.History;
 import chess.Move;
 import chess.MoveGen;
 import chess.Parameters;
@@ -51,6 +52,7 @@ public class EngineControl {
     private final Object threadMutex;
     Search sc;
     TranspositionTable tt;
+    History ht;
     MoveGen moveGen;
 
     Position pos;
@@ -120,6 +122,7 @@ public class EngineControl {
         this.os = os;
         threadMutex = new Object();
         setupTT();
+        ht = new History();
         moveGen = new MoveGen();
     }
 
@@ -163,6 +166,7 @@ public class EngineControl {
     final public void newGame() {
         randomSeed = new Random().nextLong();
         tt.clear();
+        ht.init();
     }
 
     /**
@@ -222,7 +226,7 @@ public class EngineControl {
     final private void startThread(final int minTimeLimit, final int maxTimeLimit,
                                    int maxDepth, final int maxNodes) {
         synchronized (threadMutex) {} // Must not start new search until old search is finished
-        sc = new Search(pos, posHashList, posHashListSize, tt);
+        sc = new Search(pos, posHashList, posHashListSize, tt, ht);
         sc.timeLimit(minTimeLimit, maxTimeLimit);
         sc.setListener(new SearchListener(os));
         sc.setStrength(strength, randomSeed);

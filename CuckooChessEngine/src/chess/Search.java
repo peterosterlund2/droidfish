@@ -87,15 +87,16 @@ public class Search {
     public final static int UNKNOWN_SCORE = -32767; // Represents unknown static eval score
     int q0Eval; // Static eval score at first level of quiescence search 
 
-    public Search(Position pos, long[] posHashList, int posHashListSize, TranspositionTable tt) {
+    public Search(Position pos, long[] posHashList, int posHashListSize, TranspositionTable tt,
+                  History ht) {
         this.pos = new Position(pos);
         this.moveGen = new MoveGen();
         this.posHashList = posHashList;
         this.posHashListSize = posHashListSize;
         this.tt = tt;
+        this.ht = ht;
         eval = new Evaluate();
         kt = new KillerTable();
-        ht = new History();
         posHashFirstNew = posHashListSize;
         initNodeStats();
         minTimeMillis = -1;
@@ -519,23 +520,23 @@ public class Search {
             evalScore = ent.evalScore;
             int plyToMate = MATE0 - Math.abs(score);
             int eDepth = ent.getDepth();
+            hashMove = sti.hashMove;
+            ent.getMove(hashMove);
             if ((beta == alpha + 1) && ((eDepth >= depth) || (eDepth >= plyToMate*plyScale))) {
                 if (    (ent.type == TTEntry.T_EXACT) ||
                         (ent.type == TTEntry.T_GE) && (score >= beta) ||
                         (ent.type == TTEntry.T_LE) && (score <= alpha)) {
                     if (score >= beta) {
                         hashMove = sti.hashMove;
-                        ent.getMove(hashMove);
                         if ((hashMove != null) && (hashMove.from != hashMove.to))
                             if (pos.getPiece(hashMove.to) == Piece.EMPTY)
                                 kt.addKiller(ply, hashMove);
                     }
+                    sti.bestMove = hashMove;
                     if (log != null) log.logNodeEnd(searchTreeInfo[ply].nodeIdx, score, ent.type, evalScore, hKey);
                     return score;
                 }
             }
-            hashMove = sti.hashMove;
-            ent.getMove(hashMove);
         }
         
         int posExtend = inCheck ? plyScale : 0; // Check extension
@@ -543,6 +544,7 @@ public class Search {
         // If out of depth, perform quiescence search
         if (depth + posExtend <= 0) {
             q0Eval = evalScore;
+            sti.bestMove.clear();
             int score = quiesce(alpha, beta, ply, 0, inCheck);
             int type = TTEntry.T_EXACT;
             if (score <= alpha) {
@@ -550,8 +552,8 @@ public class Search {
             } else if (score >= beta) {
                 type = TTEntry.T_GE;
             }
-            emptyMove.score = score;
-            tt.insert(hKey, emptyMove, type, ply, depth, q0Eval);
+            sti.bestMove.score = score;
+            tt.insert(hKey, sti.bestMove, type, ply, depth, q0Eval);
             if (log != null) log.logNodeEnd(sti.nodeIdx, score, type, q0Eval, hKey);
             return score;
         }
@@ -628,6 +630,7 @@ public class Search {
                 int epSquare = pos.getEpSquare();
                 pos.setEpSquare(-1);
                 searchTreeInfo[ply+1].allowNullMove = false;
+                searchTreeInfo[ply+1].bestMove.clear();
                 int score = -negaScout(-beta, -(beta - 1), ply + 1, depth - R, -1, false);
                 searchTreeInfo[ply+1].allowNullMove = true;
                 pos.setEpSquare(epSquare);
@@ -955,7 +958,7 @@ public class Search {
         if (score > alpha)
             alpha = score;
         int bestScore = score;
-        final boolean tryChecks = (depth > -3);
+        final boolean tryChecks = (depth > -1);
         MoveGen.MoveList moves;
         if (inCheck) {
             moves = moveGen.checkEvasions(pos);
@@ -1001,7 +1004,7 @@ public class Search {
                     if (optimisticScore < alpha) { // Delta pruning
                         if ((pos.wMtrlPawns > 0) && (pos.wMtrl > capt + pos.wMtrlPawns) &&
                             (pos.bMtrlPawns > 0) && (pos.bMtrl > capt + pos.bMtrlPawns)) {
-                            if (depth -1 > -4) {
+                            if (depth -1 > -2) {
                                 givesCheck = MoveGen.givesCheck(pos, m);
                                 givesCheckComputed = true;
                             }
@@ -1016,11 +1019,11 @@ public class Search {
             }
 
             if (!givesCheckComputed) {
-                if (depth - 1 > -4) {
+                if (depth - 1 > -2) {
                     givesCheck = MoveGen.givesCheck(pos, m);
                 }
             }
-            final boolean nextInCheck = (depth - 1) > -4 ? givesCheck : false;
+            final boolean nextInCheck = (depth - 1) > -2 ? givesCheck : false;
 
             pos.makeMove(m, ui); 
             qNodes++;
@@ -1030,6 +1033,10 @@ public class Search {
             if (score > bestScore) {
                 bestScore = score;
                 if (score > alpha) {
+                    if (depth == 0) {
+                        SearchTreeInfo sti = searchTreeInfo[ply];
+                        sti.bestMove.setMove(m.from, m.to, m.promoteTo, score);
+                    }
                     alpha = score;
                     if (alpha >= beta) {
                         moveGen.returnMoveList(moves);

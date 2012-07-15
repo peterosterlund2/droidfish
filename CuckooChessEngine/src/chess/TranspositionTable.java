@@ -71,7 +71,7 @@ public class TranspositionTable {
             this.move = (short)(move.from + (move.to << 6) + (move.promoteTo << 12));
         }
         
-        /** Get the score from the hash entry, and convert from "mate in x" to "mate at ply". */
+        /** Get the score from the hash entry and convert from "mate in x" to "mate at ply". */
         public final int getScore(int ply) {
             int sc = score;
             if (sc > Search.MATE0 - 1000) {
@@ -82,7 +82,7 @@ public class TranspositionTable {
             return sc;
         }
         
-        /** Convert score from "mate at ply" to "mate in x", and store in hash entry. */
+        /** Convert score from "mate at ply" to "mate in x" and store in hash entry. */
         public final void setScore(int score, int ply) {
             if (score > Search.MATE0 - 1000) {
                 score += ply;
