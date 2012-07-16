@@ -1430,15 +1430,17 @@ public class DroidFish extends Activity implements GUIInterface {
             final int COPY_GAME      = 0;
             final int COPY_POSITION  = 1;
             final int PASTE          = 2;
-            final int LOAD_GAME      = 3;
-            final int SAVE_GAME      = 4;
-            final int LOAD_SCID_GAME = 5;
+            final int SHARE          = 3;
+            final int LOAD_GAME      = 4;
+            final int SAVE_GAME      = 5;
+            final int LOAD_SCID_GAME = 6;
 
             List<CharSequence> lst = new ArrayList<CharSequence>();
             List<Integer> actions = new ArrayList<Integer>();
             lst.add(getString(R.string.copy_game));     actions.add(COPY_GAME);
             lst.add(getString(R.string.copy_position)); actions.add(COPY_POSITION);
             lst.add(getString(R.string.paste));         actions.add(PASTE);
+            lst.add(getString(R.string.share));         actions.add(SHARE);
             lst.add(getString(R.string.load_game));     actions.add(LOAD_GAME);
             lst.add(getString(R.string.save_game));     actions.add(SAVE_GAME);
             if (hasScidProvider()) {
@@ -1473,6 +1475,10 @@ public class DroidFish extends Activity implements GUIInterface {
                                 Toast.makeText(getApplicationContext(), getParseErrString(e), Toast.LENGTH_SHORT).show();
                             }
                         }
+                        break;
+                    }
+                    case SHARE: {
+                        shareGame();
                         break;
                     }
                     case LOAD_GAME:
@@ -2143,6 +2149,14 @@ public class DroidFish extends Activity implements GUIInterface {
             return makeButtonDialog(custom3ButtonActions);
         }
         return null;
+    }
+
+    private final void shareGame() {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        i.setType("text/plain");
+        i.putExtra(Intent.EXTRA_TEXT, ctrl.getPGN());
+        startActivity(Intent.createChooser(i, getString(R.string.share_pgn_game)));
     }
 
     private Dialog makeButtonDialog(ButtonActions buttonActions) {

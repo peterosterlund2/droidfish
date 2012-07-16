@@ -29,6 +29,8 @@ you are not actively using the program.\
     <string name="copy_game">Copy Game to Clipboard</string>
     <string name="copy_position">Copy Position to Clipboard</string>
     <string name="paste">Paste from Clipboard</string>
+    <string name="share">Share</string>
+    <string name="share_pgn_game">Share PGN game</string>
     <string name="load_game">Load game from PGN file</string>
     <string name="load_scid_game">Load game from Scid file</string>
     <string name="save_game">Save game to PGN file</string>
