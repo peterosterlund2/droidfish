@@ -147,7 +147,7 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! Option to display coordinates in border outside chess board.
 
     // FIXME!!! Better behavior if engine is terminated. How exactly?
-    // FIXME!!! Handle PGN intents with more than one game.
+    // FIXME!!! Handle PGN non-file intents with more than one game.
     // FIXME!!! File load/save of FEN data
     // FIXME!!! Make engine hash size configurable.
 
@@ -321,7 +321,9 @@ public class DroidFish extends Activity implements GUIInterface {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String pgn = getPgnIntent();
+        Pair<String,String> pair = getPgnIntent();
+        String intentPgn = pair.first;
+        String intentFilename = pair.second;
 
         createDirectories();
 
@@ -371,12 +373,14 @@ public class DroidFish extends Activity implements GUIInterface {
         ctrl.setGuiPaused(true);
         ctrl.setGuiPaused(false);
         ctrl.startGame();
-        if (pgn != null) {
+        if (intentPgn != null) {
             try {
-                ctrl.setFENOrPGN(pgn);
+                ctrl.setFENOrPGN(intentPgn);
                 setBoardFlip(true);
             } catch (ChessParseError e) {
             }
+        } else if (intentFilename != null) {
+            loadPGNFromFile(intentFilename);
         }
     }
 
@@ -390,13 +394,26 @@ public class DroidFish extends Activity implements GUIInterface {
         new File(extDir + sep + gtbDefaultDir).mkdirs();
     }
 
-    private final String getPgnIntent() {
+    /**
+     * Return PGN data or filename from the Intent. Both can not be non-null.
+     * @return Pair of pgndata and filename.
+     */
+    private final Pair<String,String> getPgnIntent() {
         String pgn = null;
+        String filename = null;
         try {
             Intent intent = getIntent();
-            if (intent.getData() != null) {
-                if ("content".equals(intent.getScheme()) ||
-                    "file".equals(intent.getScheme())) {
+            Uri data = intent.getData();
+            if (data != null) {
+                String scheme = intent.getScheme();
+                if ("file".equals(scheme)) {
+                    filename = data.getEncodedPath();
+                    if (filename != null)
+                        filename = Uri.decode(filename);
+                }
+                if ((filename == null) &&
+                    ("content".equals(scheme) ||
+                     "file".equals(scheme))) {
                     ContentResolver resolver = getContentResolver();
                     InputStream in = resolver.openInputStream(intent.getData());
                     StringBuilder sb = new StringBuilder();
@@ -414,7 +431,7 @@ public class DroidFish extends Activity implements GUIInterface {
             Toast.makeText(getApplicationContext(), R.string.failed_to_read_pgn_data,
                            Toast.LENGTH_SHORT).show();
         }
-        return pgn;
+        return new Pair<String,String>(pgn,filename);
     }
 
     private final byte[] strToByteArr(String str) {
