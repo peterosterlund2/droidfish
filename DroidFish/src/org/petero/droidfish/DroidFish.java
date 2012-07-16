@@ -173,7 +173,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private ImageButton custom1Button, custom2Button, custom3Button;
     private ImageButton modeButton, undoButton, redoButton;
     private ButtonActions custom1ButtonActions, custom2ButtonActions, custom3ButtonActions;
-    private TextView whiteClock, blackClock, titleText;
+    private TextView whiteTitleText, blackTitleText, engineTitleText;
 
     SharedPreferences settings;
 
@@ -469,9 +469,9 @@ public class DroidFish extends Activity implements GUIInterface {
         setContentView(leftHanded ? R.layout.main_left_handed : R.layout.main);
         if (initTitle) {
             getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title);
-            whiteClock = (TextView)findViewById(R.id.white_clock);
-            blackClock = (TextView)findViewById(R.id.black_clock);
-            titleText  = (TextView)findViewById(R.id.title_text);
+            whiteTitleText = (TextView)findViewById(R.id.white_clock);
+            blackTitleText = (TextView)findViewById(R.id.black_clock);
+            engineTitleText  = (TextView)findViewById(R.id.title_text);
         }
         status = (TextView)findViewById(R.id.status);
         moveListScroll = (ScrollView)findViewById(R.id.scrollView);
@@ -866,15 +866,15 @@ public class DroidFish extends Activity implements GUIInterface {
         if (engine.contains("/")) {
             int idx = engine.lastIndexOf('/');
             String eName = engine.substring(idx + 1);
-            titleText.setText(eName);
+            engineTitleText.setText(eName);
         } else {
             String eName = getString(engine.equals("cuckoochess") ?
                                      R.string.cuckoochess_engine :
                                      R.string.stockfish_engine);
             if (strength < 1000) {
-                titleText.setText(String.format("%s: %d%%", eName, strength / 10));
+                engineTitleText.setText(String.format("%s: %d%%", eName, strength / 10));
             } else {
-                titleText.setText(eName);
+                engineTitleText.setText(eName);
             }
         }
     }
@@ -2395,8 +2395,15 @@ public class DroidFish extends Activity implements GUIInterface {
 
     @Override
     public void setRemainingTime(long wTime, long bTime, long nextUpdate) {
-        whiteClock.setText(getString(R.string.header_white) + " " + timeToString(wTime));
-        blackClock.setText(getString(R.string.header_black) + " " + timeToString(bTime));
+        if (ctrl.getGameMode().clocksActive()) {
+            whiteTitleText.setText(getString(R.string.header_white) + " " + timeToString(wTime));
+            blackTitleText.setText(getString(R.string.header_black) + " " + timeToString(bTime));
+        } else {
+            TreeMap<String,String> headers = new TreeMap<String,String>();
+            ctrl.getHeaders(headers);
+            whiteTitleText.setText(headers.get("White"));
+            blackTitleText.setText(headers.get("Black"));
+        }
         handlerTimer.removeCallbacks(r);
         if (nextUpdate > 0) {
             handlerTimer.postDelayed(r, nextUpdate);
