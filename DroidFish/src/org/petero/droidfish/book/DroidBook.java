@@ -25,6 +25,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
+import org.petero.droidfish.Util;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.MoveGen;
 import org.petero.droidfish.gamelogic.Position;
@@ -154,9 +155,9 @@ public final class DroidBook {
                     first = false;
                 else
                     ret.append(' ');
-                ret.append("<b>");
+                ret.append(Util.boldStart);
                 ret.append(moveStr);
-                ret.append("</b>");
+                ret.append(Util.boldStop);
                 ret.append(':');
                 int percent = (int)Math.round(scaleWeight(be.weight) * 100 / totalWeight);
                 ret.append(percent);

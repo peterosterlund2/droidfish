@@ -26,6 +26,7 @@ import org.petero.droidfish.EGTBOptions;
 import org.petero.droidfish.GUIInterface;
 import org.petero.droidfish.GameMode;
 import org.petero.droidfish.PGNOptions;
+import org.petero.droidfish.Util;
 import org.petero.droidfish.book.BookOptions;
 import org.petero.droidfish.engine.DroidComputerPlayer;
 import org.petero.droidfish.engine.DroidComputerPlayer.SearchRequest;
@@ -955,10 +956,10 @@ public class DroidChessController {
             for (int i = 0; i < prevVarList.size(); i++) {
                 if (i > 0) sb.append(' ');
                 if (i == game.tree.currentNode.defaultChild)
-                    sb.append("<b>");
+                    sb.append(Util.boldStart);
                 sb.append(TextIO.moveToString(pos, prevVarList.get(i), false));
                 if (i == game.tree.currentNode.defaultChild)
-                    sb.append("</b>");
+                    sb.append(Util.boldStop);
             }
             game.tree.goForward(-1);
         }

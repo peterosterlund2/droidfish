@@ -1327,7 +1327,7 @@ public class DroidFish extends Activity implements GUIInterface {
             String s = "";
             if (!thinkingEmpty)
                 s += "<br>";
-            s += "<b>" + getString(R.string.book) + "</b>" + bookInfoStr;
+            s += Util.boldStart + getString(R.string.book) + Util.boldStop + bookInfoStr;
             thinking.append(Html.fromHtml(s));
             thinkingEmpty = false;
         }
@@ -1335,7 +1335,7 @@ public class DroidFish extends Activity implements GUIInterface {
             String s = "";
             if (!thinkingEmpty)
                 s += "<br>";
-            s += "<b>" + getString(R.string.variation) + "</b> " + variantStr;
+            s += Util.boldStart + getString(R.string.variation) + Util.boldStop + variantStr;
             thinking.append(Html.fromHtml(s));
             thinkingEmpty = false;
         }
