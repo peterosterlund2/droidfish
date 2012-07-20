@@ -430,6 +430,8 @@ public class TextIO {
      * @return True if move is valid in position pos, false otherwise.
      */
     public static final boolean isValid(Position pos, Move move, ArrayList<Move> moves) {
+        if (move == null)
+            return false;
         if (moves == null) {
             moves = new MoveGen().pseudoLegalMoves(pos);
             moves = MoveGen.removeIllegal(pos, moves);
