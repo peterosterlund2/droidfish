@@ -125,7 +125,7 @@ public class Game {
 
         Move m = TextIO.UCIstringToMove(str);
         if (m != null)
-            if (!TextIO.isValid(currPos(), m, null))
+            if (!TextIO.isValid(currPos(), m))
                 m = null;
         if (m == null)
             m = TextIO.stringToMove(currPos(), str);

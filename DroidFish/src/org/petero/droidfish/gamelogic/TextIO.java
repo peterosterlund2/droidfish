@@ -429,13 +429,11 @@ public class TextIO {
      * @param moves If non-null, list of valid moves in position pos.
      * @return True if move is valid in position pos, false otherwise.
      */
-    public static final boolean isValid(Position pos, Move move, ArrayList<Move> moves) {
+    public static final boolean isValid(Position pos, Move move) {
         if (move == null)
             return false;
-        if (moves == null) {
-            moves = new MoveGen().pseudoLegalMoves(pos);
-            moves = MoveGen.removeIllegal(pos, moves);
-        }
+        ArrayList<Move> moves = new MoveGen().pseudoLegalMoves(pos);
+        moves = MoveGen.removeIllegal(pos, moves);
         for (int i = 0; i < moves.size(); i++)
             if (move.equals(moves.get(i)))
                 return true;

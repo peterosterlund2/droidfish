@@ -764,13 +764,13 @@ public class DroidComputerPlayer {
 
         if (canPonder) {
             Move bestM = TextIO.stringToMove(sr.currPos, bestMove);
-            if ((bestM == null) || !TextIO.isValid(sr.currPos, bestM, null))
+            if ((bestM == null) || !TextIO.isValid(sr.currPos, bestM))
                 canPonder = false;
             if (canPonder) {
                 Position tmpPos = new Position(sr.currPos);
                 UndoInfo ui = new UndoInfo();
                 tmpPos.makeMove(bestM, ui);
-                if (!TextIO.isValid(tmpPos, nextPonderMove, null))
+                if (!TextIO.isValid(tmpPos, nextPonderMove))
                     canPonder = false;
             }
         }
