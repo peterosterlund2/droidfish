@@ -19,6 +19,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="copy_game">Copiar Partida al Portapapeles</string>
   <string name="copy_position">Copiar Posición al Portapapeles</string>
   <string name="paste">Pegar desde el Portapapeles</string>
+  <string name="share">Compartir</string>
+  <string name="share_pgn_game">Compartir partida PGN</string>
   <string name="load_game">Cargar partida desde archivo PGN</string>
   <string name="load_scid_game">Cargar partida desde archivo Scid</string>
   <string name="save_game">Guardar partida en archivo PGN</string>
@@ -88,6 +90,15 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="load_next_game">Cargar Siguiente Partida</string>
   <string name="no_prev_game">No hay Partida Anterior</string>
   <string name="no_next_game">No hay Partida Siguiente</string>
+  <string name="select_action">Seleccionar acciones</string>
+  <string name="flip_board">Invertir / Girar tablero</string>
+  <string name="toggle_show_thinking">Activar indicaciones de cálculo</string>
+  <string name="toggle_book_hints">Activar los consejos del libro de aperturas</string>
+  <string name="toggle_pgn_variations">Activar variantes</string>
+  <string name="toggle_pgn_comments">Activar comentarios</string>
+  <string name="toggle_pgn_headers">Activar cabeceras</string>
+  <string name="toggle_analysis">Activar análisis del motor</string>
+  <string name="toggle_large_buttons">Activar botones grandes</string>
   <string name="cancel">Cancelar</string>
   <string name="yes">Sí</string>
   <string name="no">No</string>
@@ -220,6 +231,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="prefs_oneTouchMoves_summary">Pulsando la casilla  correspondiente a una única jugada posible, hace esa jugada inmediatamente</string>
   <string name="prefs_soundEnabled_title">Permitir Sonidos</string>
   <string name="prefs_soundEnabled_summary">Suena cuando la computadora efectúa una jugada</string>
+  <string name="prefs_vibrateEnabled_title">Permitir vibración</string>
+  <string name="prefs_vibrateEnabled_summary">Vibra cuando la computadora efectúa una jugada</string>
   <string name="prefs_fullScreenMode_title">Modo Pantalla Completa</string>
   <string name="prefs_fullScreenMode_summary">El Modo pantalla completa oculta la barra de situación</string>
   <string name="prefs_wakeLock_title">Desconectar el Tiempo Muerto de la Pantalla</string>
@@ -235,6 +248,18 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="prefs_fontSize_summary">Tamaño de las Fuentes para la lista de jugadas e información de la partida</string>
   <string name="prefs_largeButtons_title">Botones Grandes</string>
   <string name="prefs_largeButtons_summary">Utilizar grandes  botones /teclas para navegar por la partida y ajustar los Modos</string>
+  <string name="prefs_buttonSettings_title">Configuración de botones</string>
+  <string name="prefs_buttonSettings_summary">Configura el tamaño de los botones y las acciones de los mismos.</string>
+  <string name="prefs_button_action_0_title">Acciones principales</string>
+  <string name="prefs_button_action_1_title">Acción 1 del menú</string>
+  <string name="prefs_button_action_2_title">Acción 2 del menú</string>
+  <string name="prefs_button_action_3_title">Acción 3 del menú</string>
+  <string name="prefs_button_action_4_title">Acción 4 del menú</string>
+  <string name="prefs_button_action_5_title">Acción 5 del menú</string>
+  <string name="prefs_button_action_6_title">Acción 6 del menú</string>
+  <string name="prefs_custom_button_1">Personalización del botón 1</string>
+  <string name="prefs_custom_button_2">Personalización del botón 2</string>
+  <string name="prefs_custom_button_3">Personalización del botón 3</string>
   <string name="prefs_colors_title">Ajustes de Color</string>
   <string name="prefs_colors_summary">Cambia los colores individuales</string>
   <string name="prefs_chess_board">Tablero de Ajedrez</string>
@@ -465,7 +490,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <item>1000000</item>
   </string-array>
   <string-array name="button_action_texts">
-    <item>Disabled</item>
+    <item>Desactivado</item>
     <item>@string/flip_board</item>
     <item>@string/toggle_analysis</item>
     <item>@string/toggle_show_thinking</item>
