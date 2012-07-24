@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.petero.droidfish.EGTBOptions;
+import org.petero.droidfish.EngineOptions;
 import org.petero.droidfish.GUIInterface;
 import org.petero.droidfish.GameMode;
 import org.petero.droidfish.PGNOptions;
@@ -42,7 +42,7 @@ public class DroidChessController {
     private DroidComputerPlayer computerPlayer = null;
     private PgnToken.PgnTokenReceiver gameTextListener = null;
     private BookOptions bookOptions = new BookOptions();
-    private EGTBOptions egtbOptions = new EGTBOptions();
+    private EngineOptions engineOptions = new EngineOptions();
     private Game game = null;
     private Move ponderMove = null;
     private GUIInterface gui;
@@ -84,7 +84,7 @@ public class DroidChessController {
         if (computerPlayer == null) {
             computerPlayer = new DroidComputerPlayer(gui.getContext(), listener);
             computerPlayer.setBookOptions(bookOptions);
-            computerPlayer.setEgtbOptions(egtbOptions);
+            computerPlayer.setEngineOptions(engineOptions);
         }
         computerPlayer.queueStartEngine(searchId, engine);
         searchId++;
@@ -152,11 +152,11 @@ public class DroidChessController {
         }
     }
 
-    public final synchronized void setEgtbOptions(EGTBOptions options) {
-        if (!egtbOptions.equals(options)) {
-            egtbOptions = options;
+    public final synchronized void setEngineOptions(EngineOptions options) {
+        if (!engineOptions.equals(options)) {
+            engineOptions = options;
             if (computerPlayer != null)
-                computerPlayer.setEgtbOptions(egtbOptions);
+                computerPlayer.setEngineOptions(engineOptions);
         }
     }
 

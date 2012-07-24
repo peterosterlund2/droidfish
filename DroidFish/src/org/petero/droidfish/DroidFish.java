@@ -149,7 +149,6 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! Better behavior if engine is terminated. How exactly?
     // FIXME!!! Handle PGN non-file intents with more than one game.
     // FIXME!!! File load/save of FEN data
-    // FIXME!!! Make engine hash size configurable.
 
     private ChessBoard cb;
     private static DroidChessController ctrl = null;
@@ -191,7 +190,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private final static String gtbDefaultDir = "DroidFish" + File.separator + "gtb";
     private BookOptions bookOptions = new BookOptions();
     private PGNOptions pgnOptions = new PGNOptions();
-    private EGTBOptions egtbOptions = new EGTBOptions();
+    private EngineOptions engineOptions = new EngineOptions();
 
     private long lastVisibleMillis; // Time when GUI became invisible. 0 if currently visible.
     private long lastComputationMillis; // Time when engine last showed that it was computing.
@@ -783,10 +782,11 @@ public class DroidFish extends Activity implements GUIInterface {
         bookOptions.random = (settings.getInt("bookRandom", 500) - 500) * (3.0 / 500);
         setBookOptions();
 
-        egtbOptions.hints = settings.getBoolean("tbHints", false);
-        egtbOptions.hintsEdit = settings.getBoolean("tbHintsEdit", false);
-        egtbOptions.rootProbe = settings.getBoolean("tbRootProbe", true);
-        egtbOptions.engineProbe = settings.getBoolean("tbEngineProbe", true);
+        engineOptions.hashMB = getHashMB();
+        engineOptions.hints = settings.getBoolean("tbHints", false);
+        engineOptions.hintsEdit = settings.getBoolean("tbHintsEdit", false);
+        engineOptions.rootProbe = settings.getBoolean("tbRootProbe", true);
+        engineOptions.engineProbe = settings.getBoolean("tbEngineProbe", true);
         String gtbPath = settings.getString("gtbPath", "");
         gtbPath = gtbPath.trim();
         if (gtbPath.length() == 0) {
@@ -794,8 +794,8 @@ public class DroidFish extends Activity implements GUIInterface {
             String sep = File.separator;
             gtbPath = extDir.getAbsolutePath() + sep + gtbDefaultDir;
         }
-        egtbOptions.gtbPath = gtbPath;
-        setEgtbOptions();
+        engineOptions.gtbPath = gtbPath;
+        setEngineOptions();
         setEgtbHints(cb.getSelectedSquare());
 
         updateThinkingInfo();
@@ -818,6 +818,19 @@ public class DroidFish extends Activity implements GUIInterface {
 
         gameTextListener.clear();
         ctrl.prefsChanged();
+    }
+
+    /** Get hash size in MB from settings, but reduce size to an amount that the device can handle. */
+    private final int getHashMB() {
+        int hashMB = getIntSetting("hashMB", 16);
+        if (hashMB > 16) {
+            int maxMem = (int)(Runtime.getRuntime().maxMemory() / (1024*1024));
+            if (maxMem < 16)
+                maxMem = 16;
+            if (hashMB > maxMem)
+                hashMB = maxMem;
+        }
+        return hashMB;
     }
 
     private void updateButtons() {
@@ -918,14 +931,14 @@ public class DroidFish extends Activity implements GUIInterface {
 
     private boolean egtbForceReload = false;
 
-    private final void setEgtbOptions() {
-        ctrl.setEgtbOptions(new EGTBOptions(egtbOptions));
-        Probe.getInstance().setPath(egtbOptions.gtbPath, egtbForceReload);
+    private final void setEngineOptions() {
+        ctrl.setEngineOptions(new EngineOptions(engineOptions));
+        Probe.getInstance().setPath(engineOptions.gtbPath, egtbForceReload);
         egtbForceReload = false;
     }
 
     private final void setEgtbHints(int sq) {
-        if (!egtbOptions.hints || (sq < 0)) {
+        if (!engineOptions.hints || (sq < 0)) {
             cb.setSquareDecorations(null);
             return;
         }

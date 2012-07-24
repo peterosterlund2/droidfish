@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">DroidFish</string>
     <string name="engine_threads_default">1</string>
+    <string name="engine_hash_default">16</string>
     <string name="moves_per_session_default">60</string>
     <string name="time_control_default">120000</string>
     <string name="time_increment_default">0</string>
@@ -220,6 +221,8 @@ you are not actively using the program.\
     <string name="prefs_ponderMode_summary">Let engine think while waiting for opponent\'s move. Supported by most engines.</string>
     <string name="prefs_threads_title">Threads</string>
     <string name="prefs_threads_summary">Number of engine threads (CPU cores) to use. Not supported by all engines.</string>
+    <string name="prefs_hash_title">Hash Table</string>
+    <string name="prefs_hash_summary">Hash table size in megabytes</string>
     <string name="prefs_time_control">Time Control</string>
     <string name="prefs_movesPerSession_title">Moves</string>
     <string name="prefs_movesPerSession_summary">Number of moves between time controls</string>
@@ -363,6 +366,18 @@ you are not actively using the program.\
         <item>2</item>
         <item>3</item>
         <item>4</item>
+    </string-array>
+    <string-array name="engine_hash_texts">
+        <item>16 MB</item>
+        <item>32 MB</item>
+        <item>64 MB</item>
+        <item>128 MB</item>
+    </string-array>
+    <string-array name="engine_hash_values">
+        <item>16</item>
+        <item>32</item>
+        <item>64</item>
+        <item>128</item>
     </string-array>
     <string-array name="moves_per_session_texts">
         <item>Whole Game</item>

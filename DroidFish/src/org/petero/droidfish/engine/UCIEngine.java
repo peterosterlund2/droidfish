@@ -18,7 +18,7 @@
 
 package org.petero.droidfish.engine;
 
-import org.petero.droidfish.EGTBOptions;
+import org.petero.droidfish.EngineOptions;
 
 public interface UCIEngine {
 
@@ -32,7 +32,11 @@ public interface UCIEngine {
     public void initialize();
 
     /** Initialize default options. */
-    public void initOptions(EGTBOptions egtbOptions);
+    public void initOptions(EngineOptions engineOptions);
+
+    /** Return true if engine options have correct values.
+     * If false is returned, engine will be restarted. */
+    public boolean optionsOk(EngineOptions engineOptions);
 
     /** Shut down engine. */
     public void shutDown();

@@ -27,7 +27,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.channels.FileChannel;
 
-import org.petero.droidfish.EGTBOptions;
+import org.petero.droidfish.EngineOptions;
 import org.petero.droidfish.R;
 import android.content.Context;
 
@@ -91,7 +91,9 @@ public class ExternalEngine extends UCIEngineBase {
                 @Override
                 public void run() {
                     try {
-                        engineProc.waitFor();
+                        Process ep = engineProc;
+                        if (ep != null)
+                            ep.waitFor();
                         isRunning = false;
                         if (!startedOk)
                             report.reportError(context.getString(R.string.failed_to_start_engine));
@@ -161,15 +163,34 @@ public class ExternalEngine extends UCIEngineBase {
         }
     }
 
+    private int hashMB = -1;
+    private String gaviotaTbPath = "";
+    private boolean optionsInitialized = false;
+
     /** @inheritDoc */
     @Override
-    public void initOptions(EGTBOptions egtbOptions) {
-        super.initOptions(egtbOptions);
-        setOption("Hash", 16);
-        if (egtbOptions.engineProbe) {
-            setOption("GaviotaTbPath", egtbOptions.gtbPath);
+    public void initOptions(EngineOptions engineOptions) {
+        super.initOptions(engineOptions);
+        hashMB = engineOptions.hashMB;
+        setOption("Hash", engineOptions.hashMB); 
+        if (engineOptions.engineProbe) {
+            gaviotaTbPath = engineOptions.gtbPath;
+            setOption("GaviotaTbPath", engineOptions.gtbPath);
             setOption("GaviotaTbCache", 8);
         }
+        optionsInitialized = true;
+    }
+
+    /** @inheritDoc */
+    @Override
+    public boolean optionsOk(EngineOptions engineOptions) {
+        if (!optionsInitialized)
+            return true;
+        if (hashMB != engineOptions.hashMB)
+            return false;
+        if (haveOption("gaviotatbpath") && !gaviotaTbPath.equals(engineOptions.gtbPath))
+            return false;
+        return true;
     }
 
     /** @inheritDoc */

@@ -23,7 +23,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.petero.droidfish.EGTBOptions;
+import org.petero.droidfish.EngineOptions;
 import org.petero.droidfish.book.BookOptions;
 import org.petero.droidfish.book.DroidBook;
 import org.petero.droidfish.gamelogic.Move;
@@ -47,7 +47,7 @@ public class DroidComputerPlayer {
     private final Context context;
     private final SearchListener listener;
     private final DroidBook book;
-    private EGTBOptions egtbOptions;
+    private EngineOptions engineOptions;
 
     /** Set when "ucinewgame" needs to be sent. */
     private boolean newGame = false;
@@ -242,7 +242,7 @@ public class DroidComputerPlayer {
         this.context = context;
         this.listener = listener;
         book = DroidBook.getInstance();
-        egtbOptions = new EGTBOptions();
+        engineOptions = new EngineOptions();
         engineState = new EngineState();
         searchRequest = null;
     }
@@ -270,8 +270,8 @@ public class DroidComputerPlayer {
         book.setOptions(options);
     }
 
-    public final void setEgtbOptions(EGTBOptions options) {
-        egtbOptions = options;
+    public final void setEngineOptions(EngineOptions options) {
+        engineOptions = options;
     }
 
     /** Return all book moves, both as a formatted string and as a list of moves. */
@@ -331,7 +331,7 @@ public class DroidComputerPlayer {
     /** Decide what moves to search. Filters out non-optimal moves if tablebases are used. */
     private final ArrayList<Move> movesToSearch(SearchRequest sr) {
         ArrayList<Move> moves = null;
-        if (egtbOptions.rootProbe)
+        if (engineOptions.rootProbe)
             moves = Probe.getInstance().findOptimal(sr.currPos);
         if (moves != null) {
             sr.searchMoves = moves;
@@ -422,9 +422,14 @@ public class DroidComputerPlayer {
     }
 
     private void killOldEngine(String engine) {
-        if (engine.equals(engineState.engine))
-            return;
-        shutdownEngine();
+        boolean needShutDown = !engine.equals(engineState.engine);
+        if (!needShutDown) {
+            UCIEngine uci = uciEngine;
+            if (uci != null)
+                needShutDown = !uci.optionsOk(engineOptions);
+        }
+        if (needShutDown)
+            shutdownEngine();
     }
 
     /** Tell engine to stop searching. */
@@ -662,7 +667,7 @@ public class DroidComputerPlayer {
         switch (engineState.state) {
         case READ_OPTIONS: {
             if (readUCIOption(uci, s)) {
-                uci.initOptions(egtbOptions);
+                uci.initOptions(engineOptions);
                 uci.writeLineToEngine("ucinewgame");
                 uci.writeLineToEngine("isready");
                 engineState.setState(MainState.WAIT_READY);

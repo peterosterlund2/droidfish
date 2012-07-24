@@ -44,7 +44,15 @@
             android:entries="@array/engine_threads_texts"
             android:defaultValue="@string/engine_threads_default">
         </ListPreference>
-    </PreferenceCategory>
+        <ListPreference
+            android:key="hashMB"
+            android:title="@string/prefs_hash_title"
+            android:summary="@string/prefs_hash_summary"
+            android:entryValues="@array/engine_hash_values"
+            android:entries="@array/engine_hash_texts"
+            android:defaultValue="@string/engine_hash_default">
+        </ListPreference>
+        </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/prefs_time_control">
         <ListPreference
