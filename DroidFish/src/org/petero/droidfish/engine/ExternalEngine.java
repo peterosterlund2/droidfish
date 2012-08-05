@@ -171,8 +171,8 @@ public class ExternalEngine extends UCIEngineBase {
     @Override
     public void initOptions(EngineOptions engineOptions) {
         super.initOptions(engineOptions);
-        hashMB = engineOptions.hashMB;
-        setOption("Hash", engineOptions.hashMB); 
+        hashMB = getHashMB(engineOptions.hashMB);
+        setOption("Hash", hashMB); 
         if (engineOptions.engineProbe) {
             gaviotaTbPath = engineOptions.gtbPath;
             setOption("GaviotaTbPath", engineOptions.gtbPath);
@@ -181,12 +181,24 @@ public class ExternalEngine extends UCIEngineBase {
         optionsInitialized = true;
     }
 
+    /** Reduce too large hash sizes. */
+    private final int getHashMB(int hashMB) {
+        if (hashMB > 16) {
+            int maxMem = (int)(Runtime.getRuntime().maxMemory() / (1024*1024));
+            if (maxMem < 16)
+                maxMem = 16;
+            if (hashMB > maxMem)
+                hashMB = maxMem;
+        }
+        return hashMB;
+    }
+
     /** @inheritDoc */
     @Override
     public boolean optionsOk(EngineOptions engineOptions) {
         if (!optionsInitialized)
             return true;
-        if (hashMB != engineOptions.hashMB)
+        if (hashMB != getHashMB(engineOptions.hashMB))
             return false;
         if (haveOption("gaviotatbpath") && !gaviotaTbPath.equals(engineOptions.gtbPath))
             return false;

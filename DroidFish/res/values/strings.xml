@@ -364,26 +364,38 @@ you are not actively using the program.\
         <item>2</item>
         <item>3</item>
         <item>4</item>
-    </string-array>
+        <item>6</item>
+        <item>8</item>
+        </string-array>
     <string-array name="engine_threads_values">
         <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>
-    </string-array>
+        <item>6</item>
+        <item>8</item>
+        </string-array>
     <string-array name="engine_hash_texts">
         <item>16 MB</item>
         <item>32 MB</item>
         <item>64 MB</item>
         <item>128 MB</item>
-    </string-array>
+        <item>256 MB</item>
+        <item>512 MB</item>
+        <item>1024 MB</item>
+        <item>2048 MB</item>
+        </string-array>
     <string-array name="engine_hash_values">
         <item>16</item>
         <item>32</item>
         <item>64</item>
         <item>128</item>
-    </string-array>
+        <item>256</item>
+        <item>512</item>
+        <item>1024</item>
+        <item>2048</item>
+        </string-array>
     <string-array name="moves_per_session_texts">
         <item>Whole Game</item>
         <item>1 move</item>

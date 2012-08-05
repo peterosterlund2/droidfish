@@ -787,7 +787,7 @@ public class DroidFish extends Activity implements GUIInterface {
         bookOptions.random = (settings.getInt("bookRandom", 500) - 500) * (3.0 / 500);
         setBookOptions();
 
-        engineOptions.hashMB = getHashMB();
+        engineOptions.hashMB = getIntSetting("hashMB", 16);
         engineOptions.hints = settings.getBoolean("tbHints", false);
         engineOptions.hintsEdit = settings.getBoolean("tbHintsEdit", false);
         engineOptions.rootProbe = settings.getBoolean("tbRootProbe", true);
@@ -822,19 +822,6 @@ public class DroidFish extends Activity implements GUIInterface {
 
         gameTextListener.clear();
         ctrl.prefsChanged();
-    }
-
-    /** Get hash size in MB from settings, but reduce size to an amount that the device can handle. */
-    private final int getHashMB() {
-        int hashMB = getIntSetting("hashMB", 16);
-        if (hashMB > 16) {
-            int maxMem = (int)(Runtime.getRuntime().maxMemory() / (1024*1024));
-            if (maxMem < 16)
-                maxMem = 16;
-            if (hashMB > maxMem)
-                hashMB = maxMem;
-        }
-        return hashMB;
     }
 
     private void updateButtons() {
