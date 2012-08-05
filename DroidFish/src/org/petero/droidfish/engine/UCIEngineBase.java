@@ -33,13 +33,16 @@ public abstract class UCIEngineBase implements UCIEngine {
     private HashMap<String, String> currOptions;
     protected boolean isUCI;
 
-    public static UCIEngine getEngine(Context context, String engine, Report report) {
+    public static UCIEngine getEngine(Context context, String engine,
+                                      EngineOptions engineOptions, Report report) {
         if ("stockfish".equals(engine) && (EngineUtil.internalStockFishName() == null))
             engine = "cuckoochess";
         if ("cuckoochess".equals(engine))
             return new CuckooChessEngine(report);
         else if ("stockfish".equals(engine))
             return new InternalStockFish(context, report);
+        else if ("networkEngine".equals(engine))
+            return new NetworkEngine(context, engine, engineOptions, report);
         else
             return new ExternalEngine(context, engine, report);
     }

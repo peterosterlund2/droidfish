@@ -150,6 +150,10 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! Handle PGN non-file intents with more than one game.
     // FIXME!!! File load/save of FEN data
 
+    // FIXME!!! Strength setting for external engines
+    // FIXME!!! Selection dialog for going into variation
+    // FIXME!!! Use two engines in engine/engine games
+
     private ChessBoard cb;
     private static DroidChessController ctrl = null;
     private boolean mShowThinking;
@@ -743,6 +747,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
         String engine = settings.getString("engine", "stockfish");
         int strength = settings.getInt("strength", 1000);
+        engineOptions.networkEngine = settings.getString("networkEngine", "").trim();
         setEngineStrength(engine, strength);
 
         mPonderMode = settings.getBoolean("ponderMode", false);
@@ -787,8 +792,7 @@ public class DroidFish extends Activity implements GUIInterface {
         engineOptions.hintsEdit = settings.getBoolean("tbHintsEdit", false);
         engineOptions.rootProbe = settings.getBoolean("tbRootProbe", true);
         engineOptions.engineProbe = settings.getBoolean("tbEngineProbe", true);
-        String gtbPath = settings.getString("gtbPath", "");
-        gtbPath = gtbPath.trim();
+        String gtbPath = settings.getString("gtbPath", "").trim();
         if (gtbPath.length() == 0) {
             File extDir = Environment.getExternalStorageDirectory();
             String sep = File.separator;
@@ -897,6 +901,8 @@ public class DroidFish extends Activity implements GUIInterface {
             int idx = engine.lastIndexOf('/');
             String eName = engine.substring(idx + 1);
             engineTitleText.setText(eName);
+        } else if (engine.equals("networkEngine")) {
+            engineTitleText.setText(engineOptions.networkEngine);
         } else {
             String eName = getString(engine.equals("cuckoochess") ?
                                      R.string.cuckoochess_engine :
@@ -1676,7 +1682,8 @@ public class DroidFish extends Activity implements GUIInterface {
             String[] fileNames = findFilesInDirectory(engineDir, null);
             final int numFiles = fileNames.length;
             boolean haveSf = EngineUtil.internalStockFishName() != null;
-            final int nEngines = numFiles + (haveSf ? 2 : 1);
+            boolean haveNet = engineOptions.networkEngine.length() > 0;
+            final int nEngines = numFiles + 1 + (haveSf ? 1 : 0) + (haveNet ? 1 : 0);
             final String[] items = new String[nEngines];
             final String[] ids = new String[nEngines];
             int idx = 0;
@@ -1684,6 +1691,9 @@ public class DroidFish extends Activity implements GUIInterface {
                 ids[idx] = "stockfish"; items[idx] = getString(R.string.stockfish_engine); idx++;
             }
             ids[idx] = "cuckoochess"; items[idx] = getString(R.string.cuckoochess_engine); idx++;
+            if (haveNet) {
+                ids[idx] = "networkEngine"; items[idx] = getString(R.string.network_engine); idx++;
+            }
             String sep = File.separator;
             String base = Environment.getExternalStorageDirectory() + sep + engineDir + sep;
             for (int i = 0; i < numFiles; i++) {

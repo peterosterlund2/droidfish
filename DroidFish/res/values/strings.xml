@@ -177,9 +177,12 @@ you are not actively using the program.\
     <string name="engine_error">Engine error</string>
     <string name="stockfish_engine">Stockfish</string>
     <string name="cuckoochess_engine">CuckooChess</string>
+    <string name="network_engine">Network Engine</string>
     <string name="failed_to_start_engine">Failed to start engine</string>
     <string name="engine_terminated">Engine terminated</string>
     <string name="uci_protocol_error">UCI protocol error</string>
+    <string name="network_host_syntax_error">Network host:port syntax error</string>
+    <string name="invalid_network_port">Invalid network port</string>
     <string name="start_new_game">Start New Game?</string>
     <string name="strength_cuckoo_hint">Use the CuckooChess engine for even lower strength.</string>
     <string name="err_too_few_spaces">Too few spaces</string>
@@ -223,6 +226,8 @@ you are not actively using the program.\
     <string name="prefs_threads_summary">Number of engine threads (CPU cores) to use. Not supported by all engines.</string>
     <string name="prefs_hash_title">Hash Table</string>
     <string name="prefs_hash_summary">Hash table size in megabytes</string>
+    <string name="prefs_networkEngine_title">Network engine</string>
+    <string name="prefs_networkEngine_summary">Enter host:port to connect to an engine on a computer on the network</string>
     <string name="prefs_time_control">Time Control</string>
     <string name="prefs_movesPerSession_title">Moves</string>
     <string name="prefs_movesPerSession_summary">Number of moves between time controls</string>

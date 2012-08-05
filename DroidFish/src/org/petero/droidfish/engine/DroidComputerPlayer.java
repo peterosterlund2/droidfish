@@ -602,7 +602,9 @@ public class DroidComputerPlayer {
         myAssert(searchRequest != null);
 
         engineName = "Computer";
-        uciEngine = UCIEngineBase.getEngine(context, searchRequest.engine, new UCIEngine.Report() {
+        uciEngine = UCIEngineBase.getEngine(context, searchRequest.engine,
+                                            engineOptions,
+                                            new UCIEngine.Report() {
             @Override
             public void reportError(String errMsg) {
                 if (errMsg == null)
