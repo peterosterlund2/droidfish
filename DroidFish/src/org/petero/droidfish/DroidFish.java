@@ -1849,11 +1849,13 @@ public class DroidFish extends Activity implements GUIInterface {
             builder.setItems(items, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
                     int gameModeType = -1;
+                    /* only flip site in case the player was specified resp. changed */
+                    boolean flipSite = false;
                     switch (item) {
                     case 0: gameModeType = GameMode.ANALYSIS;      break;
                     case 1: gameModeType = GameMode.EDIT_GAME;     break;
-                    case 2: gameModeType = GameMode.PLAYER_WHITE;  break;
-                    case 3: gameModeType = GameMode.PLAYER_BLACK;  break;
+                    case 2: gameModeType = GameMode.PLAYER_WHITE; flipSite = true; break;
+                    case 3: gameModeType = GameMode.PLAYER_BLACK; flipSite = true; break;
                     case 4: gameModeType = GameMode.TWO_PLAYERS;   break;
                     case 5: gameModeType = GameMode.TWO_COMPUTERS; break;
                     default: break;
@@ -1866,7 +1868,7 @@ public class DroidFish extends Activity implements GUIInterface {
                         editor.commit();
                         gameMode = new GameMode(gameModeType);
                         ctrl.setGameMode(gameMode);
-                        setBoardFlip(true);
+                        setBoardFlip(flipSite);
                     }
                 }
             });
