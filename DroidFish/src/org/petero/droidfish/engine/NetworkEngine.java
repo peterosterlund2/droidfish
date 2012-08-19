@@ -244,8 +244,10 @@ public class NetworkEngine extends UCIEngineBase {
         isRunning = false;
         if (startupThread != null)
             startupThread.interrupt();
-        try { socket.getOutputStream().write("quit\n".getBytes()); } catch (IOException e) {}
-        try { socket.close(); } catch (IOException e) {}
+        if (socket != null) {
+            try { socket.getOutputStream().write("quit\n".getBytes()); } catch (IOException e) {}
+            try { socket.close(); } catch (IOException e) {}
+        }
         super.shutDown();
         if (stdOutThread != null)
             stdOutThread.interrupt();
