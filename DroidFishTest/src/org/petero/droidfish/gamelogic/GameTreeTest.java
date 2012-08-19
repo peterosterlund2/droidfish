@@ -225,7 +225,7 @@ public class GameTreeTest extends TestCase {
         for (int i = 0; i < vars.size(); i++) {
             if (i > 0)
                 ret.append(' ');
-            String moveStr = TextIO.moveToString(gt.currentPos, vars.get(i), false);
+            String moveStr = TextIO.moveToString(gt.currentPos, vars.get(i), false, false);
             ret.append(moveStr);
         }
         return ret.toString();
@@ -477,7 +477,7 @@ public class GameTreeTest extends TestCase {
         assertEquals("A \"good\" player", gt.white);
         assertEquals("e4", getVariationsAsString(gt));
 
-        // Test for broken PGN headers: [White "A "good" player"]
+        // Test for broken PGN headers: [White "A "good old" player"]
         res = gt.readPGN("[White \"A \"good old\" player\"]\ne4", options);
         assertEquals(true, res);
         assertEquals("A \"good old\" player", gt.white);

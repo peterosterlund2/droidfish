@@ -31,9 +31,16 @@ public class MoveGen {
         instance = new MoveGen();
     }
 
+    /** Generate and return a list of legal moves. */
+    public final ArrayList<Move> legalMoves(Position pos) {
+        ArrayList<Move> moveList = pseudoLegalMoves(pos);
+        moveList = MoveGen.removeIllegal(pos, moveList);
+        return moveList;
+    }
+
     /**
      * Generate and return a list of pseudo-legal moves.
-     * Pseudo-legal means that the moves doesn't necessarily defend from check threats.
+     * Pseudo-legal means that the moves don't necessarily defend from check threats.
      */
     public final ArrayList<Move> pseudoLegalMoves(Position pos) {
         ArrayList<Move> moveList = getMoveListObj();

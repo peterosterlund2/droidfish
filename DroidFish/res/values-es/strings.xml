@@ -169,6 +169,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="uci_protocol_error">Fallo en el protocolo UCI</string>
   <string name="start_new_game">¿Empezar nueva partida?</string>
   <string name="strength_cuckoo_hint">Utilice el motor CuckooChess para rebajar aún más el nivel de juego.</string>
+  <string name="piece_names">P C A T D R</string>
   <string name="err_too_few_spaces">Pocos espacios</string>
   <string name="err_invalid_piece">Pieza incorrecta</string>
   <string name="err_invalid_side">Lado incorrecto</string>

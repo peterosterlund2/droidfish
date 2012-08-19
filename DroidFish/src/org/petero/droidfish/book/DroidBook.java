@@ -114,7 +114,8 @@ public final class DroidBook {
     }
 
     /** Return all book moves, both as a formatted string and as a list of moves. */
-    public final synchronized Pair<String,ArrayList<Move>> getAllBookMoves(Position pos) {
+    public final synchronized Pair<String,ArrayList<Move>> getAllBookMoves(Position pos,
+                                                                           boolean localized) {
         StringBuilder ret = new StringBuilder();
         ArrayList<Move> bookMoveList = new ArrayList<Move>();
         List<BookEntry> bookMoves = getBook().getBookEntries(pos);
@@ -150,7 +151,7 @@ public final class DroidBook {
             for (BookEntry be : bookMoves) {
                 Move m = be.move;
                 bookMoveList.add(m);
-                String moveStr = TextIO.moveToString(pos, m, false);
+                String moveStr = TextIO.moveToString(pos, m, false, localized);
                 if (first)
                     first = false;
                 else

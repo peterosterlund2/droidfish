@@ -185,8 +185,8 @@ public class Game {
         }
     }
 
-    public final String getDrawInfo() {
-        return tree.getGameStateInfo();
+    public final String getDrawInfo(boolean localized) {
+        return tree.getGameStateInfo(localized);
     }
 
     /**
@@ -404,7 +404,7 @@ public class Game {
             if (valid) {
                 String playerAction = rep ? "draw rep" : "draw 50";
                 if (m != null)
-                    playerAction += " " + TextIO.moveToString(pos, m, false);
+                    playerAction += " " + TextIO.moveToString(pos, m, false, false);
                 addToGameTree(new Move(0, 0, 0), playerAction);
             } else {
                 pendingDrawOffer = true;

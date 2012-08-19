@@ -275,8 +275,8 @@ public class DroidComputerPlayer {
     }
 
     /** Return all book moves, both as a formatted string and as a list of moves. */
-    public final Pair<String, ArrayList<Move>> getBookHints(Position pos) {
-        return book.getAllBookMoves(pos);
+    public final Pair<String, ArrayList<Move>> getBookHints(Position pos, boolean localized) {
+        return book.getAllBookMoves(pos, localized);
     }
 
     /** Get engine reported name. */
@@ -371,7 +371,9 @@ public class DroidComputerPlayer {
             Move bookMove = book.getBookMove(sr.currPos);
             if (bookMove != null) {
                 if (canClaimDraw(sr.currPos, posHashList, posHashListSize, bookMove) == "") {
-                    listener.notifySearchResult(sr.searchId, TextIO.moveToString(sr.currPos, bookMove, false), null);
+                    listener.notifySearchResult(sr.searchId,
+                                                TextIO.moveToString(sr.currPos, bookMove, false, false),
+                                                null);
                     return;
                 }
             }
@@ -803,7 +805,7 @@ public class DroidComputerPlayer {
         } else if (canClaimDrawRep(pos, posHashList, posHashListSize, posHashListSize)) {
             drawStr = "draw rep";
         } else if (move != null) {
-            String strMove = TextIO.moveToString(pos, move, false);
+            String strMove = TextIO.moveToString(pos, move, false, false);
             posHashList[posHashListSize++] = pos.zobristHash();
             UndoInfo ui = new UndoInfo();
             pos.makeMove(move, ui);

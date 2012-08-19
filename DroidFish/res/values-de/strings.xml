@@ -108,7 +108,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="filename">Dateiname:</string>
   <string name="halfmove">Halbzug:</string>
   <string name="fullmove">Zugnummer:</string>
-  <string name="filter_text">Filtertext</string>
+  <string name="filter_text">Suche…</string>
   <string name="value_percent">Wert (%):</string>
   <string name="header_event">Ereignis:</string>
   <string name="header_site">Ort:</string>
@@ -171,6 +171,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="uci_protocol_error">UCI-Protokollfehler</string>
   <string name="start_new_game">Neue Partie starten?</string>
   <string name="strength_cuckoo_hint">Nutzen Sie die CuckooChess-Engine für eine noch geringere Spielstärke.</string>
+  <string name="piece_names">B S L T D K</string>
   <string name="err_too_few_spaces">Zuwenig Felder</string>
   <string name="err_invalid_piece">Unzulässige Figur</string>
   <string name="err_invalid_side">Unzulässige Seite</string>

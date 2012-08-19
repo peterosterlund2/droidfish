@@ -195,7 +195,7 @@ public class MoveGenTest extends TestCase {
         }
         ArrayList<String> strMoves = new ArrayList<String>();
         for (Move m : moves) {
-            String mStr = TextIO.moveToString(pos, m, true);
+            String mStr = TextIO.moveToString(pos, m, true, false);
             strMoves.add(mStr);
 //            System.out.println(mStr);
         }

@@ -37,21 +37,6 @@ public interface SearchListener {
         ArrayList<Move> pv;
         String pvStr = "";
 
-        public PvInfo(PvInfo pvi) {
-            depth = pvi.depth;
-            score = pvi.score;
-            time = pvi.time;
-            nodes = pvi.nodes;
-            nps = pvi.nps;
-            isMate = pvi.isMate;
-            upperBound = pvi.upperBound;
-            lowerBound = pvi.lowerBound;
-            pv = new ArrayList<Move>(pvi.pv.size());
-            for (int i = 0; i < pvi.pv.size(); i++)
-                pv.add(pvi.pv.get(i));
-            pvStr = pvi.pvStr;
-        }
-
         public PvInfo(int depth, int score, int time, int nodes, int nps,
                       boolean isMate, boolean upperBound, boolean lowerBound, ArrayList<Move> pv) {
             this.depth = depth;

@@ -126,7 +126,6 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! PGN view option: game continuation (for training)
     // FIXME!!! Remove invalid playerActions in PGN import (should be done in verifyChildren)
     // FIXME!!! Implement bookmark mechanism for positions in pgn files
-    // FIXME!!! Display chess notation in local language
     // FIXME!!! Add support for "Chess Leipzig" font
     // FIXME!!! Implement figurine notation
 
@@ -253,7 +252,7 @@ public class DroidFish extends Activity implements GUIInterface {
                 public void run() {
                     pgnOptions.view.variations = toggleBooleanPref("viewVariations");
                     gameTextListener.clear();
-                    ctrl.prefsChanged();
+                    ctrl.prefsChanged(false);
                 }
             });
             addAction(new UIAction() {
@@ -264,7 +263,7 @@ public class DroidFish extends Activity implements GUIInterface {
                 public void run() {
                     pgnOptions.view.comments = toggleBooleanPref("viewComments");
                     gameTextListener.clear();
-                    ctrl.prefsChanged();
+                    ctrl.prefsChanged(false);
                 }
             });
             addAction(new UIAction() {
@@ -275,7 +274,7 @@ public class DroidFish extends Activity implements GUIInterface {
                 public void run() {
                     pgnOptions.view.headers = toggleBooleanPref("viewHeaders");
                     gameTextListener.clear();
-                    ctrl.prefsChanged();
+                    ctrl.prefsChanged(false);
                 }
             });
             addAction(new UIAction() {
@@ -352,6 +351,7 @@ public class DroidFish extends Activity implements GUIInterface {
         custom3ButtonActions = new ButtonActions("custom3", CUSTOM3_BUTTON_DIALOG,
                                                  R.string.select_action);
 
+        TextIO.setPieceNames(getString(R.string.piece_names));
         initUI(true);
 
         gameTextListener = new PgnScreenText(pgnOptions);
@@ -808,6 +808,8 @@ public class DroidFish extends Activity implements GUIInterface {
         pgnOptions.view.comments    = settings.getBoolean("viewComments",       true);
         pgnOptions.view.nag         = settings.getBoolean("viewNAG",            true);
         pgnOptions.view.headers     = settings.getBoolean("viewHeaders",        false);
+        final int oldViewPieceType = pgnOptions.view.pieceType;
+        pgnOptions.view.pieceType   = getIntSetting("viewPieceType", PGNOptions.PT_LOCAL);
         pgnOptions.imp.variations   = settings.getBoolean("importVariations",   true);
         pgnOptions.imp.comments     = settings.getBoolean("importComments",     true);
         pgnOptions.imp.nag          = settings.getBoolean("importNAG",          true);
@@ -821,7 +823,7 @@ public class DroidFish extends Activity implements GUIInterface {
         cb.setColors();
 
         gameTextListener.clear();
-        ctrl.prefsChanged();
+        ctrl.prefsChanged(oldViewPieceType != pgnOptions.view.pieceType);
     }
 
     private void updateButtons() {
@@ -1829,7 +1831,7 @@ public class DroidFish extends Activity implements GUIInterface {
                     ColorTheme.instance().setTheme(settings, item);
                     cb.setColors();
                     gameTextListener.clear();
-                    ctrl.prefsChanged();
+                    ctrl.prefsChanged(false);
                     dialog.dismiss();
                 }
             });

@@ -140,7 +140,7 @@ public class GameTest extends TestCase {
         game.setPos(TextIO.readFEN(fen));
         game.processString("draw 50 Nc3");
         assertEquals(Game.GameState.DRAW_50, game.getGameState());    // Draw claim valid
-        assertEquals("Nc3", game.getDrawInfo());
+        assertEquals("Nc3", game.getDrawInfo(false));
 
         game.setPos(TextIO.readFEN(fen));
         game.processString("draw 50 a6");

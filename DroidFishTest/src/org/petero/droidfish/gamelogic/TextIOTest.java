@@ -123,6 +123,10 @@ public class TextIOTest extends TestCase {
         return wasError;
     }
 
+    private final static String moveToString(Position pos, Move move, boolean longForm) {
+        return TextIO.moveToString(pos, move, longForm, false);
+    }
+
     /**
      * Test of moveToString method, of class TextIO.
      */
@@ -132,39 +136,39 @@ public class TextIOTest extends TestCase {
         Move move = new Move(Position.getSquare(4, 1), Position.getSquare(4, 3),
                 Piece.EMPTY);
         boolean longForm = true;
-        String result = TextIO.moveToString(pos, move, longForm);
+        String result = moveToString(pos, move, longForm);
         assertEquals("e2-e4", result);
 
         move = new Move(Position.getSquare(6, 0), Position.getSquare(5, 2), Piece.EMPTY);
-        result = TextIO.moveToString(pos, move, longForm);
+        result = moveToString(pos, move, longForm);
         assertEquals("Ng1-f3", result);
 
         move = new Move(Position.getSquare(4, 7), Position.getSquare(2, 7),
                 Piece.EMPTY);
-        result = TextIO.moveToString(pos, move, longForm);
+        result = moveToString(pos, move, longForm);
         assertEquals("O-O-O", result);
 
         String fen = "1r3k2/2P5/8/8/8/4K3/8/8 w - - 0 1";
         pos = TextIO.readFEN(fen);
         assertEquals(fen, TextIO.toFEN(pos));
         move = new Move(Position.getSquare(2,6), Position.getSquare(1,7), Piece.WROOK);
-        result = TextIO.moveToString(pos, move, longForm);
+        result = moveToString(pos, move, longForm);
         assertEquals("c7xb8R+", result);
 
         move = new Move(Position.getSquare(2,6), Position.getSquare(2,7), Piece.WKNIGHT);
-        result = TextIO.moveToString(pos, move, longForm);
+        result = moveToString(pos, move, longForm);
         assertEquals("c7-c8N", result);
 
         move = new Move(Position.getSquare(2,6), Position.getSquare(2,7), Piece.WQUEEN);
-        result = TextIO.moveToString(pos, move, longForm);
+        result = moveToString(pos, move, longForm);
         assertEquals("c7-c8Q+", result);
 
         // Test null move
         pos = TextIO.readFEN(TextIO.startPosFEN);
         Move nullMove = new Move(0, 0, 0);
-        result = TextIO.moveToString(pos, nullMove, false);
+        result = moveToString(pos, nullMove, false);
         assertEquals("--", result);
-        result = TextIO.moveToString(pos, nullMove, true);
+        result = moveToString(pos, nullMove, true);
         assertEquals("--", result);
     }
 
@@ -176,19 +180,19 @@ public class TextIOTest extends TestCase {
         boolean longForm = true;
 
         Move move = new Move(Position.getSquare(1, 6), Position.getSquare(1, 7), Piece.WROOK);
-        String result = TextIO.moveToString(pos, move, longForm);
+        String result = moveToString(pos, move, longForm);
         assertEquals("b7-b8R+", result);    // check
 
         move = new Move(Position.getSquare(1, 6), Position.getSquare(1, 7), Piece.WQUEEN);
-        result = TextIO.moveToString(pos, move, longForm);
+        result = moveToString(pos, move, longForm);
         assertEquals("b7-b8Q#", result);    // check mate
 
         move = new Move(Position.getSquare(1, 6), Position.getSquare(1, 7), Piece.WKNIGHT);
-        result = TextIO.moveToString(pos, move, longForm);
+        result = moveToString(pos, move, longForm);
         assertEquals("b7-b8N", result);
 
         move = new Move(Position.getSquare(1, 6), Position.getSquare(1, 7), Piece.WBISHOP);
-        result = TextIO.moveToString(pos, move, longForm);
+        result = moveToString(pos, move, longForm);
         assertEquals("b7-b8B", result);     // stalemate
     }
 
@@ -202,43 +206,43 @@ public class TextIOTest extends TestCase {
         boolean longForm = false;
 
         Move move = new Move(Position.getSquare(4,5), Position.getSquare(4,3), Piece.EMPTY);
-        String result = TextIO.moveToString(pos, move, longForm);
+        String result = moveToString(pos, move, longForm);
         assertEquals("Qee4", result);   // File disambiguation needed
 
         move = new Move(Position.getSquare(2,5), Position.getSquare(4,3), Piece.EMPTY);
-        result = TextIO.moveToString(pos, move, longForm);
+        result = moveToString(pos, move, longForm);
         assertEquals("Qc6e4", result);  // Full disambiguation needed
 
         move = new Move(Position.getSquare(2,3), Position.getSquare(4,3), Piece.EMPTY);
-        result = TextIO.moveToString(pos, move, longForm);
+        result = moveToString(pos, move, longForm);
         assertEquals("Q4e4", result);   // Row disambiguation needed
 
         move = new Move(Position.getSquare(2,3), Position.getSquare(2,0), Piece.EMPTY);
-        result = TextIO.moveToString(pos, move, longForm);
+        result = moveToString(pos, move, longForm);
         assertEquals("Qc1+", result);   // No disambiguation needed
 
         move = new Move(Position.getSquare(0,1), Position.getSquare(0,0), Piece.BQUEEN);
-        result = TextIO.moveToString(pos, move, longForm);
+        result = moveToString(pos, move, longForm);
         assertEquals("a1Q", result);    // Normal promotion
 
         move = new Move(Position.getSquare(0,1), Position.getSquare(1,0), Piece.BQUEEN);
-        result = TextIO.moveToString(pos, move, longForm);
+        result = moveToString(pos, move, longForm);
         assertEquals("axb1Q#", result); // Capture promotion and check mate
 
         move = new Move(Position.getSquare(0,1), Position.getSquare(1,0), Piece.BKNIGHT);
-        result = TextIO.moveToString(pos, move, longForm);
+        result = moveToString(pos, move, longForm);
         assertEquals("axb1N", result);  // Capture promotion
 
         move = new Move(Position.getSquare(3,6), Position.getSquare(4,4), Piece.EMPTY);
-        result = TextIO.moveToString(pos, move, longForm);
+        result = moveToString(pos, move, longForm);
         assertEquals("Ne5", result);    // Other knight pinned, no disambiguation needed
 
         move = new Move(Position.getSquare(7,6), Position.getSquare(7,4), Piece.EMPTY);
-        result = TextIO.moveToString(pos, move, longForm);
+        result = moveToString(pos, move, longForm);
         assertEquals("h5", result);     // Regular pawn move
 
         move = new Move(Position.getSquare(5,7), Position.getSquare(3,7), Piece.EMPTY);
-        result = TextIO.moveToString(pos, move, longForm);
+        result = moveToString(pos, move, longForm);
         assertEquals("Rfd8", result);     // File disambiguation needed
     }
 

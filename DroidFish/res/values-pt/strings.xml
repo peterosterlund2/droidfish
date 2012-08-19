@@ -107,7 +107,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="filename">Arquivo:</string>
   <string name="halfmove">Relógio para meio-lance:</string>
   <string name="fullmove">Contador de lances completos:</string>
-  <string name="filter_text">Pesquisar...</string>
+  <string name="filter_text">Pesquisar…</string>
   <string name="value_percent">Valor(%):</string>
   <string name="header_event">Evento:</string>
   <string name="header_site">Site:</string>
@@ -170,6 +170,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="uci_protocol_error">Erro de protocolo UCI</string>
   <string name="start_new_game">Iniciar nova partida?</string>
   <string name="strength_cuckoo_hint">Use o CuckooChess para um nível ainda menor.</string>
+  <string name="piece_names">P C B T D R</string>
   <string name="err_too_few_spaces">Poucos espaços</string>
   <string name="err_invalid_piece">Peça inválida</string>
   <string name="err_invalid_side">Lado inválido</string>
@@ -238,7 +239,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_fullScreenMode_summary">Modo tela cheia oculta a barra de notificações</string>
   <string name="prefs_wakeLock_title">Desabilita apagar a tela automaticamente</string>
   <string name="prefs_drawSquareLabels_title">Rótulos nas casas</string>
-  <string name="prefs_drawSquareLabels_summary">Mostrar rótulos nas casas: a-h e 1-8</string>
+  <string name="prefs_drawSquareLabels_summary">Mostrar rótulos nas casas: a–h e 1–8</string>
   <string name="prefs_scrollSensitivity_title">Velocidade do movimento</string>
   <string name="prefs_scrollSensitivity_summary">Velocidade do movimento para navegação em partida</string>
   <string name="prefs_invertScrollDirection_title">Inverter direção do movimento</string>

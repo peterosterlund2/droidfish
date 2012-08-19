@@ -184,15 +184,22 @@ public class DroidChessController {
     }
 
     /** Notify controller that preferences has changed. */
-    public final synchronized void prefsChanged() {
+    public final synchronized void prefsChanged(boolean translateMoves) {
+        if (game == null)
+            translateMoves = false;
+        if (translateMoves)
+            game.tree.translateMoves();
         updateBookHints();
         updateMoveList();
-        listener.prefsChanged(searchId);
+        listener.prefsChanged(searchId, translateMoves);
+        if (translateMoves)
+            updateGUI();
     }
 
     /** De-serialize from byte array. */
     public final synchronized void fromByteArray(byte[] data) {
         game.fromByteArray(data);
+        game.tree.translateMoves();
     }
 
     /** Serialize to byte array. */
@@ -221,6 +228,7 @@ public class DroidChessController {
             // Try read as PGN instead
             if (!newGame.readPGN(fenPgn, pgnOptions))
                 throw e;
+            newGame.tree.translateMoves();
         }
         searchId++;
         game = newGame;
@@ -554,7 +562,7 @@ public class DroidChessController {
     public final synchronized CommentInfo getComments() {
         Node cur = game.tree.currentNode;
         CommentInfo ret = new CommentInfo();
-        ret.move = cur.moveStr;
+        ret.move = cur.moveStrLocal;
         ret.preComment = cur.preComment;
         ret.postComment = cur.postComment;
         ret.nag = cur.nag;
@@ -571,11 +579,17 @@ public class DroidChessController {
         updateGUI();
     }
 
+    /** Return true if localized piece names should be used. */
+    private final boolean localPt() {
+        return pgnOptions.view.pieceType == PGNOptions.PT_LOCAL;
+    }
+
     /** Engine search information receiver. */
     private final class SearchListener implements org.petero.droidfish.gamelogic.SearchListener {
         private int currDepth = 0;
         private int currMoveNr = 0;
-        private String currMove = "";
+        private Move currMove = null;
+        private String currMoveStr = "";
         private int currNodes = 0;
         private int currNps = 0;
         private int currTime = 0;
@@ -586,8 +600,10 @@ public class DroidChessController {
 
         private Move ponderMove = null;
         private ArrayList<PvInfo> pvInfoV = new ArrayList<PvInfo>();
+        private int pvInfoSearchId = -1; // Search ID corresponding to pvInfoV
 
         public final void clearSearchInfo(int id) {
+            pvInfoSearchId = -1;
             ponderMove = null;
             pvInfoV.clear();
             currDepth = 0;
@@ -620,7 +636,7 @@ public class DroidChessController {
                 buf.append(pvi.pvStr);
             }
             final String statStr = (currDepth > 0) ?
-                    String.format("d:%d %d:%s t:%.2f n:%d nps:%d", currDepth, currMoveNr, currMove,
+                    String.format("d:%d %d:%s t:%.2f n:%d nps:%d", currDepth, currMoveNr, currMoveStr,
                                   currTime / 1000.0, currNodes, currNps)
                     : "";
             final String newPV = buf.toString();
@@ -652,7 +668,8 @@ public class DroidChessController {
 
         @Override
         public void notifyCurrMove(int id, Position pos, Move m, int moveNr) {
-            currMove = TextIO.moveToString(pos, m, false);
+            currMove = m;
+            currMoveStr = TextIO.moveToString(pos, m, false, localPt());
             currMoveNr = moveNr;
             setSearchInfo(id);
         }
@@ -661,6 +678,7 @@ public class DroidChessController {
         @Override
         public void notifyPV(int id, Position pos, ArrayList<PvInfo> pvInfo, Move ponderMove) {
             this.ponderMove = ponderMove;
+            this.pvInfoSearchId = id;
             pvInfoV = (ArrayList<PvInfo>) pvInfo.clone();
             for (PvInfo pv : pvInfo) {
                 currTime = pv.time;
@@ -671,7 +689,7 @@ public class DroidChessController {
                 Position tmpPos = new Position(pos);
                 UndoInfo ui = new UndoInfo();
                 if (ponderMove != null) {
-                    String moveStr = TextIO.moveToString(tmpPos, ponderMove, false);
+                    String moveStr = TextIO.moveToString(tmpPos, ponderMove, false, localPt());
                     buf.append(String.format(" [%s]", moveStr));
                     tmpPos.makeMove(ponderMove, ui);
                 }
@@ -680,7 +698,7 @@ public class DroidChessController {
                         break;
                     if (!TextIO.isValid(tmpPos, m))
                         break;
-                    String moveStr = TextIO.moveToString(tmpPos, m, false);
+                    String moveStr = TextIO.moveToString(tmpPos, m, false, localPt());
                     buf.append(String.format(" %s", moveStr));
                     tmpPos.makeMove(m, ui);
                 }
@@ -706,8 +724,15 @@ public class DroidChessController {
             setSearchInfo(id);
         }
 
-        public void prefsChanged(int id) {
-            setSearchInfo(id);
+        public void prefsChanged(int id, boolean translateMoves) {
+            if (translateMoves && (id == pvInfoSearchId)) {
+                Position pos = game.currPos();
+                if (currMove != null)
+                    notifyCurrMove(id, pos, currMove, currMoveNr);
+                notifyPV(id, pos, pvInfoV, ponderMove);
+            } else {
+                setSearchInfo(id);
+            }
         }
 
         @Override
@@ -758,7 +783,7 @@ public class DroidChessController {
 
     private final void updateBookHints() {
         if (humansTurn()) {
-            Pair<String, ArrayList<Move>> bi = computerPlayer.getBookHints(game.currPos());
+            Pair<String, ArrayList<Move>> bi = computerPlayer.getBookHints(game.currPos(), localPt());
             listener.notifyBookInfo(searchId, bi.first, bi.second);
         }
     }
@@ -906,8 +931,7 @@ public class DroidChessController {
      */
     private final boolean doMove(Move move) {
         Position pos = game.currPos();
-        ArrayList<Move> moves = new MoveGen().pseudoLegalMoves(pos);
-        moves = MoveGen.removeIllegal(pos, moves);
+        ArrayList<Move> moves = new MoveGen().legalMoves(pos);
         int promoteTo = move.promoteTo;
         for (Move m : moves) {
             if ((m.from == move.from) && (m.to == move.to)) {
@@ -917,7 +941,7 @@ public class DroidChessController {
                     return false;
                 }
                 if (m.promoteTo == promoteTo) {
-                    String strMove = TextIO.moveToString(pos, m, false);
+                    String strMove = TextIO.moveToString(pos, m, false, false, moves);
                     game.processString(strMove);
                     return true;
                 }
@@ -943,7 +967,7 @@ public class DroidChessController {
             }
         } else {
             if ((s.state == GameState.DRAW_REP) || (s.state == GameState.DRAW_50))
-                s.drawInfo = game.getDrawInfo();
+                s.drawInfo = game.getDrawInfo(localPt());
         }
         gui.setStatus(s);
         updateMoveList();
@@ -957,7 +981,7 @@ public class DroidChessController {
                 if (i > 0) sb.append(' ');
                 if (i == game.tree.currentNode.defaultChild)
                     sb.append(Util.boldStart);
-                sb.append(TextIO.moveToString(pos, prevVarList.get(i), false));
+                sb.append(TextIO.moveToString(pos, prevVarList.get(i), false, localPt()));
                 if (i == game.tree.currentNode.defaultChild)
                     sb.append(Util.boldStop);
             }
@@ -985,6 +1009,7 @@ public class DroidChessController {
             tmpOptions.exp.playerAction   = false;
             tmpOptions.exp.clockInfo      = false;
             tmpOptions.exp.moveNrAfterNag = false;
+            tmpOptions.exp.pieceType      = pgnOptions.view.pieceType;
             gameTextListener.clear();
             game.tree.pgnTreeWalker(tmpOptions, gameTextListener);
         }

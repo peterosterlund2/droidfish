@@ -218,10 +218,38 @@ public class GameTree {
         }
     }
 
+    /** Update moveStrLocal in all game nodes. */
+    public final void translateMoves() {
+        List<Integer> currPath = new ArrayList<Integer>();
+        while (currentNode != rootNode) {
+            Node child = currentNode;
+            goBack();
+            int childNum = currentNode.children.indexOf(child);
+            currPath.add(childNum);
+        }
+        translateMovesHelper();
+        for (int i = currPath.size() - 1; i >= 0; i--)
+            goForward(currPath.get(i), false);
+    }
+
+    private final void translateMovesHelper() {
+        ArrayList<Move> moves = MoveGen.instance.legalMoves(currentPos);
+        currentNode.verifyChildren(currentPos, moves);
+        int nc = currentNode.children.size();
+        for (int i = 0; i < nc; i++) {
+            Node child = currentNode.children.get(i);
+            child.moveStrLocal = TextIO.moveToString(currentPos, child.move, false, true, moves);
+            goForward(i, false);
+            translateMovesHelper();
+            goBack();
+        }
+    }
+
     /** Export game tree in PGN format. */
     public final String toPGN(PGNOptions options) {
         PgnText pgnText = new PgnText();
         options.exp.pgnPromotions = true;
+        options.exp.pieceType = PGNOptions.PT_ENGLISH;
         pgnTreeWalker(options, pgnText);
         return pgnText.getPgnString();
     }
@@ -235,7 +263,7 @@ public class GameTree {
             while (currentNode != rootNode) {
                 Node child = currentNode;
                 goBack();
-                int childNum = variations().indexOf(child);
+                int childNum = currentNode.children.indexOf(child);
                 currPath.add(childNum);
             }
             while (variations().size() > 0)
@@ -692,11 +720,17 @@ public class GameTree {
         int idx = currentNode.children.size();
         Node node = new Node(currentNode, moveStr, playerAction, Integer.MIN_VALUE, nag, preComment, postComment);
         Move move = TextIO.UCIstringToMove(moveStr);
-        if (move == null)
-            move = TextIO.stringToMove(currentPos, moveStr);
+        ArrayList<Move> moves = null;
+        if (move == null) {
+            moves = MoveGen.instance.legalMoves(currentPos);
+            move = TextIO.stringToMove(currentPos, moveStr, moves);
+        }
         if (move == null)
             return -1;
-        node.moveStr = TextIO.moveToString(currentPos, move, false);
+        if (moves == null)
+            moves = MoveGen.instance.legalMoves(currentPos);
+        node.moveStr      = TextIO.moveToString(currentPos, move, false, false, moves);
+        node.moveStrLocal = TextIO.moveToString(currentPos, move, false, true, moves);
         node.move = move;
         node.ui = new UndoInfo();
         currentNode.children.add(node);
@@ -831,7 +865,7 @@ public class GameTree {
     }
 
     /** Get additional info affecting gameState. A player "draw" or "resign" command. */
-    final String getGameStateInfo() {
+    final String getGameStateInfo(boolean localized) {
         String ret = "";
         String action = currentNode.playerAction;
         if (action.startsWith("draw rep ")) {
@@ -839,6 +873,25 @@ public class GameTree {
         }
         if (action.startsWith("draw 50 ")) {
             ret = action.substring(8).trim();
+        }
+        if (localized) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < ret.length(); i++) {
+                int p = Piece.EMPTY;
+                switch (ret.charAt(i)) {
+                case 'Q': p = Piece.WQUEEN;  break;
+                case 'R': p = Piece.WROOK;   break;
+                case 'B': p = Piece.WBISHOP; break;
+                case 'N': p = Piece.WKNIGHT; break;
+                case 'K': p = Piece.WKING;   break;
+                case 'P': p = Piece.WPAWN;   break;
+                }
+                if (p == Piece.EMPTY)
+                    sb.append(ret.charAt(i));
+                else
+                    sb.append(TextIO.pieceToCharLocalized(p));
+            }
+            ret = sb.toString();
         }
         return ret;
     }
@@ -930,7 +983,8 @@ public class GameTree {
      *  The root node is special in that it doesn't have a move.
      */
     public static class Node {
-        String moveStr;             // String representation of move leading to this node. Empty string root node.
+        String moveStr;             // String representation of move leading to this node. Empty string in root node.
+        String moveStrLocal;        // Localized version of moveStr
         Move move;                  // Computed on demand for better PGN parsing performance.
                                     // Subtrees of invalid moves will be dropped when detected.
                                     // Always valid for current node.
@@ -948,6 +1002,7 @@ public class GameTree {
 
         public Node() {
             this.moveStr = "";
+            this.moveStrLocal = "";
             this.move = null;
             this.ui = null;
             this.playerAction = "";
@@ -963,6 +1018,7 @@ public class GameTree {
         public Node(Node parent, String moveStr, String playerAction, int remainingTime, int nag,
                     String preComment, String postComment) {
             this.moveStr = moveStr;
+            this.moveStrLocal = moveStr;
             this.move = null;
             this.ui = null;
             this.playerAction = playerAction;
@@ -981,12 +1037,18 @@ public class GameTree {
 
         /** nodePos must represent the same position as this Node object. */
         private final boolean verifyChildren(Position nodePos) {
+            return verifyChildren(nodePos, null);
+        }
+        private final boolean verifyChildren(Position nodePos, ArrayList<Move> moves) {
             boolean anyToRemove = false;
             for (Node child : children) {
                 if (child.move == null) {
-                    Move move = TextIO.stringToMove(nodePos, child.moveStr);
+                    if (moves == null)
+                        moves = MoveGen.instance.legalMoves(nodePos);
+                    Move move = TextIO.stringToMove(nodePos, child.moveStr, moves);
                     if (move != null) {
-                        child.moveStr = TextIO.moveToString(nodePos, move, false);
+                        child.moveStr      = TextIO.moveToString(nodePos, move, false, false, moves);
+                        child.moveStrLocal = TextIO.moveToString(nodePos, move, false, true, moves);
                         child.move = move;
                         child.ui = new UndoInfo();
                     } else {
@@ -1053,6 +1115,7 @@ public class GameTree {
         static final void readFromStream(DataInputStream dis, Node node) throws IOException {
             while (true) {
                 node.moveStr = dis.readUTF();
+                node.moveStrLocal = node.moveStr;
                 int from = dis.readByte();
                 if (from >= 0) {
                     int to = dis.readByte();
@@ -1105,7 +1168,7 @@ public class GameTree {
             }
         }
 
-        /** Export this node in PGN format. */
+        /** Export this node in PGN (or display text) format. */
         private final boolean addPgnDataOneNode(PgnToken.PgnTokenReceiver out, MoveNumber mn,
                                                 boolean needMoveNr, PGNOptions options) {
             if ((preComment.length() > 0) && options.exp.comments) {
@@ -1125,9 +1188,13 @@ public class GameTree {
                                 out.processToken(this, PgnToken.PERIOD, null);
                         }
                     }
-                    String str = moveStr;
-                    if (options.exp.pgnPromotions && (move != null) && (move.promoteTo != Piece.EMPTY)) {
-                        str = TextIO.pgnPromotion(str);
+                    String str;
+                    if (options.exp.pieceType == PGNOptions.PT_LOCAL) {
+                        str = moveStrLocal;
+                    } else {
+                        str = moveStr;
+                        if (options.exp.pgnPromotions && (move != null) && (move.promoteTo != Piece.EMPTY))
+                            str = TextIO.pgnPromotion(str);
                     }
                     out.processToken(this, PgnToken.SYMBOL, str);
                     needMoveNr = false;
@@ -1261,6 +1328,7 @@ public class GameTree {
                             moveAdded = false;
                         }
                         nodeToAdd.moveStr = tok.token;
+                        nodeToAdd.moveStrLocal = tok.token;
                         moveAdded = true;
                     }
                     break;

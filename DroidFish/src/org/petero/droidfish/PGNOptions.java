@@ -20,11 +20,15 @@ package org.petero.droidfish;
 
 /** Settings controlling PGN import/export */
 public class PGNOptions {
+    public static final int PT_ENGLISH = 0; // Piece type english letters
+    public static final int PT_LOCAL   = 1; // Piece type local language letters
+
     public static class Viewer {
         public boolean variations;
         public boolean comments;
         public boolean nag;
         public boolean headers;
+        public int pieceType;
     }
     public static class Import {
         public boolean variations;
@@ -39,6 +43,7 @@ public class PGNOptions {
         public boolean clockInfo;
         public boolean pgnPromotions;
         public boolean moveNrAfterNag;
+        public int pieceType;
     }
 
     public Viewer view;
@@ -50,5 +55,6 @@ public class PGNOptions {
         imp = new Import();
         exp = new Export();
         exp.moveNrAfterNag = true;
+        exp.pieceType = PT_ENGLISH;
     }
 }

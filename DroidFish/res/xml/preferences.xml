@@ -513,6 +513,14 @@
                     android:summary="@string/prefs_viewHeaders_summary"
                     android:defaultValue="false">
                 </CheckBoxPreference>
+                <ListPreference
+                    android:key="viewPieceType"
+                    android:title="@string/prefs_viewPieceType_title"
+                    android:summary="@string/prefs_viewPieceType_summary"
+                    android:entryValues="@array/viewPieceType_values"
+                    android:entries="@array/viewPieceType_texts"
+                    android:defaultValue="@string/viewPieceType_default">
+                </ListPreference>
             </PreferenceCategory>
             <PreferenceCategory
                 android:title="@string/prefs_pgn_import">

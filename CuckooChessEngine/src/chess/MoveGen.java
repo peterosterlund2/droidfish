@@ -48,7 +48,7 @@ public final class MoveGen {
 
     /**
      * Generate and return a list of pseudo-legal moves.
-     * Pseudo-legal means that the moves doesn't necessarily defend from check threats.
+     * Pseudo-legal means that the moves don't necessarily defend from check threats.
      */
     public final MoveList pseudoLegalMoves(Position pos) {
         MoveList moveList = getMoveListObj();

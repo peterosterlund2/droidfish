@@ -159,6 +159,7 @@
   <string name="uci_protocol_error">Ошибка UCI протокола</string>
   <string name="start_new_game">Начать новую партию?</string>
   <string name="strength_cuckoo_hint">Использовать движок CuckooChess для наименьшего уровня сложности.</string>
+  <string name="piece_names">П К С Л Ф Кр</string>
   <string name="err_too_few_spaces">Слишком малое пространство</string>
   <string name="err_invalid_piece">Неверная фигура</string>
   <string name="err_invalid_side">Неверное местоположение</string>

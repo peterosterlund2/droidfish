@@ -60,7 +60,7 @@ public class BookTest extends TestCase {
     public void testGetAllBookMoves() throws ChessParseError {
         Position pos = TextIO.readFEN(TextIO.startPosFEN);
         DroidBook book = DroidBook.getInstance();
-        String moveListString = book.getAllBookMoves(pos).first;
+        String moveListString = book.getAllBookMoves(pos, false).first;
         String[] strMoves = moveListString.split(":[0-9]* ");
         assertTrue(strMoves.length > 1);
         for (String strMove : strMoves) {

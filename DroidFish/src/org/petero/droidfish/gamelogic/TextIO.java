@@ -25,11 +25,21 @@ import org.petero.droidfish.R;
 
 
 /**
- *
+ * Handle conversion of positions and moves to/from text format.
  * @author petero
  */
 public class TextIO {
     static public final String startPosFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
+    /** Localized version of "P N B R Q K". */
+    private static String[] pieceNames = null;
+
+    /** Set localized piece names. */
+    public static final void setPieceNames(String pieceNames) {
+        String[] pn = pieceNames.split(" ");
+        if (pn.length == 6)
+            TextIO.pieceNames = pn;
+    }
 
     /** Parse a FEN string and return a chess Position object. */
     public static final Position readFEN(String fen) throws ChessParseError {
@@ -309,18 +319,18 @@ public class TextIO {
 
     /**
      * Convert a chess move to human readable form.
-     * @param pos      The chess position.
-     * @param move     The executed move.
-     * @param longForm If true, use long notation, eg Ng1-f3.
-     *                 Otherwise, use short notation, eg Nf3
+     * @param pos       The chess position.
+     * @param move      The executed move.
+     * @param longForm  If true, use long notation, eg Ng1-f3.
+     *                  Otherwise, use short notation, eg Nf3.
+     * @param localized If true, use localized piece names.
      */
-    public static final String moveToString(Position pos, Move move, boolean longForm) {
-        ArrayList<Move> moves = MoveGen.instance.pseudoLegalMoves(pos);
-        moves = MoveGen.removeIllegal(pos, moves);
-        return moveToString(pos, move, longForm, moves);
+    public static final String moveToString(Position pos, Move move, boolean longForm,
+                                            boolean localized) {
+        return moveToString(pos, move, longForm, localized, null);
     }
-    private static final String moveToString(Position pos, Move move, boolean longForm,
-                                             List<Move> moves) {
+    public static final String moveToString(Position pos, Move move, boolean longForm,
+                                            boolean localized, List<Move> moves) {
         if ((move == null) || move.equals(new Move(0, 0, 0)))
             return "--";
         StringBuilder ret = new StringBuilder();
@@ -342,8 +352,13 @@ public class TextIO {
             }
         }
         if (ret.length() == 0) {
+            if (pieceNames == null)
+                localized = false;
             int p = pos.getPiece(move.from);
-            ret.append(pieceToChar(p));
+            if (localized)
+                ret.append(pieceToCharLocalized(p));
+            else
+                ret.append(pieceToChar(p));
             int x1 = Position.getX(move.from);
             int y1 = Position.getY(move.from);
             int x2 = Position.getX(move.to);
@@ -361,6 +376,8 @@ public class TextIO {
                     int numSameTarget = 0;
                     int numSameFile = 0;
                     int numSameRow = 0;
+                    if (moves == null)
+                        moves = MoveGen.instance.legalMoves(pos);
                     int mSize = moves.size();
                     for (int mi = 0; mi < mSize; mi++) {
                         Move m = moves.get(mi);
@@ -389,8 +406,12 @@ public class TextIO {
             }
             ret.append((char) (x2 + 'a'));
             ret.append((char) (y2 + '1'));
-            if (move.promoteTo != Piece.EMPTY)
-                ret.append(pieceToChar(move.promoteTo));
+            if (move.promoteTo != Piece.EMPTY) {
+                if (localized)
+                    ret.append(pieceToCharLocalized(move.promoteTo));
+                else
+                    ret.append(pieceToChar(move.promoteTo));
+            }
         }
         UndoInfo ui = new UndoInfo();
         pos.makeMove(move, ui);
@@ -453,6 +474,10 @@ public class TextIO {
      * information as long as it matches exactly one valid move.
      */
     public static final Move stringToMove(Position pos, String strMove) {
+        return stringToMove(pos, strMove, null);
+    }
+    public static final Move stringToMove(Position pos, String strMove,
+                                          ArrayList<Move> moves) {
         if (strMove.equals("--"))
             return new Move(0, 0, 0);
 
@@ -530,8 +555,8 @@ public class TextIO {
                 info.promPiece = Piece.EMPTY;
         }
 
-        ArrayList<Move> moves = MoveGen.instance.pseudoLegalMoves(pos);
-        moves = MoveGen.removeIllegal(pos, moves);
+        if (moves == null)
+            moves = MoveGen.instance.legalMoves(pos);
 
         ArrayList<Move> matches = new ArrayList<Move>(2);
         for (int i = 0; i < moves.size(); i++) {
@@ -713,6 +738,17 @@ public class TextIO {
             case Piece.WBISHOP: case Piece.BBISHOP: return "B";
             case Piece.WKNIGHT: case Piece.BKNIGHT: return "N";
             case Piece.WKING:   case Piece.BKING:   return "K";
+        }
+        return "";
+    }
+
+    public final static String pieceToCharLocalized(int p) {
+        switch (p) {
+            case Piece.WQUEEN:  case Piece.BQUEEN:  return pieceNames[4];
+            case Piece.WROOK:   case Piece.BROOK:   return pieceNames[3];
+            case Piece.WBISHOP: case Piece.BBISHOP: return pieceNames[2];
+            case Piece.WKNIGHT: case Piece.BKNIGHT: return pieceNames[1];
+            case Piece.WKING:   case Piece.BKING:   return pieceNames[5];
         }
         return "";
     }
