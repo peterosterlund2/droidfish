@@ -206,8 +206,7 @@ public class TextIO {
     public static final void fixupEPSquare(Position pos) {
         int epSquare = pos.getEpSquare();
         if (epSquare >= 0) {
-            ArrayList<Move> moves = MoveGen.instance.pseudoLegalMoves(pos);
-            moves = MoveGen.removeIllegal(pos, moves);
+            ArrayList<Move> moves = MoveGen.instance.legalMoves(pos);
             boolean epValid = false;
             for (Move m : moves) {
                 if (m.to == epSquare) {
@@ -417,8 +416,7 @@ public class TextIO {
         pos.makeMove(move, ui);
         boolean givesCheck = MoveGen.inCheck(pos);
         if (givesCheck) {
-            ArrayList<Move> nextMoves = MoveGen.instance.pseudoLegalMoves(pos);
-            nextMoves = MoveGen.removeIllegal(pos, nextMoves);
+            ArrayList<Move> nextMoves = MoveGen.instance.legalMoves(pos);
             if (nextMoves.size() == 0) {
                 ret.append('#');
             } else {
@@ -453,8 +451,7 @@ public class TextIO {
     public static final boolean isValid(Position pos, Move move) {
         if (move == null)
             return false;
-        ArrayList<Move> moves = new MoveGen().pseudoLegalMoves(pos);
-        moves = MoveGen.removeIllegal(pos, moves);
+        ArrayList<Move> moves = new MoveGen().legalMoves(pos);
         for (int i = 0; i < moves.size(); i++)
             if (move.equals(moves.get(i)))
                 return true;

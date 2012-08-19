@@ -180,8 +180,7 @@ public class Probe {
     /** Return a list of all legal moves that are not known to be non-optimal.
      * Returns null if no legal move could be excluded. */
     public final ArrayList<Move> findOptimal(Position pos) {
-        ArrayList<Move> moveList = new MoveGen().pseudoLegalMoves(pos);
-        moveList = MoveGen.removeIllegal(pos, moveList);
+        ArrayList<Move> moveList = new MoveGen().legalMoves(pos);
         ArrayList<Move> optimalMoves = new ArrayList<Move>();
         ArrayList<Move> unknownMoves = new ArrayList<Move>();
         final int MATE0 = 100000;
@@ -226,8 +225,7 @@ public class Probe {
             return null;
         ArrayList<Pair<Integer,Integer>> ret = new ArrayList<Pair<Integer,Integer>>();
 
-        ArrayList<Move> moveList = new MoveGen().pseudoLegalMoves(pos);
-        moveList = MoveGen.removeIllegal(pos, moveList);
+        ArrayList<Move> moveList = new MoveGen().legalMoves(pos);
         UndoInfo ui = new UndoInfo();
         for (Move m : moveList) {
             if (m.from != fromSq)

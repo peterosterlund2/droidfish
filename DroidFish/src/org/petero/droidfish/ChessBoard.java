@@ -612,8 +612,7 @@ public class ChessBoard extends View {
             }
         } else {
             if (oneTouchMoves) {
-                ArrayList<Move> moves = new MoveGen().pseudoLegalMoves(pos);
-                moves = MoveGen.removeIllegal(pos, moves);
+                ArrayList<Move> moves = new MoveGen().legalMoves(pos);
                 Move matchingMove = null;
                 int toSq = -1;
                 for (Move m : moves) {

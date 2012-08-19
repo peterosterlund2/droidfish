@@ -839,8 +839,7 @@ public class GameTree {
             // Player made null move to resign, causing whiteMove to toggle
             return pos.whiteMove ? GameState.RESIGN_BLACK : GameState.RESIGN_WHITE;
         }
-        ArrayList<Move> moves = new MoveGen().pseudoLegalMoves(pos);
-        moves = MoveGen.removeIllegal(pos, moves);
+        ArrayList<Move> moves = new MoveGen().legalMoves(pos);
         if (moves.size() == 0) {
             if (MoveGen.inCheck(pos)) {
                 return pos.whiteMove ? GameState.BLACK_MATE : GameState.WHITE_MATE;

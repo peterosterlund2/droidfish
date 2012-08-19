@@ -336,8 +336,7 @@ public class DroidComputerPlayer {
         if (moves != null) {
             sr.searchMoves = moves;
         } else {
-            moves = new MoveGen().pseudoLegalMoves(sr.currPos);
-            moves = MoveGen.removeIllegal(sr.currPos, moves);
+            moves = new MoveGen().legalMoves(sr.currPos);
             sr.searchMoves = null;
         }
         return moves;

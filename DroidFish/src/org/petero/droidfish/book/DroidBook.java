@@ -87,8 +87,7 @@ public final class DroidBook {
         if (bookMoves == null)
             return null;
 
-        ArrayList<Move> legalMoves = new MoveGen().pseudoLegalMoves(pos);
-        legalMoves = MoveGen.removeIllegal(pos, legalMoves);
+        ArrayList<Move> legalMoves = new MoveGen().legalMoves(pos);
         double sum = 0;
         final int nMoves = bookMoves.size();
         for (int i = 0; i < nMoves; i++) {
@@ -122,8 +121,7 @@ public final class DroidBook {
 
         // Check legality
         if (bookMoves != null) {
-            ArrayList<Move> legalMoves = new MoveGen().pseudoLegalMoves(pos);
-            legalMoves = MoveGen.removeIllegal(pos, legalMoves);
+            ArrayList<Move> legalMoves = new MoveGen().legalMoves(pos);
             for (int i = 0; i < bookMoves.size(); i++) {
                 BookEntry be = bookMoves.get(i);
                 if (!legalMoves.contains(be.move)) {

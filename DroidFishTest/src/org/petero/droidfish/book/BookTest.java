@@ -72,8 +72,7 @@ public class BookTest extends TestCase {
     /** Check that move is a legal move in position pos. */
     private void checkValid(Position pos, Move move) {
         assertTrue(move != null);
-        ArrayList<Move> moveList = new MoveGen().pseudoLegalMoves(pos);
-        moveList = MoveGen.removeIllegal(pos, moveList);
+        ArrayList<Move> moveList = new MoveGen().legalMoves(pos);
         assertTrue(moveList.contains(move));
     }
 }
