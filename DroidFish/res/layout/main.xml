@@ -3,24 +3,24 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-	<view
-		class="org.petero.droidfish.ChessBoard"
-	    android:id="@+id/chessboard"
-    	android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"/>
+    <view
+        class="org.petero.droidfish.ChessBoard"
+        android:id="@+id/chessboard"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:paddingTop="1dp">
-		<TextView
-    		android:id="@+id/status"
-	    	android:layout_width="0dp" 
-	    	android:layout_height="wrap_content" 
-			android:layout_weight="1"
-		    android:includeFontPadding="true"
-    		android:typeface="monospace"
-		    android:textSize="10dip"/>
+        android:layout_height="wrap_content"
+        android:paddingTop="1dp">
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="0dp" 
+            android:layout_height="wrap_content" 
+            android:layout_weight="1"
+            android:includeFontPadding="true"
+            android:typeface="monospace"
+            android:textSize="10dip"/>
         <ImageButton
             android:id="@+id/custom3Button"
             android:contentDescription="@string/buttonDesc_custom3"
@@ -33,7 +33,7 @@
             android:layout_width="36dp"
             android:layout_height="32dp">
         </ImageButton>
-		<ImageButton
+        <ImageButton
             android:id="@+id/custom1Button"
             android:contentDescription="@string/buttonDesc_custom1"
             android:layout_width="36dp"
@@ -45,19 +45,19 @@
             android:layout_width="36dp"
             android:layout_height="32dp">
         </ImageButton>
-		<ImageButton
+        <ImageButton
             android:id="@+id/undoButton"
             android:contentDescription="@string/buttonDesc_back"
             android:layout_width="36dp"
             android:layout_height="32dp">
         </ImageButton>
-		<ImageButton
+        <ImageButton
             android:id="@+id/redoButton"
             android:contentDescription="@string/buttonDesc_forward"
             android:layout_width="36dp"
             android:layout_height="32dp">
         </ImageButton>
-	</LinearLayout>
+    </LinearLayout>
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
@@ -76,18 +76,18 @@
                 android:typeface="monospace"
                 android:textSize="10dip"/>
         </view>
-    	<ScrollView
+        <ScrollView
             android:id="@+id/scrollView"
             android:layout_above="@+id/scrollViewBot"
-    		android:layout_width="fill_parent"
-    		android:layout_height="fill_parent">
-    		<TextView
-        		android:id="@+id/moveList"
-    	    	android:layout_width="fill_parent" 
-        		android:layout_height="wrap_content" 
-    	    	android:includeFontPadding="true"
-        		android:typeface="monospace"
-    		    android:textSize="10dip"/>
-    	</ScrollView>
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <TextView
+                android:id="@+id/moveList"
+                android:layout_width="fill_parent" 
+                android:layout_height="wrap_content" 
+                android:includeFontPadding="true"
+                android:typeface="monospace"
+                android:textSize="10dip"/>
+        </ScrollView>
     </RelativeLayout>
 </LinearLayout>

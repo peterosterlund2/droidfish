@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent"
-  android:orientation="vertical">
-  <TextView
-      android:id="@+id/select_game_hint"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:includeFontPadding="true">
-  </TextView>
-  <EditText
-  	android:id="@+id/select_game_filter"
-  	android:hint="@string/filter_text"
-  	android:layout_width="fill_parent"
-  	android:layout_height="wrap_content"
-  	android:maxLines="1"
-  	android:inputType="text"
-  	android:layout_margin="10dp">
-  </EditText>
-  <ListView
-    android:id="@android:id/list"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:focusable="false">
-  </ListView>
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/select_game_hint"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="true">
+    </TextView>
+    <EditText
+        android:id="@+id/select_game_filter"
+        android:hint="@string/filter_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:inputType="text"
+        android:layout_margin="10dp">
+    </EditText>
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:focusable="false">
+    </ListView>
 </LinearLayout>
