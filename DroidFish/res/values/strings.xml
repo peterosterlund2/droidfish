@@ -249,8 +249,8 @@ you are not actively using the program.\
     <string name="prefs_user_interface">User Interface</string>
     <string name="prefs_animateMoves_title">Animate Moves</string>
     <string name="prefs_animateMoves_summary">Animate piece movements</string>
-    <string name="prefs_oneTouchMoves_title">One Touch Moves</string>
-    <string name="prefs_oneTouchMoves_summary">Touching a square that corresponds to one unique move makes that move immediately</string>
+    <string name="prefs_quickMoveInput_title">Quick Move Input</string>
+    <string name="prefs_quickMoveInput_summary">From and To squares can be touched in any order. Move is played as soon as uniquely defined.</string>
     <string name="prefs_soundEnabled_title">Enable Sounds</string>
     <string name="prefs_soundEnabled_summary">Play sound when computer makes a move</string>
     <string name="prefs_vibrateEnabled_title">Enable Vibration</string>

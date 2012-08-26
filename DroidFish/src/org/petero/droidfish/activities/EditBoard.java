@@ -91,6 +91,7 @@ public class EditBoard extends Activity {
         cb.cursorVisible = oldCB.cursorVisible;
         cb.setPosition(oldCB.pos);
         setSelection(oldCB.selectedSquare);
+        cb.userSelectedSquare = oldCB.userSelectedSquare;
         status.setText(statusStr);
     }
 

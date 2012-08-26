@@ -125,8 +125,8 @@
         </CheckBoxPreference>
         <CheckBoxPreference
             android:key="oneTouchMoves"
-            android:title="@string/prefs_oneTouchMoves_title"
-            android:summary="@string/prefs_oneTouchMoves_summary"
+            android:title="@string/prefs_quickMoveInput_title"
+            android:summary="@string/prefs_quickMoveInput_summary"
             android:defaultValue="false">
         </CheckBoxPreference>
         <CheckBoxPreference

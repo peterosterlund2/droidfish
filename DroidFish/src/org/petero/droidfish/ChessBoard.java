@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.MoveGen;
+import org.petero.droidfish.gamelogic.Pair;
 import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.UndoInfo;
@@ -44,6 +45,8 @@ public class ChessBoard extends View {
     public Position pos;
 
     public int selectedSquare;
+    public boolean userSelectedSquare;  // True if selectedSquare was set by user tap/click,
+                                        // false if selectedSquare used to highlight last move
     public float cursorX, cursorY;
     public boolean cursorVisible;
     protected int x0, y0, sqSize;
@@ -88,6 +91,7 @@ public class ChessBoard extends View {
         super(context, attrs);
         pos = new Position();
         selectedSquare = -1;
+        userSelectedSquare = false;
         cursorX = cursorY = 0;
         cursorVisible = false;
         x0 = y0 = sqSize = 0;
@@ -344,6 +348,7 @@ public class ChessBoard extends View {
             selectedSquare = square;
             invalidate();
         }
+        userSelectedSquare = true;
     }
 
     protected int getWidth(int sqSize) { return sqSize * 8; }
@@ -592,50 +597,83 @@ public class ChessBoard extends View {
         if (sq < 0)
             return null;
         cursorVisible = false;
-        if (selectedSquare != -1) {
-            int p = pos.getPiece(selectedSquare);
-            if (!myColor(p)) {
-                setSelection(-1); // Remove selection of opponents last moving piece
-            }
-        }
+        if ((selectedSquare != -1) && !userSelectedSquare)
+            setSelection(-1); // Remove selection of opponents last moving piece
 
-        int p = pos.getPiece(sq);
-        if (selectedSquare != -1) {
-            if (sq == selectedSquare)
-                return null;
-            if (!myColor(p)) {
-                Move m = new Move(selectedSquare, sq, Piece.EMPTY);
-                setSelection(sq);
-                return m;
+        if (!oneTouchMoves) {
+            int p = pos.getPiece(sq);
+            if (selectedSquare != -1) {
+                if (sq == selectedSquare)
+                    return null;
+                if (!myColor(p)) {
+                    Move m = new Move(selectedSquare, sq, Piece.EMPTY);
+                    setSelection(sq);
+                    userSelectedSquare = false;
+                    return m;
+                } else
+                    setSelection(sq);
             } else {
-                setSelection(sq);
+                if (myColor(p))
+                    setSelection(sq);
             }
         } else {
-            if (oneTouchMoves) {
-                ArrayList<Move> moves = new MoveGen().legalMoves(pos);
-                Move matchingMove = null;
-                int toSq = -1;
-                for (Move m : moves) {
-                    if ((m.from == sq) || (m.to == sq)) {
-                        if (matchingMove == null) {
-                            matchingMove = m;
-                            toSq = m.to;
-                        } else {
-                            matchingMove = null;
-                            break;
-                        }
-                    }
-                }
-                if (matchingMove != null) {
-                    setSelection(toSq);
-                    return matchingMove;
-                }
+            int prevSq = userSelectedSquare ? selectedSquare : -1;
+            if (prevSq == sq)
+                return null;
+            ArrayList<Move> moves = new MoveGen().legalMoves(pos);
+            Move matchingMove = null;
+            if (prevSq >= 0)
+                matchingMove = matchingMove(prevSq, sq, moves).first;
+            boolean anyMatch = false;
+            if  (matchingMove == null) {
+                Pair<Move, Boolean> match = matchingMove(-1, sq, moves);
+                matchingMove = match.first;
+                anyMatch = match.second;
             }
-            if (myColor(p)) {
-                setSelection(sq);
+            if (matchingMove != null) {
+                setSelection(matchingMove.to);
+                userSelectedSquare = false;
+                return matchingMove;
             }
+            setSelection(anyMatch ? sq : -1);
         }
         return null;
+    }
+
+    /**
+     * Determine if there is a unique legal move corresponding to one or two selected squares.
+     * @param sq1   First square, or -1.
+     * @param sq2   Second square.
+     * @param moves List of legal moves.
+     * @return      Matching move if unique.
+     *              Boolean indicating if there was at least one match.
+     */
+    private final Pair<Move, Boolean> matchingMove(int sq1, int sq2, ArrayList<Move> moves) {
+        Move matchingMove = null;
+        boolean anyMatch = false;
+        for (Move m : moves) {
+            boolean match;
+            if (sq1 == -1)
+                match = (m.from == sq2) || (m.to == sq2);
+            else
+                match = (m.from == sq1) && (m.to == sq2) ||
+                        (m.from == sq2) && (m.to == sq1);
+            if (match) {
+                if (matchingMove == null) {
+                    matchingMove = m;
+                    anyMatch = true;
+                } else {
+                    if ((matchingMove.from == m.from) &&
+                        (matchingMove.to == m.to)) {
+                        matchingMove.promoteTo = Piece.EMPTY;
+                    } else {
+                        matchingMove = null;
+                        break;
+                    }
+                }
+            }
+        }
+        return new Pair<Move, Boolean>(matchingMove, anyMatch);
     }
 
     public static class OnTrackballListener {
