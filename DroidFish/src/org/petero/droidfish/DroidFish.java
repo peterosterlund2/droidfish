@@ -21,6 +21,8 @@ package org.petero.droidfish;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -748,7 +750,6 @@ public class DroidFish extends Activity implements GUIInterface {
 
         String engine = settings.getString("engine", "stockfish");
         int strength = settings.getInt("strength", 1000);
-        engineOptions.networkEngine = settings.getString("networkEngine", "").trim();
         setEngineStrength(engine, strength);
 
         mPonderMode = settings.getBoolean("ponderMode", false);
@@ -800,7 +801,7 @@ public class DroidFish extends Activity implements GUIInterface {
             gtbPath = extDir.getAbsolutePath() + sep + gtbDefaultDir;
         }
         engineOptions.gtbPath = gtbPath;
-        setEngineOptions();
+        setEngineOptions(false);
         setEgtbHints(cb.getSelectedSquare());
 
         updateThinkingInfo();
@@ -895,8 +896,6 @@ public class DroidFish extends Activity implements GUIInterface {
             int idx = engine.lastIndexOf('/');
             String eName = engine.substring(idx + 1);
             engineTitleText.setText(eName);
-        } else if (engine.equals("networkEngine")) {
-            engineTitleText.setText(engineOptions.networkEngine);
         } else {
             String eName = getString(engine.equals("cuckoochess") ?
                                      R.string.cuckoochess_engine :
@@ -939,10 +938,23 @@ public class DroidFish extends Activity implements GUIInterface {
 
     private boolean egtbForceReload = false;
 
-    private final void setEngineOptions() {
-        ctrl.setEngineOptions(new EngineOptions(engineOptions));
+    private final void setEngineOptions(boolean restart) {
+        computeNetEngineID();
+        ctrl.setEngineOptions(new EngineOptions(engineOptions), restart);
         Probe.getInstance().setPath(engineOptions.gtbPath, egtbForceReload);
         egtbForceReload = false;
+    }
+
+    private final void computeNetEngineID() {
+        String id = "";
+        try {
+            String engine = settings.getString("engine", "stockfish");
+            String[] lines = Util.readFile(engine);
+            if (lines.length >= 3)
+                id = lines[1] + ":" + lines[2];
+        } catch (IOException e) {
+        }
+        engineOptions.networkID = id;
     }
 
     private final void setEgtbHints(int sq) {
@@ -1027,9 +1039,8 @@ public class DroidFish extends Activity implements GUIInterface {
             removeDialog(SELECT_BOOK_DIALOG);
             showDialog(SELECT_BOOK_DIALOG);
             return true;
-        case R.id.select_engine:
-            removeDialog(SELECT_ENGINE_DIALOG);
-            showDialog(SELECT_ENGINE_DIALOG);
+        case R.id.manage_engines:
+            showDialog(MANAGE_ENGINES_DIALOG);
             return true;
         case R.id.set_color_theme:
             showDialog(SET_COLOR_THEME_DIALOG);
@@ -1423,6 +1434,10 @@ public class DroidFish extends Activity implements GUIInterface {
     static private final int CUSTOM1_BUTTON_DIALOG = 17;
     static private final int CUSTOM2_BUTTON_DIALOG = 18;
     static private final int CUSTOM3_BUTTON_DIALOG = 19;
+    static private final int MANAGE_ENGINES_DIALOG = 20;
+    static private final int NETWORK_ENGINE_DIALOG = 21;
+    static private final int NEW_NETWORK_ENGINE_DIALOG = 22;
+    static private final int NETWORK_ENGINE_CONFIG_DIALOG = 23;
 
     @Override
     protected Dialog onCreateDialog(int id) {
@@ -1590,8 +1605,6 @@ public class DroidFish extends Activity implements GUIInterface {
             } catch (UnsupportedEncodingException e1) {
             } catch (IOException e) {
             }
-            System.out.printf("%.3f DroidFish.onCreateDialog(): data:%s\n",
-                    System.currentTimeMillis() * 1e-3, data);
             wv.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
             try {
                 PackageInfo pi = getPackageManager().getPackageInfo("org.petero.droidfish", 0);
@@ -1683,11 +1696,15 @@ public class DroidFish extends Activity implements GUIInterface {
             return alert;
         }
         case SELECT_ENGINE_DIALOG: {
-            String[] fileNames = findFilesInDirectory(engineDir, null);
+            String[] fileNames = findFilesInDirectory(engineDir, new FileNameFilter() {
+                @Override
+                public boolean accept(String filename) {
+                    return !internalEngine(filename);
+                }
+            });
             final int numFiles = fileNames.length;
             boolean haveSf = EngineUtil.internalStockFishName() != null;
-            boolean haveNet = engineOptions.networkEngine.length() > 0;
-            final int nEngines = numFiles + 1 + (haveSf ? 1 : 0) + (haveNet ? 1 : 0);
+            final int nEngines = numFiles + 1 + (haveSf ? 1 : 0);
             final String[] items = new String[nEngines];
             final String[] ids = new String[nEngines];
             int idx = 0;
@@ -1695,9 +1712,6 @@ public class DroidFish extends Activity implements GUIInterface {
                 ids[idx] = "stockfish"; items[idx] = getString(R.string.stockfish_engine); idx++;
             }
             ids[idx] = "cuckoochess"; items[idx] = getString(R.string.cuckoochess_engine); idx++;
-            if (haveNet) {
-                ids[idx] = "networkEngine"; items[idx] = getString(R.string.network_engine); idx++;
-            }
             String sep = File.separator;
             String base = Environment.getExternalStorageDirectory() + sep + engineDir + sep;
             for (int i = 0; i < numFiles; i++) {
@@ -1725,6 +1739,7 @@ public class DroidFish extends Activity implements GUIInterface {
                     editor.commit();
                     dialog.dismiss();
                     int strength = settings.getInt("strength", 1000);
+                    setEngineOptions(false);
                     setEngineStrength(engine, strength);
                 }
             });
@@ -2193,8 +2208,227 @@ public class DroidFish extends Activity implements GUIInterface {
             return makeButtonDialog(custom2ButtonActions);
         case CUSTOM3_BUTTON_DIALOG:
             return makeButtonDialog(custom3ButtonActions);
+        case MANAGE_ENGINES_DIALOG:
+            return manageEnginesDialog();
+        case NETWORK_ENGINE_DIALOG:
+            return networkEngineDialog();
+        case NEW_NETWORK_ENGINE_DIALOG:
+            return newNetworkEngineDialog();
+        case NETWORK_ENGINE_CONFIG_DIALOG:
+            return networkEngineConfigDialog();
         }
         return null;
+    }
+
+    private final static boolean internalEngine(String name) {
+        return "cuckoochess".equals(name) ||
+               "stockfish".equals(name);
+    }
+
+    private final Dialog manageEnginesDialog() {
+        final CharSequence[] items = {
+                getString(R.string.select_engine),
+                getString(R.string.network_engine)
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.option_manage_engines);
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                switch (item) {
+                case 0:
+                    removeDialog(SELECT_ENGINE_DIALOG);
+                    showDialog(SELECT_ENGINE_DIALOG);
+                    break;
+                case 1:
+                    removeDialog(NETWORK_ENGINE_DIALOG);
+                    showDialog(NETWORK_ENGINE_DIALOG);
+                    break;
+                }
+            }
+        });
+        AlertDialog alert = builder.create();
+        return alert;
+    }
+
+    private final Dialog networkEngineDialog() {
+        String[] fileNames = findFilesInDirectory(engineDir, new FileNameFilter() {
+            @Override
+            public boolean accept(String filename) {
+                if (internalEngine(filename))
+                    return false;
+                try {
+                    InputStream inStream = new FileInputStream(filename);
+                    InputStreamReader inFile = new InputStreamReader(inStream);
+                    char[] buf = new char[4];
+                    boolean ret = (inFile.read(buf) == 4) && "NETE".equals(new String(buf));
+                    inFile.close();
+                    return ret;
+                } catch (IOException e) {
+                    return false;
+                }
+            }
+        });
+        final int numFiles = fileNames.length;
+        final int numItems = numFiles + 1;
+        final String[] items = new String[numItems];
+        final String[] ids = new String[numItems];
+        int idx = 0;
+        String sep = File.separator;
+        String base = Environment.getExternalStorageDirectory() + sep + engineDir + sep;
+        for (int i = 0; i < numFiles; i++) {
+            ids[idx] = base + fileNames[i];
+            items[idx] = fileNames[i];
+            idx++;
+        }
+        ids[idx] = ""; items[idx] = getString(R.string.new_engine); idx++;
+        String currEngine = ctrl.getEngine();
+        int defaultItem = 0;
+        for (int i = 0; i < numItems; i++)
+            if (ids[i].equals(currEngine)) {
+                defaultItem = i;
+                break;
+            }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.configure_network_engine);
+        builder.setSingleChoiceItems(items, defaultItem, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                if ((item < 0) || (item >= numItems))
+                    return;
+                dialog.dismiss();
+                if (item == numItems - 1) {
+                    showDialog(NEW_NETWORK_ENGINE_DIALOG);
+                } else {
+                    networkEngineToConfig = ids[item];
+                    removeDialog(NETWORK_ENGINE_CONFIG_DIALOG);
+                    showDialog(NETWORK_ENGINE_CONFIG_DIALOG);
+                }
+            }
+        });
+        AlertDialog alert = builder.create();
+        return alert;
+    }
+
+    // Filename of network engine to configure
+    private String networkEngineToConfig = "";
+
+    // Ask for name of new network engine
+    private final Dialog newNetworkEngineDialog() {
+        View content = View.inflate(this, R.layout.create_network_engine, null);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(content);
+        builder.setTitle(R.string.create_network_engine);
+        final EditText engineNameView = (EditText)content.findViewById(R.id.create_network_engine);
+        engineNameView.setText("");
+        final Runnable createEngine = new Runnable() {
+            public void run() {
+                String engineName = engineNameView.getText().toString();
+                String sep = File.separator;
+                String pathName = Environment.getExternalStorageDirectory() + sep + engineDir + sep + engineName;
+                File file = new File(pathName);
+                if (internalEngine(engineName) || file.exists()) {
+                    Toast.makeText(getApplicationContext(), R.string.engine_name_in_use, Toast.LENGTH_LONG).show();
+                    return;
+                }
+                networkEngineToConfig = pathName;
+                removeDialog(NETWORK_ENGINE_CONFIG_DIALOG);
+                showDialog(NETWORK_ENGINE_CONFIG_DIALOG);
+            }
+        };
+        builder.setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                createEngine.run();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, null);
+
+        final Dialog dialog = builder.create();
+        engineNameView.setOnKeyListener(new OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    createEngine.run();
+                    dialog.cancel();
+                    return true;
+                }
+                return false;
+            }
+        });
+        return dialog;
+    }
+
+    // Configure network engine settings
+    private final Dialog networkEngineConfigDialog() {
+        View content = View.inflate(this, R.layout.network_engine_config, null);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(content);
+        builder.setTitle(R.string.configure_network_engine);
+        final EditText hostNameView = (EditText)content.findViewById(R.id.network_engine_host);
+        final EditText portView = (EditText)content.findViewById(R.id.network_engine_port);
+        String hostName = "";
+        String port = "0";
+        try {
+            String[] lines = Util.readFile(networkEngineToConfig);
+            if ((lines.length >= 1) && lines[0].equals("NETE")) {
+                if (lines.length > 1)
+                    hostName = lines[1];
+                if (lines.length > 2)
+                    port = lines[2];
+            }
+        } catch (IOException e1) {
+        }
+        hostNameView.setText(hostName);
+        portView.setText(port);
+        final Runnable writeConfig = new Runnable() {
+            public void run() {
+                String hostName = hostNameView.getText().toString();
+                String port = portView.getText().toString();
+                try {
+                    FileWriter fw = new FileWriter(new File(networkEngineToConfig), false);
+                    fw.write("NETE\n");
+                    fw.write(hostName); fw.write("\n");
+                    fw.write(port); fw.write("\n");
+                    fw.close();
+                    setEngineOptions(true);
+                } catch (IOException e) {
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        };
+        builder.setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                writeConfig.run();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.setNeutralButton(R.string.delete, new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                new File(networkEngineToConfig).delete();
+                String engine = settings.getString("engine", "stockfish");
+                if (engine.equals(networkEngineToConfig)) {
+                    engine = "stockfish";
+                    Editor editor = settings.edit();
+                    editor.putString("engine", engine);
+                    editor.commit();
+                    dialog.dismiss();
+                    int strength = settings.getInt("strength", 1000);
+                    setEngineOptions(false);
+                    setEngineStrength(engine, strength);
+                }
+            }
+        });
+
+        final Dialog dialog = builder.create();
+        hostNameView.setOnKeyListener(new OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    writeConfig.run();
+                    dialog.cancel();
+                    return true;
+                }
+                return false;
+            }
+        });
+        return dialog;
     }
 
     private final void shareGame() {

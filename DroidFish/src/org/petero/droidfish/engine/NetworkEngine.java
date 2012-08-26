@@ -27,6 +27,8 @@ import java.net.UnknownHostException;
 
 import org.petero.droidfish.EngineOptions;
 import org.petero.droidfish.R;
+import org.petero.droidfish.Util;
+
 import android.content.Context;
 
 /** Engine running on a different computer. */
@@ -34,7 +36,8 @@ public class NetworkEngine extends UCIEngineBase {
     protected final Context context;
     private final Report report;
 
-    private String networkEngine;
+    private String fileName;
+    private String networkID;
     private Socket socket;
     private Thread startupThread;
     private Thread stdInThread;
@@ -45,11 +48,11 @@ public class NetworkEngine extends UCIEngineBase {
     private boolean isRunning;
     private boolean isError;
 
-    public NetworkEngine(Context context, String engine, EngineOptions engineOptions,
-                         Report report) {
+    public NetworkEngine(Context context, String engine, EngineOptions engineOptions, Report report) {
         this.context = context;
         this.report = report;
-        this.networkEngine = engineOptions.networkEngine;
+        fileName = engine;
+        networkID = engineOptions.networkID;
         startupThread = null;
         stdInThread = null;
         guiToEngine = new LocalPipe();
@@ -62,14 +65,25 @@ public class NetworkEngine extends UCIEngineBase {
     /** Create socket connection to remote server. */
     private final synchronized void connect() {
         if (socket == null) {
-            int idx = networkEngine.lastIndexOf(':');
-            if (idx < 0) {
+            String host = null;
+            String port = null;
+            boolean fail = false;
+            try {
+                String[] lines = Util.readFile(fileName);
+                if ((lines.length < 3) || !lines[0].equals("NETE")) {
+                    fail = true;
+                } else {
+                    host = lines[1];
+                    port = lines[2];
+                }
+            } catch (IOException e1) {
+                fail = true;
+            }
+            if (fail) {
                 isError = true;
-                report.reportError(context.getString(R.string.network_host_syntax_error));
+                report.reportError(context.getString(R.string.network_engine_config_error));
             } else {
                 try {
-                    String host = networkEngine.substring(0, idx);
-                    String port = networkEngine.substring(idx+1);
                     int portNr = Integer.parseInt(port);
                     socket = new Socket(host, portNr);
                     socket.setTcpNoDelay(true);
@@ -205,7 +219,7 @@ public class NetworkEngine extends UCIEngineBase {
             return false;
         if (!optionsInitialized)
             return true;
-        if (!networkEngine.equals(engineOptions.networkEngine))
+        if (!networkID.equals(engineOptions.networkID))
             return false;
         if (hashMB != engineOptions.hashMB)
             return false;

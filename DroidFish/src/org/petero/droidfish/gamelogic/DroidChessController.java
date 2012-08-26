@@ -153,11 +153,16 @@ public class DroidChessController {
         }
     }
 
-    public final synchronized void setEngineOptions(EngineOptions options) {
+    public final synchronized void setEngineOptions(EngineOptions options, boolean restart) {
         if (!engineOptions.equals(options)) {
             engineOptions = options;
             if (computerPlayer != null)
                 computerPlayer.setEngineOptions(engineOptions);
+            if (restart && (game != null)) {
+                abortSearch();
+                updateComputeThreads();
+                updateGUI();
+            }
         }
     }
 

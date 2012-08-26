@@ -26,7 +26,7 @@ public final class EngineOptions {
     public boolean rootProbe;   // Only search optimal moves at root
     public boolean engineProbe; // Let engine use EGTB
     public String gtbPath;      // GTB directory path
-    public String networkEngine;// Host:port for network engine
+    public String networkID;    // host+port network settings
 
     public EngineOptions() {
         hashMB = 16;
@@ -35,7 +35,7 @@ public final class EngineOptions {
         rootProbe = false;
         engineProbe = false;
         gtbPath = "";
-        networkEngine = "";
+        networkID = "";
     }
 
     public EngineOptions(EngineOptions other) {
@@ -45,7 +45,7 @@ public final class EngineOptions {
         rootProbe = other.rootProbe;
         engineProbe = other.engineProbe;
         gtbPath = other.gtbPath;
-        networkEngine = other.networkEngine;
+        networkID = other.networkID;
     }
 
     @Override
@@ -60,7 +60,7 @@ public final class EngineOptions {
                 (rootProbe == other.rootProbe) &&
                 (engineProbe == other.engineProbe) &&
                 gtbPath.equals(other.gtbPath) &&
-                networkEngine.equals(other.networkEngine));
+                networkID.equals(other.networkID));
     }
 
     @Override

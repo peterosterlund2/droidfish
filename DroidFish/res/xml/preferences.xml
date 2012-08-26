@@ -52,12 +52,6 @@
             android:entries="@array/engine_hash_texts"
             android:defaultValue="@string/engine_hash_default">
         </ListPreference>
-        <EditTextPreference
-            android:key="networkEngine"
-            android:title="@string/prefs_networkEngine_title"
-            android:summary="@string/prefs_networkEngine_summary"
-            android:defaultValue="">
-        </EditTextPreference>
         </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/prefs_time_control">

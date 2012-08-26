@@ -18,6 +18,10 @@
 
 package org.petero.droidfish.engine;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -41,10 +45,22 @@ public abstract class UCIEngineBase implements UCIEngine {
             return new CuckooChessEngine(report);
         else if ("stockfish".equals(engine))
             return new InternalStockFish(context, report);
-        else if ("networkEngine".equals(engine))
-            return new NetworkEngine(context, engine, engineOptions, report);
-        else
-            return new ExternalEngine(context, engine, report);
+        else {
+            boolean netEngine = false;
+            try {
+                InputStream inStream = new FileInputStream(engine);
+                InputStreamReader inFile = new InputStreamReader(inStream);
+                char[] buf = new char[4];
+                if ((inFile.read(buf) == 4) && "NETE".equals(new String(buf)))
+                    netEngine = true;
+                inFile.close();
+            } catch (IOException e) {
+            }
+            if (netEngine)
+                return new NetworkEngine(context, engine, engineOptions, report);
+            else
+                return new ExternalEngine(context, engine, report);
+        }
     }
 
     protected UCIEngineBase() {

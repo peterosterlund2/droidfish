@@ -1,5 +1,12 @@
 package org.petero.droidfish;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
 import android.os.Build;
 
 public final class Util {
@@ -17,5 +24,18 @@ public final class Util {
             boldStart = "<b>";
             boldStop = "</b>";
         }
+    }
+
+    /** Read a text file. Return string array with one string per line. */
+    public static String[] readFile(String networkEngineToConfig) throws IOException {
+        ArrayList<String> ret = new ArrayList<String>();
+        InputStream inStream = new FileInputStream(networkEngineToConfig);
+        InputStreamReader inFile = new InputStreamReader(inStream);
+        BufferedReader inBuf = new BufferedReader(inFile);
+        String line;
+        while ((line = inBuf.readLine()) != null)
+            ret.add(line);
+        inBuf.close();
+        return ret.toArray(new String[ret.size()]);
     }
 }
