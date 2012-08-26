@@ -1,46 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     <view
-    	class="org.petero.droidfish.activities.ChessBoardEdit"
+        class="org.petero.droidfish.activities.ChessBoardEdit"
         android:id="@+id/eb_chessboard"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
-	<LinearLayout
-	    android:orientation="vertical"
-    	android:layout_width="fill_parent"
-	    android:layout_height="fill_parent">
-		<TextView
-			android:text=""
-   			android:id="@+id/eb_status"
-	    	android:layout_width="fill_parent" 
-		    android:layout_height="wrap_content" 
-    		android:includeFontPadding="true"
-		    android:typeface="monospace"
-    		android:textSize="10dip"/>
-		<LinearLayout
-		    android:orientation="horizontal"
-			android:id="@+id/LinearLayout02"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content">
-			<Button
-				android:text="@android:string/ok"
-				android:id="@+id/eb_ok"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:layout_weight="1">
-			</Button>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <TextView
+            android:text=""
+            android:id="@+id/eb_status"
+            android:layout_width="fill_parent" 
+            android:layout_height="wrap_content" 
+            android:includeFontPadding="true"
+            android:typeface="monospace"
+            android:textSize="10dip"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/LinearLayout02"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
             <Button
-            	android:text="@string/cancel"
+                android:text="@android:string/ok"
+                android:id="@+id/eb_ok"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+            </Button>
+            <Button
+                android:text="@string/cancel"
                 android:id="@+id/eb_cancel"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
             </Button>
-					</LinearLayout>
-	</LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
-						
