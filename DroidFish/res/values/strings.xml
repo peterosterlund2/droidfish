@@ -220,8 +220,8 @@ you are not actively using the program.\
     <string name="prefs_playerNameFlip_title">Flip Board: Player</string>
     <string name="prefs_playerNameFlip_summary">Use Player Name to flip board automatically</string>
     <string name="prefs_engine_settings">Engine Settings</string>
-    <string name="prefs_strength_title">Strength</string>
-    <string name="prefs_strength_summary">Only supported by internal engines</string>
+    <string name="prefs_strength_title">Playing Strength</string>
+    <string name="prefs_strength_summary">Only supported by internal engines. Analysis mode always uses full strength.</string>
     <string name="prefs_ponderMode_title">Pondering</string>
     <string name="prefs_ponderMode_summary">Let engine think while waiting for opponent\'s move. Supported by most engines.</string>
     <string name="prefs_threads_title">Threads</string>
