@@ -887,6 +887,10 @@ public class DroidFish extends Activity implements GUIInterface {
 
     private final void setEngineStrength(String engine, int strength) {
         ctrl.setEngineStrength(engine, strength);
+        setEngineTitle(engine, strength);
+    }
+
+    private final void setEngineTitle(String engine, int strength) {
         if (engine.contains("/")) {
             int idx = engine.lastIndexOf('/');
             String eName = engine.substring(idx + 1);
@@ -897,12 +901,20 @@ public class DroidFish extends Activity implements GUIInterface {
             String eName = getString(engine.equals("cuckoochess") ?
                                      R.string.cuckoochess_engine :
                                      R.string.stockfish_engine);
-            if (strength < 1000) {
+            boolean analysis = (ctrl != null) && ctrl.analysisMode();
+            if ((strength < 1000) && !analysis) {
                 engineTitleText.setText(String.format("%s: %d%%", eName, strength / 10));
             } else {
                 engineTitleText.setText(eName);
             }
         }
+    }
+
+    @Override
+    public void updateEngineTitle() {
+        String engine = settings.getString("engine", "stockfish");
+        int strength = settings.getInt("strength", 1000);
+        setEngineTitle(engine, strength);
     }
 
     private final void setFullScreenMode(boolean fullScreenMode) {
@@ -1388,6 +1400,7 @@ public class DroidFish extends Activity implements GUIInterface {
         ctrl.newGame(gameMode);
         ctrl.startGame();
         setBoardFlip(true);
+        updateEngineTitle();
     }
 
     static private final int PROMOTE_DIALOG = 0;

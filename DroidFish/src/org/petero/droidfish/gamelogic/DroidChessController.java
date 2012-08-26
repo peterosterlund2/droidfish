@@ -128,6 +128,7 @@ public class DroidChessController {
             updateGameMode();
             abortSearch();
             updateComputeThreads();
+            gui.updateEngineTitle();
             updateGUI();
         }
     }
