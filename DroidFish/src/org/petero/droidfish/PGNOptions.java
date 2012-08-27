@@ -20,8 +20,13 @@ package org.petero.droidfish;
 
 /** Settings controlling PGN import/export */
 public class PGNOptions {
-    public static final int PT_ENGLISH = 0; // Piece type english letters
-    public static final int PT_LOCAL   = 1; // Piece type local language letters
+    /** Pieces displayed as english letters. */
+    public static final int PT_ENGLISH  = 0;
+    /** Pieces displayed as local language letters. */
+    public static final int PT_LOCAL    = 1;
+    /** Piece displayed in figurine notation, by using the english piece-names
+     *  and a special font. */
+    public static final int PT_FIGURINE = 2;
 
     public static class Viewer {
         public boolean variations;

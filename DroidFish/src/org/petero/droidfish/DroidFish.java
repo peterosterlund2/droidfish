@@ -129,7 +129,6 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! Remove invalid playerActions in PGN import (should be done in verifyChildren)
     // FIXME!!! Implement bookmark mechanism for positions in pgn files
     // FIXME!!! Add support for "Chess Leipzig" font
-    // FIXME!!! Implement figurine notation
 
     // FIXME!!! Computer clock should stop if phone turned off (computer stops thinking if unplugged)
     // FIXME!!! Add support for all time controls defined by the PGN standard
@@ -204,6 +203,11 @@ public class DroidFish extends Activity implements GUIInterface {
 
     private WakeLock wakeLock = null;
     private boolean useWakeLock = false;
+
+//    private Typeface figNotation;
+    private Typeface defaultMoveListTypeFace;
+    private Typeface defaultThinkingListTypeFace;
+
 
     /** Defines all configurable button actions. */
     private ActionFactory actionFactory = new ActionFactory() {
@@ -353,7 +357,7 @@ public class DroidFish extends Activity implements GUIInterface {
         custom3ButtonActions = new ButtonActions("custom3", CUSTOM3_BUTTON_DIALOG,
                                                  R.string.select_action);
 
-        TextIO.setPieceNames(getString(R.string.piece_names));
+        setPieceNames(PGNOptions.PT_LOCAL);
         initUI(true);
 
         gameTextListener = new PgnScreenText(pgnOptions);
@@ -386,6 +390,15 @@ public class DroidFish extends Activity implements GUIInterface {
             }
         } else if (intentFilename != null) {
             loadPGNFromFile(intentFilename);
+        }
+    }
+
+    private final void setPieceNames(int pieceType) {
+        if (pieceType == PGNOptions.PT_FIGURINE) {
+            // Unicode code points for chess pieces
+            TextIO.setPieceNames("\u2659 \u2658 \u2657 \u2656 \u2655 \u2654");
+        } else {
+            TextIO.setPieceNames(getString(R.string.piece_names));
         }
     }
 
@@ -499,7 +512,9 @@ public class DroidFish extends Activity implements GUIInterface {
         status = (TextView)findViewById(R.id.status);
         moveListScroll = (ScrollView)findViewById(R.id.scrollView);
         moveList = (TextView)findViewById(R.id.moveList);
+        defaultMoveListTypeFace = moveList.getTypeface();
         thinking = (TextView)findViewById(R.id.thinking);
+        defaultThinkingListTypeFace = thinking.getTypeface();
         status.setFocusable(false);
         moveListScroll.setFocusable(false);
         moveList.setFocusable(false);
@@ -770,6 +785,7 @@ public class DroidFish extends Activity implements GUIInterface {
         setWakeLock(useWakeLock);
 
         int fontSize = getIntSetting("fontSize", 12);
+//        figNotation = Typeface.createFromAsset(getAssets(), "fonts/DroidFishChessNotationDark.otf");
         status.setTextSize(fontSize);
         moveList.setTextSize(fontSize);
         thinking.setTextSize(fontSize);
@@ -825,7 +841,28 @@ public class DroidFish extends Activity implements GUIInterface {
         cb.setColors();
 
         gameTextListener.clear();
+        setPieceNames(pgnOptions.view.pieceType);
         ctrl.prefsChanged(oldViewPieceType != pgnOptions.view.pieceType);
+        // update the typeset in case of a change anyway, cause it could occur
+        // as well in rotation
+        setFigurineNotation(pgnOptions.view.pieceType == PGNOptions.PT_FIGURINE, fontSize);
+    }
+
+    /**
+     * Change the Pieces into figurine or regular (i.e. letters) display
+     */
+    private void setFigurineNotation(boolean displayAsFigures, int fontSize) {
+/*        if (displayAsFigures) {
+            // increase the font cause it has different kerning and looks small
+            float increaseFontSize = fontSize * 1.1f;
+            moveList.setTypeface(figNotation);
+            moveList.setTextSize(increaseFontSize);
+            thinking.setTypeface(figNotation);
+            thinking.setTextSize(increaseFontSize);
+        } else { */
+            moveList.setTypeface(defaultMoveListTypeFace);
+            thinking.setTypeface(defaultThinkingListTypeFace);
+//        }
     }
 
     private void updateButtons() {

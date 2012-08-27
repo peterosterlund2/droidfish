@@ -134,7 +134,7 @@ public class ChessBoard extends View {
         if (isInEditMode())
             return;
 
-        Typeface chessFont = Typeface.createFromAsset(getContext().getAssets(), "ChessCases.ttf");
+        Typeface chessFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/ChessCases.ttf");
         whitePiecePaint.setTypeface(chessFont);
         blackPiecePaint.setTypeface(chessFont);
 

@@ -230,8 +230,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_user_interface">Benutzeroberfläche</string>
   <string name="prefs_animateMoves_title">Zuganimation</string>
   <string name="prefs_animateMoves_summary">Bewegung der Figuren animieren</string>
-  <string name="prefs_oneTouchMoves_title">Einzelberührung</string>
-  <string name="prefs_oneTouchMoves_summary">Bei Berührung eines Feldes, von dem genau ein Zug möglich ist, diesen Zug sofort ausführen</string>
+  <string name="prefs_quickMoveInput_title">Alternative Durchführung des Zuges</string>
+  <string name="prefs_quickMoveInput_summary">Die Reihenfolge der Auswahl für einen Zug (von bzw. nach) ist beliebig. Eindeutige Züge werden sofort durchgeführt.</string>
   <string name="prefs_soundEnabled_title">Töne</string>
   <string name="prefs_soundEnabled_summary">Ton bei Computer-Zug ausgeben</string>
   <string name="prefs_vibrateEnabled_title">Vibration aktivieren</string>
@@ -303,6 +303,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_viewComments_title">Kommentare</string>
   <string name="prefs_viewComments_summary">Benutzerkommentare anzeigen</string>
   <string name="prefs_viewNAG_title">Annotationen</string>
+  <string name="prefs_viewPieceType_title">Figuren</string>
+  <string name="prefs_viewPieceType_summary">Festlegung, wie die Schach-Figuren notiert werden</string>
   <string name="prefs_viewNAG_summary">Annotationen (Numeric Annotation Glyphs, NAGs) anzeigen</string>
   <string name="prefs_viewHeaders_title">Partie-Informationen</string>
   <string name="prefs_viewHeaders_summary">Partie-Informationen anzeigen</string>
@@ -338,6 +340,16 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="buttonDesc_mode">Modus-Taste</string>
   <string name="buttonDesc_back">Zurück-Taste</string>
   <string name="buttonDesc_forward">Vorwärts-Taste</string>
+  <string-array name="viewPieceType_texts">
+    <item>Englische Buchstaben</item>
+    <item>Buchstaben der Landessprache</item>
+    <item>Darstellung als Figuren</item>
+  </string-array>
+  <string-array name="viewPieceType_values">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
+  </string-array>
   <string-array name="engine_threads_texts">
     <item>Automatisch</item>
     <item>1</item>

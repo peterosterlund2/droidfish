@@ -587,7 +587,14 @@ public class DroidChessController {
 
     /** Return true if localized piece names should be used. */
     private final boolean localPt() {
-        return pgnOptions.view.pieceType == PGNOptions.PT_LOCAL;
+        switch (pgnOptions.view.pieceType) {
+        case PGNOptions.PT_ENGLISH:
+            return false;
+        case PGNOptions.PT_LOCAL:
+        case PGNOptions.PT_FIGURINE:
+        default:
+            return true;
+        }
     }
 
     /** Engine search information receiver. */

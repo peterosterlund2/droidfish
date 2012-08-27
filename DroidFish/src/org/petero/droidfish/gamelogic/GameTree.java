@@ -1188,12 +1188,12 @@ public class GameTree {
                         }
                     }
                     String str;
-                    if (options.exp.pieceType == PGNOptions.PT_LOCAL) {
-                        str = moveStrLocal;
-                    } else {
+                    if (options.exp.pieceType == PGNOptions.PT_ENGLISH) {
                         str = moveStr;
                         if (options.exp.pgnPromotions && (move != null) && (move.promoteTo != Piece.EMPTY))
                             str = TextIO.pgnPromotion(str);
+                    } else {
+                        str = moveStrLocal;
                     }
                     out.processToken(this, PgnToken.SYMBOL, str);
                     needMoveNr = false;

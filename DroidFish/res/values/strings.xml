@@ -391,10 +391,12 @@ you are not actively using the program.\
     <string-array name="viewPieceType_texts">
         <item>English letters</item>
         <item>Local language letters</item>
+        <item>Figurine notation</item>
     </string-array>
     <string-array name="viewPieceType_values">
         <item>0</item>
         <item>1</item>
+        <item>2</item>
     </string-array>
     <string-array name="engine_hash_texts">
         <item>16 MB</item>
