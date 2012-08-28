@@ -204,7 +204,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private WakeLock wakeLock = null;
     private boolean useWakeLock = false;
 
-//    private Typeface figNotation;
+    private Typeface figNotation;
     private Typeface defaultMoveListTypeFace;
     private Typeface defaultThinkingListTypeFace;
 
@@ -785,7 +785,7 @@ public class DroidFish extends Activity implements GUIInterface {
         setWakeLock(useWakeLock);
 
         int fontSize = getIntSetting("fontSize", 12);
-//        figNotation = Typeface.createFromAsset(getAssets(), "fonts/DroidFishChessNotationDark.otf");
+        figNotation = Typeface.createFromAsset(getAssets(), "fonts/DroidFishChessNotationDark.otf");
         status.setTextSize(fontSize);
         moveList.setTextSize(fontSize);
         thinking.setTextSize(fontSize);
@@ -852,17 +852,17 @@ public class DroidFish extends Activity implements GUIInterface {
      * Change the Pieces into figurine or regular (i.e. letters) display
      */
     private void setFigurineNotation(boolean displayAsFigures, int fontSize) {
-/*        if (displayAsFigures) {
+        if (displayAsFigures) {
             // increase the font cause it has different kerning and looks small
             float increaseFontSize = fontSize * 1.1f;
             moveList.setTypeface(figNotation);
             moveList.setTextSize(increaseFontSize);
             thinking.setTypeface(figNotation);
             thinking.setTextSize(increaseFontSize);
-        } else { */
+        } else {
             moveList.setTypeface(defaultMoveListTypeFace);
             thinking.setTypeface(defaultThinkingListTypeFace);
-//        }
+        }
     }
 
     private void updateButtons() {
