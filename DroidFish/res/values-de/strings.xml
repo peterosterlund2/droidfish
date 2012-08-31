@@ -195,6 +195,11 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="option_draw">Remis anbieten/annehmen</string>
   <string name="option_select_book">Eröffnungsbuch auswählen</string>
   <string name="option_select_engine">Schach-Engine auswählen</string>
+  <string name="configure_network_engine">Konfiguration von Netzwerk Engines</string>
+  <string name="create_network_engine">Erstellen einer Netzwerk Engine</string>
+  <string name="host_name">Host</string>
+  <string name="network_port">Port</string>
+  <string name="network_engine">Netzwerk Engine</string>
   <string name="option_color_theme">Farbschema auswählen</string>
   <string name="option_about">Information/Hinweise</string>
   <string name="prefs_playing_options">Spieloptionen</string>
