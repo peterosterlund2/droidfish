@@ -786,7 +786,11 @@ public class DroidFish extends Activity implements GUIInterface {
 
         int fontSize = getIntSetting("fontSize", 12);
         figNotation = Typeface.createFromAsset(getAssets(), "fonts/DroidFishChessNotationDark.otf");
-        status.setTextSize(fontSize);
+        int statusFontSize = fontSize;
+        Configuration config = getResources().getConfiguration();
+        if (config.orientation == Configuration.ORIENTATION_PORTRAIT)
+            statusFontSize = Math.min(statusFontSize, 16);
+        status.setTextSize(statusFontSize);
         moveList.setTextSize(fontSize);
         thinking.setTextSize(fontSize);
         soundEnabled = settings.getBoolean("soundEnabled", false);
