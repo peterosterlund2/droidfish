@@ -291,6 +291,9 @@ you are not actively using the program.\
     <string name="prefs_custom_button_2">Custom Button 2</string>
     <string name="prefs_custom_button_3">Custom Button 3</string>
     <string name="prefs_colors_title">Color Settings</string>
+    <!-- Color Picker -->
+    <string name="press_color_to_apply">Press on Color to apply</string>    
+    <!--  End color Picker -->
     <string name="prefs_colors_summary">Change individual colors</string>
     <string name="prefs_chess_board">Chess Board</string>
     <string name="prefs_color_brightSquare_title">Bright Squares</string>
