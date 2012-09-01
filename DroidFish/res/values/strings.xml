@@ -336,8 +336,8 @@ you are not actively using the program.\
     <string name="prefs_viewNAG_summary">Include numeric annotation glyphs (NAGs), such as ! and ?</string>
     <string name="prefs_viewHeaders_title">Headers</string>
     <string name="prefs_viewHeaders_summary">Show PGN header lines</string>
-    <string name="prefs_viewPieceType_title">Pieces</string>
-    <string name="prefs_viewPieceType_summary">Control how chess pieces are displayed</string>
+    <string name="prefs_viewPieceType_title">Piece Names</string>
+    <string name="prefs_viewPieceType_summary">Control how chess piece names are displayed</string>
     <string name="prefs_pgn_import">PGN import</string>
     <string name="prefs_importVariations_title">Variations</string>
     <string name="prefs_importVariations_summary">Include non-mainline moves</string>

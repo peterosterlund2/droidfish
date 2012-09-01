@@ -180,6 +180,14 @@
             android:entries="@array/font_size_texts"
             android:defaultValue="@string/font_size_default">
         </ListPreference>
+        <ListPreference
+            android:key="viewPieceType"
+            android:title="@string/prefs_viewPieceType_title"
+            android:summary="@string/prefs_viewPieceType_summary"
+            android:entryValues="@array/viewPieceType_values"
+            android:entries="@array/viewPieceType_texts"
+            android:defaultValue="@string/viewPieceType_default">
+        </ListPreference>
         <PreferenceScreen
             android:key="buttonSettings"
             android:title="@string/prefs_buttonSettings_title"
@@ -523,14 +531,6 @@
                     android:summary="@string/prefs_viewHeaders_summary"
                     android:defaultValue="false">
                 </CheckBoxPreference>
-                <ListPreference
-                    android:key="viewPieceType"
-                    android:title="@string/prefs_viewPieceType_title"
-                    android:summary="@string/prefs_viewPieceType_summary"
-                    android:entryValues="@array/viewPieceType_values"
-                    android:entries="@array/viewPieceType_texts"
-                    android:defaultValue="@string/viewPieceType_default">
-                </ListPreference>
             </PreferenceCategory>
             <PreferenceCategory
                 android:title="@string/prefs_pgn_import">
