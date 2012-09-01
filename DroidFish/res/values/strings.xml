@@ -185,6 +185,7 @@ you are not actively using the program.\
     <string name="select_engine">Select Engine</string>
     <string name="configure_network_engine">Configure Network Engine</string>
     <string name="create_network_engine">Create Network Engine</string>
+    <string name="delete_network_engine">Delete Network Engine?</string>
     <string name="host_name">Host name</string>
     <string name="network_port">Port</string>
     <string name="network_engine">Network Engine</string>

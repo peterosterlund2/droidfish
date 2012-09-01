@@ -1479,6 +1479,7 @@ public class DroidFish extends Activity implements GUIInterface {
     static private final int NETWORK_ENGINE_DIALOG = 21;
     static private final int NEW_NETWORK_ENGINE_DIALOG = 22;
     static private final int NETWORK_ENGINE_CONFIG_DIALOG = 23;
+    static private final int DELETE_NETWORK_ENGINE_DIALOG = 24;
 
     @Override
     protected Dialog onCreateDialog(int id) {
@@ -1507,6 +1508,7 @@ public class DroidFish extends Activity implements GUIInterface {
         case NETWORK_ENGINE_DIALOG:          return networkEngineDialog();
         case NEW_NETWORK_ENGINE_DIALOG:      return newNetworkEngineDialog();
         case NETWORK_ENGINE_CONFIG_DIALOG:   return networkEngineConfigDialog();
+        case DELETE_NETWORK_ENGINE_DIALOG:   return deleteNetworkEngineDialog();
         }
         return null;
     }
@@ -2500,18 +2502,8 @@ public class DroidFish extends Activity implements GUIInterface {
         builder.setNeutralButton(R.string.delete, new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                new File(networkEngineToConfig).delete();
-                String engine = settings.getString("engine", "stockfish");
-                if (engine.equals(networkEngineToConfig)) {
-                    engine = "stockfish";
-                    Editor editor = settings.edit();
-                    editor.putString("engine", engine);
-                    editor.commit();
-                    dialog.dismiss();
-                    int strength = settings.getInt("strength", 1000);
-                    setEngineOptions(false);
-                    setEngineStrength(engine, strength);
-                }
+                removeDialog(DELETE_NETWORK_ENGINE_DIALOG);
+                showDialog(DELETE_NETWORK_ENGINE_DIALOG);
             }
         });
 
@@ -2527,6 +2519,39 @@ public class DroidFish extends Activity implements GUIInterface {
             }
         });
         return dialog;
+    }
+
+    private Dialog deleteNetworkEngineDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.delete_network_engine);
+        String msg = networkEngineToConfig;
+        if (msg.lastIndexOf('/') >= 0)
+            msg = msg.substring(msg.lastIndexOf('/')+1);
+        builder.setMessage(getString(R.string.network_engine) + ": " + msg);
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                new File(networkEngineToConfig).delete();
+                String engine = settings.getString("engine", "stockfish");
+                if (engine.equals(networkEngineToConfig)) {
+                    engine = "stockfish";
+                    Editor editor = settings.edit();
+                    editor.putString("engine", engine);
+                    editor.commit();
+                    dialog.dismiss();
+                    int strength = settings.getInt("strength", 1000);
+                    setEngineOptions(false);
+                    setEngineStrength(engine, strength);
+                }
+                dialog.cancel();
+            }
+        });
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alert = builder.create();
+        return alert;
     }
 
     /** Open a load/save file dialog. Uses OI file manager if available. */
