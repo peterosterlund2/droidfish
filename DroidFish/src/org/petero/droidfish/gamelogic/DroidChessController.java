@@ -603,7 +603,7 @@ public class DroidChessController {
         private int currMoveNr = 0;
         private Move currMove = null;
         private String currMoveStr = "";
-        private int currNodes = 0;
+        private long currNodes = 0;
         private int currNps = 0;
         private int currTime = 0;
 
@@ -648,10 +648,27 @@ public class DroidChessController {
 
                 buf.append(pvi.pvStr);
             }
-            final String statStr = (currDepth > 0) ?
-                    String.format("d:%d %d:%s t:%.2f n:%d nps:%d", currDepth, currMoveNr, currMoveStr,
-                                  currTime / 1000.0, currNodes, currNps)
-                    : "";
+            String statStrTmp = "";
+            if (currDepth > 0) {
+                long nodes = currNodes;
+                String nodesPrefix = "";
+                if (nodes > 100000000) {
+                    nodes /= 1000000;
+                    nodesPrefix = "M";
+                } else if (nodes > 100000) {
+                    nodes /= 1000;
+                    nodesPrefix = "k";
+                }
+                int nps = currNps;
+                String npsPrefix = "";
+                if (nps > 100000) {
+                    nps /= 1000;
+                    npsPrefix = "k";
+                }
+                statStrTmp = String.format("d:%d %d:%s t:%.2f n:%d%s nps:%d%s", currDepth, currMoveNr, currMoveStr,
+                                           currTime / 1000.0, nodes, nodesPrefix, nps, npsPrefix);
+            }
+            final String statStr = statStrTmp;
             final String newPV = buf.toString();
             final String newBookInfo = bookInfo;
             final ArrayList<ArrayList<Move>> pvMoves = new ArrayList<ArrayList<Move>>();
@@ -723,7 +740,7 @@ public class DroidChessController {
         }
 
         @Override
-        public void notifyStats(int id, int nodes, int nps, int time) {
+        public void notifyStats(int id, long nodes, int nps, int time) {
             currNodes = nodes;
             currNps = nps;
             currTime = time;

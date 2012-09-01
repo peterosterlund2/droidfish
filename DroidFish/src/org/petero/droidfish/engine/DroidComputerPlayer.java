@@ -844,7 +844,7 @@ public class DroidComputerPlayer {
     private boolean statUpperBound = false;
     private boolean statLowerBound = false;
     private int statTime = 0;
-    private int statNodes = 0;
+    private long statNodes = 0;
     private int statNps = 0;
     private int pvNum = 0;
     private ArrayList<String> statPV = new ArrayList<String>();
@@ -897,7 +897,7 @@ public class DroidComputerPlayer {
                     statTime = Integer.parseInt(tokens[i++]);
                     statsModified = true;
                 } else if (is.equals("nodes")) {
-                    statNodes = Integer.parseInt(tokens[i++]);
+                    statNodes = Long.parseLong(tokens[i++]);
                     statsModified = true;
                 } else if (is.equals("nps")) {
                     statNps = Integer.parseInt(tokens[i++]);

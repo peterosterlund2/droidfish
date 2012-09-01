@@ -29,7 +29,7 @@ public interface SearchListener {
         int depth;
         int score;
         int time;
-        int nodes;
+        long nodes;
         int nps;
         boolean isMate;
         boolean upperBound;
@@ -37,7 +37,7 @@ public interface SearchListener {
         ArrayList<Move> pv;
         String pvStr = "";
 
-        public PvInfo(int depth, int score, int time, int nodes, int nps,
+        public PvInfo(int depth, int score, int time, long nodes, int nps,
                       boolean isMate, boolean upperBound, boolean lowerBound, ArrayList<Move> pv) {
             this.depth = depth;
             this.score = score;
@@ -64,7 +64,7 @@ public interface SearchListener {
     public void notifyPV(int id, Position pos, ArrayList<PvInfo> pvInfo, Move ponderMove);
 
     /** Report search statistics. */
-    public void notifyStats(int id, int nodes, int nps, int time);
+    public void notifyStats(int id, long nodes, int nps, int time);
 
     /** Report opening book information. */
     public void notifyBookInfo(int id, String bookInfo, ArrayList<Move> moveList);
