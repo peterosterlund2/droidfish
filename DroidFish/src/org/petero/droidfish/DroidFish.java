@@ -1834,6 +1834,13 @@ public class DroidFish extends Activity implements GUIInterface {
                 setEngineStrength(engine, strength);
             }
         });
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                removeDialog(MANAGE_ENGINES_DIALOG);
+                showDialog(MANAGE_ENGINES_DIALOG);
+            }
+        });
         AlertDialog alert = builder.create();
         return alert;
     }
@@ -2404,6 +2411,13 @@ public class DroidFish extends Activity implements GUIInterface {
                 }
             }
         });
+        builder.setOnCancelListener(new Dialog.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                removeDialog(MANAGE_ENGINES_DIALOG);
+                showDialog(MANAGE_ENGINES_DIALOG);
+            }
+        });
         AlertDialog alert = builder.create();
         return alert;
     }
@@ -2427,6 +2441,8 @@ public class DroidFish extends Activity implements GUIInterface {
                 File file = new File(pathName);
                 if (internalEngine(engineName) || file.exists()) {
                     Toast.makeText(getApplicationContext(), R.string.engine_name_in_use, Toast.LENGTH_LONG).show();
+                    removeDialog(NETWORK_ENGINE_DIALOG);
+                    showDialog(NETWORK_ENGINE_DIALOG);
                     return;
                 }
                 networkEngineToConfig = pathName;
@@ -2439,7 +2455,20 @@ public class DroidFish extends Activity implements GUIInterface {
                 createEngine.run();
             }
         });
-        builder.setNegativeButton(R.string.cancel, null);
+        builder.setNegativeButton(R.string.cancel, new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                removeDialog(NETWORK_ENGINE_DIALOG);
+                showDialog(NETWORK_ENGINE_DIALOG);
+            }
+        });
+        builder.setOnCancelListener(new Dialog.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                removeDialog(NETWORK_ENGINE_DIALOG);
+                showDialog(NETWORK_ENGINE_DIALOG);
+            }
+        });
 
         final Dialog dialog = builder.create();
         engineNameView.setOnKeyListener(new OnKeyListener() {
@@ -2494,11 +2523,27 @@ public class DroidFish extends Activity implements GUIInterface {
             }
         };
         builder.setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int which) {
                 writeConfig.run();
+                removeDialog(NETWORK_ENGINE_DIALOG);
+                showDialog(NETWORK_ENGINE_DIALOG);
             }
         });
-        builder.setNegativeButton(R.string.cancel, null);
+        builder.setNegativeButton(R.string.cancel, new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                removeDialog(NETWORK_ENGINE_DIALOG);
+                showDialog(NETWORK_ENGINE_DIALOG);
+            }
+        });
+        builder.setOnCancelListener(new Dialog.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                removeDialog(NETWORK_ENGINE_DIALOG);
+                showDialog(NETWORK_ENGINE_DIALOG);
+            }
+        });
         builder.setNeutralButton(R.string.delete, new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -2508,11 +2553,13 @@ public class DroidFish extends Activity implements GUIInterface {
         });
 
         final Dialog dialog = builder.create();
-        hostNameView.setOnKeyListener(new OnKeyListener() {
+        portView.setOnKeyListener(new OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     writeConfig.run();
                     dialog.cancel();
+                    removeDialog(NETWORK_ENGINE_DIALOG);
+                    showDialog(NETWORK_ENGINE_DIALOG);
                     return true;
                 }
                 return false;
@@ -2543,11 +2590,22 @@ public class DroidFish extends Activity implements GUIInterface {
                     setEngineStrength(engine, strength);
                 }
                 dialog.cancel();
+                removeDialog(NETWORK_ENGINE_DIALOG);
+                showDialog(NETWORK_ENGINE_DIALOG);
             }
         });
         builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
+                removeDialog(NETWORK_ENGINE_DIALOG);
+                showDialog(NETWORK_ENGINE_DIALOG);
+            }
+        });
+        builder.setOnCancelListener(new Dialog.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                removeDialog(NETWORK_ENGINE_DIALOG);
+                showDialog(NETWORK_ENGINE_DIALOG);
             }
         });
         AlertDialog alert = builder.create();
