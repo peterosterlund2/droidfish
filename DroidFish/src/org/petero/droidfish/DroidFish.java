@@ -1483,54 +1483,30 @@ public class DroidFish extends Activity implements GUIInterface {
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
-        case NEW_GAME_DIALOG:
-            return newGameDialog();
-        case PROMOTE_DIALOG:
-            return promoteDialog();
-        case BOARD_MENU_DIALOG:
-            return boardMenuDialog();
-        case FILE_MENU_DIALOG:
-            return fileMenuDialog();
-        case ABOUT_DIALOG:
-            return aboutDialog();
-        case SELECT_MOVE_DIALOG:
-            return selectMoveDialog();
-        case SELECT_BOOK_DIALOG:
-            return selectBookDialog();
-        case SELECT_ENGINE_DIALOG:
-            return selectEngineDialog();
-        case SELECT_PGN_FILE_DIALOG:
-            return selectPgnFileDialog();
-        case SELECT_PGN_FILE_SAVE_DIALOG:
-            return selectPgnFileSaveDialog();
-        case SELECT_PGN_SAVE_NEWFILE_DIALOG:
-            return selectPgnSaveNewFileDialog();
-        case SET_COLOR_THEME_DIALOG:
-            return setColorThemeDialog();
-        case GAME_MODE_DIALOG:
-            return gameModeDialog();
-        case MOVELIST_MENU_DIALOG:
-            return moveListMenuDialog();
-        case THINKING_MENU_DIALOG:
-            return thinkingMenuDialog();
-        case GO_BACK_MENU_DIALOG:
-            return goBackMenuDialog();
-        case GO_FORWARD_MENU_DIALOG:
-            return goForwardMenuDialog();
-        case CUSTOM1_BUTTON_DIALOG:
-            return makeButtonDialog(custom1ButtonActions);
-        case CUSTOM2_BUTTON_DIALOG:
-            return makeButtonDialog(custom2ButtonActions);
-        case CUSTOM3_BUTTON_DIALOG:
-            return makeButtonDialog(custom3ButtonActions);
-        case MANAGE_ENGINES_DIALOG:
-            return manageEnginesDialog();
-        case NETWORK_ENGINE_DIALOG:
-            return networkEngineDialog();
-        case NEW_NETWORK_ENGINE_DIALOG:
-            return newNetworkEngineDialog();
-        case NETWORK_ENGINE_CONFIG_DIALOG:
-            return networkEngineConfigDialog();
+        case NEW_GAME_DIALOG:                return newGameDialog();
+        case PROMOTE_DIALOG:                 return promoteDialog();
+        case BOARD_MENU_DIALOG:              return boardMenuDialog();
+        case FILE_MENU_DIALOG:               return fileMenuDialog();
+        case ABOUT_DIALOG:                   return aboutDialog();
+        case SELECT_MOVE_DIALOG:             return selectMoveDialog();
+        case SELECT_BOOK_DIALOG:             return selectBookDialog();
+        case SELECT_ENGINE_DIALOG:           return selectEngineDialog();
+        case SELECT_PGN_FILE_DIALOG:         return selectPgnFileDialog();
+        case SELECT_PGN_FILE_SAVE_DIALOG:    return selectPgnFileSaveDialog();
+        case SELECT_PGN_SAVE_NEWFILE_DIALOG: return selectPgnSaveNewFileDialog();
+        case SET_COLOR_THEME_DIALOG:         return setColorThemeDialog();
+        case GAME_MODE_DIALOG:               return gameModeDialog();
+        case MOVELIST_MENU_DIALOG:           return moveListMenuDialog();
+        case THINKING_MENU_DIALOG:           return thinkingMenuDialog();
+        case GO_BACK_MENU_DIALOG:            return goBackMenuDialog();
+        case GO_FORWARD_MENU_DIALOG:         return goForwardMenuDialog();
+        case CUSTOM1_BUTTON_DIALOG:          return makeButtonDialog(custom1ButtonActions);
+        case CUSTOM2_BUTTON_DIALOG:          return makeButtonDialog(custom2ButtonActions);
+        case CUSTOM3_BUTTON_DIALOG:          return makeButtonDialog(custom3ButtonActions);
+        case MANAGE_ENGINES_DIALOG:          return manageEnginesDialog();
+        case NETWORK_ENGINE_DIALOG:          return networkEngineDialog();
+        case NEW_NETWORK_ENGINE_DIALOG:      return newNetworkEngineDialog();
+        case NETWORK_ENGINE_CONFIG_DIALOG:   return networkEngineConfigDialog();
         }
         return null;
     }
@@ -1645,6 +1621,14 @@ public class DroidFish extends Activity implements GUIInterface {
         });
         AlertDialog alert = builder.create();
         return alert;
+    }
+
+    private final void shareGame() {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        i.setType("text/plain");
+        i.putExtra(Intent.EXTRA_TEXT, ctrl.getPGN());
+        startActivity(Intent.createChooser(i, getString(R.string.share_pgn_game)));
     }
 
     private final Dialog fileMenuDialog() {
@@ -1793,6 +1777,11 @@ public class DroidFish extends Activity implements GUIInterface {
         });
         AlertDialog alert = builder.create();
         return alert;
+    }
+
+    private final static boolean internalEngine(String name) {
+        return "cuckoochess".equals(name) ||
+               "stockfish".equals(name);
     }
 
     private final Dialog selectEngineDialog() {
@@ -2311,9 +2300,27 @@ public class DroidFish extends Activity implements GUIInterface {
         return alert;
     }
 
-    private final static boolean internalEngine(String name) {
-        return "cuckoochess".equals(name) ||
-               "stockfish".equals(name);
+    private Dialog makeButtonDialog(ButtonActions buttonActions) {
+        List<CharSequence> names = new ArrayList<CharSequence>();
+        final List<UIAction> actions = new ArrayList<UIAction>();
+    
+        HashSet<String> used = new HashSet<String>();
+        for (UIAction a : buttonActions.getMenuActions()) {
+            if ((a != null) && a.enabled() && !used.contains(a.getId())) {
+                names.add(getString(a.getName()));
+                actions.add(a);
+                used.add(a.getId());
+            }
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(buttonActions.getMenuTitle());
+        builder.setItems(names.toArray(new CharSequence[names.size()]), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                UIAction a = actions.get(item);
+                a.run();
+            }
+        });
+        return builder.create();
     }
 
     private final Dialog manageEnginesDialog() {
@@ -2520,37 +2527,6 @@ public class DroidFish extends Activity implements GUIInterface {
             }
         });
         return dialog;
-    }
-
-    private final void shareGame() {
-        Intent i = new Intent(Intent.ACTION_SEND);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        i.setType("text/plain");
-        i.putExtra(Intent.EXTRA_TEXT, ctrl.getPGN());
-        startActivity(Intent.createChooser(i, getString(R.string.share_pgn_game)));
-    }
-
-    private Dialog makeButtonDialog(ButtonActions buttonActions) {
-        List<CharSequence> names = new ArrayList<CharSequence>();
-        final List<UIAction> actions = new ArrayList<UIAction>();
-
-        HashSet<String> used = new HashSet<String>();
-        for (UIAction a : buttonActions.getMenuActions()) {
-            if ((a != null) && a.enabled() && !used.contains(a.getId())) {
-                names.add(getString(a.getName()));
-                actions.add(a);
-                used.add(a.getId());
-            }
-        }
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(buttonActions.getMenuTitle());
-        builder.setItems(names.toArray(new CharSequence[names.size()]), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                UIAction a = actions.get(item);
-                a.run();
-            }
-        });
-        return builder.create();
     }
 
     /** Open a load/save file dialog. Uses OI file manager if available. */
