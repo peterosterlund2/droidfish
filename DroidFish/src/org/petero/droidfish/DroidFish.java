@@ -490,6 +490,7 @@ public class DroidFish extends Activity implements GUIInterface {
         cb.setFlipped(oldCB.flipped);
         cb.setDrawSquareLabels(oldCB.drawSquareLabels);
         cb.oneTouchMoves = oldCB.oneTouchMoves;
+        cb.toggleSelection = oldCB.toggleSelection;
         setSelection(oldCB.selectedSquare);
         cb.userSelectedSquare = oldCB.userSelectedSquare;
         setStatusString(statusStr);
@@ -755,6 +756,7 @@ public class DroidFish extends Activity implements GUIInterface {
         boolean drawSquareLabels = settings.getBoolean("drawSquareLabels", false);
         cb.setDrawSquareLabels(drawSquareLabels);
         cb.oneTouchMoves = settings.getBoolean("oneTouchMoves", false);
+        cb.toggleSelection = getIntSetting("squareSelectType", 0) == 1;
 
         mShowThinking = settings.getBoolean("showThinking", false);
         mShowStats = settings.getBoolean("showStats", true);

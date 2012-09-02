@@ -57,6 +57,7 @@ public class ChessBoard extends View {
     public boolean flipped;
     public boolean drawSquareLabels;
     boolean oneTouchMoves;
+    boolean toggleSelection;
 
     List<Move> moveHints;
 
@@ -106,6 +107,7 @@ public class ChessBoard extends View {
         flipped = false;
         drawSquareLabels = false;
         oneTouchMoves = false;
+        toggleSelection = false;
 
         darkPaint = new Paint();
         brightPaint = new Paint();
@@ -610,8 +612,11 @@ public class ChessBoard extends View {
         if (!oneTouchMoves) {
             int p = pos.getPiece(sq);
             if (selectedSquare != -1) {
-                if (sq == selectedSquare)
+                if (sq == selectedSquare) {
+                    if (toggleSelection)
+                        setSelection(-1);
                     return null;
+                }
                 if (!myColor(p)) {
                     Move m = new Move(selectedSquare, sq, Piece.EMPTY);
                     setSelection(sq);
@@ -625,8 +630,11 @@ public class ChessBoard extends View {
             }
         } else {
             int prevSq = userSelectedSquare ? selectedSquare : -1;
-            if (prevSq == sq)
+            if (prevSq == sq) {
+                if (toggleSelection)
+                    setSelection(-1);
                 return null;
+            }
             ArrayList<Move> moves = new MoveGen().legalMoves(pos);
             Move matchingMove = null;
             if (prevSq >= 0)

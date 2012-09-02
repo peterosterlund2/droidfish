@@ -173,6 +173,14 @@
             android:defaultValue="false">
         </CheckBoxPreference>
         <ListPreference
+            android:key="squareSelectType"
+            android:title="@string/prefs_squareSelectType_title"
+            android:summary="@string/prefs_squareSelectType_summary"
+            android:entryValues="@array/squareSelectType_values"
+            android:entries="@array/squareSelectType_texts"
+            android:defaultValue="@string/squareSelectType_default">
+        </ListPreference>
+        <ListPreference
             android:key="fontSize"
             android:title="@string/prefs_fontSize_title"
             android:summary="@string/prefs_fontSize_summary"
