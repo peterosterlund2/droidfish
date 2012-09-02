@@ -2852,9 +2852,8 @@ public class DroidFish extends Activity implements GUIInterface {
             blackTitleText.setText(headers.get("Black"));
         }
         handlerTimer.removeCallbacks(r);
-        if (nextUpdate > 0) {
+        if (nextUpdate > 0)
             handlerTimer.postDelayed(r, nextUpdate);
-        }
     }
 
     /** PngTokenReceiver implementation that renders PGN data for screen display. */

@@ -169,8 +169,9 @@ public class Game {
     }
 
     private final void updateTimeControl(boolean discardElapsed) {
-        int move = currPos().fullMoveCounter;
-        boolean wtm = currPos().whiteMove;
+        Position currPos = currPos();
+        int move = currPos.fullMoveCounter;
+        boolean wtm = currPos.whiteMove;
         if (discardElapsed || (move != timeController.currentMove) || (wtm != timeController.whiteToMove)) {
             int initialTime = timeController.getInitialTime();
             int whiteBaseTime = tree.getRemainingTime(true, initialTime);
@@ -178,7 +179,15 @@ public class Game {
             timeController.setCurrentMove(move, wtm, whiteBaseTime, blackBaseTime);
         }
         long now = System.currentTimeMillis();
-        if (gamePaused || (getGameState() != GameState.ALIVE)) {
+        boolean stopTimer = gamePaused || (getGameState() != GameState.ALIVE);
+        if (!stopTimer) {
+            try {
+                if (TextIO.readFEN(TextIO.startPosFEN).equals(currPos))
+                    stopTimer = true;
+            } catch (ChessParseError e) {
+            }
+        }
+        if (stopTimer) {
             timeController.stopTimer(now);
         } else {
             timeController.startTimer(now);

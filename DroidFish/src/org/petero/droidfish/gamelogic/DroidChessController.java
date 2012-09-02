@@ -489,7 +489,7 @@ public class DroidChessController {
         long nextUpdate = 0;
         if (game.timeController.clockRunning()) {
             long t = game.currPos().whiteMove ? wTime : bTime;
-            nextUpdate = (t % 1000);
+            nextUpdate = t % 1000;
             if (nextUpdate < 0) nextUpdate += 1000;
             nextUpdate += 1;
         }
