@@ -728,6 +728,17 @@ public class TextIO {
         return ret.toString();
     }
 
+    /** Convert a piece and a square to a string, such as Nf3. */
+    public final static String pieceAndSquareToString(boolean localized, int p, int sq) {
+        String ret;
+        if ((p == Piece.WPAWN) || (p == Piece.BPAWN))
+            ret = localized ? pieceNames[0] : "P";
+        else
+            ret = localized ? pieceToCharLocalized(p) : pieceToChar(p);
+        ret += squareToString(sq);
+        return ret;
+    }
+
     private final static String pieceToChar(int p) {
         switch (p) {
             case Piece.WQUEEN:  case Piece.BQUEEN:  return "Q";

@@ -27,6 +27,7 @@ import org.petero.droidfish.gamelogic.MoveGen;
 import org.petero.droidfish.gamelogic.Pair;
 import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
+import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gamelogic.UndoInfo;
 
 import android.content.Context;
@@ -40,8 +41,10 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 public class ChessBoard extends View {
+    private PGNOptions pgnOptions = null;
     public Position pos;
 
     public int selectedSquare;
@@ -86,6 +89,10 @@ public class ChessBoard extends View {
     private Paint labelPaint;
     private Paint decorationPaint;
     private ArrayList<Paint> moveMarkPaint;
+
+    public void setPgnOptions(PGNOptions pgnOptions) {
+        this.pgnOptions = pgnOptions;
+    }
 
     public ChessBoard(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -634,6 +641,16 @@ public class ChessBoard extends View {
                 setSelection(matchingMove.to);
                 userSelectedSquare = false;
                 return matchingMove;
+            }
+            if (!anyMatch && (sq >= 0)) {
+                int p = pos.getPiece(sq);
+                if (myColor(p)) {
+                    String msg = getContext().getString(R.string.piece_can_not_be_moved);
+                    boolean localized = (pgnOptions != null) &&
+                                        (pgnOptions.view.pieceType != PGNOptions.PT_ENGLISH);
+                    msg += ": " + TextIO.pieceAndSquareToString(localized, p, sq);
+                    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                }
             }
             setSelection(anyMatch ? sq : -1);
         }

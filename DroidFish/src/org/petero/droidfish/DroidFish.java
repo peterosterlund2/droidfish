@@ -525,6 +525,7 @@ public class DroidFish extends Activity implements GUIInterface {
         cb.setFocusable(true);
         cb.requestFocus();
         cb.setClickable(true);
+        cb.setPgnOptions(pgnOptions);
 
         final GestureDetector gd = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
             private float scrollX = 0;

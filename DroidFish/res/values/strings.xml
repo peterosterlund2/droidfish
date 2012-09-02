@@ -146,6 +146,7 @@ you are not actively using the program.\
     <string name="resign_black">Game over, black resigns!</string>
     <string name="book">Book:</string>
     <string name="invalid_move">Invalid move</string>
+    <string name="piece_can_not_be_moved">Piece can not be moved</string>
     <string name="preferences">Preferences</string>
     <string name="load_game_title">Edit File / Load Game</string>
     <string name="save_game_title">Edit File / Save Game</string>
