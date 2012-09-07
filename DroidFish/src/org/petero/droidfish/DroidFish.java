@@ -2338,7 +2338,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private final Dialog manageEnginesDialog() {
         final CharSequence[] items = {
                 getString(R.string.select_engine),
-                getString(R.string.network_engine)
+                getString(R.string.configure_network_engine)
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.option_manage_engines);
