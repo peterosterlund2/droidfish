@@ -4,5 +4,5 @@
     <item
         android:id="@+id/item_delete_file"
         android:title="@string/delete_file">
-	</item>
+    </item>
 </menu>
