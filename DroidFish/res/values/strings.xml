@@ -181,6 +181,7 @@ you are not actively using the program.\
     <string name="engine">Engine</string>
     <string name="engine_name">Engine name</string>
     <string name="engine_name_in_use">Engine name in use</string>
+    <string name="slash_not_allowed">Character &#47; not allowed</string>
     <string name="engine_error">Engine error</string>
     <string name="stockfish_engine">Stockfish</string>
     <string name="cuckoochess_engine">CuckooChess</string>

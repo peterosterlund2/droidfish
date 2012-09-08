@@ -2442,8 +2442,17 @@ public class DroidFish extends Activity implements GUIInterface {
                 String sep = File.separator;
                 String pathName = Environment.getExternalStorageDirectory() + sep + engineDir + sep + engineName;
                 File file = new File(pathName);
-                if (internalEngine(engineName) || file.exists()) {
-                    Toast.makeText(getApplicationContext(), R.string.engine_name_in_use, Toast.LENGTH_LONG).show();
+                boolean nameOk = true;
+                int errMsg = -1;
+                if (engineName.contains("/")) {
+                    nameOk = false;
+                    errMsg = R.string.slash_not_allowed;
+                } else if (internalEngine(engineName) || file.exists()) {
+                    nameOk = false;
+                    errMsg = R.string.engine_name_in_use;
+                }
+                if (!nameOk) {
+                    Toast.makeText(getApplicationContext(), errMsg, Toast.LENGTH_LONG).show();
                     removeDialog(NETWORK_ENGINE_DIALOG);
                     showDialog(NETWORK_ENGINE_DIALOG);
                     return;
