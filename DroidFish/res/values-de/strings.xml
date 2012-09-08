@@ -151,6 +151,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="heavy_cpu_usage">Starke Prozessor-Nutzung</string>
   <string name="background_processing">Verarbeitung im Hintergrund</string>
   <string name="lot_cpu_power">DroidFish nutzt viel Prozessor-Rechenzeit</string>
+  <string name="delete">Löschen</string>
   <string name="delete_game">Partie löschen?</string>
   <string name="delete_file">Datei löschen</string>
   <string name="delete_file_question">Datei löschen?</string>
@@ -166,6 +167,11 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="replace_selected">Auswahl ersetzen</string>
   <string name="engine">Schach-Engine</string>
   <string name="engine_error">Engine-Fehler</string>
+  <string name="configure_network_engine">Konfiguration von Netzwerk Engines</string>
+  <string name="create_network_engine">Erstellen einer Netzwerk Engine</string>
+  <string name="host_name">Host</string>
+  <string name="network_port">Port</string>
+  <string name="network_engine">Netzwerk Engine</string>
   <string name="failed_to_start_engine">Fehler beim Starten der Engine</string>
   <string name="engine_terminated">Engine beendet</string>
   <string name="uci_protocol_error">UCI-Protokollfehler</string>
@@ -195,11 +201,6 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="option_draw">Remis anbieten/annehmen</string>
   <string name="option_select_book">Eröffnungsbuch auswählen</string>
   <string name="option_select_engine">Schach-Engine auswählen</string>
-  <string name="configure_network_engine">Konfiguration von Netzwerk Engines</string>
-  <string name="create_network_engine">Erstellen einer Netzwerk Engine</string>
-  <string name="host_name">Host</string>
-  <string name="network_port">Port</string>
-  <string name="network_engine">Netzwerk Engine</string>
   <string name="option_color_theme">Farbschema auswählen</string>
   <string name="option_about">Information/Hinweise</string>
   <string name="prefs_playing_options">Spieloptionen</string>
@@ -269,9 +270,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_custom_button_2">Benutzerdefinierte Taste 2</string>
   <string name="prefs_custom_button_3">Benutzerdefinierte Taste 3</string>
   <string name="prefs_colors_title">Farbeinstellungen</string>
-  <!-- Color Picker -->
-  <string name="press_color_to_apply">Gewählte Farbe wird verwendet</string>    
-  <!--  End color Picker -->
+  <string name="press_color_to_apply">Gewählte Farbe wird verwendet</string>
   <string name="prefs_colors_summary">Einzelne Farben ändern</string>
   <string name="prefs_chess_board">Spielfeld</string>
   <string name="prefs_color_brightSquare_title">Helle Felder</string>
@@ -311,11 +310,11 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_viewComments_title">Kommentare</string>
   <string name="prefs_viewComments_summary">Benutzerkommentare anzeigen</string>
   <string name="prefs_viewNAG_title">Annotationen</string>
-  <string name="prefs_viewPieceType_title">Figuren</string>
-  <string name="prefs_viewPieceType_summary">Festlegung, wie die Schach-Figuren notiert werden</string>
   <string name="prefs_viewNAG_summary">Annotationen (Numeric Annotation Glyphs, NAGs) anzeigen</string>
   <string name="prefs_viewHeaders_title">Partie-Informationen</string>
   <string name="prefs_viewHeaders_summary">Partie-Informationen anzeigen</string>
+  <string name="prefs_viewPieceType_title">Figuren</string>
+  <string name="prefs_viewPieceType_summary">Festlegung, wie die Schach-Figuren notiert werden</string>
   <string name="prefs_pgn_import">PGN-Import</string>
   <string name="prefs_importVariations_title">Varianten</string>
   <string name="prefs_importVariations_summary">Nicht-Hauptlinienzüge importieren</string>
@@ -348,6 +347,24 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="buttonDesc_mode">Modus-Taste</string>
   <string name="buttonDesc_back">Zurück-Taste</string>
   <string name="buttonDesc_forward">Vorwärts-Taste</string>
+  <string-array name="engine_threads_texts">
+    <item>Automatisch</item>
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+    <item>6</item>
+    <item>8</item>
+  </string-array>
+  <string-array name="engine_threads_values">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+    <item>6</item>
+    <item>8</item>
+  </string-array>
   <string-array name="viewPieceType_texts">
     <item>Englische Buchstaben</item>
     <item>Buchstaben der Landessprache</item>
@@ -358,19 +375,25 @@ wenn Sie es nicht aktiv nutzen.\
     <item>1</item>
     <item>2</item>
   </string-array>
-  <string-array name="engine_threads_texts">
-    <item>Automatisch</item>
-    <item>1</item>
-    <item>2</item>
-    <item>3</item>
-    <item>4</item>
+  <string-array name="engine_hash_texts">
+    <item>16 MB</item>
+    <item>32 MB</item>
+    <item>64 MB</item>
+    <item>128 MB</item>
+    <item>256 MB</item>
+    <item>512 MB</item>
+    <item>1024 MB</item>
+    <item>2048 MB</item>
   </string-array>
-  <string-array name="engine_threads_values">
-    <item>0</item>
-    <item>1</item>
-    <item>2</item>
-    <item>3</item>
-    <item>4</item>
+  <string-array name="engine_hash_values">
+    <item>16</item>
+    <item>32</item>
+    <item>64</item>
+    <item>128</item>
+    <item>256</item>
+    <item>512</item>
+    <item>1024</item>
+    <item>2048</item>
   </string-array>
   <string-array name="moves_per_session_texts">
     <item>Ganzes Spiel</item>
@@ -447,6 +470,14 @@ wenn Sie es nicht aktiv nutzen.\
     <item>15000</item>
     <item>30000</item>
     <item>60000</item>
+  </string-array>
+  <string-array name="squareSelectType_texts">
+    <item>Sticky</item>
+    <item>Toggle</item>
+  </string-array>
+  <string-array name="squareSelectType_values">
+    <item>0</item>
+    <item>1</item>
   </string-array>
   <string-array name="font_size_texts">
     <item>Klein</item>

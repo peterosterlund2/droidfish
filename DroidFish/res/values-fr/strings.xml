@@ -54,6 +54,8 @@
     <item>2</item>
     <item>3</item>
     <item>4</item>
+    <item>6</item>
+    <item>8</item>
   </string-array>
   <string-array name="engine_threads_values">
     <item>0</item>
@@ -61,6 +63,38 @@
     <item>2</item>
     <item>3</item>
     <item>4</item>
+    <item>6</item>
+    <item>8</item>
+  </string-array>
+  <string-array name="viewPieceType_texts">
+    <item>English letters</item>
+    <item>Local language letters</item>
+    <item>Figurine notation</item>
+  </string-array>
+  <string-array name="viewPieceType_values">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
+  </string-array>
+  <string-array name="engine_hash_texts">
+    <item>16 MB</item>
+    <item>32 MB</item>
+    <item>64 MB</item>
+    <item>128 MB</item>
+    <item>256 MB</item>
+    <item>512 MB</item>
+    <item>1024 MB</item>
+    <item>2048 MB</item>
+  </string-array>
+  <string-array name="engine_hash_values">
+    <item>16</item>
+    <item>32</item>
+    <item>64</item>
+    <item>128</item>
+    <item>256</item>
+    <item>512</item>
+    <item>1024</item>
+    <item>2048</item>
   </string-array>
   <string-array name="moves_per_session_texts">
     <item>Whole Game</item>
@@ -137,6 +171,14 @@
     <item>15000</item>
     <item>30000</item>
     <item>60000</item>
+  </string-array>
+  <string-array name="squareSelectType_texts">
+    <item>Sticky</item>
+    <item>Toggle</item>
+  </string-array>
+  <string-array name="squareSelectType_values">
+    <item>0</item>
+    <item>1</item>
   </string-array>
   <string-array name="font_size_texts">
     <item>Small</item>
