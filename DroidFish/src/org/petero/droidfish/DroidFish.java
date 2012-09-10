@@ -154,7 +154,7 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! Selection dialog for going into variation
     // FIXME!!! Use two engines in engine/engine games
 
-    private ChessBoard cb;
+    private ChessBoardPlay cb;
     private static DroidChessController ctrl = null;
     private boolean mShowThinking;
     private boolean mShowStats;
@@ -479,7 +479,7 @@ public class DroidFish extends Activity implements GUIInterface {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        ChessBoard oldCB = cb;
+        ChessBoardPlay oldCB = cb;
         String statusStr = status.getText().toString();
         initUI(false);
         readPrefs();
@@ -522,7 +522,7 @@ public class DroidFish extends Activity implements GUIInterface {
         moveList.setMovementMethod(LinkMovementMethod.getInstance());
         thinking.setFocusable(false);
 
-        cb = (ChessBoard)findViewById(R.id.chessboard);
+        cb = (ChessBoardPlay)findViewById(R.id.chessboard);
         cb.setFocusable(true);
         cb.requestFocus();
         cb.setClickable(true);

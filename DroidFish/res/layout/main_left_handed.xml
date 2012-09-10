@@ -92,7 +92,7 @@
         </RelativeLayout>
     </LinearLayout>
     <view
-        class="org.petero.droidfish.ChessBoard"
+        class="org.petero.droidfish.ChessBoardPlay"
         android:id="@+id/chessboard"
         android:layout_weight="0"
         android:layout_width="fill_parent"

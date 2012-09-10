@@ -23,11 +23,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.petero.droidfish.gamelogic.Move;
-import org.petero.droidfish.gamelogic.MoveGen;
-import org.petero.droidfish.gamelogic.Pair;
 import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
-import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gamelogic.UndoInfo;
 
 import android.content.Context;
@@ -41,10 +38,8 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
-public class ChessBoard extends View {
-    private PGNOptions pgnOptions = null;
+public abstract class ChessBoard extends View {
     public Position pos;
 
     public int selectedSquare;
@@ -56,7 +51,6 @@ public class ChessBoard extends View {
     int pieceXDelta, pieceYDelta; // top/left pixel draw position relative to square
     public boolean flipped;
     public boolean drawSquareLabels;
-    boolean oneTouchMoves;
     boolean toggleSelection;
 
     List<Move> moveHints;
@@ -91,10 +85,6 @@ public class ChessBoard extends View {
     private Paint decorationPaint;
     private ArrayList<Paint> moveMarkPaint;
 
-    public void setPgnOptions(PGNOptions pgnOptions) {
-        this.pgnOptions = pgnOptions;
-    }
-
     public ChessBoard(Context context, AttributeSet attrs) {
         super(context, attrs);
         pos = new Position();
@@ -106,7 +96,6 @@ public class ChessBoard extends View {
         pieceXDelta = pieceYDelta = -1;
         flipped = false;
         drawSquareLabels = false;
-        oneTouchMoves = false;
         toggleSelection = false;
 
         darkPaint = new Paint();
@@ -360,12 +349,11 @@ public class ChessBoard extends View {
         userSelectedSquare = true;
     }
 
-    protected int getWidth(int sqSize) { return sqSize * 8; }
-    protected int getHeight(int sqSize) { return sqSize * 8; }
-    protected int getSqSizeW(int width) { return (width) / 8; }
-    protected int getSqSizeH(int height) { return (height) / 8; }
-
-    protected int getMaxHeightPercentage() { return 75; }
+    protected abstract int getWidth(int sqSize);
+    protected abstract int getHeight(int sqSize);
+    protected abstract int getSqSizeW(int width);
+    protected abstract int getSqSizeH(int height);
+    protected abstract int getMaxHeightPercentage();
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -386,13 +374,9 @@ public class ChessBoard extends View {
         setMeasuredDimension(width, height);
     }
 
-    protected void computeOrigin(int width, int height) {
-        x0 = (width - sqSize * 8) / 2;
-        y0 = (height - sqSize * 8) / 2;
-    }
-
-    protected int getXFromSq(int sq) { return Position.getX(sq); }
-    protected int getYFromSq(int sq) { return Position.getY(sq); }
+    protected abstract void computeOrigin(int width, int height);
+    protected abstract int getXFromSq(int sq);
+    protected abstract int getYFromSq(int sq);
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -573,10 +557,10 @@ public class ChessBoard extends View {
         canvas.drawText(s, xCrd, yCrd, labelPaint);
     }
 
-    protected int getXCrd(int x) { return x0 + sqSize * (flipped ? 7 - x : x); }
-    protected int getYCrd(int y) { return y0 + sqSize * (flipped ? y : 7 - y); }
-    protected int getXSq(int xCrd) { int t = (xCrd - x0) / sqSize; return flipped ? 7 - t : t; }
-    protected int getYSq(int yCrd) { int t = (yCrd - y0) / sqSize; return flipped ? t : 7 - t; }
+    protected abstract int getXCrd(int x);
+    protected abstract int getYCrd(int y);
+    protected abstract int getXSq(int xCrd);
+    protected abstract int getYSq(int yCrd);
 
     /**
      * Compute the square corresponding to the coordinates of a mouse event.
@@ -598,108 +582,7 @@ public class ChessBoard extends View {
         return sq;
     }
 
-    private final boolean myColor(int piece) {
-        return (piece != Piece.EMPTY) && (Piece.isWhite(piece) == pos.whiteMove);
-    }
-
-    public Move mousePressed(int sq) {
-        if (sq < 0)
-            return null;
-        cursorVisible = false;
-        if ((selectedSquare != -1) && !userSelectedSquare)
-            setSelection(-1); // Remove selection of opponents last moving piece
-
-        if (!oneTouchMoves) {
-            int p = pos.getPiece(sq);
-            if (selectedSquare != -1) {
-                if (sq == selectedSquare) {
-                    if (toggleSelection)
-                        setSelection(-1);
-                    return null;
-                }
-                if (!myColor(p)) {
-                    Move m = new Move(selectedSquare, sq, Piece.EMPTY);
-                    setSelection(sq);
-                    userSelectedSquare = false;
-                    return m;
-                } else
-                    setSelection(sq);
-            } else {
-                if (myColor(p))
-                    setSelection(sq);
-            }
-        } else {
-            int prevSq = userSelectedSquare ? selectedSquare : -1;
-            if (prevSq == sq) {
-                if (toggleSelection)
-                    setSelection(-1);
-                return null;
-            }
-            ArrayList<Move> moves = new MoveGen().legalMoves(pos);
-            Move matchingMove = null;
-            if (prevSq >= 0)
-                matchingMove = matchingMove(prevSq, sq, moves).first;
-            boolean anyMatch = false;
-            if  (matchingMove == null) {
-                Pair<Move, Boolean> match = matchingMove(-1, sq, moves);
-                matchingMove = match.first;
-                anyMatch = match.second;
-            }
-            if (matchingMove != null) {
-                setSelection(matchingMove.to);
-                userSelectedSquare = false;
-                return matchingMove;
-            }
-            if (!anyMatch && (sq >= 0)) {
-                int p = pos.getPiece(sq);
-                if (myColor(p)) {
-                    String msg = getContext().getString(R.string.piece_can_not_be_moved);
-                    boolean localized = (pgnOptions != null) &&
-                                        (pgnOptions.view.pieceType != PGNOptions.PT_ENGLISH);
-                    msg += ": " + TextIO.pieceAndSquareToString(localized, p, sq);
-                    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-                }
-            }
-            setSelection(anyMatch ? sq : -1);
-        }
-        return null;
-    }
-
-    /**
-     * Determine if there is a unique legal move corresponding to one or two selected squares.
-     * @param sq1   First square, or -1.
-     * @param sq2   Second square.
-     * @param moves List of legal moves.
-     * @return      Matching move if unique.
-     *              Boolean indicating if there was at least one match.
-     */
-    private final Pair<Move, Boolean> matchingMove(int sq1, int sq2, ArrayList<Move> moves) {
-        Move matchingMove = null;
-        boolean anyMatch = false;
-        for (Move m : moves) {
-            boolean match;
-            if (sq1 == -1)
-                match = (m.from == sq2) || (m.to == sq2);
-            else
-                match = (m.from == sq1) && (m.to == sq2) ||
-                        (m.from == sq2) && (m.to == sq1);
-            if (match) {
-                if (matchingMove == null) {
-                    matchingMove = m;
-                    anyMatch = true;
-                } else {
-                    if ((matchingMove.from == m.from) &&
-                        (matchingMove.to == m.to)) {
-                        matchingMove.promoteTo = Piece.EMPTY;
-                    } else {
-                        matchingMove = null;
-                        break;
-                    }
-                }
-            }
-        }
-        return new Pair<Move, Boolean>(matchingMove, anyMatch);
-    }
+    protected abstract Move mousePressed(int sq);
 
     public static class OnTrackballListener {
         public void onTrackballEvent(MotionEvent event) { }
@@ -717,8 +600,8 @@ public class ChessBoard extends View {
         return false;
     }
 
-    protected int minValidY() { return 0; }
-    protected int getSquare(int x, int y) { return Position.getSquare(x, y); }
+    protected abstract int minValidY();
+    protected abstract int getSquare(int x, int y);
 
     public final Move handleTrackballEvent(MotionEvent event) {
         switch (event.getAction()) {

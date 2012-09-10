@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     <view
-        class="org.petero.droidfish.ChessBoard"
+        class="org.petero.droidfish.ChessBoardPlay"
         android:id="@+id/chessboard"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
