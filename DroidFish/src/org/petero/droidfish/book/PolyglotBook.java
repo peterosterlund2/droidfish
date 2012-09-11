@@ -23,7 +23,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.petero.droidfish.book.DroidBook.BookEntry;
 import org.petero.droidfish.gamelogic.Move;
@@ -373,7 +372,7 @@ class PolyglotBook implements IOpeningBook {
     }
 
     @Override
-    public final List<BookEntry> getBookEntries(Position pos) {
+    public final ArrayList<BookEntry> getBookEntries(Position pos) {
         try {
             RandomAccessFile f = new RandomAccessFile(bookFile, "r");
             long numEntries = f.length() / 16;
@@ -396,7 +395,7 @@ class PolyglotBook implements IOpeningBook {
             }
 
             // Read all entries with matching hash key
-            List<BookEntry> ret = new ArrayList<BookEntry>();
+            ArrayList<BookEntry> ret = new ArrayList<BookEntry>();
             long entNo = hi;
             while (entNo < numEntries) {
                 readEntry(f, entNo, ent);

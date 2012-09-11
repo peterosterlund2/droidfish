@@ -18,7 +18,7 @@
 
 package org.petero.droidfish.book;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import org.petero.droidfish.book.DroidBook.BookEntry;
 import org.petero.droidfish.gamelogic.Position;
@@ -31,7 +31,7 @@ class NullBook implements IOpeningBook {
     }
 
     @Override
-    public List<BookEntry> getBookEntries(Position pos) {
+    public ArrayList<BookEntry> getBookEntries(Position pos) {
         return null;
     }
 

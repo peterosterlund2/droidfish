@@ -18,7 +18,7 @@
 
 package org.petero.droidfish.book;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import org.petero.droidfish.book.DroidBook.BookEntry;
 import org.petero.droidfish.gamelogic.Position;
@@ -31,5 +31,5 @@ interface IOpeningBook {
     void setOptions(BookOptions options);
 
     /** Get all book entries for a position. */
-    List<BookEntry> getBookEntries(Position pos);
+    ArrayList<BookEntry> getBookEntries(Position pos);
 }

@@ -37,9 +37,9 @@ import org.petero.droidfish.gamelogic.Pair;
  * @author petero
  */
 public final class DroidBook {
-    static class BookEntry {
+    static final class BookEntry {
         Move move;
-        double weight;
+        float weight;
         BookEntry(Move move) {
             this.move = move;
             weight = 1;
@@ -117,7 +117,7 @@ public final class DroidBook {
                                                                            boolean localized) {
         StringBuilder ret = new StringBuilder();
         ArrayList<Move> bookMoveList = new ArrayList<Move>();
-        List<BookEntry> bookMoves = getBook().getBookEntries(pos);
+        ArrayList<BookEntry> bookMoves = getBook().getBookEntries(pos);
 
         // Check legality
         if (bookMoves != null) {

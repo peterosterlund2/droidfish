@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.petero.droidfish.book.DroidBook.BookEntry;
 import org.petero.droidfish.gamelogic.ChessParseError;
@@ -33,8 +32,10 @@ import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gamelogic.UndoInfo;
 
+import android.util.FloatMath;
+
 final class InternalBook implements IOpeningBook {
-    private static Map<Long, List<BookEntry>> bookMap;
+    private static HashMap<Long, ArrayList<BookEntry>> bookMap;
     private static int numBookMoves = -1;
 
     InternalBook() {
@@ -58,15 +59,15 @@ final class InternalBook implements IOpeningBook {
     }
 
     @Override
-    public List<BookEntry> getBookEntries(Position pos) {
+    public ArrayList<BookEntry> getBookEntries(Position pos) {
         initInternalBook();
-        List<BookEntry> ents = bookMap.get(pos.zobristHash());
+        ArrayList<BookEntry> ents = bookMap.get(pos.zobristHash());
         if (ents == null)
             return null;
-        List<BookEntry> ret = new ArrayList<BookEntry>();
+        ArrayList<BookEntry> ret = new ArrayList<BookEntry>();
         for (BookEntry be : ents) {
             BookEntry be2 = new BookEntry(be.move);
-            be2.weight = Math.sqrt(be.weight) * 100 + 1;
+            be2.weight = FloatMath.sqrt(be.weight) * 100 + 1;
             ret.add(be2);
         }
         return ret;
@@ -80,7 +81,7 @@ final class InternalBook implements IOpeningBook {
         if (numBookMoves >= 0)
             return;
 //        long t0 = System.currentTimeMillis();
-        bookMap = new HashMap<Long, List<BookEntry>>();
+        bookMap = new HashMap<Long, ArrayList<BookEntry>>();
         numBookMoves = 0;
         try {
             InputStream inStream = getClass().getResourceAsStream("/book.bin");
@@ -131,7 +132,7 @@ final class InternalBook implements IOpeningBook {
 
     /** Add a move to a position in the opening book. */
     private final void addToBook(Position pos, Move moveToAdd) {
-        List<BookEntry> ent = bookMap.get(pos.zobristHash());
+        ArrayList<BookEntry> ent = bookMap.get(pos.zobristHash());
         if (ent == null) {
             ent = new ArrayList<BookEntry>();
             bookMap.put(pos.zobristHash(), ent);

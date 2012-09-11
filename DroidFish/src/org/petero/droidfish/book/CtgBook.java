@@ -62,7 +62,7 @@ class CtgBook implements IOpeningBook {
     }
 
     @Override
-    public List<BookEntry> getBookEntries(Position pos) {
+    public ArrayList<BookEntry> getBookEntries(Position pos) {
         RandomAccessFile ctgF = null;
         RandomAccessFile ctbF = null;
         RandomAccessFile ctoF = null;
@@ -75,7 +75,7 @@ class CtgBook implements IOpeningBook {
             CtoFile cto = new CtoFile(ctoF);
             CtgFile ctg = new CtgFile(ctgF, ctb, cto);
 
-            List<BookEntry> ret = null;
+            ArrayList<BookEntry> ret = null;
             PositionData pd = ctg.getPositionData(pos);
             if (pd != null) {
                 boolean mirrorColor = pd.mirrorColor;
@@ -86,7 +86,7 @@ class CtgBook implements IOpeningBook {
                     pd.pos.makeMove(be.move, ui);
                     PositionData movePd = ctg.getPositionData(pd.pos);
                     pd.pos.unMakeMove(be.move, ui);
-                    double weight = be.weight;
+                    float weight = be.weight;
                     if (movePd == null) {
 //                        System.out.printf("%s : no pos\n", TextIO.moveToUCIString(be.move));
                         weight = 0;
@@ -417,8 +417,8 @@ class CtgBook implements IOpeningBook {
                 case 0x02: ent.weight = 0;       break; // ?
                 case 0x03: ent.weight = 32;      break; // !!
                 case 0x04: ent.weight = 0;       break; // ??
-                case 0x05: ent.weight = 0.5;     break; // !?
-                case 0x06: ent.weight = 0.125;   break; // ?!
+                case 0x05: ent.weight = 0.5f;    break; // !?
+                case 0x06: ent.weight = 0.125f;  break; // ?!
                 case 0x08: ent.weight = 1000000; break; // Only move
                 }
                 entries.add(ent);
