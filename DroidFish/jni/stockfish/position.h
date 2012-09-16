@@ -94,10 +94,9 @@ struct ReducedStateInfo {
 class Position {
 public:
   Position() {}
-  Position(const Position& p) { *this = p; }
   Position(const Position& p, Thread* t) { *this = p; thisThread = t; }
   Position(const std::string& f, bool c960, Thread* t) { from_fen(f, c960, t); }
-  void operator=(const Position&);
+  Position& operator=(const Position&);
 
   // Text input/output
   void from_fen(const std::string& fen, bool isChess960, Thread* th);
@@ -141,6 +140,7 @@ public:
   // Properties of moves
   bool move_gives_check(Move m, const CheckInfo& ci) const;
   bool move_attacks_square(Move m, Square s) const;
+  bool move_is_legal(const Move m) const;
   bool pl_move_is_legal(Move m, Bitboard pinned) const;
   bool is_pseudo_legal(const Move m) const;
   bool is_capture(Move m) const;
@@ -189,15 +189,11 @@ public:
   bool pos_is_ok(int* failedStep = NULL) const;
   void flip();
 
-  // Global initialization
-  static void init();
-
 private:
   // Initialization helpers (used while setting up a position)
   void clear();
   void put_piece(Piece p, Square s);
   void set_castle_right(Color c, Square rfrom);
-  bool move_is_legal(const Move m) const;
 
   // Helper template functions
   template<bool Do> void do_castle_move(Move m);
@@ -231,14 +227,6 @@ private:
   Thread* thisThread;
   StateInfo* st;
   int chess960;
-
-  // Static variables
-  static Score pieceSquareTable[16][64]; // [piece][square]
-  static Key zobrist[2][8][64];          // [color][pieceType][square]/[piece count]
-  static Key zobEp[8];                   // [file]
-  static Key zobCastle[16];              // [castleRight]
-  static Key zobSideToMove;
-  static Key zobExclusion;
 };
 
 inline int64_t Position::nodes_searched() const {
@@ -367,7 +355,7 @@ inline Key Position::key() const {
 }
 
 inline Key Position::exclusion_key() const {
-  return st->key ^ zobExclusion;
+  return st->key ^ Zobrist::exclusion;
 }
 
 inline Key Position::pawn_key() const {
@@ -424,14 +412,14 @@ inline bool Position::is_chess960() const {
 inline bool Position::is_capture_or_promotion(Move m) const {
 
   assert(is_ok(m));
-  return is_special(m) ? !is_castle(m) : !is_empty(to_sq(m));
+  return type_of(m) ? type_of(m) != CASTLE : !is_empty(to_sq(m));
 }
 
 inline bool Position::is_capture(Move m) const {
 
   // Note that castle is coded as "king captures the rook"
   assert(is_ok(m));
-  return (!is_empty(to_sq(m)) && !is_castle(m)) || is_enpassant(m);
+  return (!is_empty(to_sq(m)) && type_of(m) != CASTLE) || type_of(m) == ENPASSANT;
 }
 
 inline PieceType Position::captured_piece_type() const {

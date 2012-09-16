@@ -41,7 +41,7 @@ public:
   MovePicker(const Position&, Move, Depth, const History&, Search::Stack*, Value);
   MovePicker(const Position&, Move, Depth, const History&, Square);
   MovePicker(const Position&, Move, const History&, PieceType);
-  Move next_move();
+  template<bool SpNode> Move next_move();
 
 private:
   void score_captures();
@@ -51,12 +51,13 @@ private:
 
   const Position& pos;
   const History& H;
+  Search::Stack* ss;
   Depth depth;
   Move ttMove;
   MoveStack killers[2];
   Square recaptureSquare;
   int captureThreshold, phase;
-  MoveStack *curMove, *lastMove, *lastQuiet, *lastBadCapture;
+  MoveStack *cur, *end, *endQuiets, *endBadCaptures;
   MoveStack moves[MAX_MOVES];
 };
 

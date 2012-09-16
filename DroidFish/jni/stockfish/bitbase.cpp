@@ -62,14 +62,14 @@ namespace {
 }
 
 
-uint32_t probe_kpk_bitbase(Square wksq, Square wpsq, Square bksq, Color stm) {
+uint32_t Bitbases::probe_kpk(Square wksq, Square wpsq, Square bksq, Color stm) {
 
   int idx = index(wksq, bksq, wpsq, stm);
   return KPKBitbase[idx / 32] & (1 << (idx & 31));
 }
 
 
-void kpk_bitbase_init() {
+void Bitbases::init_kpk() {
 
   Result db[IndexMax];
   KPKPosition pos;
@@ -117,7 +117,7 @@ namespace {
     stm  = Color(idx & 1);
     bksq = Square((idx >> 1) & 63);
     wksq = Square((idx >> 7) & 63);
-    psq  = make_square(File((idx >> 13) & 3), Rank((idx >> 15) + 1));
+    psq  = File((idx >> 13) & 3) | Rank((idx >> 15) + 1);
   }
 
   Result KPKPosition::classify_leaf(int idx) {
@@ -196,8 +196,8 @@ namespace {
 
     while (b)
     {
-        r |= Us == WHITE ? db[index(pop_1st_bit(&b), bksq, psq, BLACK)]
-                         : db[index(wksq, pop_1st_bit(&b), psq, WHITE)];
+        r |= Us == WHITE ? db[index(pop_lsb(&b), bksq, psq, BLACK)]
+                         : db[index(wksq, pop_lsb(&b), psq, WHITE)];
 
         if (Us == WHITE && (r & WIN))
             return WIN;

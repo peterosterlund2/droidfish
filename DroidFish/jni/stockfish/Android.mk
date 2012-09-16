@@ -4,7 +4,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE    := stockfish
 LOCAL_SRC_FILES := \
-	evaluate.cpp  move.cpp      search.cpp \
+	evaluate.cpp     notation.cpp  search.cpp \
 	benchmark.cpp    movegen.cpp   tt.cpp \
 	bitbase.cpp      main.cpp      movepick.cpp  uci.cpp \
 	bitboard.cpp     pawns.cpp     ucioption.cpp \
