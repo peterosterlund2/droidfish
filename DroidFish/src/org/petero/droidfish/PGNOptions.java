@@ -20,12 +20,12 @@ package org.petero.droidfish;
 
 /** Settings controlling PGN import/export */
 public class PGNOptions {
-    /** Pieces displayed as english letters. */
+    /** Pieces displayed as English letters. */
     public static final int PT_ENGLISH  = 0;
     /** Pieces displayed as local language letters. */
     public static final int PT_LOCAL    = 1;
     /** Piece displayed in figurine notation, by using UniCode characters
-      *  and a special font. */
+      * and a special font. */
     public static final int PT_FIGURINE = 2;
 
     public static class Viewer {
