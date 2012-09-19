@@ -1012,10 +1012,9 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     @Override
-    public void updateMaterialDifferenceTitle(CharSequence whitePieces,
-                                              CharSequence blackPieces) {
-        whiteFigText.setText(whitePieces);
-        blackFigText.setText(blackPieces);
+    public void updateMaterialDifferenceTitle(Util.MaterialDiff diff) {
+        whiteFigText.setText(diff.white);
+        blackFigText.setText(diff.black);
     }
 
     private final void setFullScreenMode(boolean fullScreenMode) {

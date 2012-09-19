@@ -7,6 +7,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import org.petero.droidfish.gamelogic.Piece;
+import org.petero.droidfish.gamelogic.Position;
+
 import android.os.Build;
 
 public final class Util {
@@ -37,5 +40,33 @@ public final class Util {
             ret.add(line);
         inBuf.close();
         return ret.toArray(new String[ret.size()]);
+    }
+
+    /** Represent materiel difference as two unicode strings. */
+    public final static class MaterialDiff {
+        public CharSequence white;
+        public CharSequence black;
+        MaterialDiff(CharSequence w, CharSequence b) {
+            white = w;
+            black = b;
+        }
+    }
+
+    /** Compute material difference for a position. */
+    public static MaterialDiff getMaterialDiff(Position pos) {
+        StringBuilder whiteString = new StringBuilder();
+        StringBuilder blackString = new StringBuilder();
+        for (int p = Piece.WPAWN; p >= Piece.WQUEEN; p--) {
+            int diff = pos.nPieces(p) - pos.nPieces(Piece.swapColor(p));
+            while (diff < 0) {
+                whiteString.append(Piece.toUniCode(Piece.swapColor(p)));
+                diff++;
+            }
+            while (diff > 0) {
+                blackString.append(Piece.toUniCode(p));
+                diff--;
+            }
+        }
+        return new MaterialDiff(whiteString, blackString);
     }
 }

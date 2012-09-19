@@ -1035,21 +1035,7 @@ public class DroidChessController {
     }
 
     public final void updateMaterialDiffList() {
-        Position pos = game.currPos();
-        StringBuilder whiteString = new StringBuilder();
-        StringBuilder blackString = new StringBuilder();
-        for (int p = Piece.WPAWN; p >= Piece.WQUEEN; p--) {
-            int diff = pos.nPieces(p) - pos.nPieces(Piece.swapColor(p));
-            while (diff < 0) {
-                whiteString.append(Piece.toUniCode(Piece.swapColor(p)));
-                diff++;
-            }
-            while (diff > 0) {
-                blackString.append(Piece.toUniCode(p));
-                diff--;
-            }
-        }
-        gui.updateMaterialDifferenceTitle(whiteString, blackString);
+        gui.updateMaterialDifferenceTitle(Util.getMaterialDiff(game.currPos()));
     }
 
     private final synchronized void setThinkingInfo(int id, ArrayList<ArrayList<Move>> pvMoves, String pvStr,

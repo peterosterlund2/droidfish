@@ -81,8 +81,7 @@ public interface GUIInterface {
     public void updateEngineTitle();
 
     /** Update title with the material difference. */
-    public void updateMaterialDifferenceTitle(CharSequence whitePieces,
-                                              CharSequence blackPieces);
+    public void updateMaterialDifferenceTitle(Util.MaterialDiff diff);
 
     /** Report a move made that is a candidate for GUI animation. */
     public void setAnimMove(Position sourcePos, Move move, boolean forward);
