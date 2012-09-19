@@ -3,6 +3,11 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+    <include
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/title">
+    </include>
     <view
         class="org.petero.droidfish.ChessBoardPlay"
         android:id="@+id/chessboard"

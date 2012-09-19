@@ -80,6 +80,10 @@ public interface GUIInterface {
     /** Update engine title text. */
     public void updateEngineTitle();
 
+    /** Update title with the material difference. */
+    public void updateMaterialDifferenceTitle(CharSequence whitePieces,
+                                              CharSequence blackPieces);
+
     /** Report a move made that is a candidate for GUI animation. */
     public void setAnimMove(Position sourcePos, Move move, boolean forward);
 

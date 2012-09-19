@@ -140,9 +140,9 @@ public class ChessBoardPlay extends ChessBoard {
                 int p = pos.getPiece(sq);
                 if (myColor(p)) {
                     String msg = getContext().getString(R.string.piece_can_not_be_moved);
-                    boolean localized = (pgnOptions != null) &&
-                                        (pgnOptions.view.pieceType != PGNOptions.PT_ENGLISH);
-                    msg += ": " + TextIO.pieceAndSquareToString(localized, p, sq);
+                    int pieceType = (pgnOptions == null) ? PGNOptions.PT_LOCAL
+                                                         : pgnOptions.view.pieceType;
+                    msg += ": " + TextIO.pieceAndSquareToString(pieceType, p, sq);
                     Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
                 }
             }

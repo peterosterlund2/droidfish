@@ -111,6 +111,17 @@ public class DroidChessController {
             game.timeController.setTimeControl(timeControl, movesPerSession, timeIncrement);
     }
 
+    /**
+     * @return Array containing time control, moves per session and time increment.
+     */
+    public final int[] getTimeLimit() {
+        int[] ret = new int[3];
+        ret[0] = timeControl;
+        ret[1] = movesPerSession;
+        ret[2] = timeIncrement;
+        return ret;
+    }
+
     /** The chess clocks are stopped when the GUI is paused. */
     public final synchronized void setGuiPaused(boolean paused) {
         guiPaused = paused;
@@ -1020,6 +1031,25 @@ public class DroidChessController {
         gui.setPosition(game.currPos(), sb.toString(), game.tree.variations());
 
         updateRemainingTime();
+        updateMaterialDiffList();
+    }
+
+    public final void updateMaterialDiffList() {
+        Position pos = game.currPos();
+        StringBuilder whiteString = new StringBuilder();
+        StringBuilder blackString = new StringBuilder();
+        for (int p = Piece.WPAWN; p >= Piece.WQUEEN; p--) {
+            int diff = pos.nPieces(p) - pos.nPieces(Piece.swapColor(p));
+            while (diff < 0) {
+                whiteString.append(Piece.toUniCode(Piece.swapColor(p)));
+                diff++;
+            }
+            while (diff > 0) {
+                blackString.append(Piece.toUniCode(p));
+                diff--;
+            }
+        }
+        gui.updateMaterialDifferenceTitle(whiteString, blackString);
     }
 
     private final synchronized void setThinkingInfo(int id, ArrayList<ArrayList<Move>> pvMoves, String pvStr,

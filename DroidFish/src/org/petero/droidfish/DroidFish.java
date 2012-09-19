@@ -1,6 +1,7 @@
 /*
     DroidFish - An Android chess program.
     Copyright (C) 2011-2012  Peter Österlund, peterosterlund2@gmail.com
+    Copyright (C) 2012 Leo Mayer
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -47,6 +48,7 @@ import org.petero.droidfish.gamelogic.DroidChessController;
 import org.petero.droidfish.gamelogic.ChessParseError;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.Pair;
+import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gamelogic.PgnToken;
@@ -177,6 +179,8 @@ public class DroidFish extends Activity implements GUIInterface {
     private ImageButton modeButton, undoButton, redoButton;
     private ButtonActions custom1ButtonActions, custom2ButtonActions, custom3ButtonActions;
     private TextView whiteTitleText, blackTitleText, engineTitleText;
+    private View secondTitleLine;
+    private TextView whiteFigText, blackFigText, summaryTitleText;
 
     SharedPreferences settings;
 
@@ -187,6 +191,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private MediaPlayer moveSound;
     private boolean vibrateEnabled;
     private boolean animateMoves;
+    private boolean showMaterialDiff;
 
     private final static String bookDir = "DroidFish";
     private final static String pgnDir = "DroidFish" + File.separator + "pgn";
@@ -357,8 +362,10 @@ public class DroidFish extends Activity implements GUIInterface {
         custom3ButtonActions = new ButtonActions("custom3", CUSTOM3_BUTTON_DIALOG,
                                                  R.string.select_action);
 
+        figNotation = Typeface.createFromAsset(getAssets(), "fonts/DroidFishChessNotationDark.otf");
         setPieceNames(PGNOptions.PT_LOCAL);
-        initUI(true);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        initUI();
 
         gameTextListener = new PgnScreenText(pgnOptions);
         if (ctrl != null)
@@ -393,10 +400,17 @@ public class DroidFish extends Activity implements GUIInterface {
         }
     }
 
+    // Unicode code points for chess pieces
+    private static final String figurinePieceNames = Piece.NOTATION_PAWN   + " " +
+                                                     Piece.NOTATION_KNIGHT + " " +
+                                                     Piece.NOTATION_BISHOP + " " +
+                                                     Piece.NOTATION_ROOK   + " " +
+                                                     Piece.NOTATION_QUEEN  + " " +
+                                                     Piece.NOTATION_KING;
+
     private final void setPieceNames(int pieceType) {
         if (pieceType == PGNOptions.PT_FIGURINE) {
-            // Unicode code points for chess pieces
-            TextIO.setPieceNames("\u2659 \u2658 \u2657 \u2656 \u2655 \u2654");
+            TextIO.setPieceNames(figurinePieceNames);
         } else {
             TextIO.setPieceNames(getString(R.string.piece_names));
         }
@@ -481,7 +495,7 @@ public class DroidFish extends Activity implements GUIInterface {
         super.onConfigurationChanged(newConfig);
         ChessBoardPlay oldCB = cb;
         String statusStr = status.getText().toString();
-        initUI(false);
+        initUI();
         readPrefs();
         cb.cursorX = oldCB.cursorX;
         cb.cursorY = oldCB.cursorY;
@@ -496,20 +510,35 @@ public class DroidFish extends Activity implements GUIInterface {
         setStatusString(statusStr);
         moveListUpdated();
         updateThinkingInfo();
+        ctrl.updateRemainingTime();
+        ctrl.updateMaterialDiffList();
     }
 
-    private final void initUI(boolean initTitle) {
-        if (initTitle)
-            requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+    private final void initUI() {
         Configuration config = getResources().getConfiguration();
+        // The Android app title is removed with the style, but remains
+        // individually in the Layout cause we need it to have in 2 lines +
+        // landscape and portrait differ quite much
         boolean leftHanded = this.leftHanded && (config.orientation == Configuration.ORIENTATION_LANDSCAPE);
         setContentView(leftHanded ? R.layout.main_left_handed : R.layout.main);
-        if (initTitle) {
-            getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title);
-            whiteTitleText = (TextView)findViewById(R.id.white_clock);
-            blackTitleText = (TextView)findViewById(R.id.black_clock);
-            engineTitleText  = (TextView)findViewById(R.id.title_text);
-        }
+
+        // title lines need to be regenerated every time due to layout changes (rotations)
+        secondTitleLine = findViewById(R.id.second_title_line);
+        whiteTitleText = (TextView)findViewById(R.id.white_clock);
+        whiteTitleText.setSelected(true);
+        blackTitleText = (TextView)findViewById(R.id.black_clock);
+        blackTitleText.setSelected(true);
+        engineTitleText = (TextView)findViewById(R.id.title_text);
+        whiteFigText = (TextView)findViewById(R.id.white_pieces);
+        whiteFigText.setTypeface(figNotation);
+        whiteFigText.setSelected(true);
+        whiteFigText.setTextColor(whiteTitleText.getTextColors());
+        blackFigText = (TextView)findViewById(R.id.black_pieces);
+        blackFigText.setTypeface(figNotation);
+        blackFigText.setSelected(true);
+        blackFigText.setTextColor(blackTitleText.getTextColors());
+        summaryTitleText = (TextView)findViewById(R.id.title_text_summary);
+
         status = (TextView)findViewById(R.id.status);
         moveListScroll = (ScrollView)findViewById(R.id.scrollView);
         moveList = (TextView)findViewById(R.id.moveList);
@@ -778,6 +807,7 @@ public class DroidFish extends Activity implements GUIInterface {
         int movesPerSession = getIntSetting("movesPerSession", 60);
         int timeIncrement = getIntSetting("timeIncrement", 0);
         ctrl.setTimeLimit(timeControl, movesPerSession, timeIncrement);
+        setSummaryTitle();
 
         scrollSensitivity = Float.parseFloat(settings.getString("scrollSensitivity", "2"));
         invertScrollDirection = settings.getBoolean("invertScrollDirection", false);
@@ -788,7 +818,6 @@ public class DroidFish extends Activity implements GUIInterface {
         setWakeLock(useWakeLock);
 
         int fontSize = getIntSetting("fontSize", 12);
-        figNotation = Typeface.createFromAsset(getAssets(), "fonts/DroidFishChessNotationDark.otf");
         int statusFontSize = fontSize;
         Configuration config = getResources().getConfiguration();
         if (config.orientation == Configuration.ORIENTATION_PORTRAIT)
@@ -853,6 +882,9 @@ public class DroidFish extends Activity implements GUIInterface {
         // update the typeset in case of a change anyway, cause it could occur
         // as well in rotation
         setFigurineNotation(pgnOptions.view.pieceType == PGNOptions.PT_FIGURINE, fontSize);
+
+        showMaterialDiff = settings.getBoolean("materialDiff", false);
+        secondTitleLine.setVisibility(showMaterialDiff ? View.VISIBLE : View.GONE);
     }
 
     /**
@@ -953,11 +985,37 @@ public class DroidFish extends Activity implements GUIInterface {
         }
     }
 
+    /** Update center field in second header line. */
+    private final void setSummaryTitle() {
+        int[] tmpInfo = ctrl.getTimeLimit();
+        StringBuilder sb = new StringBuilder();
+        int tc = tmpInfo[0];
+        int mps = tmpInfo[1];
+        int inc = tmpInfo[2];
+        if (mps > 0) {
+            sb.append(mps);
+            sb.append(" / ");
+        }
+        sb.append(timeToString(tc));
+        if ((inc > 0) || (mps <= 0)) {
+            sb.append(" + ");
+            sb.append(tmpInfo[2] / 1000);
+        }
+        summaryTitleText.setText(sb.toString());
+    }
+
     @Override
     public void updateEngineTitle() {
         String engine = settings.getString("engine", "stockfish");
         int strength = settings.getInt("strength", 1000);
         setEngineTitle(engine, strength);
+    }
+
+    @Override
+    public void updateMaterialDifferenceTitle(CharSequence whitePieces,
+                                              CharSequence blackPieces) {
+        whiteFigText.setText(whitePieces);
+        blackFigText.setText(blackPieces);
     }
 
     private final void setFullScreenMode(boolean fullScreenMode) {

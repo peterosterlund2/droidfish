@@ -21,6 +21,7 @@ package org.petero.droidfish.gamelogic;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.petero.droidfish.PGNOptions;
 import org.petero.droidfish.R;
 
 
@@ -729,14 +730,19 @@ public class TextIO {
     }
 
     /** Convert a piece and a square to a string, such as Nf3. */
-    public final static String pieceAndSquareToString(boolean localized, int p, int sq) {
-        String ret;
-        if ((p == Piece.WPAWN) || (p == Piece.BPAWN))
-            ret = localized ? pieceNames[0] : "P";
-        else
-            ret = localized ? pieceToCharLocalized(p) : pieceToChar(p);
-        ret += squareToString(sq);
-        return ret;
+    public final static String pieceAndSquareToString(int currentPieceType, int p, int sq) {
+        StringBuilder ret = new StringBuilder();
+        if (currentPieceType == PGNOptions.PT_FIGURINE) {
+            ret.append(Piece.toUniCode(p));
+        } else {
+            boolean localized = (currentPieceType != PGNOptions.PT_ENGLISH);
+            if ((p == Piece.WPAWN) || (p == Piece.BPAWN))
+                ret.append(localized ? pieceNames[0] : "P");
+            else
+                ret.append(localized ? pieceToCharLocalized(p) : pieceToChar(p));
+        }
+        ret.append(squareToString(sq));
+        return ret.toString();
     }
 
     private final static String pieceToChar(int p) {

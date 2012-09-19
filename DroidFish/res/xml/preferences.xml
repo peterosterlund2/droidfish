@@ -196,6 +196,11 @@
             android:entries="@array/viewPieceType_texts"
             android:defaultValue="@string/viewPieceType_default">
         </ListPreference>
+        <CheckBoxPreference
+            android:key="materialDiff"
+            android:summary="@string/material_diff_summary"
+            android:title="@string/material_diff_title" >
+        </CheckBoxPreference>
         <PreferenceScreen
             android:key="buttonSettings"
             android:title="@string/prefs_buttonSettings_title"

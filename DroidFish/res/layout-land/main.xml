@@ -15,6 +15,11 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:paddingLeft="1dp">
+        <include
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/title">
+        </include>
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
