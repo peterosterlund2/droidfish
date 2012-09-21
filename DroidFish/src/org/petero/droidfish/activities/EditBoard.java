@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import org.petero.droidfish.ChessBoard;
 import org.petero.droidfish.R;
 import org.petero.droidfish.ChessBoard.SquareDecoration;
+import org.petero.droidfish.Util;
 import org.petero.droidfish.gamelogic.ChessParseError;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.Pair;
@@ -71,6 +72,8 @@ public class EditBoard extends Activity {
 
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         egtbHints = settings.getBoolean("tbHintsEdit", false);
+        boolean fullScreenMode = settings.getBoolean("fullScreenMode", false);
+        Util.setFullScreenMode(this, fullScreenMode);
 
         Intent i = getIntent();
         Position pos;

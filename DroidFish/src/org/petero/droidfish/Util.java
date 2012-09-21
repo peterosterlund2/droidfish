@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
 
+import android.app.Activity;
 import android.os.Build;
+import android.view.WindowManager;
 
 public final class Util {
     public final static String boldStart;
@@ -68,5 +70,16 @@ public final class Util {
             }
         }
         return new MaterialDiff(whiteString, blackString);
+    }
+
+    /** Enable/disable full screen mode for an activity. */
+    public static void setFullScreenMode(Activity a, boolean fullScreenMode) {
+        WindowManager.LayoutParams attrs = a.getWindow().getAttributes();
+        if (fullScreenMode) {
+            attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        } else {
+            attrs.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+        a.getWindow().setAttributes(attrs);
     }
 }

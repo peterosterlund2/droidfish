@@ -111,7 +111,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.View.OnLongClickListener;
@@ -813,7 +812,7 @@ public class DroidFish extends Activity implements GUIInterface {
         invertScrollDirection = settings.getBoolean("invertScrollDirection", false);
         leftHanded = settings.getBoolean("leftHanded", false);
         boolean fullScreenMode = settings.getBoolean("fullScreenMode", false);
-        setFullScreenMode(fullScreenMode);
+        Util.setFullScreenMode(this, fullScreenMode);
         useWakeLock = settings.getBoolean("wakeLock", false);
         setWakeLock(useWakeLock);
 
@@ -1015,16 +1014,6 @@ public class DroidFish extends Activity implements GUIInterface {
     public void updateMaterialDifferenceTitle(Util.MaterialDiff diff) {
         whiteFigText.setText(diff.white);
         blackFigText.setText(diff.black);
-    }
-
-    private final void setFullScreenMode(boolean fullScreenMode) {
-        WindowManager.LayoutParams attrs = getWindow().getAttributes();
-        if (fullScreenMode) {
-            attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
-        } else {
-            attrs.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
-        getWindow().setAttributes(attrs);
     }
 
     private final void setBookOptions() {
