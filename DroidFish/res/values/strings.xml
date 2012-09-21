@@ -126,8 +126,8 @@ you are not actively using the program.\
     <string name="header_site">Site:</string>
     <string name="header_date">Date:</string>
     <string name="header_round">Round:</string>
-    <string name="header_white">White:</string>
-    <string name="header_black">Black:</string>
+    <string name="header_white">\u25a0</string>
+    <string name="header_black">\u25a1</string>
     <string name="comment_before">Before:</string>
     <string name="comment_move">Move:</string>
     <string name="comment_after">After:</string>

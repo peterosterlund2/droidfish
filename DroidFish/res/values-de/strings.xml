@@ -114,8 +114,6 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="header_site">Ort:</string>
   <string name="header_date">Datum:</string>
   <string name="header_round">Runde:</string>
-  <string name="header_white">Weiß:</string>
-  <string name="header_black">Schwarz:</string>
   <string name="comment_before">Vorher:</string>
   <string name="comment_move">Zug:</string>
   <string name="comment_after">Nachher:</string>

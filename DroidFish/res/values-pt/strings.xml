@@ -113,8 +113,6 @@ não estiver usando o programa diretamente.\</string>
   <string name="header_site">Site:</string>
   <string name="header_date">Data:</string>
   <string name="header_round">Rodada:</string>
-  <string name="header_white">Brancas:</string>
-  <string name="header_black">Pretas:</string>
   <string name="comment_before">Antes:</string>
   <string name="comment_move">Lance:</string>
   <string name="comment_after">Após:</string>
