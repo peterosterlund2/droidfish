@@ -51,6 +51,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -61,12 +62,15 @@ public class EditBoard extends Activity {
     private TextView status;
     private Button okButton;
     private Button cancelButton;
+    private TextView whiteTitleText, blackTitleText, engineTitleText;
+    private View secondTitleLine;
 
     boolean egtbHints;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         initUI();
 
@@ -105,6 +109,15 @@ public class EditBoard extends Activity {
         status = (TextView)findViewById(R.id.eb_status);
         okButton = (Button)findViewById(R.id.eb_ok);
         cancelButton = (Button)findViewById(R.id.eb_cancel);
+
+        whiteTitleText = (TextView)findViewById(R.id.white_clock);
+        whiteTitleText.setText(R.string.edit_board);
+        blackTitleText = (TextView)findViewById(R.id.black_clock);
+        blackTitleText.setVisibility(View.GONE);
+        engineTitleText = (TextView)findViewById(R.id.title_text);
+        engineTitleText.setVisibility(View.GONE);
+        secondTitleLine = findViewById(R.id.second_title_line);
+        secondTitleLine.setVisibility(View.GONE);
 
         okButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
