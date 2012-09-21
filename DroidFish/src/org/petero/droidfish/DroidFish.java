@@ -344,8 +344,7 @@ public class DroidFish extends Activity implements GUIInterface {
         settings.registerOnSharedPreferenceChangeListener(new OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                readPrefs();
-                ctrl.setGameMode(gameMode);
+                handlePrefsChange();
             }
         });
 
@@ -492,6 +491,11 @@ public class DroidFish extends Activity implements GUIInterface {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        reInitUI();
+    }
+
+    /** Re-initialize UI when layout should change because of rotation or handedness change. */
+    private final void reInitUI() {
         ChessBoardPlay oldCB = cb;
         String statusStr = status.getText().toString();
         initUI();
@@ -513,12 +517,26 @@ public class DroidFish extends Activity implements GUIInterface {
         ctrl.updateMaterialDiffList();
     }
 
+    /** Return true if left-handed layout should be used. */
+    private final boolean leftHandedView() {
+        return settings.getBoolean("leftHanded", false) &&
+               (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
+    }
+
+    /** Re-read preferences settings. */
+    private final void handlePrefsChange() {
+        if (leftHanded != leftHandedView())
+            reInitUI();
+        else
+            readPrefs();
+        ctrl.setGameMode(gameMode);
+    }
+
     private final void initUI() {
-        Configuration config = getResources().getConfiguration();
         // The Android app title is removed with the style, but remains
         // individually in the Layout cause we need it to have in 2 lines +
         // landscape and portrait differ quite much
-        boolean leftHanded = this.leftHanded && (config.orientation == Configuration.ORIENTATION_LANDSCAPE);
+        leftHanded = leftHandedView();
         setContentView(leftHanded ? R.layout.main_left_handed : R.layout.main);
 
         // title lines need to be regenerated every time due to layout changes (rotations)
@@ -810,7 +828,6 @@ public class DroidFish extends Activity implements GUIInterface {
 
         scrollSensitivity = Float.parseFloat(settings.getString("scrollSensitivity", "2"));
         invertScrollDirection = settings.getBoolean("invertScrollDirection", false);
-        leftHanded = settings.getBoolean("leftHanded", false);
         boolean fullScreenMode = settings.getBoolean("fullScreenMode", false);
         Util.setFullScreenMode(this, fullScreenMode);
         useWakeLock = settings.getBoolean("wakeLock", false);
@@ -1146,8 +1163,7 @@ public class DroidFish extends Activity implements GUIInterface {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
         case RESULT_SETTINGS:
-            readPrefs();
-            ctrl.setGameMode(gameMode);
+            handlePrefsChange();
             break;
         case RESULT_EDITBOARD:
             if (resultCode == RESULT_OK) {
