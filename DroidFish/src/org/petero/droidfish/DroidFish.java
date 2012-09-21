@@ -1010,11 +1010,11 @@ public class DroidFish extends Activity implements GUIInterface {
         int inc = tmpInfo[2];
         if (mps > 0) {
             sb.append(mps);
-            sb.append(" / ");
+            sb.append("/");
         }
         sb.append(timeToString(tc));
         if ((inc > 0) || (mps <= 0)) {
-            sb.append(" + ");
+            sb.append("+");
             sb.append(tmpInfo[2] / 1000);
         }
         summaryTitleText.setText(sb.toString());
