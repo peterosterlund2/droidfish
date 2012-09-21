@@ -43,6 +43,7 @@ import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -164,6 +165,12 @@ public class EditBoard extends Activity {
                 return true;
             }
         });
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        showDialog(EDIT_DIALOG);
+        return true;
     }
 
     private final void setSelection(int sq) {
