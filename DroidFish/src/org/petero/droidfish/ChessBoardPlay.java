@@ -28,6 +28,7 @@ import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.util.AttributeSet;
 import android.widget.Toast;
 
@@ -71,7 +72,9 @@ public class ChessBoardPlay extends ChessBoard {
     @Override
     protected void computeOrigin(int width, int height) {
         x0 = (width - sqSize * 8) / 2;
-        y0 = (height - sqSize * 8) / 2;
+        Configuration config = getResources().getConfiguration();
+        boolean landScape = (config.orientation == Configuration.ORIENTATION_LANDSCAPE);
+        y0 = landScape ? 0 : (height - sqSize * 8) / 2;
     }
     @Override
     protected int getXFromSq(int sq) { return Position.getX(sq); }
