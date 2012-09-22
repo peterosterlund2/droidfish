@@ -233,15 +233,32 @@ public class GameTree {
     }
 
     private final void translateMovesHelper() {
-        ArrayList<Move> moves = MoveGen.instance.legalMoves(currentPos);
-        currentNode.verifyChildren(currentPos, moves);
-        int nc = currentNode.children.size();
-        for (int i = 0; i < nc; i++) {
-            Node child = currentNode.children.get(i);
-            child.moveStrLocal = TextIO.moveToString(currentPos, child.move, false, true, moves);
-            goForward(i, false);
-            translateMovesHelper();
-            goBack();
+        ArrayList<Integer> currPath = new ArrayList<Integer>();
+        currPath.add(0);
+        while (!currPath.isEmpty()) {
+            int last = currPath.size() - 1;
+            int currChild = currPath.get(last);
+            if (currChild == 0) {
+                ArrayList<Move> moves = MoveGen.instance.legalMoves(currentPos);
+                currentNode.verifyChildren(currentPos, moves);
+                int nc = currentNode.children.size();
+                for (int i = 0; i < nc; i++) {
+                    Node child = currentNode.children.get(i);
+                    child.moveStrLocal = TextIO.moveToString(currentPos, child.move, false, true, moves);
+                }
+            }
+            int nc = currentNode.children.size();
+            if (currChild < nc) {
+                goForward(currChild, false);
+                currPath.add(0);
+            } else {
+                currPath.remove(last);
+                last--;
+                if (last >= 0) {
+                    currPath.set(last, currPath.get(last) + 1);
+                    goBack();
+                }
+            }
         }
     }
 
