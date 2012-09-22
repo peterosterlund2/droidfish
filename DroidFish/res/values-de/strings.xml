@@ -66,6 +66,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="reading_pgn_file">PGN-Datei wird gelesen</string>
   <string name="reading_scid_file">Scid-Datei wird gelesen</string>
   <string name="new_file">&lt;Neue Datei&gt;</string>
+  <string name="new_engine">&lt;Neue Engine&gt;</string>
   <string name="please_wait">Bitte warten…</string>
   <string name="no_pgn_files">Keine Dateien im Verzeichnis DroidFish/pgn auf der SD-Karte gefunden</string>
   <string name="no_scid_files">Keine Dateien im Verzeichnis scid auf der SD-Karte gefunden</string>
@@ -133,6 +134,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="resign_black">Spielende, Aufgabe durch Schwarz!</string>
   <string name="book">Buch:</string>
   <string name="invalid_move">Unzulässiger Zug</string>
+  <string name="piece_can_not_be_moved">Figur kann nicht gezogen werden</string>
   <string name="preferences">Einstellungen</string>
   <string name="load_game_title">Datei bearbeiten/Partie laden</string>
   <string name="save_game_title">Datei bearbeiten/Partie speichern</string>
@@ -164,18 +166,27 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="after_selected">Nach der Auswahl</string>
   <string name="replace_selected">Auswahl ersetzen</string>
   <string name="engine">Schach-Engine</string>
+  <string name="engine_name">Name der Engine</string>
+  <string name="engine_name_in_use">Name der verwendete Engine</string>
+  <string name="slash_not_allowed">Zeichen / ist nicht erlaubt</string>
   <string name="engine_error">Engine-Fehler</string>
+  <string name="select_engine">Engine Auswahl</string>
   <string name="configure_network_engine">Konfiguration von Netzwerk Engines</string>
   <string name="create_network_engine">Erstellen einer Netzwerk Engine</string>
+  <string name="delete_network_engine">Netzwerk-Engine löschen?</string>
   <string name="host_name">Host</string>
   <string name="network_port">Port</string>
   <string name="network_engine">Netzwerk Engine</string>
   <string name="failed_to_start_engine">Fehler beim Starten der Engine</string>
   <string name="engine_terminated">Engine beendet</string>
   <string name="uci_protocol_error">UCI-Protokollfehler</string>
+  <string name="network_engine_config_error">Konfigurationsfehler der Netzwerk-Engine</string>
+  <string name="invalid_network_port">Ungültiges Port</string>
   <string name="start_new_game">Neue Partie starten?</string>
   <string name="strength_cuckoo_hint">Nutzen Sie die CuckooChess-Engine für eine noch geringere Spielstärke.</string>
   <string name="piece_names">B S L T D K</string>
+  <string name="material_diff_summary">Blendet einen zusätzlichen Untertitel ein mit den geschlagenen Figuren</string>
+  <string name="material_diff_title">Figuren-Unterschiede anzeigen</string>
   <string name="err_too_few_spaces">Zuwenig Felder</string>
   <string name="err_invalid_piece">Unzulässige Figur</string>
   <string name="err_invalid_side">Unzulässige Seite</string>
@@ -198,6 +209,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="option_force_computer_move">Computerzug erzwingen</string>
   <string name="option_draw">Remis anbieten/annehmen</string>
   <string name="option_select_book">Eröffnungsbuch auswählen</string>
+  <string name="option_manage_engines">Verwaltung der Schach-Engines</string>
   <string name="option_select_engine">Schach-Engine auswählen</string>
   <string name="option_color_theme">Farbschema auswählen</string>
   <string name="option_about">Information/Hinweise</string>
@@ -210,11 +222,13 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_playerNameFlip_summary">Spielfeld in Abhängigkeit vom Spielernamen drehen</string>
   <string name="prefs_engine_settings">Engine-Einstellungen</string>
   <string name="prefs_strength_title">Spielstärke</string>
-  <string name="prefs_strength_summary">Nur von den internen Engines unterstützt</string>
+  <string name="prefs_strength_summary">Wird nur von internen Engines unterstützt. Im Analyse-Modus wird die volle Stärke verwendet.</string>
   <string name="prefs_ponderMode_title">Vorausberechnung</string>
   <string name="prefs_ponderMode_summary">Vorausberechnung von Zügen durch die Engine, wenn der Spieler am Zug ist (von den meisten Engines unterstützt)</string>
   <string name="prefs_threads_title">Parallelberechnung</string>
   <string name="prefs_threads_summary">Zahl der zu nutzenden parallelen Engine-Stränge bzw. Prozessorkerne (nicht von allen Engines unterstützt)</string>
+  <string name="prefs_hash_title">Hash-Tabelle</string>
+  <string name="prefs_hash_summary">Größe der Hash-Tabelle in Megabyte</string>
   <string name="prefs_time_control">Zeitvorgabe</string>
   <string name="prefs_movesPerSession_title">Züge</string>
   <string name="prefs_movesPerSession_summary">Zahl der Züge innerhalb der Zeitvorgabe</string>
@@ -251,6 +265,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_invertScrollDirection_summary">Wischrichtung für Partie-Navigation umkehren</string>
   <string name="prefs_leftHanded_title">Linkshänder-Modus</string>
   <string name="prefs_leftHanded_summary">Steuerelemente auf der linken Seite im Querformat</string>
+  <string name="prefs_squareSelectType_title">Feldauswahl</string>
+  <string name="prefs_squareSelectType_summary">Bestimmung, wie die Auswahl eines Feldes erfolgen soll</string>
   <string name="prefs_fontSize_title">Schriftgröße</string>
   <string name="prefs_fontSize_summary">Schriftgröße für Zugliste und Partie-Informationen einstellen</string>
   <string name="prefs_largeButtons_title">Größe der Tasten</string>
@@ -311,7 +327,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_viewNAG_summary">Annotationen (Numeric Annotation Glyphs, NAGs) anzeigen</string>
   <string name="prefs_viewHeaders_title">Partie-Informationen</string>
   <string name="prefs_viewHeaders_summary">Partie-Informationen anzeigen</string>
-  <string name="prefs_viewPieceType_title">Figuren</string>
+  <string name="prefs_viewPieceType_title">Bezeichnung der Figuren</string>
   <string name="prefs_viewPieceType_summary">Festlegung, wie die Schach-Figuren notiert werden</string>
   <string name="prefs_pgn_import">PGN-Import</string>
   <string name="prefs_importVariations_title">Varianten</string>
@@ -470,8 +486,8 @@ wenn Sie es nicht aktiv nutzen.\
     <item>60000</item>
   </string-array>
   <string-array name="squareSelectType_texts">
-    <item>Sticky</item>
-    <item>Toggle</item>
+    <item>Dauerhaft</item>
+    <item>Abwechselnd</item>
   </string-array>
   <string-array name="squareSelectType_values">
     <item>0</item>

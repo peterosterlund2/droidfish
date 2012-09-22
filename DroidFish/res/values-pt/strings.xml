@@ -65,6 +65,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="reading_pgn_file">Lendo arquivo PGN</string>
   <string name="reading_scid_file">Lendo arquivo Scid</string>
   <string name="new_file">&lt;Novo arquivo&gt;</string>
+  <string name="new_engine">&lt;Novo software&gt;</string>
   <string name="please_wait">Aguarde…</string>
   <string name="no_pgn_files">Nenhum arquivo encontrado no diretório DroidFish/pgn no cartão SD</string>
   <string name="no_scid_files">Nenhum arquivo encontrado no diretório scid no cartão SD</string>
@@ -132,6 +133,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="resign_black">Partida encerrada, Pretas abandonam!</string>
   <string name="book">Livro:</string>
   <string name="invalid_move">Lance inválido</string>
+  <string name="piece_can_not_be_moved">Peça não pode ser movida</string>
   <string name="preferences">Preferências</string>
   <string name="load_game_title">Editar arquivo / Carregar partida</string>
   <string name="save_game_title">Editar arquivo / Salvar partida</string>
@@ -148,6 +150,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="heavy_cpu_usage">Uso intenso de CPU</string>
   <string name="background_processing">Processamento em segundo plano</string>
   <string name="lot_cpu_power">DroidFish está usando muita CPU</string>
+  <string name="delete">Remover</string>
   <string name="delete_game">Remover partida?</string>
   <string name="delete_file">Remover arquivo</string>
   <string name="delete_file_question">Remover arquivo?</string>
@@ -162,13 +165,27 @@ não estiver usando o programa diretamente.\</string>
   <string name="after_selected">Depois do selecionado</string>
   <string name="replace_selected">Sobrescrever selecionado</string>
   <string name="engine">Software</string>
+  <string name="engine_name">Nome do software</string>
+  <string name="engine_name_in_use">Nome do software em uso</string>
+  <string name="slash_not_allowed">Caracter não permitido</string>
   <string name="engine_error">Erro do software</string>
+  <string name="select_engine">Selecionar software</string>
+  <string name="configure_network_engine">Configurar rede do software</string>
+  <string name="create_network_engine">Criar rede do software</string>
+  <string name="delete_network_engine">Remover rede do software?</string>
+  <string name="host_name">Servidor</string>
+  <string name="network_port">Porto</string>
+  <string name="network_engine">Software de rede</string>
   <string name="failed_to_start_engine">Falha ao iniciar o software</string>
   <string name="engine_terminated">Software encerrado</string>
   <string name="uci_protocol_error">Erro de protocolo UCI</string>
+  <string name="network_engine_config_error">Erro na configuração da rede do software</string>
+  <string name="invalid_network_port">Porto de rede inválido</string>
   <string name="start_new_game">Iniciar nova partida?</string>
   <string name="strength_cuckoo_hint">Use o CuckooChess para um nível ainda menor.</string>
   <string name="piece_names">P C B T D R</string>
+  <string name="material_diff_summary">Exibe uma legenda adicional para peças capturadas</string>
+  <string name="material_diff_title">Mostrar diferença de material</string>
   <string name="err_too_few_spaces">Poucos espaços</string>
   <string name="err_invalid_piece">Peça inválida</string>
   <string name="err_invalid_side">Lado inválido</string>
@@ -191,6 +208,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="option_force_computer_move">Forçar lance do computador</string>
   <string name="option_draw">Pedir/Oferecer/Aceitar empate</string>
   <string name="option_select_book">Selecione o livro de aberturas</string>
+  <string name="option_manage_engines">Gerenciar softwares de Xadrez</string>
   <string name="option_select_engine">Escolher o software de Xadrez</string>
   <string name="option_color_theme">Escolher cor do tema</string>
   <string name="option_about">Sobre/Ajuda</string>
@@ -202,12 +220,14 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_playerNameFlip_title">Inverter tabuleiro: jogador</string>
   <string name="prefs_playerNameFlip_summary">Use o nome do jogador para virar o tabuleiro automaticamente</string>
   <string name="prefs_engine_settings">Configurações do software de Xadrez</string>
-  <string name="prefs_strength_title">Nível</string>
-  <string name="prefs_strength_summary">Suportado apenas pelos softwares internos</string>
+  <string name="prefs_strength_title">Nível de jogo</string>
+  <string name="prefs_strength_summary">Somente suportado por softwares interno. Modo análise sempre usa força total.</string>
   <string name="prefs_ponderMode_title">Avaliando</string>
   <string name="prefs_ponderMode_summary">Deixar o software analisando enquanto espera o lance do oponente. Suportado pela maioria dos softwares.</string>
   <string name="prefs_threads_title">Threads</string>
   <string name="prefs_threads_summary">Número de threads (CPUs) para usar. Não suportado por todas os softwares.</string>
+  <string name="prefs_hash_title">Tabela de hash</string>
+  <string name="prefs_hash_summary">Tamanho da tabela de hash em MB</string>
   <string name="prefs_time_control">Controle de tempo</string>
   <string name="prefs_movesPerSession_title">Lances</string>
   <string name="prefs_movesPerSession_summary">Número de lances entre os controles de tempo</string>
@@ -227,6 +247,8 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_user_interface">Interface de usuário</string>
   <string name="prefs_animateMoves_title">Movimentos animados</string>
   <string name="prefs_animateMoves_summary">Movimento de peças animado</string>
+  <string name="prefs_quickMoveInput_title">Modo de lance rápido</string>
+  <string name="prefs_quickMoveInput_summary">Casas de origem e destino podem ser tocadas em qualquer ordem.</string>
   <string name="prefs_soundEnabled_title">Habilitar sons</string>
   <string name="prefs_soundEnabled_summary">Tocar som quando o software faz um lance</string>
   <string name="prefs_vibrateEnabled_title">Habilitar vibração</string>
@@ -242,6 +264,8 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_invertScrollDirection_summary">Habilite se você acha que os movimentos estão na direção errada</string>
   <string name="prefs_leftHanded_title">Modo canhoto</string>
   <string name="prefs_leftHanded_summary">Controles à esquerda no modo paisagem</string>
+  <string name="prefs_squareSelectType_title">Seleção de casa</string>
+  <string name="prefs_squareSelectType_summary">Controla como selecionar casas no tabuleiro</string>
   <string name="prefs_fontSize_title">Tamanho da fonte</string>
   <string name="prefs_fontSize_summary">Tamanho da fonte para lista de lances e informações sobre a partida</string>
   <string name="prefs_largeButtons_title">Botões grandes</string>
@@ -259,6 +283,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_custom_button_2">Botão personalizado 2</string>
   <string name="prefs_custom_button_3">Botão personalizado 3</string>
   <string name="prefs_colors_title">Configurações de cores</string>
+  <string name="press_color_to_apply">Toque na cor para aplicar</string>
   <string name="prefs_colors_summary">Mudar cores individualmente</string>
   <string name="prefs_chess_board">Tabuleiro</string>
   <string name="prefs_color_brightSquare_title">Casas brancas</string>
@@ -301,6 +326,8 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_viewNAG_summary">Incluir símbolos de anotação (NAGs), tais como ! e ?</string>
   <string name="prefs_viewHeaders_title">Cabeçalhos</string>
   <string name="prefs_viewHeaders_summary">Mostrar linhas de cabeçalho PGN</string>
+  <string name="prefs_viewPieceType_title">Nomes das peças</string>
+  <string name="prefs_viewPieceType_summary">Controlar como são exibidos os nomes das peças</string>
   <string name="prefs_pgn_import">Importação de PGN</string>
   <string name="prefs_importVariations_title">Variantes</string>
   <string name="prefs_importVariations_summary">Incluir lances fora da linha principal</string>
@@ -352,9 +379,9 @@ não estiver usando o programa diretamente.\</string>
     <item>8</item>
   </string-array>
   <string-array name="viewPieceType_texts">
-    <item>English letters</item>
-    <item>Local language letters</item>
-    <item>Figurine notation</item>
+    <item>Letras em inglês</item>
+    <item>Letras locais</item>
+    <item>Figuras de Xadrez</item>
   </string-array>
   <string-array name="viewPieceType_values">
     <item>0</item>
@@ -458,8 +485,8 @@ não estiver usando o programa diretamente.\</string>
     <item>60000</item>
   </string-array>
   <string-array name="squareSelectType_texts">
-    <item>Sticky</item>
-    <item>Toggle</item>
+    <item>Fixar</item>
+    <item>Trocar</item>
   </string-array>
   <string-array name="squareSelectType_values">
     <item>0</item>
