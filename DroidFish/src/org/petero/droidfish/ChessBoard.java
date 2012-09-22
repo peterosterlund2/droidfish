@@ -354,6 +354,7 @@ public abstract class ChessBoard extends View {
     protected abstract int getSqSizeW(int width);
     protected abstract int getSqSizeH(int height);
     protected abstract int getMaxHeightPercentage();
+    protected abstract int getMaxWidthPercentage();
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -369,7 +370,8 @@ public abstract class ChessBoard extends View {
             int p = getMaxHeightPercentage();
             height = Math.min(getHeight(sqSize), height * p / 100);
         } else {
-            width = Math.min(getWidth(sqSize), width * 65 / 100);
+            int p = getMaxWidthPercentage();
+            width = Math.min(getWidth(sqSize), width * p / 100);
         }
         setMeasuredDimension(width, height);
     }
@@ -490,8 +492,7 @@ public abstract class ChessBoard extends View {
         }
     }
 
-    protected void drawExtraSquares(Canvas canvas) {
-    }
+    abstract protected void drawExtraSquares(Canvas canvas);
 
     protected final void drawPiece(Canvas canvas, int xCrd, int yCrd, int p) {
         String psb, psw;
@@ -601,6 +602,7 @@ public abstract class ChessBoard extends View {
     }
 
     protected abstract int minValidY();
+    protected abstract int maxValidX();
     protected abstract int getSquare(int x, int y);
 
     public final Move handleTrackballEvent(MotionEvent event) {
@@ -622,7 +624,7 @@ public abstract class ChessBoard extends View {
         cursorX += c * event.getX();
         cursorY -= c * event.getY();
         if (cursorX < 0) cursorX = 0;
-        if (cursorX > 7) cursorX = 7;
+        if (cursorX > maxValidX()) cursorX = maxValidX();
         if (cursorY < minValidY()) cursorY = minValidY();
         if (cursorY > 7) cursorY = 7;
         invalidate();

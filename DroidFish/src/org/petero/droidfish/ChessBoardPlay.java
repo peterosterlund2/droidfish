@@ -29,13 +29,11 @@ import org.petero.droidfish.gamelogic.TextIO;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.widget.Toast;
 
-/**
- * Chess board widget suitable for play mode.
- * @author petero
- */
+/** Chess board widget suitable for play mode. */
 public class ChessBoardPlay extends ChessBoard {
     private PGNOptions pgnOptions = null;
     boolean oneTouchMoves;
@@ -68,6 +66,8 @@ public class ChessBoardPlay extends ChessBoard {
     protected int getSqSizeH(int height) { return (height) / 8; }
     @Override
     protected int getMaxHeightPercentage() { return 75; }
+    @Override
+    protected int getMaxWidthPercentage() { return 65; }
 
     @Override
     protected void computeOrigin(int width, int height) {
@@ -84,8 +84,13 @@ public class ChessBoardPlay extends ChessBoard {
     @Override
     protected int minValidY() { return 0; }
     @Override
+    protected int maxValidX() { return 7; }
+    @Override
     protected int getSquare(int x, int y) { return Position.getSquare(x, y); }
 
+    @Override
+    protected void drawExtraSquares(Canvas canvas) {
+    }
 
     private final boolean myColor(int piece) {
         return (piece != Piece.EMPTY) && (Piece.isWhite(piece) == pos.whiteMove);

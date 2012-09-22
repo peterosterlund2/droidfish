@@ -34,14 +34,20 @@
             <Button
                 android:text="@android:string/ok"
                 android:id="@+id/eb_ok"
-                android:layout_width="fill_parent"
+                android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
             </Button>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/LinearLayout03"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
             <Button
                 android:text="@string/cancel"
                 android:id="@+id/eb_cancel"
-                android:layout_width="fill_parent"
+                android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
             </Button>
