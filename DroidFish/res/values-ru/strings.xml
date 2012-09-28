@@ -49,8 +49,6 @@
   <string name="select_pgn_file_save">Сохранить в PGN файле</string>
   <string name="pgn_load">Загрузить</string>
   <string name="pgn_save">Сохранить</string>
-  <string name="select_scid_file">Выбрать Scid файл для открытия</string>
-  <string name="select_pgn_game">Выбрать партию для открытия</string>
   <string name="reading_pgn_file">Чтение PGN файла</string>
   <string name="reading_scid_file">Чтение Scid файла</string>
   <string name="new_file">&lt;Новый файл&gt;</string>

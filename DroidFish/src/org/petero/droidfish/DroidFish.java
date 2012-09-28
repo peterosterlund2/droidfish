@@ -533,9 +533,6 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     private final void initUI() {
-        // The Android app title is removed with the style, but remains
-        // individually in the Layout cause we need it to have in 2 lines +
-        // landscape and portrait differ quite much
         leftHanded = leftHandedView();
         setContentView(leftHanded ? R.layout.main_left_handed : R.layout.main);
 

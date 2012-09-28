@@ -18,6 +18,7 @@
 
 package org.petero.droidfish.engine;
 
+import android.annotation.TargetApi;
 import android.os.Build;
 
 public class EngineUtil {
@@ -28,6 +29,7 @@ public class EngineUtil {
     /** Return number of physical processors, i.e. hyper-threading ignored. */
     final static native int getNPhysicalProcessors();
 
+    @TargetApi(4)
     private static final class CpuAbi {
         static final String get() { return Build.CPU_ABI; }
     }

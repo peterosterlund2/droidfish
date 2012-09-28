@@ -43,8 +43,6 @@
   <string name="select_pgn_file_save">Sauvegarder dans un fichier PGN</string>
   <string name="pgn_load">Chargement</string>
   <string name="pgn_save">Sauvegarde</string>
-  <string name="select_scid_file">Sélectionner le fichier Scid à ouvrir</string>
-  <string name="select_pgn_game">Sélectionner le jeu à charger</string>
   <string name="reading_pgn_file">Lecture du fichier PGN</string>
   <string name="reading_scid_file">Lecture du fichier Scid</string>
   <string name="toggle_show_thinking">Monter/masquer l\'analyse</string>
