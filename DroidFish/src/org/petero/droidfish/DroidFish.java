@@ -2711,12 +2711,24 @@ public class DroidFish extends Activity implements GUIInterface {
         }
     }
 
+    private final boolean hasScidProvider() {
+        List<ProviderInfo> providers = getPackageManager().queryContentProviders(null, 0, 0);
+        for (ProviderInfo info : providers)
+            if (info.authority.equals("org.scid.database.scidprovider"))
+                return true;
+        return false;
+    }
+
     private final void selectScidFile() {
         Intent intent = new Intent();
         intent.setComponent(new ComponentName("org.scid.android",
                                               "org.scid.android.SelectFileActivity"));
         intent.setAction(".si4");
-        startActivityForResult(intent, RESULT_SELECT_SCID);
+        try {
+            startActivityForResult(intent, RESULT_SELECT_SCID);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     final static int FT_NONE = 0;
@@ -3139,13 +3151,5 @@ public class DroidFish extends Activity implements GUIInterface {
             }
             currNode = node;
         }
-    }
-
-    private final boolean hasScidProvider() {
-        List<ProviderInfo> providers = getPackageManager().queryContentProviders(null, 0, 0);
-        for (ProviderInfo info : providers)
-            if (info.authority.equals("org.scid.database.scidprovider"))
-                return true;
-        return false;
     }
 }

@@ -255,20 +255,28 @@ public class LoadScid extends ListActivity {
     private Cursor getListCursor() {
         String scidFileName = fileName.substring(0, fileName.indexOf("."));
         String[] proj = new String[]{"_id", "summary"};
-        Cursor cursor = managedQuery(Uri.parse("content://org.scid.database.scidprovider/games"),
-                                     proj, scidFileName, null, null);
-        idIdx = cursor.getColumnIndex("_id");
-        summaryIdx = cursor.getColumnIndex("summary");
-        return cursor;
+        try {
+            Cursor cursor = managedQuery(Uri.parse("content://org.scid.database.scidprovider/games"),
+                    proj, scidFileName, null, null);
+            idIdx = cursor.getColumnIndex("_id");
+            summaryIdx = cursor.getColumnIndex("summary");
+            return cursor;
+        } catch (Throwable t) {
+            return null;
+        }
     }
 
     private Cursor getOneGameCursor(int gameId) {
         String scidFileName = fileName.substring(0, fileName.indexOf("."));
         String[] proj = new String[]{"pgn"};
-        String uri = String.format("content://org.scid.database.scidprovider/games/%d", gameId);
-        Cursor cursor = managedQuery(Uri.parse(uri),
-                                     proj, scidFileName, null, null);
-        return cursor;
+        try {
+            String uri = String.format("content://org.scid.database.scidprovider/games/%d", gameId);
+            Cursor cursor = managedQuery(Uri.parse(uri),
+                                         proj, scidFileName, null, null);
+            return cursor;
+        } catch (Throwable t) {
+            return null;
+        }
     }
 
     private void addGameInfo(Cursor cursor) {
