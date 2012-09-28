@@ -3,21 +3,65 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:layout_gravity="center_vertical">
     <view
-        class="org.petero.droidfish.activities.ChessBoardEdit"
         android:id="@+id/eb_chessboard"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"/>
+        android:layout_height="fill_parent"
+        class="org.petero.droidfish.activities.ChessBoardEdit"/>
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-        <include
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:paddingLeft="2dp" >
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/first_title_line"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            layout="@layout/title">
-        </include>
+            android:layout_gravity="center_vertical"
+            android:background="@android:drawable/title_bar"
+            android:orientation="horizontal"
+            android:tag="title" >
+            <TextView
+                android:id="@+id/white_clock"
+                style="?android:attr/windowTitleStyle"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="left"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="false"
+                android:singleLine="true"
+                android:tag="title" />
+            <TextView
+                android:id="@+id/title_text"
+                style="?android:attr/windowTitleStyle"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:tag="title"
+                android:text="@string/app_name" />
+            <TextView
+                android:id="@+id/black_clock"
+                style="?android:attr/windowTitleStyle"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="right"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:tag="title" />
+        </LinearLayout>
         <TextView
             android:text=""
             android:id="@+id/eb_status"
@@ -45,12 +89,69 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
             <Button
-                android:text="@string/cancel"
                 android:id="@+id/eb_cancel"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
-            </Button>
+                android:layout_weight="1"
+                android:text="@string/cancel" />
+        </LinearLayout>
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/footer"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:orientation="horizontal" >
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/second_title_line"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/title_bar"
+                android:gravity="bottom"
+                android:orientation="vertical"
+                android:tag="title" >
+                <TextView
+                    android:id="@+id/white_pieces"
+                    style="?android:attr/windowTitleStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:gravity="left|center_vertical"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:singleLine="true"
+                    android:tag="title"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/title_text_summary"
+                    style="?android:attr/windowTitleStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center|center_vertical"
+                    android:tag="title"
+                    android:visibility="visible" />
+                <TextView
+                    android:id="@+id/black_pieces"
+                    style="?android:attr/windowTitleStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:gravity="left|center_vertical"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:tag="title"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -58,7 +58,7 @@ public final class Util {
     public static MaterialDiff getMaterialDiff(Position pos) {
         StringBuilder whiteString = new StringBuilder();
         StringBuilder blackString = new StringBuilder();
-        for (int p = Piece.WPAWN; p >= Piece.WQUEEN; p--) {
+        for (int p = Piece.WPAWN; p >= Piece.WKING; p--) {
             int diff = pos.nPieces(p) - pos.nPieces(Piece.swapColor(p));
             while (diff < 0) {
                 whiteString.append(Piece.toUniCode(Piece.swapColor(p)));

@@ -24,6 +24,7 @@ import org.petero.droidfish.ChessBoard;
 import org.petero.droidfish.R;
 import org.petero.droidfish.ChessBoard.SquareDecoration;
 import org.petero.droidfish.Util;
+import org.petero.droidfish.Util.MaterialDiff;
 import org.petero.droidfish.gamelogic.ChessParseError;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.Pair;
@@ -39,6 +40,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
@@ -63,14 +65,19 @@ public class EditBoard extends Activity {
     private Button okButton;
     private Button cancelButton;
     private TextView whiteTitleText, blackTitleText, engineTitleText;
-    private View secondTitleLine;
 
     boolean egtbHints;
+    private TextView whiteFigText;
+    private TextView blackFigText;
+    private TextView summaryTitleText;
+    private Typeface figNotation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        figNotation = Typeface.createFromAsset(getAssets(), "fonts/DroidFishChessNotationDark.otf");
 
         initUI();
 
@@ -84,6 +91,7 @@ public class EditBoard extends Activity {
         try {
             pos = TextIO.readFEN(i.getAction());
             cb.setPosition(pos);
+            checkValidAndUpdateMaterialDiff();
         } catch (ChessParseError e) {
         }
     }
@@ -101,6 +109,7 @@ public class EditBoard extends Activity {
         setSelection(oldCB.selectedSquare);
         cb.userSelectedSquare = oldCB.userSelectedSquare;
         status.setText(statusStr);
+        checkValidAndUpdateMaterialDiff();
     }
 
     private final void initUI() {
@@ -116,8 +125,16 @@ public class EditBoard extends Activity {
         blackTitleText.setVisibility(View.GONE);
         engineTitleText = (TextView)findViewById(R.id.title_text);
         engineTitleText.setVisibility(View.GONE);
-        secondTitleLine = findViewById(R.id.second_title_line);
-        secondTitleLine.setVisibility(View.GONE);
+        whiteFigText = (TextView) findViewById(R.id.white_pieces);
+        whiteFigText.setTypeface(figNotation);
+        whiteFigText.setSelected(true);
+        whiteFigText.setTextColor(whiteTitleText.getTextColors());
+        blackFigText = (TextView) findViewById(R.id.black_pieces);
+        blackFigText.setTypeface(figNotation);
+        blackFigText.setSelected(true);
+        blackFigText.setTextColor(blackTitleText.getTextColors());
+        summaryTitleText = (TextView) findViewById(R.id.title_text_summary);
+        summaryTitleText.setVisibility(View.GONE);
 
         okButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -243,7 +260,7 @@ public class EditBoard extends Activity {
             setSelection(-1);
         else
             setSelection(m.from);
-        checkValid();
+        checkValidAndUpdateMaterialDiff();
     }
 
     @Override
@@ -256,7 +273,7 @@ public class EditBoard extends Activity {
     }
 
     private final void sendBackResult() {
-        if (checkValid()) {
+        if (checkValidAndUpdateMaterialDiff()) {
             setPosFields();
             String fen = TextIO.toFEN(cb.pos);
             setResult(RESULT_OK, (new Intent()).setAction(fen));
@@ -287,9 +304,13 @@ public class EditBoard extends Activity {
         cb.pos.setEpSquare(epSquare);
     }
 
-    /** Test if a position is valid. */
-    private final boolean checkValid() {
+    /** Test if a position is valid and update material diff display. */
+    private final boolean checkValidAndUpdateMaterialDiff() {
         try {
+            MaterialDiff md = Util.getMaterialDiff(cb.pos);
+            whiteFigText.setText(md.white);
+            blackFigText.setText(md.black);
+
             String fen = TextIO.toFEN(cb.pos);
             TextIO.readFEN(fen);
             status.setText("");
@@ -332,13 +353,13 @@ public class EditBoard extends Activity {
                     case 0: // Edit side to move
                         showDialog(SIDE_DIALOG);
                         setSelection(-1);
-                        checkValid();
+                        checkValidAndUpdateMaterialDiff();
                         break;
                     case 1: { // Clear board
                         Position pos = new Position();
                         cb.setPosition(pos);
                         setSelection(-1);
-                        checkValid();
+                        checkValidAndUpdateMaterialDiff();
                         break;
                     }
                     case 2: { // Set initial position
@@ -346,7 +367,7 @@ public class EditBoard extends Activity {
                             Position pos = TextIO.readFEN(TextIO.startPosFEN);
                             cb.setPosition(pos);
                             setSelection(-1);
-                            checkValid();
+                            checkValidAndUpdateMaterialDiff();
                         } catch (ChessParseError e) {
                         }
                         break;
@@ -355,19 +376,19 @@ public class EditBoard extends Activity {
                         removeDialog(CASTLE_DIALOG);
                         showDialog(CASTLE_DIALOG);
                         setSelection(-1);
-                        checkValid();
+                        checkValidAndUpdateMaterialDiff();
                         break;
                     case 4: // Edit en passant file
                         removeDialog(EP_DIALOG);
                         showDialog(EP_DIALOG);
                         setSelection(-1);
-                        checkValid();
+                        checkValidAndUpdateMaterialDiff();
                         break;
                     case 5: // Edit move counters
                         removeDialog(MOVCNT_DIALOG);
                         showDialog(MOVCNT_DIALOG);
                         setSelection(-1);
-                        checkValid();
+                        checkValidAndUpdateMaterialDiff();
                         break;
                     case 6: { // Copy position
                         setPosFields();
@@ -390,7 +411,7 @@ public class EditBoard extends Activity {
                                 Toast.makeText(getApplicationContext(), getParseErrString(e), Toast.LENGTH_SHORT).show();
                             }
                             setSelection(-1);
-                            checkValid();
+                            checkValidAndUpdateMaterialDiff();
                         }
                         break;
                     }
@@ -408,11 +429,11 @@ public class EditBoard extends Activity {
                 public void onClick(DialogInterface dialog, int id) {
                     if (id == 0) { // white to move
                         cb.pos.setWhiteMove(true);
-                        checkValid();
+                        checkValidAndUpdateMaterialDiff();
                         dialog.cancel();
                     } else {
                         cb.pos.setWhiteMove(false);
-                        checkValid();
+                        checkValidAndUpdateMaterialDiff();
                         dialog.cancel();
                     }
                 }
@@ -452,7 +473,7 @@ public class EditBoard extends Activity {
                     if (h8Castle) castleMask |= 1 << Position.H8_CASTLE;
                     pos.setCastleMask(castleMask);
                     cb.setPosition(pos);
-                    checkValid();
+                    checkValidAndUpdateMaterialDiff();
                 }
             });
             AlertDialog alert = builder.create();
