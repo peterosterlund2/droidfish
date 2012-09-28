@@ -473,6 +473,18 @@
                     alphaSlider="true" 
                     android:defaultValue="#FFC0C000">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
+                <net.margaritov.preference.colorpicker.ColorPickerPreference
+                    android:key="color_fontForeground"
+                    android:title="@string/prefs_color_fontForeground_title"
+                    alphaSlider="false" 
+                    android:defaultValue="#FFFFFFFF">
+                </net.margaritov.preference.colorpicker.ColorPickerPreference>
+                <net.margaritov.preference.colorpicker.ColorPickerPreference
+                    android:key="color_generalBackground"
+                    android:title="@string/prefs_color_generalBackground_title"
+                    alphaSlider="false" 
+                    android:defaultValue="#FF000000">
+                </net.margaritov.preference.colorpicker.ColorPickerPreference>
                 </PreferenceCategory>
         </PreferenceScreen>
     </PreferenceCategory>

@@ -535,6 +535,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private final void initUI() {
         leftHanded = leftHandedView();
         setContentView(leftHanded ? R.layout.main_left_handed : R.layout.main);
+        Util.overrideFonts(findViewById(android.R.id.content));
 
         // title lines need to be regenerated every time due to layout changes (rotations)
         secondTitleLine = findViewById(R.id.second_title_line);
@@ -888,6 +889,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
         ColorTheme.instance().readColors(settings);
         cb.setColors();
+        Util.overrideFonts(findViewById(android.R.id.content));
 
         gameTextListener.clear();
         setPieceNames(pgnOptions.view.pieceType);
@@ -2026,6 +2028,7 @@ public class DroidFish extends Activity implements GUIInterface {
                 gameTextListener.clear();
                 ctrl.prefsChanged(false);
                 dialog.dismiss();
+                Util.overrideFonts(findViewById(android.R.id.content));
             }
         });
         return builder.create();

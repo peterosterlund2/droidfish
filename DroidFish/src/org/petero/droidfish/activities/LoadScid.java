@@ -21,7 +21,9 @@ package org.petero.droidfish.activities;
 import java.io.File;
 import java.util.Vector;
 
+import org.petero.droidfish.ColorTheme;
 import org.petero.droidfish.R;
+import org.petero.droidfish.Util;
 
 import android.app.Dialog;
 import android.app.ListActivity;
@@ -36,9 +38,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -167,9 +171,21 @@ public class LoadScid extends ListActivity {
 
     private final void showList() {
         progress.dismiss();
-        final ArrayAdapter<GameInfo> aa = new ArrayAdapter<GameInfo>(this, R.layout.select_game_list_item, gamesInFile);
+        final ArrayAdapter<GameInfo> aa =
+            new ArrayAdapter<GameInfo>(this, R.layout.select_game_list_item, gamesInFile) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                if (view instanceof TextView) {
+                    int fg = ColorTheme.instance().getColor(ColorTheme.FONT_FOREGROUND);
+                    ((TextView) view).setTextColor(fg);
+                }
+                return view;
+            }
+        };
         setListAdapter(aa);
         ListView lv = getListView();
+        Util.overrideFonts(lv);
         lv.setSelectionFromTop(defaultItem, 0);
         lv.setFastScrollEnabled(true);
         lv.setOnItemClickListener(new OnItemClickListener() {

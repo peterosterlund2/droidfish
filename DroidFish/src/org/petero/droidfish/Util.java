@@ -12,7 +12,14 @@ import org.petero.droidfish.gamelogic.Position;
 
 import android.app.Activity;
 import android.os.Build;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.TextView;
 
 public final class Util {
     public final static String boldStart;
@@ -81,5 +88,30 @@ public final class Util {
             attrs.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
         a.getWindow().setAttributes(attrs);
+    }
+
+    /** Change foreground/background color in a view. */
+    public static void overrideFonts(final View v) {
+        if (v == null)
+            return;
+        final int bg = ColorTheme.instance().getColor(ColorTheme.GENERAL_BACKGROUND);
+        final boolean excludedItems = v instanceof Button ||
+                                      v instanceof EditText ||
+                                      v instanceof ImageButton ||
+                                      "title".equals(v.getTag());
+        if (!excludedItems)
+            v.setBackgroundColor(bg);
+        if (v instanceof ListView)
+            ((ListView) v).setCacheColorHint(bg);
+        if (v instanceof ViewGroup) {
+            ViewGroup vg = (ViewGroup) v;
+            for (int i = 0; i < vg.getChildCount(); i++) {
+                View child = vg.getChildAt(i);
+                overrideFonts(child);
+            }
+        } else if ((v instanceof TextView) && !excludedItems) {
+            int fg = ColorTheme.instance().getColor(ColorTheme.FONT_FOREGROUND);
+            ((TextView) v).setTextColor(fg);
+        }
     }
 }

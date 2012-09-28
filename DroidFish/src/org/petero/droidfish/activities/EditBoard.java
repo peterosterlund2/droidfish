@@ -114,6 +114,8 @@ public class EditBoard extends Activity {
 
     private final void initUI() {
         setContentView(R.layout.editboard);
+        Util.overrideFonts(findViewById(android.R.id.content));
+
         cb = (ChessBoardEdit)findViewById(R.id.eb_chessboard);
         status = (TextView)findViewById(R.id.eb_status);
         okButton = (Button)findViewById(R.id.eb_ok);

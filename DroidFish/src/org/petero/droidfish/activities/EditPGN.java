@@ -21,7 +21,9 @@ package org.petero.droidfish.activities;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.petero.droidfish.ColorTheme;
 import org.petero.droidfish.R;
+import org.petero.droidfish.Util;
 import org.petero.droidfish.activities.PGNFile.GameInfo;
 import org.petero.droidfish.activities.PGNFile.GameInfoResult;
 import org.petero.droidfish.gamelogic.Pair;
@@ -43,6 +45,7 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -234,7 +237,18 @@ public class EditPGN extends ListActivity {
     private final void showList() {
         progress.dismiss();
         setContentView(R.layout.select_game);
-        aa = new ArrayAdapter<GameInfo>(this, R.layout.select_game_list_item, gamesInFile);
+        Util.overrideFonts(findViewById(android.R.id.content));
+        aa = new ArrayAdapter<GameInfo>(this, R.layout.select_game_list_item, gamesInFile) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                if (view instanceof TextView) {
+                    int fg = ColorTheme.instance().getColor(ColorTheme.FONT_FOREGROUND);
+                    ((TextView) view).setTextColor(fg);
+                }
+                return view;
+            }
+        };
         setListAdapter(aa);
         ListView lv = getListView();
         lv.setSelectionFromTop(defaultItem, 0);
