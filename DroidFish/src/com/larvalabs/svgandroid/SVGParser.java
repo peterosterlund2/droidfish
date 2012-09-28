@@ -3,6 +3,8 @@ package com.larvalabs.svgandroid;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.*;
+import android.util.FloatMath;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -1013,8 +1015,8 @@ public class SVGParser {
                 return;
             }
             if (localName.equals("svg")) {
-                int width = (int) Math.ceil(getFloatAttr("width", atts));
-                int height = (int) Math.ceil(getFloatAttr("height", atts));
+                int width = (int) FloatMath.ceil(getFloatAttr("width", atts));
+                int height = (int) FloatMath.ceil(getFloatAttr("height", atts));
                 canvas = picture.beginRecording(width, height);
             } else if (localName.equals("defs")) {
                 // Ignore
