@@ -262,6 +262,8 @@ you are not actively using the program.\
     <string name="prefs_user_interface_behavior">Behavior</string>
     <string name="prefs_animateMoves_title">Animate Moves</string>
     <string name="prefs_animateMoves_summary">Animate piece movements</string>
+    <string name="prefs_autoScrollTitle_title">Titlebar Scrolling</string>
+    <string name="prefs_autoScrollTitle_summary">Auto scroll titlebar if player names are too long</string>
     <string name="prefs_quickMoveInput_title">Quick Move Input</string>
     <string name="prefs_quickMoveInput_summary">From and To squares can be touched in any order. Move is played as soon as uniquely defined.</string>
     <string name="prefs_soundEnabled_title">Enable Sounds</string>

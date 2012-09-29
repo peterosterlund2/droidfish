@@ -96,6 +96,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
@@ -190,6 +191,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private MediaPlayer moveSound;
     private boolean vibrateEnabled;
     private boolean animateMoves;
+    private boolean autoScrollTitle;
     private boolean showMaterialDiff;
 
     private final static String bookDir = "DroidFish";
@@ -415,7 +417,7 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     /** Create directory structure on SD card. */
-    private void createDirectories() {
+    private final void createDirectories() {
         File extDir = Environment.getExternalStorageDirectory();
         String sep = File.separator;
         new File(extDir + sep + bookDir).mkdirs();
@@ -842,6 +844,8 @@ public class DroidFish extends Activity implements GUIInterface {
         soundEnabled = settings.getBoolean("soundEnabled", false);
         vibrateEnabled = settings.getBoolean("vibrateEnabled", false);
         animateMoves = settings.getBoolean("animateMoves", true);
+        autoScrollTitle = settings.getBoolean("autoScrollTitle", true);
+        setTitleScrolling();
 
         custom1ButtonActions.readPrefs(settings, actionFactory);
         custom2ButtonActions.readPrefs(settings, actionFactory);
@@ -905,7 +909,7 @@ public class DroidFish extends Activity implements GUIInterface {
     /**
      * Change the Pieces into figurine or regular (i.e. letters) display
      */
-    private void setFigurineNotation(boolean displayAsFigures, int fontSize) {
+    private final void setFigurineNotation(boolean displayAsFigures, int fontSize) {
         if (displayAsFigures) {
             // increase the font cause it has different kerning and looks small
             float increaseFontSize = fontSize * 1.1f;
@@ -919,7 +923,17 @@ public class DroidFish extends Activity implements GUIInterface {
         }
     }
 
-    private void updateButtons() {
+    /** Enable/disable title bar scrolling. */
+    private final void setTitleScrolling() {
+        TextUtils.TruncateAt where = autoScrollTitle ? TextUtils.TruncateAt.MARQUEE
+                                                     : TextUtils.TruncateAt.END;
+        whiteTitleText.setEllipsize(where);
+        blackTitleText.setEllipsize(where);
+        whiteFigText.setEllipsize(where);
+        blackFigText.setEllipsize(where);
+    }
+
+    private final void updateButtons() {
         boolean largeButtons = settings.getBoolean("largeButtons", false);
         Resources r = getResources();
         int bWidth  = (int)Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, r.getDisplayMetrics()));
@@ -950,8 +964,8 @@ public class DroidFish extends Activity implements GUIInterface {
         setButtonData(redoButton, bWidth, bHeight, R.raw.right, svg);
     }
 
-    private void setButtonData(ImageButton button, int bWidth, int bHeight,
-                               int svgResId, SVG touched) {
+    private final void setButtonData(ImageButton button, int bWidth, int bHeight,
+                                     int svgResId, SVG touched) {
         SVG svg = SVGParser.getSVGFromResource(getResources(), svgResId);
         button.setBackgroundDrawable(new SVGPictureDrawable(svg));
 

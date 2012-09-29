@@ -173,6 +173,12 @@
             android:summary="@string/prefs_animateMoves_summary" 
             android:defaultValue="true">
         </CheckBoxPreference>
+        <CheckBoxPreference 
+            android:key="autoScrollTitle" 
+            android:title="@string/prefs_autoScrollTitle_title" 
+            android:summary="@string/prefs_autoScrollTitle_summary" 
+            android:defaultValue="true">
+        </CheckBoxPreference>
         <PreferenceScreen
             android:key="colors" 
             android:title="@string/prefs_colors_title" 

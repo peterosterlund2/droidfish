@@ -44,6 +44,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
+import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -66,7 +67,8 @@ public class EditBoard extends Activity {
     private Button cancelButton;
     private TextView whiteTitleText, blackTitleText, engineTitleText;
 
-    boolean egtbHints;
+    private boolean egtbHints;
+    private boolean autoScrollTitle;
     private TextView whiteFigText;
     private TextView blackFigText;
     private TextView summaryTitleText;
@@ -79,11 +81,13 @@ public class EditBoard extends Activity {
 
         figNotation = Typeface.createFromAsset(getAssets(), "fonts/DroidFishChessNotationDark.otf");
 
-        initUI();
-
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         egtbHints = settings.getBoolean("tbHintsEdit", false);
         boolean fullScreenMode = settings.getBoolean("fullScreenMode", false);
+        autoScrollTitle = settings.getBoolean("autoScrollTitle", true);
+
+        initUI();
+
         Util.setFullScreenMode(this, fullScreenMode);
 
         Intent i = getIntent();
@@ -137,6 +141,13 @@ public class EditBoard extends Activity {
         blackFigText.setTextColor(blackTitleText.getTextColors());
         summaryTitleText = (TextView) findViewById(R.id.title_text_summary);
         summaryTitleText.setVisibility(View.GONE);
+
+        TextUtils.TruncateAt where = autoScrollTitle ? TextUtils.TruncateAt.MARQUEE
+                                                     : TextUtils.TruncateAt.END;
+        whiteTitleText.setEllipsize(where);
+        blackTitleText.setEllipsize(where);
+        whiteFigText.setEllipsize(where);
+        blackFigText.setEllipsize(where);
 
         okButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
