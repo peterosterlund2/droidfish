@@ -305,12 +305,7 @@ public class DroidFish extends Activity implements GUIInterface {
                         oldGameModeType = ctrl.getGameMode().getModeNr();
                         gameModeType = GameMode.ANALYSIS;
                     }
-                    Editor editor = settings.edit();
-                    String gameModeStr = String.format("%d", gameModeType);
-                    editor.putString("gameMode", gameModeStr);
-                    editor.commit();
-                    gameMode = new GameMode(gameModeType);
-                    ctrl.setGameMode(gameMode);
+                    newGameMode(gameModeType);
                     setBoardFlip(true);
                 }
             });
@@ -1196,6 +1191,9 @@ public class DroidFish extends Activity implements GUIInterface {
             if (resultCode == RESULT_OK) {
                 try {
                     String pgn = data.getAction();
+                    int modeNr = ctrl.getGameMode().getModeNr();
+                    if ((modeNr != GameMode.ANALYSIS) && (modeNr != GameMode.EDIT_GAME))
+                        newGameMode(GameMode.EDIT_GAME);
                     ctrl.setFENOrPGN(pgn);
                     setBoardFlip(true);
                 } catch (ChessParseError e) {
@@ -1236,6 +1234,16 @@ public class DroidFish extends Activity implements GUIInterface {
             }
             break;
         }
+    }
+
+    /** Set new game mode. */
+    private final void newGameMode(int gameModeType) {
+        Editor editor = settings.edit();
+        String gameModeStr = String.format("%d", gameModeType);
+        editor.putString("gameMode", gameModeStr);
+        editor.commit();
+        gameMode = new GameMode(gameModeType);
+        ctrl.setGameMode(gameMode);
     }
 
     private static String getFilePathFromUri(Uri uri) {
