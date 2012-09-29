@@ -258,7 +258,8 @@ you are not actively using the program.\
     <string name="prefs_bookHints_summary">Display opening book move hints for human player</string>
     <string name="prefs_thinkingArrows_title">Use Arrows</string>
     <string name="prefs_thinkingArrows_summary">Use arrows to display moves on chess board</string>
-    <string name="prefs_user_interface">User Interface</string>
+    <string name="prefs_user_interface_appearance">Appearance</string>
+    <string name="prefs_user_interface_behavior">Behavior</string>
     <string name="prefs_animateMoves_title">Animate Moves</string>
     <string name="prefs_animateMoves_summary">Animate piece movements</string>
     <string name="prefs_quickMoveInput_title">Quick Move Input</string>
