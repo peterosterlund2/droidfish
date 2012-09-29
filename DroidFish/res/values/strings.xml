@@ -279,6 +279,8 @@ you are not actively using the program.\
     <string name="prefs_scrollSensitivity_summary">Scrolling speed for game navigation</string>
     <string name="prefs_invertScrollDirection_title">Invert Scroll Direction</string>
     <string name="prefs_invertScrollDirection_summary">Enable this if you think scrolling moves in the wrong direction</string>
+    <string name="prefs_discardVariations_title">Discard variations</string>
+    <string name="prefs_discardVariations_summary">Discard non-mainline moves from move list</string>
     <string name="prefs_leftHanded_title">Left-handed mode</string>
     <string name="prefs_leftHanded_summary">Controls on left side in landscape mode</string>
     <string name="prefs_squareSelectType_title">Square selection</string>

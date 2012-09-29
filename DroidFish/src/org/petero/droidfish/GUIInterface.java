@@ -100,4 +100,7 @@ public interface GUIInterface {
 
     /** Get the default player name. */
     public String playerName();
+
+    /** Return true if only main-line moves are to be kept. */
+    public boolean discardVariations();
 }

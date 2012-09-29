@@ -496,7 +496,13 @@
             android:summary="@string/prefs_invertScrollDirection_summary"
             android:defaultValue="false">
         </CheckBoxPreference>
-    </PreferenceCategory>
+        <CheckBoxPreference
+            android:key="discardVariations"
+            android:title="@string/prefs_discardVariations_title"
+            android:summary="@string/prefs_discardVariations_summary"
+            android:defaultValue="false">
+        </CheckBoxPreference>
+        </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/prefs_other">
         <PreferenceScreen

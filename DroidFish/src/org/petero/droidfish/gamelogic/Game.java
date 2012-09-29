@@ -34,7 +34,7 @@ public class Game {
     TimeControl timeController;
     private boolean gamePaused;
     /** If true, add new moves as mainline moves. */
-    private boolean addFirst;
+    private AddMoveBehavior addMoveBehavior;
 
     PgnToken.PgnTokenReceiver gameTextListener;
 
@@ -61,9 +61,19 @@ public class Game {
         }
     }
 
+    /** Controls behavior when a new move is added to the game.*/
+    public static enum AddMoveBehavior {
+        /** Add the new move first in the list of variations. */
+        ADD_FIRST,
+        /** Add the new move last in the list of variations. */
+        ADD_LAST,
+        /** Remove all variations not matching the new move. */
+        REPLACE
+    };
+
     /** Set whether new moves are entered as mainline moves or variations. */
-    public final void setAddFirst(boolean addFirst) {
-        this.addFirst = addFirst;
+    public final void setAddFirst(AddMoveBehavior amb) {
+        addMoveBehavior = amb;
     }
 
     /** Sets start position and discards the whole game tree. */
@@ -137,7 +147,7 @@ public class Game {
     }
 
     private final void addToGameTree(Move m, String playerAction) {
-        if (m.equals(new Move(0, 0, 0))) { // Don't create more than one null move at a node
+        if (m.equals(new Move(0, 0, 0))) { // Don't create more than one game-ending move at a node
             List<Move> varMoves = tree.variations();
             for (int i = varMoves.size() - 1; i >= 0; i--) {
                 if (varMoves.get(i).equals(m)) {
@@ -146,20 +156,38 @@ public class Game {
             }
         }
 
-        List<Move> varMoves = tree.variations();
         boolean movePresent = false;
         int varNo;
-        for (varNo = 0; varNo < varMoves.size(); varNo++) {
-            if (varMoves.get(varNo).equals(m)) {
-                movePresent = true;
-                break;
+        {
+            ArrayList<Move> varMoves = tree.variations();
+            int nVars = varMoves.size();
+            if (addMoveBehavior == AddMoveBehavior.REPLACE) {
+                boolean modified = false;
+                for (int i = nVars-1; i >= 0; i--) {
+                    if (!m.equals(varMoves.get(i))) {
+                        tree.deleteVariation(i);
+                        modified = true;
+                    }
+                }
+                if (modified) {
+                    varMoves = tree.variations();
+                    nVars = varMoves.size();
+                }
+            }
+            for (varNo = 0; varNo < nVars; varNo++) {
+                if (varMoves.get(varNo).equals(m)) {
+                    movePresent = true;
+                    break;
+                }
             }
         }
         if (!movePresent) {
             String moveStr = TextIO.moveToUCIString(m);
             varNo = tree.addMove(moveStr, playerAction, 0, "", "");
         }
-        int newPos = addFirst ? 0 : varNo;
+        int newPos = 0;
+        if (addMoveBehavior == AddMoveBehavior.ADD_LAST)
+            newPos = varNo;
         tree.reorderVariation(varNo, newPos);
         tree.goForward(newPos);
         int remaining = timeController.moveMade(System.currentTimeMillis(), !gamePaused);

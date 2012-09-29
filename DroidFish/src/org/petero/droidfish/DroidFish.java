@@ -170,6 +170,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private boolean boardFlipped;
     private boolean autoSwapSides;
     private boolean playerNameFlip;
+    private boolean discardVariations;
 
     private TextView status;
     private ScrollView moveListScroll;
@@ -829,6 +830,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
         scrollSensitivity = Float.parseFloat(settings.getString("scrollSensitivity", "2"));
         invertScrollDirection = settings.getBoolean("invertScrollDirection", false);
+        discardVariations = settings.getBoolean("discardVariations", false);
         boolean fullScreenMode = settings.getBoolean("fullScreenMode", false);
         Util.setFullScreenMode(this, fullScreenMode);
         useWakeLock = settings.getBoolean("wakeLock", false);
@@ -1417,6 +1419,11 @@ public class DroidFish extends Activity implements GUIInterface {
     @Override
     public String playerName() {
         return playerName;
+    }
+
+    @Override
+    public boolean discardVariations() {
+        return discardVariations;
     }
 
     /** Report a move made that is a candidate for GUI animation. */

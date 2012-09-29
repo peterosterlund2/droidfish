@@ -96,9 +96,8 @@ public class GameTree {
     }
 
     private final void updateListener() {
-        if (gameStateListener != null) {
+        if (gameStateListener != null)
             gameStateListener.clear();
-        }
     }
 
     /** PngTokenReceiver implementation that generates plain text PGN data. */

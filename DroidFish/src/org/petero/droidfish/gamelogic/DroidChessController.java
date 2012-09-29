@@ -834,8 +834,14 @@ public class DroidChessController {
             boolean gamePaused = !gameMode.clocksActive() || (humansTurn() && guiPaused);
             game.setGamePaused(gamePaused);
             updateRemainingTime();
-            boolean addFirst = gameMode.clocksActive();
-            game.setAddFirst(addFirst);
+            Game.AddMoveBehavior amb;
+            if (gui.discardVariations())
+                amb = Game.AddMoveBehavior.REPLACE;
+            else if (gameMode.clocksActive())
+                amb = Game.AddMoveBehavior.ADD_FIRST;
+            else
+                amb = Game.AddMoveBehavior.ADD_LAST;
+            game.setAddFirst(amb);
         }
     }
 
