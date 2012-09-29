@@ -193,6 +193,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private boolean animateMoves;
     private boolean autoScrollTitle;
     private boolean showMaterialDiff;
+    private boolean showVariationLine;
 
     private final static String bookDir = "DroidFish";
     private final static String pgnDir = "DroidFish" + File.separator + "pgn";
@@ -882,6 +883,7 @@ public class DroidFish extends Activity implements GUIInterface {
         pgnOptions.view.headers     = settings.getBoolean("viewHeaders",        false);
         final int oldViewPieceType = pgnOptions.view.pieceType;
         pgnOptions.view.pieceType   = getIntSetting("viewPieceType", PGNOptions.PT_LOCAL);
+        showVariationLine           = settings.getBoolean("showVariationLine",  false);
         pgnOptions.imp.variations   = settings.getBoolean("importVariations",   true);
         pgnOptions.imp.comments     = settings.getBoolean("importComments",     true);
         pgnOptions.imp.nag          = settings.getBoolean("importNAG",          true);
@@ -1483,7 +1485,7 @@ public class DroidFish extends Activity implements GUIInterface {
             thinking.append(Html.fromHtml(s));
             thinkingEmpty = false;
         }
-        if (variantStr.indexOf(' ') >= 0) {
+        if (showVariationLine && (variantStr.indexOf(' ') >= 0)) {
             String s = "";
             if (!thinkingEmpty)
                 s += "<br>";

@@ -565,7 +565,13 @@
                     android:summary="@string/prefs_viewHeaders_summary"
                     android:defaultValue="false">
                 </CheckBoxPreference>
-            </PreferenceCategory>
+                <CheckBoxPreference
+                    android:key="showVariationLine"
+                    android:title="@string/prefs_showVariationLine_title"
+                    android:summary="@string/prefs_showVariationLine_summary"
+                    android:defaultValue="false">
+                </CheckBoxPreference>
+                </PreferenceCategory>
             <PreferenceCategory
                 android:title="@string/prefs_pgn_import">
                 <CheckBoxPreference
