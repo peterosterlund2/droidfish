@@ -68,12 +68,12 @@ public class ColorTheme {
     { // Original
         "#FF808080", "#FFBEBE5A", "#FFFF0000", "#FF00FF00", "#FF000000", "#FFFFFFFF", "#FF888888",
         "#A01F1FFF", "#A0FF1F1F", "#501F1FFF", "#50FF1F1F", "#1E1F1FFF", "#28FF1F1F", "#FFFF0000",
-        "#FF9F9F66", "#FFC0C000", "#FFFFFFFF", "#FF000000"
+        "#FF9F9F66", "#FFC0C000", "#FFFFFFFF", "#FF1F1F15"
     },
     { // XBoard
         "#FF77A26D", "#FFC8C365", "#FFFFFF00", "#FF00FF00", "#FF202020", "#FFFFFFCC", "#FF6B9262",
         "#A01F1FFF", "#A0FF1F1F", "#501F1FFF", "#50FF1F1F", "#1E1F1FFF", "#28FF1F1F", "#FFFF0000",
-        "#FF808080", "#FFC0C000", "#FFFFFFFF", "#FF000000"
+        "#FF808080", "#FFC0C000", "#FFFFFFFF", "#FF1F2315"
     },
     { // Blue
         "#FF83A5D2", "#FFFFFFFA", "#FF3232D1", "#FF5F5FFD", "#FF282828", "#FFF0F0F0", "#FF3333FF",
@@ -83,22 +83,22 @@ public class ColorTheme {
     { // Grey
         "#FF666666", "#FFDDDDDD", "#FFFF0000", "#FF0000FF", "#FF000000", "#FFFFFFFF", "#FF888888",
         "#A01F1FFF", "#A0FF1F1F", "#501F1FFF", "#50FF1F1F", "#1E1F1FFF", "#28FF1F1F", "#FFFF0000",
-        "#FF909090", "#FFC0C000", "#FFFFFFFF", "#FF000000"
+        "#FF909090", "#FFC0C000", "#FFFFFFFF", "#FF202020"
     },
     { // Scid Default
         "#FF80A0A0", "#FFD0E0D0", "#FFFF0000", "#FF00FF00", "#FF000000", "#FFFFFFFF", "#FF666666",
         "#A01F1FFF", "#A0FF1F1F", "#501F1FFF", "#50FF1F1F", "#1E1F1FFF", "#28FF1F1F", "#FFFF0000",
-        "#FF808080", "#FFC0C000", "#FFFFFFFF", "#FF000000"
+        "#FF808080", "#FFC0C000", "#FFFFFFFF", "#FF212624"
     },
     { // Scid Brown
         "#B58863",   "#F0D9B5",   "#FFFF0000", "#FF00FF00", "#FF000000", "#FFFFFFFF", "#FF666666",
         "#A01F1FFF", "#A0FF1F1F", "#501F1FFF", "#50FF1F1F", "#1E1F1FFF", "#28FF1F1F", "#FFFF0000",
-        "#FF808080", "#FFC0C000", "#FFFFFFFF", "#FF000000"
+        "#FF808080", "#FFC0C000", "#FFFFFFFF", "#FF2A231C"
     },
     { // Scid Green
         "#FF769656", "#FFEEEED2", "#FFFF0000", "#FF0000FF", "#FF000000", "#FFFFFFFF", "#FF666666",
         "#A01F1FFF", "#A0FF1F1F", "#501F1FFF", "#50FF1F1F", "#1E1F1FFF", "#28FF1F1F", "#FFFF0000",
-        "#FF808080", "#FFC0C000", "#FFFFFFFF", "#FF000000"
+        "#FF808080", "#FFC0C000", "#FFFFFFFF", "#FF23261D"
     }
     };
 
