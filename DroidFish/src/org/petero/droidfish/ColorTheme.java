@@ -78,7 +78,7 @@ public class ColorTheme {
     { // Blue
         "#FF83A5D2", "#FFFFFFFA", "#FF3232D1", "#FF5F5FFD", "#FF282828", "#FFF0F0F0", "#FF3333FF",
         "#A01F1FFF", "#A01FFF1F", "#501F1FFF", "#501FFF1F", "#1E1F1FFF", "#281FFF1F", "#FFFF0000",
-        "#FF808080", "#FFC0C000", "#FFFFFFFF", "#FF000000"
+        "#FF808080", "#FFC0C000", "#FFFFFFFF", "#FF090028"
     },
     { // Grey
         "#FF666666", "#FFDDDDDD", "#FFFF0000", "#FF0000FF", "#FF000000", "#FFFFFFFF", "#FF888888",

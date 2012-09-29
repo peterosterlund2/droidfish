@@ -288,7 +288,7 @@
                     android:key="color_generalBackground" 
                     android:title="@string/prefs_color_generalBackground_title" 
                     alphaSlider="false" 
-                    android:defaultValue="#FF000000">
+                    android:defaultValue="#FF090028">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
             </PreferenceCategory>
         </PreferenceScreen>
