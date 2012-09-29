@@ -13,6 +13,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_gravity="center_vertical"
         android:orientation="vertical"
         android:paddingLeft="2dp" >
         <LinearLayout
@@ -29,6 +30,7 @@
                 style="?android:attr/windowTitleStyle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
                 android:layout_weight="1"
                 android:ellipsize="marquee"
                 android:focusable="true"
@@ -39,10 +41,11 @@
                 android:singleLine="true"
                 android:tag="title" />
             <TextView
-                android:id="@+id/title_text"
+                android:id="@+id/title_text_summary"
                 style="?android:attr/windowTitleStyle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:tag="title"
@@ -52,6 +55,7 @@
                 style="?android:attr/windowTitleStyle"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="2dp"
                 android:layout_weight="1"
                 android:ellipsize="marquee"
                 android:focusable="true"
@@ -127,7 +131,7 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textStyle="bold" />
                 <TextView
-                    android:id="@+id/title_text_summary"
+                    android:id="@+id/title_text"
                     style="?android:attr/windowTitleStyle"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"

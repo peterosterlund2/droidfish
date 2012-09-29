@@ -13,7 +13,8 @@
         class="org.petero.droidfish.activities.ChessBoardEdit"
         android:id="@+id/eb_chessboard"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"/>
+        android:layout_height="fill_parent">
+    </view>
     <TextView
         android:text=""
         android:id="@+id/eb_status"
@@ -21,7 +22,8 @@
         android:layout_height="wrap_content" 
         android:includeFontPadding="true"
         android:typeface="monospace"
-        android:textSize="10dip"/>
+        android:textSize="10dip">
+    </TextView>
     <LinearLayout
         android:orientation="horizontal"
         android:id="@+id/LinearLayout02"

@@ -65,13 +65,11 @@ public class EditBoard extends Activity {
     private TextView status;
     private Button okButton;
     private Button cancelButton;
-    private TextView whiteTitleText, blackTitleText, engineTitleText;
 
     private boolean egtbHints;
     private boolean autoScrollTitle;
     private TextView whiteFigText;
     private TextView blackFigText;
-    private TextView summaryTitleText;
     private Typeface figNotation;
 
     @Override
@@ -125,11 +123,11 @@ public class EditBoard extends Activity {
         okButton = (Button)findViewById(R.id.eb_ok);
         cancelButton = (Button)findViewById(R.id.eb_cancel);
 
-        whiteTitleText = (TextView)findViewById(R.id.white_clock);
-        whiteTitleText.setText(R.string.edit_board);
-        blackTitleText = (TextView)findViewById(R.id.black_clock);
+        TextView whiteTitleText = (TextView)findViewById(R.id.white_clock);
+        whiteTitleText.setVisibility(View.GONE);
+        TextView blackTitleText = (TextView)findViewById(R.id.black_clock);
         blackTitleText.setVisibility(View.GONE);
-        engineTitleText = (TextView)findViewById(R.id.title_text);
+        TextView engineTitleText = (TextView)findViewById(R.id.title_text);
         engineTitleText.setVisibility(View.GONE);
         whiteFigText = (TextView) findViewById(R.id.white_pieces);
         whiteFigText.setTypeface(figNotation);
@@ -139,13 +137,12 @@ public class EditBoard extends Activity {
         blackFigText.setTypeface(figNotation);
         blackFigText.setSelected(true);
         blackFigText.setTextColor(blackTitleText.getTextColors());
-        summaryTitleText = (TextView) findViewById(R.id.title_text_summary);
-        summaryTitleText.setVisibility(View.GONE);
+        TextView summaryTitleText = (TextView) findViewById(R.id.title_text_summary);
+        summaryTitleText.setText(R.string.edit_board);
 
         TextUtils.TruncateAt where = autoScrollTitle ? TextUtils.TruncateAt.MARQUEE
                                                      : TextUtils.TruncateAt.END;
-        whiteTitleText.setEllipsize(where);
-        blackTitleText.setEllipsize(where);
+        engineTitleText.setEllipsize(where);
         whiteFigText.setEllipsize(where);
         blackFigText.setEllipsize(where);
 
