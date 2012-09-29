@@ -58,6 +58,8 @@ you are not actively using the program.\
     <string name="select_side_to_move_first">Select side to move first</string>
     <string name="white">White</string>
     <string name="black">Black</string>
+    <string name="white_square_character">\u25a0</string>
+    <string name="black_square_character">\u25a1</string>
     <string name="white_king_castle">White king castle</string>
     <string name="white_queen_castle">White queen castle</string>
     <string name="black_king_castle">Black king castle</string>
@@ -124,8 +126,6 @@ you are not actively using the program.\
     <string name="header_site">Site:</string>
     <string name="header_date">Date:</string>
     <string name="header_round">Round:</string>
-    <string name="header_white">\u25a0</string>
-    <string name="header_black">\u25a1</string>
     <string name="comment_before">Before:</string>
     <string name="comment_move">Move:</string>
     <string name="comment_after">After:</string>

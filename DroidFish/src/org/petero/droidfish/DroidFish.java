@@ -2940,8 +2940,8 @@ public class DroidFish extends Activity implements GUIInterface {
     @Override
     public void setRemainingTime(long wTime, long bTime, long nextUpdate) {
         if (ctrl.getGameMode().clocksActive()) {
-            whiteTitleText.setText(getString(R.string.header_white) + " " + timeToString(wTime));
-            blackTitleText.setText(getString(R.string.header_black) + " " + timeToString(bTime));
+            whiteTitleText.setText(getString(R.string.white_square_character) + " " + timeToString(wTime));
+            blackTitleText.setText(getString(R.string.black_square_character) + " " + timeToString(bTime));
         } else {
             TreeMap<String,String> headers = new TreeMap<String,String>();
             ctrl.getHeaders(headers);
