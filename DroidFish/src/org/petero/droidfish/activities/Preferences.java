@@ -19,9 +19,12 @@
 package org.petero.droidfish.activities;
 
 import org.petero.droidfish.R;
+import org.petero.droidfish.Util;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 
 public class Preferences extends PreferenceActivity {
 
@@ -29,5 +32,8 @@ public class Preferences extends PreferenceActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
+
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        Util.setFullScreenMode(this, settings);
     }
 }

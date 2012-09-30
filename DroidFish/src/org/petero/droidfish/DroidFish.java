@@ -843,8 +843,7 @@ public class DroidFish extends Activity implements GUIInterface {
         scrollSensitivity = Float.parseFloat(settings.getString("scrollSensitivity", "2"));
         invertScrollDirection = settings.getBoolean("invertScrollDirection", false);
         discardVariations = settings.getBoolean("discardVariations", false);
-        boolean fullScreenMode = settings.getBoolean("fullScreenMode", false);
-        Util.setFullScreenMode(this, fullScreenMode);
+        Util.setFullScreenMode(this, settings);
         useWakeLock = settings.getBoolean("wakeLock", false);
         setWakeLock(useWakeLock);
 

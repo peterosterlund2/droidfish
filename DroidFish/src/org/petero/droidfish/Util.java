@@ -11,6 +11,7 @@ import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,7 +81,8 @@ public final class Util {
     }
 
     /** Enable/disable full screen mode for an activity. */
-    public static void setFullScreenMode(Activity a, boolean fullScreenMode) {
+    public static void setFullScreenMode(Activity a, SharedPreferences settings) {
+        boolean fullScreenMode = settings.getBoolean("fullScreenMode", false);
         WindowManager.LayoutParams attrs = a.getWindow().getAttributes();
         if (fullScreenMode) {
             attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;

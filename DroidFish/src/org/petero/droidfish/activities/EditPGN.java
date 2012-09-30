@@ -81,6 +81,7 @@ public class EditPGN extends ListActivity {
         super.onCreate(savedInstanceState);
 
         settings = PreferenceManager.getDefaultSharedPreferences(this);
+        Util.setFullScreenMode(this, settings);
 
         if (savedInstanceState != null) {
             defaultItem = savedInstanceState.getInt("defaultItem");

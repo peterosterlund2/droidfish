@@ -82,13 +82,12 @@ public class EditBoard extends Activity {
 
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         egtbHints = settings.getBoolean("tbHintsEdit", false);
-        boolean fullScreenMode = settings.getBoolean("fullScreenMode", false);
         autoScrollTitle = settings.getBoolean("autoScrollTitle", true);
         boardGestures = settings.getBoolean("boardGestures", false);
 
         initUI();
 
-        Util.setFullScreenMode(this, fullScreenMode);
+        Util.setFullScreenMode(this, settings);
 
         Intent i = getIntent();
         Position pos;
