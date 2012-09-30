@@ -242,9 +242,12 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_bookHints_summary">Exibir sugestões de lances de abertura do livro para o jogador humano</string>
   <string name="prefs_thinkingArrows_title">Usar setas</string>
   <string name="prefs_thinkingArrows_summary">Usar setas para exibir lances no tabuleiro</string>
-  <string name="prefs_user_interface">Interface de usuário</string>
+  <string name="prefs_user_interface_appearance">Aparência</string>
+  <string name="prefs_user_interface_behavior">Comportamento</string>
   <string name="prefs_animateMoves_title">Movimentos animados</string>
   <string name="prefs_animateMoves_summary">Movimento de peças animado</string>
+  <string name="prefs_autoScrollTitle_title">Rolagem da barra de título</string>
+  <string name="prefs_autoScrollTitle_summary">Rolar automaticamente barra de título se os nomes dos jogadores forem muito longos</string>
   <string name="prefs_quickMoveInput_title">Modo de lance rápido</string>
   <string name="prefs_quickMoveInput_summary">Casas de origem e destino podem ser tocadas em qualquer ordem.</string>
   <string name="prefs_soundEnabled_title">Habilitar sons</string>
@@ -260,6 +263,8 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_scrollSensitivity_summary">Velocidade do movimento para navegação em partida</string>
   <string name="prefs_invertScrollDirection_title">Inverter direção do movimento</string>
   <string name="prefs_invertScrollDirection_summary">Habilite se você acha que os movimentos estão na direção errada</string>
+  <string name="prefs_discardVariations_title">Descartar variantes</string>
+  <string name="prefs_discardVariations_summary">Descartar da lista lances fora da linha principal</string>
   <string name="prefs_leftHanded_title">Modo canhoto</string>
   <string name="prefs_leftHanded_summary">Controles à esquerda no modo paisagem</string>
   <string name="prefs_squareSelectType_title">Seleção de casa</string>
@@ -301,6 +306,8 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_move_list">Lista de lances</string>
   <string name="prefs_color_currentMove_title">Lance atual</string>
   <string name="prefs_color_pgnComment_title">Comentários</string>
+  <string name="prefs_color_fontForeground_title">Cor da fonte</string>
+  <string name="prefs_color_generalBackground_title">Plano de fundo</string>
   <string name="prefs_other">Outros</string>
   <string name="prefs_bookSettings_title">Configurações do livro de abertura</string>
   <string name="prefs_bookSettings_summary">Configurações para uso de livro de aberturas</string>
@@ -324,6 +331,8 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_viewNAG_summary">Incluir símbolos de anotação (NAGs), tais como ! e ?</string>
   <string name="prefs_viewHeaders_title">Cabeçalhos</string>
   <string name="prefs_viewHeaders_summary">Mostrar linhas de cabeçalho PGN</string>
+  <string name="prefs_showVariationLine_title">Mostrar variantes atuais</string>
+  <string name="prefs_showVariationLine_summary">Mostrar variantes atuais na área de status</string>
   <string name="prefs_viewPieceType_title">Nomes das peças</string>
   <string name="prefs_viewPieceType_summary">Controlar como são exibidos os nomes das peças</string>
   <string name="prefs_pgn_import">Importação de PGN</string>

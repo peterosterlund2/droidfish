@@ -220,7 +220,6 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="prefs_bookHints_summary">Muestra en pantalla los movimientos del Libro de Aperturas al jugador humano</string>
   <string name="prefs_thinkingArrows_title">Usar Flechas</string>
   <string name="prefs_thinkingArrows_summary">Utilización de Flechas para mostrar las jugadas en el tablero</string>
-  <string name="prefs_user_interface">Interfaz del Usuario</string>
   <string name="prefs_animateMoves_title">Animación de Jugadas</string>
   <string name="prefs_animateMoves_summary">Anima los movimientos de las piezas</string>
   <string name="prefs_soundEnabled_title">Permitir Sonidos</string>

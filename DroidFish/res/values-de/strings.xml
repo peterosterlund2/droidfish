@@ -165,26 +165,26 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="replace_selected">Auswahl ersetzen</string>
   <string name="engine">Schach-Engine</string>
   <string name="engine_name">Name der Engine</string>
-  <string name="engine_name_in_use">Name der verwendete Engine</string>
+  <string name="engine_name_in_use">Name der verwendeten Engine</string>
   <string name="slash_not_allowed">Zeichen / ist nicht erlaubt</string>
   <string name="engine_error">Engine-Fehler</string>
-  <string name="select_engine">Engine Auswahl</string>
-  <string name="configure_network_engine">Konfiguration von Netzwerk Engines</string>
-  <string name="create_network_engine">Erstellen einer Netzwerk Engine</string>
-  <string name="delete_network_engine">Netzwerk-Engine löschen?</string>
-  <string name="host_name">Host</string>
-  <string name="network_port">Port</string>
-  <string name="network_engine">Netzwerk Engine</string>
+  <string name="select_engine">Schach-Engine auswählen</string>
+  <string name="configure_network_engine">Konfiguration von Schach-Engines auf Netzservern</string>
+  <string name="create_network_engine">Erstellen einer Netzserver-Engine</string>
+  <string name="delete_network_engine">Netzserver-Engine löschen?</string>
+  <string name="host_name">Hostname</string>
+  <string name="network_port">Netzwerkport</string>
+  <string name="network_engine">Netzserver-Engine</string>
   <string name="failed_to_start_engine">Fehler beim Starten der Engine</string>
   <string name="engine_terminated">Engine beendet</string>
   <string name="uci_protocol_error">UCI-Protokollfehler</string>
-  <string name="network_engine_config_error">Konfigurationsfehler der Netzwerk-Engine</string>
-  <string name="invalid_network_port">Ungültiges Port</string>
+  <string name="network_engine_config_error">Fehler bei der Konfiguration der Netzserver-Engine</string>
+  <string name="invalid_network_port">Ungültiger Netzwerkport</string>
   <string name="start_new_game">Neue Partie starten?</string>
   <string name="strength_cuckoo_hint">Nutzen Sie die CuckooChess-Engine für eine noch geringere Spielstärke.</string>
   <string name="piece_names">B S L T D K</string>
-  <string name="material_diff_summary">Blendet einen zusätzlichen Untertitel ein mit den geschlagenen Figuren</string>
-  <string name="material_diff_title">Figuren-Unterschiede anzeigen</string>
+  <string name="material_diff_summary">Zeigt einen zusätzlichen Untertitel für die geschlagenen Figuren an</string>
+  <string name="material_diff_title">Figuren-Unterschied anzeigen</string>
   <string name="err_too_few_spaces">Zuwenig Felder</string>
   <string name="err_invalid_piece">Unzulässige Figur</string>
   <string name="err_invalid_side">Unzulässige Seite</string>
@@ -207,7 +207,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="option_force_computer_move">Computerzug erzwingen</string>
   <string name="option_draw">Remis anbieten/annehmen</string>
   <string name="option_select_book">Eröffnungsbuch auswählen</string>
-  <string name="option_manage_engines">Verwaltung der Schach-Engines</string>
+  <string name="option_manage_engines">Schach-Engines verwalten</string>
   <string name="option_select_engine">Schach-Engine auswählen</string>
   <string name="option_color_theme">Farbschema auswählen</string>
   <string name="option_about">Information/Hinweise</string>
@@ -220,7 +220,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_playerNameFlip_summary">Spielfeld in Abhängigkeit vom Spielernamen drehen</string>
   <string name="prefs_engine_settings">Engine-Einstellungen</string>
   <string name="prefs_strength_title">Spielstärke</string>
-  <string name="prefs_strength_summary">Wird nur von internen Engines unterstützt. Im Analyse-Modus wird die volle Stärke verwendet.</string>
+  <string name="prefs_strength_summary">Wird nur von internen Engines unterstützt. Im Analyse-Modus wird stets die volle Stärke verwendet.</string>
   <string name="prefs_ponderMode_title">Vorausberechnung</string>
   <string name="prefs_ponderMode_summary">Vorausberechnung von Zügen durch die Engine, wenn der Spieler am Zug ist (von den meisten Engines unterstützt)</string>
   <string name="prefs_threads_title">Parallelberechnung</string>
@@ -243,10 +243,13 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_bookHints_summary">Hinweise aus dem Eröffnungsbuch für den Spieler anzeigen</string>
   <string name="prefs_thinkingArrows_title">Pfeile nutzen</string>
   <string name="prefs_thinkingArrows_summary">Pfeile zur Anzeige von Zügen auf dem Spielfeld nutzen</string>
-  <string name="prefs_user_interface">Benutzeroberfläche</string>
+  <string name="prefs_user_interface_appearance">Aussehen</string>
+  <string name="prefs_user_interface_behavior">Verhalten</string>
   <string name="prefs_animateMoves_title">Zuganimation</string>
   <string name="prefs_animateMoves_summary">Bewegung der Figuren animieren</string>
-  <string name="prefs_quickMoveInput_title">Alternative Durchführung des Zuges</string>
+  <string name="prefs_autoScrollTitle_title">Titelleiste scrollen</string>
+  <string name="prefs_autoScrollTitle_summary">Titelleiste bei zu langen Spielernamen automatisch scrollen</string>
+  <string name="prefs_quickMoveInput_title">Schnelle Zugeingabe</string>
   <string name="prefs_quickMoveInput_summary">Die Reihenfolge der Auswahl für einen Zug (von bzw. nach) ist beliebig. Eindeutige Züge werden sofort durchgeführt.</string>
   <string name="prefs_soundEnabled_title">Töne</string>
   <string name="prefs_soundEnabled_summary">Ton bei Computer-Zug ausgeben</string>
@@ -261,10 +264,12 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_scrollSensitivity_summary">Wischgeschwindigkeit für Partie-Navigation einstellen</string>
   <string name="prefs_invertScrollDirection_title">Wischrichtung</string>
   <string name="prefs_invertScrollDirection_summary">Wischrichtung für Partie-Navigation umkehren</string>
+  <string name="prefs_discardVariations_title">Varianten verwerfen</string>
+  <string name="prefs_discardVariations_summary">Nicht-Hauptlinienzüge aus der Zugliste verwerfen</string>
   <string name="prefs_leftHanded_title">Linkshänder-Modus</string>
   <string name="prefs_leftHanded_summary">Steuerelemente auf der linken Seite im Querformat</string>
   <string name="prefs_squareSelectType_title">Feldauswahl</string>
-  <string name="prefs_squareSelectType_summary">Bestimmung, wie die Auswahl eines Feldes erfolgen soll</string>
+  <string name="prefs_squareSelectType_summary">Festlegung der Auswahl von Feldern</string>
   <string name="prefs_fontSize_title">Schriftgröße</string>
   <string name="prefs_fontSize_summary">Schriftgröße für Zugliste und Partie-Informationen einstellen</string>
   <string name="prefs_largeButtons_title">Größe der Tasten</string>
@@ -272,12 +277,12 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_buttonSettings_title">Tasten konfigurieren</string>
   <string name="prefs_buttonSettings_summary">Tastengröße und -aktionen festlegen</string>
   <string name="prefs_button_action_0_title">Hauptaktion</string>
-  <string name="prefs_button_action_1_title">Menuaktion 1</string>
-  <string name="prefs_button_action_2_title">Menuaktion 2</string>
-  <string name="prefs_button_action_3_title">Menuaktion 3</string>
-  <string name="prefs_button_action_4_title">Menuaktion 4</string>
-  <string name="prefs_button_action_5_title">Menuaktion 5</string>
-  <string name="prefs_button_action_6_title">Menuaktion 6</string>
+  <string name="prefs_button_action_1_title">Menüaktion 1</string>
+  <string name="prefs_button_action_2_title">Menüaktion 2</string>
+  <string name="prefs_button_action_3_title">Menüaktion 3</string>
+  <string name="prefs_button_action_4_title">Menüaktion 4</string>
+  <string name="prefs_button_action_5_title">Menüaktion 5</string>
+  <string name="prefs_button_action_6_title">Menüaktion 6</string>
   <string name="prefs_custom_button_1">Benutzerdefinierte Taste 1</string>
   <string name="prefs_custom_button_2">Benutzerdefinierte Taste 2</string>
   <string name="prefs_custom_button_3">Benutzerdefinierte Taste 3</string>
@@ -302,6 +307,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_move_list">Zugliste</string>
   <string name="prefs_color_currentMove_title">Aktueller Zug</string>
   <string name="prefs_color_pgnComment_title">Kommentare</string>
+  <string name="prefs_color_fontForeground_title">Schriftfarbe</string>
+  <string name="prefs_color_generalBackground_title">Hintergrund</string>
   <string name="prefs_other">Sonstige Optionen</string>
   <string name="prefs_bookSettings_title">Eröffnungsbuch</string>
   <string name="prefs_bookSettings_summary">Einstellungen für die Verwendung von Eröffnungsbüchern</string>
@@ -325,8 +332,10 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_viewNAG_summary">Annotationen (Numeric Annotation Glyphs, NAGs) anzeigen</string>
   <string name="prefs_viewHeaders_title">Partie-Informationen</string>
   <string name="prefs_viewHeaders_summary">Partie-Informationen anzeigen</string>
-  <string name="prefs_viewPieceType_title">Bezeichnung der Figuren</string>
-  <string name="prefs_viewPieceType_summary">Festlegung, wie die Schach-Figuren notiert werden</string>
+  <string name="prefs_showVariationLine_title">Aktuelle Varianten anzeigen</string>
+  <string name="prefs_showVariationLine_summary">Aktuelle Varianten im Statusbereich anzeigen</string>
+  <string name="prefs_viewPieceType_title">Figurenbezeichnungen</string>
+  <string name="prefs_viewPieceType_summary">Einstellung der Figurenbezeichnungen</string>
   <string name="prefs_pgn_import">PGN-Import</string>
   <string name="prefs_importVariations_title">Varianten</string>
   <string name="prefs_importVariations_summary">Nicht-Hauptlinienzüge importieren</string>
@@ -378,9 +387,9 @@ wenn Sie es nicht aktiv nutzen.\
     <item>8</item>
   </string-array>
   <string-array name="viewPieceType_texts">
-    <item>Englische Buchstaben</item>
-    <item>Buchstaben der Landessprache</item>
-    <item>Darstellung als Figuren</item>
+    <item>Figurenbezeichnungen in Englisch</item>
+    <item>Figurenbezeichnungen in der Landessprache</item>
+    <item>Figurine Notation</item>
   </string-array>
   <string-array name="viewPieceType_values">
     <item>0</item>

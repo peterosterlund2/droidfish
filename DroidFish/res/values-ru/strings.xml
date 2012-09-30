@@ -209,7 +209,6 @@
   <string name="prefs_bookHints_summary">Отображать подсказки из книг для ходов игрока</string>
   <string name="prefs_thinkingArrows_title">Использовать стрелки</string>
   <string name="prefs_thinkingArrows_summary">Использовать стрелки для отображения ходов на доске</string>
-  <string name="prefs_user_interface">Пользовательский интерфейс</string>
   <string name="prefs_animateMoves_title">Анимировать ходы</string>
   <string name="prefs_animateMoves_summary">Анимировать перемещение фигур</string>
   <string name="prefs_soundEnabled_title">Включить звуки</string>
