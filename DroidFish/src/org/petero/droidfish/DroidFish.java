@@ -185,8 +185,10 @@ public class DroidFish extends Activity implements GUIInterface {
 
     SharedPreferences settings;
 
+    private boolean boardGestures;
     private float scrollSensitivity;
     private boolean invertScrollDirection;
+
     private boolean leftHanded;
     private boolean soundEnabled;
     private MediaPlayer moveSound;
@@ -574,12 +576,20 @@ public class DroidFish extends Activity implements GUIInterface {
         final GestureDetector gd = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
             private float scrollX = 0;
             private float scrollY = 0;
+            @Override
             public boolean onDown(MotionEvent e) {
+                if (!boardGestures) {
+                    handleClick(e);
+                    return true;
+                }
                 scrollX = 0;
                 scrollY = 0;
                 return false;
             }
+            @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                if (!boardGestures)
+                    return false;
                 cb.cancelLongPress();
                 if (invertScrollDirection) {
                     distanceX = -distanceX;
@@ -629,12 +639,18 @@ public class DroidFish extends Activity implements GUIInterface {
                 }
                 return true;
             }
+            @Override
             public boolean onSingleTapUp(MotionEvent e) {
+                if (!boardGestures)
+                    return false;
                 cb.cancelLongPress();
                 handleClick(e);
                 return true;
             }
+            @Override
             public boolean onDoubleTapEvent(MotionEvent e) {
+                if (!boardGestures)
+                    return false;
                 if (e.getAction() == MotionEvent.ACTION_UP)
                     handleClick(e);
                 return true;
@@ -823,6 +839,7 @@ public class DroidFish extends Activity implements GUIInterface {
         ctrl.setTimeLimit(timeControl, movesPerSession, timeIncrement);
         setSummaryTitle();
 
+        boardGestures = settings.getBoolean("boardGestures", false);
         scrollSensitivity = Float.parseFloat(settings.getString("scrollSensitivity", "2"));
         invertScrollDirection = settings.getBoolean("invertScrollDirection", false);
         discardVariations = settings.getBoolean("discardVariations", false);
@@ -1098,6 +1115,13 @@ public class DroidFish extends Activity implements GUIInterface {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.options_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.item_file_menu);
+        item.setTitle(boardGestures ? R.string.option_file : R.string.tools_menu);
         return true;
     }
 
@@ -1582,7 +1606,7 @@ public class DroidFish extends Activity implements GUIInterface {
         case NEW_GAME_DIALOG:                return newGameDialog();
         case PROMOTE_DIALOG:                 return promoteDialog();
         case BOARD_MENU_DIALOG:              return boardMenuDialog();
-        case FILE_MENU_DIALOG:               return fileMenuDialog();
+        case FILE_MENU_DIALOG:               return boardGestures ? fileMenuDialog() : boardMenuDialog();
         case ABOUT_DIALOG:                   return aboutDialog();
         case SELECT_MOVE_DIALOG:             return selectMoveDialog();
         case SELECT_BOOK_DIALOG:             return selectBookDialog();

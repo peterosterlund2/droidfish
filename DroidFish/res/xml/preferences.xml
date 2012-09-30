@@ -482,8 +482,15 @@
             android:entries="@array/squareSelectType_texts" 
             android:defaultValue="@string/squareSelectType_default">
         </ListPreference>
+        <CheckBoxPreference
+            android:key="boardGestures"
+            android:title="@string/prefs_boardGestures_title"
+            android:summary="@string/prefs_boardGestures_summary"
+            android:defaultValue="false">
+        </CheckBoxPreference>
         <ListPreference
             android:key="scrollSensitivity"
+            android:dependency="boardGestures"
             android:title="@string/prefs_scrollSensitivity_title"
             android:summary="@string/prefs_scrollSensitivity_summary"
             android:entryValues="@array/scroll_sensitivity_values"
@@ -492,6 +499,7 @@
         </ListPreference>
         <CheckBoxPreference
             android:key="invertScrollDirection"
+            android:dependency="boardGestures"
             android:title="@string/prefs_invertScrollDirection_title"
             android:summary="@string/prefs_invertScrollDirection_summary"
             android:defaultValue="false">

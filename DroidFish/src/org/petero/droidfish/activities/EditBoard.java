@@ -68,6 +68,7 @@ public class EditBoard extends Activity {
 
     private boolean egtbHints;
     private boolean autoScrollTitle;
+    private boolean boardGestures;
     private TextView whiteFigText;
     private TextView blackFigText;
     private Typeface figNotation;
@@ -83,6 +84,7 @@ public class EditBoard extends Activity {
         egtbHints = settings.getBoolean("tbHintsEdit", false);
         boolean fullScreenMode = settings.getBoolean("fullScreenMode", false);
         autoScrollTitle = settings.getBoolean("autoScrollTitle", true);
+        boardGestures = settings.getBoolean("boardGestures", false);
 
         initUI();
 
@@ -163,19 +165,33 @@ public class EditBoard extends Activity {
         cb.requestFocus();
         cb.setClickable(true);
         final GestureDetector gd = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
+            @Override
             public boolean onDown(MotionEvent e) {
+                if (!boardGestures) {
+                    handleClick(e);
+                    return true;
+                }
                 return false;
             }
+            @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                if (!boardGestures)
+                    return false;
                 cb.cancelLongPress();
                 return true;
             }
+            @Override
             public boolean onSingleTapUp(MotionEvent e) {
+                if (!boardGestures)
+                    return false;
                 cb.cancelLongPress();
                 handleClick(e);
                 return true;
             }
+            @Override
             public boolean onDoubleTapEvent(MotionEvent e) {
+                if (!boardGestures)
+                    return false;
                 if (e.getAction() == MotionEvent.ACTION_UP)
                     handleClick(e);
                 return true;
