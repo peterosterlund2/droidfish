@@ -288,13 +288,13 @@
                     android:key="color_fontForeground" 
                     android:title="@string/prefs_color_fontForeground_title" 
                     alphaSlider="false" 
-                    android:defaultValue="#FFFFFFFF">
+                    android:defaultValue="#FFFFFF00">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
                 <net.margaritov.preference.colorpicker.ColorPickerPreference 
                     android:key="color_generalBackground" 
                     android:title="@string/prefs_color_generalBackground_title" 
                     alphaSlider="false" 
-                    android:defaultValue="#FF090028">
+                    android:defaultValue="#FF2E2B53">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
             </PreferenceCategory>
         </PreferenceScreen>
