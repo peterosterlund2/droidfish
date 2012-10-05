@@ -486,7 +486,7 @@
             android:key="boardGestures"
             android:title="@string/prefs_boardGestures_title"
             android:summary="@string/prefs_boardGestures_summary"
-            android:defaultValue="false">
+            android:defaultValue="true">
         </CheckBoxPreference>
         <ListPreference
             android:key="scrollSensitivity"

@@ -83,7 +83,7 @@ public class EditBoard extends Activity {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         egtbHints = settings.getBoolean("tbHintsEdit", false);
         autoScrollTitle = settings.getBoolean("autoScrollTitle", true);
-        boardGestures = settings.getBoolean("boardGestures", false);
+        boardGestures = settings.getBoolean("boardGestures", true);
 
         initUI();
 
