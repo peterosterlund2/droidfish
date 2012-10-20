@@ -62,6 +62,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="reading_pgn_file">Leyendo archivo PGN </string>
   <string name="reading_scid_file">Leyendo archivo Scid </string>
   <string name="new_file">&lt;Archivo Nuevo&gt;</string>
+  <string name="new_engine">&lt;Nuevo motor&gt;</string>
   <string name="please_wait">Espere, por favor…</string>
   <string name="no_pgn_files">No se han encontrado archivos en el directorio DroidFish/pgn de la tarjeta SD </string>
   <string name="no_scid_files">No se han encontrado archivos en el directorio scid de la tarjeta SD </string>
@@ -129,6 +130,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="resign_black">Fin de la partida, negras rinden!</string>
   <string name="book">Libro:</string>
   <string name="invalid_move">Jugada no válida</string>
+  <string name="piece_can_not_be_moved">La pieza no puede moverse</string>
   <string name="preferences">Preferencias</string>
   <string name="load_game_title">Editar Archivo / Cargar Partida</string>
   <string name="save_game_title">Editar Archivo / Guardar Partida</string>
@@ -145,6 +147,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="heavy_cpu_usage">Procesador/CPU muy cargado</string>
   <string name="background_processing">Proceso en segundo plano</string>
   <string name="lot_cpu_power">DroidFish está utilizando mucha potencia del procesador/CPU</string>
+  <string name="delete">Borrar</string>
   <string name="delete_game">Borrar partida?</string>
   <string name="delete_file">Borrar archivo</string>
   <string name="delete_file_question">Borrar archivo?</string>
@@ -159,13 +162,27 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="after_selected">Después de la seleccionada</string>
   <string name="replace_selected">Sustituir la seleccionada</string>
   <string name="engine">Motor</string>
+  <string name="engine_name">Nombre del motor</string>
+  <string name="engine_name_in_use">Nombre del motor en uso</string>
+  <string name="slash_not_allowed">Símbolo / no permitido</string>
   <string name="engine_error">Error del Motor</string>
+  <string name="select_engine">Seleccionar motor</string>
+  <string name="configure_network_engine">Configurar motor en la red</string>
+  <string name="create_network_engine">Crear motor en la red</string>
+  <string name="delete_network_engine">¿Borrar el motor en la red?</string>
+  <string name="host_name">Nombre del anfitrión</string>
+  <string name="network_port">Puerto</string>
+  <string name="network_engine">Motor en la red</string>
   <string name="failed_to_start_engine">Fallo de arranque del motor</string>
   <string name="engine_terminated">Ruptura del motor</string>
   <string name="uci_protocol_error">Fallo en el protocolo UCI</string>
+  <string name="network_engine_config_error">Error de configuración en el motor de la red</string>
+  <string name="invalid_network_port">Puerto de red no válido</string>
   <string name="start_new_game">¿Empezar nueva partida?</string>
   <string name="strength_cuckoo_hint">Utilice el motor CuckooChess para rebajar aún más el nivel de juego.</string>
   <string name="piece_names">P C A T D R</string>
+  <string name="material_diff_summary">Muestra un subtítulo adicional para las piezas capturadas</string>
+  <string name="material_diff_title">Muestra la diferencia de material</string>
   <string name="err_too_few_spaces">Pocos espacios</string>
   <string name="err_invalid_piece">Pieza incorrecta</string>
   <string name="err_invalid_side">Lado incorrecto</string>
@@ -188,6 +205,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="option_force_computer_move">Obligar a jugar al Programa</string>
   <string name="option_draw">Ofrecer / Aceptar Tablas</string>
   <string name="option_select_book">Seleccionar Libro</string>
+  <string name="option_manage_engines">Gestión de motores de ajedrez</string>
   <string name="option_select_engine">Seleccionar Motor</string>
   <string name="option_color_theme">Ajustar rango de Colores</string>
   <string name="option_about"> Información / Ayuda</string>
@@ -200,10 +218,13 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="prefs_playerNameFlip_summary">Utilizar el nombre del jugador para invertir el tablero automáticamente</string>
   <string name="prefs_engine_settings">Ajustes del Motor/Programa</string>
   <string name="prefs_strength_title">Fuerza/Nivel de Juego</string>
+  <string name="prefs_strength_summary">Soportado únicamente por los motores internos. El modo análisis siempre utiliza fuerza máxima.</string>
   <string name="prefs_ponderMode_title">Pensar siempre</string>
   <string name="prefs_ponderMode_summary">Dejar calcular al motor mientras espera la jugada del oponente. Lo incorporan la mayoría de los motores.</string>
   <string name="prefs_threads_title">Núcleos</string>
   <string name="prefs_threads_summary">Número de núcleos del motor en uso. No lo incorporan todos los motores.</string>
+  <string name="prefs_hash_title">Tablas Hash</string>
+  <string name="prefs_hash_summary">Tamaño de las tablas hash en megabytes</string>
   <string name="prefs_time_control">Control de Tiempos</string>
   <string name="prefs_movesPerSession_title">Jugadas</string>
   <string name="prefs_movesPerSession_summary">Número de jugadas entre controles de tiempo</string>
@@ -220,8 +241,14 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="prefs_bookHints_summary">Muestra en pantalla los movimientos del Libro de Aperturas al jugador humano</string>
   <string name="prefs_thinkingArrows_title">Usar Flechas</string>
   <string name="prefs_thinkingArrows_summary">Utilización de Flechas para mostrar las jugadas en el tablero</string>
+  <string name="prefs_user_interface_appearance">Aspecto</string>
+  <string name="prefs_user_interface_behavior">Comportamiento</string>
   <string name="prefs_animateMoves_title">Animación de Jugadas</string>
   <string name="prefs_animateMoves_summary">Anima los movimientos de las piezas</string>
+  <string name="prefs_autoScrollTitle_title">Desplazamiento de la barra de título</string>
+  <string name="prefs_autoScrollTitle_summary">Desplaza automáticamente la barra de título si los nombres de los jugadores son demasiado largos</string>
+  <string name="prefs_quickMoveInput_title">Introducción rápida de la jugada</string>
+  <string name="prefs_quickMoveInput_summary">Las casillas de origen y destino pueden ser pulsadas en cualquier orden. El movimiento se lleva a cabo tan pronto como se define de forma inequívoca (jugada única posible).</string>
   <string name="prefs_soundEnabled_title">Permitir Sonidos</string>
   <string name="prefs_soundEnabled_summary">Suena cuando la computadora efectúa una jugada</string>
   <string name="prefs_vibrateEnabled_title">Permitir vibración</string>
@@ -235,8 +262,14 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="prefs_scrollSensitivity_summary">Velocidad de desplazamiento de la información durante la partida </string>
   <string name="prefs_invertScrollDirection_title">Invertir dirección desplazamiento</string>
   <string name="prefs_invertScrollDirection_summary">Permitirlo si usted piensa que el desplazamiento de jugadas se hace en la dirección equivocada.</string>
+  <string name="prefs_discardVariations_title">Descartar variantes</string>
+  <string name="prefs_discardVariations_summary">Descartar jugadas de líneas secundarias de la lista de movimientos</string>
   <string name="prefs_leftHanded_title">Modo zurdo</string>
   <string name="prefs_leftHanded_summary">Controles en el lado izquierdo en modo horizontal</string>
+  <string name="prefs_boardGestures_title">Acciones sobre el tablero</string>
+  <string name="prefs_boardGestures_summary">Mantenga el tablero presionado para acceder al menú de herramientas. Deslice el dedo horizontalmente a derecha e izquierda para retroceder/avanzar jugadas. Deslízelo verticalmente para ir a la anterior/siguiente variante.</string>
+  <string name="prefs_squareSelectType_title">Selección de casilla</string>
+  <string name="prefs_squareSelectType_summary">Controla cómo seleccionar el remarcado de las casillas en el tablero</string>
   <string name="prefs_fontSize_title">Tamaño del Texto</string>
   <string name="prefs_fontSize_summary">Tamaño de las Fuentes para la lista de jugadas e información de la partida</string>
   <string name="prefs_largeButtons_title">Botones Grandes</string>
@@ -254,6 +287,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="prefs_custom_button_2">Personalización del botón 2</string>
   <string name="prefs_custom_button_3">Personalización del botón 3</string>
   <string name="prefs_colors_title">Ajustes de Color</string>
+  <string name="press_color_to_apply">Presione en Ajustes de Color para adaptarlo</string>
   <string name="prefs_colors_summary">Cambia los colores individuales</string>
   <string name="prefs_chess_board">Tablero de Ajedrez</string>
   <string name="prefs_color_brightSquare_title">Casillas Blancas</string>
@@ -273,6 +307,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="prefs_move_list">Lista de Jugadas</string>
   <string name="prefs_color_currentMove_title">Jugada actual</string>
   <string name="prefs_color_pgnComment_title">Comentarios</string>
+  <string name="prefs_color_fontForeground_title">Fuente</string>
+  <string name="prefs_color_generalBackground_title">Fondo</string>
   <string name="prefs_other">Otros</string>
   <string name="prefs_bookSettings_title">Ajustes del Libro de Aperturas</string>
   <string name="prefs_bookSettings_summary">Ajusta los parámetros para la utilización del Libro de Aperturas</string>
@@ -296,6 +332,10 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="prefs_viewNAG_summary">Incluye la Notación Numérica de Glifos (NNG), tales como ! y ?</string>
   <string name="prefs_viewHeaders_title">Cabeceras/Encabezamientos</string>
   <string name="prefs_viewHeaders_summary">Muestran las líneas de cabecera en PGN</string>
+  <string name="prefs_showVariationLine_title">Mostrar variante actual</string>
+  <string name="prefs_showVariationLine_summary">Muestra las variantes actuales en el área de estatus</string>
+  <string name="prefs_viewPieceType_title">Nombres de las piezas</string>
+  <string name="prefs_viewPieceType_summary">Controla la visualización de los nombres de las piezas en pantalla</string>
   <string name="prefs_pgn_import">Importar de PGN</string>
   <string name="prefs_importVariations_title">Variantes</string>
   <string name="prefs_importVariations_summary">Incluye jugadas secundarias</string>
@@ -347,9 +387,9 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <item>8</item>
   </string-array>
   <string-array name="viewPieceType_texts">
-    <item>English letters</item>
-    <item>Local language letters</item>
-    <item>Figurine notation</item>
+    <item>Notación en inglés</item>
+    <item>Notación en el idioma local</item>
+    <item>Notación algebraica simbólica</item>
   </string-array>
   <string-array name="viewPieceType_values">
     <item>0</item>
@@ -453,8 +493,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <item>60000</item>
   </string-array>
   <string-array name="squareSelectType_texts">
-    <item>Sticky</item>
-    <item>Toggle</item>
+    <item>Remarcado permanente</item>
+    <item>Remarcado variable</item>
   </string-array>
   <string-array name="squareSelectType_values">
     <item>0</item>
