@@ -2075,7 +2075,10 @@ public class DroidFish extends Activity implements GUIInterface {
     private final Dialog setColorThemeDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.select_color_theme);
-        builder.setSingleChoiceItems(ColorTheme.themeNames, -1, new DialogInterface.OnClickListener() {
+        String[] themeNames = new String[ColorTheme.themeNames.length];
+        for (int i = 0; i < themeNames.length; i++)
+            themeNames[i] = getString(ColorTheme.themeNames[i]);
+        builder.setSingleChoiceItems(themeNames, -1, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 ColorTheme.instance().setTheme(settings, item);
                 cb.setColors();

@@ -62,8 +62,15 @@ public class ColorTheme {
     private static final String prefPrefix = "color_";
 
     private final static int defaultTheme = 2;
-    final static String[] themeNames = { "Original", "XBoard", "Blue", "Grey",
-                                         "Scid Default", "Scid Brown", "Scid Green"};
+    final static int[] themeNames = {
+        R.string.colortheme_original,
+        R.string.colortheme_xboard,
+        R.string.colortheme_blue,
+        R.string.colortheme_grey,
+        R.string.colortheme_scid_default,
+        R.string.colortheme_scid_brown,
+        R.string.colortheme_scid_green
+    };
     private final static String themeColors[][] = {
     { // Original
         "#FF808080", "#FFBEBE5A", "#FFFF0000", "#FF00FF00", "#FF000000", "#FFFFFFFF", "#FF888888",

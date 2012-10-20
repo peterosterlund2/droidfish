@@ -82,6 +82,13 @@ you are not actively using the program.\
     <string name="no_pgn_files">No files found in directory DroidFish/pgn on the SD card</string>
     <string name="no_scid_files">No files found in directory scid on the SD card</string>
     <string name="select_color_theme">Select Color Theme</string>
+    <string name="colortheme_original">Original</string>
+    <string name="colortheme_xboard">XBoard</string>
+    <string name="colortheme_blue">Blue</string>
+    <string name="colortheme_grey">Grey</string>
+    <string name="colortheme_scid_default">Scid Default</string>
+    <string name="colortheme_scid_brown">Scid Brown</string>
+    <string name="colortheme_scid_green">Scid Green</string>
     <string name="select_game_mode">Select Game Mode</string>
     <string name="edit_replay_game">Edit/re-play Game</string>
     <string name="analysis_mode">Analysis Mode</string>
