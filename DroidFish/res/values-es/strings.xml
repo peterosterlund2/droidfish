@@ -67,6 +67,13 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="no_pgn_files">No se han encontrado archivos en el directorio DroidFish/pgn de la tarjeta SD </string>
   <string name="no_scid_files">No se han encontrado archivos en el directorio scid de la tarjeta SD </string>
   <string name="select_color_theme">Seleccionar Colores</string>
+  <string name="colortheme_original">Original</string>
+  <string name="colortheme_xboard">Xboard</string>
+  <string name="colortheme_blue">Azul</string>
+  <string name="colortheme_grey">Gris</string>
+  <string name="colortheme_scid_default">Scid por defecto</string>
+  <string name="colortheme_scid_brown">Scid marrón</string>
+  <string name="colortheme_scid_green">Scid verde</string>
   <string name="select_game_mode">Seleccionar Modo Partida</string>
   <string name="edit_replay_game">Editar/reproducir partida</string>
   <string name="analysis_mode">Modo Análisis</string>
