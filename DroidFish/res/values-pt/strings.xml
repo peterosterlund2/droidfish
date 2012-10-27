@@ -68,6 +68,13 @@ não estiver usando o programa diretamente.\</string>
   <string name="no_pgn_files">Nenhum arquivo encontrado no diretório DroidFish/pgn no cartão SD</string>
   <string name="no_scid_files">Nenhum arquivo encontrado no diretório scid no cartão SD</string>
   <string name="select_color_theme">Escolha cor do tema</string>
+  <string name="colortheme_original">Original</string>
+  <string name="colortheme_xboard">XBoard</string>
+  <string name="colortheme_blue">Azul</string>
+  <string name="colortheme_grey">Cinza</string>
+  <string name="colortheme_scid_default">Padrão do Scid</string>
+  <string name="colortheme_scid_brown">Scid Marrom</string>
+  <string name="colortheme_scid_green">Scid Verde</string>
   <string name="select_game_mode">Escolha o estilo de jogo</string>
   <string name="edit_replay_game">Editar/jogar novamente a partida</string>
   <string name="analysis_mode">Modo análise</string>

@@ -69,6 +69,13 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="no_pgn_files">Keine Dateien im Verzeichnis DroidFish/pgn auf der SD-Karte gefunden</string>
   <string name="no_scid_files">Keine Dateien im Verzeichnis scid auf der SD-Karte gefunden</string>
   <string name="select_color_theme">Farbschema auswählen</string>
+  <string name="colortheme_original">Original</string>
+  <string name="colortheme_xboard">XBoard</string>
+  <string name="colortheme_blue">Blau</string>
+  <string name="colortheme_grey">Grau</string>
+  <string name="colortheme_scid_default">Scid Standard</string>
+  <string name="colortheme_scid_brown">Scid Braun</string>
+  <string name="colortheme_scid_green">Scid Grün</string>
   <string name="select_game_mode">Spielmodus auswählen</string>
   <string name="edit_replay_game">Partie bearbeiten/nachspielen</string>
   <string name="analysis_mode">Analyse</string>
