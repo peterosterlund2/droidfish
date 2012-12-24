@@ -11,6 +11,8 @@
   <string name="copy_game">Скопировать партию в буфер обмена</string>
   <string name="copy_position">Скопировать позицию в буфер обмена</string>
   <string name="paste">Вставить из буфера обмена</string>
+  <string name="share">Поделитесь</string>
+  <string name="share_pgn_game">Поделиться игрой PGN</string>
   <string name="load_game">Загрузить партию из PGN файла</string>
   <string name="load_scid_game">Загрузить партию из Scid файла</string>
   <string name="save_game">Сохранить партию в PGN файле</string>
@@ -52,10 +54,18 @@
   <string name="reading_pgn_file">Чтение PGN файла</string>
   <string name="reading_scid_file">Чтение Scid файла</string>
   <string name="new_file">&lt;Новый файл&gt;</string>
+  <string name="new_engine">&lt;Новый движок&gt;</string>
   <string name="please_wait">Пожалуйста, ожидайте…</string>
   <string name="no_pgn_files">Файлы в директории DroidFish/pgn не найдены</string>
   <string name="no_scid_files">Файлы в директории scid не найдены</string>
   <string name="select_color_theme">Выбрать цвет темы</string>
+  <string name="colortheme_original">Оригинал</string>
+  <string name="colortheme_xboard">XBoard</string>
+  <string name="colortheme_blue">Синий</string>
+  <string name="colortheme_grey">Серый</string>
+  <string name="colortheme_scid_default">Scid по умолчанию</string>
+  <string name="colortheme_scid_brown">Scid коричневый</string>
+  <string name="colortheme_scid_green">Scid зелёный</string>
   <string name="select_game_mode">Выбрать режим партии</string>
   <string name="edit_replay_game">Редактировать/Переиграть партию</string>
   <string name="analysis_mode">Режим анализа</string>
@@ -119,6 +129,7 @@
   <string name="resign_black">Игра закончена, черные сдаются!</string>
   <string name="book">Книга:</string>
   <string name="invalid_move">Неправильный ход</string>
+  <string name="piece_can_not_be_moved">Фигура не может быть перемещена</string>
   <string name="preferences">Предпочтения</string>
   <string name="load_game_title">Редактировать файл / Загрузить игру</string>
   <string name="save_game_title">Редактировать файл / Сохранить игру</string>
@@ -135,6 +146,7 @@
   <string name="heavy_cpu_usage">Повышенное использование процессора (CPU)</string>
   <string name="background_processing">Обработка в бэкграунде</string>
   <string name="lot_cpu_power">DroidFish потребляет много энергии от процессора (CPU)</string>
+  <string name="delete">Удалить</string>
   <string name="delete_game">Удалить игру?</string>
   <string name="delete_file">Удалить файл</string>
   <string name="delete_file_question">Удалить партию?</string>
@@ -149,13 +161,27 @@
   <string name="after_selected">После выделенного</string>
   <string name="replace_selected">Заменить выделенное</string>
   <string name="engine">Движок</string>
+  <string name="engine_name">Название движка</string>
+  <string name="engine_name_in_use">Имя используемого движка</string>
+  <string name="slash_not_allowed">Символ / не допускается</string>
   <string name="engine_error">Ошибка движка</string>
+  <string name="select_engine">Выбрать движок</string>
+  <string name="configure_network_engine">Настройка сетевого движка</string>
+  <string name="create_network_engine">Создать сетевой движок</string>
+  <string name="delete_network_engine">Удалить сетевой движок?</string>
+  <string name="host_name">Имя хоста</string>
+  <string name="network_port">Порт</string>
+  <string name="network_engine">Сетевой движок</string>
   <string name="failed_to_start_engine">Не удалось запустить движок</string>
   <string name="engine_terminated">Работа движка прекращена</string>
   <string name="uci_protocol_error">Ошибка UCI протокола</string>
+  <string name="network_engine_config_error">Ошибка конфигурации сетевого движка</string>
+  <string name="invalid_network_port">Недопустимый сетевой порт</string>
   <string name="start_new_game">Начать новую партию?</string>
   <string name="strength_cuckoo_hint">Использовать движок CuckooChess для наименьшего уровня сложности.</string>
   <string name="piece_names">П К С Л Ф Кр</string>
+  <string name="material_diff_summary">Отображать дополнительные субтитры для сбитых фигур</string>
+  <string name="material_diff_title">Показать существенное различие</string>
   <string name="err_too_few_spaces">Слишком малое пространство</string>
   <string name="err_invalid_piece">Неверная фигура</string>
   <string name="err_invalid_side">Неверное местоположение</string>
@@ -178,6 +204,7 @@
   <string name="option_force_computer_move">Форсировать ход компьютера</string>
   <string name="option_draw">Заявить/Предложить/Принять ничью</string>
   <string name="option_select_book">Выбрать открываемую книгу</string>
+  <string name="option_manage_engines">Управление шахматными движками</string>
   <string name="option_select_engine">Выбрать движок</string>
   <string name="option_color_theme">Установить цветную тему</string>
   <string name="option_about">Информация / Помощь</string>
@@ -189,10 +216,14 @@
   <string name="prefs_playerNameFlip_title">Поворачивать доску: игрок</string>
   <string name="prefs_playerNameFlip_summary">Использовать имя игрока для автоматического поворота доски</string>
   <string name="prefs_engine_settings">Настройки движка</string>
+  <string name="prefs_strength_title">Сила игры</string>
+  <string name="prefs_strength_summary">Поддерживается только внутренними движками. Режим анализа всегда использует полную силу.</string>
   <string name="prefs_ponderMode_title">Размышление</string>
   <string name="prefs_ponderMode_summary">Позволить движку обдумывание во время ожидания хода оппонента. Поддерживается большинством движков.</string>
   <string name="prefs_threads_title">Темы</string>
   <string name="prefs_threads_summary">Количество тем движка для использования. Поддерживается не всеми движками.</string>
+  <string name="prefs_hash_title">Хэш-таблица</string>
+  <string name="prefs_hash_summary">Размер хэш-таблицы в мегабайтах</string>
   <string name="prefs_time_control">Контроль времени</string>
   <string name="prefs_movesPerSession_title">Ходы</string>
   <string name="prefs_movesPerSession_summary">Количество ходов между отсечками времени</string>
@@ -209,8 +240,13 @@
   <string name="prefs_bookHints_summary">Отображать подсказки из книг для ходов игрока</string>
   <string name="prefs_thinkingArrows_title">Использовать стрелки</string>
   <string name="prefs_thinkingArrows_summary">Использовать стрелки для отображения ходов на доске</string>
+  <string name="prefs_user_interface_appearance">Внешний вид</string>
+  <string name="prefs_user_interface_behavior">Поведение</string>
   <string name="prefs_animateMoves_title">Анимировать ходы</string>
   <string name="prefs_animateMoves_summary">Анимировать перемещение фигур</string>
+  <string name="prefs_autoScrollTitle_title">Прокрутка строки заголовка</string>
+  <string name="prefs_autoScrollTitle_summary">Автопрокрутка строки заголовка при слишком длинных именах игроков</string>
+  <string name="prefs_quickMoveInput_title">Быстрый ввод хода</string>
   <string name="prefs_soundEnabled_title">Включить звуки</string>
   <string name="prefs_soundEnabled_summary">Включить звуки при ходе компьютера</string>
   <string name="prefs_vibrateEnabled_title">Включить вибрирование</string>
@@ -224,8 +260,10 @@
   <string name="prefs_scrollSensitivity_summary">скорость прокрутки для навигации в партии</string>
   <string name="prefs_invertScrollDirection_title">Инвертировать направление прокрутки</string>
   <string name="prefs_invertScrollDirection_summary">Позволить, если вы считаете, что прокрутка осуществляется в неправильном направлении</string>
+  <string name="prefs_discardVariations_title">Отменить изменения</string>
   <string name="prefs_leftHanded_title">Левосторонний режим</string>
   <string name="prefs_leftHanded_summary">Контроль слева в ландшафтном режиме</string>
+  <string name="prefs_boardGestures_title">Жесты на доске</string>
   <string name="prefs_fontSize_title">Размер текста</string>
   <string name="prefs_fontSize_summary">Размер шрифта для списка ходов и информации об игре</string>
   <string name="prefs_largeButtons_title">Крупные кнопки</string>
@@ -243,6 +281,7 @@
   <string name="prefs_custom_button_2">Пользовательская кнопка 2</string>
   <string name="prefs_custom_button_3">Пользовательская кнопка 3</string>
   <string name="prefs_colors_title">Настройка цвета</string>
+  <string name="press_color_to_apply">Нажмите на цвет, чтобы применить</string>
   <string name="prefs_colors_summary">Изменить индивидуальные настройки цвета</string>
   <string name="prefs_chess_board">Шахматная доска</string>
   <string name="prefs_color_brightSquare_title">Светлые клетки</string>
@@ -262,6 +301,8 @@
   <string name="prefs_move_list">Список ходов</string>
   <string name="prefs_color_currentMove_title">Текущий ход</string>
   <string name="prefs_color_pgnComment_title">Комментарии</string>
+  <string name="prefs_color_fontForeground_title">Шрифт</string>
+  <string name="prefs_color_generalBackground_title">Фон</string>
   <string name="prefs_other">Другое</string>
   <string name="prefs_bookSettings_title">Настройки книг</string>
   <string name="prefs_bookSettings_summary">Настройки для использования книг</string>
@@ -285,6 +326,10 @@
   <string name="prefs_viewNAG_summary">Включить глифовые (NAGs) цифровые обозначения , как ! и ?</string>
   <string name="prefs_viewHeaders_title">Заголовки</string>
   <string name="prefs_viewHeaders_summary">Показать линии PGN заголовков</string>
+  <string name="prefs_showVariationLine_title">Показать текущие изменения</string>
+  <string name="prefs_showVariationLine_summary">Показать текущие изменения в области состояния</string>
+  <string name="prefs_viewPieceType_title">Названия фигур</string>
+  <string name="prefs_viewPieceType_summary">Шахматная нотация</string>
   <string name="prefs_pgn_import">Импортирование PGN</string>
   <string name="prefs_importVariations_title">Изменения</string>
   <string name="prefs_importVariations_summary">Включить ходы по неглавным линяям</string>
@@ -336,9 +381,9 @@
     <item>8</item>
   </string-array>
   <string-array name="viewPieceType_texts">
-    <item>English letters</item>
-    <item>Local language letters</item>
-    <item>Figurine notation</item>
+    <item>Международная</item>
+    <item>Русская</item>
+    <item>Фигурины</item>
   </string-array>
   <string-array name="viewPieceType_values">
     <item>0</item>
