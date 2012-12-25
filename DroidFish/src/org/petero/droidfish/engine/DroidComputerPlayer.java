@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import org.petero.droidfish.EngineOptions;
 import org.petero.droidfish.book.BookOptions;
@@ -735,7 +736,7 @@ public class DroidComputerPlayer {
                 listener.notifyEngineName(engineName);
             }
         } else if (tokens.length > 2) {
-            String optName = tokens[2].toLowerCase();
+            String optName = tokens[2].toLowerCase(Locale.US);
             uci.registerOption(optName);
             if (optName.equals("multipv")) {
                 try {

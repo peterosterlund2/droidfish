@@ -24,6 +24,7 @@ import chess.Move;
 import chess.Position;
 import chess.TextIO;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import org.petero.droidfish.EngineOptions;
 import org.petero.droidfish.engine.LocalPipe;
@@ -146,12 +147,12 @@ public class CuckooChessEngine extends UCIEngineBase {
                 if (tokens[1].endsWith("name")) {
                     int idx = 2;
                     while ((idx < tokens.length) && !tokens[idx].equals("value")) {
-                        optionName.append(tokens[idx++].toLowerCase());
+                        optionName.append(tokens[idx++].toLowerCase(Locale.US));
                         optionName.append(' ');
                     }
                     if ((idx < tokens.length) && tokens[idx++].equals("value")) {
                         while ((idx < tokens.length)) {
-                            optionValue.append(tokens[idx++].toLowerCase());
+                            optionValue.append(tokens[idx++].toLowerCase(Locale.US));
                             optionValue.append(' ');
                         }
                     }

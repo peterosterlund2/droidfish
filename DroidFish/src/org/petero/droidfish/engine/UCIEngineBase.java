@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 
 import org.petero.droidfish.EngineOptions;
 import org.petero.droidfish.engine.cuckoochess.CuckooChessEngine;
@@ -120,7 +121,7 @@ public abstract class UCIEngineBase implements UCIEngine {
 
     @Override
     public void setOption(String name, String value) {
-        String lcName = name.toLowerCase();
+        String lcName = name.toLowerCase(Locale.US);
         if (!allOptions.contains(lcName))
             return;
         String currVal = currOptions.get(lcName);

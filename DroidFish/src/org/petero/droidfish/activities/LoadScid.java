@@ -19,6 +19,7 @@
 package org.petero.droidfish.activities;
 
 import java.io.File;
+import java.util.Locale;
 import java.util.Vector;
 
 import org.petero.droidfish.ColorTheme;
@@ -286,7 +287,7 @@ public class LoadScid extends ListActivity {
         String scidFileName = fileName.substring(0, fileName.indexOf("."));
         String[] proj = new String[]{"pgn"};
         try {
-            String uri = String.format("content://org.scid.database.scidprovider/games/%d", gameId);
+            String uri = String.format(Locale.US, "content://org.scid.database.scidprovider/games/%d", gameId);
             Cursor cursor = managedQuery(Uri.parse(uri),
                                          proj, scidFileName, null, null);
             return cursor;

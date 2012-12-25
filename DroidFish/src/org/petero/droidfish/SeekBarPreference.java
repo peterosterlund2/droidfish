@@ -18,6 +18,8 @@
 
 package org.petero.droidfish;
 
+import java.util.Locale;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -173,7 +175,7 @@ public class SeekBarPreference extends Preference
     }
 
     private final String valToString() {
-        return String.format("%.1f%%", currVal*0.1);
+        return String.format(Locale.US, "%.1f%%", currVal*0.1);
     }
 
     @Override

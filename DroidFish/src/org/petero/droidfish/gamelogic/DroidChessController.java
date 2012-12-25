@@ -20,6 +20,7 @@ package org.petero.droidfish.gamelogic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.petero.droidfish.EngineOptions;
@@ -676,7 +677,7 @@ public class DroidChessController {
                     nps /= 1000;
                     npsPrefix = "k";
                 }
-                statStrTmp = String.format("d:%d %d:%s t:%.2f n:%d%s nps:%d%s", currDepth, currMoveNr, currMoveStr,
+                statStrTmp = String.format(Locale.US, "d:%d %d:%s t:%.2f n:%d%s nps:%d%s", currDepth, currMoveNr, currMoveStr,
                                            currTime / 1000.0, nodes, nodesPrefix, nps, npsPrefix);
             }
             final String statStr = statStrTmp;

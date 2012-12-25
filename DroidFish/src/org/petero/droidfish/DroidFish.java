@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.TreeMap;
 
 import org.petero.droidfish.ChessBoard.SquareDecoration;
@@ -1262,7 +1263,7 @@ public class DroidFish extends Activity implements GUIInterface {
     /** Set new game mode. */
     private final void newGameMode(int gameModeType) {
         Editor editor = settings.edit();
-        String gameModeStr = String.format("%d", gameModeType);
+        String gameModeStr = String.format(Locale.US, "%d", gameModeType);
         editor.putString("gameMode", gameModeStr);
         editor.commit();
         gameMode = new GameMode(gameModeType);
@@ -1285,8 +1286,8 @@ public class DroidFish extends Activity implements GUIInterface {
     private final int nameMatchScore(String name, String match) {
         if (name == null)
             return 0;
-        String lName = name.toLowerCase();
-        String lMatch = match.toLowerCase();
+        String lName = name.toLowerCase(Locale.US);
+        String lMatch = match.toLowerCase(Locale.US);
         if (name.equals(match))
             return 6;
         if (lName.equals(lMatch))
@@ -1561,7 +1562,7 @@ public class DroidFish extends Activity implements GUIInterface {
         if (type != 2) {
             int gameModeType = (type == 0) ? GameMode.PLAYER_WHITE : GameMode.PLAYER_BLACK;
             Editor editor = settings.edit();
-            String gameModeStr = String.format("%d", gameModeType);
+            String gameModeStr = String.format(Locale.US, "%d", gameModeType);
             editor.putString("gameMode", gameModeStr);
             editor.commit();
             gameMode = new GameMode(gameModeType);
@@ -2119,7 +2120,7 @@ public class DroidFish extends Activity implements GUIInterface {
                 dialog.dismiss();
                 if (gameModeType >= 0) {
                     Editor editor = settings.edit();
-                    String gameModeStr = String.format("%d", gameModeType);
+                    String gameModeStr = String.format(Locale.US, "%d", gameModeType);
                     editor.putString("gameMode", gameModeStr);
                     editor.commit();
                     gameMode = new GameMode(gameModeType);
@@ -2225,7 +2226,7 @@ public class DroidFish extends Activity implements GUIInterface {
                     moveView.setText(commInfo.move);
                     String nagStr = Node.nagStr(commInfo.nag).trim();
                     if ((nagStr.length() == 0) && (commInfo.nag > 0))
-                        nagStr = String.format("%d", commInfo.nag);
+                        nagStr = String.format(Locale.US, "%d", commInfo.nag);
                     nag.setText(nagStr);
 
                     builder.setNegativeButton(R.string.cancel, null);
