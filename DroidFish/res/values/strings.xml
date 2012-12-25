@@ -80,7 +80,6 @@ you are not actively using the program.\
     <string name="new_engine">&lt;New Engine&gt;</string>
     <string name="please_wait">Please wait…</string>
     <string name="no_pgn_files">No files found in directory DroidFish/pgn on the SD card</string>
-    <string name="no_scid_files">No files found in directory scid on the SD card</string>
     <string name="select_color_theme">Select Color Theme</string>
     <string name="colortheme_original">Original</string>
     <string name="colortheme_xboard">XBoard</string>

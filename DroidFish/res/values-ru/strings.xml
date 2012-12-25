@@ -57,7 +57,6 @@
   <string name="new_engine">&lt;Новый движок&gt;</string>
   <string name="please_wait">Пожалуйста, ожидайте…</string>
   <string name="no_pgn_files">Файлы в директории DroidFish/pgn не найдены</string>
-  <string name="no_scid_files">Файлы в директории scid не найдены</string>
   <string name="select_color_theme">Выбрать цвет темы</string>
   <string name="colortheme_original">Оригинал</string>
   <string name="colortheme_xboard">XBoard</string>

@@ -64,7 +64,6 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="new_engine">&lt;Nouveau Module&gt;</string>
   <string name="please_wait">Veuillez patienter…</string>
   <string name="no_pgn_files">Aucun fichier trouvé dans le répertoire DroidFish/pgn de la carte SD</string>
-  <string name="no_scid_files">Aucun fichier trouvé dans le répertoire scid de la carte SD</string>
   <string name="select_color_theme">Sélectionner le thème de couleur</string>
   <string name="colortheme_original">Original</string>
   <string name="colortheme_xboard">XBoard</string>

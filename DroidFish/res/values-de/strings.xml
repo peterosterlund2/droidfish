@@ -67,7 +67,6 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="new_engine">&lt;Neue Engine&gt;</string>
   <string name="please_wait">Bitte warten…</string>
   <string name="no_pgn_files">Keine Dateien im Verzeichnis DroidFish/pgn auf der SD-Karte gefunden</string>
-  <string name="no_scid_files">Keine Dateien im Verzeichnis scid auf der SD-Karte gefunden</string>
   <string name="select_color_theme">Farbschema auswählen</string>
   <string name="colortheme_original">Original</string>
   <string name="colortheme_xboard">XBoard</string>

@@ -65,7 +65,6 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="new_engine">&lt;Nuevo motor&gt;</string>
   <string name="please_wait">Espere, por favor…</string>
   <string name="no_pgn_files">No se han encontrado archivos en el directorio DroidFish/pgn de la tarjeta SD </string>
-  <string name="no_scid_files">No se han encontrado archivos en el directorio scid de la tarjeta SD </string>
   <string name="select_color_theme">Seleccionar Colores</string>
   <string name="colortheme_original">Original</string>
   <string name="colortheme_xboard">XBoard</string>
