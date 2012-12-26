@@ -11,12 +11,6 @@ LOCAL_SRC_FILES := \
 	book.cpp         material.cpp  position.cpp \
 	endgame.cpp      misc.cpp      timeman.cpp   thread.cpp
 
-LOCAL_CFLAGS    := -I$(LOCAL_PATH)/../stlport/stlport \
-	 -mandroid \
-	-DTARGET_OS=android -D__ANDROID__ \
-	-isystem $(SYSROOT)/usr/include \
-	-DNO_PREFETCH=1
-
-LOCAL_STATIC_LIBRARIES := stlport
+LOCAL_CFLAGS    := -DNO_PREFETCH=1 -O2
 
 include $(BUILD_EXECUTABLE)
