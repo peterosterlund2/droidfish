@@ -27,7 +27,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="application/x-chess-pgn" />
             </intent-filter>
-        </activity>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/x-chess-pgn" />
+            </intent-filter>
+            </activity>
         <activity android:name=".activities.Preferences"
                   android:label="@string/preferences">
         </activity>

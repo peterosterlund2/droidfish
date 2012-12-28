@@ -436,7 +436,11 @@ public class DroidFish extends Activity implements GUIInterface {
         try {
             Intent intent = getIntent();
             Uri data = intent.getData();
-            if (data != null) {
+            if (data == null) {
+                if (Intent.ACTION_SEND.equals(intent.getAction()) &&
+                    "application/x-chess-pgn".equals(intent.getType()))
+                    pgn = intent.getStringExtra(Intent.EXTRA_TEXT);
+            } else {
                 String scheme = intent.getScheme();
                 if ("file".equals(scheme)) {
                     filename = data.getEncodedPath();
