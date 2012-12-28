@@ -183,6 +183,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private TextView whiteTitleText, blackTitleText, engineTitleText;
     private View secondTitleLine;
     private TextView whiteFigText, blackFigText, summaryTitleText;
+    private static Dialog moveListMenuDlg;
 
     SharedPreferences settings;
 
@@ -2264,9 +2265,11 @@ public class DroidFish extends Activity implements GUIInterface {
                     ctrl.makeHumanNullMove();
                     break;
                 }
+                moveListMenuDlg = null;
             }
         });
         AlertDialog alert = builder.create();
+        moveListMenuDlg = alert;
         return alert;
     }
 
@@ -3074,8 +3077,14 @@ public class DroidFish extends Activity implements GUIInterface {
             }
             @Override
             public void onClick(View widget) {
-                if (ctrl != null)
-                    ctrl.goNode(node);
+                if (ctrl != null) {
+                    // On android 4.1 this onClick method is called
+                    // even when you long click the move list. The test
+                    // below works around the problem.
+                    Dialog mlmd = moveListMenuDlg;
+                    if ((mlmd == null) || !mlmd.isShowing())
+                        ctrl.goNode(node);
+                }
             }
             @Override
             public void updateDrawState(TextPaint ds) {
