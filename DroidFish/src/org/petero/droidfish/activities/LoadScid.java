@@ -52,7 +52,11 @@ public class LoadScid extends ListActivity {
         String summary = "";
         int gameId = -1;
         public String toString() {
-            return summary;
+            StringBuilder sb = new StringBuilder(128);
+            sb.append(gameId+1);
+            sb.append(". ");
+            sb.append(summary);
+            return sb.toString();
         }
     }
 

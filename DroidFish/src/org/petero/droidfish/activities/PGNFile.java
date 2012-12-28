@@ -145,6 +145,7 @@ public class PGNFile {
     }
 
     private final static class HeaderInfo {
+        int gameNo;
         String event = "";
         String site = "";
         String date = "";
@@ -152,9 +153,15 @@ public class PGNFile {
         String white = "";
         String black = "";
         String result = "";
+        
+        HeaderInfo(int gameNo) {
+            this.gameNo = gameNo;
+        }
 
         public String toString() {
             StringBuilder info = new StringBuilder(128);
+            info.append(gameNo);
+            info.append(". ");
             info.append(white);
             info.append(" - ");
             info.append(black);
@@ -201,6 +208,7 @@ public class PGNFile {
             HeaderInfo hi = null;
             boolean inHeader = false;
             long filePos = 0;
+            int gameNo = 1;
             while (true) {
                 filePos = f.getFilePointer();
                 String line = f.readLine();
@@ -238,7 +246,7 @@ public class PGNFile {
                         gi = new GameInfo();
                         gi.startPos = filePos;
                         gi.endPos = -1;
-                        hi = new HeaderInfo();
+                        hi = new HeaderInfo(gameNo++);
                     }
                     if (line.startsWith("[Event ")) {
                         if (len >= 10) {
