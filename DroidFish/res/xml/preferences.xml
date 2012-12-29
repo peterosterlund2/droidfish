@@ -88,9 +88,16 @@
             android:defaultValue="@string/thinking_arrows_default">
         </ListPreference>
         <CheckBoxPreference 
+            android:key="highlightLastMove"
+            android:title="@string/highlight_last_move_title"
+            android:summary="@string/highlight_last_move_summary"
+            android:defaultValue="true">
+        </CheckBoxPreference>
+        <CheckBoxPreference
             android:key="materialDiff"
-            android:summary="@string/material_diff_summary" 
-            android:title="@string/material_diff_title">
+            android:title="@string/material_diff_title"
+            android:summary="@string/material_diff_summary"
+            android:defaultValue="false">
         </CheckBoxPreference>
     </PreferenceCategory>
     <PreferenceCategory 

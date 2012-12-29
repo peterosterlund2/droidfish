@@ -113,7 +113,7 @@ public class ChessBoardPlay extends ChessBoard {
                 }
                 if (!myColor(p)) {
                     Move m = new Move(selectedSquare, sq, Piece.EMPTY);
-                    setSelection(sq);
+                    setSelection(highlightLastMove ? sq : -1);
                     userSelectedSquare = false;
                     return m;
                 } else
@@ -140,7 +140,7 @@ public class ChessBoardPlay extends ChessBoard {
                 anyMatch = match.second;
             }
             if (matchingMove != null) {
-                setSelection(matchingMove.to);
+                setSelection(highlightLastMove ? matchingMove.to : -1);
                 userSelectedSquare = false;
                 return matchingMove;
             }

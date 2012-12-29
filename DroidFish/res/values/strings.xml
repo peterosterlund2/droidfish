@@ -204,8 +204,10 @@ you are not actively using the program.\
     <string name="start_new_game">Start New Game?</string>
     <string name="strength_cuckoo_hint">Use the CuckooChess engine for even lower strength.</string>
     <string name="piece_names">P N B R Q K</string>
-    <string name="material_diff_summary">Displays an additional subtitle for captured pieces</string>
+    <string name="highlight_last_move_title">Highlight last move</string>
+    <string name="highlight_last_move_summary">Draw rectangle around last moved piece</string>
     <string name="material_diff_title">Show Material Difference</string>
+    <string name="material_diff_summary">Displays an additional subtitle for captured pieces</string>
     <string name="err_too_few_spaces">Too few spaces</string>
     <string name="err_invalid_piece">Invalid piece</string>
     <string name="err_invalid_side">Invalid side</string>

@@ -52,6 +52,7 @@ public abstract class ChessBoard extends View {
     public boolean flipped;
     public boolean drawSquareLabels;
     boolean toggleSelection;
+    boolean highlightLastMove;         // If true, last move is marked with a rectangle
 
     List<Move> moveHints;
 
@@ -97,6 +98,7 @@ public abstract class ChessBoard extends View {
         flipped = false;
         drawSquareLabels = false;
         toggleSelection = false;
+        highlightLastMove = true;
 
         darkPaint = new Paint();
         brightPaint = new Paint();
