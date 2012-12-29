@@ -177,10 +177,9 @@ public class Probe {
         return ret;
     }
 
-    /** Return a list of all legal moves that are not known to be non-optimal.
+    /** Return a list of all moves in moveList that are not known to be non-optimal.
      * Returns null if no legal move could be excluded. */
-    public final ArrayList<Move> findOptimal(Position pos) {
-        ArrayList<Move> moveList = new MoveGen().legalMoves(pos);
+    public final ArrayList<Move> removeNonOptimal(Position pos, ArrayList<Move> moveList) {
         ArrayList<Move> optimalMoves = new ArrayList<Move>();
         ArrayList<Move> unknownMoves = new ArrayList<Move>();
         final int MATE0 = 100000;

@@ -332,12 +332,13 @@ public class DroidComputerPlayer {
     /** Decide what moves to search. Filters out non-optimal moves if tablebases are used. */
     private final ArrayList<Move> movesToSearch(SearchRequest sr) {
         ArrayList<Move> moves = null;
+        ArrayList<Move> legalMoves = new MoveGen().legalMoves(sr.currPos);
         if (engineOptions.rootProbe)
-            moves = Probe.getInstance().findOptimal(sr.currPos);
+            moves = Probe.getInstance().removeNonOptimal(sr.currPos, legalMoves);
         if (moves != null) {
             sr.searchMoves = moves;
         } else {
-            moves = new MoveGen().legalMoves(sr.currPos);
+            moves = legalMoves;
             sr.searchMoves = null;
         }
         return moves;
