@@ -281,7 +281,7 @@ public class MoveGen {
      * Generate all possible pawn moves from (x0,y0) to (x1,y1), taking pawn promotions into account.
      */
     private final void addPawnMoves(ArrayList<Move> moveList, int sq0, int sq1) {
-            if (sq1 >= 56) { // White promotion
+        if (sq1 >= 56) { // White promotion
             moveList.add(getMoveObj(sq0, sq1, Piece.WQUEEN));
             moveList.add(getMoveObj(sq0, sq1, Piece.WKNIGHT));
             moveList.add(getMoveObj(sq0, sq1, Piece.WROOK));
