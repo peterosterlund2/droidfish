@@ -53,6 +53,7 @@ public abstract class ChessBoard extends View {
     public boolean drawSquareLabels;
     boolean toggleSelection;
     boolean highlightLastMove;         // If true, last move is marked with a rectangle
+    boolean blindMode;                 // If true, no chess pieces and arrows are drawn
 
     List<Move> moveHints;
 
@@ -99,6 +100,7 @@ public abstract class ChessBoard extends View {
         drawSquareLabels = false;
         toggleSelection = false;
         highlightLastMove = true;
+        blindMode = false;
 
         darkPaint = new Paint();
         brightPaint = new Paint();
@@ -317,10 +319,7 @@ public abstract class ChessBoard extends View {
             invalidate();
     }
 
-    /**
-     * Set/clear the board flipped status.
-     * @param flipped
-     */
+    /** Set/clear the board flipped status. */
     final public void setFlipped(boolean flipped) {
         if (this.flipped != flipped) {
             this.flipped = flipped;
@@ -328,13 +327,18 @@ public abstract class ChessBoard extends View {
         }
     }
 
-    /**
-     * Set/clear the board flipped status.
-     * @param flipped
-     */
+    /** Set/clear the board flipped status. */
     final public void setDrawSquareLabels(boolean drawSquareLabels) {
         if (this.drawSquareLabels != drawSquareLabels) {
             this.drawSquareLabels = drawSquareLabels;
+            invalidate();
+        }
+    }
+
+    /** Set/clear the board blindMode status. */
+    final public void setBlindMode(boolean blindMode) {
+        if (this.blindMode != blindMode) {
+            this.blindMode = blindMode;
             invalidate();
         }
     }
@@ -446,7 +450,7 @@ public abstract class ChessBoard extends View {
     }
 
     private final void drawMoveHints(Canvas canvas) {
-        if (moveHints == null)
+        if ((moveHints == null) || blindMode)
             return;
         float h = (float)(sqSize / 2.0);
         float d = (float)(sqSize / 8.0);
@@ -497,6 +501,8 @@ public abstract class ChessBoard extends View {
     abstract protected void drawExtraSquares(Canvas canvas);
 
     protected final void drawPiece(Canvas canvas, int xCrd, int yCrd, int p) {
+        if (blindMode)
+            return;
         String psb, psw;
         boolean rotate = false;
         switch (p) {

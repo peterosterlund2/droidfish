@@ -323,6 +323,17 @@ public class DroidFish extends Activity implements GUIInterface {
                     updateButtons();
                 }
             });
+            addAction(new UIAction() {
+                public String getId() { return "blindMode"; }
+                public int getName() { return R.string.blind_mode; }
+                public int getIcon() { return R.raw.blind; }
+                public boolean enabled() { return true; }
+                public void run() {
+                    boolean blindMode = !cb.blindMode;
+                    setBooleanPref("blindMode", blindMode);
+                    cb.setBlindMode(blindMode);
+                }
+            });
         }
 
         @Override
@@ -516,6 +527,7 @@ public class DroidFish extends Activity implements GUIInterface {
         cb.oneTouchMoves = oldCB.oneTouchMoves;
         cb.toggleSelection = oldCB.toggleSelection;
         cb.highlightLastMove = oldCB.highlightLastMove;
+        cb.setBlindMode(oldCB.blindMode);
         setSelection(oldCB.selectedSquare);
         cb.userSelectedSquare = oldCB.userSelectedSquare;
         setStatusString(statusStr);
@@ -824,6 +836,7 @@ public class DroidFish extends Activity implements GUIInterface {
         cb.oneTouchMoves = settings.getBoolean("oneTouchMoves", false);
         cb.toggleSelection = getIntSetting("squareSelectType", 0) == 1;
         cb.highlightLastMove = settings.getBoolean("highlightLastMove", true);
+        cb.setBlindMode(settings.getBoolean("blindMode", false));
 
         mShowThinking = settings.getBoolean("showThinking", false);
         mShowStats = settings.getBoolean("showStats", true);

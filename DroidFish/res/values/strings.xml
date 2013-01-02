@@ -112,6 +112,7 @@ you are not actively using the program.\
     <string name="no_next_game">No next game</string>
     <string name="select_action">Select Action</string>
     <string name="flip_board">Flip Board</string>
+    <string name="blind_mode">Blindfold mode</string>
     <string name="toggle_show_thinking">Toggle Show Thinking</string>
     <string name="toggle_book_hints">Toggle Book Hints</string>
     <string name="toggle_pgn_variations">Toggle Variations</string>
@@ -119,6 +120,7 @@ you are not actively using the program.\
     <string name="toggle_pgn_headers">Toggle Headers</string>
     <string name="toggle_analysis">Toggle Engine Analysis</string>
     <string name="toggle_large_buttons">Toggle Large Buttons</string>
+    <string name="toggle_blind_mode">Toggle Blindfold Mode</string>
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -363,6 +365,8 @@ you are not actively using the program.\
     <string name="prefs_showVariationLine_summary">Show current variations in status area</string>
     <string name="prefs_viewPieceType_title">Piece Names</string>
     <string name="prefs_viewPieceType_summary">Control how chess piece names are displayed</string>
+    <string name="prefs_blindMode_title">Blindfold mode</string>
+    <string name="prefs_blindMode_summary">Show blank board instead of pieces</string>
     <string name="prefs_pgn_import">PGN import</string>
     <string name="prefs_importVariations_title">Variations</string>
     <string name="prefs_importVariations_summary">Include non-mainline moves</string>
@@ -604,6 +608,7 @@ you are not actively using the program.\
         <item>@string/toggle_pgn_comments</item>
         <item>@string/toggle_pgn_headers</item>
         <item>@string/toggle_large_buttons</item>
+        <item>@string/toggle_blind_mode</item>
     </string-array>
     <string-array name="button_action_values">
         <item></item>
@@ -615,5 +620,6 @@ you are not actively using the program.\
         <item>viewComments</item>
         <item>viewHeaders</item>
         <item>largeButtons</item>
+        <item>blindMode</item>
     </string-array>
 </resources>

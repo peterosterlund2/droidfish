@@ -145,6 +145,12 @@
             android:entries="@array/viewPieceType_texts" 
             android:defaultValue="@string/viewPieceType_default">
         </ListPreference>
+        <CheckBoxPreference 
+            android:key="blindMode" 
+            android:title="@string/prefs_blindMode_title" 
+            android:summary="@string/prefs_blindMode_summary" 
+            android:defaultValue="false">
+        </CheckBoxPreference>
         <CheckBoxPreference
             android:key="vibrateEnabled"
             android:title="@string/prefs_vibrateEnabled_title" 
