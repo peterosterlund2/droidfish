@@ -456,7 +456,8 @@ public class DroidFish extends Activity implements GUIInterface {
             Intent intent = getIntent();
             Uri data = intent.getData();
             if (data == null) {
-                if (Intent.ACTION_SEND.equals(intent.getAction()) &&
+                if ((Intent.ACTION_SEND.equals(intent.getAction()) ||
+                     Intent.ACTION_VIEW.equals(intent.getAction())) &&
                     ("application/x-chess-pgn".equals(intent.getType()) ||
                      "application/x-chess-fen".equals(intent.getType())))
                     pgnOrFen = intent.getStringExtra(Intent.EXTRA_TEXT);
