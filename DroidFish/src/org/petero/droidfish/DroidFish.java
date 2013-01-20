@@ -347,8 +347,8 @@ public class DroidFish extends Activity implements GUIInterface {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Pair<String,String> pair = getPgnIntent();
-        String intentPgn = pair.first;
+        Pair<String,String> pair = getPgnOrFenIntent();
+        String intentPgnOrFen = pair.first;
         String intentFilename = pair.second;
 
         createDirectories();
@@ -401,9 +401,9 @@ public class DroidFish extends Activity implements GUIInterface {
         ctrl.setGuiPaused(true);
         ctrl.setGuiPaused(false);
         ctrl.startGame();
-        if (intentPgn != null) {
+        if (intentPgnOrFen != null) {
             try {
-                ctrl.setFENOrPGN(intentPgn);
+                ctrl.setFENOrPGN(intentPgnOrFen);
                 setBoardFlip(true);
             } catch (ChessParseError e) {
             }
@@ -439,19 +439,20 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     /**
-     * Return PGN data or filename from the Intent. Both can not be non-null.
-     * @return Pair of pgndata and filename.
+     * Return PGN/FEN data or filename from the Intent. Both can not be non-null.
+     * @return Pair of PGN/FEN data and filename.
      */
-    private final Pair<String,String> getPgnIntent() {
-        String pgn = null;
+    private final Pair<String,String> getPgnOrFenIntent() {
+        String pgnOrFen = null;
         String filename = null;
         try {
             Intent intent = getIntent();
             Uri data = intent.getData();
             if (data == null) {
                 if (Intent.ACTION_SEND.equals(intent.getAction()) &&
-                    "application/x-chess-pgn".equals(intent.getType()))
-                    pgn = intent.getStringExtra(Intent.EXTRA_TEXT);
+                    ("application/x-chess-pgn".equals(intent.getType()) ||
+                     "application/x-chess-fen".equals(intent.getType())))
+                    pgnOrFen = intent.getStringExtra(Intent.EXTRA_TEXT);
             } else {
                 String scheme = intent.getScheme();
                 if ("file".equals(scheme)) {
@@ -472,14 +473,14 @@ public class DroidFish extends Activity implements GUIInterface {
                             break;
                         sb.append(new String(buffer, 0, len));
                     }
-                    pgn = sb.toString();
+                    pgnOrFen = sb.toString();
                 }
             } 
         } catch (IOException e) {
             Toast.makeText(getApplicationContext(), R.string.failed_to_read_pgn_data,
                            Toast.LENGTH_SHORT).show();
         }
-        return new Pair<String,String>(pgn,filename);
+        return new Pair<String,String>(pgnOrFen,filename);
     }
 
     private final byte[] strToByteArr(String str) {
