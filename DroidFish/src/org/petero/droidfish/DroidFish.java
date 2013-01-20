@@ -475,7 +475,7 @@ public class DroidFish extends Activity implements GUIInterface {
                     }
                     pgnOrFen = sb.toString();
                 }
-            } 
+            }
         } catch (IOException e) {
             Toast.makeText(getApplicationContext(), R.string.failed_to_read_pgn_data,
                            Toast.LENGTH_SHORT).show();
@@ -2458,7 +2458,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private Dialog makeButtonDialog(ButtonActions buttonActions) {
         List<CharSequence> names = new ArrayList<CharSequence>();
         final List<UIAction> actions = new ArrayList<UIAction>();
-    
+
         HashSet<String> used = new HashSet<String>();
         for (UIAction a : buttonActions.getMenuActions()) {
             if ((a != null) && a.enabled() && !used.contains(a.getId())) {

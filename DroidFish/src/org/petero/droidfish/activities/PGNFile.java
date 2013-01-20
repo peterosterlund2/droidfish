@@ -153,7 +153,7 @@ public class PGNFile {
         String white = "";
         String black = "";
         String result = "";
-        
+
         HeaderInfo(int gameNo) {
             this.gameNo = gameNo;
         }

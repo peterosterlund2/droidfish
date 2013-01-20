@@ -37,7 +37,7 @@ import android.widget.Toast;
 public class ChessBoardPlay extends ChessBoard {
     private PGNOptions pgnOptions = null;
     boolean oneTouchMoves;
-    
+
     public ChessBoardPlay(Context context, AttributeSet attrs) {
         super(context, attrs);
         oneTouchMoves = false;

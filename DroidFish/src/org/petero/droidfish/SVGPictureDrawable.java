@@ -15,7 +15,7 @@ public class SVGPictureDrawable extends PictureDrawable {
 
     private final int iWidth;
     private final int iHeight;
-    
+
     private Rect cachedBounds;
     private Bitmap cachedBitmap;
 

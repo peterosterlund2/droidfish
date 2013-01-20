@@ -65,7 +65,7 @@ public class GameMode {
     public final boolean analysisMode() {
         return modeNr == ANALYSIS;
     }
-    
+
     /** Return true if it is a humans turn to move. */
     public final boolean humansTurn(boolean whiteMove) {
         return whiteMove ? playerWhite() : playerBlack();
@@ -80,7 +80,7 @@ public class GameMode {
         case TWO_COMPUTERS:
             return true;
         default:
-            return false;    
+            return false;
         }
     }
 

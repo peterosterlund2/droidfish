@@ -203,7 +203,7 @@ public class NetworkEngine extends UCIEngineBase {
     public void initOptions(EngineOptions engineOptions) {
         super.initOptions(engineOptions);
         hashMB = engineOptions.hashMB;
-        setOption("Hash", engineOptions.hashMB); 
+        setOption("Hash", engineOptions.hashMB);
         if (engineOptions.engineProbe) {
             gaviotaTbPath = engineOptions.gtbPath;
             setOption("GaviotaTbPath", engineOptions.gtbPath);

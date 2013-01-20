@@ -44,7 +44,7 @@ public class ChessBoardEdit extends ChessBoard {
     private final static int gap = 4;
 
     @Override
-    protected int getWidth(int sqSize) { 
+    protected int getWidth(int sqSize) {
         return landScape ? sqSize * 10 + gap : sqSize * 8;
     }
     @Override
