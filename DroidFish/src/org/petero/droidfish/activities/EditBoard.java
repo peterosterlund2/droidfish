@@ -90,13 +90,15 @@ public class EditBoard extends Activity {
         Util.setFullScreenMode(this, settings);
 
         Intent i = getIntent();
-        Position pos;
+        Position pos = null;
         try {
             pos = TextIO.readFEN(i.getAction());
-            cb.setPosition(pos);
-            checkValidAndUpdateMaterialDiff();
         } catch (ChessParseError e) {
+            pos = e.pos;
         }
+        if (pos != null)
+            cb.setPosition(pos);
+        checkValidAndUpdateMaterialDiff();
     }
 
     @Override

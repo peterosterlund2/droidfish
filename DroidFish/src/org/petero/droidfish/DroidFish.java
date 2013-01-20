@@ -406,6 +406,13 @@ public class DroidFish extends Activity implements GUIInterface {
                 ctrl.setFENOrPGN(intentPgnOrFen);
                 setBoardFlip(true);
             } catch (ChessParseError e) {
+                // If FEN corresponds to illegal chess position, go into edit board mode.
+                try {
+                    TextIO.readFEN(intentPgnOrFen);
+                } catch (ChessParseError e2) {
+                    if (e2.pos != null)
+                        startEditBoard(intentPgnOrFen);
+                }
             }
         } else if (intentFilename != null) {
             loadPGNFromFile(intentFilename);
@@ -1160,9 +1167,7 @@ public class DroidFish extends Activity implements GUIInterface {
             showDialog(NEW_GAME_DIALOG);
             return true;
         case R.id.item_editboard: {
-            Intent i = new Intent(DroidFish.this, EditBoard.class);
-            i.setAction(ctrl.getFEN());
-            startActivityForResult(i, RESULT_EDITBOARD);
+            startEditBoard(ctrl.getFEN());
             return true;
         }
         case R.id.item_settings: {
@@ -1214,6 +1219,12 @@ public class DroidFish extends Activity implements GUIInterface {
             return true;
         }
         return false;
+    }
+
+    private void startEditBoard(String fen) {
+        Intent i = new Intent(DroidFish.this, EditBoard.class);
+        i.setAction(fen);
+        startActivityForResult(i, RESULT_EDITBOARD);
     }
 
     @Override
