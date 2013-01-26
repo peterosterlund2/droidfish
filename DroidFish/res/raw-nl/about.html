@@ -1,0 +1,209 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+
+<h2>Over</h2>
+<p>
+  <i>DroidFish</i> is een uitgebreid schaakprogramma, dat gebruik maakt van de zeer sterke <i>Stockfish</i> schaak engine.
+</p>
+
+<h3>Functies</h3>
+<ul>
+  <li>Openingsboek</li>
+  <li>Onbeperkte zetten geschiedenis</li>
+  <li>Kopieren en plakken vanaf/naar klembord</li>
+  <li>Analyses</li>
+  <li>Twee spelers modus</li>
+  <li>Computer vs computer modus</li>
+  <li>Posities invoeren</li>
+  <li>Uitgebreide PGN ondersteuning</li>
+  <li>Aanpasbare spelsterkte</li>
+  <li>UCI engines</li>
+  <li>Gaviota eindspel databases</li>
+</ul>
+
+<h3>Hints</h3>
+<ul>
+  <li>
+    Druk lang op de mode/links/rechts knoppen voor extra commando's.  
+</li>
+  <li>
+    Bij het naspelen van een partij kunnen in de spelmodus <i>Bewerken/Naspelen</i> halfzetten teruggenomen worden.  
+</li>
+</ul>
+
+<h3>Openingsboeken</h3>
+<p>
+  DroidFish heeft een klein intern openingsboek. Het programma kan ook externe openingsboeken van het formaat Polyglot of CTG gebruiken:
+</p>
+<ol>
+  <li>
+    Kopieer de boekbestanden naar de <i>DroidFish</i> directory op de SD kaart.
+    Polyglot bestanden moeten de extensie <i>.bin</i> hebben.
+    Let op: Android is hoofdletter gevoelig, gebruik <i>.bin</i> en niet <i>.Bin</i> of <i>.BIN</i>.  
+</li>
+  <li>
+    Kopieer de CTG boekbestanden naar de  <i>DroidFish</i> directory.
+    Een CTG boek bestaat uit drie bestanden met de extensies <i>.ctg</i>, <i>.ctb</i> en <i>.cto</i>. 
+    Alledrie de bestanden moeten gekopieerd worden.  
+</li>
+  <li>
+    Kies vanuit het programma-menu de optie <i>Selecteer openingsboek</i>.  
+</li>
+  <li>
+    Selecteer het gewenste openingsboek.  
+</li>
+</ol>
+
+<h3>PGN bestanden</h3>
+<p>
+  DroidFish kan partijen laden die opgeslagen zijn in PGN ( Portable Game Notation).
+</p>
+<ol>
+  <li>
+    Kopieer de PGN bestanden naar de <i>DroidFish/pgn</i> directory op de SD kaart.  
+</li>
+  <li>
+    Raak het bord lang aan en selecteer <i>Laad partij vanuit PGN bestand</i>.  
+</li>
+  <li>
+    Selecteer het bestand en vervolgens de gewenste partij.  
+</li>
+</ol>
+<p>
+  Partij-informatie, zoals spelersnamen, kan bewerkt worden door de zettenlijst lang aan te raken en <i>Bewerk partij-informatie</i> te selecteren. Commentaar bij een zet kan bewerkt worden door de zettenlijst lang aan te raken <i>Bewerk Commentaar</i> te selecteren.
+</p>
+<p>
+  PGN bewaren: raak het bord lang aan en selecteer <i>Opslaan als PGN</i>. Selecteer het bestand en vervolgens de positie in de lijst waar de partij moet worden opgeslagen.
+</p>
+<p>
+  <b>Let op!</b> Als de <a href="http://play.google.com/store/apps/details?id=org.openintents.filemanager">OI File Manager</a> geïnstalleerd is, kan een iedere directory gebruikt worden op partijen op te slaan.
+</p>
+<p>
+  Analyse toevoegen: raak de analyse informatie lang aan en selecteer <i>Analyse Toevoegen</i>.
+  De huidige hoofdvariant wordt toegevoegd als variant in de partijboom.
+</p>
+<p>
+  In analyse modus is het mogelijk om lege zetten toe te voegen aan de partijboom. Let op, lege zetten zijn geen onderdeel van de PGN standaard en zijn daarom misschien niet meer beschikbaar in andere schaakprogramma's die uw PGN bestand openen.
+</p>
+
+<h3>Scid bestanden</h3>
+<p>
+  Als u <a href="http://play.google.com/store/apps/details?id=org.scid.android">Scid on the go</a> heeft geïnstalleerd, is het mogelijk de Scid database files direct vanuit DroidFish te benaderen.
+  Raak het schaakbord lang aan en selecteer <i>Laad partij vanuit Scid bestand</i>.
+</p>
+
+<h3>UCI Engines</h3>
+<p>
+  DroidFish kan externe UCI engines gebruiken:
+</p>
+<ol>
+  <li>
+    Kopieer de UCI engine binary naar de <i>DroidFish/uci</i> directory op de SD kaart. De binaries moeten gecompileerd zijn voor Android.  
+</li>
+  <li>
+    Kies vanuit het programma-menu de optie <i>Engines beheren</i> en <i>Selecteer Engine</i> om de gewenste engine te activeren.  
+</li>
+</ol>
+
+<h3>UCI engines gebruiken vanaf een remote server</h3>
+<p>
+  DroidFish kan ook UCI engines gebruiken die op een remote server staan:
+</p>
+<ol>
+  <li>
+    Installeer chess network server software op de server.    
+<ol>
+      <li>
+        Voor Windows: installeer de server software op de <a href="http://home.arcor.de/bernhard.wallner/netChess.html">Computer Chess Utility</a> pagina.      
+</li>
+      <li>
+        Voor Linux, kan <tt>mini-inetd</tt> uit de <tt>tcputils</tt> package gebruikt worden.      
+</li>
+    </ol>
+  </li>
+  <li>
+    Selecteer <i>Beheer Engines</i> vanuit het programma-menu en maak een nieuwe netwerk engine aan. Voer de hostnaam en het poortnummer in van de externe engine.  
+</li>
+  <li>
+    Kies vanuit het programma-menu <i>Beheer Engines</i> en selecteer de gewenste engine met <i>Selecteer Engine</i>.  
+</li>
+</ol>
+
+<h3>Gaviota eindspel databases</h3>
+<p>
+  DroidFish kan <a href="http://sites.google.com/site/gaviotachessengine/Home/endgame-tablebases-1">Gaviota eindspel databases</a> gebruiken:
+</p>
+<ol>
+  <li>
+    Kopieer de .gtb.cp4 bestanden naar de <i>DroidFish/gtb</i> directory op de SD kaart.  
+</li>
+  <li>
+    Kies <i>Endspel Databases</i> instellingen om in te stellen hoe de database gebruikt moet worden.  
+</li>
+</ol>
+
+<h3>Licentie</h3>
+<p>
+  <a href="http://www.gnu.org/licenses/gpl.html">GNU GPL v3</a>
+</p>
+
+<h3>Ontwikkelaars</h3>
+<ul>
+  <li>
+    <i>Stockfish</i> is gemaakt door Tord Romstad, Marco Costalba en Joona Kiiski.  
+</li>
+  <li>
+    <i>Droidfish</i> is ontwikkeld door Peter Österlund.  
+</li>
+  <li>
+    User interface verbeteringen door Aaro Korhonen.  
+</li>
+  <li>
+    Gaviota Database API, Copyright © 2010 Miguel A. Ballicora.    
+<ul>
+      <li>
+        LZMA compressie door Igor Pavlov.      
+</li>
+      <li>
+        ZLIB compressie, Copyright © 1995-2005 Jean-loup Gailly en Mark Adler.      
+</li>
+      <li>
+        LZF compressie, Copyright © 2000-2007 Marc Alexander Lehmann.      
+</li>
+    </ul>
+  </li>
+  <li>
+    SVG reader overgenomen uit het <a href="http://code.google.com/p/svg-android/">svg-android</a> project.  
+</li>
+  <li>
+    Color picker, Copyright © 2010 Daniel Nilsson en Copyright © 2011 Sergey Margaritov.  
+</li>
+</ul>
+
+<h3>Vertalingen</h3>
+<p>
+  Vertalingen worden beheerd op <a href="http://crowdin.net/project/droidfish-android-chess-app">crowdin.net</a>.
+</p>
+<ul>
+  <li>
+    Duitse vertaling door Uwe Walschus.  
+</li>
+  <li>
+    Spaanse vertaling door Amador Cuesta.  
+</li>
+  <li>
+    Russische vertaling door SWEN и dfuk (allBlackBerry).  
+</li>
+  <li>
+    Portugese vertaling door C. R. Zamana.  
+</li>
+  <li>
+    Franse Vertaling door Eric Weibel (Thanvillé).  
+</li>
+</ul>
+
+  </body>
+</html>
