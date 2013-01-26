@@ -186,8 +186,8 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="start_new_game">Commencer une nouvelle partie?</string>
   <string name="strength_cuckoo_hint">Utilisez le moteur CuckooChess pour un niveau encore plus bas.</string>
   <string name="piece_names">P C F T D R</string>
-  <string name="material_diff_summary">Afficher les pièces capturées par un texte additionnel</string>
   <string name="material_diff_title">Montrer la différence de matériel</string>
+  <string name="material_diff_summary">Afficher les pièces capturées par un texte additionnel</string>
   <string name="err_too_few_spaces">Trop peu d\'espaces</string>
   <string name="err_invalid_piece">Pièce non valide</string>
   <string name="err_invalid_side">Côté non valide</string>
@@ -579,6 +579,7 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
     <item>@string/toggle_pgn_comments</item>
     <item>@string/toggle_pgn_headers</item>
     <item>@string/toggle_large_buttons</item>
+    <item>@string/toggle_blind_mode</item>
   </string-array>
   <string-array name="button_action_values">
     <item></item>
@@ -590,5 +591,6 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
     <item>viewComments</item>
     <item>viewHeaders</item>
     <item>largeButtons</item>
+    <item>blindMode</item>
   </string-array>
 </resources>

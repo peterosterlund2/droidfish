@@ -98,6 +98,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="no_next_game">Não há próxima partida</string>
   <string name="select_action">Selecione ação</string>
   <string name="flip_board">Inverter tabuleiro</string>
+  <string name="blind_mode">Modo às cegas</string>
   <string name="toggle_show_thinking">Mostrar/Ocultar avaliação</string>
   <string name="toggle_book_hints">Mostrar/Ocultar dicas do livro</string>
   <string name="toggle_pgn_variations">Mostrar/Ocultar variantes</string>
@@ -105,6 +106,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="toggle_pgn_headers">Mostrar/Ocultar cabeçalhos</string>
   <string name="toggle_analysis">Mostrar/Ocultar análise do software</string>
   <string name="toggle_large_buttons">Mostrar/Ocultar botões grandes</string>
+  <string name="toggle_blind_mode">Trocar modo às cegas</string>
   <string name="cancel">Cancelar</string>
   <string name="yes">Sim</string>
   <string name="no">Não</string>
@@ -188,8 +190,10 @@ não estiver usando o programa diretamente.\</string>
   <string name="start_new_game">Iniciar nova partida?</string>
   <string name="strength_cuckoo_hint">Use o CuckooChess para um nível ainda menor.</string>
   <string name="piece_names">P C B T D R</string>
-  <string name="material_diff_summary">Exibe uma legenda adicional para peças capturadas</string>
+  <string name="highlight_last_move_title">Destacar último lance</string>
+  <string name="highlight_last_move_summary">Retângulo ao redor da última peça movida</string>
   <string name="material_diff_title">Mostrar diferença de material</string>
+  <string name="material_diff_summary">Exibe uma legenda adicional para peças capturadas</string>
   <string name="err_too_few_spaces">Poucos espaços</string>
   <string name="err_invalid_piece">Peça inválida</string>
   <string name="err_invalid_side">Lado inválido</string>
@@ -343,6 +347,8 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_showVariationLine_summary">Mostrar variantes atuais na área de status</string>
   <string name="prefs_viewPieceType_title">Nomes das peças</string>
   <string name="prefs_viewPieceType_summary">Controlar como são exibidos os nomes das peças</string>
+  <string name="prefs_blindMode_title">Modo às cegas</string>
+  <string name="prefs_blindMode_summary">Mostrar tabuleiro vazio em vez de com peças</string>
   <string name="prefs_pgn_import">Importação de PGN</string>
   <string name="prefs_importVariations_title">Variantes</string>
   <string name="prefs_importVariations_summary">Incluir lances fora da linha principal</string>
@@ -581,6 +587,7 @@ não estiver usando o programa diretamente.\</string>
     <item>@string/toggle_pgn_comments</item>
     <item>@string/toggle_pgn_headers</item>
     <item>@string/toggle_large_buttons</item>
+    <item>@string/toggle_blind_mode</item>
   </string-array>
   <string-array name="button_action_values">
     <item></item>
@@ -592,5 +599,6 @@ não estiver usando o programa diretamente.\</string>
     <item>viewComments</item>
     <item>viewHeaders</item>
     <item>largeButtons</item>
+    <item>blindMode</item>
   </string-array>
 </resources>

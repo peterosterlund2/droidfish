@@ -189,8 +189,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="start_new_game">Neue Partie starten?</string>
   <string name="strength_cuckoo_hint">Nutzen Sie die CuckooChess-Engine für eine noch geringere Spielstärke.</string>
   <string name="piece_names">B S L T D K</string>
-  <string name="material_diff_summary">Zeigt einen zusätzlichen Untertitel für die geschlagenen Figuren an</string>
   <string name="material_diff_title">Figuren-Unterschied anzeigen</string>
+  <string name="material_diff_summary">Zeigt einen zusätzlichen Untertitel für die geschlagenen Figuren an</string>
   <string name="err_too_few_spaces">Zuwenig Felder</string>
   <string name="err_invalid_piece">Unzulässige Figur</string>
   <string name="err_invalid_side">Unzulässige Seite</string>
@@ -582,6 +582,7 @@ wenn Sie es nicht aktiv nutzen.\
     <item>@string/toggle_pgn_comments</item>
     <item>@string/toggle_pgn_headers</item>
     <item>@string/toggle_large_buttons</item>
+    <item>@string/toggle_blind_mode</item>
   </string-array>
   <string-array name="button_action_values">
     <item></item>
@@ -593,5 +594,6 @@ wenn Sie es nicht aktiv nutzen.\
     <item>viewComments</item>
     <item>viewHeaders</item>
     <item>largeButtons</item>
+    <item>blindMode</item>
   </string-array>
 </resources>
