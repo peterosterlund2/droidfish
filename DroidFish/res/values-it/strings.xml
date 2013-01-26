@@ -67,7 +67,7 @@
   <string name="colortheme_scid_brown">Scid Marrone</string>
   <string name="colortheme_scid_green">Scid verde</string>
   <string name="select_game_mode">Selezionare la modalità di gioco</string>
-  <string name="edit_replay_game">Modifica/ri-gioca la partita</string>
+  <string name="edit_replay_game">Modifica/rigioca la partita</string>
   <string name="analysis_mode">Modalità di analisi</string>
   <string name="play_white">Gioca col Bianco</string>
   <string name="play_black">Gioca col Nero</string>
@@ -314,7 +314,7 @@
   <string name="prefs_color_generalBackground_title">Sfondo</string>
   <string name="prefs_other">Altro</string>
   <string name="prefs_bookSettings_title">Impostazione del Libro delle Aperture</string>
-  <string name="prefs_bookSettings_summary">Impostazioni per \'utilizzo del Libro delle Aperture</string>
+  <string name="prefs_bookSettings_summary">Impostazioni per l\'utilizzo del Libro delle Aperture</string>
   <string name="prefs_bookMaxLength_title">Lunghezza dal libro</string>
   <string name="prefs_bookMaxLength_summary">Massima lunghezza della linea dal libro</string>
   <string name="prefs_bookPreferMainLines_title">Preferisci le linee principali</string>
@@ -340,7 +340,7 @@
   <string name="prefs_viewPieceType_title">Nome dei pezzi</string>
   <string name="prefs_viewPieceType_summary">Controlla il modo in cui vengono visualizzati i nomi dei pezzi</string>
   <string name="prefs_blindMode_title">Modalità \'alla cieca\'</string>
-  <string name="prefs_blindMode_summary">Visualizza una scacchiera vuota invece di pezzi</string>
+  <string name="prefs_blindMode_summary">Visualizza una scacchiera vuota invece dei pezzi</string>
   <string name="prefs_pgn_import">Importa PGN</string>
   <string name="prefs_importVariations_title">Varianti</string>
   <string name="prefs_importVariations_summary">Includi le mosse che non sono nella linea principale</string>
