@@ -96,6 +96,7 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="no_next_game">Aucune partie suivante</string>
   <string name="select_action">Sélectionner une action</string>
   <string name="flip_board">Retourner l\'échiquier</string>
+  <string name="blind_mode">Jouer à l\'aveugle</string>
   <string name="toggle_show_thinking">Montrer/masquer l\'analyse</string>
   <string name="toggle_book_hints">Afficher/Masquer les conseils du livre</string>
   <string name="toggle_pgn_variations">Afficher/Masquer les variations</string>
@@ -103,6 +104,7 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="toggle_pgn_headers">Afficher/Masquer les en-têtes</string>
   <string name="toggle_analysis">Afficher/Masquer les analyses du module</string>
   <string name="toggle_large_buttons">Afficher/Masquer les grands boutons</string>
+  <string name="toggle_blind_mode">Activer/Désactiver le jeu à l\'aveugle</string>
   <string name="cancel">Annuler</string>
   <string name="yes">Oui</string>
   <string name="no">Non</string>
@@ -186,6 +188,8 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="start_new_game">Commencer une nouvelle partie?</string>
   <string name="strength_cuckoo_hint">Utilisez le moteur CuckooChess pour un niveau encore plus bas.</string>
   <string name="piece_names">P C F T D R</string>
+  <string name="highlight_last_move_title">Mettre en surbrillance le dernier coup</string>
+  <string name="highlight_last_move_summary">Afficher un rectangle autour de la dernière pièce jouée</string>
   <string name="material_diff_title">Montrer la différence de matériel</string>
   <string name="material_diff_summary">Afficher les pièces capturées par un texte additionnel</string>
   <string name="err_too_few_spaces">Trop peu d\'espaces</string>
@@ -341,6 +345,8 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="prefs_showVariationLine_summary">Montrer les variations actuelles dans la zone d\'état</string>
   <string name="prefs_viewPieceType_title">Nom des pièces</string>
   <string name="prefs_viewPieceType_summary">Définir l\'affichage des noms de pièces</string>
+  <string name="prefs_blindMode_title">Jouer à l\'aveugle</string>
+  <string name="prefs_blindMode_summary">Masquer les pièces de l\'échiquier</string>
   <string name="prefs_pgn_import">Importer PGN</string>
   <string name="prefs_importVariations_title">Variations</string>
   <string name="prefs_importVariations_summary">Inclure les coups des lignes secondaires</string>

@@ -99,6 +99,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="no_next_game">Keine nächste Partie</string>
   <string name="select_action">Aktion auswählen</string>
   <string name="flip_board">Spielfeld drehen</string>
+  <string name="blind_mode">Blindspiel-Modus</string>
   <string name="toggle_show_thinking">Berechnungen an/aus</string>
   <string name="toggle_book_hints">Eröffnungsbuch-Hinweise an/aus</string>
   <string name="toggle_pgn_variations">Varianten an/aus</string>
@@ -106,6 +107,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="toggle_pgn_headers">Partie-Informationen an/aus</string>
   <string name="toggle_analysis">Engine-Analyse an/aus</string>
   <string name="toggle_large_buttons">Große Tasten ein/aus</string>
+  <string name="toggle_blind_mode">Blindspiel-Modus an/aus</string>
   <string name="cancel">Abbrechen</string>
   <string name="yes">Ja</string>
   <string name="no">Nein</string>
@@ -174,6 +176,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="engine_name_in_use">Name der verwendeten Engine</string>
   <string name="slash_not_allowed">Zeichen / ist nicht erlaubt</string>
   <string name="engine_error">Engine-Fehler</string>
+  <string name="stockfish_engine">Stockfish</string>
+  <string name="cuckoochess_engine">CuckooChess</string>
   <string name="select_engine">Schach-Engine auswählen</string>
   <string name="configure_network_engine">Konfiguration von Schach-Engines auf Netzservern</string>
   <string name="create_network_engine">Erstellen einer Netzserver-Engine</string>
@@ -189,6 +193,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="start_new_game">Neue Partie starten?</string>
   <string name="strength_cuckoo_hint">Nutzen Sie die CuckooChess-Engine für eine noch geringere Spielstärke.</string>
   <string name="piece_names">B S L T D K</string>
+  <string name="highlight_last_move_title">Letzten Zug hervorheben</string>
+  <string name="highlight_last_move_summary">Zuletzt gezogene Figur mit einem Rechteck markieren</string>
   <string name="material_diff_title">Figuren-Unterschied anzeigen</string>
   <string name="material_diff_summary">Zeigt einen zusätzlichen Untertitel für die geschlagenen Figuren an</string>
   <string name="err_too_few_spaces">Zuwenig Felder</string>
@@ -344,6 +350,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_showVariationLine_summary">Aktuelle Varianten im Statusbereich anzeigen</string>
   <string name="prefs_viewPieceType_title">Figurenbezeichnungen</string>
   <string name="prefs_viewPieceType_summary">Einstellung der Figurenbezeichnungen</string>
+  <string name="prefs_blindMode_title">Blindspiel-Modus</string>
+  <string name="prefs_blindMode_summary">Leeres Brett anstelle von Figuren anzeigen</string>
   <string name="prefs_pgn_import">PGN-Import</string>
   <string name="prefs_importVariations_title">Varianten</string>
   <string name="prefs_importVariations_summary">Nicht-Hauptlinienzüge importieren</string>

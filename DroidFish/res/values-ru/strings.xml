@@ -89,6 +89,7 @@
   <string name="no_next_game">Следующая партия отсутствует</string>
   <string name="select_action">Выбрать действие</string>
   <string name="flip_board">Информационное табло</string>
+  <string name="blind_mode">Режим игры в слепую</string>
   <string name="toggle_show_thinking">Переключатель вида мышления</string>
   <string name="toggle_book_hints">Переключатель книжных подсказок</string>
   <string name="toggle_pgn_variations">Переключатель вариаций</string>
@@ -96,6 +97,7 @@
   <string name="toggle_pgn_headers">Переключатель заголовков</string>
   <string name="toggle_analysis">Переключатель анализа движка</string>
   <string name="toggle_large_buttons">Переключатель больших кнопок</string>
+  <string name="toggle_blind_mode">Переключиться на режим игры в слепую</string>
   <string name="cancel">Отмена</string>
   <string name="yes">Да</string>
   <string name="no">Нет</string>
@@ -179,6 +181,8 @@
   <string name="start_new_game">Начать новую партию?</string>
   <string name="strength_cuckoo_hint">Использовать движок CuckooChess для наименьшего уровня сложности.</string>
   <string name="piece_names">П К С Л Ф Кр</string>
+  <string name="highlight_last_move_title">Подсвечивать последний ход</string>
+  <string name="highlight_last_move_summary">Потяните прямоугольник вокруг последней передвинутой фигуры</string>
   <string name="material_diff_title">Показать существенное различие</string>
   <string name="material_diff_summary">Отображать дополнительные субтитры для сбитых фигур</string>
   <string name="err_too_few_spaces">Слишком малое пространство</string>
@@ -246,6 +250,7 @@
   <string name="prefs_autoScrollTitle_title">Прокрутка строки заголовка</string>
   <string name="prefs_autoScrollTitle_summary">Автопрокрутка строки заголовка при слишком длинных именах игроков</string>
   <string name="prefs_quickMoveInput_title">Быстрый ввод хода</string>
+  <string name="prefs_quickMoveInput_summary">От и До клеток может быть нажат в любом порядке. Ход играется как только он уникально определён.</string>
   <string name="prefs_soundEnabled_title">Включить звуки</string>
   <string name="prefs_soundEnabled_summary">Включить звуки при ходе компьютера</string>
   <string name="prefs_vibrateEnabled_title">Включить вибрирование</string>
@@ -260,9 +265,13 @@
   <string name="prefs_invertScrollDirection_title">Инвертировать направление прокрутки</string>
   <string name="prefs_invertScrollDirection_summary">Позволить, если вы считаете, что прокрутка осуществляется в неправильном направлении</string>
   <string name="prefs_discardVariations_title">Отменить изменения</string>
+  <string name="prefs_discardVariations_summary">Отказаться от хода не главной линии из списка ходов</string>
   <string name="prefs_leftHanded_title">Левосторонний режим</string>
   <string name="prefs_leftHanded_summary">Контроль слева в ландшафтном режиме</string>
   <string name="prefs_boardGestures_title">Жесты на доске</string>
+  <string name="prefs_boardGestures_summary">Долго нажмите на доске для вызова меню инструментов. Проведите горизонтально, чтобы отменить/повторить ход. Проведите вертикально, чтобы сделать предыдущее/следующее изменение хода.</string>
+  <string name="prefs_squareSelectType_title">Выбор клеток</string>
+  <string name="prefs_squareSelectType_summary">Контроль поведения выбранных клеток на шахматной доске</string>
   <string name="prefs_fontSize_title">Размер текста</string>
   <string name="prefs_fontSize_summary">Размер шрифта для списка ходов и информации об игре</string>
   <string name="prefs_largeButtons_title">Крупные кнопки</string>
@@ -329,6 +338,8 @@
   <string name="prefs_showVariationLine_summary">Показать текущие изменения в области состояния</string>
   <string name="prefs_viewPieceType_title">Названия фигур</string>
   <string name="prefs_viewPieceType_summary">Шахматная нотация</string>
+  <string name="prefs_blindMode_title">Режим игры в слепую</string>
+  <string name="prefs_blindMode_summary">Показать чистую доску вместо фигур</string>
   <string name="prefs_pgn_import">Импортирование PGN</string>
   <string name="prefs_importVariations_title">Изменения</string>
   <string name="prefs_importVariations_summary">Включить ходы по неглавным линяям</string>
@@ -486,8 +497,8 @@
     <item>60000</item>
   </string-array>
   <string-array name="squareSelectType_texts">
-    <item>Sticky</item>
-    <item>Toggle</item>
+    <item>Приклеиться</item>
+    <item>Переключить</item>
   </string-array>
   <string-array name="squareSelectType_values">
     <item>0</item>
