@@ -76,9 +76,9 @@ não estiver usando o programa diretamente.\</string>
   <string name="colortheme_scid_green">Scid Verde</string>
   <string name="select_game_mode">Escolha o estilo de jogo</string>
   <string name="edit_replay_game">Jogar novamente a partida</string>
-  <string name="analysis_mode">Modo análise</string>
-  <string name="play_white">Jogar com as brancas</string>
-  <string name="play_black">Jogar com as pretas</string>
+  <string name="analysis_mode">Análise</string>
+  <string name="play_white">Jogar com as Brancas</string>
+  <string name="play_black">Jogar com as Pretas</string>
   <string name="two_players">Dois jogadores</string>
   <string name="comp_vs_comp">Software vs Software</string>
   <string name="analysis">Análise</string>
@@ -96,7 +96,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="load_next_game">Carregar próxima partida</string>
   <string name="no_prev_game">Não há partida anterior</string>
   <string name="no_next_game">Não há próxima partida</string>
-  <string name="select_action">Selecione ação</string>
+  <string name="select_action">Selecione</string>
   <string name="flip_board">Inverter tabuleiro</string>
   <string name="blind_mode">Modo às cegas</string>
   <string name="toggle_show_thinking">Mostrar/Ocultar avaliação</string>
@@ -115,7 +115,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="halfmove">Relógio para meio-lance:</string>
   <string name="fullmove">Contador de lances completos:</string>
   <string name="filter_text">Pesquisar…</string>
-  <string name="value_percent">Valor(%):</string>
+  <string name="value_percent">Valor (%):</string>
   <string name="header_event">Evento:</string>
   <string name="header_site">Site:</string>
   <string name="header_date">Data:</string>
@@ -229,7 +229,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_playerNameFlip_summary">Use o nome do jogador para virar o tabuleiro automaticamente</string>
   <string name="prefs_engine_settings">Configurações do software de Xadrez</string>
   <string name="prefs_strength_title">Nível de jogo</string>
-  <string name="prefs_strength_summary">Somente suportado por softwares interno. Modo análise sempre usa força total.</string>
+  <string name="prefs_strength_summary">Somente suportado pelos software interno. Modo análise sempre usa força total.</string>
   <string name="prefs_ponderMode_title">Avaliando</string>
   <string name="prefs_ponderMode_summary">Deixar o software analisando enquanto espera o lance do oponente. Suportado pela maioria dos softwares.</string>
   <string name="prefs_threads_title">Threads</string>

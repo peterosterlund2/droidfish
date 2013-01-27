@@ -63,7 +63,7 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="reading_scid_file">Scid bestand lezen</string>
   <string name="new_file">&lt;Nieuw bestand&gt;</string>
   <string name="new_engine">&lt;Nieuwe Engine&gt;</string>
-  <string name="please_wait">Even geduld...</string>
+  <string name="please_wait">Even geduld…</string>
   <string name="no_pgn_files">Geen bestanden gevonden in de DroidFish/pgn directory op SD kaart</string>
   <string name="select_color_theme">Selecteer kleurenschema</string>
   <string name="colortheme_original">Orgineel</string>
@@ -113,7 +113,7 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="filename">Bestandsnaam:</string>
   <string name="halfmove">Halfzet klok:</string>
   <string name="fullmove">Volledige zet teller:</string>
-  <string name="filter_text">Zoeken...</string>
+  <string name="filter_text">Zoeken…</string>
   <string name="value_percent">Waarde (%):</string>
   <string name="header_event">Gebeurtenis:</string>
   <string name="header_site">Kant:</string>

@@ -3,7 +3,7 @@
 <resources>
   <string name="cpu_warning">\
 <b>Usage CPU</b>\n\
-Si vous laissez DroidFish tourner tâche de fond et que le <i>Mode de jeu</i> est sur \ <i>Analyse</i> ou <i>Ordinateur vs Ordinateur</i>, ou si <i>Temps de réflexion</i> \
+Si vous laissez DroidFish tourner en tâche de fond et que le <i>Mode de jeu</i> est sur \ <i>Analyse</i> ou <i>Ordinateur vs Ordinateur</i>, ou si <i>Temps de réflexion</i> \
 est réglé sur une grande valeur, ou si le <i>Pondering</i> est activé, DroidFish peut utiliser \
 beaucoup de ressources CPU.\n\
 \n\

@@ -114,7 +114,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="halfmove">Reloj de media jugada:</string>
   <string name="fullmove">Contador de movimientos completos:</string>
   <string name="filter_text">Buscar…</string>
-  <string name="value_percent">Valor(en porcentaje):</string>
+  <string name="value_percent">Valor (%):</string>
   <string name="header_event">Evento:</string>
   <string name="header_site">Lugar:</string>
   <string name="header_date">Fecha:</string>

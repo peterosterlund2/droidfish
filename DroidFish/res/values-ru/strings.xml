@@ -349,7 +349,7 @@
   <string name="prefs_importNAG_summary">Включить глифовые (NAGs) цифровые обозначения , как ! и ?</string>
   <string name="prefs_pgn_export">Экспортирование PGN</string>
   <string name="prefs_exportVariations_title">Изменения</string>
-  <string name="prefs_exportVariations_summary">Включить ходы по неглавным линяям</string>
+  <string name="prefs_exportVariations_summary">Включить ходы по неглавным линиям</string>
   <string name="prefs_exportComments_title">Комментарии</string>
   <string name="prefs_exportComments_summary">Включить комментарии пользователя</string>
   <string name="prefs_exportNAG_title">Аннотации</string>

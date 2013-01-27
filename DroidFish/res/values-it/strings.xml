@@ -8,7 +8,7 @@
   <string name="rook">Torre</string>
   <string name="bishop">Alfiere</string>
   <string name="knight">Cavallo</string>
-  <string name="promote_pawn_to">Promuovi il pedone a...?</string>
+  <string name="promote_pawn_to">Promuovi il pedone a…?</string>
   <string name="copy_game">Copia la partita negli Appunti</string>
   <string name="copy_position">Copia la posizione negli appunti</string>
   <string name="paste">Incolla dagli Appunti</string>
@@ -56,7 +56,7 @@
   <string name="reading_scid_file">Caricamento di un file Scid</string>
   <string name="new_file">&lt; Nuovo file &gt;</string>
   <string name="new_engine">&lt; Nuovo motore &gt;</string>
-  <string name="please_wait">Attendere prego...</string>
+  <string name="please_wait">Attendere prego…</string>
   <string name="no_pgn_files">Nessun file trovato nella cartella DroidFish/pgn sulla scheda SD</string>
   <string name="select_color_theme">Seleziona un Tema di Colori</string>
   <string name="colortheme_original">Originale</string>
@@ -106,7 +106,7 @@
   <string name="filename">Nome del file:</string>
   <string name="halfmove">Orologio semimossa:</string>
   <string name="fullmove">Contatore mosse:</string>
-  <string name="filter_text">Cerca...</string>
+  <string name="filter_text">Cerca…</string>
   <string name="value_percent">Valore (%):</string>
   <string name="header_event">Evento:</string>
   <string name="header_site">Luogo:</string>
