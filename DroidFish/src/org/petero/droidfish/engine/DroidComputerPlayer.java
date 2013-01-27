@@ -738,6 +738,11 @@ public class DroidComputerPlayer {
             }
         } else if (tokens.length > 2) {
             String optName = tokens[2].toLowerCase(Locale.US);
+            for (int i = 3; i < tokens.length; i++) {
+                if ("type".equals(tokens[i]))
+                    break;
+                optName += " " + tokens[i].toLowerCase(Locale.US);
+            }
             uci.registerOption(optName);
             if (optName.equals("multipv")) {
                 try {
