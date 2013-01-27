@@ -125,7 +125,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="comment_after">Após:</string>
   <string name="whites_move">Lance das Brancas</string>
   <string name="blacks_move">Lance das Pretas</string>
-  <string name="ponder">Avaliando</string>
+  <string name="ponder">Análise</string>
   <string name="thinking">Pensando</string>
   <string name="analyzing">Analisando</string>
   <string name="white_mate">Partida encerrada, mate das Brancas!</string>
@@ -143,7 +143,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="preferences">Preferências</string>
   <string name="load_game_title">Editar arquivo / Carregar partida</string>
   <string name="save_game_title">Editar arquivo / Salvar partida</string>
-  <string name="save_game_hint">Escolha uma partida existente para controlar onde salvar a partida. Pressione e mantenha uma partida existente para removê-la.</string>
+  <string name="save_game_hint">Escolha uma partida existente para definir onde salvar a partida. Pressione e mantenha uma partida existente para removê-la.</string>
   <string name="load_scid_game_title">Carregar partida Scid</string>
   <string name="cpu_warning_title">Aviso de CPU</string>
   <string name="failed_to_read_pgn_data">Falha na leitura de arquivo PGN</string>
@@ -191,9 +191,9 @@ não estiver usando o programa diretamente.\</string>
   <string name="strength_cuckoo_hint">Use o CuckooChess para um nível ainda menor.</string>
   <string name="piece_names">P C B T D R</string>
   <string name="highlight_last_move_title">Destacar último lance</string>
-  <string name="highlight_last_move_summary">Retângulo ao redor da última peça movida</string>
+  <string name="highlight_last_move_summary">Mostrar um retângulo ao redor da última peça movida</string>
   <string name="material_diff_title">Mostrar diferença de material</string>
-  <string name="material_diff_summary">Exibe uma legenda adicional para peças capturadas</string>
+  <string name="material_diff_summary">Exibir uma legenda adicional para peças capturadas</string>
   <string name="err_too_few_spaces">Poucos espaços</string>
   <string name="err_invalid_piece">Peça inválida</string>
   <string name="err_invalid_side">Lado inválido</string>
@@ -213,7 +213,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="option_edit_board">Editar tabuleiro</string>
   <string name="option_settings">Configurações</string>
   <string name="option_goto_move">Ir para o lance</string>
-  <string name="option_force_computer_move">Forçar lance do computador</string>
+  <string name="option_force_computer_move">Forçar lance do software</string>
   <string name="option_draw">Pedir/Aceitar empate</string>
   <string name="option_select_book">Livro de aberturas</string>
   <string name="option_manage_engines">Softwares de Xadrez</string>
@@ -224,18 +224,18 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_playerName_title">Nome do jogador</string>
   <string name="prefs_playerName_summary">Nome do jogador padrão em novas partidas</string>
   <string name="prefs_autoSwapSides_title">Inverter tabuleiro: automático</string>
-  <string name="prefs_autoSwapSides_summary">Use o lado a mover para virar o tabuleiro automaticamente</string>
+  <string name="prefs_autoSwapSides_summary">Usar o lado a mover para virar o tabuleiro automaticamente</string>
   <string name="prefs_playerNameFlip_title">Inverter tabuleiro: jogador</string>
-  <string name="prefs_playerNameFlip_summary">Use o nome do jogador para virar o tabuleiro automaticamente</string>
+  <string name="prefs_playerNameFlip_summary">Usar o nome do jogador para virar o tabuleiro automaticamente</string>
   <string name="prefs_engine_settings">Configurações do software de Xadrez</string>
   <string name="prefs_strength_title">Nível de jogo</string>
-  <string name="prefs_strength_summary">Somente suportado pelos software interno. Modo análise sempre usa força total.</string>
-  <string name="prefs_ponderMode_title">Avaliando</string>
+  <string name="prefs_strength_summary">Somente suportado pelo software interno. Modo análise sempre usa força total.</string>
+  <string name="prefs_ponderMode_title">Análise constante</string>
   <string name="prefs_ponderMode_summary">Deixar o software analisando enquanto espera o lance do oponente. Suportado pela maioria dos softwares.</string>
   <string name="prefs_threads_title">Threads</string>
-  <string name="prefs_threads_summary">Número de threads (CPUs) para usar. Não suportado por todas os softwares.</string>
-  <string name="prefs_hash_title">Tabela de hash</string>
-  <string name="prefs_hash_summary">Tamanho da tabela de hash em MB</string>
+  <string name="prefs_threads_summary">Número de threads (CPUs) para usar. Não suportado por todos os softwares.</string>
+  <string name="prefs_hash_title">Tabela hash</string>
+  <string name="prefs_hash_summary">Tamanho da tabela hash em MB</string>
   <string name="prefs_time_control">Controle de tempo</string>
   <string name="prefs_movesPerSession_title">Lances</string>
   <string name="prefs_movesPerSession_summary">Número de lances entre os controles de tempo</string>
@@ -261,9 +261,9 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_quickMoveInput_title">Modo de lance rápido</string>
   <string name="prefs_quickMoveInput_summary">Casas de origem e destino podem ser tocadas em qualquer ordem.</string>
   <string name="prefs_soundEnabled_title">Habilitar sons</string>
-  <string name="prefs_soundEnabled_summary">Tocar som quando o software faz um lance</string>
+  <string name="prefs_soundEnabled_summary">Tocar som quando o software fizer um lance</string>
   <string name="prefs_vibrateEnabled_title">Habilitar vibração</string>
-  <string name="prefs_vibrateEnabled_summary">Vibrar quando o computador faz um lance</string>
+  <string name="prefs_vibrateEnabled_summary">Vibrar quando o software fizer um lance</string>
   <string name="prefs_fullScreenMode_title">Modo tela cheia</string>
   <string name="prefs_fullScreenMode_summary">Modo tela cheia oculta a barra de notificações</string>
   <string name="prefs_wakeLock_title">Tela sempre ligada</string>
@@ -278,15 +278,15 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_leftHanded_title">Modo canhoto</string>
   <string name="prefs_leftHanded_summary">Controles à esquerda no modo paisagem</string>
   <string name="prefs_boardGestures_title">Gestos no tabuleiro</string>
-  <string name="prefs_boardGestures_summary">Pressione longamente o tabuleiro para ativar o menu. Deslize horizontalmente para fazer/desfazer lances. Deslize verticalmente para ir para a anterior/próxima variante.</string>
+  <string name="prefs_boardGestures_summary">Pressione longamente o tabuleiro para ativar o menu. Deslize horizontalmente para fazer/desfazer lances. Deslize verticalmente para ir para a variante anterior/próxima.</string>
   <string name="prefs_squareSelectType_title">Seleção de casa</string>
-  <string name="prefs_squareSelectType_summary">Controla como selecionar casas no tabuleiro</string>
+  <string name="prefs_squareSelectType_summary">Definir como selecionar casas no tabuleiro</string>
   <string name="prefs_fontSize_title">Tamanho da fonte</string>
   <string name="prefs_fontSize_summary">Tamanho da fonte para lista de lances e informações sobre a partida</string>
   <string name="prefs_largeButtons_title">Botões grandes</string>
   <string name="prefs_largeButtons_summary">Usar botões grandes para navegação na partida e controles</string>
   <string name="prefs_buttonSettings_title">Configurar botões</string>
-  <string name="prefs_buttonSettings_summary">Configurar o tamanho e ações de botão.</string>
+  <string name="prefs_buttonSettings_summary">Configurar tamanho e ações dos botões.</string>
   <string name="prefs_button_action_0_title">Ação principal</string>
   <string name="prefs_button_action_1_title">Ação de menu 1</string>
   <string name="prefs_button_action_2_title">Ação de menu 2</string>
@@ -324,12 +324,12 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_bookSettings_title">Config. do livro de abertura</string>
   <string name="prefs_bookSettings_summary">Configurações para uso de livro de aberturas</string>
   <string name="prefs_bookMaxLength_title">Tamanho do livro</string>
-  <string name="prefs_bookMaxLength_summary">Tamanho máximo de linha do livro</string>
+  <string name="prefs_bookMaxLength_summary">Tamanho máximo de linhas do livro</string>
   <string name="prefs_bookPreferMainLines_title">Preferir linhas principais</string>
   <string name="prefs_bookPreferMainLines_summary">Preferir lances marcados como principais</string>
   <string name="prefs_bookTournamentMode_title">Modo torneio</string>
-  <string name="prefs_bookTournamentMode_summary">Ignorar lances marcados como não-torneio</string>
-  <string name="prefs_bookRandom_title">Randomização do livro</string>
+  <string name="prefs_bookTournamentMode_summary">Ignorar lances marcados como não sendo de torneio</string>
+  <string name="prefs_bookRandom_title">Aleatoriedade do livro</string>
   <string name="prefs_bookFile_title">Nome do arquivo de livro</string>
   <string name="prefs_bookFile_summary">Arquivo de livro Polyglot ou CTG no diretório DroidFish no cartão SD</string>
   <string name="prefs_pgnSettings_title">Configurações de PGN</string>
@@ -346,7 +346,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_showVariationLine_title">Mostrar variantes atuais</string>
   <string name="prefs_showVariationLine_summary">Mostrar variantes atuais na área de status</string>
   <string name="prefs_viewPieceType_title">Nomes das peças</string>
-  <string name="prefs_viewPieceType_summary">Controlar como são exibidos os nomes das peças</string>
+  <string name="prefs_viewPieceType_summary">Definir como são exibidos os nomes das peças</string>
   <string name="prefs_blindMode_title">Modo às cegas</string>
   <string name="prefs_blindMode_summary">Mostrar tabuleiro vazio em vez de com peças</string>
   <string name="prefs_pgn_import">Importação de PGN</string>
@@ -369,17 +369,17 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_exportTime_summary">Incluir informações de tempo para cada lance</string>
   <string name="prefs_egtbSettings_title">Tabelas de finais</string>
   <string name="prefs_tbHints_title">Mostrar dicas</string>
-  <string name="prefs_tbHints_summary">Quando tocar uma peça, mostrar valores para todos os possíveis lances</string>
+  <string name="prefs_tbHints_summary">Quando tocar uma peça, mostrar valores para todos os lances possíveis</string>
   <string name="prefs_tbHintsEdit_title">Alterar dicas no tabuleiro</string>
   <string name="prefs_tbHintsEdit_summary">Ao tocar uma peça no modo de edição de tabuleiro, mostrar os valores para todas as possíveis posições alternativas da peça</string>
-  <string name="prefs_tbRootProbe_title">Verificar na raiz</string>
+  <string name="prefs_tbRootProbe_title">Filtrar na raiz</string>
   <string name="prefs_tbRootProbe_summary">Filtrar os lances não-ideais antes de iniciar a pesquisa</string>
-  <string name="prefs_tbEngineProbe_title">Mecanismo de sondagem</string>
-  <string name="prefs_tbEngineProbe_summary">Habilitar sondagem no software, quando suportado. Tem efeito na próxima vez que o software for iniciado</string>
-  <string name="prefs_gtbPath_title">Diretório de GTB</string>
+  <string name="prefs_tbEngineProbe_title">Análise do software</string>
+  <string name="prefs_tbEngineProbe_summary">Habilitar análise do software quando suportado. Tem efeito na próxima vez em que o software for iniciado</string>
+  <string name="prefs_gtbPath_title">Diretório GTB</string>
   <string name="prefs_gtbPath_summary">Diretório onde as bases Gaviota estão instaladas. Deixe em branco para usar o diretório padrão</string>
   <string name="buttonDesc_mode">Botão de modo</string>
-  <string name="buttonDesc_back">Botão de volta</string>
+  <string name="buttonDesc_back">Botão voltar</string>
   <string name="buttonDesc_forward">Botão avançar</string>
   <string-array name="engine_threads_texts">
     <item>Automático</item>
@@ -401,7 +401,7 @@ não estiver usando o programa diretamente.\</string>
   </string-array>
   <string-array name="viewPieceType_texts">
     <item>Letras em inglês</item>
-    <item>Letras locais</item>
+    <item>Letras no idioma local</item>
     <item>Figuras de Xadrez</item>
   </string-array>
   <string-array name="viewPieceType_values">
@@ -506,18 +506,18 @@ não estiver usando o programa diretamente.\</string>
     <item>60000</item>
   </string-array>
   <string-array name="squareSelectType_texts">
-    <item>Fixar</item>
-    <item>Trocar</item>
+    <item>Manter</item>
+    <item>Alternar</item>
   </string-array>
   <string-array name="squareSelectType_values">
     <item>0</item>
     <item>1</item>
   </string-array>
   <string-array name="font_size_texts">
-    <item>Pequeno</item>
-    <item>Médio</item>
+    <item>Pequena</item>
+    <item>Média</item>
     <item>Grande</item>
-    <item>Maior</item>
+    <item>Gigante</item>
   </string-array>
   <string-array name="font_size_values">
     <item>10</item>
