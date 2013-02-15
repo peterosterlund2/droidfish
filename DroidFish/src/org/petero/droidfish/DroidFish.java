@@ -2938,7 +2938,8 @@ public class DroidFish extends Activity implements GUIInterface {
             if (moveSound != null)
                 moveSound.release();
             moveSound = MediaPlayer.create(this, R.raw.movesound);
-            moveSound.start();
+            if (moveSound != null)
+                moveSound.start();
         }
         if (vibrateEnabled) {
             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
