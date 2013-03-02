@@ -76,6 +76,7 @@ you are not actively using the program.\
     <string name="pgn_load">Load</string>
     <string name="pgn_save">Save</string>
     <string name="reading_pgn_file">Reading PGN file</string>
+    <string name="reading_fen_file">Reading FEN file</string>
     <string name="reading_scid_file">Reading Scid file</string>
     <string name="new_file">&lt;New File&gt;</string>
     <string name="new_engine">&lt;New Engine&gt;</string>
@@ -111,6 +112,8 @@ you are not actively using the program.\
     <string name="load_next_game">Load Next Game</string>
     <string name="no_prev_game">No previous game</string>
     <string name="no_next_game">No next game</string>
+    <string name="no_prev_fen">No previous position</string>
+    <string name="no_next_fen">No next position</string>
     <string name="select_action">Select Action</string>
     <string name="flip_board">Flip Board</string>
     <string name="blind_mode">Blindfold mode</string>
@@ -160,6 +163,7 @@ you are not actively using the program.\
     <string name="save_game_title">Edit File / Save Game</string>
     <string name="save_game_hint">Select an existing game to control where to save the game. Long press an existing game to delete it.</string>
     <string name="load_scid_game_title">Load Scid Game</string>
+    <string name="load_fen_title">Load Position</string>
     <string name="cpu_warning_title">CPU Warning</string>
     <string name="failed_to_read_pgn_data">Failed to read PGN data</string>
     <string name="variation">Var:</string>

@@ -1,6 +1,6 @@
 /*
     DroidFish - An Android chess program.
-    Copyright (C) 2011-2012  Peter Österlund, peterosterlund2@gmail.com
+    Copyright (C) 2011-2013  Peter Österlund, peterosterlund2@gmail.com
     Copyright (C) 2012 Leo Mayer
 
     This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@ package org.petero.droidfish;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,6 +39,7 @@ import org.petero.droidfish.activities.CPUWarning;
 import org.petero.droidfish.activities.EditBoard;
 import org.petero.droidfish.activities.EditPGNLoad;
 import org.petero.droidfish.activities.EditPGNSave;
+import org.petero.droidfish.activities.LoadFEN;
 import org.petero.droidfish.activities.LoadScid;
 import org.petero.droidfish.activities.Preferences;
 import org.petero.droidfish.book.BookOptions;
@@ -1161,6 +1161,7 @@ public class DroidFish extends Activity implements GUIInterface {
     static private final int RESULT_OI_PGN_SAVE = 4;
     static private final int RESULT_OI_PGN_LOAD = 5;
     static private final int RESULT_GET_FEN = 6;
+    static private final int RESULT_LOAD_FEN = 7;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -1296,32 +1297,15 @@ public class DroidFish extends Activity implements GUIInterface {
                 String fen = data.getStringExtra(Intent.EXTRA_TEXT);
                 if (fen == null) {
                     String pathName = getFilePathFromUri(data.getData());
-                    if (pathName != null) {
-                        InputStream is = null;
-                        try {
-                            is = new FileInputStream(pathName);
-                            fen = Util.readFromStream(is);
-                        } catch (FileNotFoundException e) {
-                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                        } finally {
-                            if (is != null)
-                                try { is.close(); } catch (IOException e) {}
-                        }
-                    }
+                    loadFENFromFile(pathName);
                 }
-                if (fen != null) {
-                    try {
-                        ctrl.setFENOrPGN(fen);
-                    } catch (ChessParseError e) {
-                        // If FEN corresponds to illegal chess position, go into edit board mode.
-                        try {
-                            TextIO.readFEN(fen);
-                        } catch (ChessParseError e2) {
-                            if (e2.pos != null)
-                                startEditBoard(fen);
-                        }
-                    }
-                }
+                setFenHelper(fen);
+            }
+            break;
+        case RESULT_LOAD_FEN:
+            if (resultCode == RESULT_OK) {
+                String fen = data.getAction();
+                setFenHelper(fen);
             }
             break;
         }
@@ -2439,12 +2423,18 @@ public class DroidFish extends Activity implements GUIInterface {
                         i = new Intent(DroidFish.this, EditPGNLoad.class);
                         i.setAction("org.petero.droidfish.loadFilePrevGame");
                         i.putExtra("org.petero.droidfish.pathname", currPathName);
-                    } else {
+                        startActivityForResult(i, RESULT_LOAD_PGN);
+                    } else if (currFT == FT_SCID) {
                         i = new Intent(DroidFish.this, LoadScid.class);
                         i.setAction("org.petero.droidfish.loadScidPrevGame");
                         i.putExtra("org.petero.droidfish.pathname", currPathName);
+                        startActivityForResult(i, RESULT_LOAD_PGN);
+                    } else if (currFT == FT_FEN) {
+                        i = new Intent(DroidFish.this, LoadFEN.class);
+                        i.setAction("org.petero.droidfish.loadPrevFen");
+                        i.putExtra("org.petero.droidfish.pathname", currPathName);
+                        startActivityForResult(i, RESULT_LOAD_FEN);
                     }
-                    startActivityForResult(i, RESULT_LOAD_PGN);
                     break;
                 }
             }
@@ -2483,12 +2473,18 @@ public class DroidFish extends Activity implements GUIInterface {
                         i = new Intent(DroidFish.this, EditPGNLoad.class);
                         i.setAction("org.petero.droidfish.loadFileNextGame");
                         i.putExtra("org.petero.droidfish.pathname", currPathName);
-                    } else {
+                        startActivityForResult(i, RESULT_LOAD_PGN);
+                    } else if (currFT == FT_SCID) {
                         i = new Intent(DroidFish.this, LoadScid.class);
                         i.setAction("org.petero.droidfish.loadScidNextGame");
                         i.putExtra("org.petero.droidfish.pathname", currPathName);
+                        startActivityForResult(i, RESULT_LOAD_PGN);
+                    } else if (currFT == FT_FEN) {
+                        i = new Intent(DroidFish.this, LoadFEN.class);
+                        i.setAction("org.petero.droidfish.loadNextFen");
+                        i.putExtra("org.petero.droidfish.pathname", currPathName);
+                        startActivityForResult(i, RESULT_LOAD_FEN);
                     }
-                    startActivityForResult(i, RESULT_LOAD_PGN);
                     break;
                 }
             }
@@ -2874,6 +2870,7 @@ public class DroidFish extends Activity implements GUIInterface {
     final static int FT_NONE = 0;
     final static int FT_PGN  = 1;
     final static int FT_SCID = 2;
+    final static int FT_FEN  = 3;
 
     private final int currFileType() {
         if (gameMode.clocksActive())
@@ -2895,6 +2892,8 @@ public class DroidFish extends Activity implements GUIInterface {
         }
         case FT_SCID:
             return settings.getString("currentScidFile", "");
+        case FT_FEN:
+            return settings.getString("currentFENFile", "");
         default:
             return "";
         }
@@ -2950,6 +2949,36 @@ public class DroidFish extends Activity implements GUIInterface {
         i.setAction("org.petero.droidfish.loadFile");
         i.putExtra("org.petero.droidfish.pathname", pathName);
         startActivityForResult(i, RESULT_LOAD_PGN);
+    }
+
+    /** Load a FEN position from a file. */
+    private final void loadFENFromFile(String pathName) {
+        if (pathName == null)
+            return;
+        Editor editor = settings.edit();
+        editor.putString("currentFENFile", pathName);
+        editor.putInt("currFT", FT_FEN);
+        editor.commit();
+        Intent i = new Intent(DroidFish.this, LoadFEN.class);
+        i.setAction("org.petero.droidfish.loadFen");
+        i.putExtra("org.petero.droidfish.pathname", pathName);
+        startActivityForResult(i, RESULT_LOAD_FEN);
+    }
+
+    private final void setFenHelper(String fen) {
+        if (fen == null)
+            return;
+        try {
+            ctrl.setFENOrPGN(fen);
+        } catch (ChessParseError e) {
+            // If FEN corresponds to illegal chess position, go into edit board mode.
+            try {
+                TextIO.readFEN(fen);
+            } catch (ChessParseError e2) {
+                if (e2.pos != null)
+                    startEditBoard(fen);
+            }
+        }
     }
 
     @Override

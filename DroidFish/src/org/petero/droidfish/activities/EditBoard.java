@@ -1,6 +1,6 @@
 /*
     DroidFish - An Android chess program.
-    Copyright (C) 2011  Peter Österlund, peterosterlund2@gmail.com
+    Copyright (C) 2011-2013  Peter Österlund, peterosterlund2@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,10 +18,6 @@
 
 package org.petero.droidfish.activities;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -605,7 +601,8 @@ public class EditBoard extends Activity {
         checkValidAndUpdateMaterialDiff();
     }
 
-    static private final int RESULT_GET_FEN = 0;
+    static private final int RESULT_GET_FEN  = 0;
+    static private final int RESULT_LOAD_FEN = 1;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -615,19 +612,17 @@ public class EditBoard extends Activity {
                 String fen = data.getStringExtra(Intent.EXTRA_TEXT);
                 if (fen == null) {
                     String pathName = DroidFish.getFilePathFromUri(data.getData());
-                    if (pathName != null) {
-                        InputStream is = null;
-                        try {
-                            is = new FileInputStream(pathName);
-                            fen = Util.readFromStream(is);
-                        } catch (FileNotFoundException e) {
-                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                        } finally {
-                            if (is != null)
-                                try { is.close(); } catch (IOException e) {}
-                        }
-                    }
+                    Intent i = new Intent(EditBoard.this, LoadFEN.class);
+                    i.setAction("org.petero.droidfish.loadFen");
+                    i.putExtra("org.petero.droidfish.pathname", pathName);
+                    startActivityForResult(i, RESULT_LOAD_FEN);
                 }
+                setFEN(fen);
+            }
+            break;
+        case RESULT_LOAD_FEN:
+            if (resultCode == RESULT_OK) {
+                String fen = data.getAction();
                 setFEN(fen);
             }
             break;

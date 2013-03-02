@@ -62,6 +62,10 @@
                   android:label="@string/load_scid_game_title"
                   android:configChanges="orientation">
         </activity>
+        <activity android:name=".activities.LoadFEN"
+                  android:label="@string/load_fen_title"
+                  android:configChanges="orientation">
+        </activity>
         <activity android:name=".activities.CPUWarning"
                   android:label="@string/cpu_warning_title">
         </activity>
