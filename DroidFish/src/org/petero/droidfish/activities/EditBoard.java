@@ -229,7 +229,7 @@ public class EditBoard extends Activity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         showDialog(EDIT_DIALOG);
-        return true;
+        return false;
     }
 
     private final void setSelection(int sq) {
