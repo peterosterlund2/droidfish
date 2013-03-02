@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import org.petero.droidfish.gamelogic.Piece;
@@ -52,7 +53,28 @@ public final class Util {
         return ret.toArray(new String[ret.size()]);
     }
 
-    /** Represent materiel difference as two unicode strings. */
+    /** Read all data from an input stream. Return null if IO error. */
+    public static String readFromStream(InputStream is) {
+        InputStreamReader isr;
+        try {
+            isr = new InputStreamReader(is, "UTF-8");
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+                sb.append('\n');
+            }
+            br.close();
+            return sb.toString();
+        } catch (UnsupportedEncodingException e) {
+            return null;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    /** Represent material difference as two unicode strings. */
     public final static class MaterialDiff {
         public CharSequence white;
         public CharSequence black;

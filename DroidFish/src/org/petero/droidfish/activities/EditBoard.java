@@ -18,9 +18,15 @@
 
 package org.petero.droidfish.activities;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.petero.droidfish.ChessBoard;
+import org.petero.droidfish.DroidFish;
 import org.petero.droidfish.R;
 import org.petero.droidfish.ChessBoard.SquareDecoration;
 import org.petero.droidfish.Util;
@@ -36,6 +42,7 @@ import org.petero.droidfish.gtb.Probe;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -364,31 +371,48 @@ public class EditBoard extends Activity {
     protected Dialog onCreateDialog(int id) {
         switch (id) {
         case EDIT_DIALOG: {
-            final CharSequence[] items = {
-                    getString(R.string.side_to_move),
-                    getString(R.string.clear_board), getString(R.string.initial_position),
-                    getString(R.string.castling_flags), getString(R.string.en_passant_file),
-                    getString(R.string.move_counters),
-                    getString(R.string.copy_position), getString(R.string.paste_position)
-            };
+            final int SIDE_TO_MOVE    = 0;
+            final int CLEAR_BOARD     = 1;
+            final int INITIAL_POS     = 2;
+            final int CASTLING_FLAGS  = 3;
+            final int EN_PASSANT_FILE = 4;
+            final int MOVE_COUNTERS   = 5;
+            final int COPY_POSITION   = 6;
+            final int PASTE_POSITION  = 7;
+            final int GET_FEN         = 8;
+
+            List<CharSequence> lst = new ArrayList<CharSequence>();
+            List<Integer> actions = new ArrayList<Integer>();
+            lst.add(getString(R.string.side_to_move));     actions.add(SIDE_TO_MOVE);
+            lst.add(getString(R.string.clear_board));      actions.add(CLEAR_BOARD);
+            lst.add(getString(R.string.initial_position)); actions.add(INITIAL_POS);
+            lst.add(getString(R.string.castling_flags));   actions.add(CASTLING_FLAGS);
+            lst.add(getString(R.string.en_passant_file));  actions.add(EN_PASSANT_FILE);
+            lst.add(getString(R.string.move_counters));    actions.add(MOVE_COUNTERS);
+            lst.add(getString(R.string.copy_position));    actions.add(COPY_POSITION);
+            lst.add(getString(R.string.paste_position));   actions.add(PASTE_POSITION);
+            if (DroidFish.hasFenProvider(getPackageManager())) {
+                lst.add(getString(R.string.get_fen)); actions.add(GET_FEN);
+            }
+            final List<Integer> finalActions = actions;
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.edit_board);
-            builder.setItems(items, new DialogInterface.OnClickListener() {
+            builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
-                    switch (item) {
-                    case 0: // Edit side to move
+                    switch (finalActions.get(item)) {
+                    case SIDE_TO_MOVE:
                         showDialog(SIDE_DIALOG);
                         setSelection(-1);
                         checkValidAndUpdateMaterialDiff();
                         break;
-                    case 1: { // Clear board
+                    case CLEAR_BOARD: {
                         Position pos = new Position();
                         cb.setPosition(pos);
                         setSelection(-1);
                         checkValidAndUpdateMaterialDiff();
                         break;
                     }
-                    case 2: { // Set initial position
+                    case INITIAL_POS: {
                         try {
                             Position pos = TextIO.readFEN(TextIO.startPosFEN);
                             cb.setPosition(pos);
@@ -398,25 +422,25 @@ public class EditBoard extends Activity {
                         }
                         break;
                     }
-                    case 3: // Edit castling flags
+                    case CASTLING_FLAGS:
                         removeDialog(CASTLE_DIALOG);
                         showDialog(CASTLE_DIALOG);
                         setSelection(-1);
                         checkValidAndUpdateMaterialDiff();
                         break;
-                    case 4: // Edit en passant file
+                    case EN_PASSANT_FILE:
                         removeDialog(EP_DIALOG);
                         showDialog(EP_DIALOG);
                         setSelection(-1);
                         checkValidAndUpdateMaterialDiff();
                         break;
-                    case 5: // Edit move counters
+                    case MOVE_COUNTERS:
                         removeDialog(MOVCNT_DIALOG);
                         showDialog(MOVCNT_DIALOG);
                         setSelection(-1);
                         checkValidAndUpdateMaterialDiff();
                         break;
-                    case 6: { // Copy position
+                    case COPY_POSITION: {
                         setPosFields();
                         String fen = TextIO.toFEN(cb.pos) + "\n";
                         ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
@@ -424,23 +448,22 @@ public class EditBoard extends Activity {
                         setSelection(-1);
                         break;
                     }
-                    case 7: { // Paste position
+                    case PASTE_POSITION: {
                         ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
                         if (clipboard.hasText()) {
                             String fen = clipboard.getText().toString();
-                            try {
-                                Position pos = TextIO.readFEN(fen);
-                                cb.setPosition(pos);
-                            } catch (ChessParseError e) {
-                                if (e.pos != null)
-                                    cb.setPosition(e.pos);
-                                Toast.makeText(getApplicationContext(), getParseErrString(e), Toast.LENGTH_SHORT).show();
-                            }
-                            setSelection(-1);
-                            checkValidAndUpdateMaterialDiff();
+                            setFEN(fen);
                         }
                         break;
                     }
+                    case GET_FEN:
+                        Intent i = new Intent(Intent.ACTION_GET_CONTENT); 
+                        i.setType("application/x-chess-fen");
+                        try {
+                            startActivityForResult(i, RESULT_GET_FEN);
+                        } catch (ActivityNotFoundException e) {
+                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
             });
@@ -565,5 +588,49 @@ public class EditBoard extends Activity {
         }
         }
         return null;
+    }
+
+    private final void setFEN(String fen) {
+        if (fen == null)
+            return;
+        try {
+            Position pos = TextIO.readFEN(fen);
+            cb.setPosition(pos);
+        } catch (ChessParseError e) {
+            if (e.pos != null)
+                cb.setPosition(e.pos);
+            Toast.makeText(getApplicationContext(), getParseErrString(e), Toast.LENGTH_SHORT).show();
+        }
+        setSelection(-1);
+        checkValidAndUpdateMaterialDiff();
+    }
+
+    static private final int RESULT_GET_FEN = 0;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+        case RESULT_GET_FEN:
+            if (resultCode == RESULT_OK) {
+                String fen = data.getStringExtra(Intent.EXTRA_TEXT);
+                if (fen == null) {
+                    String pathName = DroidFish.getFilePathFromUri(data.getData());
+                    if (pathName != null) {
+                        InputStream is = null;
+                        try {
+                            is = new FileInputStream(pathName);
+                            fen = Util.readFromStream(is);
+                        } catch (FileNotFoundException e) {
+                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        } finally {
+                            if (is != null)
+                                try { is.close(); } catch (IOException e) {}
+                        }
+                    }
+                }
+                setFEN(fen);
+            }
+            break;
+        }
     }
 }

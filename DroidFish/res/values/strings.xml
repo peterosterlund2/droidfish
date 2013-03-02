@@ -37,6 +37,7 @@ you are not actively using the program.\
     <string name="load_game">Load game from PGN file</string>
     <string name="load_scid_game">Load game from Scid file</string>
     <string name="save_game">Save game to PGN file</string>
+    <string name="get_fen">Retrieve Position</string>
     <string name="truncate_gametree">Truncate Game Tree</string>
     <string name="move_var_up">Move Variation Up</string>
     <string name="move_var_down">Move Variation Down</string>

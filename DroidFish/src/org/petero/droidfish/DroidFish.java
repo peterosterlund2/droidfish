@@ -19,15 +19,14 @@
 
 package org.petero.droidfish;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -75,8 +74,10 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.ProviderInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -1159,6 +1160,7 @@ public class DroidFish extends Activity implements GUIInterface {
     static private final int RESULT_SELECT_SCID = 3;
     static private final int RESULT_OI_PGN_SAVE = 4;
     static private final int RESULT_OI_PGN_LOAD = 5;
+    static private final int RESULT_GET_FEN = 6;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -1289,6 +1291,39 @@ public class DroidFish extends Activity implements GUIInterface {
                 }
             }
             break;
+        case RESULT_GET_FEN:
+            if (resultCode == RESULT_OK) {
+                String fen = data.getStringExtra(Intent.EXTRA_TEXT);
+                if (fen == null) {
+                    String pathName = getFilePathFromUri(data.getData());
+                    if (pathName != null) {
+                        InputStream is = null;
+                        try {
+                            is = new FileInputStream(pathName);
+                            fen = Util.readFromStream(is);
+                        } catch (FileNotFoundException e) {
+                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        } finally {
+                            if (is != null)
+                                try { is.close(); } catch (IOException e) {}
+                        }
+                    }
+                }
+                if (fen != null) {
+                    try {
+                        ctrl.setFENOrPGN(fen);
+                    } catch (ChessParseError e) {
+                        // If FEN corresponds to illegal chess position, go into edit board mode.
+                        try {
+                            TextIO.readFEN(fen);
+                        } catch (ChessParseError e2) {
+                            if (e2.pos != null)
+                                startEditBoard(fen);
+                        }
+                    }
+                }
+            }
+            break;
         }
     }
 
@@ -1302,7 +1337,7 @@ public class DroidFish extends Activity implements GUIInterface {
         ctrl.setGameMode(gameMode);
     }
 
-    private static String getFilePathFromUri(Uri uri) {
+    public static String getFilePathFromUri(Uri uri) {
         if (uri == null)
             return null;
         return uri.getPath();
@@ -1713,6 +1748,7 @@ public class DroidFish extends Activity implements GUIInterface {
         final int LOAD_GAME      = 4;
         final int SAVE_GAME      = 5;
         final int LOAD_SCID_GAME = 6;
+        final int GET_FEN        = 7;
 
         List<CharSequence> lst = new ArrayList<CharSequence>();
         List<Integer> actions = new ArrayList<Integer>();
@@ -1724,6 +1760,9 @@ public class DroidFish extends Activity implements GUIInterface {
         lst.add(getString(R.string.save_game));     actions.add(SAVE_GAME);
         if (hasScidProvider()) {
             lst.add(getString(R.string.load_scid_game)); actions.add(LOAD_SCID_GAME);
+        }
+        if (hasFenProvider(getPackageManager())) {
+            lst.add(getString(R.string.get_fen)); actions.add(GET_FEN);
         }
         final List<Integer> finalActions = actions;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -1768,6 +1807,9 @@ public class DroidFish extends Activity implements GUIInterface {
                     break;
                 case SAVE_GAME:
                     selectPgnFile(true);
+                    break;
+                case GET_FEN:
+                    getFen();
                     break;
                 }
             }
@@ -1823,22 +1865,11 @@ public class DroidFish extends Activity implements GUIInterface {
         String title = getString(R.string.app_name);
         WebView wv = new WebView(this);
         builder.setView(wv);
-        String data = "";
-        try {
-            InputStream is = getResources().openRawResource(R.raw.about);
-            InputStreamReader isr = new InputStreamReader(is, "UTF-8");
-            BufferedReader br = new BufferedReader(isr);
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-                sb.append('\n');
-            }
-            br.close();
-            data = sb.toString();
-        } catch (UnsupportedEncodingException e1) {
-        } catch (IOException e) {
-        }
+        InputStream is = getResources().openRawResource(R.raw.about);
+        String data = Util.readFromStream(is);
+        if (data == null)
+            data = "";
+        try { is.close(); } catch (IOException e1) {}
         wv.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
         try {
             PackageInfo pi = getPackageManager().getPackageInfo("org.petero.droidfish", 0);
@@ -2818,6 +2849,23 @@ public class DroidFish extends Activity implements GUIInterface {
         intent.setAction(".si4");
         try {
             startActivityForResult(intent, RESULT_SELECT_SCID);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public final static boolean hasFenProvider(PackageManager manager) {
+        Intent i = new Intent(Intent.ACTION_GET_CONTENT); 
+        i.setType("application/x-chess-fen");
+        List<ResolveInfo> resolvers = manager.queryIntentActivities(i, 0);
+        return (resolvers != null) && (resolvers.size() > 0);
+    }
+
+    private final void getFen() {
+        Intent i = new Intent(Intent.ACTION_GET_CONTENT); 
+        i.setType("application/x-chess-fen");
+        try {
+            startActivityForResult(i, RESULT_GET_FEN);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
