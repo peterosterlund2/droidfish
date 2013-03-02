@@ -30,7 +30,7 @@ public final class Util {
         // Using bold face causes crashes in android 4.1, see:
         // http://code.google.com/p/android/issues/detail?id=34872
         final int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
-        if (sdkVersion >= 16) {
+        if (sdkVersion == 16) {
             boldStart = "";
             boldStop = "";
         } else {
