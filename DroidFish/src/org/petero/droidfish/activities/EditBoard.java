@@ -36,12 +36,14 @@ import org.petero.droidfish.gtb.Probe;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
 import android.text.TextUtils;
@@ -52,7 +54,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
-import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.Button;
@@ -197,6 +198,11 @@ public class EditBoard extends Activity {
                     handleClick(e);
                 return true;
             }
+            @Override
+            public void onLongPress(MotionEvent e) {
+                ((Vibrator)getSystemService(Context.VIBRATOR_SERVICE)).vibrate(20);
+                showDialog(EDIT_DIALOG);
+            }
             private final void handleClick(MotionEvent e) {
                 int sq = cb.eventToSquare(e);
                 Move m = cb.mousePressed(sq);
@@ -216,13 +222,6 @@ public class EditBoard extends Activity {
                 if (m != null)
                     doMove(m);
                 setEgtbHints(cb.getSelectedSquare());
-            }
-        });
-        cb.setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                showDialog(EDIT_DIALOG);
-                return true;
             }
         });
     }

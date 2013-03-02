@@ -692,6 +692,12 @@ public class DroidFish extends Activity implements GUIInterface {
                     setEgtbHints(cb.getSelectedSquare());
                 }
             }
+            @Override
+            public void onLongPress(MotionEvent e) {
+                ((Vibrator)getSystemService(Context.VIBRATOR_SERVICE)).vibrate(20);
+                removeDialog(BOARD_MENU_DIALOG);
+                showDialog(BOARD_MENU_DIALOG);
+            }
         });
         cb.setOnTouchListener(new OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
@@ -706,13 +712,6 @@ public class DroidFish extends Activity implements GUIInterface {
                         ctrl.makeHumanMove(m);
                     setEgtbHints(cb.getSelectedSquare());
                 }
-            }
-        });
-        cb.setOnLongClickListener(new OnLongClickListener() {
-            public boolean onLongClick(View v) {
-                removeDialog(BOARD_MENU_DIALOG);
-                showDialog(BOARD_MENU_DIALOG);
-                return true;
             }
         });
 
