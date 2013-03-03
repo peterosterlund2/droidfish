@@ -35,6 +35,7 @@ you are not actively using the program.\
     <string name="paste">Paste from Clipboard</string>
     <string name="share">Share</string>
     <string name="share_pgn_game">Share PGN game</string>
+    <string name="load_last_file">Load from last file</string>
     <string name="load_game">Load game from PGN file</string>
     <string name="load_scid_game">Load game from Scid file</string>
     <string name="save_game">Save game to PGN file</string>
@@ -615,7 +616,8 @@ you are not actively using the program.\
         <item>@string/toggle_pgn_headers</item>
         <item>@string/toggle_large_buttons</item>
         <item>@string/toggle_blind_mode</item>
-    </string-array>
+        <item>@string/load_last_file</item>
+        </string-array>
     <string-array name="button_action_values">
         <item></item>
         <item>flipboard</item>
@@ -627,5 +629,6 @@ you are not actively using the program.\
         <item>viewHeaders</item>
         <item>largeButtons</item>
         <item>blindMode</item>
+        <item>loadLastFile</item>
     </string-array>
 </resources>

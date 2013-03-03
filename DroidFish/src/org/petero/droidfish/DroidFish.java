@@ -335,6 +335,15 @@ public class DroidFish extends Activity implements GUIInterface {
                     cb.setBlindMode(blindMode);
                 }
             });
+            addAction(new UIAction() {
+                public String getId() { return "loadLastFile"; }
+                public int getName() { return R.string.load_last_file; }
+                public int getIcon() { return R.raw.open_last_file; }
+                public boolean enabled() { return currFileType() != FT_NONE; }
+                public void run() {
+                    loadLastFile();
+                }
+            });
         }
 
         @Override
@@ -1828,12 +1837,16 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     private final Dialog fileMenuDialog() {
-        final int LOAD_GAME      = 0;
-        final int SAVE_GAME      = 1;
-        final int LOAD_SCID_GAME = 2;
+        final int LOAD_LAST_FILE = 0;
+        final int LOAD_GAME      = 1;
+        final int SAVE_GAME      = 2;
+        final int LOAD_SCID_GAME = 3;
 
         List<CharSequence> lst = new ArrayList<CharSequence>();
         List<Integer> actions = new ArrayList<Integer>();
+        if (currFileType() != FT_NONE) {
+            lst.add(getString(R.string.load_last_file));     actions.add(LOAD_LAST_FILE);
+        }
         lst.add(getString(R.string.load_game));     actions.add(LOAD_GAME);
         lst.add(getString(R.string.save_game));     actions.add(SAVE_GAME);
         if (hasScidProvider()) {
@@ -1844,7 +1857,13 @@ public class DroidFish extends Activity implements GUIInterface {
         builder.setTitle(R.string.load_save_menu);
         builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
+                String path = currPathName();
+                if (path.length() == 0)
+                    return;
                 switch (finalActions.get(item)) {
+                case LOAD_LAST_FILE:
+                    loadLastFile();
+                    break;
                 case LOAD_GAME:
                     selectPgnFile(false);
                     break;
@@ -1859,6 +1878,26 @@ public class DroidFish extends Activity implements GUIInterface {
         });
         AlertDialog alert = builder.create();
         return alert;
+    }
+
+    /** Open dialog to select a game/position from the last used file. */
+    final private void loadLastFile() {
+        String path = currPathName();
+        if (path.length() == 0)
+            return;
+        switch (currFileType()) {
+        case FT_PGN:
+            loadPGNFromFile(path);
+            break;
+        case FT_SCID: {
+            Intent data = new Intent(path);
+            onActivityResult(RESULT_SELECT_SCID, RESULT_OK, data);
+            break;
+        }
+        case FT_FEN:
+            loadFENFromFile(path);
+            break;
+        }
     }
 
     private final Dialog aboutDialog() {
