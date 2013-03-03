@@ -29,6 +29,7 @@ you are not actively using the program.\
     <string name="bishop">Bishop</string>
     <string name="knight">Knight</string>
     <string name="promote_pawn_to">Promote pawn to?</string>
+    <string name="clipboard">Clipboard</string>
     <string name="copy_game">Copy Game to Clipboard</string>
     <string name="copy_position">Copy Position to Clipboard</string>
     <string name="paste">Paste from Clipboard</string>

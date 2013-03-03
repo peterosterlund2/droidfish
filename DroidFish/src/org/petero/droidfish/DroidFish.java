@@ -695,6 +695,8 @@ public class DroidFish extends Activity implements GUIInterface {
             }
             @Override
             public void onLongPress(MotionEvent e) {
+                if (!boardGestures)
+                    return;
                 ((Vibrator)getSystemService(Context.VIBRATOR_SERVICE)).vibrate(20);
                 removeDialog(BOARD_MENU_DIALOG);
                 showDialog(BOARD_MENU_DIALOG);
@@ -1650,6 +1652,7 @@ public class DroidFish extends Activity implements GUIInterface {
     static private final int NEW_NETWORK_ENGINE_DIALOG = 22;
     static private final int NETWORK_ENGINE_CONFIG_DIALOG = 23;
     static private final int DELETE_NETWORK_ENGINE_DIALOG = 24;
+    static private final int CLIPBOARD_DIALOG = 25;
 
     @Override
     protected Dialog onCreateDialog(int id) {
@@ -1679,6 +1682,7 @@ public class DroidFish extends Activity implements GUIInterface {
         case NEW_NETWORK_ENGINE_DIALOG:      return newNetworkEngineDialog();
         case NETWORK_ENGINE_CONFIG_DIALOG:   return networkEngineConfigDialog();
         case DELETE_NETWORK_ENGINE_DIALOG:   return deleteNetworkEngineDialog();
+        case CLIPBOARD_DIALOG:               return clipBoardDialog();
         }
         return null;
     }
@@ -1724,30 +1728,16 @@ public class DroidFish extends Activity implements GUIInterface {
         return alert;
     }
 
-    private final Dialog boardMenuDialog() {
+    private final Dialog clipBoardDialog() {
         final int COPY_GAME      = 0;
         final int COPY_POSITION  = 1;
         final int PASTE          = 2;
-        final int SHARE          = 3;
-        final int LOAD_GAME      = 4;
-        final int SAVE_GAME      = 5;
-        final int LOAD_SCID_GAME = 6;
-        final int GET_FEN        = 7;
 
         List<CharSequence> lst = new ArrayList<CharSequence>();
         List<Integer> actions = new ArrayList<Integer>();
         lst.add(getString(R.string.copy_game));     actions.add(COPY_GAME);
         lst.add(getString(R.string.copy_position)); actions.add(COPY_POSITION);
         lst.add(getString(R.string.paste));         actions.add(PASTE);
-        lst.add(getString(R.string.share));         actions.add(SHARE);
-        lst.add(getString(R.string.load_game));     actions.add(LOAD_GAME);
-        lst.add(getString(R.string.save_game));     actions.add(SAVE_GAME);
-        if (hasScidProvider()) {
-            lst.add(getString(R.string.load_scid_game)); actions.add(LOAD_SCID_GAME);
-        }
-        if (hasFenProvider(getPackageManager())) {
-            lst.add(getString(R.string.get_fen)); actions.add(GET_FEN);
-        }
         final List<Integer> finalActions = actions;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.tools_menu);
@@ -1779,19 +1769,46 @@ public class DroidFish extends Activity implements GUIInterface {
                     }
                     break;
                 }
+                }
+            }
+        });
+        AlertDialog alert = builder.create();
+        return alert;
+    }
+
+    private final Dialog boardMenuDialog() {
+        final int CLIPBOARD = 0;
+        final int FILEMENU  = 1;
+        final int SHARE     = 2;
+        final int GET_FEN   = 3;
+
+        List<CharSequence> lst = new ArrayList<CharSequence>();
+        List<Integer> actions = new ArrayList<Integer>();
+        lst.add(getString(R.string.clipboard));     actions.add(CLIPBOARD);
+        lst.add(getString(R.string.option_file));   actions.add(FILEMENU);
+        lst.add(getString(R.string.share));         actions.add(SHARE);
+        if (hasFenProvider(getPackageManager())) {
+            lst.add(getString(R.string.get_fen)); actions.add(GET_FEN);
+        }
+        final List<Integer> finalActions = actions;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.tools_menu);
+        builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                switch (finalActions.get(item)) {
+                case CLIPBOARD: {
+                    showDialog(CLIPBOARD_DIALOG);
+                    break;
+                }
+                case FILEMENU: {
+                    removeDialog(FILE_MENU_DIALOG);
+                    showDialog(FILE_MENU_DIALOG);
+                    break;
+                }
                 case SHARE: {
                     shareGame();
                     break;
                 }
-                case LOAD_GAME:
-                    selectPgnFile(false);
-                    break;
-                case LOAD_SCID_GAME:
-                    selectScidFile();
-                    break;
-                case SAVE_GAME:
-                    selectPgnFile(true);
-                    break;
                 case GET_FEN:
                     getFen();
                     break;

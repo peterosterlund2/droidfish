@@ -203,6 +203,8 @@ public class EditBoard extends Activity {
             }
             @Override
             public void onLongPress(MotionEvent e) {
+                if (!boardGestures)
+                    return;
                 ((Vibrator)getSystemService(Context.VIBRATOR_SERVICE)).vibrate(20);
                 showDialog(EDIT_DIALOG);
             }
