@@ -345,6 +345,16 @@ public class DroidFish extends Activity implements GUIInterface {
                     loadLastFile();
                 }
             });
+            addAction(new UIAction() {
+                public String getId() { return "selectEngine"; }
+                public int getName() { return R.string.select_engine; }
+                public int getIcon() { return R.raw.engine; }
+                public boolean enabled() { return true; }
+                public void run() {
+                    removeDialog(SELECT_ENGINE_DIALOG_NOMANAGE);
+                    showDialog(SELECT_ENGINE_DIALOG_NOMANAGE);
+                }
+            });
         }
 
         @Override
@@ -1652,27 +1662,28 @@ public class DroidFish extends Activity implements GUIInterface {
     static private final int SELECT_MOVE_DIALOG = 3;
     static private final int SELECT_BOOK_DIALOG = 4;
     static private final int SELECT_ENGINE_DIALOG = 5;
-    static private final int SELECT_PGN_FILE_DIALOG = 6;
-    static private final int SELECT_PGN_FILE_SAVE_DIALOG = 7;
-    static private final int SET_COLOR_THEME_DIALOG = 8;
-    static private final int GAME_MODE_DIALOG = 9;
-    static private final int SELECT_PGN_SAVE_NEWFILE_DIALOG = 10;
-    static private final int MOVELIST_MENU_DIALOG = 11;
-    static private final int THINKING_MENU_DIALOG = 12;
-    static private final int GO_BACK_MENU_DIALOG = 13;
-    static private final int GO_FORWARD_MENU_DIALOG = 14;
-    static private final int FILE_MENU_DIALOG = 15;
-    static private final int NEW_GAME_DIALOG = 16;
-    static private final int CUSTOM1_BUTTON_DIALOG = 17;
-    static private final int CUSTOM2_BUTTON_DIALOG = 18;
-    static private final int CUSTOM3_BUTTON_DIALOG = 19;
-    static private final int MANAGE_ENGINES_DIALOG = 20;
-    static private final int NETWORK_ENGINE_DIALOG = 21;
-    static private final int NEW_NETWORK_ENGINE_DIALOG = 22;
-    static private final int NETWORK_ENGINE_CONFIG_DIALOG = 23;
-    static private final int DELETE_NETWORK_ENGINE_DIALOG = 24;
-    static private final int CLIPBOARD_DIALOG = 25;
-    static private final int SELECT_FEN_FILE_DIALOG = 26;
+    static private final int SELECT_ENGINE_DIALOG_NOMANAGE = 6;
+    static private final int SELECT_PGN_FILE_DIALOG = 7;
+    static private final int SELECT_PGN_FILE_SAVE_DIALOG = 8;
+    static private final int SET_COLOR_THEME_DIALOG = 9;
+    static private final int GAME_MODE_DIALOG = 10;
+    static private final int SELECT_PGN_SAVE_NEWFILE_DIALOG = 11;
+    static private final int MOVELIST_MENU_DIALOG = 12;
+    static private final int THINKING_MENU_DIALOG = 13;
+    static private final int GO_BACK_MENU_DIALOG = 14;
+    static private final int GO_FORWARD_MENU_DIALOG = 15;
+    static private final int FILE_MENU_DIALOG = 16;
+    static private final int NEW_GAME_DIALOG = 17;
+    static private final int CUSTOM1_BUTTON_DIALOG = 18;
+    static private final int CUSTOM2_BUTTON_DIALOG = 19;
+    static private final int CUSTOM3_BUTTON_DIALOG = 20;
+    static private final int MANAGE_ENGINES_DIALOG = 21;
+    static private final int NETWORK_ENGINE_DIALOG = 22;
+    static private final int NEW_NETWORK_ENGINE_DIALOG = 23;
+    static private final int NETWORK_ENGINE_CONFIG_DIALOG = 24;
+    static private final int DELETE_NETWORK_ENGINE_DIALOG = 25;
+    static private final int CLIPBOARD_DIALOG = 26;
+    static private final int SELECT_FEN_FILE_DIALOG = 27;
 
     @Override
     protected Dialog onCreateDialog(int id) {
@@ -1684,7 +1695,8 @@ public class DroidFish extends Activity implements GUIInterface {
         case ABOUT_DIALOG:                   return aboutDialog();
         case SELECT_MOVE_DIALOG:             return selectMoveDialog();
         case SELECT_BOOK_DIALOG:             return selectBookDialog();
-        case SELECT_ENGINE_DIALOG:           return selectEngineDialog();
+        case SELECT_ENGINE_DIALOG:           return selectEngineDialog(false);
+        case SELECT_ENGINE_DIALOG_NOMANAGE:  return selectEngineDialog(true);
         case SELECT_PGN_FILE_DIALOG:         return selectPgnFileDialog();
         case SELECT_PGN_FILE_SAVE_DIALOG:    return selectPgnFileSaveDialog();
         case SELECT_PGN_SAVE_NEWFILE_DIALOG: return selectPgnSaveNewFileDialog();
@@ -2025,7 +2037,7 @@ public class DroidFish extends Activity implements GUIInterface {
                "stockfish".equals(name);
     }
 
-    private final Dialog selectEngineDialog() {
+    private final Dialog selectEngineDialog(final boolean abortOnCancel) {
         String[] fileNames = findFilesInDirectory(engineDir, new FileNameFilter() {
             @Override
             public boolean accept(String filename) {
@@ -2076,8 +2088,10 @@ public class DroidFish extends Activity implements GUIInterface {
         builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                removeDialog(MANAGE_ENGINES_DIALOG);
-                showDialog(MANAGE_ENGINES_DIALOG);
+                if (!abortOnCancel) {
+                    removeDialog(MANAGE_ENGINES_DIALOG);
+                    showDialog(MANAGE_ENGINES_DIALOG);
+                }
             }
         });
         AlertDialog alert = builder.create();
