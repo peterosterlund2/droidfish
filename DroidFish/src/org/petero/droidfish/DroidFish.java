@@ -202,9 +202,10 @@ public class DroidFish extends Activity implements GUIInterface {
     private boolean showVariationLine;
 
     private final static String bookDir = "DroidFish";
-    private final static String pgnDir = "DroidFish" + File.separator + "pgn";
-    private final static String engineDir = "DroidFish" + File.separator + "uci";
-    private final static String gtbDefaultDir = "DroidFish" + File.separator + "gtb";
+    private final static String pgnDir = "DroidFish/pgn";
+    private final static String fenDir = "DroidFish/epd";
+    private final static String engineDir = "DroidFish/uci";
+    private final static String gtbDefaultDir = "DroidFish/gtb";
     private BookOptions bookOptions = new BookOptions();
     private PGNOptions pgnOptions = new PGNOptions();
     private EngineOptions engineOptions = new EngineOptions();
@@ -451,6 +452,7 @@ public class DroidFish extends Activity implements GUIInterface {
         String sep = File.separator;
         new File(extDir + sep + bookDir).mkdirs();
         new File(extDir + sep + pgnDir).mkdirs();
+        new File(extDir + sep + fenDir).mkdirs();
         new File(extDir + sep + engineDir).mkdirs();
         new File(extDir + sep + gtbDefaultDir).mkdirs();
     }
@@ -1168,11 +1170,12 @@ public class DroidFish extends Activity implements GUIInterface {
     static private final int RESULT_EDITBOARD = 0;
     static private final int RESULT_SETTINGS = 1;
     static private final int RESULT_LOAD_PGN = 2;
-    static private final int RESULT_SELECT_SCID = 3;
-    static private final int RESULT_OI_PGN_SAVE = 4;
-    static private final int RESULT_OI_PGN_LOAD = 5;
-    static private final int RESULT_GET_FEN = 6;
-    static private final int RESULT_LOAD_FEN = 7;
+    static private final int RESULT_LOAD_FEN = 3;
+    static private final int RESULT_SELECT_SCID = 4;
+    static private final int RESULT_OI_PGN_SAVE = 5;
+    static private final int RESULT_OI_PGN_LOAD = 6;
+    static private final int RESULT_OI_FEN_LOAD = 7;
+    static private final int RESULT_GET_FEN = 8;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -1301,6 +1304,13 @@ public class DroidFish extends Activity implements GUIInterface {
                         pathName += ".pgn";
                     savePGNToFile(pathName, false);
                 }
+            }
+            break;
+        case RESULT_OI_FEN_LOAD:
+            if (resultCode == RESULT_OK) {
+                String pathName = getFilePathFromUri(data.getData());
+                if (pathName != null)
+                    loadFENFromFile(pathName);
             }
             break;
         case RESULT_GET_FEN:
@@ -1662,6 +1672,7 @@ public class DroidFish extends Activity implements GUIInterface {
     static private final int NETWORK_ENGINE_CONFIG_DIALOG = 23;
     static private final int DELETE_NETWORK_ENGINE_DIALOG = 24;
     static private final int CLIPBOARD_DIALOG = 25;
+    static private final int SELECT_FEN_FILE_DIALOG = 26;
 
     @Override
     protected Dialog onCreateDialog(int id) {
@@ -1692,6 +1703,7 @@ public class DroidFish extends Activity implements GUIInterface {
         case NETWORK_ENGINE_CONFIG_DIALOG:   return networkEngineConfigDialog();
         case DELETE_NETWORK_ENGINE_DIALOG:   return deleteNetworkEngineDialog();
         case CLIPBOARD_DIALOG:               return clipBoardDialog();
+        case SELECT_FEN_FILE_DIALOG:         return selectFenFileDialog();
         }
         return null;
     }
@@ -1839,36 +1851,41 @@ public class DroidFish extends Activity implements GUIInterface {
     private final Dialog fileMenuDialog() {
         final int LOAD_LAST_FILE = 0;
         final int LOAD_GAME      = 1;
-        final int SAVE_GAME      = 2;
+        final int LOAD_POS       = 2;
         final int LOAD_SCID_GAME = 3;
+        final int SAVE_GAME      = 4;
 
         List<CharSequence> lst = new ArrayList<CharSequence>();
         List<Integer> actions = new ArrayList<Integer>();
         if (currFileType() != FT_NONE) {
-            lst.add(getString(R.string.load_last_file));     actions.add(LOAD_LAST_FILE);
+            lst.add(getString(R.string.load_last_file)); actions.add(LOAD_LAST_FILE);
         }
         lst.add(getString(R.string.load_game));     actions.add(LOAD_GAME);
-        lst.add(getString(R.string.save_game));     actions.add(SAVE_GAME);
+        lst.add(getString(R.string.load_position)); actions.add(LOAD_POS);
         if (hasScidProvider()) {
             lst.add(getString(R.string.load_scid_game)); actions.add(LOAD_SCID_GAME);
         }
+        lst.add(getString(R.string.save_game));     actions.add(SAVE_GAME);
         final List<Integer> finalActions = actions;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.load_save_menu);
         builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                String path = currPathName();
-                if (path.length() == 0)
-                    return;
                 switch (finalActions.get(item)) {
                 case LOAD_LAST_FILE:
                     loadLastFile();
                     break;
                 case LOAD_GAME:
-                    selectPgnFile(false);
+                    selectFile(R.string.select_pgn_file, R.string.pgn_load, "currentPGNFile", pgnDir,
+                                  SELECT_PGN_FILE_DIALOG, RESULT_OI_PGN_LOAD);
                     break;
                 case SAVE_GAME:
-                    selectPgnFile(true);
+                    selectFile(R.string.select_pgn_file_save, R.string.pgn_save, "currentPGNFile", pgnDir,
+                                  SELECT_PGN_FILE_SAVE_DIALOG, RESULT_OI_PGN_SAVE);
+                    break;
+                case LOAD_POS:
+                    selectFile(R.string.select_fen_file, R.string.pgn_load, "currentFENFile", fenDir,
+                                  SELECT_FEN_FILE_DIALOG, RESULT_OI_FEN_LOAD);
                     break;
                 case LOAD_SCID_GAME:
                     selectScidFile();
@@ -2067,33 +2084,58 @@ public class DroidFish extends Activity implements GUIInterface {
         return alert;
     }
 
+    private static interface Loader {
+        void load(String pathName);
+    }
+
     private final Dialog selectPgnFileDialog() {
-        final String[] fileNames = findFilesInDirectory(pgnDir, null);
+        return selectFileDialog(pgnDir, R.string.select_pgn_file, R.string.no_pgn_files,
+                                "currentPGNFile", new Loader() {
+            @Override
+            public void load(String pathName) {
+                loadPGNFromFile(pathName);
+            }
+        });
+    }
+
+    private final Dialog selectFenFileDialog() {
+        return selectFileDialog(fenDir, R.string.select_fen_file, R.string.no_fen_files,
+                                "currentFENFile", new Loader() {
+            @Override
+            public void load(String pathName) {
+                loadFENFromFile(pathName);
+            }
+        });
+    }
+
+    private final Dialog selectFileDialog(final String defaultDir, int selectFileMsg, int noFilesMsg,
+                                          String settingsName, final Loader loader) {
+        final String[] fileNames = findFilesInDirectory(defaultDir, null);
         final int numFiles = fileNames.length;
         if (numFiles == 0) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.app_name).setMessage(R.string.no_pgn_files);
+            builder.setTitle(R.string.app_name).setMessage(noFilesMsg);
             AlertDialog alert = builder.create();
             return alert;
         }
         int defaultItem = 0;
-        String currentPGNFile = settings.getString("currentPGNFile", "");
-        currentPGNFile = new File(currentPGNFile).getName();
+        String currentFile = settings.getString(settingsName, "");
+        currentFile = new File(currentFile).getName();
         for (int i = 0; i < numFiles; i++) {
-            if (currentPGNFile.equals(fileNames[i])) {
+            if (currentFile.equals(fileNames[i])) {
                 defaultItem = i;
                 break;
             }
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.select_pgn_file);
+        builder.setTitle(selectFileMsg);
         builder.setSingleChoiceItems(fileNames, defaultItem, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 dialog.dismiss();
                 String sep = File.separator;
-                String pgnFile = fileNames[item].toString();
-                String pathName = Environment.getExternalStorageDirectory() + sep + pgnDir + sep + pgnFile;
-                loadPGNFromFile(pathName);
+                String fn = fileNames[item].toString();
+                String pathName = Environment.getExternalStorageDirectory() + sep + defaultDir + sep + fn;
+                loader.load(pathName);
             }
         });
         AlertDialog alert = builder.create();
@@ -2862,22 +2904,18 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     /** Open a load/save file dialog. Uses OI file manager if available. */
-    private void selectPgnFile(boolean save) {
+    private void selectFile(int titleMsg, int buttonMsg, String settingsName, String defaultDir,
+                            int dialog, int result) {
         String action = "org.openintents.action.PICK_FILE";
-        String title = getString(save ? R.string.select_pgn_file_save : R.string.select_pgn_file);
-        String button = getString(save ? R.string.pgn_save : R.string.pgn_load);
-        int result = save ? RESULT_OI_PGN_SAVE : RESULT_OI_PGN_LOAD;
-        int dialog = save ? SELECT_PGN_FILE_SAVE_DIALOG : SELECT_PGN_FILE_DIALOG;
-
         Intent i = new Intent(action);
-        String currentPGNFile = settings.getString("currentPGNFile", "");
+        String currentFile = settings.getString(settingsName, "");
         String sep = File.separator;
-        if (!currentPGNFile.contains(sep))
-            currentPGNFile = Environment.getExternalStorageDirectory() +
-                             sep + pgnDir + sep + currentPGNFile;
-        i.setData(Uri.fromFile(new File(currentPGNFile)));
-        i.putExtra("org.openintents.extra.TITLE", title);
-        i.putExtra("org.openintents.extra.BUTTON_TEXT", button);
+        if (!currentFile.contains(sep))
+            currentFile = Environment.getExternalStorageDirectory() +
+                          sep + defaultDir + sep + currentFile;
+        i.setData(Uri.fromFile(new File(currentFile)));
+        i.putExtra("org.openintents.extra.TITLE", getString(titleMsg));
+        i.putExtra("org.openintents.extra.BUTTON_TEXT", getString(buttonMsg));
         try {
             startActivityForResult(i, result);
         } catch (ActivityNotFoundException e) {

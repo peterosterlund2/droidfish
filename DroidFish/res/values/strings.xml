@@ -37,6 +37,7 @@ you are not actively using the program.\
     <string name="share_pgn_game">Share PGN game</string>
     <string name="load_last_file">Load from last file</string>
     <string name="load_game">Load game from PGN file</string>
+    <string name="load_position">Load position from file</string>
     <string name="load_scid_game">Load game from Scid file</string>
     <string name="save_game">Save game to PGN file</string>
     <string name="get_fen">Retrieve Position</string>
@@ -75,15 +76,17 @@ you are not actively using the program.\
     <string name="select_chess_engine">Select Chess Engine</string>
     <string name="select_pgn_file">Open PGN file</string>
     <string name="select_pgn_file_save">Save to PGN file</string>
+    <string name="select_fen_file">Open FEN/EPD file</string>
     <string name="pgn_load">Load</string>
     <string name="pgn_save">Save</string>
     <string name="reading_pgn_file">Reading PGN file</string>
-    <string name="reading_fen_file">Reading FEN file</string>
+    <string name="reading_fen_file">Reading FEN/EPD file</string>
     <string name="reading_scid_file">Reading Scid file</string>
     <string name="new_file">&lt;New File&gt;</string>
     <string name="new_engine">&lt;New Engine&gt;</string>
     <string name="please_wait">Please wait…</string>
     <string name="no_pgn_files">No files found in directory DroidFish/pgn on the SD card</string>
+    <string name="no_fen_files">No files found in directory DroidFish/epd on the SD card</string>
     <string name="select_color_theme">Select Color Theme</string>
     <string name="colortheme_original">Original</string>
     <string name="colortheme_xboard">XBoard</string>
