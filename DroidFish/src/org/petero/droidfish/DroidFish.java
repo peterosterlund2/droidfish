@@ -1203,8 +1203,9 @@ public class DroidFish extends Activity implements GUIInterface {
             return true;
         }
         case R.id.item_file_menu: {
-            removeDialog(FILE_MENU_DIALOG);
-            showDialog(FILE_MENU_DIALOG);
+            int dialog = boardGestures ? FILE_MENU_DIALOG : BOARD_MENU_DIALOG;
+            removeDialog(dialog);
+            showDialog(dialog);
             return true;
         }
         case R.id.item_goto_move: {
@@ -1691,7 +1692,7 @@ public class DroidFish extends Activity implements GUIInterface {
         case NEW_GAME_DIALOG:                return newGameDialog();
         case PROMOTE_DIALOG:                 return promoteDialog();
         case BOARD_MENU_DIALOG:              return boardMenuDialog();
-        case FILE_MENU_DIALOG:               return boardGestures ? fileMenuDialog() : boardMenuDialog();
+        case FILE_MENU_DIALOG:               return fileMenuDialog();
         case ABOUT_DIALOG:                   return aboutDialog();
         case SELECT_MOVE_DIALOG:             return selectMoveDialog();
         case SELECT_BOOK_DIALOG:             return selectBookDialog();
