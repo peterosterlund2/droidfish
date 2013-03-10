@@ -321,7 +321,6 @@ public class EditPGN extends ListActivity {
             progress = new ProgressDialog(this);
             progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progress.setTitle(R.string.reading_pgn_file);
-            progress.setMessage(getString(R.string.please_wait));
             progress.setOnCancelListener(new OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {

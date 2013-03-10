@@ -79,12 +79,11 @@ you are not actively using the program.\
     <string name="select_fen_file">Open FEN/EPD file</string>
     <string name="pgn_load">Load</string>
     <string name="pgn_save">Save</string>
-    <string name="reading_pgn_file">Reading PGN file</string>
-    <string name="reading_fen_file">Reading FEN/EPD file</string>
-    <string name="reading_scid_file">Reading Scid file</string>
+    <string name="reading_pgn_file">Reading PGN file…</string>
+    <string name="reading_fen_file">Reading FEN/EPD file…</string>
+    <string name="reading_scid_file">Reading Scid file…</string>
     <string name="new_file">&lt;New File&gt;</string>
     <string name="new_engine">&lt;New Engine&gt;</string>
-    <string name="please_wait">Please wait…</string>
     <string name="no_pgn_files">No files found in directory DroidFish/pgn on the SD card</string>
     <string name="no_fen_files">No files found in directory DroidFish/epd on the SD card</string>
     <string name="select_color_theme">Select Color Theme</string>
