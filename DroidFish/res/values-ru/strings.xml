@@ -8,14 +8,18 @@
   <string name="bishop">Слон</string>
   <string name="knight">Конь</string>
   <string name="promote_pawn_to">Превратить пешку в …?</string>
+  <string name="clipboard">Буфер обмена</string>
   <string name="copy_game">Скопировать партию в буфер обмена</string>
   <string name="copy_position">Скопировать позицию в буфер обмена</string>
   <string name="paste">Вставить из буфера обмена</string>
   <string name="share">Поделитесь</string>
   <string name="share_pgn_game">Поделиться игрой PGN</string>
+  <string name="load_last_file">Загрузить из последнего файла</string>
   <string name="load_game">Загрузить партию из PGN файла</string>
+  <string name="load_position">Загрузить позиции из файла</string>
   <string name="load_scid_game">Загрузить партию из Scid файла</string>
   <string name="save_game">Сохранить партию в PGN файле</string>
+  <string name="get_fen">Получить позиции</string>
   <string name="truncate_gametree">Обрезать дерево партии</string>
   <string name="move_var_up">Переместить изменение вверх</string>
   <string name="move_var_down">Переместить изменение вниз</string>
@@ -49,14 +53,16 @@
   <string name="select_chess_engine">Выбрать движок</string>
   <string name="select_pgn_file">Открыть PGN файл</string>
   <string name="select_pgn_file_save">Сохранить в PGN файле</string>
+  <string name="select_fen_file">Открыть FEN/EPD файл</string>
   <string name="pgn_load">Загрузить</string>
   <string name="pgn_save">Сохранить</string>
-  <string name="reading_pgn_file">Чтение PGN файла</string>
-  <string name="reading_scid_file">Чтение Scid файла</string>
+  <string name="reading_pgn_file">Чтение PGN файла…</string>
+  <string name="reading_fen_file">Чтение FEN/EPD файла...</string>
+  <string name="reading_scid_file">Чтение Scid файла…</string>
   <string name="new_file">&lt;Новый файл&gt;</string>
   <string name="new_engine">&lt;Новый движок&gt;</string>
-  <string name="please_wait">Пожалуйста, ожидайте…</string>
   <string name="no_pgn_files">Файлы в директории DroidFish/pgn не найдены</string>
+  <string name="no_fen_files">Файлы не найдены в каталоге DroidFish/epd на SD-карте</string>
   <string name="select_color_theme">Выбрать цвет темы</string>
   <string name="colortheme_original">Оригинал</string>
   <string name="colortheme_xboard">XBoard</string>
@@ -87,6 +93,8 @@
   <string name="load_next_game">Загрузить следующую партию</string>
   <string name="no_prev_game">Предыдущая партия отсутствует</string>
   <string name="no_next_game">Следующая партия отсутствует</string>
+  <string name="no_prev_fen">Нет предыдущей позиции</string>
+  <string name="no_next_fen">Нет следующей позиции</string>
   <string name="select_action">Выбрать действие</string>
   <string name="flip_board">Информационное табло</string>
   <string name="blind_mode">Режим игры в слепую</string>
@@ -136,6 +144,7 @@
   <string name="save_game_title">Редактировать файл / Сохранить игру</string>
   <string name="save_game_hint">Выбрать партию для сохранения. Нажать и удерживать партию для удаления.</string>
   <string name="load_scid_game_title">Загрузить Scid партию</string>
+  <string name="load_fen_title">Загрузить позиции</string>
   <string name="cpu_warning_title">Предупреждение о процессоре (CPU)</string>
   <string name="failed_to_read_pgn_data">Не удалось прочесть pgn данные</string>
   <string name="variation">Изменение:</string>
@@ -250,7 +259,7 @@
   <string name="prefs_autoScrollTitle_title">Прокрутка строки заголовка</string>
   <string name="prefs_autoScrollTitle_summary">Автопрокрутка строки заголовка при слишком длинных именах игроков</string>
   <string name="prefs_quickMoveInput_title">Быстрый ввод хода</string>
-  <string name="prefs_quickMoveInput_summary">Откуда и Куда может быть нажато на клетках в любом порядке. Ход играется как только он будет определён как допустимый.</string>
+  <string name="prefs_quickMoveInput_summary">Клетки Откуда и Куда могут быть нажаты в любом порядке. Ход играется сразу если является допустимым.</string>
   <string name="prefs_soundEnabled_title">Включить звуки</string>
   <string name="prefs_soundEnabled_summary">Включить звуки при ходе компьютера</string>
   <string name="prefs_vibrateEnabled_title">Включить вибрирование</string>
@@ -579,6 +588,8 @@
     <item>@string/toggle_pgn_headers</item>
     <item>@string/toggle_large_buttons</item>
     <item>@string/toggle_blind_mode</item>
+    <item>@string/load_last_file</item>
+    <item>@string/select_engine</item>
   </string-array>
   <string-array name="button_action_values">
     <item></item>
@@ -591,5 +602,7 @@
     <item>viewHeaders</item>
     <item>largeButtons</item>
     <item>blindMode</item>
+    <item>loadLastFile</item>
+    <item>selectEngine</item>
   </string-array>
 </resources>

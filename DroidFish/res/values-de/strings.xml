@@ -18,14 +18,18 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="bishop">Läufer</string>
   <string name="knight">Springer</string>
   <string name="promote_pawn_to">Bauer umwandeln in?</string>
+  <string name="clipboard">Zwischenablage</string>
   <string name="copy_game">Partie in die Zwischenablage kopieren</string>
   <string name="copy_position">Stellung in die Zwischenablage kopieren</string>
   <string name="paste">Aus der Zwischenablage einfügen</string>
   <string name="share">Freigeben</string>
   <string name="share_pgn_game">PGN-Partie freigeben</string>
+  <string name="load_last_file">Aus der letzter Datei laden</string>
   <string name="load_game">Partie aus einer PGN-Datei laden</string>
+  <string name="load_position">Postion aus Datei laden</string>
   <string name="load_scid_game">Partie aus einer Scid-Datei laden</string>
   <string name="save_game">Partie in eine PGN-Datei speichern</string>
+  <string name="get_fen">Wiederherstellen der Position</string>
   <string name="truncate_gametree">Spielbaum abschneiden</string>
   <string name="move_var_up">Variante nach oben verschieben</string>
   <string name="move_var_down">Variante nach unten verschieben</string>
@@ -59,14 +63,15 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="select_chess_engine">Schach-Engine auswählen</string>
   <string name="select_pgn_file">PGN-Datei zum Öffnen wählen</string>
   <string name="select_pgn_file_save">In eine PGN-Datei speichern</string>
+  <string name="select_fen_file">Öffnen einer FEN/EPD-Datei</string>
   <string name="pgn_load">Laden</string>
   <string name="pgn_save">Speichern</string>
-  <string name="reading_pgn_file">PGN-Datei wird gelesen</string>
-  <string name="reading_scid_file">Scid-Datei wird gelesen</string>
+  <string name="reading_pgn_file">PGN-Datei wird gelesen…</string>
+  <string name="reading_scid_file">Scid-Datei wird gelesen…</string>
   <string name="new_file">&lt;Neue Datei&gt;</string>
   <string name="new_engine">&lt;Neue Engine&gt;</string>
-  <string name="please_wait">Bitte warten…</string>
   <string name="no_pgn_files">Keine Dateien im Verzeichnis DroidFish/pgn auf der SD-Karte gefunden</string>
+  <string name="no_fen_files">Keine Dateien gefunden im SD-Karten-Verzeichnis DroidFish/Epd</string>
   <string name="select_color_theme">Farbschema auswählen</string>
   <string name="colortheme_original">Original</string>
   <string name="colortheme_xboard">XBoard</string>
@@ -97,6 +102,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="load_next_game">Nächste Partie laden</string>
   <string name="no_prev_game">Keine vorherige Partie</string>
   <string name="no_next_game">Keine nächste Partie</string>
+  <string name="no_prev_fen">Keine vorherige Position</string>
+  <string name="no_next_fen">Keine nächste Position</string>
   <string name="select_action">Aktion auswählen</string>
   <string name="flip_board">Spielfeld drehen</string>
   <string name="blind_mode">Blindspiel-Modus</string>
@@ -146,6 +153,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="save_game_title">Datei bearbeiten/Partie speichern</string>
   <string name="save_game_hint">Bestehende Partie auswählen, um Speicherort festzulegen. Durch langes Drücken wird die entsprechende Partie gelöscht.</string>
   <string name="load_scid_game_title">Scid-Partie laden</string>
+  <string name="load_fen_title">Position laden</string>
   <string name="cpu_warning_title">Prozessor-Warnung</string>
   <string name="failed_to_read_pgn_data">PGN-Daten konnten nicht gelesen werden</string>
   <string name="variation">Variante:</string>
@@ -591,6 +599,8 @@ wenn Sie es nicht aktiv nutzen.\
     <item>@string/toggle_pgn_headers</item>
     <item>@string/toggle_large_buttons</item>
     <item>@string/toggle_blind_mode</item>
+    <item>@string/load_last_file</item>
+    <item>@string/select_engine</item>
   </string-array>
   <string-array name="button_action_values">
     <item></item>
@@ -603,5 +613,7 @@ wenn Sie es nicht aktiv nutzen.\
     <item>viewHeaders</item>
     <item>largeButtons</item>
     <item>blindMode</item>
+    <item>loadLastFile</item>
+    <item>selectEngine</item>
   </string-array>
 </resources>

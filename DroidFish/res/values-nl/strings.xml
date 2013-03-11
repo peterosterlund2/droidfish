@@ -16,14 +16,18 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="bishop">Loper</string>
   <string name="knight">Paard</string>
   <string name="promote_pawn_to">Pion promoveren tot?</string>
+  <string name="clipboard">Klembord</string>
   <string name="copy_game">Kopieer de partij naar het klembord</string>
   <string name="copy_position">Kopieer de positie naar het klembord</string>
   <string name="paste">Plakken vanuit klembord</string>
   <string name="share">Delen</string>
   <string name="share_pgn_game">Deel PGN partij</string>
+  <string name="load_last_file">Laden vanuit laatste bestand</string>
   <string name="load_game">Partij laden vanuit PGN bestand</string>
+  <string name="load_position">Positie uit bestand ophalen</string>
   <string name="load_scid_game">Partij laden vanuit Scid bestand</string>
   <string name="save_game">Partij opslaan als PGN bestand</string>
+  <string name="get_fen">Positie ophalen</string>
   <string name="truncate_gametree">Partijboom afkappen</string>
   <string name="move_var_up">Variant omhoog</string>
   <string name="move_var_down">Variant omlaag</string>
@@ -57,14 +61,15 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="select_chess_engine">Selecteer Engine</string>
   <string name="select_pgn_file">Open PGN bestand</string>
   <string name="select_pgn_file_save">Opslaan als PGN</string>
+  <string name="select_fen_file">FEN/EPD bestand openen</string>
   <string name="pgn_load">Laad</string>
   <string name="pgn_save">Opslaan</string>
-  <string name="reading_pgn_file">PGN bestand lezen</string>
-  <string name="reading_scid_file">Scid bestand lezen</string>
+  <string name="reading_pgn_file">PGN bestand lezen…</string>
+  <string name="reading_scid_file">Scid bestand lezen…</string>
   <string name="new_file">&lt;Nieuw bestand&gt;</string>
   <string name="new_engine">&lt;Nieuwe Engine&gt;</string>
-  <string name="please_wait">Even geduld…</string>
   <string name="no_pgn_files">Geen bestanden gevonden in de DroidFish/pgn directory op SD kaart</string>
+  <string name="no_fen_files">Geen bestanden gevonden in de map DroidFish/epd op de SD</string>
   <string name="select_color_theme">Selecteer kleurenschema</string>
   <string name="colortheme_original">Orgineel</string>
   <string name="colortheme_xboard">XBoard</string>
@@ -95,6 +100,8 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="load_next_game">Laad volgende partij</string>
   <string name="no_prev_game">Geen vorige partij aanwezig</string>
   <string name="no_next_game">Geen volgende partij aanwezig</string>
+  <string name="no_prev_fen">Geen voorgaande positie</string>
+  <string name="no_next_fen">Geen volgende positie</string>
   <string name="select_action">Actie selecteren</string>
   <string name="flip_board">Bord wisselen</string>
   <string name="blind_mode">Blindschaak mode</string>
@@ -144,6 +151,7 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="save_game_title">Bestand bewerken / Partij bewaren</string>
   <string name="save_game_hint">Selecteer een bestaande partij om locatie aan te geven. Een partij lang aanraken om te verwijderen.</string>
   <string name="load_scid_game_title">Laad Scid partij</string>
+  <string name="load_fen_title">Positie laden</string>
   <string name="cpu_warning_title">CPU waarschuwing</string>
   <string name="failed_to_read_pgn_data">De PGN data kon niet gelezen worden</string>
   <string name="variation">Variant:</string>
@@ -587,6 +595,8 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
     <item>@string/toggle_pgn_headers</item>
     <item>@string/toggle_large_buttons</item>
     <item>@string/toggle_blind_mode</item>
+    <item>@string/load_last_file</item>
+    <item>@string/select_engine</item>
   </string-array>
   <string-array name="button_action_values">
     <item></item>
@@ -599,5 +609,7 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
     <item>viewHeaders</item>
     <item>largeButtons</item>
     <item>blindMode</item>
+    <item>loadLastFile</item>
+    <item>selectEngine</item>
   </string-array>
 </resources>

@@ -15,14 +15,18 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="bishop">Fou</string>
   <string name="knight">Cavalier</string>
   <string name="promote_pawn_to">Quelle promotion pour le pion?</string>
+  <string name="clipboard">Presse-papier</string>
   <string name="copy_game">Copier la partie dans le presse-papier</string>
   <string name="copy_position">Copier la position dans le presse-papier</string>
   <string name="paste">Coller depuis le presse-papier</string>
   <string name="share">Partager</string>
   <string name="share_pgn_game">Partager une partie PGN</string>
+  <string name="load_last_file">Charger le dernier fichier</string>
   <string name="load_game">Charger une partie PGN</string>
+  <string name="load_position">Charger une position depuis un fichier</string>
   <string name="load_scid_game">Charger une partie Scid</string>
   <string name="save_game">Sauvegarder la partie au format PGN</string>
+  <string name="get_fen">Récupérer la position</string>
   <string name="truncate_gametree">Tronquer la variation</string>
   <string name="move_var_up">Monter la variation</string>
   <string name="move_var_down">Descendre la variation</string>
@@ -56,14 +60,15 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="select_chess_engine">Sélectionner le module d\'analyse</string>
   <string name="select_pgn_file">Ouvrir un fichier PGN</string>
   <string name="select_pgn_file_save">Sauvegarder dans un fichier PGN</string>
+  <string name="select_fen_file">Ouvrir un fichier FEN/EPD</string>
   <string name="pgn_load">Charger</string>
   <string name="pgn_save">Sauvegarder</string>
-  <string name="reading_pgn_file">Lecture du fichier PGN</string>
-  <string name="reading_scid_file">Lecture du fichier Scid</string>
+  <string name="reading_pgn_file">Lecture du fichier PGN…</string>
+  <string name="reading_scid_file">Lecture du fichier Scid…</string>
   <string name="new_file">&lt;Nouveau fichier&gt;</string>
   <string name="new_engine">&lt;Nouveau Module&gt;</string>
-  <string name="please_wait">Veuillez patienter…</string>
   <string name="no_pgn_files">Aucun fichier trouvé dans le répertoire DroidFish/pgn de la carte SD</string>
+  <string name="no_fen_files">Aucun fichier trouvé dans le répertoire DroidFish/epd de la carte SD</string>
   <string name="select_color_theme">Sélectionner le thème de couleur</string>
   <string name="colortheme_original">Original</string>
   <string name="colortheme_xboard">XBoard</string>
@@ -94,6 +99,8 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="load_next_game">Charger la partie suivante</string>
   <string name="no_prev_game">Aucune partie précédente</string>
   <string name="no_next_game">Aucune partie suivante</string>
+  <string name="no_prev_fen">Aucune position précédente</string>
+  <string name="no_next_fen">Aucune position suivante</string>
   <string name="select_action">Sélectionner une action</string>
   <string name="flip_board">Retourner l\'échiquier</string>
   <string name="blind_mode">Jouer à l\'aveugle</string>
@@ -143,6 +150,7 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="save_game_title">Modifier le fichier / Sauvegarder la partie</string>
   <string name="save_game_hint">Écraser une partie existante pour sauvegarder la partie. Appui long sur une partie existante pour la supprimer.</string>
   <string name="load_scid_game_title">Charger une partie Scid</string>
+  <string name="load_fen_title">Charger une position</string>
   <string name="cpu_warning_title">Alerte CPU</string>
   <string name="failed_to_read_pgn_data">Impossible de lire les données PGN</string>
   <string name="variation">Var:</string>
@@ -586,6 +594,8 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
     <item>@string/toggle_pgn_headers</item>
     <item>@string/toggle_large_buttons</item>
     <item>@string/toggle_blind_mode</item>
+    <item>@string/load_last_file</item>
+    <item>@string/select_engine</item>
   </string-array>
   <string-array name="button_action_values">
     <item></item>
@@ -598,5 +608,7 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
     <item>viewHeaders</item>
     <item>largeButtons</item>
     <item>blindMode</item>
+    <item>loadLastFile</item>
+    <item>selectEngine</item>
   </string-array>
 </resources>

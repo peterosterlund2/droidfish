@@ -9,14 +9,18 @@
   <string name="bishop">Alfiere</string>
   <string name="knight">Cavallo</string>
   <string name="promote_pawn_to">Promuovi il pedone a…?</string>
+  <string name="clipboard">Appunti</string>
   <string name="copy_game">Copia la partita negli Appunti</string>
   <string name="copy_position">Copia la posizione negli appunti</string>
   <string name="paste">Incolla dagli Appunti</string>
   <string name="share">Condividi</string>
   <string name="share_pgn_game">Condividi in formato PGN</string>
+  <string name="load_last_file">Carica dall\'ultimo file</string>
   <string name="load_game">Carica una partita da un file PGN</string>
+  <string name="load_position">Carica posizione dal file</string>
   <string name="load_scid_game">Carica una partita da un file di Scid</string>
   <string name="save_game">Salva la partita in formato PGN</string>
+  <string name="get_fen">Recuperare la posizione</string>
   <string name="truncate_gametree">Interrompi la sequenza delle mosse</string>
   <string name="move_var_up">Sposta in alto la variante</string>
   <string name="move_var_down">Sposta la variante in basso</string>
@@ -50,14 +54,16 @@
   <string name="select_chess_engine">Seleziona il motore scacchistico</string>
   <string name="select_pgn_file">Apri un file PGN</string>
   <string name="select_pgn_file_save">Salva in un file PGN</string>
+  <string name="select_fen_file">Apri un file FEN/EPD</string>
   <string name="pgn_load">Apri</string>
   <string name="pgn_save">Salva</string>
-  <string name="reading_pgn_file">Caricamento di un file PGN</string>
-  <string name="reading_scid_file">Caricamento di un file Scid</string>
+  <string name="reading_pgn_file">Caricamento di un file PGN…</string>
+  <string name="reading_fen_file">Lettura del file FEN/EPD…</string>
+  <string name="reading_scid_file">Caricamento di un file Scid…</string>
   <string name="new_file">&lt; Nuovo file &gt;</string>
   <string name="new_engine">&lt; Nuovo motore &gt;</string>
-  <string name="please_wait">Attendere prego…</string>
   <string name="no_pgn_files">Nessun file trovato nella cartella DroidFish/pgn sulla scheda SD</string>
+  <string name="no_fen_files">Nessun file trovato nella cartella DroidFish/pgn sulla scheda SD</string>
   <string name="select_color_theme">Seleziona un Tema di Colori</string>
   <string name="colortheme_original">Originale</string>
   <string name="colortheme_xboard">XBoard</string>
@@ -88,6 +94,8 @@
   <string name="load_next_game">Carica la prossima partita</string>
   <string name="no_prev_game">Non ci sono partite precedenti</string>
   <string name="no_next_game">Non ci sono giochi successivi</string>
+  <string name="no_prev_fen">Nessuna posizione precedente</string>
+  <string name="no_next_fen">Nessuna posizione successiva</string>
   <string name="select_action">Seleziona l\'azione</string>
   <string name="flip_board">Ruota la scacchiera</string>
   <string name="blind_mode">Modalità \'alla cieca\'</string>
@@ -137,6 +145,7 @@
   <string name="save_game_title">Modifica il file / Salva la partita</string>
   <string name="save_game_hint">Seleziona una partita esistente per controllare dove effettuare il salvataggio. Premi a lungo su una partita esistente per cancellarla.</string>
   <string name="load_scid_game_title">Apri un file Scid</string>
+  <string name="load_fen_title">Carica una posizione</string>
   <string name="cpu_warning_title">Avvertimento CPU</string>
   <string name="failed_to_read_pgn_data">Impossibile leggere dati dal file PGN</string>
   <string name="variation">Var:</string>
@@ -580,6 +589,8 @@
     <item>@string/toggle_pgn_headers</item>
     <item>@string/toggle_large_buttons</item>
     <item>@string/toggle_blind_mode</item>
+    <item>@string/load_last_file</item>
+    <item>@string/select_engine</item>
   </string-array>
   <string-array name="button_action_values">
     <item></item>
@@ -592,5 +603,7 @@
     <item>viewHeaders</item>
     <item>largeButtons</item>
     <item>blindMode</item>
+    <item>loadLastFile</item>
+    <item>selectEngine</item>
   </string-array>
 </resources>

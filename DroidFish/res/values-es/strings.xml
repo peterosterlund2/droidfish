@@ -16,14 +16,18 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="bishop">Alfil</string>
   <string name="knight">Caballo</string>
   <string name="promote_pawn_to">Promocionar/coronar peón en/a?</string>
+  <string name="clipboard">Portapapeles</string>
   <string name="copy_game">Copiar Partida al Portapapeles</string>
   <string name="copy_position">Copiar Posición al Portapapeles</string>
   <string name="paste">Pegar desde el Portapapeles</string>
   <string name="share">Compartir</string>
   <string name="share_pgn_game">Compartir partida PGN</string>
+  <string name="load_last_file">Cargar desde el último archivo</string>
   <string name="load_game">Cargar partida desde archivo PGN</string>
+  <string name="load_position">Cargar posición desde el archivo</string>
   <string name="load_scid_game">Cargar partida desde archivo Scid</string>
   <string name="save_game">Guardar partida en archivo PGN</string>
+  <string name="get_fen">Recuperar Posición</string>
   <string name="truncate_gametree">Podar Arbol de Variantes</string>
   <string name="move_var_up">Subir Variante </string>
   <string name="move_var_down">Bajar Variante </string>
@@ -57,14 +61,16 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="select_chess_engine">Seleccionar motor de ajedrez</string>
   <string name="select_pgn_file">Abrir archivo PGN</string>
   <string name="select_pgn_file_save">Grabar en archivo PGN </string>
+  <string name="select_fen_file">Abrir archivo FEN/EPD</string>
   <string name="pgn_load">Cargar</string>
   <string name="pgn_save">Guardar</string>
-  <string name="reading_pgn_file">Leyendo archivo PGN </string>
-  <string name="reading_scid_file">Leyendo archivo Scid </string>
+  <string name="reading_pgn_file">Leyendo archivo PGN…</string>
+  <string name="reading_fen_file">Leyendo archivo FEN/EPD…</string>
+  <string name="reading_scid_file">Leyendo archivo Scid…</string>
   <string name="new_file">&lt;Archivo Nuevo&gt;</string>
   <string name="new_engine">&lt;Nuevo motor&gt;</string>
-  <string name="please_wait">Espere, por favor…</string>
   <string name="no_pgn_files">No se han encontrado archivos en el directorio DroidFish/pgn de la tarjeta SD </string>
+  <string name="no_fen_files">No se encuentran archivos en el directorio DroidFish/epd de la tarjeta SD</string>
   <string name="select_color_theme">Seleccionar Colores</string>
   <string name="colortheme_original">Original</string>
   <string name="colortheme_xboard">XBoard</string>
@@ -95,9 +101,11 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="load_next_game">Cargar Siguiente Partida</string>
   <string name="no_prev_game">No hay Partida Anterior</string>
   <string name="no_next_game">No hay Partida Siguiente</string>
+  <string name="no_prev_fen">No hay posición previa</string>
+  <string name="no_next_fen">No hay siguiente posición</string>
   <string name="select_action">Seleccionar acciones</string>
   <string name="flip_board">Invertir / Girar tablero</string>
-  <string name="blind_mode">Alternar modo de venda</string>
+  <string name="blind_mode">Modo a la ciega</string>
   <string name="toggle_show_thinking">Activar indicaciones de cálculo</string>
   <string name="toggle_book_hints">Activar los consejos del libro de aperturas</string>
   <string name="toggle_pgn_variations">Activar variantes</string>
@@ -105,7 +113,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="toggle_pgn_headers">Activar cabeceras</string>
   <string name="toggle_analysis">Activar análisis del motor</string>
   <string name="toggle_large_buttons">Activar botones grandes</string>
-  <string name="toggle_blind_mode">Alternar modo de venda</string>
+  <string name="toggle_blind_mode">Conectar modo a la ciega</string>
   <string name="cancel">Cancelar</string>
   <string name="yes">Sí</string>
   <string name="no">No</string>
@@ -144,6 +152,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="save_game_title">Editar Archivo / Guardar Partida</string>
   <string name="save_game_hint">Selecionar una partida ya existente para controlar donde guardarla. Mantenga pulsada la partida para borrarla.</string>
   <string name="load_scid_game_title">Cargar Partida Scid </string>
+  <string name="load_fen_title">Cargar posición</string>
   <string name="cpu_warning_title">Advertencia del procesador/CPU </string>
   <string name="failed_to_read_pgn_data">Fallo al leer datos PGN</string>
   <string name="variation">Variante:</string>
@@ -189,8 +198,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="start_new_game">¿Empezar nueva partida?</string>
   <string name="strength_cuckoo_hint">Utilice el motor CuckooChess para rebajar aún más el nivel de juego.</string>
   <string name="piece_names">P C A T D R</string>
-  <string name="highlight_last_move_title">Resaltar la última jugada</string>
-  <string name="highlight_last_move_summary">Dibujar rectángulo alrededor de la última pieza movida</string>
+  <string name="highlight_last_move_title">Destacar último movimiento</string>
+  <string name="highlight_last_move_summary">Enmarcar última pieza jugada</string>
   <string name="material_diff_title">Muestra la diferencia de material</string>
   <string name="material_diff_summary">Muestra un subtítulo adicional para las piezas capturadas</string>
   <string name="err_too_few_spaces">Pocos espacios</string>
@@ -346,8 +355,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="prefs_showVariationLine_summary">Muestra las variantes actuales en el área de estatus</string>
   <string name="prefs_viewPieceType_title">Nombres de las piezas</string>
   <string name="prefs_viewPieceType_summary">Controla la visualización de los nombres de las piezas en pantalla</string>
-  <string name="prefs_blindMode_title">Modo de venda</string>
-  <string name="prefs_blindMode_summary">Mostrar placa en blanco en lugar de piezas</string>
+  <string name="prefs_blindMode_title">Modo a la ciega</string>
+  <string name="prefs_blindMode_summary">Muestra el tablero vacío</string>
   <string name="prefs_pgn_import">Importar de PGN</string>
   <string name="prefs_importVariations_title">Variantes</string>
   <string name="prefs_importVariations_summary">Incluye jugadas secundarias</string>
@@ -587,6 +596,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <item>@string/toggle_pgn_headers</item>
     <item>@string/toggle_large_buttons</item>
     <item>@string/toggle_blind_mode</item>
+    <item>@string/load_last_file</item>
+    <item>@string/select_engine</item>
   </string-array>
   <string-array name="button_action_values">
     <item></item>
@@ -599,5 +610,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <item>viewHeaders</item>
     <item>largeButtons</item>
     <item>blindMode</item>
+    <item>loadLastFile</item>
+    <item>selectEngine</item>
   </string-array>
 </resources>
