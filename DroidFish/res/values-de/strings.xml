@@ -67,12 +67,12 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="pgn_load">Laden</string>
   <string name="pgn_save">Speichern</string>
   <string name="reading_pgn_file">PGN-Datei wird gelesen…</string>
-  <string name="reading_fen_file">Einlesen des FEN/EPD files…</string>
+  <string name="reading_fen_file">FEN/EPD-Datei wird gelesen…</string>
   <string name="reading_scid_file">Scid-Datei wird gelesen…</string>
   <string name="new_file">&lt;Neue Datei&gt;</string>
   <string name="new_engine">&lt;Neue Engine&gt;</string>
   <string name="no_pgn_files">Keine Dateien im Verzeichnis DroidFish/pgn auf der SD-Karte gefunden</string>
-  <string name="no_fen_files">Keine Dateien gefunden im SD-Karten-Verzeichnis DroidFish/epd</string>
+  <string name="no_fen_files">Keine Dateien im Verzeichnis DroidFish/epd auf der SD-Karte gefunden</string>
   <string name="select_color_theme">Farbschema auswählen</string>
   <string name="colortheme_original">Original</string>
   <string name="colortheme_xboard">XBoard</string>
