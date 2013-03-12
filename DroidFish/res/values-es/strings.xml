@@ -101,7 +101,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="load_next_game">Cargar Siguiente Partida</string>
   <string name="no_prev_game">No hay Partida Anterior</string>
   <string name="no_next_game">No hay Partida Siguiente</string>
-  <string name="no_prev_fen">No hay posición previa</string>
+  <string name="no_prev_fen">No hay posición anterior</string>
   <string name="no_next_fen">No hay siguiente posición</string>
   <string name="select_action">Seleccionar acciones</string>
   <string name="flip_board">Invertir / Girar tablero</string>

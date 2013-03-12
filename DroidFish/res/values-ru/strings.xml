@@ -57,7 +57,7 @@
   <string name="pgn_load">Загрузить</string>
   <string name="pgn_save">Сохранить</string>
   <string name="reading_pgn_file">Чтение PGN файла…</string>
-  <string name="reading_fen_file">Чтение FEN/EPD файла...</string>
+  <string name="reading_fen_file">Чтение FEN/EPD файла…</string>
   <string name="reading_scid_file">Чтение Scid файла…</string>
   <string name="new_file">&lt;Новый файл&gt;</string>
   <string name="new_engine">&lt;Новый движок&gt;</string>

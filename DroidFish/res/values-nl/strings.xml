@@ -65,6 +65,7 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="pgn_load">Laad</string>
   <string name="pgn_save">Opslaan</string>
   <string name="reading_pgn_file">PGN bestand lezen…</string>
+  <string name="reading_fen_file">Bezig met inlezen van FEN/EPD bestand…</string>
   <string name="reading_scid_file">Scid bestand lezen…</string>
   <string name="new_file">&lt;Nieuw bestand&gt;</string>
   <string name="new_engine">&lt;Nieuwe Engine&gt;</string>

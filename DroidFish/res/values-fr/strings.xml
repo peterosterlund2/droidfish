@@ -64,6 +64,7 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="pgn_load">Charger</string>
   <string name="pgn_save">Sauvegarder</string>
   <string name="reading_pgn_file">Lecture du fichier PGN…</string>
+  <string name="reading_fen_file">Lecture du fichier FEN/EPD…</string>
   <string name="reading_scid_file">Lecture du fichier Scid…</string>
   <string name="new_file">&lt;Nouveau fichier&gt;</string>
   <string name="new_engine">&lt;Nouveau Module&gt;</string>

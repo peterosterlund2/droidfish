@@ -63,7 +63,7 @@
   <string name="new_file">&lt; Nuovo file &gt;</string>
   <string name="new_engine">&lt; Nuovo motore &gt;</string>
   <string name="no_pgn_files">Nessun file trovato nella cartella DroidFish/pgn sulla scheda SD</string>
-  <string name="no_fen_files">Nessun file trovato nella cartella DroidFish/pgn sulla scheda SD</string>
+  <string name="no_fen_files">Nessun file trovato nella cartella DroidFish/epd sulla scheda SD</string>
   <string name="select_color_theme">Seleziona un Tema di Colori</string>
   <string name="colortheme_original">Originale</string>
   <string name="colortheme_xboard">XBoard</string>
