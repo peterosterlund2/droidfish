@@ -436,7 +436,11 @@ public class DroidFish extends Activity implements GUIInterface {
                 }
             }
         } else if (intentFilename != null) {
-            loadPGNFromFile(intentFilename);
+            if (intentFilename.toLowerCase(Locale.US).endsWith(".fen") ||
+                intentFilename.toLowerCase(Locale.US).endsWith(".epd"))
+                loadFENFromFile(intentFilename);
+            else
+                loadPGNFromFile(intentFilename);
         }
     }
 
