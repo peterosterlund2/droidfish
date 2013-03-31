@@ -24,12 +24,12 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="paste">Aus der Zwischenablage einfügen</string>
   <string name="share">Freigeben</string>
   <string name="share_pgn_game">PGN-Partie freigeben</string>
-  <string name="load_last_file">Aus der letzter Datei laden</string>
+  <string name="load_last_file">Aus der letzten Datei laden</string>
   <string name="load_game">Partie aus einer PGN-Datei laden</string>
-  <string name="load_position">Postion aus Datei laden</string>
+  <string name="load_position">Position aus Datei laden</string>
   <string name="load_scid_game">Partie aus einer Scid-Datei laden</string>
   <string name="save_game">Partie in eine PGN-Datei speichern</string>
-  <string name="get_fen">Wiederherstellen der Position</string>
+  <string name="get_fen">Position auslesen</string>
   <string name="truncate_gametree">Spielbaum abschneiden</string>
   <string name="move_var_up">Variante nach oben verschieben</string>
   <string name="move_var_down">Variante nach unten verschieben</string>
@@ -63,7 +63,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="select_chess_engine">Schach-Engine auswählen</string>
   <string name="select_pgn_file">PGN-Datei zum Öffnen wählen</string>
   <string name="select_pgn_file_save">In eine PGN-Datei speichern</string>
-  <string name="select_fen_file">Öffnen einer FEN/EPD-Datei</string>
+  <string name="select_fen_file">FEN/EPD-Datei öffnen</string>
   <string name="pgn_load">Laden</string>
   <string name="pgn_save">Speichern</string>
   <string name="reading_pgn_file">PGN-Datei wird gelesen…</string>
@@ -189,7 +189,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="cuckoochess_engine">CuckooChess</string>
   <string name="select_engine">Schach-Engine auswählen</string>
   <string name="configure_network_engine">Konfiguration von Schach-Engines auf Netzservern</string>
-  <string name="create_network_engine">Erstellen einer Netzserver-Engine</string>
+  <string name="create_network_engine">Netzserver-Engine erstellen</string>
   <string name="delete_network_engine">Netzserver-Engine löschen?</string>
   <string name="host_name">Hostname</string>
   <string name="network_port">Netzwerkport</string>
@@ -275,7 +275,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_soundEnabled_title">Töne</string>
   <string name="prefs_soundEnabled_summary">Ton bei Computer-Zug ausgeben</string>
   <string name="prefs_vibrateEnabled_title">Vibration aktivieren</string>
-  <string name="prefs_vibrateEnabled_summary">Vibrieren bei Zug des Computers</string>
+  <string name="prefs_vibrateEnabled_summary">Bei Zug des Computers vibrieren</string>
   <string name="prefs_fullScreenMode_title">Vollbildanzeige</string>
   <string name="prefs_fullScreenMode_summary">Vollbildanzeige mit verdeckter Statuszeile aktivieren</string>
   <string name="prefs_wakeLock_title">Bildschirmabschaltung deaktivieren</string>
@@ -290,7 +290,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_leftHanded_title">Linkshänder-Modus</string>
   <string name="prefs_leftHanded_summary">Steuerelemente auf der linken Seite im Querformat</string>
   <string name="prefs_boardGestures_title">Spielfeld-Gesten</string>
-  <string name="prefs_boardGestures_summary">Längeres Drücken auf auf das Spielfeld aktiviert das Hilfsmittel-Menü. Horizontales Wischen führt zur Rücknahme/ Wiederholung von Zügen. Vertikales Wischen springt zur vorherigen/ nächsten Variante.</string>
+  <string name="prefs_boardGestures_summary">Langes Drücken auf das Spielfeld aktiviert das Hilfsmittel-Menü. Horizontales Wischen führt zur Rücknahme/ Wiederholung von Zügen. Vertikales Wischen springt zur vorherigen/ nächsten Variante.</string>
   <string name="prefs_squareSelectType_title">Feldauswahl</string>
   <string name="prefs_squareSelectType_summary">Festlegung der Auswahl von Feldern</string>
   <string name="prefs_fontSize_title">Schriftgröße</string>
@@ -384,7 +384,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_tbHints_summary">Bei Berührung einer Figur Datenbankeintrag für alle mit dieser Figur möglichen Züge anzeigen</string>
   <string name="prefs_tbHintsEdit_title">Hinweise bei Stellungseingabe</string>
   <string name="prefs_tbHintsEdit_summary">Bei Berührung einer Figur während der Eingabe einer Stellung Datenbankeintrag für alle alternativ möglichen Positionen dieser Figur anzeigen</string>
-  <string name="prefs_tbRootProbe_title">Suche ab dem Anfang des Suchbaums</string>
+  <string name="prefs_tbRootProbe_title">Ab dem Anfang des Suchbaums suchen</string>
   <string name="prefs_tbRootProbe_summary">Nicht-optimale Züge vor Beginn der Suche ausfiltern</string>
   <string name="prefs_tbEngineProbe_title">Engine-Zugriff</string>
   <string name="prefs_tbEngineProbe_summary">Zugriff auf die Gaviota-Datenbanken durch die Engine aktivieren, sofern unterstützt. Diese Einstellung wirkt sich beim nächsten Start der Engine aus.</string>
