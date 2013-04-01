@@ -1,0 +1,243 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+  </head>
+  <body>
+
+<h2>O programie</h2>
+<p>
+  <i>DroidFish</i> jest bogatym w funkcjonalność programem szachowym, połączonym z bardzo mocnym silnikiem szachowym (<i>Stockfish</i>).
+</p>
+
+<h3>Funkcje</h3>
+<ul>
+  <li>Książka otwarć</li>
+  <li>Nieskończone undo/redo</li>
+  <li>Kopiowanie/wklejanie ze schowka</li>
+  <li>Tryb analizy</li>
+  <li>Tryb dwóch graczy</li>
+  <li>Tryb komputer z komputerem</li>
+  <li>Edycja ustawienia</li>
+  <li>Szerokie wsparcie formatu PGN</li>
+  <li>Definiowalna siła gry</li>
+  <li>Zewnętrzne silniki szachowe UCI</li>
+  <li>Tabele końcówek Gaviota</li>
+</ul>
+
+<h3>Wskazówki</h3>
+<ul>
+  <li>
+    Długie przyciśnięcie przycisków tryb gry/lewo/prawo daje dostęp do dodatkowych poleceń.  
+</li>
+  <li>
+    Podczas odtwarzania partii, zmień tryb gry na <i>Edytuj/odtwórz partię</i> aby mieć możliwość cofania/prywracania poszczególnych półruchów.  
+</li>
+</ul>
+
+<h3>Książki otwarć</h3>
+<p>
+  DroidFish ma wbudowaną niewielką książkę otwarć. Jeśli chcesz używać większej książki, możesz skonfigurować DroidFish'a, żeby używał zewnętrznych plików z książkami w formacie <i>polyglot</i>  lub <i>CTG</i>:
+</p>
+<ol>
+  <li>
+    Skopuj jeden lub więcej plików polyglot do katalogu <i>DroidFish</i> na karcie SD.
+    Książki polyglot muszą mieć rozszerzenie pliku <i>.bin</i>.
+    <b>Uwaga!</b> System plików Android jest wrażliwy na wielkość znaków, więc rozszerzenie musi być <i>.bin</i>, nie <i>.Bin</i> czy <i>.BIN</i>.  
+</li>
+  <li>
+    Skopiuj jeden lub więcej plików CTG do katalogu <i>DroidFish</i>.
+    Książka otwarć CTG skłąda się z trzech plików z rozszerzeniami <i>.ctg</i>, <i>.ctb</i> i <i>.cto</i>.
+    Musisz skopiować wszystkie trzy pliki.  
+</li>
+  <li>
+    Z menu programu wybierz opcję <i>Wybierz książkę otwarć</i>.  
+</li>
+  <li>
+    Wybierz książkę otwarć, której chcesz używać.  
+</li>
+</ol>
+
+<h3>Pliki PGN</h3>
+<p>
+  DroidFish potrafi ładować partie z plików PGN.
+</p>
+<ol>
+  <li>
+    Skopiuj jeden lub wiele plików PGN do katalogu <i>DroidFish/pgn</i> na karcie SD.  
+</li>
+  <li>
+    Długie przyciśnięcie na szachownicy, po czym wybierz <i>Załaduj partię z pliku PGN</i>.  
+</li>
+  <li>
+    Wybierz plik a następnie partię w pliku, którą chcesz załadować.  
+</li>
+</ol>
+<p>
+  Aby edytować nagłówki gry, np. nazwy graczy, długo przyciśnij na liście posunięć, po czym wybierz <i>Edytuj nagłówki</i>. Aby edytować komentarze, długo przyciśnij na liście posunięć, po czym wybierz <i>Edytuj komentarze</i>.
+</p>
+<p>
+  Aby zapisać swoją partię, długo przyciśnij na szachownicy, po czym wybierz <i>Zapisz partię w pliku PGN</i>. Wybierz plik, do którego chcesz zapisać, po czym wybierz pozycję w pliku, gdzie partia zostanie zapisana.
+</p>
+<p>
+  <b>Uwaga!</b> Jeśli zainstalowany jest <a href="http://play.google.com/store/apps/details?id=org.openintents.filemanager">OI File Manager</a>, pliki mogą być ładowane/zapisywane w dowolnym katalogu.
+</p>
+<p>
+  Aby dodać analizę komputera do drzewa gry, długo przyciśnij na informacji z analizy podczas namysłu komputera, po czym wybierz <i>Dodaj analizę</i>.
+  Aktualny wariant główny jest dodawany jako wariant w drzewie partii.
+</p>
+<p>
+  W trybie analizy można dodawać puste posunięcia do drzewa partii. Miej jednak na uwadze, że puste ruchy nie są częścią standardu PGN i mogą nie działać przy odczycie PGN w innych programach.
+</p>
+
+<h3>Pliki Scid</h3>
+<p>
+  Jeśli posiadasz zainstalowany <a href="http://play.google.com/store/apps/details?id=org.scid.android">Scid on the go</a>, możesz wczytać pliki baz Scid bezpośrednio z DroidFish'a.
+  Długo przyciśnij na szachownicy, po czym wybierz <i>Załaduj partię z pliku Scid</i>.
+</p>
+
+<h3>Pliki FEN/EPD</h3>
+<p>
+  DroidFish potrafi załadować ustawienie z plików FEN/EPD.
+</p>
+<ol>
+  <li>
+    Skopiuj jeden lub więcej plików FEN/EPD do katalogu <i>DroidFish/epd</i> na karcie SD.  
+</li>
+  <li>
+    Długo przyciśnij na szachownicy, po czym wybierz <i>Załaduj ustawienie z pliku</i>.  
+</li>
+  <li>
+    Wybierz plik a następnie pozycję w pliku, którą chcesz załadować.  
+</li>
+</ol>
+
+<p>
+  Możesz również załadować pozycję z zewnętrznych programów, np. <a href="http://play.google.com/store/apps/details?id=com.kgroth.chessocr">ChessOcr</a> (płatny), który pozwala na wykonanie zdjęcia diagramu szachowego i automatycznie ustawia stosowną pozycję w DroidFishu.
+</p>
+<ol>
+  <li>
+    Długo przyciśnij na szachownicy, po czym wybierz <i>Pobierz ustawienie</i>.  
+</li>
+  <li>
+    Podążaj za instrukcjami w zewnętrznym programie.  
+</li>
+</ol>
+
+<h3>Silniki szachowe UCI</h3>
+<p>
+  DroidFish potrafi używać zewnętrznych silników szachowych UCI.
+</p>
+<ol>
+  <li>
+    Skopiuj jeden lub więcej plików binarnych z silnikami UCI do katalogu <i>DroidFish/uci</i> na karcie SD.  <b>Uwaga!</b> Slniki muszą być skompilowane dla Androida.  
+</li>
+  <li>
+    Z menu programu wybierz <i>Zarządzaj silnikami szachowymi</i> i <i>Wybierz silnik</i>, po czym wybierz silnik, który ma być używany.  
+</li>
+</ol>
+
+<h3>Silniki szachowe UCI na zdalnym serwerze</h3>
+<p>
+  DroidFish potrafi używać silników szachowych UCI, które są uruchomione na zdalnym serwerze.
+</p>
+<ol>
+  <li>
+    Zainstaluj szachowy program sieciowy na zdalnym komputerze.    
+<ol>
+      <li>
+        Dla Windows, zainstaluj serwer ze strony <a href="http://home.arcor.de/bernhard.wallner/netChess.html">Computer Chess Utility</a>.      
+</li>
+      <li>
+        Dla Linuxa możesz użyć <tt>mini-inetd</tt> z pakietu <tt>tcputils</tt>.      
+</li>
+    </ol>
+  </li>
+  <li>
+    Wybierz <i>Zarządzaj silnikami szachowymi</i> w menu programu, utwórz nowy silnik i wpisz nazwę hosta oraz numer portu sieciowego zdalnego silnika.  
+</li>
+  <li>
+    Z menu programu wybierz <i>Zarządzaj silnikami szachowymi</i> i <i>Wybierz silnik</i>, po czym wybierz silnik, który ma być używany.  
+</li>
+</ol>
+
+<h3>Tabele końcówek Gaviota</h3>
+<p>
+  Żeby użyć <a href="http://sites.google.com/site/gaviotachessengine/Home/endgame-tablebases-1">tabel końcówek Gaviota</a>:
+</p>
+<ol>
+  <li>
+    Skopiuj pliki .gtb.cp4 do katalogu <i>DroidFish/gtb</i> na karcie SD.  
+</li>
+  <li>
+    Użyj ekranu preferencji <i>Bazy końcówek</i> żeby kontrolować, jak używane będą tabele końcówek.  
+</li>
+</ol>
+
+<h3>Licencja</h3>
+<p>
+  <a href="http://www.gnu.org/licenses/gpl.html">GNU GPL v3</a>
+</p>
+
+<h3>Programiści</h3>
+<ul>
+  <li>
+    Implementacja <i>Stockfish</i>'a : Tord Romstad, Marco Costalba i Joona Kiiski.  
+</li>
+  <li>
+    Implementacja <i>Droidfish</i>'a: Peter Österlund.  
+</li>
+  <li>
+    Rozszerzenia intefrejsu użytkownika: Aaro Korhonen.  
+</li>
+  <li>
+    Interfejs programistyczny do próbkowania tabel końcówek Gaviota, Copyright © 2010 Miguel A. Ballicora.    
+<ul>
+      <li>
+        Kompresja LZMA: Igor Pavlov.      
+</li>
+      <li>
+        Kompresja ZLIB, Copyright © 1995-2005 Jean-loup Gailly and Mark Adler.      
+</li>
+      <li>
+        Kompresja LZF, Copyright © 2000-2007 Marc Alexander Lehmann.      
+</li>
+    </ul>
+  </li>
+  <li>
+    Czytnik SVG z projektu <a href="http://code.google.com/p/svg-android/">svg-android</a>.  
+</li>
+  <li>
+    Color picker, Copyright © 2010 Daniel Nilsson and Copyright © 2011 Sergey Margaritov.  
+</li>
+</ul>
+
+<h3>Tłumaczenia</h3>
+<p>
+  Do zarządzania tłumaczeniami używany jest <a href="http://crowdin.net/project/droidfish-android-chess-app">crowdin.net</a>.
+</p>
+<ul>
+  <li>
+    Tłumaczenie na niemiecki Uwe Walschus.  
+</li>
+  <li>
+    Tłumaczenie na hiszpański Amador Cuesta.  
+</li>
+  <li>
+    Tłumaczenie na rosyjski SWEN и dfuk (allBlackBerry).  
+</li>
+  <li>
+    Tłumaczenie na portugalski C. R. Zamana.  
+</li>
+  <li>
+    Tłumaczenie na francuski Eric Weibel (Thanvillé).  
+</li>
+  <li>
+    Tłumaczenie na włoski Michele Carfora (suessola).  
+</li>
+  <li>
+    Tłumaczenie na holenderski David Pront.  
+</li>
+</ul>
+
+  </body>
+</html>

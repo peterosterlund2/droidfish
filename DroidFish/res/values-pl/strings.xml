@@ -46,7 +46,7 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="en_passant_file">Kolumna en passant</string>
   <string name="move_counters">Liczniki posunięć</string>
   <string name="paste_position">Wklej ustawienie</string>
-  <string name="edit_board">Edytuj ustawienie</string>
+  <string name="edit_board">Edytuj pozycję</string>
   <string name="select_side_to_move_first">Wybierz stronę na posunięciu</string>
   <string name="white">Białe</string>
   <string name="black">Czarne</string>
@@ -120,6 +120,8 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="no">Nie</string>
   <string name="move_number">Numer posunięcia:</string>
   <string name="filename">Nazwa pliku:</string>
+  <string name="halfmove">Licznik półruchów:</string>
+  <string name="fullmove">Licznik posunięć:</string>
   <string name="filter_text">Wyszukiwanie…</string>
   <string name="value_percent">Wartość (%):</string>
   <string name="header_event">Zdarzenie:</string>
@@ -153,7 +155,7 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="load_scid_game_title">Załaduj partię Scid</string>
   <string name="load_fen_title">Załaduj ustawienie</string>
   <string name="cpu_warning_title">Ostrzeżenie CPU</string>
-  <string name="failed_to_read_pgn_data">Błąd przy odczycie danych PGN</string>
+  <string name="failed_to_read_pgn_data">Błąd przy odczycie danych w formacie PGN</string>
   <string name="variation">Wariant:</string>
   <string name="add_analysis">Dodaj analizę</string>
   <string name="fewer_variations">Mniej wariantów</string>
@@ -217,7 +219,7 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="option_new_game">Nowa partia</string>
   <string name="option_file">Plik</string>
   <string name="option_resign_game">Poddaj partię</string>
-  <string name="option_edit_board">Edytuj ustawienie</string>
+  <string name="option_edit_board">Edytuj pozycję</string>
   <string name="option_settings">Ustawienia</string>
   <string name="option_goto_move">Idź do posunięcia</string>
   <string name="option_force_computer_move">Wymuś ruch komputera</string>
@@ -245,7 +247,9 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="prefs_hash_summary">Rozmiar tablicy haszującej w megabajtach</string>
   <string name="prefs_time_control">Kontrola czasu</string>
   <string name="prefs_movesPerSession_title">Posunięcia</string>
+  <string name="prefs_movesPerSession_summary">Liczba ruchów pomiędzy punktami kontroli czasu</string>
   <string name="prefs_timeControl_title">Czas</string>
+  <string name="prefs_timeControl_summary">Maksymalny czas namysłu pomiędzy punktami kontroli czasu</string>
   <string name="prefs_timeIncrement_title">Przyrost</string>
   <string name="prefs_timeIncrement_summary">Dodatkowy czas do namysłu po każdym posunięciu</string>
   <string name="prefs_hints">Wskazówki</string>
@@ -283,7 +287,7 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="prefs_leftHanded_title">Tryb leworęczny</string>
   <string name="prefs_leftHanded_summary">Elementy sterujące po lewej stronie dla orientacji poziomej</string>
   <string name="prefs_boardGestures_title">Gesty na szachownicy</string>
-  <string name="prefs_boardGestures_summary">Długie wciśnięcie na szachownicy dla menu podręcznego. Poziome przeciągnięcia - posunięcie w przód/tył. Pionowe przeciągnięcia - przejście do poprzedniego/następnego wariantu.</string>
+  <string name="prefs_boardGestures_summary">Długie wciśnięcie na szachownicy otwiera menu podręczne. Poziome przeciągnięcia - posunięcie w przód/tył. Pionowe przeciągnięcia - przejście do poprzedniego/następnego wariantu.</string>
   <string name="prefs_squareSelectType_title">Wybór pola</string>
   <string name="prefs_squareSelectType_summary">Kontroluje sposób wyboru pól na szachownicy</string>
   <string name="prefs_fontSize_title">Rozmiar tekstu</string>
@@ -368,14 +372,19 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="prefs_exportComments_summary">Załącz komentarze użytkownika</string>
   <string name="prefs_exportNAG_title">Adnotacje</string>
   <string name="prefs_exportNAG_summary">Załącz adnotacje NAG (numeric annotation glyphs), np. !, ?, itp.</string>
+  <string name="prefs_exportPlayerAction_title">Akcje gracza</string>
   <string name="prefs_exportPlayerAction_summary">Załącz informację o propozycjach remisu i poddaniu partii</string>
   <string name="prefs_exportTime_title">Zegar</string>
   <string name="prefs_exportTime_summary">Załącz informacje o czasie dla każdego posunięcia</string>
   <string name="prefs_egtbSettings_title">Baza końcówek</string>
   <string name="prefs_tbHints_title">Pokaż wskazówki</string>
+  <string name="prefs_tbHints_summary">Po dotknięciu bierki, pokaż wartości z tabeli końcówek dla wszystkich ruchów możliwych do wykonania tą bierką</string>
   <string name="prefs_tbHintsEdit_title">Wskazówki dla edycji ustawienia</string>
+  <string name="prefs_tbHintsEdit_summary">Po dotknięciu bierki w trybie edycji ustawienia, pokaż wartości z tabeli końcówek dla wszystkich możliwych alternatywnych pozycji tej bierki</string>
+  <string name="prefs_tbRootProbe_title">Próbkuj od czubka drzewa</string>
   <string name="prefs_tbRootProbe_summary">Odrzuć nieoptymalne ruchy przed rozpoczęciem szukania</string>
-  <string name="prefs_tbEngineProbe_title">Sondowanie silnika</string>
+  <string name="prefs_tbEngineProbe_title">Próbkowanie silnika</string>
+  <string name="prefs_tbEngineProbe_summary">Włącza próbkowanie tablicy końcówek, jeśli wspierane przez silnik. Wymaga ponownego uruchomienia silnika</string>
   <string name="prefs_gtbPath_title">Katalog GTB</string>
   <string name="prefs_gtbPath_summary">Katalog, w któym zainstalowane są tabele końcówek Gaviotta. Jeśli puste, użyty będzie katalog domyślny</string>
   <string name="buttonDesc_mode">Przycisk trybu</string>
