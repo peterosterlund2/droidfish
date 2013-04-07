@@ -16,10 +16,10 @@
   <string name="share_pgn_game">Поделиться игрой PGN</string>
   <string name="load_last_file">Загрузить из последнего файла</string>
   <string name="load_game">Загрузить партию из PGN файла</string>
-  <string name="load_position">Загрузить позиции из файла</string>
+  <string name="load_position">Загрузить позицию из файла</string>
   <string name="load_scid_game">Загрузить партию из Scid файла</string>
   <string name="save_game">Сохранить партию в PGN файле</string>
-  <string name="get_fen">Получить позиции</string>
+  <string name="get_fen">Получить позицию</string>
   <string name="truncate_gametree">Обрезать дерево партии</string>
   <string name="move_var_up">Переместить изменение вверх</string>
   <string name="move_var_down">Переместить изменение вниз</string>
@@ -144,7 +144,7 @@
   <string name="save_game_title">Редактировать файл / Сохранить игру</string>
   <string name="save_game_hint">Выбрать партию для сохранения. Нажать и удерживать партию для удаления.</string>
   <string name="load_scid_game_title">Загрузить Scid партию</string>
-  <string name="load_fen_title">Загрузить позиции</string>
+  <string name="load_fen_title">Загрузить позицию</string>
   <string name="cpu_warning_title">Предупреждение о процессоре (CPU)</string>
   <string name="failed_to_read_pgn_data">Не удалось прочесть pgn данные</string>
   <string name="variation">Изменение:</string>
