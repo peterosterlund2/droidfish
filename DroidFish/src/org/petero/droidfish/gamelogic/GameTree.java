@@ -826,7 +826,7 @@ public class GameTree {
     }
 
     final int getRemainingTime(boolean whiteMove, int initialTime) {
-        int undef = Integer.MIN_VALUE;
+        final int undef = Integer.MIN_VALUE;
         int remainingTime = undef;
         Node node = currentNode;
         boolean wtm = currentPos.whiteMove;

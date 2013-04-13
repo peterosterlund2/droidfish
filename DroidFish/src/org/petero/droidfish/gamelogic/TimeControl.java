@@ -18,19 +18,33 @@
 
 package org.petero.droidfish.gamelogic;
 
-public class TimeControl {
-    private long timeControl;
-    private int movesPerSession;
-    private long increment;
+import java.util.ArrayList;
 
-    private long whiteBaseTime;
-    private long blackBaseTime;
+/** Keep track of time control information for both players. */
+public class TimeControl {
+    public static final class TimeControlField {
+        long timeControl;
+        int movesPerSession;
+        long increment;
+
+        public TimeControlField(long time, int moves, long inc) {
+            timeControl = time;
+            movesPerSession = moves;
+            increment = inc;
+        }
+    }
+
+    private ArrayList<TimeControlField> tcW;
+    private ArrayList<TimeControlField> tcB;
+
+    private long whiteBaseTime; // Current remaining time, or remaining time when clock started
+    private long blackBaseTime; // Current remaining time, or remaining time when clock started
 
     int currentMove;
     boolean whiteToMove;
 
-    long elapsed; // Accumulated elapsed time for this move.
-    long timerT0; // Time when timer started. 0 if timer is stopped.
+    private long elapsed; // Accumulated elapsed time for this move.
+    private long timerT0; // Time when timer started. 0 if timer is stopped.
 
 
     /** Constructor. Sets time control to "game in 5min". */
@@ -48,9 +62,17 @@ public class TimeControl {
 
     /** Set time control to "moves" moves in "time" milliseconds, + inc milliseconds per move. */
     public final void setTimeControl(long time, int moves, long inc) {
-        timeControl = time;
-        movesPerSession = moves;
-        increment = inc;
+        tcW = new ArrayList<TimeControlField>();
+        tcW.add(new TimeControlField(time, moves, inc));
+        tcB = new ArrayList<TimeControlField>();
+        tcB.add(new TimeControlField(time, moves, inc));
+    }
+
+    /** Set time controls for white and black players. */
+    public final void setTimeControl(ArrayList<TimeControlField> whiteTC,
+                                     ArrayList<TimeControlField> blackTC) {
+        tcW = whiteTC;
+        tcB = blackTC;
     }
 
     public final void setCurrentMove(int move, boolean whiteToMove, long whiteBaseTime, long blackBaseTime) {
@@ -86,11 +108,20 @@ public class TimeControl {
     /** Compute new remaining time after a move is made. */
     public final int moveMade(long now, boolean useIncrement) {
         stopTimer(now);
+
+        ArrayList<TimeControlField> tc = whiteToMove ? tcW : tcB;
+        Pair<Integer,Integer> tcInfo = getCurrentTC(whiteToMove);
+        int tcIdx = tcInfo.first;
+        int movesToTc = tcInfo.second;
+
         long remaining = getRemainingTime(whiteToMove, now);
         if (useIncrement) {
-            remaining += increment;
-            if (getMovesToTC() == 1)
-                remaining += timeControl;
+            remaining += tc.get(tcIdx).increment;
+            if (movesToTc == 1) {
+                if (tcIdx+1 < tc.size())
+                    tcIdx++;
+                remaining += tc.get(tcIdx).timeControl;
+            }
         }
         elapsed = 0;
         return (int)remaining;
@@ -108,24 +139,42 @@ public class TimeControl {
         return (int)remaining;
     }
 
-    public final int getInitialTime() {
-        return (int)timeControl;
+    /** Get initial thinking time in milliseconds. */
+    public final int getInitialTime(boolean whiteMove) {
+        ArrayList<TimeControlField> tc = whiteMove ? tcW : tcB;
+        return (int)tc.get(0).timeControl;
     }
 
-    public final int getIncrement() {
-        return (int)increment;
+    /** Get time increment in milliseconds after playing next move. */
+    public final int getIncrement(boolean whiteMove) {
+        ArrayList<TimeControlField> tc = whiteMove ? tcW : tcB;
+        int tcIdx = getCurrentTC(whiteMove).first;
+        return (int)tc.get(tcIdx).increment;
     }
 
-    public final int getMovesToTC() {
-        if (movesPerSession <= 0)
-            return 0;
+    /** Return number of moves to the next time control, or 0 if "sudden death". */
+    public final int getMovesToTC(boolean whiteMove) {
+        return getCurrentTC(whiteMove).second;
+    }
+
+    /** Return the current active time control index and number of moves to next time control. */
+    private Pair<Integer,Integer> getCurrentTC(boolean whiteMove) {
+        ArrayList<TimeControlField> tc = whiteMove ? tcW : tcB;
+        int tcIdx = 0;
+        final int lastTcIdx = tc.size() - 1;
         int nextTC = 1;
-        while (nextTC <= currentMove)
-            nextTC += movesPerSession;
-        return nextTC - currentMove;
-    }
-
-    public final int getMovesPerSession() {
-        return movesPerSession;
+        int currMove = currentMove;
+        if (!whiteToMove && whiteMove)
+            currMove++;
+        while (true) {
+            if (tc.get(tcIdx).movesPerSession <= 0)
+                return new Pair<Integer,Integer>(tcIdx, 0);
+            nextTC += tc.get(tcIdx).movesPerSession;
+            if (nextTC > currMove)
+                break;
+            if (tcIdx < lastTcIdx)
+                tcIdx++;
+        }
+        return new Pair<Integer,Integer>(tcIdx, nextTC - currMove);
     }
 }

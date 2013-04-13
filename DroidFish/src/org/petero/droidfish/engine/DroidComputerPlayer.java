@@ -109,7 +109,8 @@ public class DroidComputerPlayer {
         boolean isAnalyze;      // True if analysis search
         int wTime;              // White remaining time, milliseconds
         int bTime;              // Black remaining time, milliseconds
-        int inc;                // Time increment per move, milliseconds
+        int wInc;               // White time increment per move, milliseconds
+        int bInc;               // Black time increment per move, milliseconds
         int movesToGo;          // Number of moves to next time control
 
         String engine;          // Engine name (identifier)
@@ -157,7 +158,7 @@ public class DroidComputerPlayer {
         public static SearchRequest searchRequest(int id, long now,
                                                   Position prevPos, ArrayList<Move> mList,
                                                   Position currPos, boolean drawOffer,
-                                                  int wTime, int bTime, int inc, int movesToGo,
+                                                  int wTime, int bTime, int wInc, int bInc, int movesToGo,
                                                   boolean ponderEnabled, Move ponderMove,
                                                   String engine, int engineThreads,
                                                   int strength) {
@@ -172,7 +173,8 @@ public class DroidComputerPlayer {
             sr.isAnalyze = false;
             sr.wTime = wTime;
             sr.bTime = bTime;
-            sr.inc = inc;
+            sr.wInc = wInc;
+            sr.bInc = bInc;
             sr.movesToGo = movesToGo;
             sr.engine = engine;
             sr.engineThreads = engineThreads;
@@ -212,7 +214,7 @@ public class DroidComputerPlayer {
             sr.drawOffer = drawOffer;
             sr.isSearch = false;
             sr.isAnalyze = true;
-            sr.wTime = sr.bTime = sr.inc = sr.movesToGo = 0;
+            sr.wTime = sr.bTime = sr.wInc = sr.bInc = sr.movesToGo = 0;
             sr.engine = engine;
             sr.engineThreads = engineThreads;
             sr.strength = 1000;
@@ -554,8 +556,10 @@ public class DroidComputerPlayer {
             if (sr.bTime < 1) sr.bTime = 1;
             StringBuilder goStr = new StringBuilder(96);
             goStr.append(String.format("go wtime %d btime %d", sr.wTime, sr.bTime));
-            if (sr.inc > 0)
-                goStr.append(String.format(" winc %d binc %d", sr.inc, sr.inc));
+            if (sr.wInc > 0)
+                goStr.append(String.format(" winc %d", sr.wInc));
+            if (sr.bInc > 0)
+                goStr.append(String.format(" binc %d", sr.bInc));
             if (sr.movesToGo > 0)
                 goStr.append(String.format(" movestogo %d", sr.movesToGo));
             if (sr.ponderMove != null)

@@ -201,9 +201,8 @@ public class Game {
         int move = currPos.fullMoveCounter;
         boolean wtm = currPos.whiteMove;
         if (discardElapsed || (move != timeController.currentMove) || (wtm != timeController.whiteToMove)) {
-            int initialTime = timeController.getInitialTime();
-            int whiteBaseTime = tree.getRemainingTime(true, initialTime);
-            int blackBaseTime = tree.getRemainingTime(false, initialTime);
+            int whiteBaseTime = tree.getRemainingTime(true, timeController.getInitialTime(true));
+            int blackBaseTime = tree.getRemainingTime(false, timeController.getInitialTime(false));
             timeController.setCurrentMove(move, wtm, whiteBaseTime, blackBaseTime);
         }
         long now = System.currentTimeMillis();

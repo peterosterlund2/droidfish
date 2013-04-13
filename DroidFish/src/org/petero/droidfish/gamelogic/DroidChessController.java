@@ -873,18 +873,15 @@ public class DroidChessController {
                 long now = System.currentTimeMillis();
                 int wTime = game.timeController.getRemainingTime(true, now);
                 int bTime = game.timeController.getRemainingTime(false, now);
-                int inc = game.timeController.getIncrement();
-                int movesToGo = game.timeController.getMovesToTC();
-                if (ponder && !currPos.whiteMove && (movesToGo > 0)) {
-                    movesToGo--;
-                    if (movesToGo <= 0)
-                        movesToGo += game.timeController.getMovesPerSession();
-                }
+                int wInc = game.timeController.getIncrement(true);
+                int bInc = game.timeController.getIncrement(false);
+                boolean wtm = currPos.whiteMove;
+                int movesToGo = game.timeController.getMovesToTC(wtm);
                 final Move fPonderMove = ponder ? ponderMove : null;
                 SearchRequest sr = DroidComputerPlayer.SearchRequest.searchRequest(
                         searchId, now, ph.first, ph.second, currPos,
                         game.haveDrawOffer(),
-                        wTime, bTime, inc, movesToGo,
+                        wTime, bTime, wInc, bInc, movesToGo,
                         gui.ponderMode(), fPonderMove,
                         engine, gui.engineThreads(),
                         strength);

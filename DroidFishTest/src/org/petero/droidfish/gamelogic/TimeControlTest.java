@@ -18,6 +18,8 @@
 
 package org.petero.droidfish.gamelogic;
 
+import java.util.ArrayList;
+
 import junit.framework.TestCase;
 
 
@@ -31,20 +33,24 @@ public class TimeControlTest extends TestCase {
         long t0 = 1000;
         tc.setTimeControl(totTime, 0, 0);
         tc.setCurrentMove(1, true, totTime, totTime);
-        assertEquals(0, tc.getMovesToTC());
-        assertEquals(0, tc.getIncrement());
+        assertEquals(0, tc.getMovesToTC(true));
+        assertEquals(0, tc.getMovesToTC(false));
+        assertEquals(0, tc.getIncrement(true));
+        assertEquals(0, tc.getIncrement(false));
         assertEquals(totTime, tc.getRemainingTime(true, 0));
         tc.startTimer(t0);
         int remain = tc.moveMade(t0 + 1000, true);
         assertEquals(totTime - 1000, remain);
 
         tc.setCurrentMove(2, true, totTime - 1000, totTime);
-        assertEquals(0, tc.getMovesToTC());
+        assertEquals(0, tc.getMovesToTC(true));
+        assertEquals(0, tc.getMovesToTC(false));
         assertEquals(totTime - 1000, tc.getRemainingTime(true, t0 + 4711));
         assertEquals(totTime, tc.getRemainingTime(false, t0 + 4711));
 
         tc.setCurrentMove(1, false, totTime - 1000, totTime);
-        assertEquals(0, tc.getMovesToTC());
+        assertEquals(0, tc.getMovesToTC(true));
+        assertEquals(0, tc.getMovesToTC(false));
         assertEquals(totTime - 1000, tc.getRemainingTime(true, t0 + 4711));
         assertEquals(totTime, tc.getRemainingTime(false, t0 + 4711));
 
@@ -66,24 +72,102 @@ public class TimeControlTest extends TestCase {
         TimeControl tc = new TimeControl();
         tc.setTimeControl(2 * 60 * 1000, 40, 0);
         tc.setCurrentMove(1, true, 0, 0);
-        assertEquals(40, tc.getMovesToTC());
+        assertEquals(40, tc.getMovesToTC(true));
+        assertEquals(40, tc.getMovesToTC(false));
         tc.setCurrentMove(1, false, 0, 0);
-        assertEquals(40, tc.getMovesToTC());
+        assertEquals(39, tc.getMovesToTC(true));
+        assertEquals(40, tc.getMovesToTC(false));
 
         tc.setCurrentMove(2, true, 0, 0);
-        assertEquals(39, tc.getMovesToTC());
+        assertEquals(39, tc.getMovesToTC(true));
+        assertEquals(39, tc.getMovesToTC(false));
 
         tc.setCurrentMove(40, true, 0, 0);
-        assertEquals(1, tc.getMovesToTC());
+        assertEquals(1, tc.getMovesToTC(true));
+        assertEquals(1, tc.getMovesToTC(false));
+
+        tc.setCurrentMove(40, false, 0, 0);
+        assertEquals(40, tc.getMovesToTC(true));
+        assertEquals(1, tc.getMovesToTC(false));
 
         tc.setCurrentMove(41, true, 0, 0);
-        assertEquals(40, tc.getMovesToTC());
+        assertEquals(40, tc.getMovesToTC(true));
+        assertEquals(40, tc.getMovesToTC(false));
 
         tc.setCurrentMove(80, true, 0, 0);
-        assertEquals(1, tc.getMovesToTC());
+        assertEquals(1, tc.getMovesToTC(true));
+        assertEquals(1, tc.getMovesToTC(false));
+
+        tc.setCurrentMove(80, false, 0, 0);
+        assertEquals(40, tc.getMovesToTC(true));
+        assertEquals(1, tc.getMovesToTC(false));
 
         tc.setCurrentMove(81, true, 0, 0);
-        assertEquals(40, tc.getMovesToTC());
+        assertEquals(40, tc.getMovesToTC(true));
+        assertEquals(40, tc.getMovesToTC(false));
+    }
+
+    private TimeControl.TimeControlField tcf(long time, int moves, long inc) {
+        return new TimeControl.TimeControlField(time, moves, inc);
+    }
+
+    /** Test multiple time controls. */
+    public void testMultiTimeControl() {
+        TimeControl tc = new TimeControl();
+        ArrayList<TimeControl.TimeControlField> tcW = new ArrayList<TimeControl.TimeControlField>();
+        tcW.add(tcf(120*60*1000, 40, 0));
+        tcW.add(tcf(60*60*1000, 20, 0));
+        tcW.add(tcf(30*60*1000, 0, 15*1000));
+        ArrayList<TimeControl.TimeControlField> tcB = new ArrayList<TimeControl.TimeControlField>();
+        tcB.add(tcf(5*60*1000, 60, 1000));
+        tc.setTimeControl(tcW, tcB);
+
+        assertEquals(40, tc.getMovesToTC(true));
+        assertEquals(60, tc.getMovesToTC(false));
+        assertEquals(0, tc.getIncrement(true));
+        assertEquals(1000, tc.getIncrement(false));
+
+        tc.setCurrentMove(40, true, 0, 0);
+        assertEquals(1, tc.getMovesToTC(true));
+        assertEquals(21, tc.getMovesToTC(false));
+        assertEquals(0, tc.getIncrement(true));
+        assertEquals(1000, tc.getIncrement(false));
+
+        tc.setCurrentMove(40, false, 0, 0);
+        assertEquals(20, tc.getMovesToTC(true));
+        assertEquals(21, tc.getMovesToTC(false));
+        assertEquals(0, tc.getIncrement(true));
+        assertEquals(1000, tc.getIncrement(false));
+
+        tc.setCurrentMove(60, true, 0, 0);
+        assertEquals(1, tc.getMovesToTC(true));
+        assertEquals(1, tc.getMovesToTC(false));
+        assertEquals(0, tc.getIncrement(true));
+        assertEquals(1000, tc.getIncrement(false));
+
+        tc.setCurrentMove(61, true, 0, 0);
+        assertEquals(0, tc.getMovesToTC(true));
+        assertEquals(60, tc.getMovesToTC(false));
+        assertEquals(15000, tc.getIncrement(true));
+        assertEquals(1000, tc.getIncrement(false));
+
+
+        long wBaseTime = 60*1000;
+        long bBaseTime = 50*1000;
+        tc.setCurrentMove(30, true, wBaseTime, bBaseTime);
+        tc.startTimer(1500);
+        wBaseTime = tc.moveMade(1500 + 3000, true);
+        assertEquals(60*1000-3000, wBaseTime);
+        tc.setCurrentMove(30, false, wBaseTime, bBaseTime);
+        assertEquals(60*1000-3000, tc.getRemainingTime(true, 1500 + 3000));
+        assertEquals(50*1000, tc.getRemainingTime(false, 1500 + 3000));
+
+        tc.startTimer(5000);
+        bBaseTime = tc.moveMade(9000, true);
+        assertEquals(50000 - 4000 + 1000, bBaseTime);
+        tc.setCurrentMove(31, true, wBaseTime, bBaseTime);
+        assertEquals(60*1000-3000, tc.getRemainingTime(true, 9000));
+        assertEquals(50000 - 4000 + 1000, tc.getRemainingTime(false, 9000));
     }
 
     public void testExtraTime() {
@@ -116,7 +200,7 @@ public class TimeControlTest extends TestCase {
         assertEquals(timeCont - 1000 + timeCont + inc - 3000 + inc, tc.getRemainingTime(true, t0 + 4711));
         assertEquals(timeCont - 4000 + timeCont + inc, tc.getRemainingTime(false, t0 + 4711));
 
-        // No increment when move made int paused mode, ie analysis mode
+        // No increment when move made in paused mode, ie analysis mode
         tc.startTimer(t0 + 9000);
         bBaseTime = tc.moveMade(t0 + 10000, false);
         tc.setCurrentMove(7, true, wBaseTime, bBaseTime);
