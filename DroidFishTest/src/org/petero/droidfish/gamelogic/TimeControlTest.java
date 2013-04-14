@@ -18,6 +18,11 @@
 
 package org.petero.droidfish.gamelogic;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.petero.droidfish.gamelogic.TimeControlData.TimeControlField;
@@ -226,5 +231,37 @@ public class TimeControlTest extends TestCase {
         tc.setCurrentMove(1, false, wBaseTime, bBaseTime);
         assertEquals(timeCont - 2000 + (timeCont + inc)*0, tc.getRemainingTime(true, t0 + 4711));
         assertEquals(timeCont, tc.getRemainingTime(false, t0 + 4711));
+    }
+
+    public void testSerialize() throws IOException {
+        TimeControl tc = new TimeControl();
+        TimeControlData tcData = new TimeControlData();
+        tcData.tcW = new ArrayList<TimeControlField>();
+        tcData.tcW.add(tcf(120*60*1000, 40, 0));
+        tcData.tcW.add(tcf(60*60*1000, 20, 0));
+        tcData.tcW.add(tcf(30*60*1000, 0, 15*1000));
+        tcData.tcB = new ArrayList<TimeControlField>();
+        tcData.tcB.add(tcf(5*60*1000, 60, 1000));
+        tc.setTimeControl(tcData);
+
+        byte[] serialState = null;
+        {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream(32768);
+            DataOutputStream dos = new DataOutputStream(baos);
+            tc.writeToStream(dos);
+            dos.flush();
+            serialState = baos.toByteArray();
+            dos.close();
+            baos.close();
+        }
+        TimeControl tc2 = new TimeControl();
+        {
+            ByteArrayInputStream bais = new ByteArrayInputStream(serialState);
+            DataInputStream dis = new DataInputStream(bais);
+            tc2.readFromStream(dis, 3);
+            dis.close();
+            bais.close();
+        }
+        assertEquals(tcData, tc2.tcData);
     }
 }

@@ -19,6 +19,11 @@
 package org.petero.droidfish.gamelogic;
 
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +44,7 @@ public class GameTreeTest extends TestCase {
         return gt.addMove(moveStr, "", 0, "", "");
     }
 
-    public final void testGameTree() throws ChessParseError {
+    public final void testGameTree() throws ChessParseError, IOException {
         GameTree gt = new GameTree(null);
         Position expectedPos = TextIO.readFEN(TextIO.startPosFEN);
         assertEquals(expectedPos, gt.currentPos);
@@ -97,9 +102,24 @@ public class GameTreeTest extends TestCase {
         expectedPos.makeMove(move, ui);
         assertEquals(expectedPos, gt.currentPos);
 
-        byte[] serialState = gt.toByteArray();
+        byte[] serialState = null;
+        {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream(32768);
+            DataOutputStream dos = new DataOutputStream(baos);
+            gt.writeToStream(dos);
+            dos.flush();
+            serialState = baos.toByteArray();
+            dos.close();
+            baos.close();
+        }
         gt = new GameTree(null);
-        gt.fromByteArray(serialState, 2);
+        {
+            ByteArrayInputStream bais = new ByteArrayInputStream(serialState);
+            DataInputStream dis = new DataInputStream(bais);
+            gt.readFromStream(dis, 3);
+            dis.close();
+            bais.close();
+        }
         assertEquals(expectedPos, gt.currentPos);
 
         gt.goBack();

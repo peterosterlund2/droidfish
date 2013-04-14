@@ -18,6 +18,11 @@
 
 package org.petero.droidfish.gamelogic;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -199,13 +204,41 @@ public class DroidChessController {
 
     /** De-serialize from byte array. */
     public final synchronized void fromByteArray(byte[] data, int version) {
-        game.fromByteArray(data, version);
-        game.tree.translateMoves();
+        ByteArrayInputStream bais = null;
+        DataInputStream dis = null;
+        try {
+            bais = new ByteArrayInputStream(data);
+            dis = new DataInputStream(bais);
+            game.readFromStream(dis, version);
+            game.tree.translateMoves();
+        } catch (IOException e) {
+        } catch (ChessParseError e) {
+        } finally {
+            if (dis != null)
+                try { dis.close(); } catch (IOException ex) {}
+            if (bais != null)
+                try { bais.close(); } catch (IOException ex) {}
+        }
     }
 
     /** Serialize to byte array. */
     public final synchronized byte[] toByteArray() {
-        return game.toByteArray();
+        ByteArrayOutputStream baos = null;
+        DataOutputStream dos = null;
+        try {
+            baos = new ByteArrayOutputStream(32768);
+            dos = new DataOutputStream(baos);
+            game.writeToStream(dos);
+            dos.flush();
+            return baos.toByteArray();
+        } catch (IOException e) {
+            return null;
+        } finally {
+            if (dos != null)
+                try { dos.close(); } catch (IOException ex) {}
+            if (baos != null)
+                try { baos.close(); } catch (IOException ex) {}
+        }
     }
 
     /** Return FEN string corresponding to a current position. */

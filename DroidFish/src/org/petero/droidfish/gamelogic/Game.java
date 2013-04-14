@@ -18,6 +18,9 @@
 
 package org.petero.droidfish.gamelogic;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,15 +50,18 @@ public class Game {
         tree.setTimeControlData(tcData);
     }
 
-    /** De-serialize from byte array. */
-    final void fromByteArray(byte[] data, int version) {
-        tree.fromByteArray(data, version);
+    /** De-serialize from input stream. */
+    final void readFromStream(DataInputStream dis, int version) throws IOException, ChessParseError {
+        tree.readFromStream(dis, version);
+        if (version >= 3)
+            timeController.readFromStream(dis, version);
         updateTimeControl(true);
     }
 
-    /** Serialize to byte array. */
-    final synchronized byte[] toByteArray() {
-        return tree.toByteArray();
+    /** Serialize to output stream. */
+    final synchronized void writeToStream(DataOutputStream dos) throws IOException {
+        tree.writeToStream(dos);
+        timeController.writeToStream(dos);
     }
 
     public final void setGamePaused(boolean gamePaused) {

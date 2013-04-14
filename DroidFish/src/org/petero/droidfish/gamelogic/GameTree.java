@@ -18,8 +18,6 @@
 
 package org.petero.droidfish.gamelogic;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -613,83 +611,65 @@ public class GameTree {
         return true;
     }
 
-    /** Serialize to byte array. */
-    public final byte[] toByteArray() {
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream(32768);
-            DataOutputStream dos = new DataOutputStream(baos);
-            dos.writeUTF(event);
-            dos.writeUTF(site);
-            dos.writeUTF(date);
-            dos.writeUTF(round);
-            dos.writeUTF(white);
-            dos.writeUTF(black);
-            dos.writeUTF(TextIO.toFEN(startPos));
-            dos.writeUTF(timeControl);
-            dos.writeUTF(whiteTimeControl);
-            dos.writeUTF(blackTimeControl);
-            int nTags = tagPairs.size();
-            dos.writeInt(nTags);
-            for (int i = 0; i < nTags; i++) {
-                dos.writeUTF(tagPairs.get(i).tagName);
-                dos.writeUTF(tagPairs.get(i).tagValue);
-            }
-            Node.writeToStream(dos, rootNode);
-            ArrayList<Integer> pathFromRoot = currentNode.getPathFromRoot();
-            int pathLen = pathFromRoot.size();
-            dos.writeInt(pathLen);
-            for (int i = 0; i < pathLen; i++)
-                dos.writeInt(pathFromRoot.get(i));
-            dos.flush();
-            dos.close();
-            byte[] ret = baos.toByteArray();
-            baos.close();
-            return ret;
-        } catch (IOException e) {
-            return null;
+    /** Serialize to output stream. */
+    public final void writeToStream(DataOutputStream dos) throws IOException {
+        dos.writeUTF(event);
+        dos.writeUTF(site);
+        dos.writeUTF(date);
+        dos.writeUTF(round);
+        dos.writeUTF(white);
+        dos.writeUTF(black);
+        dos.writeUTF(TextIO.toFEN(startPos));
+        dos.writeUTF(timeControl);
+        dos.writeUTF(whiteTimeControl);
+        dos.writeUTF(blackTimeControl);
+        int nTags = tagPairs.size();
+        dos.writeInt(nTags);
+        for (int i = 0; i < nTags; i++) {
+            dos.writeUTF(tagPairs.get(i).tagName);
+            dos.writeUTF(tagPairs.get(i).tagValue);
         }
+        Node.writeToStream(dos, rootNode);
+        ArrayList<Integer> pathFromRoot = currentNode.getPathFromRoot();
+        int pathLen = pathFromRoot.size();
+        dos.writeInt(pathLen);
+        for (int i = 0; i < pathLen; i++)
+            dos.writeInt(pathFromRoot.get(i));
     }
 
-    /** De-serialize from byte array. */
-    public final void fromByteArray(byte[] data, int version) {
-        try {
-            ByteArrayInputStream bais = new ByteArrayInputStream(data);
-            DataInputStream dis = new DataInputStream(bais);
-            event = dis.readUTF();
-            site = dis.readUTF();
-            date = dis.readUTF();
-            round = dis.readUTF();
-            white = dis.readUTF();
-            black = dis.readUTF();
-            startPos = TextIO.readFEN(dis.readUTF());
-            currentPos = new Position(startPos);
-            timeControl = dis.readUTF();
-            if (version >= 2) {
-                whiteTimeControl = dis.readUTF();
-                blackTimeControl = dis.readUTF();
-            } else {
-                whiteTimeControl = "?";
-                blackTimeControl = "?";
-            }
-            int nTags = dis.readInt();
-            tagPairs.clear();
-            for (int i = 0; i < nTags; i++) {
-                TagPair tp = new TagPair();
-                tp.tagName = dis.readUTF();
-                tp.tagValue = dis.readUTF();
-                tagPairs.add(tp);
-            }
-            rootNode = new Node();
-            Node.readFromStream(dis, rootNode);
-            currentNode = rootNode;
-            int pathLen = dis.readInt();
-            for (int i = 0; i < pathLen; i++)
-                goForward(dis.readInt());
-            dis.close();
-            bais.close();
-        } catch (IOException e) {
-        } catch (ChessParseError e) {
+    /** De-serialize from input stream. */
+    public final void readFromStream(DataInputStream dis, int version) throws IOException, ChessParseError {
+        event = dis.readUTF();
+        site = dis.readUTF();
+        date = dis.readUTF();
+        round = dis.readUTF();
+        white = dis.readUTF();
+        black = dis.readUTF();
+        startPos = TextIO.readFEN(dis.readUTF());
+        currentPos = new Position(startPos);
+        timeControl = dis.readUTF();
+        if (version >= 2) {
+            whiteTimeControl = dis.readUTF();
+            blackTimeControl = dis.readUTF();
+        } else {
+            whiteTimeControl = "?";
+            blackTimeControl = "?";
         }
+        int nTags = dis.readInt();
+        tagPairs.clear();
+        for (int i = 0; i < nTags; i++) {
+            TagPair tp = new TagPair();
+            tp.tagName = dis.readUTF();
+            tp.tagValue = dis.readUTF();
+            tagPairs.add(tp);
+        }
+        rootNode = new Node();
+        Node.readFromStream(dis, rootNode);
+        currentNode = rootNode;
+        int pathLen = dis.readInt();
+        for (int i = 0; i < pathLen; i++)
+            goForward(dis.readInt());
+
         updateListener();
     }
 

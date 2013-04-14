@@ -136,8 +136,7 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! Add support for "Chess Leipzig" font
 
     // FIXME!!! Computer clock should stop if phone turned off (computer stops thinking if unplugged)
-    // FIXME!!! Add support for all time controls defined by the PGN standard
-    // FIXME!!! How to handle hour-glass time control?
+    // FIXME!!! Add support for "no time control" and "hour-glass time control" as defined by the PGN standard
 
     // FIXME!!! Online play on FICS
     // FIXME!!! Add chess960 support
@@ -167,7 +166,9 @@ public class DroidFish extends Activity implements GUIInterface {
     private int maxNumArrows;
     private GameMode gameMode;
     private boolean mPonderMode;
-    private TimeControlData tcData = new TimeControlData();
+    private int timeControl;
+    private int movesPerSession;
+    private int timeIncrement;
     private int mEngineThreads;
     private String playerName;
     private boolean boardFlipped;
@@ -407,6 +408,8 @@ public class DroidFish extends Activity implements GUIInterface {
         ctrl = new DroidChessController(this, gameTextListener, pgnOptions);
         egtbForceReload = true;
         readPrefs();
+        TimeControlData tcData = new TimeControlData();
+        tcData.setTimeControl(timeControl, movesPerSession, timeIncrement);
         ctrl.newGame(gameMode, tcData);
         {
             byte[] data = null;
@@ -522,6 +525,8 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     private final byte[] strToByteArr(String str) {
+        if (str == null)
+            return null;
         int nBytes = str.length() / 2;
         byte[] ret = new byte[nBytes];
         for (int i = 0; i < nBytes; i++) {
@@ -533,6 +538,8 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     private final String byteArrToString(byte[] data) {
+        if (data == null)
+            return null;
         StringBuilder ret = new StringBuilder(32768);
         int nBytes = data.length;
         for (int i = 0; i < nBytes; i++) {
@@ -818,7 +825,7 @@ public class DroidFish extends Activity implements GUIInterface {
         if (ctrl != null) {
             byte[] data = ctrl.toByteArray();
             outState.putByteArray("gameState", data);
-            outState.putInt("gameStateVersion", 2);
+            outState.putInt("gameStateVersion", 3);
         }
     }
 
@@ -841,7 +848,7 @@ public class DroidFish extends Activity implements GUIInterface {
             Editor editor = settings.edit();
             String dataStr = byteArrToString(data);
             editor.putString("gameState", dataStr);
-            editor.putInt("gameStateVersion", 2);
+            editor.putInt("gameStateVersion", 3);
             editor.commit();
         }
         lastVisibleMillis = System.currentTimeMillis();
@@ -896,11 +903,9 @@ public class DroidFish extends Activity implements GUIInterface {
         if (!mPonderMode)
             ctrl.stopPonder();
 
-        int timeControl = getIntSetting("timeControl", 120000);
-        int movesPerSession = getIntSetting("movesPerSession", 60);
-        int timeIncrement = getIntSetting("timeIncrement", 0);
-        tcData.setTimeControl(timeControl, movesPerSession, timeIncrement);
-        updateTimeControlTitle();
+        timeControl = getIntSetting("timeControl", 120000);
+        movesPerSession = getIntSetting("movesPerSession", 60);
+        timeIncrement = getIntSetting("timeIncrement", 0);
 
         boardGestures = settings.getBoolean("boardGestures", true);
         scrollSensitivity = Float.parseFloat(settings.getString("scrollSensitivity", "2"));
@@ -1651,22 +1656,6 @@ public class DroidFish extends Activity implements GUIInterface {
         cb.setMoveHints(hints);
     }
 
-    private final void startNewGame(int type) {
-        if (type != 2) {
-            int gameModeType = (type == 0) ? GameMode.PLAYER_WHITE : GameMode.PLAYER_BLACK;
-            Editor editor = settings.edit();
-            String gameModeStr = String.format(Locale.US, "%d", gameModeType);
-            editor.putString("gameMode", gameModeStr);
-            editor.commit();
-            gameMode = new GameMode(gameModeType);
-        }
-//        savePGNToFile(".autosave.pgn", true);
-        ctrl.newGame(gameMode, tcData);
-        ctrl.startGame();
-        setBoardFlip(true);
-        updateEngineTitle();
-    }
-
     static private final int PROMOTE_DIALOG = 0;
     static private final int BOARD_MENU_DIALOG = 1;
     static private final int ABOUT_DIALOG = 2;
@@ -1754,6 +1743,24 @@ public class DroidFish extends Activity implements GUIInterface {
             }
         });
         return builder.create();
+    }
+
+    private final void startNewGame(int type) {
+        if (type != 2) {
+            int gameModeType = (type == 0) ? GameMode.PLAYER_WHITE : GameMode.PLAYER_BLACK;
+            Editor editor = settings.edit();
+            String gameModeStr = String.format(Locale.US, "%d", gameModeType);
+            editor.putString("gameMode", gameModeStr);
+            editor.commit();
+            gameMode = new GameMode(gameModeType);
+        }
+//        savePGNToFile(".autosave.pgn", true);
+        TimeControlData tcData = new TimeControlData();
+        tcData.setTimeControl(timeControl, movesPerSession, timeIncrement);
+        ctrl.newGame(gameMode, tcData);
+        ctrl.startGame();
+        setBoardFlip(true);
+        updateEngineTitle();
     }
 
     private final Dialog promoteDialog() {

@@ -18,6 +18,9 @@
 
 package org.petero.droidfish.gamelogic;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.petero.droidfish.gamelogic.TimeControlData.TimeControlField;
@@ -160,5 +163,15 @@ public class TimeControl {
                 tcIdx++;
         }
         return new Pair<Integer,Integer>(tcIdx, nextTC - currMove);
+    }
+
+    /** De-serialize from input stream. */
+    public void readFromStream(DataInputStream dis, int version) throws IOException {
+        tcData.readFromStream(dis, version);
+    }
+
+    /** Serialize to output stream. */
+    public void writeToStream(DataOutputStream dos) throws IOException {
+        tcData.writeToStream(dos);
     }
 }

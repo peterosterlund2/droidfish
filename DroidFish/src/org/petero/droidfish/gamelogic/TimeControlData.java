@@ -1,5 +1,8 @@
 package org.petero.droidfish.gamelogic;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public final class TimeControlData {
@@ -64,5 +67,38 @@ public final class TimeControlData {
                 return false;
         }
         return true;
+    }
+
+    /** De-serialize from input stream. */
+    public void readFromStream(DataInputStream dis, int version) throws IOException {
+        for (int c = 0; c < 2; c++) {
+            ArrayList<TimeControlField> tc = new ArrayList<TimeControlField>();
+            if (c == 0)
+                tcW = tc;
+            else
+                tcB = tc;
+            int nw = dis.readInt();
+            for (int i = 0; i < nw; i++) {
+                int time = dis.readInt();
+                int moves = dis.readInt();
+                int inc = dis.readInt();
+                tc.add(new TimeControlField(time, moves, inc));
+            }
+        }
+    }
+
+    /** Serialize to output stream. */
+    public void writeToStream(DataOutputStream dos) throws IOException {
+        for (int c = 0; c < 2; c++) {
+            ArrayList<TimeControlField> tc = (c == 0) ? tcW : tcB;
+            int nw = tc.size();
+            dos.writeInt(nw);
+            for (int i = 0; i < nw; i++) {
+                TimeControlField tcf = tc.get(i);
+                dos.writeInt(tcf.timeControl);
+                dos.writeInt(tcf.movesPerSession);
+                dos.writeInt(tcf.increment);
+            }
+        }
     }
 }
