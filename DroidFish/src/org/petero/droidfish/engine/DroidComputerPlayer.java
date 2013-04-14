@@ -555,13 +555,13 @@ public class DroidComputerPlayer {
             if (sr.wTime < 1) sr.wTime = 1;
             if (sr.bTime < 1) sr.bTime = 1;
             StringBuilder goStr = new StringBuilder(96);
-            goStr.append(String.format("go wtime %d btime %d", sr.wTime, sr.bTime));
+            goStr.append(String.format(Locale.US, "go wtime %d btime %d", sr.wTime, sr.bTime));
             if (sr.wInc > 0)
-                goStr.append(String.format(" winc %d", sr.wInc));
+                goStr.append(String.format(Locale.US, " winc %d", sr.wInc));
             if (sr.bInc > 0)
-                goStr.append(String.format(" binc %d", sr.bInc));
+                goStr.append(String.format(Locale.US, " binc %d", sr.bInc));
             if (sr.movesToGo > 0)
-                goStr.append(String.format(" movestogo %d", sr.movesToGo));
+                goStr.append(String.format(Locale.US, " movestogo %d", sr.movesToGo));
             if (sr.ponderMove != null)
                 goStr.append(" ponder");
             if (sr.searchMoves != null) {

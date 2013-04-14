@@ -20,6 +20,7 @@ package org.petero.droidfish.activities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.petero.droidfish.ChessBoard;
 import org.petero.droidfish.DroidFish;
@@ -549,8 +550,8 @@ public class EditBoard extends Activity {
             builder.setTitle(R.string.edit_move_counters);
             final EditText halfMoveClock = (EditText)content.findViewById(R.id.ed_cnt_halfmove);
             final EditText fullMoveCounter = (EditText)content.findViewById(R.id.ed_cnt_fullmove);
-            halfMoveClock.setText(String.format("%d", cb.pos.halfMoveClock));
-            fullMoveCounter.setText(String.format("%d", cb.pos.fullMoveCounter));
+            halfMoveClock.setText(String.format(Locale.US, "%d", cb.pos.halfMoveClock));
+            fullMoveCounter.setText(String.format(Locale.US, "%d", cb.pos.fullMoveCounter));
             final Runnable setCounters = new Runnable() {
                 public void run() {
                     try {

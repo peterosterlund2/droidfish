@@ -859,7 +859,7 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     private final int getIntSetting(String settingName, int defaultValue) {
-        String tmp = settings.getString(settingName, String.format("%d", defaultValue));
+        String tmp = settings.getString(settingName, String.format(Locale.US, "%d", defaultValue));
         int value = Integer.parseInt(tmp);
         return value;
     }
@@ -1085,7 +1085,7 @@ public class DroidFish extends Activity implements GUIInterface {
                                      R.string.stockfish_engine);
             boolean analysis = (ctrl != null) && ctrl.analysisMode();
             if ((strength < 1000) && !analysis) {
-                engineTitleText.setText(String.format("%s: %d%%", eName, strength / 10));
+                engineTitleText.setText(String.format(Locale.US, "%s: %d%%", eName, strength / 10));
             } else {
                 engineTitleText.setText(eName);
             }
@@ -3107,7 +3107,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
     @Override
     public void reportInvalidMove(Move m) {
-        String msg = String.format("%s %s-%s",
+        String msg = String.format(Locale.US, "%s %s-%s",
                 getString(R.string.invalid_move),
                 TextIO.squareToString(m.from), TextIO.squareToString(m.to));
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
@@ -3115,14 +3115,14 @@ public class DroidFish extends Activity implements GUIInterface {
 
     @Override
     public void reportEngineName(String engine) {
-        String msg = String.format("%s: %s",
+        String msg = String.format(Locale.US, "%s: %s",
                 getString(R.string.engine), engine);
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void reportEngineError(String errMsg) {
-        String msg = String.format("%s: %s",
+        String msg = String.format(Locale.US, "%s: %s",
                 getString(R.string.engine_error), errMsg);
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
     }

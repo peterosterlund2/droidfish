@@ -111,7 +111,7 @@ public abstract class UCIEngineBase implements UCIEngine {
 
     @Override
     public void setOption(String name, int value) {
-        setOption(name, String.format("%d", value));
+        setOption(name, String.format(Locale.US, "%d", value));
     }
 
     @Override
@@ -127,7 +127,7 @@ public abstract class UCIEngineBase implements UCIEngine {
         String currVal = currOptions.get(lcName);
         if (value.equals(currVal))
             return;
-        writeLineToEngine(String.format("setoption name %s value %s", name, value));
+        writeLineToEngine(String.format(Locale.US, "setoption name %s value %s", name, value));
         currOptions.put(lcName, value);
     }
 }

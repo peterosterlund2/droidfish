@@ -21,6 +21,7 @@ package chess;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 /**
  *
@@ -320,7 +321,7 @@ public class Game {
         for (int i = 0; i < moveList.size(); i++) {
             Move move = moveList.get(i);
             String strMove = TextIO.moveToString(pos, move, false);
-            moves.append(String.format(" %s", strMove));
+            moves.append(String.format(Locale.US, " %s", strMove));
             UndoInfo ui = new UndoInfo();
             pos.makeMove(move, ui);
         }
@@ -364,10 +365,10 @@ public class Game {
                     whiteMove = "...";
                 }
                 if (compressed) {
-                    ret.append(String.format("%d. %s %s ",
+                    ret.append(String.format(Locale.US, "%d. %s %s ",
                             pos.fullMoveCounter, whiteMove, blackMove));
                 } else {
-                    ret.append(String.format("%3d.  %-10s %-10s%n",
+                    ret.append(String.format(Locale.US, "%3d.  %-10s %-10s%n",
                             pos.fullMoveCounter, whiteMove, blackMove));
                 }
                 whiteMove = "";
@@ -381,10 +382,10 @@ public class Game {
                 whiteMove = "...";
             }
             if (compressed) {
-                ret.append(String.format("%d. %s %s ",
+                ret.append(String.format(Locale.US, "%d. %s %s ",
                         pos.fullMoveCounter, whiteMove, blackMove));
             } else {
-                ret.append(String.format("%3d.  %-8s %-8s%n",
+                ret.append(String.format(Locale.US, "%3d.  %-8s %-8s%n",
                         pos.fullMoveCounter, whiteMove, blackMove));
             }
         }
@@ -393,7 +394,7 @@ public class Game {
             if (compressed) {
                 ret.append(gameResult);
             } else {
-                ret.append(String.format("%s%n", gameResult));
+                ret.append(String.format(Locale.US, "%s%n", gameResult));
             }
         }
         return ret.toString();

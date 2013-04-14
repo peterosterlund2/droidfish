@@ -20,6 +20,7 @@ package org.petero.droidfish.gamelogic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.petero.droidfish.PGNOptions;
 import org.petero.droidfish.R;
@@ -703,7 +704,7 @@ public class TextIO {
      */
     public static final String asciiBoard(Position pos) {
         StringBuilder ret = new StringBuilder(400);
-        String nl = String.format("%n");
+        String nl = String.format(Locale.US, "%n");
         ret.append("    +----+----+----+----+----+----+----+----+"); ret.append(nl);
         for (int y = 7; y >= 0; y--) {
             ret.append("    |");

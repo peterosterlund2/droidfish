@@ -628,7 +628,7 @@ public class DroidChessController {
                     continue;
                 if (i > 0)
                     buf.append('\n');
-                buf.append(String.format("[%d] ", pvi.depth));
+                buf.append(String.format(Locale.US, "[%d] ", pvi.depth));
                 boolean negateScore = !whiteMove && gui.whiteBasedScores();
                 if (pvi.upperBound || pvi.lowerBound) {
                     boolean upper = pvi.upperBound ^ negateScore;
@@ -636,9 +636,9 @@ public class DroidChessController {
                 }
                 int score = negateScore ? -pvi.score : pvi.score;
                 if (pvi.isMate) {
-                    buf.append(String.format("m%d", score));
+                    buf.append(String.format(Locale.US, "m%d", score));
                 } else {
-                    buf.append(String.format("%.2f", score / 100.0));
+                    buf.append(String.format(Locale.US, "%.2f", score / 100.0));
                 }
 
                 buf.append(pvi.pvStr);
@@ -715,7 +715,7 @@ public class DroidChessController {
                 UndoInfo ui = new UndoInfo();
                 if (ponderMove != null) {
                     String moveStr = TextIO.moveToString(tmpPos, ponderMove, false, localPt());
-                    buf.append(String.format(" [%s]", moveStr));
+                    buf.append(String.format(Locale.US, " [%s]", moveStr));
                     tmpPos.makeMove(ponderMove, ui);
                 }
                 for (Move m : pv.pv) {
@@ -724,7 +724,7 @@ public class DroidChessController {
                     if (!TextIO.isValid(tmpPos, m))
                         break;
                     String moveStr = TextIO.moveToString(tmpPos, m, false, localPt());
-                    buf.append(String.format(" %s", moveStr));
+                    buf.append(String.format(Locale.US, " %s", moveStr));
                     tmpPos.makeMove(m, ui);
                 }
                 pv.pvStr = buf.toString();
@@ -897,7 +897,7 @@ public class DroidChessController {
             if (computerPlayer != null) {
                 engine = computerPlayer.getEngineName();
                 if (strength < 1000)
-                    engine += String.format(" (%.1f%%)", strength * 0.1);
+                    engine += String.format(Locale.US, " (%.1f%%)", strength * 0.1);
             }
             String player = gui.playerName();
             String white = gameMode.playerWhite() ? player : engine;
@@ -909,7 +909,7 @@ public class DroidChessController {
     private final synchronized void updatePlayerNames(String engineName) {
         if (game != null) {
             if (strength < 1000)
-                engineName += String.format(" (%.1f%%)", strength * 0.1);
+                engineName += String.format(Locale.US, " (%.1f%%)", strength * 0.1);
             String white = gameMode.playerWhite() ? game.tree.white : engineName;
             String black = gameMode.playerBlack() ? game.tree.black : engineName;
             game.tree.setPlayerNames(white, black);

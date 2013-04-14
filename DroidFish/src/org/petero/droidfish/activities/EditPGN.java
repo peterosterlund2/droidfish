@@ -20,6 +20,7 @@ package org.petero.droidfish.activities;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import org.petero.droidfish.ColorTheme;
 import org.petero.droidfish.R;
@@ -382,7 +383,7 @@ public class EditPGN extends ListActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.delete_file_question);
             String name = new File(pgnFile.getName()).getName();
-            String msg = String.format(getString(R.string.delete_named_file), name);
+            String msg = String.format(Locale.US, getString(R.string.delete_named_file), name);
             builder.setMessage(msg);
             builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {

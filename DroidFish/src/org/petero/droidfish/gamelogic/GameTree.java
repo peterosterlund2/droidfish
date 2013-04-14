@@ -83,7 +83,7 @@ public class GameTree {
             int year = now.get(Calendar.YEAR);
             int month = now.get(Calendar.MONTH) + 1;
             int day = now.get(Calendar.DAY_OF_MONTH);
-            date = String.format("%04d.%02d.%02d", year, month, day);
+            date = String.format(Locale.US, "%04d.%02d.%02d", year, month, day);
         }
         round = "?";
         white = "?";

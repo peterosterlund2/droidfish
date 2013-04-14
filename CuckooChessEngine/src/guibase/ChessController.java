@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -71,20 +72,20 @@ public class ChessController {
 
         private void setSearchInfo() {
             StringBuilder buf = new StringBuilder();
-            buf.append(String.format("%n[%d] ", pvDepth));
+            buf.append(String.format(Locale.US, "%n[%d] ", pvDepth));
             if (pvUpperBound) {
                 buf.append("<=");
             } else if (pvLowerBound) {
                 buf.append(">=");
             }
             if (pvIsMate) {
-                buf.append(String.format("m%d", pvScore));
+                buf.append(String.format(Locale.US, "m%d", pvScore));
             } else {
-                buf.append(String.format("%.2f", pvScore / 100.0));
+                buf.append(String.format(Locale.US, "%.2f", pvScore / 100.0));
             }
             buf.append(pvStr);
-            buf.append(String.format("%n"));
-            buf.append(String.format("d:%d %d:%s t:%.2f n:%d nps:%d", currDepth,
+            buf.append(String.format(Locale.US, "%n"));
+            buf.append(String.format(Locale.US, "d:%d %d:%s t:%.2f n:%d nps:%d", currDepth,
                     currMoveNr, currMove, currTime / 1000.0, currNodes, currNps));
             final String newPV = buf.toString();
             gui.runOnUIThread(new Runnable() {
@@ -121,7 +122,7 @@ public class ChessController {
             Position pos = new Position(game.pos);
             UndoInfo ui = new UndoInfo();
             for (Move m : pv) {
-                buf.append(String.format(" %s", TextIO.moveToString(pos, m, false)));
+                buf.append(String.format(Locale.US, " %s", TextIO.moveToString(pos, m, false)));
                 pos.makeMove(m, ui);
             }
             pvStr = buf.toString();
@@ -211,17 +212,17 @@ public class ChessController {
             month = now.get(Calendar.MONTH) + 1;
             day = now.get(Calendar.DAY_OF_MONTH);
         }
-        pgn.append(String.format("[Date \"%04d.%02d.%02d\"]%n", year, month, day));
+        pgn.append(String.format(Locale.US, "[Date \"%04d.%02d.%02d\"]%n", year, month, day));
         String white = "Player";
         String black = ComputerPlayer.engineName;
         if (!humanIsWhite) {
             String tmp = white; white = black; black = tmp;
         }
-        pgn.append(String.format("[White \"%s\"]%n", white));
-        pgn.append(String.format("[Black \"%s\"]%n", black));
-        pgn.append(String.format("[Result \"%s\"]%n", game.getPGNResultString()));
+        pgn.append(String.format(Locale.US, "[White \"%s\"]%n", white));
+        pgn.append(String.format(Locale.US, "[Black \"%s\"]%n", black));
+        pgn.append(String.format(Locale.US, "[Result \"%s\"]%n", game.getPGNResultString()));
         if (!fen.equals(TextIO.startPosFEN)) {
-            pgn.append(String.format("[FEN \"%s\"]%n", fen));
+            pgn.append(String.format(Locale.US, "[FEN \"%s\"]%n", fen));
             pgn.append("[SetUp \"1\"]\n");
         }
         pgn.append("\n");

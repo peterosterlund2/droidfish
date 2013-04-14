@@ -1,6 +1,7 @@
 package org.petero.droidfish.engine;
 
 import java.util.LinkedList;
+import java.util.Locale;
 
 /** Implements line-based text communication between threads. */
 public class LocalPipe {
@@ -9,13 +10,13 @@ public class LocalPipe {
 
     /** Write a line to the pipe. */
     public final synchronized void printLine(String format) {
-        String s = String.format(format, new Object[]{});
+        String s = String.format(Locale.US, format, new Object[]{});
         addLine(s);
     }
 
     /** Write a line to the pipe. */
     public final synchronized void printLine(String format, Object ... args) {
-        String s = String.format(format, args);
+        String s = String.format(Locale.US, format, args);
         addLine(s);
     }
 

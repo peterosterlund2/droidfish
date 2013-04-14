@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A player that reads input from the keyboard.
@@ -39,7 +40,7 @@ public class HumanPlayer implements Player {
     public String getCommand(Position pos, boolean drawOffer, List<Position> history) {
         try {
             String color = pos.whiteMove ? "white" : "black";
-            System.out.print(String.format("Enter move (%s):", color));
+            System.out.print(String.format(Locale.US, "Enter move (%s):", color));
             String moveStr = in.readLine();
             if (moveStr == null)
                 return "quit";
