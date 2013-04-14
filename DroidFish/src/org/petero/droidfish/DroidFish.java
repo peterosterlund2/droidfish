@@ -2535,7 +2535,7 @@ public class DroidFish extends Activity implements GUIInterface {
         }
         final int currFT = currFileType();
         final String currPathName = currPathName();
-        if (currFT != FT_NONE) {
+        if ((currFT != FT_NONE) && !gameMode.clocksActive()) {
             lst.add(getString(R.string.load_prev_game)); actions.add(LOAD_PREV_GAME);
         }
         final List<Integer> finalActions = actions;
@@ -2586,7 +2586,7 @@ public class DroidFish extends Activity implements GUIInterface {
         }
         final int currFT = currFileType();
         final String currPathName = currPathName();
-        if (currFT != FT_NONE) {
+        if ((currFT != FT_NONE) && !gameMode.clocksActive()) {
             lst.add(getString(R.string.load_next_game)); actions.add(LOAD_NEXT_GAME);
         }
         final List<Integer> finalActions = actions;
@@ -2999,10 +2999,7 @@ public class DroidFish extends Activity implements GUIInterface {
     final static int FT_FEN  = 3;
 
     private final int currFileType() {
-        if (gameMode.clocksActive())
-            return FT_NONE;
-        int ft = settings.getInt("currFT", FT_NONE);
-        return ft;
+        return settings.getInt("currFT", FT_NONE);
     }
 
     /** Return path name for the last used PGN or SCID file. */
