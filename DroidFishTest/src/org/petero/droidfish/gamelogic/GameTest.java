@@ -36,7 +36,7 @@ public class GameTest extends TestCase {
      * Test of haveDrawOffer method, of class Game.
      */
     public void testHaveDrawOffer() {
-        Game game = new Game(null, 0, 0, 0);
+        Game game = new Game(null, new TimeControlData());
         assertEquals(false, game.haveDrawOffer());
 
         boolean res = game.processString("e4");
@@ -124,7 +124,7 @@ public class GameTest extends TestCase {
      * Test of draw by 50 move rule, of class Game.
      */
     public void testDraw50() throws ChessParseError {
-        Game game = new Game(null, 0, 0, 0);
+        Game game = new Game(null, new TimeControlData());
         assertEquals(false, game.haveDrawOffer());
         boolean res = game.processString("draw 50");
         assertEquals(true, res);
@@ -179,7 +179,7 @@ public class GameTest extends TestCase {
      * Test of draw by repetition, of class Game.
      */
     public void testDrawRep() throws ChessParseError {
-        Game game = new Game(null, 0, 0, 0);
+        Game game = new Game(null, new TimeControlData());
         assertEquals(false, game.haveDrawOffer());
         game.processString("Nc3");
         game.processString("Nc6");
@@ -251,7 +251,7 @@ public class GameTest extends TestCase {
      * Test of draw offer/accept/request command.
      */
     public void testDrawBug() throws ChessParseError {
-        Game game = new Game(null, 0, 0, 0);
+        Game game = new Game(null, new TimeControlData());
         assertEquals(false, game.haveDrawOffer());
         game.processString("e4");
         game.processString("c5");
@@ -269,7 +269,7 @@ public class GameTest extends TestCase {
      * Test of resign command, of class Game.
      */
     public void testResign() throws ChessParseError {
-        Game game = new Game(null, 0, 0, 0);
+        Game game = new Game(null, new TimeControlData());
         assertEquals(Game.GameState.ALIVE, game.getGameState());
         game.processString("f3");
         assertEquals(Game.GameState.ALIVE, game.getGameState());
@@ -299,7 +299,7 @@ public class GameTest extends TestCase {
      * Test of processString method, of class Game.
      */
     public void testProcessString() throws ChessParseError {
-        Game game = new Game(null, 0, 0, 0);
+        Game game = new Game(null, new TimeControlData());
         assertEquals(TextIO.startPosFEN, TextIO.toFEN(game.currPos()));
         boolean res = game.processString("Nf3");
         assertEquals(true, res);
@@ -348,7 +348,7 @@ public class GameTest extends TestCase {
      * Test of getGameState method, of class Game.
      */
     public void testGetGameState() throws ChessParseError {
-        Game game = new Game(null, 0, 0, 0);
+        Game game = new Game(null, new TimeControlData());
         assertEquals(Game.GameState.ALIVE, game.getGameState());
         game.processString("f3");
         game.processString("e5");
@@ -364,7 +364,7 @@ public class GameTest extends TestCase {
      * Test of insufficientMaterial method, of class Game.
      */
     public void testInsufficientMaterial() throws ChessParseError {
-        Game game = new Game(null, 0, 0, 0);
+        Game game = new Game(null, new TimeControlData());
         assertEquals(Game.GameState.ALIVE, game.getGameState());
         game.setPos(TextIO.readFEN("4k3/8/8/8/8/8/8/4K3 w - - 0 1"));
         assertEquals(Game.GameState.DRAW_NO_MATE, game.getGameState());
@@ -407,7 +407,7 @@ public class GameTest extends TestCase {
     /** Test that UCI history is not longer than necessary.
      * We can't expect engines to handle null moves, for example. */
     public void testUCIHistory() throws ChessParseError {
-        Game game = new Game(null, 0, 0, 0);
+        Game game = new Game(null, new TimeControlData());
 
         Pair<Position, ArrayList<Move>> hist = game.getUCIHistory();
         assertEquals(0, hist.second.size());

@@ -20,22 +20,11 @@ package org.petero.droidfish.gamelogic;
 
 import java.util.ArrayList;
 
+import org.petero.droidfish.gamelogic.TimeControlData.TimeControlField;
+
 /** Keep track of time control information for both players. */
 public class TimeControl {
-    public static final class TimeControlField {
-        long timeControl;
-        int movesPerSession;
-        long increment;
-
-        public TimeControlField(long time, int moves, long inc) {
-            timeControl = time;
-            movesPerSession = moves;
-            increment = inc;
-        }
-    }
-
-    private ArrayList<TimeControlField> tcW;
-    private ArrayList<TimeControlField> tcB;
+    private TimeControlData tcData;
 
     private long whiteBaseTime; // Current remaining time, or remaining time when clock started
     private long blackBaseTime; // Current remaining time, or remaining time when clock started
@@ -49,7 +38,7 @@ public class TimeControl {
 
     /** Constructor. Sets time control to "game in 5min". */
     public TimeControl() {
-        setTimeControl(5 * 60 * 1000, 0, 0);
+        tcData = new TimeControlData();
         reset();
     }
 
@@ -60,19 +49,9 @@ public class TimeControl {
         timerT0 = 0;
     }
 
-    /** Set time control to "moves" moves in "time" milliseconds, + inc milliseconds per move. */
-    public final void setTimeControl(long time, int moves, long inc) {
-        tcW = new ArrayList<TimeControlField>();
-        tcW.add(new TimeControlField(time, moves, inc));
-        tcB = new ArrayList<TimeControlField>();
-        tcB.add(new TimeControlField(time, moves, inc));
-    }
-
     /** Set time controls for white and black players. */
-    public final void setTimeControl(ArrayList<TimeControlField> whiteTC,
-                                     ArrayList<TimeControlField> blackTC) {
-        tcW = whiteTC;
-        tcB = blackTC;
+    public final void setTimeControl(TimeControlData tcData) {
+        this.tcData = tcData;
     }
 
     public final void setCurrentMove(int move, boolean whiteToMove, long whiteBaseTime, long blackBaseTime) {
@@ -109,7 +88,7 @@ public class TimeControl {
     public final int moveMade(long now, boolean useIncrement) {
         stopTimer(now);
 
-        ArrayList<TimeControlField> tc = whiteToMove ? tcW : tcB;
+        ArrayList<TimeControlField> tc = tcData.getTC(whiteToMove);
         Pair<Integer,Integer> tcInfo = getCurrentTC(whiteToMove);
         int tcIdx = tcInfo.first;
         int movesToTc = tcInfo.second;
@@ -141,13 +120,13 @@ public class TimeControl {
 
     /** Get initial thinking time in milliseconds. */
     public final int getInitialTime(boolean whiteMove) {
-        ArrayList<TimeControlField> tc = whiteMove ? tcW : tcB;
+        ArrayList<TimeControlField> tc = tcData.getTC(whiteMove);
         return (int)tc.get(0).timeControl;
     }
 
     /** Get time increment in milliseconds after playing next move. */
     public final int getIncrement(boolean whiteMove) {
-        ArrayList<TimeControlField> tc = whiteMove ? tcW : tcB;
+        ArrayList<TimeControlField> tc = tcData.getTC(whiteMove);
         int tcIdx = getCurrentTC(whiteMove).first;
         return (int)tc.get(tcIdx).increment;
     }
@@ -159,7 +138,7 @@ public class TimeControl {
 
     /** @return Array containing time control, moves per session and time increment. */
     public int[] getTimeLimit(boolean whiteMove) {
-        ArrayList<TimeControlField> tc = whiteMove ? tcW : tcB;
+        ArrayList<TimeControlField> tc = tcData.getTC(whiteMove);
         int tcIdx = getCurrentTC(whiteMove).first;
         TimeControlField t = tc.get(tcIdx);
         return new int[]{(int)t.timeControl, t.movesPerSession, (int)t.increment};
@@ -167,7 +146,7 @@ public class TimeControl {
 
     /** Return the current active time control index and number of moves to next time control. */
     private Pair<Integer,Integer> getCurrentTC(boolean whiteMove) {
-        ArrayList<TimeControlField> tc = whiteMove ? tcW : tcB;
+        ArrayList<TimeControlField> tc = tcData.getTC(whiteMove);
         int tcIdx = 0;
         final int lastTcIdx = tc.size() - 1;
         int nextTC = 1;

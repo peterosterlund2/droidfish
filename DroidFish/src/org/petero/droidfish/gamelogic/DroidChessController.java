@@ -34,6 +34,7 @@ import org.petero.droidfish.engine.DroidComputerPlayer.SearchRequest;
 import org.petero.droidfish.engine.DroidComputerPlayer.SearchType;
 import org.petero.droidfish.gamelogic.Game.GameState;
 import org.petero.droidfish.gamelogic.GameTree.Node;
+import org.petero.droidfish.gamelogic.TimeControlData.TimeControlField;
 
 /**
  * The glue between the chess engine and the GUI.
@@ -54,9 +55,7 @@ public class DroidChessController {
     private int strength = 1000;
     private int numPV = 1;
 
-    private int timeControl;
-    private int movesPerSession;
-    private int timeIncrement;
+    private TimeControlData tcData;
 
     private SearchListener listener;
     private boolean guiPaused = false;
@@ -72,6 +71,7 @@ public class DroidChessController {
         this.gameTextListener = gameTextListener;
         gameMode = new GameMode(GameMode.TWO_PLAYERS);
         pgnOptions = options;
+        tcData = new TimeControlData();
         listener = new SearchListener();
         searchId = 0;
     }
@@ -89,7 +89,7 @@ public class DroidChessController {
         }
         computerPlayer.queueStartEngine(searchId, engine);
         searchId++;
-        game = new Game(gameTextListener, timeControl, movesPerSession, timeIncrement);
+        game = new Game(gameTextListener, tcData);
         computerPlayer.clearTT();
         setPlayerNames(game);
         updateGameMode();
@@ -105,11 +105,9 @@ public class DroidChessController {
 
     /** Set time control parameters. */
     public final synchronized void setTimeLimit(int time, int moves, int inc) {
-        timeControl = time;
-        movesPerSession = moves;
-        timeIncrement = inc;
+        tcData.setTimeControl(time, moves, inc);
         if (game != null)
-            game.timeController.setTimeControl(timeControl, movesPerSession, timeIncrement);
+            game.timeController.setTimeControl(tcData);
     }
 
     /** @return Array containing time control, moves per session and time increment. */
@@ -117,9 +115,10 @@ public class DroidChessController {
         if (game != null)
             return game.timeController.getTimeLimit(game.currPos().whiteMove);
         int[] ret = new int[3];
-        ret[0] = timeControl;
-        ret[1] = movesPerSession;
-        ret[2] = timeIncrement;
+        TimeControlField tc = tcData.getTC(true).get(0);
+        ret[0] = (int)tc.timeControl;
+        ret[1] = tc.movesPerSession;
+        ret[2] = (int)tc.increment;
         return ret;
     }
 
@@ -237,7 +236,7 @@ public class DroidChessController {
 
     /** Parse a string as FEN or PGN data. */
     public final synchronized void setFENOrPGN(String fenPgn) throws ChessParseError {
-        Game newGame = new Game(gameTextListener, timeControl, movesPerSession, timeIncrement);
+        Game newGame = new Game(gameTextListener, tcData);
         try {
             Position pos = TextIO.readFEN(fenPgn);
             newGame.setPos(pos);

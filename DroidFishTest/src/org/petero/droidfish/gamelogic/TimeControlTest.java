@@ -20,6 +20,8 @@ package org.petero.droidfish.gamelogic;
 
 import java.util.ArrayList;
 
+import org.petero.droidfish.gamelogic.TimeControlData.TimeControlField;
+
 import junit.framework.TestCase;
 
 
@@ -31,7 +33,9 @@ public class TimeControlTest extends TestCase {
         TimeControl tc = new TimeControl();
         long totTime = 5 * 60 * 1000;
         long t0 = 1000;
-        tc.setTimeControl(totTime, 0, 0);
+        TimeControlData tcData = new TimeControlData();
+        tcData.setTimeControl(totTime, 0, 0);
+        tc.setTimeControl(tcData);
         tc.setCurrentMove(1, true, totTime, totTime);
         assertEquals(0, tc.getMovesToTC(true));
         assertEquals(0, tc.getMovesToTC(false));
@@ -70,7 +74,9 @@ public class TimeControlTest extends TestCase {
     /** Test getMovesToTC */
     public void testTimeControl() {
         TimeControl tc = new TimeControl();
-        tc.setTimeControl(2 * 60 * 1000, 40, 0);
+        TimeControlData tcData = new TimeControlData();
+        tcData.setTimeControl(2 * 60 * 1000, 40, 0);
+        tc.setTimeControl(tcData);
         tc.setCurrentMove(1, true, 0, 0);
         assertEquals(40, tc.getMovesToTC(true));
         assertEquals(40, tc.getMovesToTC(false));
@@ -107,20 +113,21 @@ public class TimeControlTest extends TestCase {
         assertEquals(40, tc.getMovesToTC(false));
     }
 
-    private TimeControl.TimeControlField tcf(long time, int moves, long inc) {
-        return new TimeControl.TimeControlField(time, moves, inc);
+    private TimeControlField tcf(long time, int moves, long inc) {
+        return new TimeControlField(time, moves, inc);
     }
 
     /** Test multiple time controls. */
     public void testMultiTimeControl() {
         TimeControl tc = new TimeControl();
-        ArrayList<TimeControl.TimeControlField> tcW = new ArrayList<TimeControl.TimeControlField>();
-        tcW.add(tcf(120*60*1000, 40, 0));
-        tcW.add(tcf(60*60*1000, 20, 0));
-        tcW.add(tcf(30*60*1000, 0, 15*1000));
-        ArrayList<TimeControl.TimeControlField> tcB = new ArrayList<TimeControl.TimeControlField>();
-        tcB.add(tcf(5*60*1000, 60, 1000));
-        tc.setTimeControl(tcW, tcB);
+        TimeControlData tcData = new TimeControlData();
+        tcData.tcW = new ArrayList<TimeControlField>();
+        tcData.tcW.add(tcf(120*60*1000, 40, 0));
+        tcData.tcW.add(tcf(60*60*1000, 20, 0));
+        tcData.tcW.add(tcf(30*60*1000, 0, 15*1000));
+        tcData.tcB = new ArrayList<TimeControlField>();
+        tcData.tcB.add(tcf(5*60*1000, 60, 1000));
+        tc.setTimeControl(tcData);
 
         assertEquals(40, tc.getMovesToTC(true));
         assertEquals(60, tc.getMovesToTC(false));
@@ -176,7 +183,9 @@ public class TimeControlTest extends TestCase {
         int wBaseTime = (int)timeCont;
         int bBaseTime = (int)timeCont;
         final long inc = 700;
-        tc.setTimeControl(timeCont, 5, inc);
+        TimeControlData tcData = new TimeControlData();
+        tcData.setTimeControl(timeCont, 5, inc);
+        tc.setTimeControl(tcData);
         tc.setCurrentMove(5, true, wBaseTime, bBaseTime);
         long t0 = 1342134;
         assertEquals(timeCont, tc.getRemainingTime(true, t0 + 4711));
@@ -208,7 +217,8 @@ public class TimeControlTest extends TestCase {
         assertEquals(timeCont - 4000 + timeCont + inc - 1000, tc.getRemainingTime(false, t0 + 4711));
 
         // No extra time when passing time control in analysis mode
-        tc.setTimeControl(timeCont, 1, inc);
+        tcData.setTimeControl(timeCont, 1, inc);
+        tc.setTimeControl(tcData);
         wBaseTime = bBaseTime = (int)timeCont;
         tc.setCurrentMove(1, true, wBaseTime, bBaseTime);
         tc.startTimer(t0 + 1000);

@@ -38,12 +38,11 @@ public class Game {
 
     PgnToken.PgnTokenReceiver gameTextListener;
 
-    public Game(PgnToken.PgnTokenReceiver gameTextListener,
-                int timeControl, int movesPerSession, int timeIncrement) {
+    public Game(PgnToken.PgnTokenReceiver gameTextListener, TimeControlData tcData) {
         this.gameTextListener = gameTextListener;
         tree = new GameTree(gameTextListener);
         timeController = new TimeControl();
-        timeController.setTimeControl(timeControl, movesPerSession, timeIncrement);
+        timeController.setTimeControl(tcData);
         gamePaused = false;
         newGame();
     }
