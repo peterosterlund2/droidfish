@@ -21,6 +21,8 @@ package org.petero.droidfish.gamelogic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import junit.framework.TestCase;
 
@@ -28,6 +30,7 @@ import org.petero.droidfish.PGNOptions;
 import org.petero.droidfish.gamelogic.Game.GameState;
 import org.petero.droidfish.gamelogic.GameTree.Node;
 import org.petero.droidfish.gamelogic.GameTree.PgnScanner;
+import org.petero.droidfish.gamelogic.TimeControlData.TimeControlField;
 
 public class GameTreeTest extends TestCase {
 
@@ -96,7 +99,7 @@ public class GameTreeTest extends TestCase {
 
         byte[] serialState = gt.toByteArray();
         gt = new GameTree(null);
-        gt.fromByteArray(serialState);
+        gt.fromByteArray(serialState, 2);
         assertEquals(expectedPos, gt.currentPos);
 
         gt.goBack();
@@ -693,5 +696,91 @@ public class GameTreeTest extends TestCase {
         gt.goNode(na6);
         gt.goNode(ne4);
         assertEquals("e4* e5 Nf3 Nc6 Bb5 a6", getMoveListAsString(gt));
+    }
+
+    public final void testTimeControl() throws ChessParseError {
+        GameTree gt = new GameTree(null);
+        PGNOptions options = new PGNOptions();
+
+        TimeControlData tcData = new TimeControlData();
+        tcData.setTimeControl(180*1000, 35, 0);
+        gt.setTimeControlData(tcData);
+        TimeControlData tcData2 = gt.getTimeControlData();
+        assertTrue(tcData2.isSymmetric());
+        assertTrue(tcData.equals(tcData2));
+
+        Map<String,String> headers = new TreeMap<String,String>();
+        gt.getHeaders(headers);
+        assertEquals("35/180", headers.get("TimeControl"));
+        assertEquals(null, headers.get("WhiteTimeControl"));
+        assertEquals(null, headers.get("BlackTimeControl"));
+
+        String pgn = gt.toPGN(options);
+        boolean res = gt.readPGN(pgn, options);
+        assertTrue(res);
+        tcData2 = gt.getTimeControlData();
+        assertTrue(tcData2.isSymmetric());
+        assertEquals(tcData, tcData2);
+        headers = new TreeMap<String,String>();
+        gt.getHeaders(headers);
+        assertEquals("35/180", headers.get("TimeControl"));
+        assertEquals(null, headers.get("WhiteTimeControl"));
+        assertEquals(null, headers.get("BlackTimeControl"));
+
+        tcData = new TimeControlData();
+        tcData.tcW.clear();
+        tcData.tcW.add(new TimeControlField(15*60*1000,40,0));
+        tcData.tcW.add(new TimeControlField(5*60*1000+345,20,0));
+        tcData.tcW.add(new TimeControlField(0,10,1000));
+        tcData.tcW.add(new TimeControlField(0,0,5000));
+        tcData.tcB.clear();
+        tcData.tcB.add(new TimeControlField(60*1000,20,3004));
+        tcData.tcB.add(new TimeControlField(30*1000,0,0));
+        gt.setTimeControlData(tcData);
+        headers = new TreeMap<String,String>();
+        gt.getHeaders(headers);
+        assertEquals(null, headers.get("TimeControl"));
+        assertEquals("40/900:20/300.345:10/0+1:0+5", headers.get("WhiteTimeControl"));
+        assertEquals("20/60+3.004:30", headers.get("BlackTimeControl"));
+
+        tcData2 = gt.getTimeControlData();
+        assertTrue(!tcData2.isSymmetric());
+        assertEquals(tcData, tcData2);
+
+        pgn = gt.toPGN(options);
+        res = gt.readPGN(pgn, options);
+        assertTrue(res);
+        tcData2 = gt.getTimeControlData();
+        assertTrue(!tcData2.isSymmetric());
+        assertEquals(tcData, tcData2);
+        headers = new TreeMap<String,String>();
+        gt.getHeaders(headers);
+        assertEquals(null, headers.get("TimeControl"));
+        assertEquals("40/900:20/300.345:10/0+1:0+5", headers.get("WhiteTimeControl"));
+        assertEquals("20/60+3.004:30", headers.get("BlackTimeControl"));
+
+        tcData = new TimeControlData();
+        tcData.setTimeControl(2*60*1000, 0, 12000);
+        gt.setTimeControlData(tcData);
+        headers = new TreeMap<String,String>();
+        gt.getHeaders(headers);
+        assertEquals("120+12", headers.get("TimeControl"));
+        assertEquals(null, headers.get("WhiteTimeControl"));
+        assertEquals(null, headers.get("BlackTimeControl"));
+
+        // Test pgn data with extra white space
+        res = gt.readPGN("[TimeControl \" 40 / 5400 + 60 : 3.14 + 2.718 \"]", options);
+        assertTrue(res);
+        tcData = gt.getTimeControlData();
+        assertTrue(tcData.isSymmetric());
+        assertEquals(2, tcData.tcW.size());
+        TimeControlField tf = tcData.tcW.get(0);
+        assertEquals(40, tf.movesPerSession);
+        assertEquals(5400*1000, tf.timeControl);
+        assertEquals(60*1000, tf.increment);
+        tf = tcData.tcW.get(1);
+        assertEquals(0, tf.movesPerSession);
+        assertEquals(3140, tf.timeControl);
+        assertEquals(2718, tf.increment);
     }
 }

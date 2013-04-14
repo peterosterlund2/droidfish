@@ -53,6 +53,7 @@ import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gamelogic.PgnToken;
 import org.petero.droidfish.gamelogic.GameTree.Node;
+import org.petero.droidfish.gamelogic.TimeControlData;
 import org.petero.droidfish.gtb.Probe;
 
 import com.larvalabs.svgandroid.SVG;
@@ -166,6 +167,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private int maxNumArrows;
     private GameMode gameMode;
     private boolean mPonderMode;
+    private TimeControlData tcData = new TimeControlData();
     private int mEngineThreads;
     private String playerName;
     private boolean boardFlipped;
@@ -405,18 +407,21 @@ public class DroidFish extends Activity implements GUIInterface {
         ctrl = new DroidChessController(this, gameTextListener, pgnOptions);
         egtbForceReload = true;
         readPrefs();
-        ctrl.newGame(gameMode);
+        ctrl.newGame(gameMode, tcData);
         {
             byte[] data = null;
+            int version = 1;
             if (savedInstanceState != null) {
                 data = savedInstanceState.getByteArray("gameState");
+                version = savedInstanceState.getInt("gameStateVersion", version);
             } else {
                 String dataStr = settings.getString("gameState", null);
+                version = settings.getInt("gameStateVersion", version);
                 if (dataStr != null)
                     data = strToByteArr(dataStr);
             }
             if (data != null)
-                ctrl.fromByteArray(data);
+                ctrl.fromByteArray(data, version);
         }
         ctrl.setGuiPaused(true);
         ctrl.setGuiPaused(false);
@@ -813,6 +818,7 @@ public class DroidFish extends Activity implements GUIInterface {
         if (ctrl != null) {
             byte[] data = ctrl.toByteArray();
             outState.putByteArray("gameState", data);
+            outState.putInt("gameStateVersion", 2);
         }
     }
 
@@ -835,6 +841,7 @@ public class DroidFish extends Activity implements GUIInterface {
             Editor editor = settings.edit();
             String dataStr = byteArrToString(data);
             editor.putString("gameState", dataStr);
+            editor.putInt("gameStateVersion", 2);
             editor.commit();
         }
         lastVisibleMillis = System.currentTimeMillis();
@@ -892,7 +899,7 @@ public class DroidFish extends Activity implements GUIInterface {
         int timeControl = getIntSetting("timeControl", 120000);
         int movesPerSession = getIntSetting("movesPerSession", 60);
         int timeIncrement = getIntSetting("timeIncrement", 0);
-        ctrl.setTimeLimit(timeControl, movesPerSession, timeIncrement);
+        tcData.setTimeControl(timeControl, movesPerSession, timeIncrement);
         updateTimeControlTitle();
 
         boardGestures = settings.getBoolean("boardGestures", true);
@@ -1654,7 +1661,7 @@ public class DroidFish extends Activity implements GUIInterface {
             gameMode = new GameMode(gameModeType);
         }
 //        savePGNToFile(".autosave.pgn", true);
-        ctrl.newGame(gameMode);
+        ctrl.newGame(gameMode, tcData);
         ctrl.startGame();
         setBoardFlip(true);
         updateEngineTitle();

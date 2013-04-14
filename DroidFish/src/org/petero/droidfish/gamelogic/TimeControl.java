@@ -24,7 +24,7 @@ import org.petero.droidfish.gamelogic.TimeControlData.TimeControlField;
 
 /** Keep track of time control information for both players. */
 public class TimeControl {
-    private TimeControlData tcData;
+    TimeControlData tcData;
 
     private long whiteBaseTime; // Current remaining time, or remaining time when clock started
     private long blackBaseTime; // Current remaining time, or remaining time when clock started

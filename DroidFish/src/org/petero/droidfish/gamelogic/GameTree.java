@@ -28,11 +28,13 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.petero.droidfish.PGNOptions;
 import org.petero.droidfish.gamelogic.Game.GameState;
+import org.petero.droidfish.gamelogic.TimeControlData.TimeControlField;
 
 public class GameTree {
     // Data from the seven tag roster (STR) part of the PGN standard
@@ -40,7 +42,7 @@ public class GameTree {
     // Result is the last tag pair in the STR, but it is computed on demand from the game tree.
 
     Position startPos;
-    private String timeControl;
+    private String timeControl, whiteTimeControl, blackTimeControl;
 
     // Non-standard tags
     static private final class TagPair {
@@ -88,6 +90,8 @@ public class GameTree {
         black = "?";
         startPos = pos;
         timeControl = "?";
+        whiteTimeControl = "?";
+        blackTimeControl = "?";
         tagPairs = new ArrayList<TagPair>();
         rootNode = new Node();
         currentNode = rootNode;
@@ -308,6 +312,10 @@ public class GameTree {
         }
         if (!timeControl.equals("?"))
             addTagPair(out, "TimeControl", timeControl);
+        if (!whiteTimeControl.equals("?"))
+            addTagPair(out, "WhiteTimeControl", whiteTimeControl);
+        if (!blackTimeControl.equals("?"))
+            addTagPair(out, "BlackTimeControl", blackTimeControl);
 
         // Write other non-standard tag pairs
         for (int i = 0; i < tagPairs.size(); i++)
@@ -559,6 +567,10 @@ public class GameTree {
                 result = val;
             } else if (name.equals("TimeControl")) {
                 timeControl = val;
+            } else if (name.equals("WhiteTimeControl")) {
+                whiteTimeControl = val;
+            } else if (name.equals("BlackTimeControl")) {
+                blackTimeControl = val;
             } else {
                 this.tagPairs.add(tagPairs.get(i));
             }
@@ -614,6 +626,8 @@ public class GameTree {
             dos.writeUTF(black);
             dos.writeUTF(TextIO.toFEN(startPos));
             dos.writeUTF(timeControl);
+            dos.writeUTF(whiteTimeControl);
+            dos.writeUTF(blackTimeControl);
             int nTags = tagPairs.size();
             dos.writeInt(nTags);
             for (int i = 0; i < nTags; i++) {
@@ -637,7 +651,7 @@ public class GameTree {
     }
 
     /** De-serialize from byte array. */
-    public final void fromByteArray(byte[] data) {
+    public final void fromByteArray(byte[] data, int version) {
         try {
             ByteArrayInputStream bais = new ByteArrayInputStream(data);
             DataInputStream dis = new DataInputStream(bais);
@@ -650,6 +664,13 @@ public class GameTree {
             startPos = TextIO.readFEN(dis.readUTF());
             currentPos = new Position(startPos);
             timeControl = dis.readUTF();
+            if (version >= 2) {
+                whiteTimeControl = dis.readUTF();
+                blackTimeControl = dis.readUTF();
+            } else {
+                whiteTimeControl = "?";
+                blackTimeControl = "?";
+            }
             int nTags = dis.readInt();
             tagPairs.clear();
             for (int i = 0; i < nTags; i++) {
@@ -1516,9 +1537,118 @@ public class GameTree {
         headers.put("Round", round);
         headers.put("White", white);
         headers.put("Black", black);
+        if (!timeControl.equals("?"))
+            headers.put("TimeControl", timeControl);
+        if (!whiteTimeControl.equals("?"))
+            headers.put("WhiteTimeControl", whiteTimeControl);
+        if (!blackTimeControl.equals("?"))
+            headers.put("BlackTimeControl", blackTimeControl);
         for (int i = 0; i < tagPairs.size(); i++) {
             TagPair tp = tagPairs.get(i);
             headers.put(tp.tagName, tp.tagValue);
+        }
+    }
+
+    private ArrayList<TimeControlField> stringToTCFields(String tcStr) {
+        String[] fields = tcStr.split(":");
+        int nf = fields.length;
+        ArrayList<TimeControlField> ret = new ArrayList<TimeControlField>(nf);
+        for (int i = 0; i < nf; i++) {
+            String f = fields[i].trim();
+            if (f.equals("?") || f.equals("-") || f.contains("*")) {
+                // Not supported
+            } else {
+                try {
+                    int moves = 0;
+                    int time = 0;
+                    int inc = 0;
+                    int idx = f.indexOf('/');
+                    if (idx > 0)
+                        moves = Integer.parseInt(f.substring(0, idx).trim());
+                    if (idx >= 0)
+                        f = f.substring(idx+1);
+                    idx = f.indexOf('+');
+                    if (idx >= 0) {
+                        if (idx > 0)
+                            time = (int)(Double.parseDouble(f.substring(0, idx).trim())*1e3);
+                        if (idx >= 0)
+                            f = f.substring(idx+1);
+                        inc = (int)(Double.parseDouble(f.trim())*1e3);
+                    } else {
+                        time = (int)(Double.parseDouble(f.trim())*1e3);
+                    }
+                    ret.add(new TimeControlField(time, moves, inc));
+                } catch (NumberFormatException ex) {
+                    // Invalid syntax, ignore
+                }
+            }
+        }
+        return ret;
+    }
+
+    private String tcFieldsToString(ArrayList<TimeControlField> tcFields) {
+        StringBuilder sb = new StringBuilder();
+        int nf = tcFields.size();
+        for (int i = 0; i < nf; i++) {
+            if (i > 0)
+                sb.append(':');
+            TimeControlField t = tcFields.get(i);
+            if (t.movesPerSession > 0) {
+                sb.append(t.movesPerSession);
+                sb.append('/');
+            }
+            sb.append(t.timeControl / 1000);
+            int ms = (int)t.timeControl % 1000;
+            if (ms > 0) {
+                sb.append('.');
+                sb.append(String.format(Locale.US, "%03d", ms));
+            }
+            if (t.increment > 0) {
+                sb.append('+');
+                sb.append(t.increment / 1000);
+                ms = (int)t.increment % 1000;
+                if (ms > 0) {
+                    sb.append('.');
+                    sb.append(String.format(Locale.US, "%03d", ms));
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    /** Get time control data, or null if not present. */
+    public TimeControlData getTimeControlData() {
+        if (!whiteTimeControl.equals("?") && !blackTimeControl.equals("?")) {
+            ArrayList<TimeControlField> tcW = stringToTCFields(whiteTimeControl);
+            ArrayList<TimeControlField> tcB = stringToTCFields(blackTimeControl);
+            if (!tcW.isEmpty() && !tcB.isEmpty()) {
+                TimeControlData tcData = new TimeControlData();
+                tcData.tcW = tcW;
+                tcData.tcB = tcB;
+                return tcData;
+            }
+        }
+        if (!timeControl.equals("?")) {
+            ArrayList<TimeControlField> tc = stringToTCFields(timeControl);
+            if (!tc.isEmpty()) {
+                TimeControlData tcData = new TimeControlData();
+                tcData.tcW = tc;
+                tcData.tcB = tc;
+                return tcData;
+            }
+        }
+        return null;
+    }
+
+    public void setTimeControlData(TimeControlData tcData) {
+        if (tcData.isSymmetric()) {
+            timeControl = tcFieldsToString(tcData.tcW);
+            whiteTimeControl = "?";
+            blackTimeControl = "?";
+        } else {
+            whiteTimeControl = tcFieldsToString(tcData.tcW);
+            blackTimeControl = tcFieldsToString(tcData.tcB);
+            timeControl = "?";
         }
     }
 }

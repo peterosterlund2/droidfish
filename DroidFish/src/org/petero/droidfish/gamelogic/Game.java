@@ -40,16 +40,16 @@ public class Game {
 
     public Game(PgnToken.PgnTokenReceiver gameTextListener, TimeControlData tcData) {
         this.gameTextListener = gameTextListener;
-        tree = new GameTree(gameTextListener);
         timeController = new TimeControl();
         timeController.setTimeControl(tcData);
         gamePaused = false;
         newGame();
+        tree.setTimeControlData(tcData);
     }
 
     /** De-serialize from byte array. */
-    final void fromByteArray(byte[] data) {
-        tree.fromByteArray(data);
+    final void fromByteArray(byte[] data, int version) {
+        tree.fromByteArray(data, version);
         updateTimeControl(true);
     }
 
@@ -83,8 +83,12 @@ public class Game {
 
     final boolean readPGN(String pgn, PGNOptions options) throws ChessParseError {
         boolean ret = tree.readPGN(pgn, options);
-        if (ret)
-            updateTimeControl(false);
+        if (ret) {
+            TimeControlData tcData = tree.getTimeControlData();
+            if (tcData != null)
+                timeController.setTimeControl(tcData);
+            updateTimeControl(tcData != null);
+        }
         return ret;
     }
 
