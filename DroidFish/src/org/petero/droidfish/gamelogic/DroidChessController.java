@@ -205,7 +205,7 @@ public class DroidChessController {
 
     /** Serialize to byte array. */
     public final synchronized byte[] toByteArray() {
-        return game.tree.toByteArray();
+        return game.toByteArray();
     }
 
     /** Return FEN string corresponding to a current position. */
@@ -479,11 +479,11 @@ public class DroidChessController {
     /** Update remaining time and trigger GUI update of clocks. */
     public final synchronized void updateRemainingTime() {
         long now = System.currentTimeMillis();
-        long wTime = game.timeController.getRemainingTime(true, now);
-        long bTime = game.timeController.getRemainingTime(false, now);
-        long nextUpdate = 0;
+        int wTime = game.timeController.getRemainingTime(true, now);
+        int bTime = game.timeController.getRemainingTime(false, now);
+        int nextUpdate = 0;
         if (game.timeController.clockRunning()) {
-            long t = game.currPos().whiteMove ? wTime : bTime;
+            int t = game.currPos().whiteMove ? wTime : bTime;
             nextUpdate = t % 1000;
             if (nextUpdate < 0) nextUpdate += 1000;
             nextUpdate += 1;

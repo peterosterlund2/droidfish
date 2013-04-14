@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public final class TimeControlData {
     public static final class TimeControlField {
-        long timeControl;      // Time in milliseconds
+        int timeControl;      // Time in milliseconds
         int movesPerSession;
-        long increment;        // Increment in milliseconds
+        int increment;        // Increment in milliseconds
 
-        public TimeControlField(long time, int moves, long inc) {
+        public TimeControlField(int time, int moves, int inc) {
             timeControl = time;
             movesPerSession = moves;
             increment = inc;
@@ -26,7 +26,7 @@ public final class TimeControlData {
     }
 
     /** Set a single time control for both white and black. */
-    public final void setTimeControl(long time, int moves, long inc) {
+    public final void setTimeControl(int time, int moves, int inc) {
         tcW = new ArrayList<TimeControlField>();
         tcW.add(new TimeControlField(time, moves, inc));
         tcB = new ArrayList<TimeControlField>();

@@ -1598,7 +1598,7 @@ public class GameTree {
                 sb.append('/');
             }
             sb.append(t.timeControl / 1000);
-            int ms = (int)t.timeControl % 1000;
+            int ms = t.timeControl % 1000;
             if (ms > 0) {
                 sb.append('.');
                 sb.append(String.format(Locale.US, "%03d", ms));
@@ -1606,7 +1606,7 @@ public class GameTree {
             if (t.increment > 0) {
                 sb.append('+');
                 sb.append(t.increment / 1000);
-                ms = (int)t.increment % 1000;
+                ms = t.increment % 1000;
                 if (ms > 0) {
                     sb.append('.');
                     sb.append(String.format(Locale.US, "%03d", ms));

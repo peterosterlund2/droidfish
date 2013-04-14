@@ -3187,7 +3187,7 @@ public class DroidFish extends Activity implements GUIInterface {
         }
     }
 
-    private final String timeToString(long time) {
+    private final String timeToString(int time) {
         int secs = (int)Math.floor((time + 999) / 1000.0);
         boolean neg = false;
         if (secs < 0) {
@@ -3213,7 +3213,7 @@ public class DroidFish extends Activity implements GUIInterface {
     };
 
     @Override
-    public void setRemainingTime(long wTime, long bTime, long nextUpdate) {
+    public void setRemainingTime(int wTime, int bTime, int nextUpdate) {
         if (ctrl.getGameMode().clocksActive()) {
             whiteTitleText.setText(getString(R.string.white_square_character) + " " + timeToString(wTime));
             blackTitleText.setText(getString(R.string.black_square_character) + " " + timeToString(bTime));

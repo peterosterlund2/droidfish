@@ -26,13 +26,13 @@ import org.petero.droidfish.gamelogic.TimeControlData.TimeControlField;
 public class TimeControl {
     TimeControlData tcData;
 
-    private long whiteBaseTime; // Current remaining time, or remaining time when clock started
-    private long blackBaseTime; // Current remaining time, or remaining time when clock started
+    private int whiteBaseTime; // Current remaining time, or remaining time when clock started
+    private int blackBaseTime; // Current remaining time, or remaining time when clock started
 
     int currentMove;
     boolean whiteToMove;
 
-    private long elapsed; // Accumulated elapsed time for this move.
+    private int elapsed;  // Accumulated elapsed time for this move.
     private long timerT0; // Time when timer started. 0 if timer is stopped.
 
 
@@ -54,7 +54,7 @@ public class TimeControl {
         this.tcData = tcData;
     }
 
-    public final void setCurrentMove(int move, boolean whiteToMove, long whiteBaseTime, long blackBaseTime) {
+    public final void setCurrentMove(int move, boolean whiteToMove, int whiteBaseTime, int blackBaseTime) {
         currentMove = move;
         this.whiteToMove = whiteToMove;
         this.whiteBaseTime = whiteBaseTime;
@@ -75,12 +75,10 @@ public class TimeControl {
 
     public final void stopTimer(long now) {
         if (clockRunning()) {
-            long timerT1 = now;
-            long currElapsed = timerT1 - timerT0;
+            int currElapsed = (int)(now - timerT0);
             timerT0 = 0;
-            if (currElapsed > 0) {
+            if (currElapsed > 0)
                 elapsed += currElapsed;
-            }
         }
     }
 
@@ -93,7 +91,7 @@ public class TimeControl {
         int tcIdx = tcInfo.first;
         int movesToTc = tcInfo.second;
 
-        long remaining = getRemainingTime(whiteToMove, now);
+        int remaining = getRemainingTime(whiteToMove, now);
         if (useIncrement) {
             remaining += tc.get(tcIdx).increment;
             if (movesToTc == 1) {
@@ -103,32 +101,31 @@ public class TimeControl {
             }
         }
         elapsed = 0;
-        return (int)remaining;
+        return remaining;
     }
 
     /** Get remaining time */
     public final int getRemainingTime(boolean whiteToMove, long now) {
-        long remaining = whiteToMove ? whiteBaseTime : blackBaseTime;
+        int remaining = whiteToMove ? whiteBaseTime : blackBaseTime;
         if (whiteToMove == this.whiteToMove) {
             remaining -= elapsed;
-            if (timerT0 != 0) {
+            if (timerT0 != 0)
                 remaining -= now - timerT0;
-            }
         }
-        return (int)remaining;
+        return remaining;
     }
 
     /** Get initial thinking time in milliseconds. */
     public final int getInitialTime(boolean whiteMove) {
         ArrayList<TimeControlField> tc = tcData.getTC(whiteMove);
-        return (int)tc.get(0).timeControl;
+        return tc.get(0).timeControl;
     }
 
     /** Get time increment in milliseconds after playing next move. */
     public final int getIncrement(boolean whiteMove) {
         ArrayList<TimeControlField> tc = tcData.getTC(whiteMove);
         int tcIdx = getCurrentTC(whiteMove).first;
-        return (int)tc.get(tcIdx).increment;
+        return tc.get(tcIdx).increment;
     }
 
     /** Return number of moves to the next time control, or 0 if "sudden death". */
@@ -141,7 +138,7 @@ public class TimeControl {
         ArrayList<TimeControlField> tc = tcData.getTC(whiteMove);
         int tcIdx = getCurrentTC(whiteMove).first;
         TimeControlField t = tc.get(tcIdx);
-        return new int[]{(int)t.timeControl, t.movesPerSession, (int)t.increment};
+        return new int[]{t.timeControl, t.movesPerSession, t.increment};
     }
 
     /** Return the current active time control index and number of moves to next time control. */

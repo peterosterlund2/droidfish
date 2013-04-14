@@ -53,6 +53,11 @@ public class Game {
         updateTimeControl(true);
     }
 
+    /** Serialize to byte array. */
+    final synchronized byte[] toByteArray() {
+        return tree.toByteArray();
+    }
+
     public final void setGamePaused(boolean gamePaused) {
         if (gamePaused != this.gamePaused) {
             this.gamePaused = gamePaused;

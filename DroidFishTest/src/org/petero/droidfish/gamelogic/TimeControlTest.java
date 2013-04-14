@@ -31,7 +31,7 @@ public class TimeControlTest extends TestCase {
 
     public void testElapsedTime() {
         TimeControl tc = new TimeControl();
-        long totTime = 5 * 60 * 1000;
+        int totTime = 5 * 60 * 1000;
         long t0 = 1000;
         TimeControlData tcData = new TimeControlData();
         tcData.setTimeControl(totTime, 0, 0);
@@ -113,7 +113,7 @@ public class TimeControlTest extends TestCase {
         assertEquals(40, tc.getMovesToTC(false));
     }
 
-    private TimeControlField tcf(long time, int moves, long inc) {
+    private TimeControlField tcf(int time, int moves, int inc) {
         return new TimeControlField(time, moves, inc);
     }
 
@@ -159,8 +159,8 @@ public class TimeControlTest extends TestCase {
         assertEquals(1000, tc.getIncrement(false));
 
 
-        long wBaseTime = 60*1000;
-        long bBaseTime = 50*1000;
+        int wBaseTime = 60*1000;
+        int bBaseTime = 50*1000;
         tc.setCurrentMove(30, true, wBaseTime, bBaseTime);
         tc.startTimer(1500);
         wBaseTime = tc.moveMade(1500 + 3000, true);
@@ -179,15 +179,15 @@ public class TimeControlTest extends TestCase {
 
     public void testExtraTime() {
         TimeControl tc = new TimeControl();
-        final long timeCont = 60 * 1000;
-        int wBaseTime = (int)timeCont;
-        int bBaseTime = (int)timeCont;
-        final long inc = 700;
+        final int timeCont = 60 * 1000;
+        int wBaseTime = timeCont;
+        int bBaseTime = timeCont;
+        final int inc = 700;
         TimeControlData tcData = new TimeControlData();
         tcData.setTimeControl(timeCont, 5, inc);
         tc.setTimeControl(tcData);
         tc.setCurrentMove(5, true, wBaseTime, bBaseTime);
-        long t0 = 1342134;
+        int t0 = 1342134;
         assertEquals(timeCont, tc.getRemainingTime(true, t0 + 4711));
         assertEquals(timeCont, tc.getRemainingTime(false, t0 + 4711));
 
@@ -219,7 +219,7 @@ public class TimeControlTest extends TestCase {
         // No extra time when passing time control in analysis mode
         tcData.setTimeControl(timeCont, 1, inc);
         tc.setTimeControl(tcData);
-        wBaseTime = bBaseTime = (int)timeCont;
+        wBaseTime = bBaseTime = timeCont;
         tc.setCurrentMove(1, true, wBaseTime, bBaseTime);
         tc.startTimer(t0 + 1000);
         wBaseTime = tc.moveMade(t0 + 3000, false);

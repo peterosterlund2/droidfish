@@ -75,7 +75,7 @@ public interface GUIInterface {
     public void computerMoveMade();
 
     /** Report remaining thinking time to GUI. */
-    public void setRemainingTime(long wTime, long bTime, long nextUpdate);
+    public void setRemainingTime(int wTime, int bTime, int nextUpdate);
 
     /** Update engine title text. */
     public void updateEngineTitle();
