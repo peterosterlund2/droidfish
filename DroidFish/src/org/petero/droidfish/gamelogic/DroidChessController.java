@@ -112,10 +112,10 @@ public class DroidChessController {
             game.timeController.setTimeControl(timeControl, movesPerSession, timeIncrement);
     }
 
-    /**
-     * @return Array containing time control, moves per session and time increment.
-     */
+    /** @return Array containing time control, moves per session and time increment. */
     public final int[] getTimeLimit() {
+        if (game != null)
+            return game.timeController.getTimeLimit(game.currPos().whiteMove);
         int[] ret = new int[3];
         ret[0] = timeControl;
         ret[1] = movesPerSession;
@@ -1036,6 +1036,7 @@ public class DroidChessController {
 
         updateRemainingTime();
         updateMaterialDiffList();
+        gui.updateTimeControlTitle();
     }
 
     public final void updateMaterialDiffList() {

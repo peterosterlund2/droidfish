@@ -137,7 +137,6 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! Computer clock should stop if phone turned off (computer stops thinking if unplugged)
     // FIXME!!! Add support for all time controls defined by the PGN standard
     // FIXME!!! How to handle hour-glass time control?
-    // FIXME!!! What should happen if you change time controls in the middle of a game?
 
     // FIXME!!! Online play on FICS
     // FIXME!!! Add chess960 support
@@ -152,7 +151,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
     // FIXME!!! Better behavior if engine is terminated. How exactly?
     // FIXME!!! Handle PGN non-file intents with more than one game.
-    // FIXME!!! File load/save of FEN data
+    // FIXME!!! Save position to fen/epd file
 
     // FIXME!!! Strength setting for external engines
     // FIXME!!! Selection dialog for going into variation
@@ -894,7 +893,7 @@ public class DroidFish extends Activity implements GUIInterface {
         int movesPerSession = getIntSetting("movesPerSession", 60);
         int timeIncrement = getIntSetting("timeIncrement", 0);
         ctrl.setTimeLimit(timeControl, movesPerSession, timeIncrement);
-        setSummaryTitle();
+        updateTimeControlTitle();
 
         boardGestures = settings.getBoolean("boardGestures", true);
         scrollSensitivity = Float.parseFloat(settings.getString("scrollSensitivity", "2"));
@@ -1087,7 +1086,7 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     /** Update center field in second header line. */
-    private final void setSummaryTitle() {
+    public final void updateTimeControlTitle() {
         int[] tmpInfo = ctrl.getTimeLimit();
         StringBuilder sb = new StringBuilder();
         int tc = tmpInfo[0];

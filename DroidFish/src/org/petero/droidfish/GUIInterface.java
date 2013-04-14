@@ -83,6 +83,9 @@ public interface GUIInterface {
     /** Update title with the material difference. */
     public void updateMaterialDifferenceTitle(Util.MaterialDiff diff);
 
+    /** Update title with time control information. */
+    public void updateTimeControlTitle();
+
     /** Report a move made that is a candidate for GUI animation. */
     public void setAnimMove(Position sourcePos, Move move, boolean forward);
 

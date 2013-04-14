@@ -157,6 +157,14 @@ public class TimeControl {
         return getCurrentTC(whiteMove).second;
     }
 
+    /** @return Array containing time control, moves per session and time increment. */
+    public int[] getTimeLimit(boolean whiteMove) {
+        ArrayList<TimeControlField> tc = whiteMove ? tcW : tcB;
+        int tcIdx = getCurrentTC(whiteMove).first;
+        TimeControlField t = tc.get(tcIdx);
+        return new int[]{(int)t.timeControl, t.movesPerSession, (int)t.increment};
+    }
+
     /** Return the current active time control index and number of moves to next time control. */
     private Pair<Integer,Integer> getCurrentTC(boolean whiteMove) {
         ArrayList<TimeControlField> tc = whiteMove ? tcW : tcB;
