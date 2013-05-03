@@ -1,7 +1,7 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2012 Marco Costalba, Joona Kiiski, Tord Romstad
+  Copyright (C) 2008-2013 Marco Costalba, Joona Kiiski, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -46,6 +46,10 @@ struct MoveList {
   bool end() const { return cur == last; }
   Move move() const { return cur->move; }
   size_t size() const { return last - mlist; }
+  bool contains(Move m) const {
+    for (const MoveStack* it(mlist); it != last; ++it) if (it->move == m) return true;
+    return false;
+  }
 
 private:
   MoveStack mlist[MAX_MOVES];

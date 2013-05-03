@@ -1,7 +1,7 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2012 Marco Costalba, Joona Kiiski, Tord Romstad
+  Copyright (C) 2008-2013 Marco Costalba, Joona Kiiski, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -39,6 +39,7 @@ enum EndgameType {
   KRKP,  // KR vs KP
   KRKB,  // KR vs KB
   KRKN,  // KR vs KN
+  KQKP,  // KQ vs KP
   KQKR,  // KQ vs KR
   KBBKN, // KBB vs KN
   KNNK,  // KNN vs K
@@ -57,6 +58,7 @@ enum EndgameType {
   KBPPKB,  // KBPP vs KB
   KBPKN,   // KBP vs KN
   KNPK,    // KNP vs K
+  KNPKB,   // KNP vs KB
   KPKP     // KP vs KP
 };
 
@@ -111,7 +113,7 @@ class Endgames {
 
 public:
   Endgames();
-  ~Endgames();
+ ~Endgames();
 
   template<typename T> T probe(Key key, T& eg)
   { return eg = map(eg).count(key) ? map(eg)[key] : NULL; }

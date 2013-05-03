@@ -1,7 +1,7 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2012 Marco Costalba, Joona Kiiski, Tord Romstad
+  Copyright (C) 2008-2013 Marco Costalba, Joona Kiiski, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -40,6 +40,7 @@ typedef unsigned __int64 uint64_t;
 
 #else
 #  include <inttypes.h>
+#  include <unistd.h>  // Used by sysconf(_SC_NPROCESSORS_ONLN)
 #endif
 
 #if !defined(_WIN32) && !defined(_WIN64) // Linux - Unix
@@ -92,6 +93,9 @@ typedef CRITICAL_SECTION Lock;
 typedef HANDLE WaitCondition;
 typedef HANDLE NativeHandle;
 
+// On Windows 95 and 98 parameter lpThreadId my not be null
+inline DWORD* dwWin9xKludge() { static DWORD dw; return &dw; }
+
 #  define lock_init(x) InitializeCriticalSection(&(x))
 #  define lock_grab(x) EnterCriticalSection(&(x))
 #  define lock_release(x) LeaveCriticalSection(&(x))
@@ -101,7 +105,7 @@ typedef HANDLE NativeHandle;
 #  define cond_signal(x) SetEvent(x)
 #  define cond_wait(x,y) { lock_release(y); WaitForSingleObject(x, INFINITE); lock_grab(y); }
 #  define cond_timedwait(x,y,z) { lock_release(y); WaitForSingleObject(x,z); lock_grab(y); }
-#  define thread_create(x,f,t) (x = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)f,t,0,NULL), x != NULL)
+#  define thread_create(x,f,t) (x = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)f,t,0,dwWin9xKludge()), x != NULL)
 #  define thread_join(x) { WaitForSingleObject(x, INFINITE); CloseHandle(x); }
 
 #endif

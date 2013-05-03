@@ -1,7 +1,7 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2012 Marco Costalba, Joona Kiiski, Tord Romstad
+  Copyright (C) 2008-2013 Marco Costalba, Joona Kiiski, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -64,6 +64,7 @@ void init(OptionsMap& o) {
   o["Search Log Filename"]         = Option("SearchLog.txt");
   o["Book File"]                   = Option("book.bin");
   o["Best Book Move"]              = Option(false);
+  o["Contempt Factor"]             = Option(0, -50,  50);
   o["Mobility (Middle Game)"]      = Option(100, 0, 200, on_eval);
   o["Mobility (Endgame)"]          = Option(100, 0, 200, on_eval);
   o["Passed Pawns (Middle Game)"]  = Option(100, 0, 200, on_eval);
@@ -71,11 +72,11 @@ void init(OptionsMap& o) {
   o["Space"]                       = Option(100, 0, 200, on_eval);
   o["Aggressiveness"]              = Option(100, 0, 200, on_eval);
   o["Cowardice"]                   = Option(100, 0, 200, on_eval);
-  o["Min Split Depth"]             = Option(msd, 4, 7, on_threads);
+  o["Min Split Depth"]             = Option(msd, 4, 12, on_threads);
   o["Max Threads per Split Point"] = Option(5, 4, 8, on_threads);
   o["Threads"]                     = Option(cpus, 1, MAX_THREADS, on_threads);
-  o["Use Sleeping Threads"]        = Option(true, on_threads);
-  o["Hash"]                        = Option(32, 4, 8192, on_hash_size);
+  o["Use Sleeping Threads"]        = Option(true);
+  o["Hash"]                        = Option(32, 1, 8192, on_hash_size);
   o["Clear Hash"]                  = Option(on_clear_hash);
   o["Ponder"]                      = Option(true);
   o["OwnBook"]                     = Option(false);
