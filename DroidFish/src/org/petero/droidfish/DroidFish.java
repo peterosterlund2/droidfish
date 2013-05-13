@@ -81,6 +81,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.content.res.Resources.NotFoundException;
 import android.graphics.Typeface;
 import android.graphics.drawable.StateListDrawable;
 import android.media.MediaPlayer;
@@ -3136,9 +3137,12 @@ public class DroidFish extends Activity implements GUIInterface {
         if (soundEnabled) {
             if (moveSound != null)
                 moveSound.release();
-            moveSound = MediaPlayer.create(this, R.raw.movesound);
-            if (moveSound != null)
-                moveSound.start();
+            try {
+                moveSound = MediaPlayer.create(this, R.raw.movesound);
+                if (moveSound != null)
+                    moveSound.start();
+            } catch (NotFoundException ex) {
+            }
         }
         if (vibrateEnabled) {
             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
