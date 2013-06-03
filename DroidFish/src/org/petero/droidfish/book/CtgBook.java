@@ -99,11 +99,11 @@ class CtgBook implements IOpeningBook {
                             if (options.preferMainLines)
                                 weight *= 10;
                         }
-                        int score = movePd.getOpponentScore();
-//                        double w0 = weight;
-                          weight = weight * score;
-//                        System.out.printf("%s : w0:%.3f rec:%d score:%d %.3f\n", TextIO.moveToUCIString(be.move),
-//                                w0, recom, score, weight);
+                        float score = movePd.getOpponentScore() + 1e-4f;
+//                      double w0 = weight;
+                        weight = weight * score;
+//                      System.out.printf("%s : w0:%.3f rec:%d score:%d %.3f\n", TextIO.moveToUCIString(be.move),
+//                                        w0, recom, score, weight);
                     }
                     be.weight = weight;
                 }
@@ -426,7 +426,7 @@ class CtgBook implements IOpeningBook {
             return entries;
         }
 
-        /** Return (wins + draws/2) / games. */
+        /** Return (loss * 2 + draws). */
         final int getOpponentScore() {
             int statStart = posLen + moveBytes;
 //            int wins  = extractInt(buf, statStart + 3, 3);
