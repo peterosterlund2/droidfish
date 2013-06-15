@@ -19,12 +19,16 @@
 package org.petero.droidfish.engine;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import org.petero.droidfish.EngineOptions;
+import org.petero.droidfish.Util;
 import org.petero.droidfish.book.BookOptions;
 import org.petero.droidfish.book.DroidBook;
 import org.petero.droidfish.gamelogic.Move;
@@ -999,7 +1003,15 @@ public class DroidComputerPlayer {
         }
     }
 
+    /** Try to find out how many CPU cores are present. */
     private static final int getNumCPUs() {
+        int nCPUsFromProc = getNumCPUsFromProc();
+        int nCPUsFromSys = getNumCPUsFromSys();
+        int nCPUsFromOS = EngineUtil.getNPhysicalProcessors();
+        return Math.max(Math.max(nCPUsFromProc, nCPUsFromSys), nCPUsFromOS);
+    }
+
+    private static final int getNumCPUsFromProc() {
         int nCPUsFromProc = 1;
         try {
             FileReader fr = new FileReader("/proc/stat");
@@ -1011,12 +1023,24 @@ public class DroidComputerPlayer {
                     nCPUs++;
             }
             inBuf.close();
-            if (nCPUs < 1) nCPUs = 1;
-            nCPUsFromProc = nCPUs;
+            if (nCPUs > 1)
+                nCPUsFromProc = nCPUs;
         } catch (IOException e) {
         }
-        int nCPUsFromOS = EngineUtil.getNPhysicalProcessors();
-        return Math.max(nCPUsFromProc, nCPUsFromOS);
+        return nCPUsFromProc;
+    }
+
+    private static final int getNumCPUsFromSys() {
+        File dir = new File("/sys/devices/system/cpu");
+        File[] files = dir.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return Pattern.matches("cpu[0-9]+", pathname.getName());
+            }
+        });
+        if (files == null)
+            return 1;
+        return Math.max(files.length, 1);
     }
 
     private final static void myAssert(boolean b) {
