@@ -137,6 +137,11 @@ public class PGNFile {
                 int len = line.length();
                 if (len == 0)
                     continue;
+                if ((filePos == 0) && (len > 1) && (line.charAt(0) == '\uFEFF')) {
+                    line = line.substring(1);
+                    len--;
+                    filePos += 3;
+                }
                 boolean isHeader = line.charAt(0) == '[';
                 if (isHeader) {
                     if (!line.contains("\"")) // Try to avoid some false positives
