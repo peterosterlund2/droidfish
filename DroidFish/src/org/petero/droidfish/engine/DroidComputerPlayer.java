@@ -28,7 +28,6 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 import org.petero.droidfish.EngineOptions;
-import org.petero.droidfish.Util;
 import org.petero.droidfish.book.BookOptions;
 import org.petero.droidfish.book.DroidBook;
 import org.petero.droidfish.gamelogic.Move;
