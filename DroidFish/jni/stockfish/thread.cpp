@@ -40,9 +40,6 @@ namespace { extern "C" {
 } }
 
 
-// Thread c'tor starts a newly-created thread of execution that will call
-// the the virtual function idle_loop(), going immediately to sleep.
-
 Thread::Thread() /* : splitPoints() */ { // Value-initialization bug in MSVC
 
   searching = exit = false;
@@ -50,22 +47,29 @@ Thread::Thread() /* : splitPoints() */ { // Value-initialization bug in MSVC
   activeSplitPoint = NULL;
   activePosition = NULL;
   idx = Threads.size();
+}
 
+// Starts a newly-created thread of execution that will call
+// the the virtual function idle_loop(), going immediately to sleep.
+Thread* Thread::start() {
   if (!thread_create(handle, start_routine, this))
   {
       std::cerr << "Failed to create thread number " << idx << std::endl;
       ::exit(EXIT_FAILURE);
   }
+  return this;
 }
 
 
-// Thread d'tor waits for thread termination before to return
-
 Thread::~Thread() {
+}
 
+// Waits for thread termination before to return
+Thread* Thread::stop() {
   exit = true; // Search must be already finished
   notify_one();
   thread_join(handle); // Wait for thread termination
+  return this;
 }
 
 
@@ -186,8 +190,8 @@ bool Thread::is_available_to(Thread* master) const {
 void ThreadPool::init() {
 
   sleepWhileIdle = true;
-  timer = new TimerThread();
-  push_back(new MainThread());
+  timer = new TimerThread(); timer->start();
+  push_back((new MainThread())->start());
   read_uci_options();
 }
 
@@ -196,10 +200,10 @@ void ThreadPool::init() {
 
 void ThreadPool::exit() {
 
-  delete timer; // As first because check_time() accesses threads data
+  delete timer->stop(); // As first because check_time() accesses threads data
 
   for (iterator it = begin(); it != end(); ++it)
-      delete *it;
+      delete (*it)->stop();
 }
 
 
@@ -217,11 +221,11 @@ void ThreadPool::read_uci_options() {
   assert(requested > 0);
 
   while (size() < requested)
-      push_back(new Thread());
+      push_back((new Thread())->start());
 
   while (size() > requested)
   {
-      delete back();
+      delete back()->stop();
       pop_back();
   }
 }

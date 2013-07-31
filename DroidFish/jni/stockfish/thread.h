@@ -95,6 +95,10 @@ struct Thread {
   Thread();
   virtual ~Thread();
 
+  Thread* start();
+  Thread* stop();
+
+
   virtual void idle_loop();
   void notify_one();
   bool cutoff_occurred() const;
