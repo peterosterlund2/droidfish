@@ -232,8 +232,8 @@
   <string name="prefs_strength_summary">Поддерживается только внутренними движками. Режим анализа всегда использует полную силу.</string>
   <string name="prefs_ponderMode_title">Размышление</string>
   <string name="prefs_ponderMode_summary">Позволить движку обдумывание во время ожидания хода оппонента. Поддерживается большинством движков.</string>
-  <string name="prefs_threads_title">Темы</string>
-  <string name="prefs_threads_summary">Количество тем движка для использования. Поддерживается не всеми движками.</string>
+  <string name="prefs_threads_title">Потоки</string>
+  <string name="prefs_threads_summary">Количество потоков (ядер) двигатель для использования. Не поддерживается всеми двигателями.</string>
   <string name="prefs_hash_title">Хэш-таблица</string>
   <string name="prefs_hash_summary">Размер хэш-таблицы в мегабайтах</string>
   <string name="prefs_time_control">Контроль времени</string>
