@@ -17,7 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#if !defined(POSITION_H_INCLUDED)
+#ifndef POSITION_H_INCLUDED
 #define POSITION_H_INCLUDED
 
 #include <cassert>
@@ -52,7 +52,7 @@ struct StateInfo {
   Key pawnKey, materialKey;
   Value npMaterial[COLOR_NB];
   int castleRights, rule50, pliesFromNull;
-  Score psqScore;
+  Score psq;
   Square epSquare;
 
   Key key;
@@ -95,6 +95,7 @@ public:
   Position(const Position& p, Thread* t) { *this = p; thisThread = t; }
   Position(const std::string& f, bool c960, Thread* t) { set(f, c960, t); }
   Position& operator=(const Position&);
+  static void init();
 
   // Text input/output
   void set(const std::string& fen, bool isChess960, Thread* th);
@@ -112,8 +113,8 @@ public:
   Square king_square(Color c) const;
   Square ep_square() const;
   bool is_empty(Square s) const;
-  const Square* piece_list(Color c, PieceType pt) const;
-  int piece_count(Color c, PieceType pt) const;
+  template<PieceType Pt> int count(Color c) const;
+  template<PieceType Pt> const Square* list(Color c) const;
 
   // Castling
   int can_castle(CastleRight f) const;
@@ -169,7 +170,6 @@ public:
 
   // Incremental piece-square evaluation
   Score psq_score() const;
-  Score psq_delta(Piece p, Square from, Square to) const;
   Value non_pawn_material(Color c) const;
 
   // Other properties of the position
@@ -188,12 +188,14 @@ public:
 private:
   // Initialization helpers (used while setting up a position)
   void clear();
-  void put_piece(Piece p, Square s);
   void set_castle_right(Color c, Square rfrom);
 
   // Helper functions
   void do_castle(Square kfrom, Square kto, Square rfrom, Square rto);
-  template<bool FindPinned> Bitboard hidden_checkers() const;
+  Bitboard hidden_checkers(Square ksq, Color c) const;
+  void put_piece(Square s, Color c, PieceType pt);
+  void remove_piece(Square s, Color c, PieceType pt);
+  void move_piece(Square from, Square to, Color c, PieceType pt);
 
   // Computing hash keys from scratch (for initialization and debugging)
   Key compute_key() const;
@@ -273,12 +275,12 @@ inline Bitboard Position::pieces(Color c, PieceType pt1, PieceType pt2) const {
   return byColorBB[c] & (byTypeBB[pt1] | byTypeBB[pt2]);
 }
 
-inline int Position::piece_count(Color c, PieceType pt) const {
-  return pieceCount[c][pt];
+template<PieceType Pt> inline int Position::count(Color c) const {
+  return pieceCount[c][Pt];
 }
 
-inline const Square* Position::piece_list(Color c, PieceType pt) const {
-  return pieceList[c][pt];
+template<PieceType Pt> inline const Square* Position::list(Color c) const {
+  return pieceList[c][Pt];
 }
 
 inline Square Position::ep_square() const {
@@ -331,11 +333,11 @@ inline Bitboard Position::checkers() const {
 }
 
 inline Bitboard Position::discovered_check_candidates() const {
-  return hidden_checkers<false>();
+  return hidden_checkers(king_square(~sideToMove), sideToMove);
 }
 
 inline Bitboard Position::pinned_pieces() const {
-  return hidden_checkers<true>();
+  return hidden_checkers(king_square(sideToMove), ~sideToMove);
 }
 
 inline bool Position::pawn_is_passed(Color c, Square s) const {
@@ -346,10 +348,6 @@ inline Key Position::key() const {
   return st->key;
 }
 
-inline Key Position::exclusion_key() const {
-  return st->key ^ Zobrist::exclusion;
-}
-
 inline Key Position::pawn_key() const {
   return st->pawnKey;
 }
@@ -358,12 +356,8 @@ inline Key Position::material_key() const {
   return st->materialKey;
 }
 
-inline Score Position::psq_delta(Piece p, Square from, Square to) const {
-  return pieceSquareTable[p][to] - pieceSquareTable[p][from];
-}
-
 inline Score Position::psq_score() const {
-  return st->psqScore;
+  return st->psq;
 }
 
 inline Value Position::non_pawn_material(Color c) const {
@@ -422,4 +416,44 @@ inline Thread* Position::this_thread() const {
   return thisThread;
 }
 
-#endif // !defined(POSITION_H_INCLUDED)
+inline void Position::put_piece(Square s, Color c, PieceType pt) {
+
+  board[s] = make_piece(c, pt);
+  byTypeBB[ALL_PIECES] |= s;
+  byTypeBB[pt] |= s;
+  byColorBB[c] |= s;
+  index[s] = pieceCount[c][pt]++;
+  pieceList[c][pt][index[s]] = s;
+}
+
+inline void Position::move_piece(Square from, Square to, Color c, PieceType pt) {
+
+  // index[from] is not updated and becomes stale. This works as long
+  // as index[] is accessed just by known occupied squares.
+  Bitboard from_to_bb = SquareBB[from] ^ SquareBB[to];
+  byTypeBB[ALL_PIECES] ^= from_to_bb;
+  byTypeBB[pt] ^= from_to_bb;
+  byColorBB[c] ^= from_to_bb;
+  board[from] = NO_PIECE;
+  board[to] = make_piece(c, pt);
+  index[to] = index[from];
+  pieceList[c][pt][index[to]] = to;
+}
+
+inline void Position::remove_piece(Square s, Color c, PieceType pt) {
+
+  // WARNING: This is not a reversible operation. If we remove a piece in
+  // do_move() and then replace it in undo_move() we will put it at the end of
+  // the list and not in its original place, it means index[] and pieceList[]
+  // are not guaranteed to be invariant to a do_move() + undo_move() sequence.
+  byTypeBB[ALL_PIECES] ^= s;
+  byTypeBB[pt] ^= s;
+  byColorBB[c] ^= s;
+  /* board[s] = NO_PIECE; */ // Not needed, will be overwritten by capturing
+  Square lastSquare = pieceList[c][pt][--pieceCount[c][pt]];
+  index[lastSquare] = index[s];
+  pieceList[c][pt][index[lastSquare]] = lastSquare;
+  pieceList[c][pt][pieceCount[c][pt]] = SQ_NONE;
+}
+
+#endif // #ifndef POSITION_H_INCLUDED

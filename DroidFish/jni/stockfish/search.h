@@ -17,7 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#if !defined(SEARCH_H_INCLUDED)
+#ifndef SEARCH_H_INCLUDED
 #define SEARCH_H_INCLUDED
 
 #include <cstring>
@@ -79,7 +79,7 @@ struct RootMove {
 
 struct LimitsType {
 
-  LimitsType() { memset(this, 0, sizeof(LimitsType)); }
+  LimitsType() { std::memset(this, 0, sizeof(LimitsType)); }
   bool use_time_management() const { return !(mate | movetime | depth | nodes | infinite); }
 
   int time[COLOR_NB], inc[COLOR_NB], movestogo, depth, nodes, movetime, mate, infinite, ponder;
@@ -109,4 +109,4 @@ extern void think();
 
 } // namespace Search
 
-#endif // !defined(SEARCH_H_INCLUDED)
+#endif // #ifndef SEARCH_H_INCLUDED

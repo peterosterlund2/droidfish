@@ -19,7 +19,6 @@
 
 #include <algorithm> // For std::count
 #include <cassert>
-#include <iostream>
 
 #include "movegen.h"
 #include "search.h"
@@ -30,46 +29,64 @@ using namespace Search;
 
 ThreadPool Threads; // Global object
 
-namespace { extern "C" {
+namespace {
 
  // start_routine() is the C function which is called when a new thread
  // is launched. It is a wrapper to the virtual function idle_loop().
 
- long start_routine(Thread* th) { th->idle_loop(); return 0; }
+ extern "C" { long start_routine(ThreadBase* th) { th->idle_loop(); return 0; } }
 
-} }
 
+ // Helpers to launch a thread after creation and joining before delete. Must be
+ // outside Thread c'tor and d'tor because object shall be fully initialized
+ // when start_routine (and hence virtual idle_loop) is called and when joining.
+
+ template<typename T> T* new_thread() {
+   T* th = new T();
+   thread_create(th->handle, start_routine, th); // Will go to sleep
+   return th;
+ }
+
+ void delete_thread(ThreadBase* th) {
+   th->exit = true; // Search must be already finished
+   th->notify_one();
+   thread_join(th->handle); // Wait for thread termination
+   delete th;
+ }
+
+}
+
+
+// ThreadBase::notify_one() wakes up the thread when there is some work to do
+
+void ThreadBase::notify_one() {
+
+  mutex.lock();
+  sleepCondition.notify_one();
+  mutex.unlock();
+}
+
+
+// ThreadBase::wait_for() set the thread to sleep until condition 'b' turns true
+
+void ThreadBase::wait_for(volatile const bool& b) {
+
+  mutex.lock();
+  while (!b) sleepCondition.wait(mutex);
+  mutex.unlock();
+}
+
+
+// Thread c'tor just inits data but does not launch any thread of execution that
+// instead will be started only upon c'tor returns.
 
 Thread::Thread() /* : splitPoints() */ { // Value-initialization bug in MSVC
 
-  searching = exit = false;
+  searching = false;
   maxPly = splitPointsSize = 0;
   activeSplitPoint = NULL;
   activePosition = NULL;
   idx = Threads.size();
-}
-
-// Starts a newly-created thread of execution that will call
-// the the virtual function idle_loop(), going immediately to sleep.
-Thread* Thread::start() {
-  if (!thread_create(handle, start_routine, this))
-  {
-      std::cerr << "Failed to create thread number " << idx << std::endl;
-      ::exit(EXIT_FAILURE);
-  }
-  return this;
-}
-
-
-Thread::~Thread() {
-}
-
-// Waits for thread termination before to return
-Thread* Thread::stop() {
-  exit = true; // Search must be already finished
-  notify_one();
-  thread_join(handle); // Wait for thread termination
-  return this;
 }
 
 
@@ -127,26 +144,6 @@ void MainThread::idle_loop() {
 }
 
 
-// Thread::notify_one() wakes up the thread when there is some search to do
-
-void Thread::notify_one() {
-
-  mutex.lock();
-  sleepCondition.notify_one();
-  mutex.unlock();
-}
-
-
-// Thread::wait_for() set the thread to sleep until condition 'b' turns true
-
-void Thread::wait_for(volatile const bool& b) {
-
-  mutex.lock();
-  while (!b) sleepCondition.wait(mutex);
-  mutex.unlock();
-}
-
-
 // Thread::cutoff_occurred() checks whether a beta cutoff has occurred in the
 // current active split point, or in some ancestor of the split point.
 
@@ -167,7 +164,7 @@ bool Thread::cutoff_occurred() const {
 // which are busy searching the split point at the top of slaves split point
 // stack (the "helpful master concept" in YBWC terminology).
 
-bool Thread::is_available_to(Thread* master) const {
+bool Thread::is_available_to(const Thread* master) const {
 
   if (searching)
       return false;
@@ -190,8 +187,8 @@ bool Thread::is_available_to(Thread* master) const {
 void ThreadPool::init() {
 
   sleepWhileIdle = true;
-  timer = new TimerThread(); timer->start();
-  push_back((new MainThread())->start());
+  timer = new_thread<TimerThread>();
+  push_back(new_thread<MainThread>());
   read_uci_options();
 }
 
@@ -200,10 +197,10 @@ void ThreadPool::init() {
 
 void ThreadPool::exit() {
 
-  delete timer->stop(); // As first because check_time() accesses threads data
+  delete_thread(timer); // As first because check_time() accesses threads data
 
   for (iterator it = begin(); it != end(); ++it)
-      delete (*it)->stop();
+      delete_thread(*it);
 }
 
 
@@ -220,12 +217,19 @@ void ThreadPool::read_uci_options() {
 
   assert(requested > 0);
 
+  // Value 0 has a special meaning: We determine the optimal minimum split depth
+  // automatically. Anyhow the minimumSplitDepth should never be under 4 plies.
+  if (!minimumSplitDepth)
+      minimumSplitDepth = (requested < 8 ? 4 : 7) * ONE_PLY;
+  else
+      minimumSplitDepth = std::max(4 * ONE_PLY, minimumSplitDepth);
+
   while (size() < requested)
-      push_back((new Thread())->start());
+      push_back(new_thread<Thread>());
 
   while (size() > requested)
   {
-      delete back()->stop();
+      delete_thread(back());
       pop_back();
   }
 }
@@ -234,7 +238,7 @@ void ThreadPool::read_uci_options() {
 // slave_available() tries to find an idle thread which is available as a slave
 // for the thread 'master'.
 
-Thread* ThreadPool::available_slave(Thread* master) const {
+Thread* ThreadPool::available_slave(const Thread* master) const {
 
   for (const_iterator it = begin(); it != end(); ++it)
       if ((*it)->is_available_to(master))
@@ -254,9 +258,9 @@ Thread* ThreadPool::available_slave(Thread* master) const {
 // search() then split() returns.
 
 template <bool Fake>
-void Thread::split(Position& pos, Stack* ss, Value alpha, Value beta, Value* bestValue,
+void Thread::split(Position& pos, const Stack* ss, Value alpha, Value beta, Value* bestValue,
                    Move* bestMove, Depth depth, Move threatMove, int moveCount,
-                   MovePicker* movePicker, int nodeType) {
+                   MovePicker* movePicker, int nodeType, bool cutNode) {
 
   assert(pos.pos_is_ok());
   assert(*bestValue <= alpha && alpha < beta && beta <= VALUE_INFINITE);
@@ -278,6 +282,7 @@ void Thread::split(Position& pos, Stack* ss, Value alpha, Value beta, Value* bes
   sp.alpha = alpha;
   sp.beta = beta;
   sp.nodeType = nodeType;
+  sp.cutNode = cutNode;
   sp.movePicker = movePicker;
   sp.moveCount = moveCount;
   sp.pos = &pos;
@@ -343,15 +348,15 @@ void Thread::split(Position& pos, Stack* ss, Value alpha, Value beta, Value* bes
 }
 
 // Explicit template instantiations
-template void Thread::split<false>(Position&, Stack*, Value, Value, Value*, Move*, Depth, Move, int, MovePicker*, int);
-template void Thread::split< true>(Position&, Stack*, Value, Value, Value*, Move*, Depth, Move, int, MovePicker*, int);
+template void Thread::split<false>(Position&, const Stack*, Value, Value, Value*, Move*, Depth, Move, int, MovePicker*, int, bool);
+template void Thread::split< true>(Position&, const Stack*, Value, Value, Value*, Move*, Depth, Move, int, MovePicker*, int, bool);
 
 
 // wait_for_think_finished() waits for main thread to go to sleep then returns
 
 void ThreadPool::wait_for_think_finished() {
 
-  MainThread* t = main_thread();
+  MainThread* t = main();
   t->mutex.lock();
   while (t->thinking) sleepCondition.wait(t->mutex);
   t->mutex.unlock();
@@ -370,16 +375,20 @@ void ThreadPool::start_thinking(const Position& pos, const LimitsType& limits,
   Signals.stopOnPonderhit = Signals.firstRootMove = false;
   Signals.stop = Signals.failedLowAtRoot = false;
 
+  RootMoves.clear();
   RootPos = pos;
   Limits = limits;
-  SetupStates = states; // Ownership transfer here
-  RootMoves.clear();
+  if (states.get()) // If we don't set a new position, preserve current state
+  {
+      SetupStates = states; // Ownership transfer here
+      assert(!states.get());
+  }
 
-  for (MoveList<LEGAL> ml(pos); !ml.end(); ++ml)
+  for (MoveList<LEGAL> it(pos); *it; ++it)
       if (   searchMoves.empty()
-          || std::count(searchMoves.begin(), searchMoves.end(), ml.move()))
-          RootMoves.push_back(RootMove(ml.move()));
+          || std::count(searchMoves.begin(), searchMoves.end(), *it))
+          RootMoves.push_back(RootMove(*it));
 
-  main_thread()->thinking = true;
-  main_thread()->notify_one(); // Starts main thread
+  main()->thinking = true;
+  main()->notify_one(); // Starts main thread
 }

@@ -42,14 +42,13 @@ Bitboard SquareBB[SQUARE_NB];
 Bitboard FileBB[FILE_NB];
 Bitboard RankBB[RANK_NB];
 Bitboard AdjacentFilesBB[FILE_NB];
-Bitboard ThisAndAdjacentFilesBB[FILE_NB];
 Bitboard InFrontBB[COLOR_NB][RANK_NB];
 Bitboard StepAttacksBB[PIECE_NB][SQUARE_NB];
 Bitboard BetweenBB[SQUARE_NB][SQUARE_NB];
 Bitboard DistanceRingsBB[SQUARE_NB][8];
 Bitboard ForwardBB[COLOR_NB][SQUARE_NB];
 Bitboard PassedPawnMask[COLOR_NB][SQUARE_NB];
-Bitboard AttackSpanMask[COLOR_NB][SQUARE_NB];
+Bitboard PawnAttackSpan[COLOR_NB][SQUARE_NB];
 Bitboard PseudoAttacks[PIECE_TYPE_NB][SQUARE_NB];
 
 int SquareDistance[SQUARE_NB][SQUARE_NB];
@@ -84,7 +83,7 @@ namespace {
 /// lsb()/msb() finds the least/most significant bit in a nonzero bitboard.
 /// pop_lsb() finds and clears the least significant bit in a nonzero bitboard.
 
-#if !defined(USE_BSFQ)
+#ifndef USE_BSFQ
 
 Square lsb(Bitboard b) { return BSFTable[bsf_index(b)]; }
 
@@ -123,7 +122,7 @@ Square msb(Bitboard b) {
   return (Square)(result + MS1BTable[b32]);
 }
 
-#endif // !defined(USE_BSFQ)
+#endif // ifndef USE_BSFQ
 
 
 /// Bitboards::print() prints a bitboard in an easily readable format to the
@@ -171,10 +170,7 @@ void Bitboards::init() {
   }
 
   for (File f = FILE_A; f <= FILE_H; f++)
-  {
       AdjacentFilesBB[f] = (f > FILE_A ? FileBB[f - 1] : 0) | (f < FILE_H ? FileBB[f + 1] : 0);
-      ThisAndAdjacentFilesBB[f] = FileBB[f] | AdjacentFilesBB[f];
-  }
 
   for (Rank r = RANK_1; r < RANK_8; r++)
       InFrontBB[WHITE][r] = ~(InFrontBB[BLACK][r + 1] = InFrontBB[BLACK][r] | RankBB[r]);
@@ -183,19 +179,17 @@ void Bitboards::init() {
       for (Square s = SQ_A1; s <= SQ_H8; s++)
       {
           ForwardBB[c][s]      = InFrontBB[c][rank_of(s)] & FileBB[file_of(s)];
-          PassedPawnMask[c][s] = InFrontBB[c][rank_of(s)] & ThisAndAdjacentFilesBB[file_of(s)];
-          AttackSpanMask[c][s] = InFrontBB[c][rank_of(s)] & AdjacentFilesBB[file_of(s)];
+          PawnAttackSpan[c][s] = InFrontBB[c][rank_of(s)] & AdjacentFilesBB[file_of(s)];
+          PassedPawnMask[c][s] = ForwardBB[c][s] | PawnAttackSpan[c][s];
       }
 
   for (Square s1 = SQ_A1; s1 <= SQ_H8; s1++)
       for (Square s2 = SQ_A1; s2 <= SQ_H8; s2++)
+      {
           SquareDistance[s1][s2] = std::max(file_distance(s1, s2), rank_distance(s1, s2));
-
-  for (Square s1 = SQ_A1; s1 <= SQ_H8; s1++)
-      for (int d = 1; d < 8; d++)
-          for (Square s2 = SQ_A1; s2 <= SQ_H8; s2++)
-              if (SquareDistance[s1][s2] == d)
-                  DistanceRingsBB[s1][d - 1] |= s2;
+          if (s1 != s2)
+             DistanceRingsBB[s1][SquareDistance[s1][s2] - 1] |= s2;
+      }
 
   int steps[][9] = { {}, { 7, 9 }, { 17, 15, 10, 6, -6, -10, -15, -17 },
                      {}, {}, {}, { 9, 7, -7, -9, 8, 1, -1, -8 } };
@@ -322,7 +316,7 @@ namespace {
             do magics[s] = pick_random(rk, booster);
             while (popcount<Max15>((magics[s] * masks[s]) >> 56) < 6);
 
-            memset(attacks[s], 0, size * sizeof(Bitboard));
+            std::memset(attacks[s], 0, size * sizeof(Bitboard));
 
             // A good magic must map every possible occupancy to an index that
             // looks up the correct sliding attack in the attacks[s] database.

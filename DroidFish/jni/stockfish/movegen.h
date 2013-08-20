@@ -17,7 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#if !defined(MOVEGEN_H_INCLUDED)
+#ifndef MOVEGEN_H_INCLUDED
 #define MOVEGEN_H_INCLUDED
 
 #include "types.h"
@@ -34,26 +34,25 @@ enum GenType {
 class Position;
 
 template<GenType>
-MoveStack* generate(const Position& pos, MoveStack* mlist);
+ExtMove* generate(const Position& pos, ExtMove* mlist);
 
 /// The MoveList struct is a simple wrapper around generate(), sometimes comes
 /// handy to use this class instead of the low level generate() function.
 template<GenType T>
 struct MoveList {
 
-  explicit MoveList(const Position& pos) : cur(mlist), last(generate<T>(pos, mlist)) {}
+  explicit MoveList(const Position& pos) : cur(mlist), last(generate<T>(pos, mlist)) { last->move = MOVE_NONE; }
   void operator++() { cur++; }
-  bool end() const { return cur == last; }
-  Move move() const { return cur->move; }
+  Move operator*() const { return cur->move; }
   size_t size() const { return last - mlist; }
   bool contains(Move m) const {
-    for (const MoveStack* it(mlist); it != last; ++it) if (it->move == m) return true;
+    for (const ExtMove* it(mlist); it != last; ++it) if (it->move == m) return true;
     return false;
   }
 
 private:
-  MoveStack mlist[MAX_MOVES];
-  MoveStack *cur, *last;
+  ExtMove mlist[MAX_MOVES];
+  ExtMove *cur, *last;
 };
 
-#endif // !defined(MOVEGEN_H_INCLUDED)
+#endif // #ifndef MOVEGEN_H_INCLUDED

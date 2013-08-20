@@ -39,9 +39,9 @@ namespace {
   // bit  6-11: black king square (from SQ_A1 to SQ_H8)
   // bit    12: side to move (WHITE or BLACK)
   // bit 13-14: white pawn file (from FILE_A to FILE_D)
-  // bit 15-17: white pawn 6 - rank (from 6 - RANK_7 to 6 - RANK_2)
+  // bit 15-17: white pawn RANK_7 - rank (from RANK_7 - RANK_7 to RANK_7 - RANK_2)
   unsigned index(Color us, Square bksq, Square wksq, Square psq) {
-    return wksq + (bksq << 6) + (us << 12) + (file_of(psq) << 13) + ((6 - rank_of(psq)) << 15);
+    return wksq + (bksq << 6) + (us << 12) + (file_of(psq) << 13) + ((RANK_7 - rank_of(psq)) << 15);
   }
 
   enum Result {
@@ -107,10 +107,10 @@ namespace {
 
   Result KPKPosition::classify_leaf(unsigned idx) {
 
-    wksq = Square((idx >> 0) & 0x3F);
-    bksq = Square((idx >> 6) & 0x3F);
-    us   = Color((idx >> 12) & 0x01);
-    psq  = File((idx >> 13) & 3) | Rank(6 - (idx >> 15));
+    wksq = Square((idx >>  0) & 0x3F);
+    bksq = Square((idx >>  6) & 0x3F);
+    us   = Color ((idx >> 12) & 0x01);
+    psq  = File  ((idx >> 13) & 0x03) | Rank(RANK_7 - (idx >> 15));
 
     // Check if two pieces are on the same square or if a king can be captured
     if (   wksq == psq || wksq == bksq || bksq == psq
@@ -148,12 +148,14 @@ namespace {
     // as WIN, the position is classified WIN otherwise the current position is
     // classified UNKNOWN.
 
+    const Color Them = (Us == WHITE ? BLACK : WHITE);
+
     Result r = INVALID;
     Bitboard b = StepAttacksBB[KING][Us == WHITE ? wksq : bksq];
 
     while (b)
-        r |= Us == WHITE ? db[index(~Us, bksq, pop_lsb(&b), psq)]
-                         : db[index(~Us, pop_lsb(&b), wksq, psq)];
+        r |= Us == WHITE ? db[index(Them, bksq, pop_lsb(&b), psq)]
+                         : db[index(Them, pop_lsb(&b), wksq, psq)];
 
     if (Us == WHITE && rank_of(psq) < RANK_7)
     {

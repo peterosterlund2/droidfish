@@ -4,12 +4,9 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE    := stockfish
 LOCAL_SRC_FILES := \
-	evaluate.cpp     notation.cpp  search.cpp \
-	benchmark.cpp    movegen.cpp   tt.cpp \
-	bitbase.cpp      main.cpp      movepick.cpp  uci.cpp \
-	bitboard.cpp     pawns.cpp     ucioption.cpp \
-	book.cpp         material.cpp  position.cpp \
-	endgame.cpp      misc.cpp      timeman.cpp   thread.cpp
+	benchmark.cpp  book.cpp      main.cpp	   movegen.cpp	 pawns.cpp     thread.cpp   uci.cpp \
+	bitbase.cpp    endgame.cpp   material.cpp  movepick.cpp  position.cpp  timeman.cpp  ucioption.cpp \
+	bitboard.cpp   evaluate.cpp  misc.cpp	   notation.cpp  search.cpp    tt.cpp
 
 LOCAL_CFLAGS    := -DNO_PREFETCH=1 -O2
 

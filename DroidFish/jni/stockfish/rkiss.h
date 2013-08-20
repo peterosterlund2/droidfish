@@ -22,7 +22,7 @@
   (at your option) any later version.
 */
 
-#if !defined(RKISS_H_INCLUDED)
+#ifndef RKISS_H_INCLUDED
 #define RKISS_H_INCLUDED
 
 #include "types.h"
@@ -43,14 +43,12 @@
 
 class RKISS {
 
-  // Keep variables always together
-  struct S { uint64_t a, b, c, d; } s;
+  struct S { uint64_t a, b, c, d; } s; // Keep variables always together
 
   uint64_t rotate(uint64_t x, uint64_t k) const {
     return (x << k) | (x >> (64 - k));
   }
 
-  // Return 64 bit unsigned integer in between [0, 2^64 - 1]
   uint64_t rand64() {
 
     const uint64_t
@@ -73,4 +71,4 @@ public:
   template<typename T> T rand() { return T(rand64()); }
 };
 
-#endif // !defined(RKISS_H_INCLUDED)
+#endif // #ifndef RKISS_H_INCLUDED
