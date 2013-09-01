@@ -28,6 +28,55 @@
                 <data android:mimeType="application/x-chess-pgn" />
             </intent-filter>
             <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\.pgn"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\.pgn"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\.pgn"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\.pgn"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\.pgn"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.pgn"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.pgn"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.pgn"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.pgn"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\.fen"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\.fen"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\.fen"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\.fen"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\.fen"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\.fen"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\.epd"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\.epd"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\.epd"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\.epd"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\.epd"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.epd"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.epd"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.epd"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.epd"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\.epd"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\.epd"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\.epd"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\.epd"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\.epd"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.epd"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.epd"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.epd"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.epd"/>
+                </intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="application/x-chess-pgn" />
