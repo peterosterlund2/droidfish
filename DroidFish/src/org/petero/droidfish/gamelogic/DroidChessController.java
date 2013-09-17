@@ -887,12 +887,16 @@ public class DroidChessController {
                 final Pair<Position, ArrayList<Move>> ph = game.getUCIHistory();
                 Position currPos = new Position(game.currPos());
                 long now = System.currentTimeMillis();
+                if (ponder)
+                    game.timeController.advanceMove(1);
                 int wTime = game.timeController.getRemainingTime(true, now);
                 int bTime = game.timeController.getRemainingTime(false, now);
                 int wInc = game.timeController.getIncrement(true);
                 int bInc = game.timeController.getIncrement(false);
                 boolean wtm = currPos.whiteMove;
-                int movesToGo = game.timeController.getMovesToTC(wtm);
+                int movesToGo = game.timeController.getMovesToTC(wtm ^ ponder);
+                if (ponder)
+                    game.timeController.advanceMove(-1);
                 final Move fPonderMove = ponder ? ponderMove : null;
                 SearchRequest sr = DroidComputerPlayer.SearchRequest.searchRequest(
                         searchId, now, ph.first, ph.second, currPos,

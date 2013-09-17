@@ -66,6 +66,22 @@ public class TimeControl {
         elapsed = 0;
     }
 
+    /** Move current move "delta" half-moves forward. */
+    public final void advanceMove(int delta) {
+        while (delta > 0) {
+            if (!whiteToMove)
+                currentMove++;
+            whiteToMove = !whiteToMove;
+            delta--;
+        }
+        while (delta < 0) {
+            whiteToMove = !whiteToMove;
+            if (!whiteToMove)
+                currentMove--;
+            delta++;
+        }
+    }
+
     public final boolean clockRunning() {
         return timerT0 != 0;
     }
