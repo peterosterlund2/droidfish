@@ -396,6 +396,7 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
     <item>4</item>
     <item>6</item>
     <item>8</item>
+    <item>16</item>
   </string-array>
   <string-array name="engine_threads_values">
     <item>0</item>
@@ -405,6 +406,7 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
     <item>4</item>
     <item>6</item>
     <item>8</item>
+    <item>16</item>
   </string-array>
   <string-array name="viewPieceType_texts">
     <item>Lettres anglaises</item>

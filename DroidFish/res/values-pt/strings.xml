@@ -398,6 +398,7 @@ não estiver usando o programa diretamente.\</string>
     <item>4</item>
     <item>6</item>
     <item>8</item>
+    <item>16</item>
   </string-array>
   <string-array name="engine_threads_values">
     <item>0</item>
@@ -407,6 +408,7 @@ não estiver usando o programa diretamente.\</string>
     <item>4</item>
     <item>6</item>
     <item>8</item>
+    <item>16</item>
   </string-array>
   <string-array name="viewPieceType_texts">
     <item>Letras em inglês</item>

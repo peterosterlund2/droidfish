@@ -389,6 +389,7 @@
     <item>4</item>
     <item>6</item>
     <item>8</item>
+    <item>16</item>
   </string-array>
   <string-array name="engine_threads_values">
     <item>0</item>
@@ -398,6 +399,7 @@
     <item>4</item>
     <item>6</item>
     <item>8</item>
+    <item>16</item>
   </string-array>
   <string-array name="viewPieceType_texts">
     <item>Международная</item>

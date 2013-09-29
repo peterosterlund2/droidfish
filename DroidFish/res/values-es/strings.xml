@@ -397,6 +397,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <item>4</item>
     <item>6</item>
     <item>8</item>
+    <item>16</item>
   </string-array>
   <string-array name="engine_threads_values">
     <item>0</item>
@@ -406,6 +407,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <item>4</item>
     <item>6</item>
     <item>8</item>
+    <item>16</item>
   </string-array>
   <string-array name="viewPieceType_texts">
     <item>Notación en inglés</item>

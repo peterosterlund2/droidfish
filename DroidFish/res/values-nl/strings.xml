@@ -397,6 +397,7 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
     <item>4</item>
     <item>6</item>
     <item>8</item>
+    <item>16</item>
   </string-array>
   <string-array name="engine_threads_values">
     <item>0</item>
@@ -406,6 +407,7 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
     <item>4</item>
     <item>6</item>
     <item>8</item>
+    <item>16</item>
   </string-array>
   <string-array name="viewPieceType_texts">
     <item>Engelse letters</item>
