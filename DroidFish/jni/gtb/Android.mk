@@ -19,7 +19,6 @@ LOCAL_CFLAGS    := \
 	-I $(LOCAL_PATH)/compression/liblzf/ -I $(LOCAL_PATH)/compression/zlib/ \
 	-I $(LOCAL_PATH)/compression/lzma/ -I $(LOCAL_PATH)/compression/huffman/ \
 	-D Z_PREFIX -D NDEBUG -Wall\
-	 -mandroid -DTARGET_OS=android -D__ANDROID__ \
-	-isystem $(SYSROOT)/usr/include
+	 -mandroid -DTARGET_OS=android -D__ANDROID__
 
 include $(BUILD_SHARED_LIBRARY)
