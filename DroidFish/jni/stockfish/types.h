@@ -88,7 +88,7 @@ const bool Is64Bit = false;
 typedef uint64_t Key;
 typedef uint64_t Bitboard;
 
-const int MAX_MOVES      = 192;
+const int MAX_MOVES      = 256;
 const int MAX_PLY        = 100;
 const int MAX_PLY_PLUS_6 = MAX_PLY + 6;
 
@@ -194,9 +194,9 @@ enum Depth {
   ONE_PLY = 2,
 
   DEPTH_ZERO          =  0 * ONE_PLY,
-  DEPTH_QS_CHECKS     = -1 * ONE_PLY,
-  DEPTH_QS_NO_CHECKS  = -2 * ONE_PLY,
-  DEPTH_QS_RECAPTURES = -7 * ONE_PLY,
+  DEPTH_QS_CHECKS     =  0 * ONE_PLY,
+  DEPTH_QS_NO_CHECKS  = -1 * ONE_PLY,
+  DEPTH_QS_RECAPTURES = -5 * ONE_PLY,
 
   DEPTH_NONE = -127 * ONE_PLY
 };
@@ -274,15 +274,15 @@ inline T operator-(const T d1, const T d2) { return T(int(d1) - int(d2)); } \
 inline T operator*(int i, const T d) { return T(i * int(d)); }              \
 inline T operator*(const T d, int i) { return T(int(d) * i); }              \
 inline T operator-(const T d) { return T(-int(d)); }                        \
-inline T& operator+=(T& d1, const T d2) { d1 = d1 + d2; return d1; }        \
-inline T& operator-=(T& d1, const T d2) { d1 = d1 - d2; return d1; }        \
-inline T& operator*=(T& d, int i) { d = T(int(d) * i); return d; }
+inline T& operator+=(T& d1, const T d2) { return d1 = d1 + d2; }            \
+inline T& operator-=(T& d1, const T d2) { return d1 = d1 - d2; }            \
+inline T& operator*=(T& d, int i) { return d = T(int(d) * i); }
 
 #define ENABLE_OPERATORS_ON(T) ENABLE_SAFE_OPERATORS_ON(T)                  \
-inline T operator++(T& d, int) { d = T(int(d) + 1); return d; }             \
-inline T operator--(T& d, int) { d = T(int(d) - 1); return d; }             \
+inline T& operator++(T& d) { return d = T(int(d) + 1); }                    \
+inline T& operator--(T& d) { return d = T(int(d) - 1); }                    \
 inline T operator/(const T d, int i) { return T(int(d) / i); }              \
-inline T& operator/=(T& d, int i) { d = T(int(d) / i); return d; }
+inline T& operator/=(T& d, int i) { return d = T(int(d) / i); }
 
 ENABLE_OPERATORS_ON(Value)
 ENABLE_OPERATORS_ON(PieceType)
@@ -323,11 +323,11 @@ inline bool operator<(const ExtMove& f, const ExtMove& s) {
 }
 
 inline Color operator~(Color c) {
-  return Color(c ^ 1);
+  return Color(c ^ BLACK);
 }
 
 inline Square operator~(Square s) {
-  return Square(s ^ 56); // Vertical flip SQ_A1 -> SQ_A8
+  return Square(s ^ SQ_A8); // Vertical flip SQ_A1 -> SQ_A8
 }
 
 inline Square operator|(File f, Rank r) {
@@ -369,10 +369,6 @@ inline File file_of(Square s) {
 
 inline Rank rank_of(Square s) {
   return Rank(s >> 3);
-}
-
-inline Square mirror(Square s) {
-  return Square(s ^ 7); // Horizontal flip SQ_A1 -> SQ_H1
 }
 
 inline Square relative_square(Color c, Square s) {

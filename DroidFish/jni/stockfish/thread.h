@@ -114,7 +114,7 @@ struct Thread : public ThreadBase {
   Thread();
   virtual void idle_loop();
   bool cutoff_occurred() const;
-  bool is_available_to(const Thread* master) const;
+  bool available_to(const Thread* master) const;
 
   template <bool Fake>
   void split(Position& pos, const Search::Stack* ss, Value alpha, Value beta, Value* bestValue, Move* bestMove,
@@ -143,9 +143,10 @@ struct MainThread : public Thread {
 };
 
 struct TimerThread : public ThreadBase {
-  TimerThread() : msec(0) {}
+  TimerThread() : run(false) {}
   virtual void idle_loop();
-  int msec;
+  bool run;
+  static const int Resolution = 5; // msec between two check_time() calls
 };
 
 
