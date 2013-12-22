@@ -55,7 +55,7 @@ public class GameTree {
 
     private final PgnToken.PgnTokenReceiver gameStateListener;
 
-    /** Creates an empty GameTree start the standard start position.
+    /** Creates an empty GameTree starting at the standard start position.
      * @param gameStateListener  Optional tree change listener.
      */
     public GameTree(PgnToken.PgnTokenReceiver gameStateListener) {
@@ -102,7 +102,7 @@ public class GameTree {
             gameStateListener.clear();
     }
 
-    /** PngTokenReceiver implementation that generates plain text PGN data. */
+    /** PgnTokenReceiver implementation that generates plain text PGN data. */
     private static class PgnText implements PgnToken.PgnTokenReceiver {
         private StringBuilder sb = new StringBuilder(256);
         private String header = "";
@@ -402,7 +402,7 @@ public class GameTree {
                         break;
                     } else if (c == '{') {
                         ret.type = PgnToken.COMMENT;
-                        StringBuilder sb = new StringBuilder();;
+                        StringBuilder sb = new StringBuilder();
                         while ((c = data.charAt(idx++)) != '}') {
                             sb.append(c);
                         }
@@ -410,7 +410,7 @@ public class GameTree {
                         break;
                     } else if (c == ';') {
                         ret.type = PgnToken.COMMENT;
-                        StringBuilder sb = new StringBuilder();;
+                        StringBuilder sb = new StringBuilder();
                         while (true) {
                             c = data.charAt(idx++);
                             if ((c == '\n') || (c == '\r'))
@@ -421,7 +421,7 @@ public class GameTree {
                         break;
                     } else if (c == '"') {
                         ret.type = PgnToken.STRING;
-                        StringBuilder sb = new StringBuilder();;
+                        StringBuilder sb = new StringBuilder();
                         while (true) {
                             c = data.charAt(idx++);
                             if (c == '"') {
@@ -435,7 +435,7 @@ public class GameTree {
                         break;
                     } else if (c == '$') {
                         ret.type = PgnToken.NAG;
-                        StringBuilder sb = new StringBuilder();;
+                        StringBuilder sb = new StringBuilder();
                         while (true) {
                             c = data.charAt(idx++);
                             if (!Character.isDigit(c)) {
