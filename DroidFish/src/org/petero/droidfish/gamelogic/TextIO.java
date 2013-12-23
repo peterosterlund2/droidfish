@@ -492,13 +492,13 @@ public class TextIO {
             info.fromX = 4;
             info.toX = 6;
             info.fromY = info.toY = wtm ? 0 : 7;
-            info.promPiece= Piece.EMPTY;
+            info.promPiece = Piece.EMPTY;
         } else if (strMove.equals("O-O-O") || strMove.equals("0-0-0") || strMove.equals("o-o-o")) {
             info.piece = wtm ? Piece.WKING : Piece.BKING;
             info.fromX = 4;
             info.toX = 2;
             info.fromY = info.toY = wtm ? 0 : 7;
-            info.promPiece= Piece.EMPTY;
+            info.promPiece = Piece.EMPTY;
         } else {
             boolean atToSq = false;
             for (int i = 0; i < strMove.length(); i++) {
