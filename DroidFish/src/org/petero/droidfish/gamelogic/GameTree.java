@@ -306,7 +306,7 @@ public class GameTree {
         String fen = TextIO.toFEN(startPos);
         if (!fen.equals(TextIO.startPosFEN)) {
             addTagPair(out, "FEN", fen);
-            addTagPair(out, "Setup", "1");
+            addTagPair(out, "SetUp", "1");
         }
         if (!timeControl.equals("?"))
             addTagPair(out, "TimeControl", timeControl);
@@ -547,7 +547,7 @@ public class GameTree {
         for (int i = 0; i < nTags; i++) {
             String name = tagPairs.get(i).tagName;
             String val = tagPairs.get(i).tagValue;
-            if (name.equals("FEN") || name.equals("Setup")) {
+            if (name.equals("FEN") || name.equals("SetUp")) {
                 // Already handled
             } else if (name.equals("Event")) {
                 event = val;
