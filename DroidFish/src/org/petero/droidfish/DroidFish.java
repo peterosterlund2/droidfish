@@ -21,11 +21,9 @@ package org.petero.droidfish;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -2694,16 +2692,7 @@ public class DroidFish extends Activity implements GUIInterface {
             public boolean accept(String filename) {
                 if (internalEngine(filename))
                     return false;
-                try {
-                    InputStream inStream = new FileInputStream(filename);
-                    InputStreamReader inFile = new InputStreamReader(inStream);
-                    char[] buf = new char[4];
-                    boolean ret = (inFile.read(buf) == 4) && "NETE".equals(new String(buf));
-                    inFile.close();
-                    return ret;
-                } catch (IOException e) {
-                    return false;
-                }
+                return EngineUtil.isNetEngine(filename);
             }
         });
         final int numFiles = fileNames.length;
@@ -2835,8 +2824,8 @@ public class DroidFish extends Activity implements GUIInterface {
         String hostName = "";
         String port = "0";
         try {
-            String[] lines = Util.readFile(networkEngineToConfig);
-            if ((lines.length >= 1) && lines[0].equals("NETE")) {
+            if (EngineUtil.isNetEngine(networkEngineToConfig)) {
+                String[] lines = Util.readFile(networkEngineToConfig);
                 if (lines.length > 1)
                     hostName = lines[1];
                 if (lines.length > 2)

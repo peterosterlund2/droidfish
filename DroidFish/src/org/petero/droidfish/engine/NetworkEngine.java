@@ -67,19 +67,19 @@ public class NetworkEngine extends UCIEngineBase {
         if (socket == null) {
             String host = null;
             String port = null;
-            boolean fail = false;
-            try {
-                String[] lines = Util.readFile(fileName);
-                if ((lines.length < 3) || !lines[0].equals("NETE")) {
-                    fail = true;
-                } else {
-                    host = lines[1];
-                    port = lines[2];
+            boolean ok = false;
+            if (EngineUtil.isNetEngine(fileName)) {
+                try {
+                    String[] lines = Util.readFile(fileName);
+                    if (lines.length >= 3) {
+                        host = lines[1];
+                        port = lines[2];
+                        ok = true;
+                    }
+                } catch (IOException e1) {
                 }
-            } catch (IOException e1) {
-                fail = true;
             }
-            if (fail) {
+            if (!ok) {
                 isError = true;
                 report.reportError(context.getString(R.string.network_engine_config_error));
             } else {

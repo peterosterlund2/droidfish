@@ -18,6 +18,11 @@
 
 package org.petero.droidfish.engine;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import android.os.Build;
 
 public class EngineUtil {
@@ -41,6 +46,21 @@ public class EngineUtil {
             !abi.equals("mips"))
             abi = "armeabi"; // Unknown ABI, assume original ARM
         return "stockfish-" + abi;
+    }
+
+    /** Return true if file "engine" is a network engine. */
+    public static boolean isNetEngine(String engine) {
+        boolean netEngine = false;
+        try {
+            InputStream inStream = new FileInputStream(engine);
+            InputStreamReader inFile = new InputStreamReader(inStream);
+            char[] buf = new char[4];
+            if ((inFile.read(buf) == 4) && "NETE".equals(new String(buf)))
+                netEngine = true;
+            inFile.close();
+        } catch (IOException e) {
+        }
+        return netEngine;
     }
 
     /** Executes chmod 744 exePath. */
