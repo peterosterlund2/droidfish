@@ -18,7 +18,6 @@
 
 package org.petero.droidfish.engine;
 
-import android.annotation.TargetApi;
 import android.os.Build;
 
 public class EngineUtil {
@@ -29,7 +28,6 @@ public class EngineUtil {
     /** Return number of physical processors, i.e. hyper-threading ignored. */
     final static native int getNPhysicalProcessors();
 
-    @TargetApi(4)
     private static final class CpuAbi {
         static final String get() { return Build.CPU_ABI; }
     }
@@ -37,9 +35,6 @@ public class EngineUtil {
     /** Return file name of the internal stockfish executable,
      * or null if the internal stockfish engine is not supported. */
     public static String internalStockFishName() {
-        final int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
-        if (sdkVersion < 4)
-            return "stockfish15.mygz";
         String abi = CpuAbi.get();
         if (!abi.equals("x86") &&
             !abi.equals("armeabi-v7a") &&
