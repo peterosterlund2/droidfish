@@ -59,6 +59,7 @@ import org.petero.droidfish.gtb.Probe;
 import com.larvalabs.svgandroid.SVG;
 import com.larvalabs.svgandroid.SVGParser;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -1079,6 +1080,7 @@ public class DroidFish extends Activity implements GUIInterface {
         button.setScaleType(ScaleType.FIT_XY);
     }
 
+    @SuppressLint("Wakelock")
     private synchronized final void setWakeLock(boolean enableLock) {
         WakeLock wl = wakeLock;
         if (wl != null) {
