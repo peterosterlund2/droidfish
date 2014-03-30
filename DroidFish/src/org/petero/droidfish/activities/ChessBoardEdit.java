@@ -41,23 +41,25 @@ public class ChessBoardEdit extends ChessBoard {
         landScape = (config.orientation == Configuration.ORIENTATION_LANDSCAPE);
     }
 
-    private final static int gap = 4;
+    private final static int getGap(int sqSize) {
+        return sqSize / 4;
+    }
 
     @Override
     protected int getWidth(int sqSize) {
-        return landScape ? sqSize * 10 + gap : sqSize * 8;
+        return landScape ? sqSize * 10 + getGap(sqSize) : sqSize * 8;
     }
     @Override
     protected int getHeight(int sqSize) {
-        return landScape ? sqSize * 8 : sqSize * 10 + gap;
+        return landScape ? sqSize * 8 : sqSize * 10 + getGap(sqSize);
     }
     @Override
     protected int getSqSizeW(int width) {
-        return landScape ? (width - gap) / 10 : width / 8;
+        return landScape ? (width - getGap(sqSize)) / 10 : width / 8;
     }
     @Override
     protected int getSqSizeH(int height) {
-        return landScape ? height / 8 : (height - gap) / 10;
+        return landScape ? height / 8 : (height - getGap(sqSize)) / 10;
     }
     @Override
     protected int getMaxHeightPercentage() { return 85; }
@@ -217,12 +219,12 @@ public class ChessBoardEdit extends ChessBoard {
 
     @Override
     protected int getXCrd(int x) {
-        return x0 + sqSize * x + ((x >= 8) ? gap : 0);
+        return x0 + sqSize * x + ((x >= 8) ? getGap(sqSize) : 0);
     }
 
     @Override
     protected int getYCrd(int y) {
-        return y0 + sqSize * (7 - y) + ((y < 0) ? gap : 0);
+        return y0 + sqSize * (7 - y) + ((y < 0) ? getGap(sqSize) : 0);
     }
 
     @Override
@@ -230,7 +232,7 @@ public class ChessBoardEdit extends ChessBoard {
         int x = (xCrd - x0) / sqSize;
         if (x < 8)
             return x;
-        return (xCrd - x0 - gap) / sqSize;
+        return (xCrd - x0 - getGap(sqSize)) / sqSize;
     }
 
     @Override
@@ -238,7 +240,7 @@ public class ChessBoardEdit extends ChessBoard {
         int y = 7 - (yCrd - y0) / sqSize;
         if (y >= 0)
             return y;
-        return 7 - (yCrd - y0 - gap) / sqSize;
+        return 7 - (yCrd - y0 - getGap(sqSize)) / sqSize;
     }
 
     /**
