@@ -6,9 +6,9 @@
     <string name="moves_per_session_default">60</string>
     <string name="time_control_default">120000</string>
     <string name="time_increment_default">0</string>
-    <string name="squareSelectType_default">0</string>
+    <string name="squareSelectType_default">1</string>
     <string name="font_size_default">12</string>
-    <string name="thinking_arrows_default">2</string>
+    <string name="thinking_arrows_default">4</string>
     <string name="scroll_sensitivity_default">2</string>
     <string name="book_line_length_default">1000000</string>
     <string name="viewPieceType_default">1</string>
