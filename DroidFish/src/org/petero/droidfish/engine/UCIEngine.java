@@ -71,4 +71,7 @@ public interface UCIEngine {
 
     /** Register an option as supported by the engine. */
     public void registerOption(String optName);
+
+    /** Set number of search threads to use. */
+    public void setNThreads(int nThreads);
 }

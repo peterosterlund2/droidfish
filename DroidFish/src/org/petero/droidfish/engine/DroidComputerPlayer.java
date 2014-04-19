@@ -553,7 +553,7 @@ public class DroidComputerPlayer {
             }
             uciEngine.setOption("Ponder", sr.ponderEnabled);
             uciEngine.setOption("UCI_AnalyseMode", false);
-            uciEngine.setOption("Threads", sr.engineThreads > 0 ? sr.engineThreads : numCPUs);
+            uciEngine.setNThreads(sr.engineThreads > 0 ? sr.engineThreads : numCPUs);
             uciEngine.writeLineToEngine(posStr.toString());
             if (sr.wTime < 1) sr.wTime = 1;
             if (sr.bTime < 1) sr.bTime = 1;
@@ -590,7 +590,7 @@ public class DroidComputerPlayer {
             }
             uciEngine.writeLineToEngine(posStr.toString());
             uciEngine.setOption("UCI_AnalyseMode", true);
-            uciEngine.setOption("Threads", sr.engineThreads > 0 ? sr.engineThreads : numCPUs);
+            uciEngine.setNThreads(sr.engineThreads > 0 ? sr.engineThreads : numCPUs);
             StringBuilder goStr = new StringBuilder(96);
             goStr.append("go infinite");
             if (sr.searchMoves != null) {

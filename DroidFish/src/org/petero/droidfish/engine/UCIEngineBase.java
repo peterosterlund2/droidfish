@@ -89,7 +89,7 @@ public abstract class UCIEngineBase implements UCIEngine {
     }
 
     /** Return true if engine has option optName. */
-    protected boolean haveOption(String optName) {
+    protected boolean hasOption(String optName) {
         return allOptions.contains(optName);
     }
 
@@ -113,5 +113,13 @@ public abstract class UCIEngineBase implements UCIEngine {
             return;
         writeLineToEngine(String.format(Locale.US, "setoption name %s value %s", name, value));
         currOptions.put(lcName, value);
+    }
+
+    @Override
+    public void setNThreads(int nThreads) {
+        if (allOptions.contains("threads"))
+            setOption("Threads", nThreads);
+        else if (allOptions.contains("cores"))
+            setOption("Cores", nThreads);
     }
 }

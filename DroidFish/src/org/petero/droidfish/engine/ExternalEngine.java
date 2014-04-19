@@ -200,7 +200,7 @@ public class ExternalEngine extends UCIEngineBase {
             return true;
         if (hashMB != getHashMB(engineOptions.hashMB))
             return false;
-        if (haveOption("gaviotatbpath") && !gaviotaTbPath.equals(engineOptions.gtbPath))
+        if (hasOption("gaviotatbpath") && !gaviotaTbPath.equals(engineOptions.gtbPath))
             return false;
         return true;
     }

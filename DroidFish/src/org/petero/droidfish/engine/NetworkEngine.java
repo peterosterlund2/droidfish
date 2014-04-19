@@ -223,7 +223,7 @@ public class NetworkEngine extends UCIEngineBase {
             return false;
         if (hashMB != engineOptions.hashMB)
             return false;
-        if (haveOption("gaviotatbpath") && !gaviotaTbPath.equals(engineOptions.gtbPath))
+        if (hasOption("gaviotatbpath") && !gaviotaTbPath.equals(engineOptions.gtbPath))
             return false;
         return true;
     }
