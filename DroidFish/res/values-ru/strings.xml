@@ -420,6 +420,9 @@
     <item>512 MB</item>
     <item>1024 MB</item>
     <item>2048 MB</item>
+    <item>4096 MB</item>
+    <item>8192 MB</item>
+    <item>16384 MB</item>
   </string-array>
   <string-array name="engine_hash_values">
     <item>16</item>
@@ -430,6 +433,9 @@
     <item>512</item>
     <item>1024</item>
     <item>2048</item>
+    <item>4096</item>
+    <item>8192</item>
+    <item>16384</item>
   </string-array>
   <string-array name="moves_per_session_texts">
     <item>Полная партия</item>
