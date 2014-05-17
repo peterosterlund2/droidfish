@@ -31,11 +31,15 @@ public class ComputerPlayer implements Player {
 
     static {
         String name = "CuckooChess 1.13a9";
-        String m = System.getProperty("sun.arch.data.model");
-        if ("32".equals(m))
-            name += " 32-bit";
-        else if ("64".equals(m))
-            name += " 64-bit";
+        try {
+            String m = System.getProperty("sun.arch.data.model");
+            if ("32".equals(m))
+                name += " 32-bit";
+            else if ("64".equals(m))
+                name += " 64-bit";
+        } catch (SecurityException ex) {
+            // getProperty not allowed in applets
+        }
         engineName = name;
     }
 
