@@ -859,6 +859,7 @@ public class DroidComputerPlayer {
     private boolean statLowerBound = false;
     private int statTime = 0;
     private long statNodes = 0;
+    private long statTBHits = 0;
     private int statNps = 0;
     private int pvNum = 0;
     private ArrayList<String> statPV = new ArrayList<String>();
@@ -873,6 +874,11 @@ public class DroidComputerPlayer {
     private boolean statsModified = false;
 
     private final void clearInfo() {
+        statCurrDepth = statPVDepth = statScore = 0;
+        statIsMate = statUpperBound = statLowerBound = false;
+        statTime = 0;
+        statNodes = statTBHits = 0;
+        statNps = 0;
         depthModified = false;
         currMoveModified = false;
         pvModified = false;
@@ -913,6 +919,9 @@ public class DroidComputerPlayer {
                 } else if (is.equals("nodes")) {
                     statNodes = Long.parseLong(tokens[i++]);
                     statsModified = true;
+                } else if (is.equals("tbhits")) {
+                    statTBHits = Long.parseLong(tokens[i++]);
+                    statsModified = true;
                 } else if (is.equals("nps")) {
                     statNps = Integer.parseInt(tokens[i++]);
                     statsModified = true;
@@ -945,15 +954,15 @@ public class DroidComputerPlayer {
             }
             if (havePvData) {
                 while (statPvInfo.size() < pvNum)
-                    statPvInfo.add(new PvInfo(0, 0, 0, 0, 0, false, false, false, new ArrayList<Move>()));
+                    statPvInfo.add(new PvInfo(0, 0, 0, 0, 0, 0, false, false, false, new ArrayList<Move>()));
                 while (statPvInfo.size() <= pvNum)
                     statPvInfo.add(null);
                 ArrayList<Move> moves = new ArrayList<Move>();
                 int nMoves = statPV.size();
                 for (i = 0; i < nMoves; i++)
                     moves.add(TextIO.UCIstringToMove(statPV.get(i)));
-                statPvInfo.set(pvNum, new PvInfo(statPVDepth, statScore, statTime, statNodes, statNps, statIsMate,
-                                             statUpperBound, statLowerBound, moves));
+                statPvInfo.set(pvNum, new PvInfo(statPVDepth, statScore, statTime, statNodes, statNps, statTBHits,
+                                                 statIsMate, statUpperBound, statLowerBound, moves));
             }
         } catch (NumberFormatException nfe) {
             // Ignore
@@ -997,7 +1006,7 @@ public class DroidComputerPlayer {
             pvModified = false;
         }
         if (statsModified) {
-            listener.notifyStats(id, statNodes, statNps, statTime);
+            listener.notifyStats(id, statNodes, statNps, statTBHits, statTime);
             statsModified = false;
         }
     }

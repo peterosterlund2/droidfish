@@ -687,6 +687,12 @@
                 android:summary="@string/prefs_gtbPath_summary"
                 android:defaultValue="">
             </EditTextPreference>
-        </PreferenceScreen>
+            <EditTextPreference
+                android:key="rtbPath"
+                android:title="@string/prefs_rtbPath_title"
+                android:summary="@string/prefs_rtbPath_summary"
+                android:defaultValue="">
+            </EditTextPreference>
+            </PreferenceScreen>
     </PreferenceCategory>
 </PreferenceScreen>

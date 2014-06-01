@@ -208,6 +208,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private final static String fenDir = "DroidFish/epd";
     private final static String engineDir = "DroidFish/uci";
     private final static String gtbDefaultDir = "DroidFish/gtb";
+    private final static String rtbDefaultDir = "DroidFish/rtb";
     private BookOptions bookOptions = new BookOptions();
     private PGNOptions pgnOptions = new PGNOptions();
     private EngineOptions engineOptions = new EngineOptions();
@@ -476,6 +477,7 @@ public class DroidFish extends Activity implements GUIInterface {
         new File(extDir + sep + fenDir).mkdirs();
         new File(extDir + sep + engineDir).mkdirs();
         new File(extDir + sep + gtbDefaultDir).mkdirs();
+        new File(extDir + sep + rtbDefaultDir).mkdirs();
     }
 
     /**
@@ -960,6 +962,7 @@ public class DroidFish extends Activity implements GUIInterface {
         engineOptions.hintsEdit = settings.getBoolean("tbHintsEdit", false);
         engineOptions.rootProbe = settings.getBoolean("tbRootProbe", true);
         engineOptions.engineProbe = settings.getBoolean("tbEngineProbe", true);
+
         String gtbPath = settings.getString("gtbPath", "").trim();
         if (gtbPath.length() == 0) {
             File extDir = Environment.getExternalStorageDirectory();
@@ -967,6 +970,14 @@ public class DroidFish extends Activity implements GUIInterface {
             gtbPath = extDir.getAbsolutePath() + sep + gtbDefaultDir;
         }
         engineOptions.gtbPath = gtbPath;
+        String rtbPath = settings.getString("rtbPath", "").trim();
+        if (rtbPath.length() == 0) {
+            File extDir = Environment.getExternalStorageDirectory();
+            String sep = File.separator;
+            rtbPath = extDir.getAbsolutePath() + sep + rtbDefaultDir;
+        }
+        engineOptions.rtbPath = rtbPath;
+
         setEngineOptions(false);
         setEgtbHints(cb.getSelectedSquare());
 

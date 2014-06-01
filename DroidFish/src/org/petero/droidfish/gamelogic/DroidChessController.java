@@ -633,6 +633,7 @@ public class DroidChessController {
         private String currMoveStr = "";
         private long currNodes = 0;
         private int currNps = 0;
+        private long currTBHits = 0;
         private int currTime = 0;
 
         private boolean whiteMove = true;
@@ -695,6 +696,18 @@ public class DroidChessController {
                 }
                 statStrTmp = String.format(Locale.US, "d:%d %d:%s t:%.2f n:%d%s nps:%d%s", currDepth, currMoveNr, currMoveStr,
                                            currTime / 1000.0, nodes, nodesPrefix, nps, npsPrefix);
+                if (currTBHits > 0) {
+                    long tbHits = currTBHits;
+                    String tbHitsPrefix = "";
+                    if (tbHits > 100000000) {
+                        tbHits /= 1000000;
+                        tbHitsPrefix = "M";
+                    } else if (tbHits > 100000) {
+                        tbHits /= 1000;
+                        tbHitsPrefix = "k";
+                    }
+                    statStrTmp += String.format(Locale.US, " tb:%d%s", tbHits, tbHitsPrefix);
+                }
             }
             final String statStr = statStrTmp;
             final String newPV = buf.toString();
@@ -742,6 +755,7 @@ public class DroidChessController {
                 currTime = pv.time;
                 currNodes = pv.nodes;
                 currNps = pv.nps;
+                currTBHits = pv.tbHits;
 
                 StringBuilder buf = new StringBuilder();
                 Position tmpPos = new Position(pos);
@@ -768,9 +782,10 @@ public class DroidChessController {
         }
 
         @Override
-        public void notifyStats(int id, long nodes, int nps, int time) {
+        public void notifyStats(int id, long nodes, int nps, long tbHits, int time) {
             currNodes = nodes;
             currNps = nps;
+            currTBHits = tbHits;
             currTime = time;
             setSearchInfo(id);
         }

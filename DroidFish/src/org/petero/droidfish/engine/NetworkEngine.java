@@ -196,6 +196,7 @@ public class NetworkEngine extends UCIEngineBase {
 
     private int hashMB = -1;
     private String gaviotaTbPath = "";
+    private String syzygyPath = "";
     private boolean optionsInitialized = false;
 
     /** @inheritDoc */
@@ -208,6 +209,8 @@ public class NetworkEngine extends UCIEngineBase {
             gaviotaTbPath = engineOptions.gtbPath;
             setOption("GaviotaTbPath", engineOptions.gtbPath);
             setOption("GaviotaTbCache", 8);
+            syzygyPath = engineOptions.rtbPath;
+            setOption("SyzygyPath", engineOptions.rtbPath);
         }
         optionsInitialized = true;
     }
@@ -224,6 +227,8 @@ public class NetworkEngine extends UCIEngineBase {
         if (hashMB != engineOptions.hashMB)
             return false;
         if (hasOption("gaviotatbpath") && !gaviotaTbPath.equals(engineOptions.gtbPath))
+            return false;
+        if (hasOption("syzygypath") && !syzygyPath.equals(engineOptions.rtbPath))
             return false;
         return true;
     }
