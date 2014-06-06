@@ -26,6 +26,7 @@ public final class EngineOptions {
     public boolean rootProbe;   // Only search optimal moves at root
     public boolean engineProbe; // Let engine use EGTB
     public String gtbPath;      // GTB directory path
+    public String gtbPathNet;   // GTB directory path for network engines
     public String rtbPath;      // Syzygy directory path
     public String networkID;    // host+port network settings
 
@@ -36,6 +37,7 @@ public final class EngineOptions {
         rootProbe = false;
         engineProbe = false;
         gtbPath = "";
+        gtbPathNet = "";
         rtbPath = "";
         networkID = "";
     }
@@ -47,6 +49,7 @@ public final class EngineOptions {
         rootProbe = other.rootProbe;
         engineProbe = other.engineProbe;
         gtbPath = other.gtbPath;
+        gtbPathNet = other.gtbPathNet;
         rtbPath = other.rtbPath;
         networkID = other.networkID;
     }
@@ -63,6 +66,7 @@ public final class EngineOptions {
                 (rootProbe == other.rootProbe) &&
                 (engineProbe == other.engineProbe) &&
                 gtbPath.equals(other.gtbPath) &&
+                gtbPathNet.equals(other.gtbPathNet) &&
                 rtbPath.equals(other.rtbPath) &&
                 networkID.equals(other.networkID));
     }

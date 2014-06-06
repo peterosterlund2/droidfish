@@ -688,6 +688,12 @@
                 android:defaultValue="">
             </EditTextPreference>
             <EditTextPreference
+                android:key="gtbPathNet"
+                android:title="@string/prefs_gtbPathNet_title"
+                android:summary="@string/prefs_gtbPathNet_summary"
+                android:defaultValue="">
+            </EditTextPreference>
+            <EditTextPreference
                 android:key="rtbPath"
                 android:title="@string/prefs_rtbPath_title"
                 android:summary="@string/prefs_rtbPath_summary"

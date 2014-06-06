@@ -206,8 +206,8 @@ public class NetworkEngine extends UCIEngineBase {
         hashMB = engineOptions.hashMB;
         setOption("Hash", engineOptions.hashMB);
         if (engineOptions.engineProbe) {
-            gaviotaTbPath = engineOptions.gtbPath;
-            setOption("GaviotaTbPath", engineOptions.gtbPath);
+            gaviotaTbPath = engineOptions.gtbPathNet;
+            setOption("GaviotaTbPath", engineOptions.gtbPathNet);
             setOption("GaviotaTbCache", 8);
             syzygyPath = engineOptions.rtbPath;
             setOption("SyzygyPath", engineOptions.rtbPath);
@@ -226,7 +226,7 @@ public class NetworkEngine extends UCIEngineBase {
             return false;
         if (hashMB != engineOptions.hashMB)
             return false;
-        if (hasOption("gaviotatbpath") && !gaviotaTbPath.equals(engineOptions.gtbPath))
+        if (hasOption("gaviotatbpath") && !gaviotaTbPath.equals(engineOptions.gtbPathNet))
             return false;
         if (hasOption("syzygypath") && !syzygyPath.equals(engineOptions.rtbPath))
             return false;

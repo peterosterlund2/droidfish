@@ -405,6 +405,8 @@ you are not actively using the program.\
     <string name="prefs_tbEngineProbe_summary">Enable tablebase probing in engine, when supported. Takes effect next time engine is started</string>
     <string name="prefs_gtbPath_title">GTB Directory</string>
     <string name="prefs_gtbPath_summary">Directory where Gaviota tablebases are installed. Leave blank to use default directory</string>
+    <string name="prefs_gtbPathNet_title">GTB Network Directory</string>
+    <string name="prefs_gtbPathNet_summary">Directory for network engines where Gaviota tablebases are installed.</string>
     <string name="prefs_rtbPath_title">Syzygy Directory</string>
     <string name="prefs_rtbPath_summary">Directory where Syzygy tablebases are installed. Leave blank to use default directory</string>
     <string name="buttonDesc_custom1">@string/prefs_custom_button_1</string>

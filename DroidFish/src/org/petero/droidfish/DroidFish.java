@@ -970,6 +970,8 @@ public class DroidFish extends Activity implements GUIInterface {
             gtbPath = extDir.getAbsolutePath() + sep + gtbDefaultDir;
         }
         engineOptions.gtbPath = gtbPath;
+        String gtbPathNet = settings.getString("gtbPathNet", "").trim();
+        engineOptions.gtbPathNet = gtbPathNet;
         String rtbPath = settings.getString("rtbPath", "").trim();
         if (rtbPath.length() == 0) {
             File extDir = Environment.getExternalStorageDirectory();
