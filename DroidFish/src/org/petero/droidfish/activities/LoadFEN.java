@@ -53,6 +53,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 
 public class LoadFEN extends ListActivity {
     private static ArrayList<FenInfo> fensInFile = new ArrayList<FenInfo>();
@@ -234,6 +235,24 @@ public class LoadFEN extends ListActivity {
                     cb.setPosition(chessPos);
                     okButton.setEnabled(true);
                 }
+            }
+        });
+        lv.setOnItemLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int pos, long id) {
+                selectedFi = aa.getItem(pos);
+                if (selectedFi == null)
+                    return false;
+                defaultItem = pos;
+                Position chessPos;
+                try {
+                    chessPos = TextIO.readFEN(selectedFi.fen);
+                } catch (ChessParseError e2) {
+                    chessPos = e2.pos;
+                }
+                if (chessPos != null)
+                    sendBackResult(selectedFi);
+                return true;
             }
         });
         lv.requestFocus();
