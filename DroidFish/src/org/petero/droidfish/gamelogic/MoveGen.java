@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * @author petero
  */
 public class MoveGen {
-    static MoveGen instance;
+    public static MoveGen instance;
     static {
         instance = new MoveGen();
     }

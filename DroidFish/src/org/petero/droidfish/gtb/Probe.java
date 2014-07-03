@@ -72,6 +72,39 @@ public class Probe {
      * @return True if success.
      */
     public final ProbeResult probeHard(Position pos) {
+        ProbeResult ret = probeHardRaw(pos);
+        if (ret.result == ProbeResult.DRAW && pos.getEpSquare() != -1) {
+            ArrayList<Move> moveList = MoveGen.instance.legalMoves(pos);
+            int pawn = pos.whiteMove ? Piece.WPAWN : Piece.BPAWN;
+            int maxMate = -1;
+            UndoInfo ui = new UndoInfo();
+            for (Move move : moveList) {
+                if ((move.to != pos.getEpSquare()) || (pos.getPiece(move.from) != pawn))
+                    return ret;
+                pos.makeMove(move, ui);
+                ProbeResult ret2 = probeHard(pos);
+                pos.unMakeMove(move, ui);
+                switch (ret2.result) {
+                case ProbeResult.DRAW:
+                    break;
+                case ProbeResult.WMATE:
+                case ProbeResult.BMATE:
+                    maxMate = Math.max(maxMate, ret2.movesToMate);
+                    break;
+                case ProbeResult.UNKNOWN:
+                    ret.result = ProbeResult.UNKNOWN;
+                    return ret;
+                }
+            }
+            if (maxMate != -1) {
+                ret.result = pos.whiteMove ? ProbeResult.BMATE : ProbeResult.WMATE;
+                ret.movesToMate = maxMate;
+            }
+        }
+        return ret;
+    }
+
+    private final ProbeResult probeHardRaw(Position pos) {
         int castleMask = 0;
         if (pos.a1Castle()) castleMask |= GtbProbe.A1_CASTLE;
         if (pos.h1Castle()) castleMask |= GtbProbe.H1_CASTLE;
