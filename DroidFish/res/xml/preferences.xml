@@ -699,6 +699,12 @@
                 android:summary="@string/prefs_rtbPath_summary"
                 android:defaultValue="">
             </EditTextPreference>
+            <EditTextPreference
+                android:key="rtbPathNet"
+                android:title="@string/prefs_rtbPathNet_title"
+                android:summary="@string/prefs_rtbPathNet_summary"
+                android:defaultValue="">
+            </EditTextPreference>
             </PreferenceScreen>
     </PreferenceCategory>
 </PreferenceScreen>

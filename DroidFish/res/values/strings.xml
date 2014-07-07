@@ -409,6 +409,8 @@ you are not actively using the program.\
     <string name="prefs_gtbPathNet_summary">Directory for network engines where Gaviota tablebases are installed.</string>
     <string name="prefs_rtbPath_title">Syzygy Directory</string>
     <string name="prefs_rtbPath_summary">Directory where Syzygy tablebases are installed. Leave blank to use default directory</string>
+    <string name="prefs_rtbPathNet_title">Syzygy Network Directory</string>
+    <string name="prefs_rtbPathNet_summary">Directory for network engines where Syzygy tablebases are installed.</string>
     <string name="buttonDesc_custom1">@string/prefs_custom_button_1</string>
     <string name="buttonDesc_custom2">@string/prefs_custom_button_2</string>
     <string name="buttonDesc_custom3">@string/prefs_custom_button_3</string>

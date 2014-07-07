@@ -979,6 +979,8 @@ public class DroidFish extends Activity implements GUIInterface {
             rtbPath = extDir.getAbsolutePath() + sep + rtbDefaultDir;
         }
         engineOptions.rtbPath = rtbPath;
+        String rtbPathNet = settings.getString("rtbPathNet", "").trim();
+        engineOptions.rtbPathNet = rtbPathNet;
 
         setEngineOptions(false);
         setEgtbHints(cb.getSelectedSquare());

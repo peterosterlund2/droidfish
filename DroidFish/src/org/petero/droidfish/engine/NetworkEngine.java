@@ -209,8 +209,8 @@ public class NetworkEngine extends UCIEngineBase {
             gaviotaTbPath = engineOptions.gtbPathNet;
             setOption("GaviotaTbPath", engineOptions.gtbPathNet);
             setOption("GaviotaTbCache", 8);
-            syzygyPath = engineOptions.rtbPath;
-            setOption("SyzygyPath", engineOptions.rtbPath);
+            syzygyPath = engineOptions.rtbPathNet;
+            setOption("SyzygyPath", engineOptions.rtbPathNet);
         }
         optionsInitialized = true;
     }
@@ -228,7 +228,7 @@ public class NetworkEngine extends UCIEngineBase {
             return false;
         if (hasOption("gaviotatbpath") && !gaviotaTbPath.equals(engineOptions.gtbPathNet))
             return false;
-        if (hasOption("syzygypath") && !syzygyPath.equals(engineOptions.rtbPath))
+        if (hasOption("syzygypath") && !syzygyPath.equals(engineOptions.rtbPathNet))
             return false;
         return true;
     }
