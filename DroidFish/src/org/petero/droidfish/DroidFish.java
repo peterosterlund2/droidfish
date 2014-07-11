@@ -1905,7 +1905,11 @@ public class DroidFish extends Activity implements GUIInterface {
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         i.setType("text/plain");
         i.putExtra(Intent.EXTRA_TEXT, ctrl.getPGN());
-        startActivity(Intent.createChooser(i, getString(R.string.share_pgn_game)));
+        try {
+            startActivity(Intent.createChooser(i, getString(R.string.share_pgn_game)));
+        } catch (ActivityNotFoundException ex) {
+            // Ignore
+        }
     }
 
     private final Dialog fileMenuDialog() {
