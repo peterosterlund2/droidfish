@@ -36,8 +36,6 @@ public class ExternalEngine extends UCIEngineBase {
     protected final Context context;
 
     private File engineFileName;
-    protected static final String intSfPath = "/data/data/org.petero.droidfish/internal_sf";
-    private static final String exePath = "/data/data/org.petero.droidfish/engine.exe";
     private final Report report;
     private Process engineProc;
     private Thread startupThread;
@@ -62,10 +60,15 @@ public class ExternalEngine extends UCIEngineBase {
         isRunning = false;
     }
 
+    protected String internalSFPath() {
+        return context.getFilesDir().getAbsolutePath() + "/internal_sf";
+    }
+
     /** @inheritDoc */
     @Override
     protected void startProcess() {
         try {
+            String exePath = context.getFilesDir().getAbsolutePath() + "/engine.exe";
             copyFile(engineFileName, new File(exePath));
             chmod(exePath);
             ProcessBuilder pb = new ProcessBuilder(exePath);
@@ -256,7 +259,7 @@ public class ExternalEngine extends UCIEngineBase {
     }
 
     protected void copyFile(File from, File to) throws IOException {
-        new File(intSfPath).delete();
+        new File(internalSFPath()).delete();
         if (to.exists() && (from.length() == to.length()) && (from.lastModified() == to.lastModified()))
             return;
         if (to.exists())

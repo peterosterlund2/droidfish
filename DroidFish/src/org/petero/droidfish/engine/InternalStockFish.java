@@ -105,7 +105,7 @@ public class InternalStockFish extends ExternalEngine {
 
         // The checksum test is to avoid writing to /data unless necessary,
         // on the assumption that it will reduce memory wear.
-        long oldCSum = readCheckSum(new File(intSfPath));
+        long oldCSum = readCheckSum(new File(internalSFPath()));
         long newCSum = computeAssetsCheckSum(sfExe);
         if (oldCSum == newCSum)
             return;
@@ -132,6 +132,6 @@ public class InternalStockFish extends ExternalEngine {
             if (os != null) try { os.close(); } catch (IOException ex) {}
         }
 
-        writeCheckSum(new File(intSfPath), newCSum);
+        writeCheckSum(new File(internalSFPath()), newCSum);
     }
 }

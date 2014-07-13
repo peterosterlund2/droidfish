@@ -825,6 +825,12 @@ public class DroidFish extends Activity implements GUIInterface {
                 return true;
             }
         });
+        thinking.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openOptionsMenu();
+            }
+        });
 
         custom1Button = (ImageButton)findViewById(R.id.custom1Button);
         custom1ButtonActions.setImageButton(custom1Button, this);
