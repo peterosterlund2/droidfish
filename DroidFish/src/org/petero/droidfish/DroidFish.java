@@ -92,6 +92,7 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.support.v4.view.MotionEventCompat;
 import android.text.ClipboardManager;
 import android.text.Html;
 import android.text.Layout;
@@ -107,7 +108,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.LeadingMarginSpan;
 import android.text.style.StyleSpan;
 import android.util.TypedValue;
-import android.view.GestureDetector;
+import android.view.ViewConfiguration;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -127,6 +128,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressLint("ClickableViewAccessibility")
 public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! book.txt (and test classes) should not be included in apk
 
@@ -190,7 +192,6 @@ public class DroidFish extends Activity implements GUIInterface {
 
     SharedPreferences settings;
 
-    private boolean boardGestures;
     private float scrollSensitivity;
     private boolean invertScrollDirection;
 
@@ -654,24 +655,82 @@ public class DroidFish extends Activity implements GUIInterface {
         cb.setClickable(true);
         cb.setPgnOptions(pgnOptions);
 
-        final GestureDetector gd = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
+        cb.setOnTouchListener(new OnTouchListener() {
+            private boolean pending = false;
+            private boolean pendingClick = false;
+            private int sq0 = -1;
             private float scrollX = 0;
             private float scrollY = 0;
-            @Override
-            public boolean onDown(MotionEvent e) {
-                if (!boardGestures) {
-                    handleClick(e);
-                    return true;
+            private float prevX = 0;
+            private float prevY = 0;
+            private Handler handler = new Handler();
+            private Runnable runnable = new Runnable() {
+                public void run() {
+                    pending = false;
+                    handler.removeCallbacks(runnable);
+                    ((Vibrator)getSystemService(Context.VIBRATOR_SERVICE)).vibrate(20);
+                    removeDialog(BOARD_MENU_DIALOG);
+                    showDialog(BOARD_MENU_DIALOG);
                 }
-                scrollX = 0;
-                scrollY = 0;
-                return false;
-            }
+            };
+
             @Override
-            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                if (!boardGestures)
-                    return false;
-                cb.cancelLongPress();
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = MotionEventCompat.getActionMasked(event);
+                switch (action) {
+                case MotionEvent.ACTION_DOWN:
+                    handler.postDelayed(runnable, ViewConfiguration.getLongPressTimeout());
+                    pending = true;
+                    pendingClick = true;
+                    sq0 = cb.eventToSquare(event);
+                    scrollX = 0;
+                    scrollY = 0;
+                    prevX = event.getX();
+                    prevY = event.getY();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if (pending) {
+                        int sq = cb.eventToSquare(event);
+                        if (sq != sq0) {
+                            handler.removeCallbacks(runnable);
+                            pendingClick = false;
+                        }
+                        float currX = event.getX();
+                        float currY = event.getY();
+                        if (onScroll(currX - prevX, currY - prevY)) {
+                            handler.removeCallbacks(runnable);
+                            pendingClick = false;
+                        }
+                        prevX = currX;
+                        prevY = currY;
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                    if (pending) {
+                        pending = false;
+                        handler.removeCallbacks(runnable);
+                        if (!pendingClick)
+                            break;
+                        int sq = cb.eventToSquare(event);
+                        if (sq == sq0) {
+                            if (ctrl.humansTurn()) {
+                                Move m = cb.mousePressed(sq);
+                                if (m != null)
+                                    ctrl.makeHumanMove(m);
+                                setEgtbHints(cb.getSelectedSquare());
+                            }
+                        }
+                    }
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    pending = false;
+                    handler.removeCallbacks(runnable);
+                    break;
+                }
+                return true;
+            }
+
+            private boolean onScroll(float distanceX, float distanceY) {
                 if (invertScrollDirection) {
                     distanceX = -distanceX;
                     distanceY = -distanceY;
@@ -702,6 +761,7 @@ public class DroidFish extends Activity implements GUIInterface {
                         for (int i = 0; i < nRedo; i++) ctrl.redoMove();
                         for (int i = 0; i < nUndo; i++) ctrl.undoMove();
                         ctrl.setGameMode(gameMode);
+                        return nRedo + nUndo > 0;
                     } else {
                         // Next/previous variation
                         int varDelta = 0;
@@ -716,47 +776,10 @@ public class DroidFish extends Activity implements GUIInterface {
                         if (varDelta != 0)
                             scrollX = 0;
                         ctrl.changeVariation(varDelta);
+                        return varDelta > 0;
                     }
                 }
-                return true;
-            }
-            @Override
-            public boolean onSingleTapUp(MotionEvent e) {
-                if (!boardGestures)
-                    return false;
-                cb.cancelLongPress();
-                handleClick(e);
-                return true;
-            }
-            @Override
-            public boolean onDoubleTapEvent(MotionEvent e) {
-                if (!boardGestures)
-                    return false;
-                if (e.getAction() == MotionEvent.ACTION_UP)
-                    handleClick(e);
-                return true;
-            }
-            private final void handleClick(MotionEvent e) {
-                if (ctrl.humansTurn()) {
-                    int sq = cb.eventToSquare(e);
-                    Move m = cb.mousePressed(sq);
-                    if (m != null)
-                        ctrl.makeHumanMove(m);
-                    setEgtbHints(cb.getSelectedSquare());
-                }
-            }
-            @Override
-            public void onLongPress(MotionEvent e) {
-                if (!boardGestures)
-                    return;
-                ((Vibrator)getSystemService(Context.VIBRATOR_SERVICE)).vibrate(20);
-                removeDialog(BOARD_MENU_DIALOG);
-                showDialog(BOARD_MENU_DIALOG);
-            }
-        });
-        cb.setOnTouchListener(new OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-                return gd.onTouchEvent(event);
+                return false;
             }
         });
         cb.setOnTrackballListener(new ChessBoard.OnTrackballListener() {
@@ -923,7 +946,6 @@ public class DroidFish extends Activity implements GUIInterface {
         movesPerSession = getIntSetting("movesPerSession", 60);
         timeIncrement = getIntSetting("timeIncrement", 0);
 
-        boardGestures = settings.getBoolean("boardGestures", true);
         scrollSensitivity = Float.parseFloat(settings.getString("scrollSensitivity", "2"));
         invertScrollDirection = settings.getBoolean("invertScrollDirection", false);
         discardVariations = settings.getBoolean("discardVariations", false);
@@ -1218,7 +1240,7 @@ public class DroidFish extends Activity implements GUIInterface {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.item_file_menu);
-        item.setTitle(boardGestures ? R.string.option_file : R.string.tools_menu);
+        item.setTitle(R.string.option_file);
         return true;
     }
 
@@ -1248,7 +1270,7 @@ public class DroidFish extends Activity implements GUIInterface {
             return true;
         }
         case R.id.item_file_menu: {
-            int dialog = boardGestures ? FILE_MENU_DIALOG : BOARD_MENU_DIALOG;
+            int dialog = FILE_MENU_DIALOG;
             removeDialog(dialog);
             showDialog(dialog);
             return true;

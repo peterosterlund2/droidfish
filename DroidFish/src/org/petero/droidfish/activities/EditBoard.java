@@ -36,6 +36,7 @@ import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gtb.Probe;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -47,15 +48,17 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.support.v4.view.MotionEventCompat;
 import android.text.ClipboardManager;
 import android.text.TextUtils;
-import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
@@ -65,6 +68,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressLint("ClickableViewAccessibility")
 public class EditBoard extends Activity {
     private ChessBoardEdit cb;
     private TextView status;
@@ -73,7 +77,6 @@ public class EditBoard extends Activity {
 
     private boolean egtbHints;
     private boolean autoScrollTitle;
-    private boolean boardGestures;
     private TextView whiteFigText;
     private TextView blackFigText;
     private Typeface figNotation;
@@ -88,7 +91,6 @@ public class EditBoard extends Activity {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         egtbHints = settings.getBoolean("tbHintsEdit", false);
         autoScrollTitle = settings.getBoolean("autoScrollTitle", true);
-        boardGestures = settings.getBoolean("boardGestures", true);
 
         initUI();
 
@@ -170,56 +172,45 @@ public class EditBoard extends Activity {
         cb.setFocusable(true);
         cb.requestFocus();
         cb.setClickable(true);
-        final GestureDetector gd = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
-            @Override
-            public boolean onDown(MotionEvent e) {
-                if (!boardGestures) {
-                    handleClick(e);
-                    return true;
-                }
-                return false;
-            }
-            @Override
-            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                if (!boardGestures)
-                    return false;
-                cb.cancelLongPress();
-                return true;
-            }
-            @Override
-            public boolean onSingleTapUp(MotionEvent e) {
-                if (!boardGestures)
-                    return false;
-                cb.cancelLongPress();
-                handleClick(e);
-                return true;
-            }
-            @Override
-            public boolean onDoubleTapEvent(MotionEvent e) {
-                if (!boardGestures)
-                    return false;
-                if (e.getAction() == MotionEvent.ACTION_UP)
-                    handleClick(e);
-                return true;
-            }
-            @Override
-            public void onLongPress(MotionEvent e) {
-                if (!boardGestures)
-                    return;
-                ((Vibrator)getSystemService(Context.VIBRATOR_SERVICE)).vibrate(20);
-                showDialog(EDIT_DIALOG);
-            }
-            private final void handleClick(MotionEvent e) {
-                int sq = cb.eventToSquare(e);
-                Move m = cb.mousePressed(sq);
-                if (m != null)
-                    doMove(m);
-                setEgtbHints(cb.getSelectedSquare());
-            }
-        });
         cb.setOnTouchListener(new OnTouchListener() {
+            private boolean pending = false;
+            private int sq0 = -1;
+            private Handler handler = new Handler();
+            private Runnable runnable = new Runnable() {
+                public void run() {
+                    pending = false;
+                    handler.removeCallbacks(runnable);
+                    ((Vibrator)getSystemService(Context.VIBRATOR_SERVICE)).vibrate(20);
+                    showDialog(EDIT_DIALOG);
+                }
+            };
             public boolean onTouch(View v, MotionEvent event) {
-                return gd.onTouchEvent(event);
+                int action = MotionEventCompat.getActionMasked(event);
+                switch (action) {
+                case MotionEvent.ACTION_DOWN:
+                    handler.postDelayed(runnable, ViewConfiguration.getLongPressTimeout());
+                    sq0 = cb.eventToSquare(event);
+                    pending = true;
+                    break;
+                case MotionEvent.ACTION_UP:
+                    if (pending) {
+                        pending = false;
+                        handler.removeCallbacks(runnable);
+                        int sq = cb.eventToSquare(event);
+                        if (sq == sq0) {
+                            Move m = cb.mousePressed(sq);
+                            if (m != null)
+                                doMove(m);
+                            setEgtbHints(cb.getSelectedSquare());
+                        }
+                    }
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    pending = false;
+                    handler.removeCallbacks(runnable);
+                    break;
+                }
+                return true;
             }
         });
         cb.setOnTrackballListener(new ChessBoard.OnTrackballListener() {
