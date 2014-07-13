@@ -174,13 +174,11 @@ public class ExternalEngine extends UCIEngineBase {
         super.initOptions(engineOptions);
         hashMB = getHashMB(engineOptions.hashMB);
         setOption("Hash", hashMB);
-        if (engineOptions.engineProbe) {
-            gaviotaTbPath = engineOptions.gtbPath;
-            setOption("GaviotaTbPath", engineOptions.gtbPath);
-            setOption("GaviotaTbCache", 8);
-            syzygyPath = engineOptions.rtbPath;
-            setOption("SyzygyPath", engineOptions.rtbPath);
-        }
+        gaviotaTbPath = engineOptions.getEngineGtbPath(false);
+        setOption("GaviotaTbPath", gaviotaTbPath);
+        setOption("GaviotaTbCache", 8);
+        syzygyPath = engineOptions.getEngineRtbPath(false);
+        setOption("SyzygyPath", syzygyPath);
         optionsInitialized = true;
     }
 
@@ -203,9 +201,9 @@ public class ExternalEngine extends UCIEngineBase {
             return true;
         if (hashMB != getHashMB(engineOptions.hashMB))
             return false;
-        if (hasOption("gaviotatbpath") && !gaviotaTbPath.equals(engineOptions.gtbPath))
+        if (hasOption("gaviotatbpath") && !gaviotaTbPath.equals(engineOptions.getEngineGtbPath(false)))
             return false;
-        if (hasOption("syzygypath") && !syzygyPath.equals(engineOptions.rtbPath))
+        if (hasOption("syzygypath") && !syzygyPath.equals(engineOptions.getEngineRtbPath(false)))
             return false;
         return true;
     }

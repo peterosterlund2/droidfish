@@ -400,7 +400,7 @@ you are not actively using the program.\
     <string name="prefs_tbRootProbe_title">Probe at Root</string>
     <string name="prefs_tbRootProbe_summary">Filter out non-optimal moves before starting search</string>
     <string name="prefs_tbEngineProbe_title">Engine Probing</string>
-    <string name="prefs_tbEngineProbe_summary">Enable tablebase probing in engine, when supported. Takes effect next time engine is started</string>
+    <string name="prefs_tbEngineProbe_summary">Enable tablebase probing in engine, when supported</string>
     <string name="prefs_gtbPath_title">GTB Directory</string>
     <string name="prefs_gtbPath_summary">Directory where Gaviota tablebases are installed. Leave blank to use default directory</string>
     <string name="prefs_gtbPathNet_title">GTB Network Directory</string>

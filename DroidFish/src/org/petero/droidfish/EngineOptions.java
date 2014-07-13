@@ -25,10 +25,10 @@ public final class EngineOptions {
     public boolean hintsEdit;   // Hints in "edit board" mode
     public boolean rootProbe;   // Only search optimal moves at root
     public boolean engineProbe; // Let engine use EGTB
-    public String gtbPath;      // GTB directory path
-    public String gtbPathNet;   // GTB directory path for network engines
-    public String rtbPath;      // Syzygy directory path
-    public String rtbPathNet;   // Syzygy directory path for network engines
+    String gtbPath;             // GTB directory path
+    String gtbPathNet;          // GTB directory path for network engines
+    String rtbPath;             // Syzygy directory path
+    String rtbPathNet;          // Syzygy directory path for network engines
     public String networkID;    // host+port network settings
 
     public EngineOptions() {
@@ -55,6 +55,20 @@ public final class EngineOptions {
         rtbPath = other.rtbPath;
         rtbPathNet = other.rtbPathNet;
         networkID = other.networkID;
+    }
+
+    /** Get the GTB path for an engine. */
+    public String getEngineGtbPath(boolean networkEngine) {
+        if (!engineProbe)
+            return "";
+        return networkEngine ? gtbPathNet : gtbPath;
+    }
+
+    /** Get the RTB path for an engine. */
+    public String getEngineRtbPath(boolean networkEngine) {
+        if (!engineProbe)
+            return "";
+        return networkEngine ? rtbPathNet : rtbPath;
     }
 
     @Override
