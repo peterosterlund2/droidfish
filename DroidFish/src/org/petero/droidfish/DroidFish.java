@@ -186,7 +186,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private ImageButton modeButton, undoButton, redoButton;
     private ButtonActions custom1ButtonActions, custom2ButtonActions, custom3ButtonActions;
     private TextView whiteTitleText, blackTitleText, engineTitleText;
-    private View secondTitleLine;
+    private View firstTitleLine, secondTitleLine;
     private TextView whiteFigText, blackFigText, summaryTitleText;
     private static Dialog moveListMenuDlg;
 
@@ -621,6 +621,7 @@ public class DroidFish extends Activity implements GUIInterface {
         Util.overrideFonts(findViewById(android.R.id.content));
 
         // title lines need to be regenerated every time due to layout changes (rotations)
+        firstTitleLine = findViewById(R.id.first_title_line);
         secondTitleLine = findViewById(R.id.second_title_line);
         whiteTitleText = (TextView)findViewById(R.id.white_clock);
         whiteTitleText.setSelected(true);
@@ -648,6 +649,19 @@ public class DroidFish extends Activity implements GUIInterface {
         moveList.setFocusable(false);
         moveList.setMovementMethod(LinkMovementMethod.getInstance());
         thinking.setFocusable(false);
+
+        firstTitleLine.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openOptionsMenu();
+            }
+        });
+        secondTitleLine.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openOptionsMenu();
+            }
+        });
 
         cb = (ChessBoardPlay)findViewById(R.id.chessboard);
         cb.setFocusable(true);

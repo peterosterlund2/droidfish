@@ -128,6 +128,8 @@ public class EditBoard extends Activity {
         setContentView(R.layout.editboard);
         Util.overrideFonts(findViewById(android.R.id.content));
 
+        View firstTitleLine = findViewById(R.id.first_title_line);
+        View secondTitleLine = findViewById(R.id.second_title_line);
         cb = (ChessBoardEdit)findViewById(R.id.eb_chessboard);
         status = (TextView)findViewById(R.id.eb_status);
         okButton = (Button)findViewById(R.id.eb_ok);
@@ -155,6 +157,19 @@ public class EditBoard extends Activity {
         engineTitleText.setEllipsize(where);
         whiteFigText.setEllipsize(where);
         blackFigText.setEllipsize(where);
+
+        firstTitleLine.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openOptionsMenu();
+            }
+        });
+        secondTitleLine.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openOptionsMenu();
+            }
+        });
 
         okButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
