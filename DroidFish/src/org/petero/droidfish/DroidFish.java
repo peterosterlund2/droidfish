@@ -204,7 +204,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private boolean showMaterialDiff;
     private boolean showVariationLine;
 
-    private final static String bookDir = "DroidFish";
+    private final static String bookDir = "DroidFish/book";
     private final static String pgnDir = "DroidFish/pgn";
     private final static String fenDir = "DroidFish/epd";
     private final static String engineDir = "DroidFish/uci";
