@@ -218,7 +218,6 @@
   <string name="option_draw">Chiedi/Offri/Accetta la patta</string>
   <string name="option_select_book">Seleziona Libro delle Aperture</string>
   <string name="option_manage_engines">Gestisci i motori scacchistici</string>
-  <string name="option_select_engine">Seleziona il motore scacchistico</string>
   <string name="option_color_theme">Imposta il Tema del Colore</string>
   <string name="option_about">Informazioni/Aiuto</string>
   <string name="prefs_playing_options">Opzioni di gioco</string>
@@ -278,8 +277,6 @@
   <string name="prefs_discardVariations_summary">Scarta dalla lista delle mosse quelle che non sono nella linea principale</string>
   <string name="prefs_leftHanded_title">Modalità Mancini</string>
   <string name="prefs_leftHanded_summary">Controlli sul lato sinistro in modalità paesaggio</string>
-  <string name="prefs_boardGestures_title">Gesti sulla scacchiera</string>
-  <string name="prefs_boardGestures_summary">Pressione lunga sulla scacchiera per il menu degli strumenti. Scorri in orizzontale per annullare/ripetere le mosse. Scorri verticalmente per passare alla precedente/successiva variante.</string>
   <string name="prefs_squareSelectType_title">Selezione della casella</string>
   <string name="prefs_squareSelectType_summary">Controlla come si comporta la selezione delle caselle sulla scacchiera</string>
   <string name="prefs_fontSize_title">Dimensione del testo</string>

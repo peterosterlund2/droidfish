@@ -225,7 +225,6 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="option_draw">Remise aanbieden/accepteren</string>
   <string name="option_select_book">Selecteer openingsboek</string>
   <string name="option_manage_engines">Schaak engines beheren</string>
-  <string name="option_select_engine">Selecteer engine</string>
   <string name="option_color_theme">Kleurenschema instellen</string>
   <string name="option_about">Over/Help</string>
   <string name="prefs_playing_options">Spel opties</string>
@@ -285,8 +284,6 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="prefs_discardVariations_summary">Zetten die niet tot de stamvoortzetting behoren weglaten</string>
   <string name="prefs_leftHanded_title">Linkshandige mode</string>
   <string name="prefs_leftHanded_summary">Bedieningsknoppen aan de linkerkant in landscape</string>
-  <string name="prefs_boardGestures_title">Bord bewegingen</string>
-  <string name="prefs_boardGestures_summary">Lang aanraken voor tools menu. Swipe horizontaal voor zet terug/vooruit. Swipe verticaal voor vorige/vorige variant.</string>
   <string name="prefs_squareSelectType_title">Veldselectie</string>
   <string name="prefs_squareSelectType_summary">Instellen hoe velden geselecteerd worden</string>
   <string name="prefs_fontSize_title">Tekstgrootte</string>

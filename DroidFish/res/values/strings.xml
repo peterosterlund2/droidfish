@@ -242,7 +242,6 @@ you are not actively using the program.\
     <string name="option_draw">Claim/Offer/Accept Draw</string>
     <string name="option_select_book">Select Opening Book</string>
     <string name="option_manage_engines">Manage Chess Engines</string>
-    <string name="option_select_engine">Select Chess Engine</string>
     <string name="option_color_theme">Set Color Theme</string>
     <string name="option_about">About / Help</string>
     <string name="prefs_playing_options">Playing Options</string>

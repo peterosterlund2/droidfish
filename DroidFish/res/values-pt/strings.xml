@@ -226,7 +226,6 @@ não estiver usando o programa diretamente.\</string>
   <string name="option_draw">Pedir/Aceitar empate</string>
   <string name="option_select_book">Livro de aberturas</string>
   <string name="option_manage_engines">Softwares de Xadrez</string>
-  <string name="option_select_engine">Escolher o software de Xadrez</string>
   <string name="option_color_theme">Escolher cor do tema</string>
   <string name="option_about">Sobre/Ajuda</string>
   <string name="prefs_playing_options">Opções de jogo</string>
@@ -286,8 +285,6 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_discardVariations_summary">Descartar da lista lances fora da linha principal</string>
   <string name="prefs_leftHanded_title">Modo canhoto</string>
   <string name="prefs_leftHanded_summary">Controles à esquerda no modo paisagem</string>
-  <string name="prefs_boardGestures_title">Gestos no tabuleiro</string>
-  <string name="prefs_boardGestures_summary">Pressione longamente o tabuleiro para ativar o menu. Deslize horizontalmente para fazer/desfazer lances. Deslize verticalmente para ir para a variante anterior/próxima.</string>
   <string name="prefs_squareSelectType_title">Seleção de casa</string>
   <string name="prefs_squareSelectType_summary">Definir como selecionar casas no tabuleiro</string>
   <string name="prefs_fontSize_title">Tamanho da fonte</string>

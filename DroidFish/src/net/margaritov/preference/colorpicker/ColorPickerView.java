@@ -16,6 +16,7 @@
 
 package net.margaritov.preference.colorpicker;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -40,6 +41,7 @@ import android.view.View;
  * setAlphaSliderVisible(boolean) to true.
  * @author Daniel Nilsson
  */
+@SuppressLint("ClickableViewAccessibility")
 public class ColorPickerView extends View {
 
 	private final static int	PANEL_SAT_VAL = 0;

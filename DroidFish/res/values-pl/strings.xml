@@ -226,7 +226,6 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="option_draw">Zaproponuj/przyjmij remis</string>
   <string name="option_select_book">Wybierz książkę otwarć</string>
   <string name="option_manage_engines">Zarządzaj silnikami szachowymi</string>
-  <string name="option_select_engine">Wybierz silnik szachowy</string>
   <string name="option_color_theme">Ustaw schemat kolorów</string>
   <string name="option_about">O programie/pomoc</string>
   <string name="prefs_playing_options">Opcje gry</string>
@@ -286,8 +285,6 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="prefs_discardVariations_summary">Pomiń posunięcia spoza głównych linii na liście posunięć</string>
   <string name="prefs_leftHanded_title">Tryb leworęczny</string>
   <string name="prefs_leftHanded_summary">Elementy sterujące po lewej stronie dla orientacji poziomej</string>
-  <string name="prefs_boardGestures_title">Gesty na szachownicy</string>
-  <string name="prefs_boardGestures_summary">Długie przyciśnięcie na szachownicy otwiera menu podręczne. Poziome przeciągnięcia - posunięcie w przód/tył. Pionowe przeciągnięcia - przejście do poprzedniego/następnego wariantu.</string>
   <string name="prefs_squareSelectType_title">Wybór pola</string>
   <string name="prefs_squareSelectType_summary">Kontroluje sposób wyboru pól na szachownicy</string>
   <string name="prefs_fontSize_title">Rozmiar tekstu</string>

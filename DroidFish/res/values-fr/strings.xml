@@ -224,7 +224,6 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="option_draw">Proposer/Accepter la Nulle</string>
   <string name="option_select_book">Sélectionner le livre d\'ouverture</string>
   <string name="option_manage_engines">Gérer les modules d\'échecs</string>
-  <string name="option_select_engine">Sélectionner le module d\'analyse</string>
   <string name="option_color_theme">Définir le thème de couleurs</string>
   <string name="option_about">À propos/Aide</string>
   <string name="prefs_playing_options">Paramètres de jeu</string>
@@ -284,8 +283,6 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="prefs_discardVariations_summary">Ignorer les coups secondaires de la liste de coups</string>
   <string name="prefs_leftHanded_title">Mode gaucher</string>
   <string name="prefs_leftHanded_summary">Boutons situés sur le côté gauche en mode paysage</string>
-  <string name="prefs_boardGestures_title">Gestes sur l\'échiquier</string>
-  <string name="prefs_boardGestures_summary">Faire un appui long pour accéder au menu d\'options. Glisser horizontalement pour aller aux coups suivants/précédents. Glisser verticalement pour aller à la variation suivante/précédente.</string>
   <string name="prefs_squareSelectType_title">Sélection de la case</string>
   <string name="prefs_squareSelectType_summary">Définir le comportement de la saisie des cases</string>
   <string name="prefs_fontSize_title">Taille du texte</string>

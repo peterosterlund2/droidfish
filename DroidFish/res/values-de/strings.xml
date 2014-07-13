@@ -229,7 +229,6 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="option_draw">Remis anbieten/annehmen</string>
   <string name="option_select_book">Eröffnungsbuch auswählen</string>
   <string name="option_manage_engines">Schach-Engines verwalten</string>
-  <string name="option_select_engine">Schach-Engine auswählen</string>
   <string name="option_color_theme">Farbschema auswählen</string>
   <string name="option_about">Information/Hinweise</string>
   <string name="prefs_playing_options">Spieloptionen</string>
@@ -289,8 +288,6 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_discardVariations_summary">Nicht-Hauptlinienzüge aus der Zugliste verwerfen</string>
   <string name="prefs_leftHanded_title">Linkshänder-Modus</string>
   <string name="prefs_leftHanded_summary">Steuerelemente auf der linken Seite im Querformat</string>
-  <string name="prefs_boardGestures_title">Spielfeld-Gesten</string>
-  <string name="prefs_boardGestures_summary">Langes Drücken auf das Spielfeld aktiviert das Hilfsmittel-Menü. Horizontales Wischen führt zur Rücknahme/ Wiederholung von Zügen. Vertikales Wischen springt zur vorherigen/ nächsten Variante.</string>
   <string name="prefs_squareSelectType_title">Feldauswahl</string>
   <string name="prefs_squareSelectType_summary">Festlegung der Auswahl von Feldern</string>
   <string name="prefs_fontSize_title">Schriftgröße</string>

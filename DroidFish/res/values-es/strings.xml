@@ -225,7 +225,6 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="option_draw">Ofrecer / Aceptar Tablas</string>
   <string name="option_select_book">Seleccionar Libro</string>
   <string name="option_manage_engines">Gestión de motores de ajedrez</string>
-  <string name="option_select_engine">Seleccionar Motor</string>
   <string name="option_color_theme">Ajustar rango de Colores</string>
   <string name="option_about"> Información / Ayuda</string>
   <string name="prefs_playing_options">Opciones de juego</string>
@@ -285,8 +284,6 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="prefs_discardVariations_summary">Descartar jugadas de líneas secundarias de la lista de movimientos</string>
   <string name="prefs_leftHanded_title">Modo zurdo</string>
   <string name="prefs_leftHanded_summary">Controles en el lado izquierdo en modo horizontal</string>
-  <string name="prefs_boardGestures_title">Acciones sobre el tablero</string>
-  <string name="prefs_boardGestures_summary">Mantenga el tablero presionado para acceder al menú de herramientas. Deslice el dedo horizontalmente a derecha e izquierda para retroceder/avanzar jugadas. Deslízelo verticalmente para ir a la anterior/siguiente variante.</string>
   <string name="prefs_squareSelectType_title">Selección de casilla</string>
   <string name="prefs_squareSelectType_summary">Controla cómo seleccionar el remarcado de las casillas en el tablero</string>
   <string name="prefs_fontSize_title">Tamaño del Texto</string>

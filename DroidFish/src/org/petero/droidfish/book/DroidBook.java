@@ -18,6 +18,7 @@
 
 package org.petero.droidfish.book;
 
+import android.annotation.SuppressLint;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,6 +50,7 @@ public final class DroidBook {
             return TextIO.moveToUCIString(move) + " (" + weight + ")";
         }
     }
+    @SuppressLint("TrulyRandom")
     private Random rndGen = new SecureRandom();
 
     private IOpeningBook externalBook = new NullBook();

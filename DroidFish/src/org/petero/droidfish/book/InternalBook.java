@@ -32,8 +32,10 @@ import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gamelogic.UndoInfo;
 
+import android.annotation.SuppressLint;
 import android.util.FloatMath;
 
+@SuppressLint("UseSparseArrays")
 final class InternalBook implements IOpeningBook {
     private static HashMap<Long, ArrayList<BookEntry>> bookMap;
     private static int numBookMoves = -1;

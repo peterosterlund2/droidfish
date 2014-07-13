@@ -217,7 +217,6 @@
   <string name="option_draw">Заявить/Предложить/Принять ничью</string>
   <string name="option_select_book">Выбрать открываемую книгу</string>
   <string name="option_manage_engines">Управление шахматными движками</string>
-  <string name="option_select_engine">Выбрать движок</string>
   <string name="option_color_theme">Установить цветную тему</string>
   <string name="option_about">Информация / Помощь</string>
   <string name="prefs_playing_options">Опции партии</string>
@@ -277,8 +276,6 @@
   <string name="prefs_discardVariations_summary">Отказаться от хода не главной линии из списка ходов</string>
   <string name="prefs_leftHanded_title">Левосторонний режим</string>
   <string name="prefs_leftHanded_summary">Контроль слева в ландшафтном режиме</string>
-  <string name="prefs_boardGestures_title">Жесты на доске</string>
-  <string name="prefs_boardGestures_summary">Долго нажмите на доске для вызова меню инструментов. Проведите горизонтально, чтобы отменить/повторить ход. Проведите вертикально, чтобы сделать предыдущее/следующее изменение хода.</string>
   <string name="prefs_squareSelectType_title">Выбор клеток</string>
   <string name="prefs_squareSelectType_summary">Управление выбираемыми клетками на шахматной доске</string>
   <string name="prefs_fontSize_title">Размер текста</string>
