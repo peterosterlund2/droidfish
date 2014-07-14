@@ -75,12 +75,6 @@ public class CuckooChessEngine extends UCIEngineBase {
 
     /** @inheritDoc */
     @Override
-    public final void initOptions(EngineOptions engineOptions) {
-        super.initOptions(engineOptions);
-    }
-
-    /** @inheritDoc */
-    @Override
     public boolean optionsOk(EngineOptions engineOptions) {
         return true;
     }
