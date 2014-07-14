@@ -1224,9 +1224,11 @@ public class DroidFish extends Activity implements GUIInterface {
         String id = "";
         try {
             String engine = settings.getString("engine", "stockfish");
-            String[] lines = Util.readFile(engine);
-            if (lines.length >= 3)
-                id = lines[1] + ":" + lines[2];
+            if (EngineUtil.isNetEngine(engine)) {
+                String[] lines = Util.readFile(engine);
+                if (lines.length >= 3)
+                    id = lines[1] + ":" + lines[2];
+            }
         } catch (IOException e) {
         }
         engineOptions.networkID = id;
