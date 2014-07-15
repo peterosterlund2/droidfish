@@ -1,6 +1,6 @@
 /*
     DroidFish - An Android chess program.
-    Copyright (C) 2011-2012  Peter Österlund, peterosterlund2@gmail.com
+    Copyright (C) 2011-2014  Peter Österlund, peterosterlund2@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,9 +18,14 @@
 
 package org.petero.droidfish.engine;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
 
 import org.petero.droidfish.EngineOptions;
 import org.petero.droidfish.engine.cuckoochess.CuckooChessEngine;
@@ -68,6 +73,42 @@ public abstract class UCIEngineBase implements UCIEngine {
     @Override
     public void initOptions(EngineOptions engineOptions) {
         isUCI = true;
+    }
+
+    @Override
+    public final void applyIniFile() {
+        File optionsFile = getOptionsFile();
+        Properties iniOptions = new Properties();
+        FileInputStream is = null;
+        try {
+            is = new FileInputStream(optionsFile);
+            iniOptions.load(is);
+        } catch (IOException ex) {
+        } finally {
+            if (is != null)
+                try { is.close(); } catch (IOException ex) {}
+        }
+        for (Map.Entry<Object,Object> ent : iniOptions.entrySet()) {
+            if (ent.getKey() instanceof String && ent.getValue() instanceof String) {
+                String key = ((String)ent.getKey()).toLowerCase(Locale.US);
+                String value = (String)ent.getValue();
+                if (key.startsWith("uci_") || key.equals("hash") || key.equals("ponder") ||
+                    key.equals("multipv") || key.equals("gaviotatbpath") ||
+                    key.equals("syzygypath") || key.equals("threads") || key.equals("cores"))
+                    continue;
+                if (!configurableOption(key))
+                    continue;
+                setOption(key, value);
+            }
+        }
+    }
+
+    /** Get engine UCI options file. */
+    protected abstract File getOptionsFile();
+
+    /** Return true if the UCI option can be changed by the user. */
+    protected boolean configurableOption(String name) {
+        return true;
     }
 
     @Override

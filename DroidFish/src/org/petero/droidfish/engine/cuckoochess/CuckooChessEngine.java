@@ -1,6 +1,6 @@
 /*
     DroidFish - An Android chess program.
-    Copyright (C) 2011  Peter Österlund, peterosterlund2@gmail.com
+    Copyright (C) 2011-2014  Peter Österlund, peterosterlund2@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,11 +18,13 @@
 
 package org.petero.droidfish.engine.cuckoochess;
 
+import android.os.Environment;
 import chess.ChessParseError;
 import chess.ComputerPlayer;
 import chess.Move;
 import chess.Position;
 import chess.TextIO;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -71,6 +73,19 @@ public class CuckooChessEngine extends UCIEngineBase {
         int prio = pMin + (pNorm - pMin) / 2;
         engineThread.setPriority(prio);
         engineThread.start();
+    }
+
+    @Override
+    protected File getOptionsFile() {
+        File extDir = Environment.getExternalStorageDirectory();
+        return new File(extDir, "uci/cuckoochess.ini");
+    }
+
+    @Override
+    protected boolean configurableOption(String name) {
+        if (name.equals("strength"))
+            return false;
+        return true;
     }
 
     /** @inheritDoc */

@@ -1,6 +1,6 @@
 /*
     DroidFish - An Android chess program.
-    Copyright (C) 2011-2013  Peter Österlund, peterosterlund2@gmail.com
+    Copyright (C) 2011-2014  Peter Österlund, peterosterlund2@gmail.com
     Copyright (C) 2012 Leo Mayer
 
     This program is free software: you can redistribute it and/or modify
@@ -2128,16 +2128,17 @@ public class DroidFish extends Activity implements GUIInterface {
         return alert;
     }
 
-    private final static boolean internalEngine(String name) {
+    private final static boolean reservedEngineName(String name) {
         return "cuckoochess".equals(name) ||
-               "stockfish".equals(name);
+               "stockfish".equals(name) ||
+               name.endsWith(".ini");
     }
 
     private final Dialog selectEngineDialog(final boolean abortOnCancel) {
         String[] fileNames = findFilesInDirectory(engineDir, new FileNameFilter() {
             @Override
             public boolean accept(String filename) {
-                return !internalEngine(filename);
+                return !reservedEngineName(filename);
             }
         });
         final int numFiles = fileNames.length;
@@ -2753,7 +2754,7 @@ public class DroidFish extends Activity implements GUIInterface {
         String[] fileNames = findFilesInDirectory(engineDir, new FileNameFilter() {
             @Override
             public boolean accept(String filename) {
-                if (internalEngine(filename))
+                if (reservedEngineName(filename))
                     return false;
                 return EngineUtil.isNetEngine(filename);
             }
@@ -2827,7 +2828,7 @@ public class DroidFish extends Activity implements GUIInterface {
                 if (engineName.contains("/")) {
                     nameOk = false;
                     errMsg = R.string.slash_not_allowed;
-                } else if (internalEngine(engineName) || file.exists()) {
+                } else if (reservedEngineName(engineName) || file.exists()) {
                     nameOk = false;
                     errMsg = R.string.engine_name_in_use;
                 }

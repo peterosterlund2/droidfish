@@ -1,6 +1,6 @@
 /*
     DroidFish - An Android chess program.
-    Copyright (C) 2011-2012  Peter Österlund, peterosterlund2@gmail.com
+    Copyright (C) 2011-2014  Peter Österlund, peterosterlund2@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -680,6 +680,7 @@ public class DroidComputerPlayer {
         case READ_OPTIONS: {
             if (readUCIOption(uci, s)) {
                 uci.initOptions(engineOptions);
+                uci.applyIniFile();
                 uci.writeLineToEngine("ucinewgame");
                 uci.writeLineToEngine("isready");
                 engineState.setState(MainState.WAIT_READY);

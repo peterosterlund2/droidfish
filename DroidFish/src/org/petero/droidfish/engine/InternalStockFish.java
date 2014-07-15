@@ -1,6 +1,6 @@
 /*
     DroidFish - An Android chess program.
-    Copyright (C) 2011-2012  Peter Österlund, peterosterlund2@gmail.com
+    Copyright (C) 2011-2014  Peter Österlund, peterosterlund2@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -31,12 +31,26 @@ import java.security.NoSuchAlgorithmException;
 import java.util.zip.GZIPInputStream;
 
 import android.content.Context;
+import android.os.Environment;
 
 /** Stockfish engine running as process, started from assets resource. */
 public class InternalStockFish extends ExternalEngine {
 
     public InternalStockFish(Context context, Report report) {
         super(context, "", report);
+    }
+
+    @Override
+    protected File getOptionsFile() {
+        File extDir = Environment.getExternalStorageDirectory();
+        return new File(extDir, "uci/stockfish.ini");
+    }
+
+    @Override
+    protected boolean configurableOption(String name) {
+        if (name.equals("skill level"))
+            return false;
+        return true;
     }
 
     /** @inheritDoc */

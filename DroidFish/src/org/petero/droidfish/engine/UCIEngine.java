@@ -1,6 +1,6 @@
 /*
     DroidFish - An Android chess program.
-    Copyright (C) 2011  Peter Österlund, peterosterlund2@gmail.com
+    Copyright (C) 2011-2014  Peter Österlund, peterosterlund2@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -33,6 +33,9 @@ public interface UCIEngine {
 
     /** Initialize default options. */
     public void initOptions(EngineOptions engineOptions);
+
+    /** Read UCI options from .ini file and send them to the engine. */
+    public void applyIniFile();
 
     /** Return true if engine options have correct values.
      * If false is returned, engine will be restarted. */

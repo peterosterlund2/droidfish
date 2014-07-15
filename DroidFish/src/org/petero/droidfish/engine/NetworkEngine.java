@@ -1,6 +1,6 @@
 /*
     DroidFish - An Android chess program.
-    Copyright (C) 2012  Peter Österlund, peterosterlund2@gmail.com
+    Copyright (C) 2012-2014  Peter Österlund, peterosterlund2@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 package org.petero.droidfish.engine;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -207,10 +208,14 @@ public class NetworkEngine extends UCIEngineBase {
         setOption("Hash", engineOptions.hashMB);
         gaviotaTbPath = engineOptions.getEngineGtbPath(true);
         setOption("GaviotaTbPath", gaviotaTbPath);
-        setOption("GaviotaTbCache", 8);
         syzygyPath = engineOptions.getEngineRtbPath(true);
         setOption("SyzygyPath", syzygyPath);
         optionsInitialized = true;
+    }
+
+    @Override
+    protected File getOptionsFile() {
+        return new File(fileName + ".ini");
     }
 
     /** @inheritDoc */

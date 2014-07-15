@@ -1,6 +1,6 @@
 /*
     DroidFish - An Android chess program.
-    Copyright (C) 2011-2012  Peter Österlund, peterosterlund2@gmail.com
+    Copyright (C) 2011-2014  Peter Österlund, peterosterlund2@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -179,10 +179,14 @@ public class ExternalEngine extends UCIEngineBase {
         setOption("Hash", hashMB);
         gaviotaTbPath = engineOptions.getEngineGtbPath(false);
         setOption("GaviotaTbPath", gaviotaTbPath);
-        setOption("GaviotaTbCache", 8);
         syzygyPath = engineOptions.getEngineRtbPath(false);
         setOption("SyzygyPath", syzygyPath);
         optionsInitialized = true;
+    }
+
+    @Override
+    protected File getOptionsFile() {
+        return new File(engineFileName.getAbsolutePath() + ".ini");
     }
 
     /** Reduce too large hash sizes. */
