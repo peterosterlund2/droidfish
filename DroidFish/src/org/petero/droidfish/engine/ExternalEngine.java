@@ -177,10 +177,10 @@ public class ExternalEngine extends UCIEngineBase {
         super.initOptions(engineOptions);
         hashMB = getHashMB(engineOptions.hashMB);
         setOption("Hash", hashMB);
-        gaviotaTbPath = engineOptions.getEngineGtbPath(false);
-        setOption("GaviotaTbPath", gaviotaTbPath);
         syzygyPath = engineOptions.getEngineRtbPath(false);
         setOption("SyzygyPath", syzygyPath);
+        gaviotaTbPath = engineOptions.getEngineGtbPath(false);
+        setOption("GaviotaTbPath", gaviotaTbPath);
         optionsInitialized = true;
     }
 

@@ -206,10 +206,10 @@ public class NetworkEngine extends UCIEngineBase {
         super.initOptions(engineOptions);
         hashMB = engineOptions.hashMB;
         setOption("Hash", engineOptions.hashMB);
-        gaviotaTbPath = engineOptions.getEngineGtbPath(true);
-        setOption("GaviotaTbPath", gaviotaTbPath);
         syzygyPath = engineOptions.getEngineRtbPath(true);
         setOption("SyzygyPath", syzygyPath);
+        gaviotaTbPath = engineOptions.getEngineGtbPath(true);
+        setOption("GaviotaTbPath", gaviotaTbPath);
         optionsInitialized = true;
     }
 
