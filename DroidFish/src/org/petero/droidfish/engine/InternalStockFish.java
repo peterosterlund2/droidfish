@@ -52,7 +52,10 @@ public class InternalStockFish extends ExternalEngine {
         name = name.toLowerCase(Locale.US);
         if (!super.configurableOption(name))
             return false;
-        if (name.equals("skill level"))
+        if (name.equals("skill level") || name.equals("write debug log") ||
+            name.equals("write search log") || name.equals("search log filename") ||
+            name.equals("book file") || name.equals("best book move") ||
+            name.equals("ownbook"))
             return false;
         return true;
     }
