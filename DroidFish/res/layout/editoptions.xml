@@ -33,5 +33,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="1">
         </Button>
-    </LinearLayout>
+        <Button
+            android:text="@string/reset"
+            android:id="@+id/eo_reset"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+        </Button>
+        </LinearLayout>
 </LinearLayout>

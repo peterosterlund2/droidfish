@@ -130,6 +130,7 @@ you are not actively using the program.\
     <string name="toggle_large_buttons">Toggle Large Buttons</string>
     <string name="toggle_blind_mode">Toggle Blindfold Mode</string>
     <string name="cancel">Cancel</string>
+    <string name="reset">Reset</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="move_number">Move number:</string>
