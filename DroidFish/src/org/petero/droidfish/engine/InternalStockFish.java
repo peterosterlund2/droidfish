@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
 import java.util.zip.GZIPInputStream;
 
 import android.content.Context;
@@ -43,11 +44,14 @@ public class InternalStockFish extends ExternalEngine {
     @Override
     protected File getOptionsFile() {
         File extDir = Environment.getExternalStorageDirectory();
-        return new File(extDir, "uci/stockfish.ini");
+        return new File(extDir, "/DroidFish/uci/stockfish.ini");
     }
 
     @Override
     protected boolean configurableOption(String name) {
+        name = name.toLowerCase(Locale.US);
+        if (!super.configurableOption(name))
+            return false;
         if (name.equals("skill level"))
             return false;
         return true;

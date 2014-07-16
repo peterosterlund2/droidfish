@@ -20,9 +20,9 @@ package org.petero.droidfish.engine;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
@@ -35,8 +35,7 @@ import android.content.Context;
 public abstract class UCIEngineBase implements UCIEngine {
 
     private boolean processAlive;
-    private HashSet<String> allOptions;
-    private HashMap<String, String> currOptions;
+    UCIOptions options;
     protected boolean isUCI;
 
     public static UCIEngine getEngine(Context context, String engine,
@@ -55,8 +54,7 @@ public abstract class UCIEngineBase implements UCIEngine {
 
     protected UCIEngineBase() {
         processAlive = false;
-        allOptions = new HashSet<String>();
-        currOptions = new HashMap<String, String>();
+        options = new UCIOptions();
         isUCI = false;
     }
 
@@ -92,15 +90,44 @@ public abstract class UCIEngineBase implements UCIEngine {
             if (ent.getKey() instanceof String && ent.getValue() instanceof String) {
                 String key = ((String)ent.getKey()).toLowerCase(Locale.US);
                 String value = (String)ent.getValue();
-                if (key.startsWith("uci_") || key.equals("hash") || key.equals("ponder") ||
-                    key.equals("multipv") || key.equals("gaviotatbpath") ||
-                    key.equals("syzygypath") || key.equals("threads") || key.equals("cores"))
-                    continue;
-                if (!configurableOption(key))
-                    continue;
-                setOption(key, value);
+                if (configurableOption(key))
+                    setOption(key, value);
             }
         }
+    }
+
+    @Override
+    public final void setUCIOptions(Map<String,String> uciOptions) {
+        boolean modified = false;
+        for (Map.Entry<String,String> ent : uciOptions.entrySet()) {
+            String key = ((String)ent.getKey()).toLowerCase(Locale.US);
+            String value = (String)ent.getValue();
+            if (configurableOption(key))
+                modified |= setOption(key, value);
+        }
+        if (modified) { // Save .ini file
+            Properties iniOptions = new Properties();
+            for (String name : options.getOptionNames()) {
+                UCIOptions.OptionBase o = options.getOption(name);
+                if (configurableOption(name) && o.modified())
+                    iniOptions.put(o.name, o.getStringValue());
+            }
+            File optionsFile = getOptionsFile();
+            FileOutputStream os = null;
+            try {
+                os = new FileOutputStream(optionsFile);
+                iniOptions.store(os, null);
+            } catch (IOException ex) {
+            } finally {
+                if (os != null)
+                    try { os.close(); } catch (IOException ex) {}
+            }
+        }
+    }
+
+    @Override
+    public final UCIOptions getUCIOptions() {
+        return options;
     }
 
     /** Get engine UCI options file. */
@@ -108,6 +135,11 @@ public abstract class UCIEngineBase implements UCIEngine {
 
     /** Return true if the UCI option can be changed by the user. */
     protected boolean configurableOption(String name) {
+        name = name.toLowerCase(Locale.US);
+        if (name.startsWith("uci_") || name.equals("hash") || name.equals("ponder") ||
+            name.equals("multipv") || name.equals("gaviotatbpath") ||
+            name.equals("syzygypath") || name.equals("threads") || name.equals("cores"))
+            return false;
         return true;
     }
 
@@ -120,47 +152,143 @@ public abstract class UCIEngineBase implements UCIEngine {
     }
 
     @Override
-    public void clearOptions() {
-        allOptions.clear();
+    public final void clearOptions() {
+        options.clear();
     }
 
     @Override
-    public void registerOption(String optName) {
-        allOptions.add(optName);
+    public final UCIOptions.OptionBase registerOption(String[] tokens) {
+        if (tokens.length < 5 || !tokens[1].equals("name"))
+            return null;
+        String name = tokens[2];
+        int i;
+        for (i = 3; i < tokens.length; i++) {
+            if ("type".equals(tokens[i]))
+                break;
+            name += " " + tokens[i];
+        }
+
+        if (i >= tokens.length - 1)
+            return null;
+        i++;
+        String type = tokens[i++];
+
+        String defVal = null;
+        String minVal = null;
+        String maxVal = null;
+        ArrayList<String> var = new ArrayList<String>();
+        try {
+            for (; i < tokens.length; i++) {
+                if (tokens[i].equals("default")) {
+                    String stop = null;
+                    if (type.equals("spin"))
+                        stop = "min";
+                    else if (type.equals("combo"))
+                        stop = "var";
+                    defVal = "";
+                    while (i+1 < tokens.length && !tokens[i+1].equals(stop)) {
+                        if (defVal.length() > 0)
+                            defVal += " ";
+                        defVal += tokens[i+1];
+                        i++;
+                    }
+                } else if (tokens[i].equals("min")) {
+                    minVal = tokens[++i];
+                } else if (tokens[i].equals("max")) {
+                    maxVal = tokens[++i];
+                } else if (tokens[i].equals("var")) {
+                    String value = "";
+                    while (i+1 < tokens.length && !tokens[i+1].equals("var")) {
+                        if (value.length() > 0)
+                            value += " ";
+                        value += tokens[i+1];
+                        i++;
+                    }
+                    var.add(value);
+                } else
+                    return null;
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            return null;
+        }
+
+        UCIOptions.OptionBase option = null;
+        if (type.equals("check")) {
+            if (defVal != null) {
+                defVal = defVal.toLowerCase(Locale.US);
+                option = new UCIOptions.CheckOption(name, defVal.equals("true"));
+            }
+        } else if (type.equals("spin")) {
+            if (defVal != null && minVal != null && maxVal != null) {
+                try {
+                    int defV = Integer.parseInt(defVal);
+                    int minV = Integer.parseInt(minVal);
+                    int maxV = Integer.parseInt(maxVal);
+                    if (minV <= defV && defV <= maxV)
+                        option = new UCIOptions.SpinOption(name, minV, maxV, defV);
+                } catch (NumberFormatException ex) {
+                }
+            }
+        } else if (type.equals("combo")) {
+            if (defVal != null && var.size() > 0) {
+                String[] allowed = var.toArray(new String[var.size()]);
+                for (String s : allowed)
+                    if (s.equals(defVal)) {
+                        option = new UCIOptions.ComboOption(name, allowed, defVal);
+                        break;
+                    }
+            }
+        } else if (type.equals("button")) {
+            option = new UCIOptions.ButtonOption(name);
+        } else if (type.equals("string")) {
+            if (defVal != null)
+                option = new UCIOptions.StringOption(name, defVal);
+        }
+
+        if (option != null) {
+            if (!configurableOption(name))
+                option.visible = false;
+            options.addOption(option);
+        }
+        return option;
     }
 
     /** Return true if engine has option optName. */
-    protected boolean hasOption(String optName) {
-        return allOptions.contains(optName);
+    protected final boolean hasOption(String optName) {
+        return options.contains(optName);
     }
 
     @Override
-    public void setOption(String name, int value) {
+    public final void setOption(String name, int value) {
         setOption(name, String.format(Locale.US, "%d", value));
     }
 
     @Override
-    public void setOption(String name, boolean value) {
+    public final void setOption(String name, boolean value) {
         setOption(name, value ? "true" : "false");
     }
 
     @Override
-    public void setOption(String name, String value) {
-        String lcName = name.toLowerCase(Locale.US);
-        if (!allOptions.contains(lcName))
-            return;
-        String currVal = currOptions.get(lcName);
-        if (value.equals(currVal))
-            return;
-        writeLineToEngine(String.format(Locale.US, "setoption name %s value %s", name, value));
-        currOptions.put(lcName, value);
+    public final boolean setOption(String name, String value) {
+        if (!options.contains(name))
+            return false;
+        UCIOptions.OptionBase o = options.getOption(name);
+        if (o instanceof UCIOptions.ButtonOption) {
+            writeLineToEngine(String.format(Locale.US, "setoption name %s", name));
+        } else if (o.setFromString(value)) {
+            if (value.length() == 0)
+                value = "<empty>";
+            writeLineToEngine(String.format(Locale.US, "setoption name %s value %s", name, value));
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void setNThreads(int nThreads) {
-        if (allOptions.contains("threads"))
+    public final void setNThreads(int nThreads) {
+        if (options.contains("Threads"))
             setOption("Threads", nThreads);
-        else if (allOptions.contains("cores"))
+        else if (options.contains("Cores"))
             setOption("Cores", nThreads);
     }
 }

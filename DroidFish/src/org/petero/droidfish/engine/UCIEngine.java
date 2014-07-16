@@ -18,6 +18,8 @@
 
 package org.petero.droidfish.engine;
 
+import java.util.Map;
+
 import org.petero.droidfish.EngineOptions;
 
 public interface UCIEngine {
@@ -36,6 +38,12 @@ public interface UCIEngine {
 
     /** Read UCI options from .ini file and send them to the engine. */
     public void applyIniFile();
+
+    /** Set engine UCI options. */
+    public void setUCIOptions(Map<String,String> uciOptions);
+
+    /** Get engine UCI options. */
+    public UCIOptions getUCIOptions();
 
     /** Return true if engine options have correct values.
      * If false is returned, engine will be restarted. */
@@ -66,14 +74,17 @@ public interface UCIEngine {
     /** Set an engine boolean option. */
     public void setOption(String name, boolean value);
 
-    /** Set an engine string option. */
-    public void setOption(String name, String value);
+    /** Set an engine option. If the option is not a string option,
+     * value is converted to the correct type.
+     * @return True if the option was changed. */
+    public boolean setOption(String name, String value);
 
     /** Clear list of supported options. */
     public void clearOptions();
 
-    /** Register an option as supported by the engine. */
-    public void registerOption(String optName);
+    /** Register an option as supported by the engine.
+     * @param tokens  The UCI option line sent by the engine, split in words. */
+    public UCIOptions.OptionBase registerOption(String[] tokens);
 
     /** Set number of search threads to use. */
     public void setNThreads(int nThreads);

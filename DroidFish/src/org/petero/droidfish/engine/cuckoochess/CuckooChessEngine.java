@@ -78,11 +78,14 @@ public class CuckooChessEngine extends UCIEngineBase {
     @Override
     protected File getOptionsFile() {
         File extDir = Environment.getExternalStorageDirectory();
-        return new File(extDir, "uci/cuckoochess.ini");
+        return new File(extDir, "/DroidFish/uci/cuckoochess.ini");
     }
 
     @Override
     protected boolean configurableOption(String name) {
+        name = name.toLowerCase(Locale.US);
+        if (!super.configurableOption(name))
+            return false;
         if (name.equals("strength"))
             return false;
         return true;

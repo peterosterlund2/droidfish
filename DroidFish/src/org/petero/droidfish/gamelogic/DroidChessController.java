@@ -35,6 +35,7 @@ import org.petero.droidfish.PGNOptions;
 import org.petero.droidfish.Util;
 import org.petero.droidfish.book.BookOptions;
 import org.petero.droidfish.engine.DroidComputerPlayer;
+import org.petero.droidfish.engine.UCIOptions;
 import org.petero.droidfish.engine.DroidComputerPlayer.SearchRequest;
 import org.petero.droidfish.engine.DroidComputerPlayer.SearchType;
 import org.petero.droidfish.gamelogic.Game.GameState;
@@ -153,6 +154,7 @@ public class DroidChessController {
         }
     }
 
+    /** Set engine options. */
     public final synchronized void setEngineOptions(EngineOptions options, boolean restart) {
         if (!engineOptions.equals(options)) {
             engineOptions = options;
@@ -182,6 +184,12 @@ public class DroidChessController {
                 updateGUI();
             }
         }
+    }
+
+    /** Set engine UCI options. */
+    public final synchronized void setEngineUCIOptions(Map<String,String> uciOptions) {
+        if (computerPlayer != null)
+            computerPlayer.setEngineUCIOptions(uciOptions);
     }
 
     /** Return current engine identifier. */
@@ -285,6 +293,17 @@ public class DroidChessController {
     /** Return true if computer player is using CPU power. */
     public final synchronized boolean computerBusy() {
         return (computerPlayer != null) && computerPlayer.computerBusy();
+    }
+
+    /** Return true if computer player is in IDLE state. */
+    public final synchronized boolean computerIdle() {
+        return (computerPlayer != null) && computerPlayer.computerIdle();
+    }
+    
+    public final synchronized UCIOptions getUCIOptions() {
+        if (!computerIdle() || computerPlayer == null)
+            return null;
+        return computerPlayer.getUCIOptions();
     }
 
     /** Make a move for a human player. */

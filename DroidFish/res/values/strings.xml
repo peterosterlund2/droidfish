@@ -169,6 +169,7 @@ you are not actively using the program.\
     <string name="load_scid_game_title">Load Scid Game</string>
     <string name="load_fen_title">Load Position</string>
     <string name="cpu_warning_title">CPU Warning</string>
+    <string name="edit_options_title">UCI Options</string>
     <string name="failed_to_read_pgn_data">Failed to read PGN data</string>
     <string name="variation">Var:</string>
     <string name="add_analysis">Add Analysis</string>
@@ -201,6 +202,7 @@ you are not actively using the program.\
     <string name="stockfish_engine">Stockfish</string>
     <string name="cuckoochess_engine">CuckooChess</string>
     <string name="select_engine">Select Engine</string>
+    <string name="set_engine_options">Set options</string>
     <string name="configure_network_engine">Configure Network Engine</string>
     <string name="create_network_engine">Create Network Engine</string>
     <string name="delete_network_engine">Delete Network Engine?</string>

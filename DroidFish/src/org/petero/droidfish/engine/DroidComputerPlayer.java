@@ -25,6 +25,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.petero.droidfish.EngineOptions;
@@ -266,6 +267,18 @@ public class DroidComputerPlayer {
         }
     }
 
+    /** Return true if computer player is in IDLE state. */
+    public final synchronized boolean computerIdle() {
+        return engineState.state == MainState.IDLE;
+    }
+    
+    public final synchronized UCIOptions getUCIOptions() {
+        UCIEngine uci = uciEngine;
+        if (uci == null)
+            return null;
+        return uci.getUCIOptions();
+    }
+
     /** Return maximum number of PVs supported by engine. */
     public final synchronized int getMaxPV() {
         return maxPV;
@@ -278,6 +291,14 @@ public class DroidComputerPlayer {
 
     public final void setEngineOptions(EngineOptions options) {
         engineOptions = options;
+    }
+
+    public synchronized void setEngineUCIOptions(Map<String,String> uciOptions) {
+        if (engineState.state == MainState.IDLE) {
+            UCIEngine uci = uciEngine;
+            if (uci != null)
+                uci.setUCIOptions(uciOptions);
+        }
     }
 
     /** Return all book moves, both as a formatted string and as a list of moves. */
@@ -744,24 +765,11 @@ public class DroidComputerPlayer {
                 }
                 listener.notifyEngineName(engineName);
             }
-        } else if (tokens.length > 2) {
-            String optName = tokens[2].toLowerCase(Locale.US);
-            for (int i = 3; i < tokens.length; i++) {
-                if ("type".equals(tokens[i]))
-                    break;
-                optName += " " + tokens[i].toLowerCase(Locale.US);
-            }
-            uci.registerOption(optName);
-            if (optName.equals("multipv")) {
-                try {
-                    for (int i = 3; i < tokens.length; i++) {
-                        if (tokens[i].equals("max") && (i+1 < tokens.length)) {
-                            maxPV = Math.max(maxPV, Integer.parseInt(tokens[i+1]));
-                            break;
-                        }
-                    }
-                } catch (NumberFormatException nfe) { }
-            }
+        } else if (tokens[0].equals("option")) {
+            UCIOptions.OptionBase o = uci.registerOption(tokens);
+            if (o instanceof UCIOptions.SpinOption &&
+                o.name.toLowerCase(Locale.US).equals("multipv"))
+                maxPV = Math.max(maxPV, ((UCIOptions.SpinOption)o).maxValue);
         }
         return false;
     }

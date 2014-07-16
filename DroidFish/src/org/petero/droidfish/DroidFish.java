@@ -30,11 +30,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TreeMap;
 
 import org.petero.droidfish.ChessBoard.SquareDecoration;
 import org.petero.droidfish.activities.CPUWarning;
 import org.petero.droidfish.activities.EditBoard;
+import org.petero.droidfish.activities.EditOptions;
 import org.petero.droidfish.activities.EditPGNLoad;
 import org.petero.droidfish.activities.EditPGNSave;
 import org.petero.droidfish.activities.LoadFEN;
@@ -42,6 +44,7 @@ import org.petero.droidfish.activities.LoadScid;
 import org.petero.droidfish.activities.Preferences;
 import org.petero.droidfish.book.BookOptions;
 import org.petero.droidfish.engine.EngineUtil;
+import org.petero.droidfish.engine.UCIOptions;
 import org.petero.droidfish.gamelogic.DroidChessController;
 import org.petero.droidfish.gamelogic.ChessParseError;
 import org.petero.droidfish.gamelogic.Move;
@@ -155,7 +158,6 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! Handle PGN non-file intents with more than one game.
     // FIXME!!! Save position to fen/epd file
 
-    // FIXME!!! Strength setting for external engines
     // FIXME!!! Selection dialog for going into variation
     // FIXME!!! Use two engines in engine/engine games
 
@@ -1275,6 +1277,7 @@ public class DroidFish extends Activity implements GUIInterface {
     static private final int RESULT_OI_PGN_LOAD = 6;
     static private final int RESULT_OI_FEN_LOAD = 7;
     static private final int RESULT_GET_FEN = 8;
+    static private final int RESULT_EDITOPTIONS = 9;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -1326,6 +1329,7 @@ public class DroidFish extends Activity implements GUIInterface {
             showDialog(SELECT_BOOK_DIALOG);
             return true;
         case R.id.manage_engines:
+            removeDialog(MANAGE_ENGINES_DIALOG);
             showDialog(MANAGE_ENGINES_DIALOG);
             return true;
         case R.id.set_color_theme:
@@ -1427,6 +1431,14 @@ public class DroidFish extends Activity implements GUIInterface {
             if (resultCode == RESULT_OK) {
                 String fen = data.getAction();
                 setFenHelper(fen);
+            }
+            break;
+        case RESULT_EDITOPTIONS:
+            if (resultCode == RESULT_OK) {
+                @SuppressWarnings("unchecked")
+                Map<String,String> uciOpts =
+                    (Map<String,String>)data.getSerializableExtra("org.petero.droidfish.ucioptions");
+                ctrl.setEngineUCIOptions(uciOpts);
             }
             break;
         }
@@ -2726,20 +2738,48 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     private final Dialog manageEnginesDialog() {
-        final CharSequence[] items = {
-                getString(R.string.select_engine),
-                getString(R.string.configure_network_engine)
-        };
+        final int SELECT_ENGINE = 0;
+        final int SET_ENGINE_OPTIONS = 1;
+        final int CONFIG_NET_ENGINE = 2;
+        List<CharSequence> lst = new ArrayList<CharSequence>();
+        List<Integer> actions = new ArrayList<Integer>();
+        lst.add(getString(R.string.select_engine)); actions.add(SELECT_ENGINE);
+        if (ctrl.computerIdle()) {
+            UCIOptions uciOpts = ctrl.getUCIOptions();
+            if (uciOpts != null) {
+                boolean visible = false;
+                for (String name : uciOpts.getOptionNames())
+                    if (uciOpts.getOption(name).visible) {
+                        visible = true;
+                        break;
+                    }
+                if (visible) {
+                    lst.add(getString(R.string.set_engine_options));
+                    actions.add(SET_ENGINE_OPTIONS);
+                }
+            }
+        }
+        lst.add(getString(R.string.configure_network_engine)); actions.add(CONFIG_NET_ENGINE);
+        final List<Integer> finalActions = actions;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.option_manage_engines);
-        builder.setItems(items, new DialogInterface.OnClickListener() {
+        builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                switch (item) {
-                case 0:
+                switch (finalActions.get(item)) {
+                case SELECT_ENGINE:
                     removeDialog(SELECT_ENGINE_DIALOG);
                     showDialog(SELECT_ENGINE_DIALOG);
                     break;
-                case 1:
+                case SET_ENGINE_OPTIONS: {
+                    Intent i = new Intent(DroidFish.this, EditOptions.class);
+                    UCIOptions uciOpts = ctrl.getUCIOptions();
+                    if (uciOpts != null) {
+                        i.putExtra("org.petero.droidfish.ucioptions", uciOpts);
+                        startActivityForResult(i, RESULT_EDITOPTIONS);
+                    }
+                    break;
+                }
+                case CONFIG_NET_ENGINE:
                     removeDialog(NETWORK_ENGINE_DIALOG);
                     showDialog(NETWORK_ENGINE_DIALOG);
                     break;
