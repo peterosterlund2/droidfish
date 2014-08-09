@@ -261,10 +261,12 @@ public class LoadFEN extends ListActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Position pos = cb.pos;
-        showList();
-        cb.setPosition(pos);
-        okButton.setEnabled(selectedFi != null);
+        if (cb != null) {
+            Position pos = cb.pos;
+            showList();
+            cb.setPosition(pos);
+            okButton.setEnabled(selectedFi != null);
+        }
     }
 
     final static int PROGRESS_DIALOG = 0;
