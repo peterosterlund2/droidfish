@@ -888,11 +888,13 @@ public class DroidComputerPlayer {
         statTime = 0;
         statNodes = statTBHits = 0;
         statNps = 0;
-        depthModified = false;
-        currMoveModified = false;
-        pvModified = false;
-        statsModified = false;
+        depthModified = true;
+        currMoveModified = true;
+        pvModified = true;
+        statsModified = true;
         statPvInfo.clear();
+        statCurrMove = "";
+        statCurrMoveNr = 0;
     }
 
     private final synchronized int getReadTimeout() {
