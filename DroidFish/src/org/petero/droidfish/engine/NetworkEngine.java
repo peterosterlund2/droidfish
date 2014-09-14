@@ -256,8 +256,8 @@ public class NetworkEngine extends UCIEngineBase {
     /** @inheritDoc */
     @Override
     public void writeLineToEngine(String data) {
-//      System.out.printf("GUI -> Engine: %s\n", data);
-      guiToEngine.addLine(data);
+//        System.out.printf("GUI -> Engine: %s\n", data);
+        guiToEngine.addLine(data);
     }
 
     /** @inheritDoc */
