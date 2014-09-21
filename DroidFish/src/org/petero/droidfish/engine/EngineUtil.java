@@ -33,14 +33,9 @@ public class EngineUtil {
     /** Return number of physical processors, i.e. hyper-threading ignored. */
     final static native int getNPhysicalProcessors();
 
-    private static final class CpuAbi {
-        static final String get() { return Build.CPU_ABI; }
-    }
-
-    /** Return file name of the internal stockfish executable,
-     * or null if the internal stockfish engine is not supported. */
+    /** Return file name of the internal stockfish executable. */
     public static String internalStockFishName() {
-        String abi = CpuAbi.get();
+        String abi = Build.CPU_ABI;
         if (!abi.equals("x86") &&
             !abi.equals("armeabi-v7a") &&
             !abi.equals("mips"))

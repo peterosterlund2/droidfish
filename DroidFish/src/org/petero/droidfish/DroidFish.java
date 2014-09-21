@@ -2154,14 +2154,11 @@ public class DroidFish extends Activity implements GUIInterface {
             }
         });
         final int numFiles = fileNames.length;
-        boolean haveSf = EngineUtil.internalStockFishName() != null;
-        final int nEngines = numFiles + 1 + (haveSf ? 1 : 0);
+        final int nEngines = numFiles + 2;
         final String[] items = new String[nEngines];
         final String[] ids = new String[nEngines];
         int idx = 0;
-        if (haveSf) {
-            ids[idx] = "stockfish"; items[idx] = getString(R.string.stockfish_engine); idx++;
-        }
+        ids[idx] = "stockfish"; items[idx] = getString(R.string.stockfish_engine); idx++;
         ids[idx] = "cuckoochess"; items[idx] = getString(R.string.cuckoochess_engine); idx++;
         String sep = File.separator;
         String base = Environment.getExternalStorageDirectory() + sep + engineDir + sep;
