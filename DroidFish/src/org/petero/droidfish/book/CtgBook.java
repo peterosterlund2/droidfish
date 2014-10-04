@@ -127,7 +127,7 @@ class CtgBook implements IOpeningBook {
     }
 
     /** Read len bytes from offs in file f. */
-    private final static byte[] readBytes(RandomAccessFile f, int offs, int len) throws IOException {
+    private final static byte[] readBytes(RandomAccessFile f, long offs, int len) throws IOException {
         byte[] ret = new byte[len];
         f.seek(offs);
         f.readFully(ret);
@@ -350,7 +350,7 @@ class CtgBook implements IOpeningBook {
         }
 
         private final PositionData findInPage(int page, byte[] encodedPos) throws IOException {
-            byte[] pageBuf = readBytes(f, (page+1)*4096, 4096);
+            byte[] pageBuf = readBytes(f, (page+1)*4096L, 4096);
             try {
                 int nPos = extractInt(pageBuf, 0, 2);
                 int nBytes = extractInt(pageBuf, 2, 2);
