@@ -1219,9 +1219,11 @@ public class DroidFish extends Activity implements GUIInterface {
     private final void setBookOptions() {
         BookOptions options = new BookOptions(bookOptions);
         if (options.filename.length() > 0) {
-            File extDir = Environment.getExternalStorageDirectory();
             String sep = File.separator;
-            options.filename = extDir.getAbsolutePath() + sep + bookDir + sep + options.filename;
+            if (!options.filename.startsWith(sep)) {
+                File extDir = Environment.getExternalStorageDirectory();
+                options.filename = extDir.getAbsolutePath() + sep + bookDir + sep + options.filename;
+            }
         }
         ctrl.setBookOptions(options);
     }
