@@ -870,7 +870,6 @@ public class DroidComputerPlayer {
     private long statNodes = 0;
     private long statTBHits = 0;
     private int statNps = 0;
-    private int pvNum = 0;
     private ArrayList<String> statPV = new ArrayList<String>();
     private String statCurrMove = "";
     private int statCurrMoveNr = 0;
@@ -913,6 +912,7 @@ public class DroidComputerPlayer {
             boolean havePvData = false;
             int nTokens = tokens.length;
             int i = 1;
+            int pvNum = 0;
             while (i < nTokens - 1) {
                 String is = tokens[i++];
                 if (is.equals("depth")) {
