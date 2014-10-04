@@ -382,6 +382,11 @@ public class DroidChessController {
         }
     }
 
+    /** Return true if the player to move in the current position is in check. */
+    public final synchronized boolean inCheck() {
+        return MoveGen.inCheck(game.tree.currentPos);
+    }
+
     /** Undo last move. Does not truncate game tree. */
     public final synchronized void undoMove() {
         if (game.getLastMove() != null) {

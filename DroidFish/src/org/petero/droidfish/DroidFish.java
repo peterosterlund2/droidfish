@@ -2457,8 +2457,9 @@ public class DroidFish extends Activity implements GUIInterface {
         }
 
         boolean allowNullMove =
-            gameMode.analysisMode() ||
-            (gameMode.playerWhite() && gameMode.playerBlack() && !gameMode.clocksActive());
+            (gameMode.analysisMode() ||
+             (gameMode.playerWhite() && gameMode.playerBlack() && !gameMode.clocksActive())) &&
+             !ctrl.inCheck();
         if (allowNullMove) {
             lst.add(getString(R.string.add_null_move)); actions.add(ADD_NULL_MOVE);
         }
