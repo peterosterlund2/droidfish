@@ -832,12 +832,6 @@ public class DroidFish extends Activity implements GUIInterface {
                 return true;
             }
         });
-        thinking.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openOptionsMenu();
-            }
-        });
 
         custom1Button = (ImageButton)findViewById(R.id.custom1Button);
         custom1ButtonActions.setImageButton(custom1Button, this);
@@ -851,6 +845,13 @@ public class DroidFish extends Activity implements GUIInterface {
             @Override
             public void onClick(View v) {
                 showDialog(GAME_MODE_DIALOG);
+            }
+        });
+        modeButton.setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                openOptionsMenu();
+                return true;
             }
         });
         undoButton = (ImageButton)findViewById(R.id.undoButton);
