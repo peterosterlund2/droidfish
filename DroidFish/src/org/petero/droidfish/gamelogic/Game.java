@@ -289,18 +289,53 @@ public class Game {
 
     /** Move current variation up/down in the game tree. */
     public final void moveVariation(int delta) {
-        if (tree.currentNode == tree.rootNode)
-            return;
-        tree.goBack();
-        int varNo = tree.currentNode.defaultChild;
-        int nChildren = tree.variations().size();
-        int newPos = varNo + delta;
-        newPos = Math.max(newPos, 0);
-        newPos = Math.min(newPos, nChildren - 1);
-        tree.reorderVariation(varNo, newPos);
-        tree.goForward(newPos);
+        int nBack = 0;
+        boolean found = false;
+        while (tree.currentNode != tree.rootNode) {
+            tree.goBack();
+            nBack++;
+            if (((delta < 0) && tree.currentNode.defaultChild > 0) ||
+                ((delta > 0) && tree.currentNode.defaultChild < tree.variations().size() - 1)) {
+                found = true;
+                break;
+            }
+        }
+        if (found) {
+            int varNo = tree.currentNode.defaultChild;
+            int nChildren = tree.variations().size();
+            int newPos = varNo + delta;
+            newPos = Math.max(newPos, 0);
+            newPos = Math.min(newPos, nChildren - 1);
+            tree.reorderVariation(varNo, newPos);
+            tree.goForward(newPos);
+            nBack--;
+        }
+        while (nBack > 0) {
+            tree.goForward(-1);
+            nBack--;
+        }
         pendingDrawOffer = false;
         updateTimeControl(true);
+    }
+
+    /** Return true if the current variation can be moved up/down. */
+    public final boolean canMoveVariation(int delta) {
+        int nBack = 0;
+        boolean found = false;
+        while (tree.currentNode != tree.rootNode) {
+            tree.goBack();
+            nBack++;
+            if (((delta < 0) && tree.currentNode.defaultChild > 0) ||
+                ((delta > 0) && tree.currentNode.defaultChild < tree.variations().size() - 1)) {
+                found = true;
+                break;
+            }
+        }
+        while (nBack > 0) {
+            tree.goForward(-1);
+            nBack--;
+        }
+        return found;
     }
 
     /** Delete whole game sub-tree rooted at current position. */

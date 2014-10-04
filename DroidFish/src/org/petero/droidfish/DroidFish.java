@@ -2449,8 +2449,10 @@ public class DroidFish extends Activity implements GUIInterface {
             lst.add(getString(R.string.edit_comments)); actions.add(EDIT_COMMENTS);
         }
         lst.add(getString(R.string.truncate_gametree)); actions.add(REMOVE_SUBTREE);
-        if (ctrl.numVariations() > 1) {
+        if (ctrl.canMoveVariationUp()) {
             lst.add(getString(R.string.move_var_up));   actions.add(MOVE_VAR_UP);
+        }
+        if (ctrl.canMoveVariationDown()) {
             lst.add(getString(R.string.move_var_down)); actions.add(MOVE_VAR_DOWN);
         }
 

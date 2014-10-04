@@ -477,6 +477,16 @@ public class DroidChessController {
         return game.numVariations();
     }
 
+    /** Return true if the current variation can be moved closer to the main-line. */
+    public final synchronized boolean canMoveVariationUp() {
+        return game.canMoveVariation(-1);
+    }
+
+    /** Return true if the current variation can be moved farther away from the main-line. */
+    public final synchronized boolean canMoveVariationDown() {
+        return game.canMoveVariation(1);
+    }
+
     /** Get current variation in current position. */
     public final synchronized int currVariation() {
         return game.currVariation();
@@ -504,7 +514,8 @@ public class DroidChessController {
 
     /** Move current variation up/down in the game tree. */
     public final synchronized void moveVariation(int delta) {
-        if (game.numVariations() > 1) {
+        if (((delta > 0) && canMoveVariationDown()) ||
+            ((delta < 0) && canMoveVariationUp())) {
             game.moveVariation(delta);
             updateGUI();
         }
