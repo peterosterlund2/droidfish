@@ -29,7 +29,6 @@ import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
-import java.util.zip.GZIPInputStream;
 
 import android.content.Context;
 import android.os.Environment;
@@ -95,8 +94,6 @@ public class InternalStockFish extends ExternalEngine {
         InputStream is = null;
         try {
             is = context.getAssets().open(sfExe);
-            if (sfExe.endsWith(".mygz"))
-                is = new GZIPInputStream(is);
             MessageDigest md = MessageDigest.getInstance("SHA-1");
             byte[] buf = new byte[8192];
             while (true) {
@@ -121,7 +118,8 @@ public class InternalStockFish extends ExternalEngine {
     }
 
     @Override
-    protected void copyFile(File from, File to) throws IOException {
+    protected String copyFile(File from, File exeDir) throws IOException {
+        File to = new File(exeDir, "engine.exe");
         final String sfExe = EngineUtil.internalStockFishName();
 
         // The checksum test is to avoid writing to /data unless necessary,
@@ -129,15 +127,13 @@ public class InternalStockFish extends ExternalEngine {
         long oldCSum = readCheckSum(new File(internalSFPath()));
         long newCSum = computeAssetsCheckSum(sfExe);
         if (oldCSum == newCSum)
-            return;
+            return to.getAbsolutePath();
 
         if (to.exists())
             to.delete();
         to.createNewFile();
 
         InputStream is = context.getAssets().open(sfExe);
-        if (sfExe.endsWith(".mygz"))
-            is = new GZIPInputStream(is);
         OutputStream os = new FileOutputStream(to);
 
         try {
@@ -154,5 +150,6 @@ public class InternalStockFish extends ExternalEngine {
         }
 
         writeCheckSum(new File(internalSFPath()), newCSum);
+        return to.getAbsolutePath();
     }
 }

@@ -68,9 +68,11 @@ public class ExternalEngine extends UCIEngineBase {
     @Override
     protected void startProcess() {
         try {
-            String exePath = context.getFilesDir().getAbsolutePath() + "/engine.exe";
-            copyFile(engineFileName, new File(exePath));
+            File exeDir = new File(context.getFilesDir(), "engine");
+            exeDir.mkdir();
+            String exePath = copyFile(engineFileName, exeDir);
             chmod(exePath);
+            cleanUpExeDir(exeDir, exePath);
             ProcessBuilder pb = new ProcessBuilder(exePath);
             synchronized (EngineUtil.nativeLock) {
                 engineProc = pb.start();
@@ -163,6 +165,22 @@ public class ExternalEngine extends UCIEngineBase {
             stdErrThread.start();
         } catch (IOException ex) {
             report.reportError(ex.getMessage());
+        }
+    }
+
+    /** Remove all files except exePath from exeDir. */
+    private void cleanUpExeDir(File exeDir, String exePath) {
+        try {
+            exePath = new File(exePath).getCanonicalPath();
+            File[] files = exeDir.listFiles();
+            if (files == null)
+                return;
+            for (File f : files) {
+                if (!f.getCanonicalPath().equals(exePath))
+                    f.delete();
+            }
+            new File(context.getFilesDir(), "engine.exe").delete();
+        } catch (IOException e) {
         }
     }
 
@@ -262,10 +280,11 @@ public class ExternalEngine extends UCIEngineBase {
             stdErrThread.interrupt();
     }
 
-    protected void copyFile(File from, File to) throws IOException {
+    protected String copyFile(File from, File exeDir) throws IOException {
+        File to = new File(exeDir, "engine.exe");
         new File(internalSFPath()).delete();
         if (to.exists() && (from.length() == to.length()) && (from.lastModified() == to.lastModified()))
-            return;
+            return to.getAbsolutePath();
         if (to.exists())
             to.delete();
         to.createNewFile();
@@ -282,6 +301,7 @@ public class ExternalEngine extends UCIEngineBase {
             if (outFC != null) { try { outFC.close(); } catch (IOException ex) {} }
             to.setLastModified(from.lastModified());
         }
+        return to.getAbsolutePath();
     }
 
     private final void chmod(String exePath) throws IOException {

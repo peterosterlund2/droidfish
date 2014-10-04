@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -57,6 +59,8 @@ import org.petero.droidfish.gamelogic.GameTree.Node;
 import org.petero.droidfish.gamelogic.TimeControlData;
 import org.petero.droidfish.gtb.Probe;
 
+import com.kalab.chess.enginesupport.ChessEngine;
+import com.kalab.chess.enginesupport.ChessEngineResolver;
 import com.larvalabs.svgandroid.SVG;
 import com.larvalabs.svgandroid.SVGParser;
 
@@ -479,6 +483,7 @@ public class DroidFish extends Activity implements GUIInterface {
         new File(extDir + sep + pgnDir).mkdirs();
         new File(extDir + sep + fenDir).mkdirs();
         new File(extDir + sep + engineDir).mkdirs();
+        new File(extDir + sep + engineDir + sep + EngineUtil.openExchangeDir).mkdirs();
         new File(extDir + sep + gtbDefaultDir).mkdirs();
         new File(extDir + sep + rtbDefaultDir).mkdirs();
     }
@@ -1154,21 +1159,29 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     private final void setEngineTitle(String engine, int strength) {
-        if (engine.contains("/")) {
-            int idx = engine.lastIndexOf('/');
-            String eName = engine.substring(idx + 1);
-            engineTitleText.setText(eName);
-        } else {
-            String eName = getString(engine.equals("cuckoochess") ?
-                                     R.string.cuckoochess_engine :
-                                     R.string.stockfish_engine);
-            boolean analysis = (ctrl != null) && ctrl.analysisMode();
-            if ((strength < 1000) && !analysis) {
-                engineTitleText.setText(String.format(Locale.US, "%s: %d%%", eName, strength / 10));
-            } else {
-                engineTitleText.setText(eName);
+        String eName = "";
+        if (EngineUtil.isOpenExchangeEngine(engine)) {
+            String engineFileName = new File(engine).getName();
+            ChessEngineResolver resolver = new ChessEngineResolver(this);
+            List<ChessEngine> engines = resolver.resolveEngines();
+            for (ChessEngine ce : engines) {
+                if (EngineUtil.openExchangeFileName(ce).equals(engineFileName)) {
+                    eName = ce.getName();
+                    break;
+                }
             }
+        } else if (engine.contains("/")) {
+            int idx = engine.lastIndexOf('/');
+            eName = engine.substring(idx + 1);
+        } else {
+            eName = getString(engine.equals("cuckoochess") ?
+                              R.string.cuckoochess_engine :
+                              R.string.stockfish_engine);
+            boolean analysis = (ctrl != null) && ctrl.analysisMode();
+            if ((strength < 1000) && !analysis)
+                eName = String.format(Locale.US, "%s: %d%%", eName, strength / 10);
         }
+        engineTitleText.setText(eName);
     }
 
     /** Update center field in second header line. */
@@ -2147,42 +2160,65 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     private final Dialog selectEngineDialog(final boolean abortOnCancel) {
+        final ArrayList<String> items = new ArrayList<String>();
+        final ArrayList<String> ids = new ArrayList<String>();
+        ids.add("stockfish"); items.add(getString(R.string.stockfish_engine));
+        ids.add("cuckoochess"); items.add(getString(R.string.cuckoochess_engine));
+
+        final String sep = File.separator;
+        final String base = Environment.getExternalStorageDirectory() + sep + engineDir + sep;
+        {
+            ChessEngineResolver resolver = new ChessEngineResolver(this);
+            List<ChessEngine> engines = resolver.resolveEngines();
+            ArrayList<Pair<String,String>> oexEngines = new ArrayList<Pair<String,String>>();
+            for (ChessEngine engine : engines) {
+                if ((engine.getName() != null) && (engine.getFileName() != null) &&
+                    (engine.getPackageName() != null)) {
+                    oexEngines.add(new Pair<String,String>(EngineUtil.openExchangeFileName(engine),
+                                                           engine.getName()));
+                }
+            }
+            Collections.sort(oexEngines, new Comparator<Pair<String,String>>() {
+                @Override
+                public int compare(Pair<String, String> lhs, Pair<String, String> rhs) {
+                    return lhs.second.compareTo(rhs.second);
+                }
+            });
+            for (Pair<String,String> eng : oexEngines) {
+                ids.add(base + EngineUtil.openExchangeDir + sep + eng.first);
+                items.add(eng.second);
+            }
+        }
+
         String[] fileNames = findFilesInDirectory(engineDir, new FileNameFilter() {
             @Override
             public boolean accept(String filename) {
                 return !reservedEngineName(filename);
             }
         });
-        final int numFiles = fileNames.length;
-        final int nEngines = numFiles + 2;
-        final String[] items = new String[nEngines];
-        final String[] ids = new String[nEngines];
-        int idx = 0;
-        ids[idx] = "stockfish"; items[idx] = getString(R.string.stockfish_engine); idx++;
-        ids[idx] = "cuckoochess"; items[idx] = getString(R.string.cuckoochess_engine); idx++;
-        String sep = File.separator;
-        String base = Environment.getExternalStorageDirectory() + sep + engineDir + sep;
-        for (int i = 0; i < numFiles; i++) {
-            ids[idx] = base + fileNames[i];
-            items[idx] = fileNames[i];
-            idx++;
+        for (String file : fileNames) {
+            ids.add(base + file);
+            items.add(file);
         }
+
         String currEngine = ctrl.getEngine();
         int defaultItem = 0;
+        final int nEngines = items.size();
         for (int i = 0; i < nEngines; i++) {
-            if (ids[i].equals(currEngine)) {
+            if (ids.get(i).equals(currEngine)) {
                 defaultItem = i;
                 break;
             }
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.select_chess_engine);
-        builder.setSingleChoiceItems(items, defaultItem, new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(items.toArray(new String[0]), defaultItem,
+                                     new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 if ((item < 0) || (item >= nEngines))
                     return;
                 Editor editor = settings.edit();
-                String engine = ids[item];
+                String engine = ids.get(item);
                 editor.putString("engine", engine);
                 editor.commit();
                 dialog.dismiss();
