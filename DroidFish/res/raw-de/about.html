@@ -6,8 +6,7 @@
 
 <h2>Information</h2>
 <p>
-  <i>DroidFish</i> ist ein Schachprogramm mit vielfältigen Funktionen und der sehr
-spielstarken Schach-Engine <i>Stockfish</i>.
+  <i>DroidFish</i> ist ein Schachprogramm mit vielfältigen Funktionen und der sehr spielstarken Schach-Engine <i>Stockfish</i>.
 </p>
 
 <h3>Funktionen</h3>
@@ -22,43 +21,42 @@ spielstarken Schach-Engine <i>Stockfish</i>.
   <li>Umfangreiche PGN-Unterstützung</li>
   <li>Einstellbare Spielstärke</li>
   <li>Unterstützung für UCI-Engines von Drittanbietern</li>
-  <li>Nutzung von Gaviota-Endspieldatenbanken</li>
+  <li>Nutzung von Syzygy- und Gaviota-Endspieldatenbanken</li>
+  <li>Syzygy endgame tablebases</li>
 </ul>
 
 <h3>Hinweise</h3>
 <ul>
   <li>
     Langes Drücken auf die Links- und Rechts-Schaltflächen aktiviert
-zusätzliche Kommandos zur Navigation.  
-</li>
+zusätzliche Kommandos zur Navigation.
+  </li>
   <li>
-    Beim Nachspielen einer Partie ermöglicht der Spielmodus <i>Partie bearbeiten/ nachspielen</i> das Zurücknehmen und Wiederholen von Halbzügen.  
-</li>
+    Beim Nachspielen einer Partie ermöglicht der Spielmodus <i>Partie bearbeiten/ nachspielen</i> das Zurücknehmen und Wiederholen von Halbzügen.
+  </li>
 </ul>
 
 <h3>Eröffnungsbücher</h3>
 <p>
-  DroidFish enthält ein kleines internes Eröffnungsbuch. Wenn Sie ein größeres
-Eröffnungsbuch verwenden möchten, können Sie die Verwendung externer
-Eröffnungsbücher (<i>Polyglot</i> oder <i>CTG</i>) folgendermaßen konfigurieren:
+  DroidFish enthält ein kleines internes Eröffnungsbuch. Wenn Sie ein größeres Eröffnungsbuch verwenden möchten, können Sie die Verwendung externer Eröffnungsbücher (<i>Polyglot</i> oder <i>CTG</i>) wie folgt konfigurieren:
 </p>
 <ol>
   <li>
-    Kopieren Sie eines oder mehrere Polyglot-Eröffnungsbücher in das Verzeichnis <i>DroidFish/book</i> auf der SD-Karte.
+    Kopieren Sie eine oder mehrere Polyglot-Eröffnungsbuch-Dateien in das Verzeichnis <i>DroidFish/book</i> auf der SD-Karte.
     Diese müssen die Dateiendung <i>.bin</i> aufweisen.
-    Beachten Sie dabei bitte, dass das Android-Dateisystem zwischen Groß- und Kleinbuchstaben unterscheidet. Die Datei muss also mit <i>.bin</i> enden, nicht mit <i>.Bin</i> oder <i>.BIN</i>.  
-</li>
+    Beachten Sie dabei bitte, dass das Android-Dateisystem zwischen Groß- und Kleinbuchstaben unterscheidet. Die Datei muss also mit <i>.bin</i> enden, nicht mit <i>.Bin</i> oder <i>.BIN</i>.
+  </li>
   <li>
-    Kopieren Sie eines oder mehrere CTG-Eröffnungsbücher in das Verzeichnis <i>DroidFish/book</i>.
+    Kopieren Sie eine oder mehrere CTG-Eröffnungsbuch-Dateien in das Verzeichnis <i>DroidFish/book</i> auf der SD-Karte.
     Diese bestehen aus drei Dateien mit den Endungen <i>.ctg</i>, <i>.ctb</i> und <i>.cto</i>.
-    Sie müssen alle drei Dateien kopieren.  
-</li>
+    Sie müssen alle drei Dateien kopieren.
+  </li>
   <li>
-    Aktivieren Sie im Programm-Menü die Funktion <i>Eröffnungsbuch auswählen</i>.  
-</li>
+    Aktivieren Sie im Programm-Menü die Funktion <i>Eröffnungsbuch auswählen</i>.
+  </li>
   <li>
-    Wählen Sie das Eröffnungsbuch aus, das Sie benutzen möchten.  
-</li>
+    Wählen Sie das Eröffnungsbuch aus, das Sie verwenden möchten.
+  </li>
 </ol>
 
 <h3>PGN-Dateien</h3>
@@ -68,22 +66,20 @@ Eröffnungsbücher (<i>Polyglot</i> oder <i>CTG</i>) folgendermaßen konfigurier
 <ol>
   <li>
     Kopieren Sie eine oder mehrere PGN-Dateien in das Verzeichnis
-<i>DroidFish/pgn</i> auf der SD-Karte.  
-</li>
+<i>DroidFish/pgn</i> auf der SD-Karte.
+  </li>
   <li>
-    Drücken Sie lange auf das Spielfeld und aktivieren Sie im darauf folgenden
-Menü die Funktion <i>Partie aus einer PGN-Datei laden</i>.  
-</li>
+    Drücken Sie lange auf das Spielfeld und aktivieren Sie im darauf folgenden Menü den Punkt <i>Datei</i> sowie anschließend die Funktion <i>Partie aus einer PGN-Datei laden</i>.
+  </li>
   <li>
-    Wählen Sie die Datei und anschließend innerhalb der Datei die Partie aus, die Sie laden möchten.  
-</li>
+    Wählen Sie die Datei und danach innerhalb der Datei die Partie aus, die Sie laden möchten.
+  </li>
 </ol>
 <p>
-  Um Partie-Informationen wie die Spielernamen zu ändern, drücken Sie lange auf die Zugliste und wählen <i>Partie-Informationen</i>. Um Kommentare für einen Zug zu bearbeiten, drücken Sie lange auf die Zugliste und wählen <i>Kommentare</i>.
+  Um Partie-Informationen wie die Spielernamen zu ändern, drücken Sie lange auf die Zugliste und wählen <i>Informationen</i>. Um Kommentare für einen Zug zu bearbeiten, drücken Sie lange auf die Zugliste und wählen <i>Kommentare</i>.
 </p>
 <p>
-  Um eine veränderte Partie zu speichern, drücken Sie lange auf das Spielfeld und aktivieren im darauf folgenden Menü die Funktion <i>Partie in eine PGN-Datei speichern</i>. Wählen Sie anschließend die Datei und dann innerhalb der
-Datei die Position aus, an der die neue Partie gespeichert werden soll.
+  Um eine veränderte Partie zu speichern, drücken Sie lange auf das Spielfeld. Im darauf folgenden Menü aktivieren Sie den Punkt <i>Datei</i> sowie anschließend die Funktion <i>Partie in eine PGN-Datei speichern</i>. Wählen Sie danach die Datei und innerhalb der Datei die Position aus, an der die neue Partie gespeichert werden soll.
 </p>
 <p>
   <b>Hinweis:</b> Wenn das Programm <a href="http://play.google.com/store/apps/details?id=org.openintents.filemanager">OI File Manager</a> installiert ist, kann jedes Verzeichnis zum Laden und Speichern von Partien verwendet werden.
@@ -111,27 +107,26 @@ DroidFish Scid-Datenbank-Dateien direkt einlesen.
 </p>
 <ol>
   <li>
-    Kopieren Sie eine oder mehere FEN/EPD-Dateien in das <i>DroidFish/epd</i>-Verzeichnis auf der SD-Karte.  
-</li>
+    Kopieren Sie eine oder mehere FEN/EPD-Dateien in das Verzeichnis <i>DroidFish/epd</i> auf der SD-Karte.
+  </li>
   <li>
-    Drücken Sie lange auf das Spielfeld und aktivieren Sie im darauf folgenden Menü die Funktion <i>Position aus Datei laden</i>.  
-</li>
+    Drücken Sie lange auf das Spielfeld. Im darauf folgenden Menü aktivieren Sie den Punkt <i>Datei</i> sowie anschließend die Funktion <i>Position aus Datei laden</i>.
+  </li>
   <li>
-    Wählen Sie die Datei und anschließend innerhalb der Datei die Position aus,
-die Sie laden möchten.  
-</li>
+    Wählen Sie die Datei und danach innerhalb der Datei die Position aus, die Sie laden möchten.
+  </li>
 </ol>
 
 <p>
-  Sie können Positionen auch von anderen Programmen laden, zum Beispiel <a href="http://play.google.com/store/apps/details?id=com.kgroth.chessocr">ChessOcr</a> (kostenpflichtig). Mit diesen Programmen ist es möglich, ein Foto eines Schach-Diagramms aufzunehmen und die Stellung automatisch nach DroidFish zu übernehmen.
+  Sie können Positionen auch von anderen Programmen laden, zum Beispiel <a href="http://play.google.com/store/apps/details?id=com.kgroth.chessocr">ChessOcr</a> (kostenpflichtig). Mit diesem Programm ist es möglich, ein Foto eines Schach-Diagramms aufzunehmen und die Stellung automatisch nach DroidFish zu übernehmen.
 </p>
 <ol>
   <li>
-    Drücken Sie lange auf das Spielfeld und wählen aus <i>Position auslesen</i>.  
-</li>
+    Drücken Sie lange auf das Spielfeld und wählen Sie im darauf folgenden Menü den Punkt <i>Position auslesen</i>.
+  </li>
   <li>
-    Folgen Sie den Anweisungen des externen Programms.  
-</li>
+    Folgen Sie den Anweisungen des externen Programms.
+  </li>
 </ol>
 
 <h3>UCI-Engines</h3>
@@ -140,12 +135,12 @@ die Sie laden möchten.
 </p>
 <ol>
   <li>
-    Kopieren Sie eine oder mehrere UCI-Engines als ausführbare Dateien in das Verzeichnis <i>DroidFish/uci</i> directory on the SD card.
-    <b>Hinweis:</b> Die ausführbaren Dateien müssen für Android kompiliert worden sein.  
-</li>
+    Kopieren Sie eine oder mehrere UCI-Engines als ausführbare Dateien in das Verzeichnis <i>DroidFish/uci</i> auf der SD-Karte.
+    <b>Hinweis:</b> Die ausführbaren Dateien müssen für Android kompiliert worden sein.
+  </li>
   <li>
-    Wählen Sie aus dem Programm-Menü <i>Schach-Engines verwalten</i> und anschließend <i>Schach-Engine auswählen</i>. Wählen Sie dann die zu verwendende Engine aus.  
-</li>
+    Wählen Sie aus dem Programm-Menü <i>Schach-Engines verwalten</i> und anschließend <i>Schach-Engine auswählen</i>. Wählen Sie dann die zu verwendende Engine aus.
+  </li>
 </ol>
 
 <h3>UCI-Engines auf einem Netzserver</h3>
@@ -154,22 +149,22 @@ die Sie laden möchten.
 </p>
 <ol>
   <li>
-    Installieren Sie ein Schach-Netzwerk-Serverprogramm auf dem Netzserver.    
-<ol>
+    Installieren Sie ein Schach-Netzwerk-Serverprogramm auf dem Netzserver.
+    <ol>
       <li>
-        Für Windows installieren Sie das Serverprogramm von der Seite <a href="http://home.arcor.de/bernhard.wallner/netChess.html">Computer Chess Utility</a>.      
-</li>
+        Für Windows installieren Sie das Serverprogramm von der Seite <a href="http://home.arcor.de/bernhard.wallner/netChess.html">Computer Chess Utility</a>.
+      </li>
       <li>
-        Für Linux kann <tt>mini-inetd</tt> aus dem Paket <tt>tcputils</tt> verwendet werden.      
-</li>
+        Für Linux kann <tt>mini-inetd</tt> aus dem Paket <tt>tcputils</tt> verwendet werden.
+      </li>
     </ol>
   </li>
   <li>
-    Wählen Sie <i>Schach-Engines verwalten</i> aus dem Programm-Menü aus. Erstellen Sie eine neue Netzserver-Engine und geben den Hostnamen sowie den Port des Netzservers an.  
-</li>
+    Wählen Sie <i>Schach-Engines verwalten</i> aus dem Programm-Menü aus. Erstellen Sie eine neue Netzserver-Engine und geben den Hostnamen sowie den Port des Netzservers an.
+  </li>
   <li>
-    Wählen Sie aus dem Programm-Menü <i>Schach-Engines verwalten</i> und anschließend <i>Schach-Engine auswählen</i>. Wählen Sie dann die zu verwendende Engine aus.  
-</li>
+    Wählen Sie aus dem Programm-Menü <i>Schach-Engines verwalten</i> und anschließend <i>Schach-Engine auswählen</i>. Wählen Sie dann die zu verwendende Engine aus.
+  </li>
 </ol>
 
 <h3>Gaviota-Endspieldatenbanken</h3>
@@ -178,11 +173,24 @@ die Sie laden möchten.
 </p>
 <ol>
   <li>
-    Kopieren Sie die entsprechenden GTB-Dateien in das Verzeichnis <i>DroidFish/gtb</i> auf der SD-Karte.  
-</li>
+    Kopieren Sie die entsprechenden GTB-Dateien in das Verzeichnis <i>DroidFish/gtb</i> auf der SD-Karte.
+  </li>
   <li>
-    Konfigurieren Sie die Nutzung der Endspiel-Datenbanken mit Hilfe der entsprechenden Optionen im Menü <i>Einstellungen</i>.  
-</li>
+    Konfigurieren Sie die Nutzung der Endspiel-Datenbanken mit Hilfe der entsprechenden Optionen im Menü <i>Einstellungen</i>.
+  </li>
+</ol>
+
+<h3>Syzygy endgame tablebases</h3>
+<p>
+  To use <a href="https://chessprogramming.wikispaces.com/Syzygy+Bases">Syzygy endgame tablebases</a>:
+</p>
+<ol>
+  <li>
+    Copy .rtbw and optionally .rtbz files to the <i>DroidFish/rtb</i> directory on the SD card.
+  </li>
+  <li>
+    Konfigurieren Sie die Nutzung der Endspiel-Datenbanken mit Hilfe der entsprechenden Optionen im Menü <i>Einstellungen</i>.
+  </li>
 </ol>
 
 <h3>Lizenz</h3>
@@ -194,34 +202,40 @@ die Sie laden möchten.
 <ul>
   <li>
     Das Schachprogramm <i>Stockfish</i> wird entwickelt von Tord Romstad, Marco
-Costalba und Joona Kiiski.  
-</li>
+Costalba und Joona Kiiski.
+  </li>
   <li>
-    <i>Droidfish</i> wird entwickelt von Peter Österlund.  
-</li>
+    <i>Droidfish</i> wird entwickelt von Peter Österlund.
+  </li>
   <li>
-    Von Aaro Korhonen stammen Verbesserungen der Benutzeroberfläche.  
-</li>
+    Von Aaro Korhonen stammen Verbesserungen der Benutzeroberfläche.
+  </li>
   <li>
-    Gaviota-Datenbank-API: Copyright © 2010 Miguel A. Ballicora.    
-<ul>
+    Gaviota-Datenbank-API: Copyright © 2010 Miguel A. Ballicora.
+    <ul>
       <li>
-        LZMA-Datenkomprimierung: Igor Pavlov.      
-</li>
+        LZMA-Datenkomprimierung: Igor Pavlov.
+      </li>
       <li>
-        ZLIB-Datenkomprimierung, Copyright © 1995-2005 Jean-loup Gailly und Mark Adler.      
-</li>
+        ZLIB-Datenkomprimierung, Copyright © 1995-2005 Jean-loup Gailly und Mark Adler.
+      </li>
       <li>
-        LZF-Datenkomprimierung, Copyright © 2000-2007 Marc Alexander Lehmann.      
-</li>
+        LZF-Datenkomprimierung, Copyright © 2000-2007 Marc Alexander Lehmann.
+      </li>
     </ul>
   </li>
   <li>
-    Die SVG-Darstellung kommt vom Projekt <a href="http://code.google.com/p/svg-android/">svg-android</a>.  
-</li>
+    Die SVG-Darstellung kommt vom Projekt <a href="http://code.google.com/p/svg-android/">svg-android</a>.
+  </li>
   <li>
-    Color picker, Copyright © 2010 Daniel Nilsson sowie Copyright © 2011 Sergey Margaritov.  
-</li>
+    Color picker, Copyright © 2010 Daniel Nilsson sowie Copyright © 2011 Sergey Margaritov.
+  </li>
+  <li>
+    Die Implementierung der Open-Exchange-Schnittstelle für Chess Engines erfolgte durch Gerhard Kalab (<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 license</a>).
+  </li>
+  <li>
+    Syzygy tablebases probing code, Copyright © 2011-2013 Ronald de Man.
+  </li>
 </ul>
 
 <h3>Lokalisierung</h3>
@@ -230,29 +244,29 @@ Costalba und Joona Kiiski.
 </p>
 <ul>
   <li>
-    Die deutsche Übersetzung erfolgte durch Uwe Walschus.  
-</li>
+    Die deutsche Übersetzung erfolgte durch Uwe Walschus.
+  </li>
   <li>
-    Die spanische Übersetzung erfolgte durch Amador Cuesta.  
-</li>
+    Die spanische Übersetzung erfolgte durch Amador Cuesta.
+  </li>
   <li>
-    Die russische Übersetzung erfolgte durch SWEN и dfuk (allBlackBerry).  
-</li>
+    Die russische Übersetzung erfolgte durch SWEN и dfuk (allBlackBerry).
+  </li>
   <li>
-    Die portugiesische Übersetzung erfolgte durch C. R. Zamana.  
-</li>
+    Die portugiesische Übersetzung erfolgte durch C. R. Zamana.
+  </li>
   <li>
-    Die französische Übersetzung erfolgte durch Eric Weibel (Thanvillé).  
-</li>
+    Die französische Übersetzung erfolgte durch Eric Weibel (Thanvillé).
+  </li>
   <li>
-    Die italienische Übersetzung erfolgte durch Michele Carfora (suessola).  
-</li>
+    Die italienische Übersetzung erfolgte durch Michele Carfora (suessola).
+  </li>
   <li>
-    Die niederländische Übersetzung erfolgte durch David Pront.  
-</li>
+    Die niederländische Übersetzung erfolgte durch David Pront.
+  </li>
   <li>
-    Die polnische Übersetzung erfolgte durch Rafał Smyka.  
-</li>
+    Die polnische Übersetzung erfolgte durch Rafał Smyka.
+  </li>
 </ul>
 
   </body>
