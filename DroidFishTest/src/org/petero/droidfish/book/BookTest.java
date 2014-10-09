@@ -57,6 +57,7 @@ public class BookTest extends TestCase {
     /**
      * Test of getAllBookMoves method, of class Book.
      */
+    /*
     public void testGetAllBookMoves() throws ChessParseError {
         Position pos = TextIO.readFEN(TextIO.startPosFEN);
         DroidBook book = DroidBook.getInstance();
@@ -68,6 +69,7 @@ public class BookTest extends TestCase {
             checkValid(pos, m);
         }
     }
+    */
 
     /** Check that move is a legal move in position pos. */
     private void checkValid(Position pos, Move move) {
