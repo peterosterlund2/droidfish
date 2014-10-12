@@ -45,7 +45,7 @@ struct Stack {
   Move killers[2];
   Depth reduction;
   Value staticEval;
-  int skipNullMove;
+  bool skipNullMove;
 };
 
 
@@ -101,13 +101,12 @@ extern volatile SignalsType Signals;
 extern LimitsType Limits;
 extern std::vector<RootMove> RootMoves;
 extern Position RootPos;
-extern Color RootColor;
 extern Time::point SearchTime;
 extern StateStackPtr SetupStates;
 
 extern void init();
-extern uint64_t perft(Position& pos, Depth depth);
 extern void think();
+template<bool Root> uint64_t perft(Position& pos, Depth depth);
 
 } // namespace Search
 

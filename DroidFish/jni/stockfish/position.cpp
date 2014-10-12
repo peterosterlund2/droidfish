@@ -226,7 +226,7 @@ void Position::set(const string& fenStr, bool isChess960, Thread* th) {
       incremented after Black's move.
 */
 
-  char col, row, token;
+  unsigned char col, row, token;
   size_t idx;
   Square sq = SQ_A8;
   std::istringstream ss(fenStr);
@@ -430,16 +430,11 @@ const string Position::fen() const {
 }
 
 
-/// Position::pretty() returns an ASCII representation of the position to be
-/// printed to the standard output together with the move's san notation.
+/// Position::pretty() returns an ASCII representation of the position
 
-const string Position::pretty(Move m) const {
+const string Position::pretty() const {
 
   std::ostringstream ss;
-
-  if (m)
-      ss << "\nMove: " << (sideToMove == BLACK ? ".." : "")
-         << move_to_san(*const_cast<Position*>(this), m);
 
   ss << "\n +---+---+---+---+---+---+---+---+\n";
 
@@ -457,11 +452,20 @@ const string Position::pretty(Move m) const {
   for (Bitboard b = checkers(); b; )
       ss << to_string(pop_lsb(&b)) << " ";
 
-  ss << "\nLegal moves: ";
-  for (MoveList<LEGAL> it(*this); *it; ++it)
-      ss << move_to_san(*const_cast<Position*>(this), *it) << " ";
-
   return ss.str();
+}
+
+
+/// Position::game_phase() calculates the game phase interpolating total non-pawn
+/// material between endgame and midgame limits.
+
+Phase Position::game_phase() const {
+
+  Value npm = st->npMaterial[WHITE] + st->npMaterial[BLACK];
+
+  npm = std::max(EndgameLimit, std::min(npm, MidgameLimit));
+
+  return Phase(((npm - EndgameLimit) * 128) / (MidgameLimit - EndgameLimit));
 }
 
 
@@ -803,9 +807,6 @@ void Position::do_move(Move m, StateInfo& newSt, const CheckInfo& ci, bool moveI
       st->castlingRights &= ~cr;
   }
 
-  // Prefetch TT access as soon as we know the new hash key
-  prefetch((char*)TT.first_entry(k));
-
   // Move the piece. The tricky Chess960 castling is handled earlier
   if (type_of(m) != CASTLING)
       move_piece(from, to, us, pt);
@@ -1012,6 +1013,26 @@ void Position::undo_null_move() {
 }
 
 
+/// Position::key_after() computes the new hash key after the given moven. Needed
+/// for speculative prefetch. It doesn't recognize special moves like castling,
+/// en-passant and promotions.
+
+Key Position::key_after(Move m) const {
+
+  Color us = sideToMove;
+  Square from = from_sq(m);
+  Square to = to_sq(m);
+  PieceType pt = type_of(piece_on(from));
+  PieceType captured = type_of(piece_on(to));
+  Key k = st->key ^ Zobrist::side;
+
+  if (captured)
+      k ^= Zobrist::psq[~us][captured][to];
+
+  return k ^ Zobrist::psq[us][pt][to] ^ Zobrist::psq[us][pt][from];
+}
+
+
 /// Position::see() is a static exchange evaluator: It tries to estimate the
 /// material gain or loss resulting from a move.
 
@@ -1112,10 +1133,6 @@ Value Position::see(Move m) const {
 /// rule or repetition. It does not detect stalemates.
 
 bool Position::is_draw() const {
-
-  if (   !pieces(PAWN)
-      && (non_pawn_material(WHITE) + non_pawn_material(BLACK) <= BishopValueMg))
-      return true;
 
   if (st->rule50 > 99 && (!checkers() || MoveList<LEGAL>(*this).size()))
       return true;

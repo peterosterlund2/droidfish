@@ -136,7 +136,7 @@ enum CastlingSide {
   KING_SIDE, QUEEN_SIDE, CASTLING_SIDE_NB = 2
 };
 
-enum CastlingRight {  // Defined as in PolyGlot book hash key
+enum CastlingRight {
   NO_CASTLING,
   WHITE_OO,
   WHITE_OOO   = WHITE_OO << 1,
@@ -181,8 +181,8 @@ enum Value {
   VALUE_INFINITE  = 32001,
   VALUE_NONE      = 32002,
 
-  VALUE_MATE_IN_MAX_PLY  =  VALUE_MATE - MAX_PLY,
-  VALUE_MATED_IN_MAX_PLY = -VALUE_MATE + MAX_PLY,
+  VALUE_MATE_IN_MAX_PLY  =  VALUE_MATE - 2 * MAX_PLY,
+  VALUE_MATED_IN_MAX_PLY = -VALUE_MATE + 2 * MAX_PLY,
 
   VALUE_ENSURE_INTEGER_SIZE_P = INT_MAX,
   VALUE_ENSURE_INTEGER_SIZE_N = INT_MIN,
@@ -211,14 +211,14 @@ enum Piece {
 
 enum Depth {
 
-  ONE_PLY = 2,
+  ONE_PLY = 1,
 
-  DEPTH_ZERO          =  0 * ONE_PLY,
-  DEPTH_QS_CHECKS     =  0 * ONE_PLY,
-  DEPTH_QS_NO_CHECKS  = -1 * ONE_PLY,
-  DEPTH_QS_RECAPTURES = -5 * ONE_PLY,
+  DEPTH_ZERO          =  0,
+  DEPTH_QS_CHECKS     =  0,
+  DEPTH_QS_NO_CHECKS  = -1,
+  DEPTH_QS_RECAPTURES = -5,
 
-  DEPTH_NONE = -127 * ONE_PLY
+  DEPTH_NONE = -6
 };
 
 enum Square {
@@ -267,28 +267,17 @@ enum Score {
   SCORE_ENSURE_INTEGER_SIZE_N = INT_MIN
 };
 
-typedef union {
-  uint32_t full;
-  struct { int16_t eg, mg; } half;
-} ScoreView;
+inline Score make_score(int mg, int eg) { return Score((mg << 16) + eg); }
 
-inline Score make_score(int mg, int eg) {
-  ScoreView v;
-  v.half.mg = (int16_t)(mg - (uint16_t(eg) >> 15));
-  v.half.eg = (int16_t)eg;
-  return Score(v.full);
-}
-
+/// Extracting the signed lower and upper 16 bits is not so trivial because
+/// according to the standard a simple cast to short is implementation defined
+/// and so is a right shift of a signed integer.
 inline Value mg_value(Score s) {
-  ScoreView v;
-  v.full = s;
-  return Value(v.half.mg + (uint16_t(v.half.eg) >> 15));
+  return Value(((s + 0x8000) & ~0xffff) / 0x10000);
 }
 
 inline Value eg_value(Score s) {
-  ScoreView v;
-  v.full = s;
-  return Value(v.half.eg);
+  return Value((int)(unsigned(s) & 0x7FFFU) - (int)(unsigned(s) & 0x8000U));
 }
 
 #define ENABLE_BASE_OPERATORS_ON(T)                                         \
@@ -336,6 +325,8 @@ inline Score operator*(Score s1, Score s2);
 inline Score operator/(Score s, int i) {
   return make_score(mg_value(s) / i, eg_value(s) / i);
 }
+
+CACHE_LINE_ALIGNMENT
 
 extern Value PieceValue[PHASE_NB][PIECE_NB];
 
@@ -414,14 +405,6 @@ inline bool opposite_colors(Square s1, Square s2) {
   return ((s >> 3) ^ s) & 1;
 }
 
-inline char to_char(File f, bool tolower = true) {
-  return char(f - FILE_A + (tolower ? 'a' : 'A'));
-}
-
-inline char to_char(Rank r) {
-  return char(r - RANK_1 + '1');
-}
-
 inline Square pawn_push(Color c) {
   return c == WHITE ? DELTA_N : DELTA_S;
 }
@@ -453,13 +436,6 @@ inline Move make(Square from, Square to, PieceType pt = KNIGHT) {
 
 inline bool is_ok(Move m) {
   return from_sq(m) != to_sq(m); // Catches also MOVE_NULL and MOVE_NONE
-}
-
-#include <string>
-
-inline const std::string to_string(Square s) {
-  char ch[] = { to_char(file_of(s)), to_char(rank_of(s)), 0 };
-  return ch;
 }
 
 #endif // #ifndef TYPES_H_INCLUDED

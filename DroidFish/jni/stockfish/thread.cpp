@@ -119,7 +119,7 @@ bool Thread::available_to(const Thread* master) const {
 
   // Make a local copy to be sure it doesn't become zero under our feet while
   // testing next condition and so leading to an out of bounds access.
-  int size = splitPointsSize;
+  const int size = splitPointsSize;
 
   // No split points means that the thread is available as a slave for any
   // other thread otherwise apply the "helpful master" concept if possible.
@@ -255,7 +255,6 @@ Thread* ThreadPool::available_slave(const Thread* master) const {
 // leave their idle loops and call search(). When all threads have returned from
 // search() then split() returns.
 
-template <bool Fake>
 void Thread::split(Position& pos, const Stack* ss, Value alpha, Value beta, Value* bestValue,
                    Move* bestMove, Depth depth, int moveCount,
                    MovePicker* movePicker, int nodeType, bool cutNode) {
@@ -297,14 +296,13 @@ void Thread::split(Position& pos, const Stack* ss, Value alpha, Value beta, Valu
   activeSplitPoint = &sp;
   activePosition = NULL;
 
-  if (!Fake)
-      for (Thread* slave; (slave = Threads.available_slave(this)) != NULL; )
-      {
-          sp.slavesMask.set(slave->idx);
-          slave->activeSplitPoint = &sp;
-          slave->searching = true; // Slave leaves idle_loop()
-          slave->notify_one(); // Could be sleeping
-      }
+  for (Thread* slave; (slave = Threads.available_slave(this)) != NULL; )
+  {
+      sp.slavesMask.set(slave->idx);
+      slave->activeSplitPoint = &sp;
+      slave->searching = true; // Slave leaves idle_loop()
+      slave->notify_one(); // Could be sleeping
+  }
 
   // Everything is set up. The master thread enters the idle loop, from which
   // it will instantly launch a search, because its 'searching' flag is set.
@@ -338,11 +336,6 @@ void Thread::split(Position& pos, const Stack* ss, Value alpha, Value beta, Valu
   sp.mutex.unlock();
   Threads.mutex.unlock();
 }
-
-// Explicit template instantiations
-template void Thread::split<false>(Position&, const Stack*, Value, Value, Value*, Move*, Depth, int, MovePicker*, int, bool);
-template void Thread::split< true>(Position&, const Stack*, Value, Value, Value*, Move*, Depth, int, MovePicker*, int, bool);
-
 
 // wait_for_think_finished() waits for main thread to go to sleep then returns
 

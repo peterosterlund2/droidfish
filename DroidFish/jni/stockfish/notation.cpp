@@ -18,9 +18,7 @@
 */
 
 #include <cassert>
-#include <iomanip>
 #include <sstream>
-#include <stack>
 
 #include "movegen.h"
 #include "notation.h"
@@ -42,7 +40,7 @@ string score_to_uci(Value v, Value alpha, Value beta) {
 
   stringstream ss;
 
-  if (abs(v) < VALUE_MATE_IN_MAX_PLY)
+  if (abs(v) < VALUE_MATE - MAX_PLY)
       ss << "cp " << v * 100 / PawnValueEg;
   else
       ss << "mate " << (v > 0 ? VALUE_MATE - v + 1 : -VALUE_MATE - v) / 2;
@@ -94,163 +92,4 @@ Move move_from_uci(const Position& pos, string& str) {
           return *it;
 
   return MOVE_NONE;
-}
-
-
-/// move_to_san() takes a position and a legal Move as input and returns its
-/// short algebraic notation representation.
-
-const string move_to_san(Position& pos, Move m) {
-
-  if (m == MOVE_NONE)
-      return "(none)";
-
-  if (m == MOVE_NULL)
-      return "(null)";
-
-  assert(MoveList<LEGAL>(pos).contains(m));
-
-  Bitboard others, b;
-  string san;
-  Color us = pos.side_to_move();
-  Square from = from_sq(m);
-  Square to = to_sq(m);
-  Piece pc = pos.piece_on(from);
-  PieceType pt = type_of(pc);
-
-  if (type_of(m) == CASTLING)
-      san = to > from ? "O-O" : "O-O-O";
-  else
-  {
-      if (pt != PAWN)
-      {
-          san = PieceToChar[WHITE][pt]; // Upper case
-
-          // A disambiguation occurs if we have more then one piece of type 'pt'
-          // that can reach 'to' with a legal move.
-          others = b = (pos.attacks_from(pc, to) & pos.pieces(us, pt)) ^ from;
-
-          while (b)
-          {
-              Square s = pop_lsb(&b);
-              if (!pos.legal(make_move(s, to), pos.pinned_pieces(us)))
-                  others ^= s;
-          }
-
-          if (!others)
-          { /* Disambiguation is not needed */ }
-
-          else if (!(others & file_bb(from)))
-              san += to_char(file_of(from));
-
-          else if (!(others & rank_bb(from)))
-              san += to_char(rank_of(from));
-
-          else
-              san += to_string(from);
-      }
-      else if (pos.capture(m))
-          san = to_char(file_of(from));
-
-      if (pos.capture(m))
-          san += 'x';
-
-      san += to_string(to);
-
-      if (type_of(m) == PROMOTION)
-          san += string("=") + PieceToChar[WHITE][promotion_type(m)];
-  }
-
-  if (pos.gives_check(m, CheckInfo(pos)))
-  {
-      StateInfo st;
-      pos.do_move(m, st);
-      san += MoveList<LEGAL>(pos).size() ? "+" : "#";
-      pos.undo_move(m);
-  }
-
-  return san;
-}
-
-
-/// pretty_pv() formats human-readable search information, typically to be
-/// appended to the search log file. It uses the two helpers below to pretty
-/// format the time and score respectively.
-
-static string format(int64_t msecs) {
-
-  const int MSecMinute = 1000 * 60;
-  const int MSecHour   = 1000 * 60 * 60;
-
-  int64_t hours   =   msecs / MSecHour;
-  int64_t minutes =  (msecs % MSecHour) / MSecMinute;
-  int64_t seconds = ((msecs % MSecHour) % MSecMinute) / 1000;
-
-  stringstream ss;
-
-  if (hours)
-      ss << hours << ':';
-
-  ss << setfill('0') << setw(2) << minutes << ':' << setw(2) << seconds;
-
-  return ss.str();
-}
-
-static string format(Value v) {
-
-  stringstream ss;
-
-  if (v >= VALUE_MATE_IN_MAX_PLY)
-      ss << "#" << (VALUE_MATE - v + 1) / 2;
-
-  else if (v <= VALUE_MATED_IN_MAX_PLY)
-      ss << "-#" << (VALUE_MATE + v) / 2;
-
-  else
-      ss << setprecision(2) << fixed << showpos << double(v) / PawnValueEg;
-
-  return ss.str();
-}
-
-string pretty_pv(Position& pos, int depth, Value value, int64_t msecs, Move pv[]) {
-
-  const uint64_t K = 1000;
-  const uint64_t M = 1000000;
-
-  std::stack<StateInfo> st;
-  Move* m = pv;
-  string san, str, padding;
-  stringstream ss;
-
-  ss << setw(2) << depth << setw(8) << format(value) << setw(8) << format(msecs);
-
-  if (pos.nodes_searched() < M)
-      ss << setw(8) << pos.nodes_searched() / 1 << "  ";
-
-  else if (pos.nodes_searched() < K * M)
-      ss << setw(7) << pos.nodes_searched() / K << "K  ";
-
-  else
-      ss << setw(7) << pos.nodes_searched() / M << "M  ";
-
-  str = ss.str();
-  padding = string(str.length(), ' ');
-
-  while (*m != MOVE_NONE)
-  {
-      san = move_to_san(pos, *m) + ' ';
-
-      if ((str.length() + san.length()) % 80 <= san.length()) // Exceed 80 cols
-          str += "\n" + padding;
-
-      str += san;
-
-      st.push(StateInfo());
-      pos.do_move(*m++, st.top());
-  }
-
-  while (m != pv)
-      pos.undo_move(*--m);
-
-  return str;
 }

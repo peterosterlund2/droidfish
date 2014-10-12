@@ -17,6 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -28,7 +29,7 @@ using namespace std;
 
 /// Version number. If Version is left empty, then compile date in the format
 /// DD-MM-YY and show in engine_info.
-static const string Version = "5";
+static const string Version = "121014";
 
 
 /// engine_info() returns the full name of the current Stockfish version. This
