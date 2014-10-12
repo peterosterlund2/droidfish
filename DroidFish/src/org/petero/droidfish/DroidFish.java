@@ -759,7 +759,7 @@ public class DroidFish extends Activity implements GUIInterface {
                 if ((scrollSensitivity > 0) && (cb.sqSize > 0)) {
                     scrollX += distanceX;
                     scrollY += distanceY;
-                    float scrollUnit = cb.sqSize * scrollSensitivity;
+                    final float scrollUnit = cb.sqSize * scrollSensitivity;
                     if (Math.abs(scrollX) >= Math.abs(scrollY)) {
                         // Undo/redo
                         int nRedo = 0, nUndo = 0;
@@ -794,10 +794,11 @@ public class DroidFish extends Activity implements GUIInterface {
                             varDelta--;
                             scrollY += scrollUnit;
                         }
-                        if (varDelta != 0)
+                        if (varDelta != 0) {
                             scrollX = 0;
-                        ctrl.changeVariation(varDelta);
-                        return varDelta > 0;
+                            ctrl.changeVariation(varDelta);
+                        }
+                        return varDelta != 0;
                     }
                 }
                 return false;
