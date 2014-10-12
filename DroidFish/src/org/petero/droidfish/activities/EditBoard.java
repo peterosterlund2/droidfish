@@ -34,8 +34,8 @@ import org.petero.droidfish.gamelogic.Pair;
 import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
-import org.petero.droidfish.gtb.Probe;
-import org.petero.droidfish.gtb.ProbeResult;
+import org.petero.droidfish.tb.Probe;
+import org.petero.droidfish.tb.ProbeResult;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

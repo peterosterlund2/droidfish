@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package org.petero.droidfish.gtb;
+package org.petero.droidfish.tb;
 
 import java.util.ArrayList;
 

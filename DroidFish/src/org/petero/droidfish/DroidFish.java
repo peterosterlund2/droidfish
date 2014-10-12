@@ -57,8 +57,8 @@ import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gamelogic.PgnToken;
 import org.petero.droidfish.gamelogic.GameTree.Node;
 import org.petero.droidfish.gamelogic.TimeControlData;
-import org.petero.droidfish.gtb.Probe;
-import org.petero.droidfish.gtb.ProbeResult;
+import org.petero.droidfish.tb.Probe;
+import org.petero.droidfish.tb.ProbeResult;
 
 import com.kalab.chess.enginesupport.ChessEngine;
 import com.kalab.chess.enginesupport.ChessEngineResolver;

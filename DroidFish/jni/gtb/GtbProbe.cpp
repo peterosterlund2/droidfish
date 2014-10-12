@@ -27,7 +27,7 @@ static const char** paths = NULL;
 
 
 JNIEXPORT jboolean
-JNICALL Java_org_petero_droidfish_gtb_GtbProbe_init(
+JNICALL Java_org_petero_droidfish_tb_GtbProbe_init(
         JNIEnv* env, jclass cls, jstring jTbPath)
 {
     initOk = false;
@@ -70,7 +70,7 @@ JNICALL Java_org_petero_droidfish_gtb_GtbProbe_init(
 #define BLACK_TO_MOVE 1
 
 JNIEXPORT jboolean
-JNICALL Java_org_petero_droidfish_gtb_GtbProbe_probeHard(
+JNICALL Java_org_petero_droidfish_tb_GtbProbe_probeHard(
         JNIEnv* env, jobject ths,
         jboolean wtm, jint epSq, jint castleMask,
         jintArray whiteSquares, jintArray blackSquares,

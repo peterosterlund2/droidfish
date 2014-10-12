@@ -26,7 +26,7 @@ import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.UndoInfo;
-import org.petero.droidfish.gtb.ProbeResult;
+import org.petero.droidfish.tb.ProbeResult;
 
 import android.content.Context;
 import android.graphics.Canvas;

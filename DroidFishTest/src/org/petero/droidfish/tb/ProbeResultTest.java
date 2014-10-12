@@ -1,6 +1,7 @@
-package org.petero.droidfish.gtb;
+package org.petero.droidfish.tb;
 
-import org.petero.droidfish.gtb.ProbeResult.Type;
+import org.petero.droidfish.tb.ProbeResult;
+import org.petero.droidfish.tb.ProbeResult.Type;
 
 import junit.framework.TestCase;
 

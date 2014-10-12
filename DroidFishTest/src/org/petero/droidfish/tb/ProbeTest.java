@@ -1,7 +1,9 @@
-package org.petero.droidfish.gtb;
+package org.petero.droidfish.tb;
 
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
+import org.petero.droidfish.tb.Probe;
+import org.petero.droidfish.tb.ProbeResult;
 
 import android.os.Environment;
 

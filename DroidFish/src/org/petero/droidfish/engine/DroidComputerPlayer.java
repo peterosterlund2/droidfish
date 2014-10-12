@@ -39,7 +39,7 @@ import org.petero.droidfish.gamelogic.SearchListener;
 import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gamelogic.UndoInfo;
 import org.petero.droidfish.gamelogic.SearchListener.PvInfo;
-import org.petero.droidfish.gtb.Probe;
+import org.petero.droidfish.tb.Probe;
 
 import android.content.Context;
 

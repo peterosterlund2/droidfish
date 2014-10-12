@@ -1,4 +1,4 @@
-package org.petero.droidfish.gtb;
+package org.petero.droidfish.tb;
 
 /** Tablebase probe result. */
 public final class ProbeResult implements Comparable<ProbeResult> {
