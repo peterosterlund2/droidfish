@@ -87,7 +87,7 @@ class GtbProbe {
     final static int UNKNOWN = 7;
 
     /**
-     * Probe table bases.
+     * Probe tablebases.
      * @param wtm           True if white to move.
      * @param epSq          En passant square, or NOSQUARE.
      * @param castleMask    Castle mask.

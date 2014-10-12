@@ -66,7 +66,7 @@ public class RtbProbe {
     public final static int NOINFO = 1000;
 
     /**
-     * Probe table bases.
+     * Probe tablebases.
      * @param squares          Array of length 64, see Position class.
      * @param wtm              True if white to move.
      * @param epSq             En passant square, see Position class.
