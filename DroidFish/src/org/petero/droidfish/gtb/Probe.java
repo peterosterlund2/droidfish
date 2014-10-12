@@ -27,53 +27,56 @@ import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.UndoInfo;
 
-/** Interface between Position class and GTB probing code. */
+/** Interface between Position class and GTB/RTB probing code. */
 public class Probe {
     private final GtbProbe gtb;
+    private final RtbProbe rtb;
     private final int whiteSquares[];
     private final int blackSquares[];
     private final byte whitePieces[];
     private final byte blackPieces[];
 
-    private static final Probe INSTANCE = new Probe();
+    private static final Probe instance = new Probe();
 
     /** Get singleton instance. */
     public static Probe getInstance() {
-        return INSTANCE;
+        return instance;
     }
 
     /** Constructor. */
     private Probe() {
         gtb = new GtbProbe();
+        rtb = new RtbProbe();
         whiteSquares = new int[65];
         blackSquares = new int[65];
         whitePieces = new byte[65];
         blackPieces = new byte[65];
     }
 
-    public void setPath(String tbPath, boolean forceReload) {
-        gtb.setPath(tbPath, forceReload);
+    public void setPath(String gtbPath, String rtbPath, boolean forceReload) {
+        gtb.setPath(gtbPath, forceReload);
+        rtb.setPath(rtbPath, forceReload);
     }
 
-    public static final class ProbeResult {
+    private static final class GtbProbeResult {
         public final static int DRAW    = 0;
         public final static int WMATE   = 1;
         public final static int BMATE   = 2;
         public final static int UNKNOWN = 3;
 
         public int result;
-        public int movesToMate; // Full moves to mate, or 0 if DRAW or UNKNOWN.
+        public int pliesToMate; // Plies to mate, or 0 if DRAW or UNKNOWN.
     }
 
     /**
-     * Probe table bases.
+     * Probe GTB tablebases.
      * @param pos    The position to probe.
      * @param result Two element array. Set to [tbinfo, plies].
      * @return True if success.
      */
-    public final ProbeResult probeHard(Position pos) {
-        ProbeResult ret = probeHardRaw(pos);
-        if (ret.result == ProbeResult.DRAW && pos.getEpSquare() != -1) {
+    private final GtbProbeResult gtbProbe(Position pos) {
+        GtbProbeResult ret = gtbProbeRaw(pos);
+        if (ret.result == GtbProbeResult.DRAW && pos.getEpSquare() != -1) {
             ArrayList<Move> moveList = MoveGen.instance.legalMoves(pos);
             int pawn = pos.whiteMove ? Piece.WPAWN : Piece.BPAWN;
             int maxMate = -1;
@@ -82,29 +85,29 @@ public class Probe {
                 if ((move.to != pos.getEpSquare()) || (pos.getPiece(move.from) != pawn))
                     return ret;
                 pos.makeMove(move, ui);
-                ProbeResult ret2 = probeHard(pos);
+                GtbProbeResult ret2 = gtbProbe(pos);
                 pos.unMakeMove(move, ui);
                 switch (ret2.result) {
-                case ProbeResult.DRAW:
+                case GtbProbeResult.DRAW:
                     break;
-                case ProbeResult.WMATE:
-                case ProbeResult.BMATE:
-                    maxMate = Math.max(maxMate, ret2.movesToMate);
+                case GtbProbeResult.WMATE:
+                case GtbProbeResult.BMATE:
+                    maxMate = Math.max(maxMate, ret2.pliesToMate);
                     break;
-                case ProbeResult.UNKNOWN:
-                    ret.result = ProbeResult.UNKNOWN;
+                case GtbProbeResult.UNKNOWN:
+                    ret.result = GtbProbeResult.UNKNOWN;
                     return ret;
                 }
             }
             if (maxMate != -1) {
-                ret.result = pos.whiteMove ? ProbeResult.BMATE : ProbeResult.WMATE;
-                ret.movesToMate = maxMate;
+                ret.result = pos.whiteMove ? GtbProbeResult.BMATE : GtbProbeResult.WMATE;
+                ret.pliesToMate = maxMate;
             }
         }
         return ret;
     }
 
-    private final ProbeResult probeHardRaw(Position pos) {
+    private final GtbProbeResult gtbProbeRaw(Position pos) {
         int castleMask = 0;
         if (pos.a1Castle()) castleMask |= GtbProbe.A1_CASTLE;
         if (pos.h1Castle()) castleMask |= GtbProbe.H1_CASTLE;
@@ -183,31 +186,79 @@ public class Probe {
                                 whiteSquares, blackSquares, whitePieces, blackPieces,
                                 result);
         }
-        ProbeResult ret = new ProbeResult();
+        GtbProbeResult ret = new GtbProbeResult();
         if (res) {
             switch (result[0]) {
             case GtbProbe.DRAW:
-                ret.result = ProbeResult.DRAW;
-                ret.movesToMate = 0;
+                ret.result = GtbProbeResult.DRAW;
+                ret.pliesToMate = 0;
                 break;
             case GtbProbe.WMATE:
-                ret.result = ProbeResult.WMATE;
-                ret.movesToMate = (result[1] + 1) / 2;
+                ret.result = GtbProbeResult.WMATE;
+                ret.pliesToMate = result[1];
                 break;
             case GtbProbe.BMATE:
-                ret.result = ProbeResult.BMATE;
-                ret.movesToMate = (result[1] + 1) / 2;
+                ret.result = GtbProbeResult.BMATE;
+                ret.pliesToMate = result[1];
                 break;
             default:
-                ret.result = ProbeResult.UNKNOWN;
-                ret.movesToMate = 0;
+                ret.result = GtbProbeResult.UNKNOWN;
+                ret.pliesToMate = 0;
                 break;
             }
         } else {
-            ret.result = ProbeResult.UNKNOWN;
-            ret.movesToMate = 0;
+            ret.result = GtbProbeResult.UNKNOWN;
+            ret.pliesToMate = 0;
         }
         return ret;
+    }
+
+    private final ProbeResult rtbProbe(Position pos) {
+        if (pos.nPieces() > 6)
+            return new ProbeResult(ProbeResult.Type.NONE, 0, 0);
+
+        rtb.initIfNeeded();
+
+        byte[] squares = new byte[64];
+        for (int sq = 0; sq < 64; sq++)
+            squares[sq] = (byte)pos.getPiece(sq);
+        int[] result = new int[2];
+        rtb.probe(squares, pos.whiteMove, pos.getEpSquare(), pos.getCastleMask(),
+                  pos.halfMoveClock, pos.fullMoveCounter, result);
+        int wdl = 0;
+        if (result[1] != RtbProbe.NOINFO) {
+            int score = result[1];
+            if (score > 0) {
+                wdl = 1;
+            } else if (score < 0) {
+                wdl = -1;
+                score = -score;
+            }
+            return new ProbeResult(ProbeResult.Type.DTZ, wdl, score);
+        } else if (result[0] != RtbProbe.NOINFO) {
+            return new ProbeResult(ProbeResult.Type.WDL, result[0], 0);
+        } else {
+            return new ProbeResult(ProbeResult.Type.NONE, 0, 0);
+        }
+    }
+
+    final ProbeResult probe(Position pos) {
+        GtbProbeResult gtbRes = gtbProbe(pos);
+        if (gtbRes.result != GtbProbeResult.UNKNOWN) {
+            int wdl = 0;
+            int score = 0;
+            if (gtbRes.result == GtbProbeResult.WMATE) {
+                wdl = 1;
+                score = gtbRes.pliesToMate;
+            } else if (gtbRes.result == GtbProbeResult.BMATE) {
+                wdl = -1;
+                score = gtbRes.pliesToMate;
+            }
+            if (!pos.whiteMove)
+                wdl = -wdl;
+            return new ProbeResult(ProbeResult.Type.DTM, wdl, score);
+        }
+        return rtbProbe(pos);
     }
 
     /** Return a list of all moves in moveList that are not known to be non-optimal.
@@ -220,16 +271,16 @@ public class Probe {
         UndoInfo ui = new UndoInfo();
         for (Move m : moveList) {
             pos.makeMove(m, ui);
-            ProbeResult res = probeHard(pos);
+            GtbProbeResult res = gtbProbe(pos);
             pos.unMakeMove(m, ui);
-            if (res.result == ProbeResult.UNKNOWN) {
+            if (res.result == GtbProbeResult.UNKNOWN) {
                 unknownMoves.add(m);
             } else {
                 int wScore;
-                if (res.result == ProbeResult.WMATE)
-                    wScore = MATE0 - res.movesToMate;
-                else if (res.result == ProbeResult.BMATE)
-                    wScore = -(MATE0 - res.movesToMate);
+                if (res.result == GtbProbeResult.WMATE)
+                    wScore = MATE0 - res.pliesToMate;
+                else if (res.result == GtbProbeResult.BMATE)
+                    wScore = -(MATE0 - res.pliesToMate);
                 else
                     wScore = 0;
                 int score = pos.whiteMove ? wScore : -wScore;
@@ -251,11 +302,11 @@ public class Probe {
 
     /** For a given position and from square, return EGTB information
      * about all legal destination squares. Return null if no information available. */
-    public final ArrayList<Pair<Integer,Integer>> movePieceProbe(Position pos, int fromSq) {
+    public final ArrayList<Pair<Integer,ProbeResult>> movePieceProbe(Position pos, int fromSq) {
         int p = pos.getPiece(fromSq);
         if ((p == Piece.EMPTY) || (pos.whiteMove != Piece.isWhite(p)))
             return null;
-        ArrayList<Pair<Integer,Integer>> ret = new ArrayList<Pair<Integer,Integer>>();
+        ArrayList<Pair<Integer,ProbeResult>> ret = new ArrayList<Pair<Integer,ProbeResult>>();
 
         ArrayList<Move> moveList = new MoveGen().legalMoves(pos);
         UndoInfo ui = new UndoInfo();
@@ -263,17 +314,18 @@ public class Probe {
             if (m.from != fromSq)
                 continue;
             pos.makeMove(m, ui);
-            ProbeResult res = probeHard(pos);
+            boolean isZeroing = pos.halfMoveClock == 0;
+            ProbeResult res = probe(pos);
             pos.unMakeMove(m, ui);
-            if (res.result == ProbeResult.UNKNOWN)
+            if (res.type == ProbeResult.Type.NONE)
                 continue;
-            int score = 0;
-            if (res.result == ProbeResult.WMATE) {
-                score = pos.whiteMove ? res.movesToMate + 1 : -res.movesToMate;
-            } else if (res.result == ProbeResult.BMATE) {
-                score = pos.whiteMove ? -res.movesToMate : res.movesToMate + 1;
+            res.wdl = -res.wdl;
+            if (isZeroing && (res.type == ProbeResult.Type.DTZ)) {
+                res.score = 1;
+            } else if (res.type != ProbeResult.Type.WDL) {
+                res.score++;
             }
-            ret.add(new Pair<Integer,Integer>(m.to, score));
+            ret.add(new Pair<Integer,ProbeResult>(m.to, res));
         }
         return ret;
     }
@@ -281,12 +333,12 @@ public class Probe {
     /** For a given position and from square, return EGTB information
      * about all legal alternative positions for the piece on from square.
      * Return null if no information is available. */
-    public final ArrayList<Pair<Integer, Integer>> relocatePieceProbe(Position pos, int fromSq) {
+    public final ArrayList<Pair<Integer,ProbeResult>> relocatePieceProbe(Position pos, int fromSq) {
         int p = pos.getPiece(fromSq);
         if (p == Piece.EMPTY)
             return null;
         boolean isPawn = (Piece.makeWhite(p) == Piece.WPAWN);
-        ArrayList<Pair<Integer,Integer>> ret = new ArrayList<Pair<Integer,Integer>>();
+        ArrayList<Pair<Integer,ProbeResult>> ret = new ArrayList<Pair<Integer,ProbeResult>>();
         for (int sq = 0; sq < 64; sq++) {
             if ((sq != fromSq) && (pos.getPiece(sq) != Piece.EMPTY))
                 continue;
@@ -294,18 +346,14 @@ public class Probe {
                 continue;
             pos.setPiece(fromSq, Piece.EMPTY);
             pos.setPiece(sq, p);
-            ProbeResult res = probeHard(pos);
+            ProbeResult res = probe(pos);
             pos.setPiece(sq, Piece.EMPTY);
             pos.setPiece(fromSq, p);
-            if (res.result == ProbeResult.UNKNOWN)
+            if (res.type == ProbeResult.Type.NONE)
                 continue;
-            int score = 0;
-            if (res.result == ProbeResult.WMATE) {
-                score = res.movesToMate;
-            } else if (res.result == ProbeResult.BMATE) {
-                score = -res.movesToMate;
-            }
-            ret.add(new Pair<Integer,Integer>(sq, score));
+            if (!pos.whiteMove)
+                res.wdl = -res.wdl;
+            ret.add(new Pair<Integer,ProbeResult>(sq, res));
         }
         return ret;
     }

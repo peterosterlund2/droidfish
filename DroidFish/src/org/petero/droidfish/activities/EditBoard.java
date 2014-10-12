@@ -35,6 +35,7 @@ import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gtb.Probe;
+import org.petero.droidfish.gtb.ProbeResult;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -256,14 +257,14 @@ public class EditBoard extends Activity {
         }
 
         Probe gtbProbe = Probe.getInstance();
-        ArrayList<Pair<Integer, Integer>> x = gtbProbe.relocatePieceProbe(cb.pos, sq);
+        ArrayList<Pair<Integer,ProbeResult>> x = gtbProbe.relocatePieceProbe(cb.pos, sq);
         if (x == null) {
             cb.setSquareDecorations(null);
             return;
         }
 
         ArrayList<SquareDecoration> sd = new ArrayList<SquareDecoration>();
-        for (Pair<Integer,Integer> p : x)
+        for (Pair<Integer,ProbeResult> p : x)
             sd.add(new SquareDecoration(p.first, p.second));
         cb.setSquareDecorations(sd);
     }

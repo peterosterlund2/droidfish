@@ -58,6 +58,7 @@ import org.petero.droidfish.gamelogic.PgnToken;
 import org.petero.droidfish.gamelogic.GameTree.Node;
 import org.petero.droidfish.gamelogic.TimeControlData;
 import org.petero.droidfish.gtb.Probe;
+import org.petero.droidfish.gtb.ProbeResult;
 
 import com.kalab.chess.enginesupport.ChessEngine;
 import com.kalab.chess.enginesupport.ChessEngineResolver;
@@ -147,7 +148,6 @@ public class DroidFish extends Activity implements GUIInterface {
     // FIXME!!! Computer clock should stop if phone turned off (computer stops thinking if unplugged)
     // FIXME!!! Add support for "no time control" and "hour-glass time control" as defined by the PGN standard
 
-    // FIXME!!! Online play on FICS
     // FIXME!!! Add chess960 support
     // FIXME!!! Implement "hint" feature
 
@@ -1234,7 +1234,8 @@ public class DroidFish extends Activity implements GUIInterface {
     private final void setEngineOptions(boolean restart) {
         computeNetEngineID();
         ctrl.setEngineOptions(new EngineOptions(engineOptions), restart);
-        Probe.getInstance().setPath(engineOptions.gtbPath, egtbForceReload);
+        Probe.getInstance().setPath(engineOptions.gtbPath, engineOptions.rtbPath,
+                                    egtbForceReload);
         egtbForceReload = false;
     }
 
@@ -1259,14 +1260,14 @@ public class DroidFish extends Activity implements GUIInterface {
         }
 
         Probe gtbProbe = Probe.getInstance();
-        ArrayList<Pair<Integer, Integer>> x = gtbProbe.movePieceProbe(cb.pos, sq);
+        ArrayList<Pair<Integer,ProbeResult>> x = gtbProbe.movePieceProbe(cb.pos, sq);
         if (x == null) {
             cb.setSquareDecorations(null);
             return;
         }
 
         ArrayList<SquareDecoration> sd = new ArrayList<SquareDecoration>();
-        for (Pair<Integer,Integer> p : x)
+        for (Pair<Integer,ProbeResult> p : x)
             sd.add(new SquareDecoration(p.first, p.second));
         cb.setSquareDecorations(sd);
     }

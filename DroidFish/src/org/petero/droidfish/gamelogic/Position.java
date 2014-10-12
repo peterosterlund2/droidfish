@@ -214,15 +214,21 @@ public class Position {
         return whiteMove ? wKingSq : bKingSq;
     }
 
-    /**
-     * Count number of pieces of a certain type.
-     */
+    /** Count number of pieces of a certain type. */
     public final int nPieces(int pType) {
         int ret = 0;
-        for (int sq = 0; sq < 64; sq++) {
+        for (int sq = 0; sq < 64; sq++)
             if (squares[sq] == pType)
                 ret++;
-        }
+        return ret;
+    }
+
+    /** Count total number of pieces. */
+    public final int nPieces() {
+        int ret = 0;
+        for (int sq = 0; sq < 64; sq++)
+            if (squares[sq] != Piece.EMPTY)
+                ret++;
         return ret;
     }
 

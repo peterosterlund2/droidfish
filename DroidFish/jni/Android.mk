@@ -10,3 +10,5 @@ include $(BUILD_SHARED_LIBRARY)
 include jni/stockfish/Android.mk
 
 include jni/gtb/Android.mk
+
+include jni/rtb/Android.mk

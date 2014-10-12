@@ -26,6 +26,7 @@ import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.UndoInfo;
+import org.petero.droidfish.gtb.ProbeResult;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -57,22 +58,17 @@ public abstract class ChessBoard extends View {
 
     List<Move> moveHints;
 
-    /** Decoration for a square. Currently the only possible decoration is a number. */
+    /** Decoration for a square. Currently the only possible decoration is a tablebase probe result. */
     public final static class SquareDecoration implements Comparable<SquareDecoration> {
         int sq;
-        int number;
-        public SquareDecoration(int sq, int number) {
+        ProbeResult tbData;
+        public SquareDecoration(int sq, ProbeResult tbData) {
             this.sq = sq;
-            this.number = number;
+            this.tbData = tbData;
         }
         @Override
         public int compareTo(SquareDecoration another) {
-            int M0 = 100000;
-            int n = number;
-            int s1 = (n > 0) ? M0 - n : ((n == 0) ? 0 : -M0-n);
-            n = another.number;
-            int s2 = (n > 0) ? M0 - n : ((n == 0) ? 0 : -M0-n);
-            return s2 - s1;
+            return tbData.compareTo(another.tbData);
         }
     }
     private ArrayList<SquareDecoration> decorations;
@@ -681,20 +677,42 @@ public abstract class ChessBoard extends View {
             int xCrd = getXCrd(Position.getX(sq));
             int yCrd = getYCrd(Position.getY(sq));
 
-            int num = sd.number;
-            String s;
-            if (num > 0)
-                s = "+" + String.valueOf(num);
-            else if (num < 0)
-                s = String.valueOf(num);
-            else
-                s = "0";
-
-            Rect bounds = new Rect();
-            decorationPaint.getTextBounds(s, 0, s.length(), bounds);
-            xCrd += (sqSize - (bounds.left + bounds.right)) / 2;
-            yCrd += (sqSize - (bounds.top + bounds.bottom)) / 2;
-            canvas.drawText(s, xCrd, yCrd, decorationPaint);
+            String s = null;
+            int wdl = sd.tbData.wdl;
+            int num = (sd.tbData.score + 1) / 2;
+            switch (sd.tbData.type) {
+            case DTM:
+                if (wdl > 0)
+                    s = "+" + String.valueOf(num);
+                else if (wdl < 0)
+                    s = "-" + String.valueOf(num);
+                else
+                    s = "0";
+                break;
+            case DTZ:
+                if (wdl > 0)
+                    s = "W" + String.valueOf(num);
+                else if (wdl < 0)
+                    s = "L" + String.valueOf(num);
+                else
+                    s = "0";
+                break;
+            case WDL:
+                if (wdl > 0)
+                    s = "W";
+                else if (wdl < 0)
+                    s = "L";
+                else
+                    s = "0";
+                break;
+            }
+            if (s != null) {
+                Rect bounds = new Rect();
+                decorationPaint.getTextBounds(s, 0, s.length(), bounds);
+                xCrd += (sqSize - (bounds.left + bounds.right)) / 2;
+                yCrd += (sqSize - (bounds.top + bounds.bottom)) / 2;
+                canvas.drawText(s, xCrd, yCrd, decorationPaint);
+            }
         }
     }
 
