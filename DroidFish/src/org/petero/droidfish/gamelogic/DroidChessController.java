@@ -712,7 +712,7 @@ public class DroidChessController {
 
                 buf.append(pvi.pvStr);
             }
-            String statStrTmp = "";
+            StringBuilder statStrTmp = new StringBuilder();
             if (currDepth > 0) {
                 long nodes = currNodes;
                 String nodesPrefix = "";
@@ -729,8 +729,11 @@ public class DroidChessController {
                     nps /= 1000;
                     npsPrefix = "k";
                 }
-                statStrTmp = String.format(Locale.US, "d:%d %d:%s t:%.2f n:%d%s nps:%d%s", currDepth, currMoveNr, currMoveStr,
-                                           currTime / 1000.0, nodes, nodesPrefix, nps, npsPrefix);
+                statStrTmp.append(String.format(Locale.US, "d:%d", currDepth));
+                if (currMoveNr > 0)
+                    statStrTmp.append(String.format(Locale.US, " %d:%s", currMoveNr, currMoveStr));
+                statStrTmp.append(String.format(Locale.US, " t:%.2f n:%d%s nps:%d%s",
+                                                currTime / 1000.0, nodes, nodesPrefix, nps, npsPrefix));
                 if (currTBHits > 0) {
                     long tbHits = currTBHits;
                     String tbHitsPrefix = "";
@@ -741,10 +744,10 @@ public class DroidChessController {
                         tbHits /= 1000;
                         tbHitsPrefix = "k";
                     }
-                    statStrTmp += String.format(Locale.US, " tb:%d%s", tbHits, tbHitsPrefix);
+                    statStrTmp.append(String.format(Locale.US, " tb:%d%s", tbHits, tbHitsPrefix));
                 }
             }
-            final String statStr = statStrTmp;
+            final String statStr = statStrTmp.toString();
             final String newPV = buf.toString();
             final String newBookInfo = bookInfo;
             final ArrayList<ArrayList<Move>> pvMoves = new ArrayList<ArrayList<Move>>();
