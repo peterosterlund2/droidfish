@@ -41,6 +41,13 @@ public class ChessEngineResolver {
         super();
         this.context = context;
         this.target = Build.CPU_ABI;
+        sanitizeArmV6Target();
+    }
+
+    private void sanitizeArmV6Target() {
+        if (this.target.startsWith("armeabi-v6")) {
+            this.target = "armeabi";
+        }
     }
 
     public List<ChessEngine> resolveEngines() {
@@ -128,5 +135,6 @@ public class ChessEngineResolver {
      */
     public void setTarget(String target) {
         this.target = target;
+        sanitizeArmV6Target();
     }
 }
