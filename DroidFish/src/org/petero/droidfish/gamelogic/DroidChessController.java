@@ -732,8 +732,15 @@ public class DroidChessController {
                 statStrTmp.append(String.format(Locale.US, "d:%d", currDepth));
                 if (currMoveNr > 0)
                     statStrTmp.append(String.format(Locale.US, " %d:%s", currMoveNr, currMoveStr));
-                statStrTmp.append(String.format(Locale.US, " t:%.2f n:%d%s nps:%d%s",
-                                                currTime / 1000.0, nodes, nodesPrefix, nps, npsPrefix));
+                if (currTime < 99995) {
+                    statStrTmp.append(String.format(Locale.US, " t:%.2f", currTime / 1000.0));
+                } else if (currTime < 999950) {
+                    statStrTmp.append(String.format(Locale.US, " t:%.1f", currTime / 1000.0));
+                } else {
+                    statStrTmp.append(String.format(Locale.US, " t:%d", (int)((currTime + 500) / 1000)));
+                }
+                statStrTmp.append(String.format(Locale.US, " n:%d%s nps:%d%s",
+                                                nodes, nodesPrefix, nps, npsPrefix));
                 if (currTBHits > 0) {
                     long tbHits = currTBHits;
                     String tbHitsPrefix = "";
