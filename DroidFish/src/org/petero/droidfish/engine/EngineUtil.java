@@ -40,8 +40,11 @@ public class EngineUtil {
     public static String internalStockFishName() {
         String abi = Build.CPU_ABI;
         if (!abi.equals("x86") &&
+            !abi.equals("x86_64") &&
             !abi.equals("armeabi-v7a") &&
-            !abi.equals("mips"))
+            !abi.equals("arm64-v8a") &&
+            !abi.equals("mips") &&
+            !abi.equals("mips64"))
             abi = "armeabi"; // Unknown ABI, assume original ARM
         return "stockfish-" + abi;
     }

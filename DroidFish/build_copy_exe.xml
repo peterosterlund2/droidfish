@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="copy_stockfish" name="Copy stockfish executables to assets">
     <target name="copy_stockfish">
+        <copy file="${basedir}/libs/arm64-v8a/stockfish"   tofile="${basedir}/assets/stockfish-arm64-v8a"/>
         <copy file="${basedir}/libs/armeabi/stockfish"     tofile="${basedir}/assets/stockfish-armeabi"/>
         <copy file="${basedir}/libs/armeabi-v7a/stockfish" tofile="${basedir}/assets/stockfish-armeabi-v7a"/>
-        <copy file="${basedir}/libs/x86/stockfish"         tofile="${basedir}/assets/stockfish-x86"/>
         <copy file="${basedir}/libs/mips/stockfish"        tofile="${basedir}/assets/stockfish-mips"/>
+        <copy file="${basedir}/libs/mips64/stockfish"      tofile="${basedir}/assets/stockfish-mips64"/>
+        <copy file="${basedir}/libs/x86/stockfish"         tofile="${basedir}/assets/stockfish-x86"/>
+        <copy file="${basedir}/libs/x86_64/stockfish"      tofile="${basedir}/assets/stockfish-x86_64"/>
     </target>
 </project>
