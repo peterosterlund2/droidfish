@@ -276,11 +276,11 @@ public abstract class UCIEngineBase implements UCIEngine {
             return false;
         UCIOptions.OptionBase o = options.getOption(name);
         if (o instanceof UCIOptions.ButtonOption) {
-            writeLineToEngine(String.format(Locale.US, "setoption name %s", name));
+            writeLineToEngine(String.format(Locale.US, "setoption name %s", o.name));
         } else if (o.setFromString(value)) {
             if (value.length() == 0)
                 value = "<empty>";
-            writeLineToEngine(String.format(Locale.US, "setoption name %s value %s", name, value));
+            writeLineToEngine(String.format(Locale.US, "setoption name %s value %s", o.name, value));
             return true;
         }
         return false;
