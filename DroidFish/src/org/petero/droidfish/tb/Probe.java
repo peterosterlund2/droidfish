@@ -20,11 +20,13 @@ package org.petero.droidfish.tb;
 
 import java.util.ArrayList;
 
+import org.petero.droidfish.gamelogic.ChessParseError;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.MoveGen;
 import org.petero.droidfish.gamelogic.Pair;
 import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
+import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gamelogic.UndoInfo;
 
 /** Interface between Position class and GTB/RTB probing code. */
@@ -216,6 +218,13 @@ public class Probe {
     private final ProbeResult rtbProbe(Position pos) {
         if (pos.nPieces() > 6)
             return new ProbeResult(ProbeResult.Type.NONE, 0, 0);
+
+        // Make sure position is valid. Required by native move generation code.
+        try {
+            TextIO.readFEN(TextIO.toFEN(pos));
+        } catch (ChessParseError ex) {
+            return new ProbeResult(ProbeResult.Type.NONE, 0, 0);
+        }
 
         rtb.initIfNeeded();
 
