@@ -9,6 +9,5 @@ LOCAL_SRC_FILES := \
 	bitboard.cpp   evaluate.cpp  misc.cpp	   notation.cpp  search.cpp    tt.cpp tbprobe.cpp
 
 LOCAL_CFLAGS    := -std=c++11 -O2
-LOCAL_LDFLAGS	:= -static
 
 include $(BUILD_EXECUTABLE)
