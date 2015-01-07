@@ -39,14 +39,20 @@ public class EngineUtil {
     /** Return file name of the internal stockfish executable. */
     public static String internalStockFishName() {
         String abi = Build.CPU_ABI;
-        if (!abi.equals("x86") &&
-            !abi.equals("x86_64") &&
-            !abi.equals("armeabi-v7a") &&
-            !abi.equals("arm64-v8a") &&
-            !abi.equals("mips") &&
-            !abi.equals("mips64"))
+        boolean noPIE = Build.VERSION.SDK_INT < 21;
+        if (abi.equals("x86")) {
+        } else if (abi.equals("x86_64")) {
+            noPIE = false;
+        } else if (abi.equals("armeabi-v7a")) {
+        } else if (abi.equals("arm64-v8a")) {
+            noPIE = false;
+        } else if (abi.equals("mips")) {
+        } else if (abi.equals("mips64")) {
+            noPIE = false;
+        } else {
             abi = "armeabi"; // Unknown ABI, assume original ARM
-        return "stockfish-" + abi;
+        }
+        return "stockfish-" + abi + (noPIE ? "-nopie" : "");
     }
 
     /** Return true if file "engine" is a network engine. */
