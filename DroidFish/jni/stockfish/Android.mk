@@ -15,5 +15,5 @@ include $(CLEAR_VARS)
 LOCAL_MODULE    := stockfish
 LOCAL_SRC_FILES := $(SF_SRC_FILES)
 LOCAL_CFLAGS    := -std=c++11 -O2 -fPIE
-LOCAL_LDFLAGS	+= -FPIE -pie
+LOCAL_LDFLAGS	+= -fPIE -pie
 include $(BUILD_EXECUTABLE)
