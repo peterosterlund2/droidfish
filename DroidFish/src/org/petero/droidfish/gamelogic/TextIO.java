@@ -45,6 +45,7 @@ public class TextIO {
 
     /** Parse a FEN string and return a chess Position object. */
     public static final Position readFEN(String fen) throws ChessParseError {
+        fen = fen.trim();
         Position pos = new Position();
         String[] words = fen.split(" ");
         if (words.length < 2) {
