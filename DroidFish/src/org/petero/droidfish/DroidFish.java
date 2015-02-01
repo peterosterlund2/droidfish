@@ -210,6 +210,12 @@ public class DroidFish extends Activity implements GUIInterface {
     private boolean showMaterialDiff;
     private boolean showVariationLine;
 
+    private int autoMoveDelay; // Delay in auto forward/backward mode
+    private static enum AutoMode {
+        OFF, FORWARD, BACKWARD;
+    }
+    private AutoMode autoMode = AutoMode.OFF;
+
     private final static String bookDir = "DroidFish/book";
     private final static String pgnDir = "DroidFish/pgn";
     private final static String fenDir = "DroidFish/epd";
@@ -410,7 +416,7 @@ public class DroidFish extends Activity implements GUIInterface {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         initUI();
 
-        gameTextListener = new PgnScreenText(pgnOptions);
+        gameTextListener = new PgnScreenText(this, pgnOptions);
         if (ctrl != null)
             ctrl.shutdownEngine();
         ctrl = new DroidChessController(this, gameTextListener, pgnOptions);
@@ -419,6 +425,7 @@ public class DroidFish extends Activity implements GUIInterface {
         TimeControlData tcData = new TimeControlData();
         tcData.setTimeControl(timeControl, movesPerSession, timeIncrement);
         ctrl.newGame(gameMode, tcData);
+        setAutoMode(AutoMode.OFF);
         {
             byte[] data = null;
             int version = 1;
@@ -619,6 +626,7 @@ public class DroidFish extends Activity implements GUIInterface {
             reInitUI();
         else
             readPrefs();
+        maybeAutoModeOff(gameMode);
         ctrl.setGameMode(gameMode);
     }
 
@@ -736,8 +744,10 @@ public class DroidFish extends Activity implements GUIInterface {
                         if (sq == sq0) {
                             if (ctrl.humansTurn()) {
                                 Move m = cb.mousePressed(sq);
-                                if (m != null)
+                                if (m != null) {
+                                    setAutoMode(AutoMode.OFF);
                                     ctrl.makeHumanMove(m);
+                                }
                                 setEgtbHints(cb.getSelectedSquare());
                             }
                         }
@@ -771,8 +781,10 @@ public class DroidFish extends Activity implements GUIInterface {
                             nUndo++;
                             scrollX += scrollUnit;
                         }
-                        if (nUndo + nRedo > 0)
+                        if (nUndo + nRedo > 0) {
                             scrollY = 0;
+                            setAutoMode(AutoMode.OFF);
+                        }
                         if (nRedo + nUndo > 1) {
                             boolean analysis = gameMode.analysisMode();
                             boolean human = gameMode.playerWhite() || gameMode.playerBlack();
@@ -796,6 +808,7 @@ public class DroidFish extends Activity implements GUIInterface {
                         }
                         if (varDelta != 0) {
                             scrollX = 0;
+                            setAutoMode(AutoMode.OFF);
                             ctrl.changeVariation(varDelta);
                         }
                         return varDelta != 0;
@@ -808,8 +821,10 @@ public class DroidFish extends Activity implements GUIInterface {
             public void onTrackballEvent(MotionEvent event) {
                 if (ctrl.humansTurn()) {
                     Move m = cb.handleTrackballEvent(event);
-                    if (m != null)
+                    if (m != null) {
+                        setAutoMode(AutoMode.OFF);
                         ctrl.makeHumanMove(m);
+                    }
                     setEgtbHints(cb.getSelectedSquare());
                 }
             }
@@ -859,6 +874,7 @@ public class DroidFish extends Activity implements GUIInterface {
         undoButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                setAutoMode(AutoMode.OFF);
                 ctrl.undoMove();
             }
         });
@@ -874,6 +890,7 @@ public class DroidFish extends Activity implements GUIInterface {
         redoButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                setAutoMode(AutoMode.OFF);
                 ctrl.redoMove();
             }
         });
@@ -911,6 +928,7 @@ public class DroidFish extends Activity implements GUIInterface {
     @Override
     protected void onPause() {
         if (ctrl != null) {
+            setAutoMode(AutoMode.OFF);
             ctrl.setGuiPaused(true);
             byte[] data = ctrl.toByteArray();
             Editor editor = settings.edit();
@@ -927,6 +945,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
     @Override
     protected void onDestroy() {
+        setAutoMode(AutoMode.OFF);
         if (ctrl != null)
             ctrl.shutdownEngine();
         setNotification(false);
@@ -974,6 +993,8 @@ public class DroidFish extends Activity implements GUIInterface {
         timeControl = getIntSetting("timeControl", 120000);
         movesPerSession = getIntSetting("movesPerSession", 60);
         timeIncrement = getIntSetting("timeIncrement", 0);
+
+        autoMoveDelay = getIntSetting("autoDelay", 5000);
 
         scrollSensitivity = Float.parseFloat(settings.getString("scrollSensitivity", "2"));
         invertScrollDirection = settings.getBoolean("invertScrollDirection", false);
@@ -1299,6 +1320,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        setAutoMode(AutoMode.OFF);
         switch (item.getItemId()) {
         case R.id.item_new_game:
             showDialog(NEW_GAME_DIALOG);
@@ -1469,6 +1491,7 @@ public class DroidFish extends Activity implements GUIInterface {
         editor.putString("gameMode", gameModeStr);
         editor.commit();
         gameMode = new GameMode(gameModeType);
+        maybeAutoModeOff(gameMode);
         ctrl.setGameMode(gameMode);
     }
 
@@ -1888,6 +1911,7 @@ public class DroidFish extends Activity implements GUIInterface {
         final int COPY_POSITION  = 1;
         final int PASTE          = 2;
 
+        setAutoMode(AutoMode.OFF);
         List<CharSequence> lst = new ArrayList<CharSequence>();
         List<Integer> actions = new ArrayList<Integer>();
         lst.add(getString(R.string.copy_game));     actions.add(COPY_GAME);
@@ -1937,6 +1961,7 @@ public class DroidFish extends Activity implements GUIInterface {
         final int SHARE     = 2;
         final int GET_FEN   = 3;
 
+        setAutoMode(AutoMode.OFF);
         List<CharSequence> lst = new ArrayList<CharSequence>();
         List<Integer> actions = new ArrayList<Integer>();
         lst.add(getString(R.string.clipboard));     actions.add(CLIPBOARD);
@@ -1993,6 +2018,7 @@ public class DroidFish extends Activity implements GUIInterface {
         final int LOAD_SCID_GAME = 3;
         final int SAVE_GAME      = 4;
 
+        setAutoMode(AutoMode.OFF);
         List<CharSequence> lst = new ArrayList<CharSequence>();
         List<Integer> actions = new ArrayList<Integer>();
         if (currFileType() != FT_NONE) {
@@ -2040,6 +2066,7 @@ public class DroidFish extends Activity implements GUIInterface {
         String path = currPathName();
         if (path.length() == 0)
             return;
+        setAutoMode(AutoMode.OFF);
         switch (currFileType()) {
         case FT_PGN:
             loadPGNFromFile(path);
@@ -2077,6 +2104,7 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     private final Dialog selectMoveDialog() {
+        setAutoMode(AutoMode.OFF);
         View content = View.inflate(this, R.layout.select_move_number, null);
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(content);
@@ -2271,6 +2299,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
     private final Dialog selectFileDialog(final String defaultDir, int selectFileMsg, int noFilesMsg,
                                           String settingsName, final Loader loader) {
+        setAutoMode(AutoMode.OFF);
         final String[] fileNames = findFilesInDirectory(defaultDir, null);
         final int numFiles = fileNames.length;
         if (numFiles == 0) {
@@ -2304,6 +2333,7 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     private final Dialog selectPgnFileSaveDialog() {
+        setAutoMode(AutoMode.OFF);
         final String[] fileNames = findFilesInDirectory(pgnDir, null);
         final int numFiles = fileNames.length;
         int defaultItem = 0;
@@ -2342,6 +2372,7 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     private final Dialog selectPgnSaveNewFileDialog() {
+        setAutoMode(AutoMode.OFF);
         View content = View.inflate(this, R.layout.create_pgn_file, null);
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(content);
@@ -2430,6 +2461,7 @@ public class DroidFish extends Activity implements GUIInterface {
                     editor.putString("gameMode", gameModeStr);
                     editor.commit();
                     gameMode = new GameMode(gameModeType);
+                    maybeAutoModeOff(gameMode);
                     ctrl.setGameMode(gameMode);
                     setBoardFlip(flipSite);
                 }
@@ -2447,6 +2479,7 @@ public class DroidFish extends Activity implements GUIInterface {
         final int MOVE_VAR_DOWN  = 4;
         final int ADD_NULL_MOVE  = 5;
 
+        setAutoMode(AutoMode.OFF);
         List<CharSequence> lst = new ArrayList<CharSequence>();
         List<Integer> actions = new ArrayList<Integer>();
         lst.add(getString(R.string.edit_headers));      actions.add(EDIT_HEADERS);
@@ -2657,7 +2690,9 @@ public class DroidFish extends Activity implements GUIInterface {
         final int GOTO_START_VAR  = 1;
         final int GOTO_PREV_VAR   = 2;
         final int LOAD_PREV_GAME  = 3;
+        final int AUTO_BACKWARD   = 4;
 
+        setAutoMode(AutoMode.OFF);
         List<CharSequence> lst = new ArrayList<CharSequence>();
         List<Integer> actions = new ArrayList<Integer>();
         lst.add(getString(R.string.goto_start_game));      actions.add(GOTO_START_GAME);
@@ -2669,6 +2704,9 @@ public class DroidFish extends Activity implements GUIInterface {
         final String currPathName = currPathName();
         if ((currFT != FT_NONE) && !gameMode.clocksActive()) {
             lst.add(getString(R.string.load_prev_game)); actions.add(LOAD_PREV_GAME);
+        }
+        if (!gameMode.clocksActive()) {
+            lst.add(getString(R.string.auto_backward)); actions.add(AUTO_BACKWARD);
         }
         final List<Integer> finalActions = actions;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -2698,6 +2736,9 @@ public class DroidFish extends Activity implements GUIInterface {
                         startActivityForResult(i, RESULT_LOAD_FEN);
                     }
                     break;
+                case AUTO_BACKWARD:
+                    setAutoMode(AutoMode.BACKWARD);
+                    break;
                 }
             }
         });
@@ -2709,7 +2750,9 @@ public class DroidFish extends Activity implements GUIInterface {
         final int GOTO_END_VAR   = 0;
         final int GOTO_NEXT_VAR  = 1;
         final int LOAD_NEXT_GAME = 2;
+        final int AUTO_FORWARD   = 3;
 
+        setAutoMode(AutoMode.OFF);
         List<CharSequence> lst = new ArrayList<CharSequence>();
         List<Integer> actions = new ArrayList<Integer>();
         lst.add(getString(R.string.goto_end_variation)); actions.add(GOTO_END_VAR);
@@ -2720,6 +2763,9 @@ public class DroidFish extends Activity implements GUIInterface {
         final String currPathName = currPathName();
         if ((currFT != FT_NONE) && !gameMode.clocksActive()) {
             lst.add(getString(R.string.load_next_game)); actions.add(LOAD_NEXT_GAME);
+        }
+        if (!gameMode.clocksActive()) {
+            lst.add(getString(R.string.auto_forward)); actions.add(AUTO_FORWARD);
         }
         final List<Integer> finalActions = actions;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -2747,6 +2793,9 @@ public class DroidFish extends Activity implements GUIInterface {
                         i.putExtra("org.petero.droidfish.pathname", currPathName);
                         startActivityForResult(i, RESULT_LOAD_FEN);
                     }
+                    break;
+                case AUTO_FORWARD:
+                    setAutoMode(AutoMode.FORWARD);
                     break;
                 }
             }
@@ -3089,6 +3138,7 @@ public class DroidFish extends Activity implements GUIInterface {
     /** Open a load/save file dialog. Uses OI file manager if available. */
     private void selectFile(int titleMsg, int buttonMsg, String settingsName, String defaultDir,
                             int dialog, int result) {
+        setAutoMode(AutoMode.OFF);
         String action = "org.openintents.action.PICK_FILE";
         Intent i = new Intent(action);
         String currentFile = settings.getString(settingsName, "");
@@ -3116,6 +3166,7 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     private final void selectScidFile() {
+        setAutoMode(AutoMode.OFF);
         Intent intent = new Intent();
         intent.setComponent(new ComponentName("org.scid.android",
                                               "org.scid.android.SelectFileActivity"));
@@ -3386,6 +3437,48 @@ public class DroidFish extends Activity implements GUIInterface {
             handlerTimer.postDelayed(r, nextUpdate);
     }
 
+    private Handler autoModeTimer = new Handler();
+    private Runnable amRunnable = new Runnable() {
+        @Override
+        public void run() {
+            switch (autoMode) {
+            case BACKWARD:
+                ctrl.undoMove();
+                setAutoMode(autoMode);
+                break;
+            case FORWARD:
+                ctrl.redoMove();
+                setAutoMode(autoMode);
+                break;
+            case OFF:
+                break;
+            }
+        }
+    };
+
+    /** Set automatic move forward/backward mode. */
+    void setAutoMode(AutoMode am) {
+//        System.out.printf("%.3f DroidFish.setAutoMode(): %s\n",
+//                System.currentTimeMillis() * 1e-3, am.toString());
+        autoMode = am;
+        switch (am) {
+        case BACKWARD:
+        case FORWARD:
+            if (autoMoveDelay > 0)
+                autoModeTimer.postDelayed(amRunnable, autoMoveDelay);
+            break;
+        case OFF:
+            autoModeTimer.removeCallbacks(amRunnable);
+            break;
+        }
+    }
+
+    /** Disable automatic move mode if clocks are active. */
+    void maybeAutoModeOff(GameMode gm) {
+        if (gm.clocksActive())
+            setAutoMode(AutoMode.OFF);
+    }
+
     /** PngTokenReceiver implementation that renders PGN data for screen display. */
     static class PgnScreenText implements PgnToken.PgnTokenReceiver {
         private SpannableStringBuilder sb = new SpannableStringBuilder();
@@ -3397,6 +3490,7 @@ public class DroidFish extends Activity implements GUIInterface {
         int currPos = 0, endPos = 0;
         boolean upToDate = false;
         PGNOptions options;
+        DroidFish df;
 
         private static class NodeInfo {
             int l0, l1;
@@ -3407,7 +3501,8 @@ public class DroidFish extends Activity implements GUIInterface {
         }
         HashMap<Node, NodeInfo> nodeToCharPos;
 
-        PgnScreenText(PGNOptions options) {
+        PgnScreenText(DroidFish df, PGNOptions options) {
+            this.df = df;
             nodeToCharPos = new HashMap<Node, NodeInfo>();
             this.options = options;
         }
@@ -3452,7 +3547,7 @@ public class DroidFish extends Activity implements GUIInterface {
         boolean pendingNewLine = false;
 
         /** Makes moves in the move list clickable. */
-        private final static class MoveLink extends ClickableSpan {
+        private final class MoveLink extends ClickableSpan {
             private Node node;
             MoveLink(Node n) {
                 node = n;
@@ -3464,8 +3559,10 @@ public class DroidFish extends Activity implements GUIInterface {
                     // even when you long click the move list. The test
                     // below works around the problem.
                     Dialog mlmd = moveListMenuDlg;
-                    if ((mlmd == null) || !mlmd.isShowing())
+                    if ((mlmd == null) || !mlmd.isShowing()) {
+                        df.setAutoMode(AutoMode.OFF);
                         ctrl.goNode(node);
+                    }
                 }
             }
             @Override

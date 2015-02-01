@@ -509,6 +509,14 @@
             android:summary="@string/prefs_invertScrollDirection_summary"
             android:defaultValue="false">
         </CheckBoxPreference>
+        <ListPreference
+            android:key="autoDelay"
+            android:title="@string/prefs_autoDelay_title"
+            android:summary="@string/prefs_autoDelay_summary"
+            android:entryValues="@array/autoDelay_values"
+            android:entries="@array/autoDelay_texts"
+            android:defaultValue="@string/autoDelay_default">
+        </ListPreference>
         <CheckBoxPreference
             android:key="discardVariations"
             android:title="@string/prefs_discardVariations_title"
