@@ -1,7 +1,7 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2014 Marco Costalba, Joona Kiiski, Tord Romstad
+  Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ namespace {
   // bit 13-14: white pawn file (from FILE_A to FILE_D)
   // bit 15-17: white pawn RANK_7 - rank (from RANK_7 - RANK_7 to RANK_7 - RANK_2)
   unsigned index(Color us, Square bksq, Square wksq, Square psq) {
-    return wksq + (bksq << 6) + (us << 12) + (file_of(psq) << 13) + ((RANK_7 - rank_of(psq)) << 15);
+    return wksq | (bksq << 6) | (us << 12) | (file_of(psq) << 13) | ((RANK_7 - rank_of(psq)) << 15);
   }
 
   enum Result {
@@ -71,7 +71,7 @@ namespace {
 } // namespace
 
 
-bool Bitbases::probe_kpk(Square wksq, Square wpsq, Square bksq, Color us) {
+bool Bitbases::probe(Square wksq, Square wpsq, Square bksq, Color us) {
 
   assert(file_of(wpsq) <= FILE_D);
 
@@ -80,7 +80,7 @@ bool Bitbases::probe_kpk(Square wksq, Square wpsq, Square bksq, Color us) {
 }
 
 
-void Bitbases::init_kpk() {
+void Bitbases::init() {
 
   unsigned idx, repeat = 1;
   std::vector<KPKPosition> db;
@@ -114,7 +114,7 @@ namespace {
     result = UNKNOWN;
 
     // Check if two pieces are on the same square or if a king can be captured
-    if (   square_distance(wksq, bksq) <= 1
+    if (   distance(wksq, bksq) <= 1
         || wksq == psq
         || bksq == psq
         || (us == WHITE && (StepAttacksBB[PAWN][psq] & bksq)))
@@ -125,7 +125,7 @@ namespace {
         // Immediate win if a pawn can be promoted without getting captured
         if (   rank_of(psq) == RANK_7
             && wksq != psq + DELTA_N
-            && (   square_distance(bksq, psq + DELTA_N) > 1
+            && (   distance(bksq, psq + DELTA_N) > 1
                 ||(StepAttacksBB[KING][wksq] & (psq + DELTA_N))))
             result = WIN;
     }

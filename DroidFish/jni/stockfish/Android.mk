@@ -1,9 +1,9 @@
 LOCAL_PATH := $(call my-dir)
 
 SF_SRC_FILES := \
-	benchmark.cpp  main.cpp	   movegen.cpp	 pawns.cpp     thread.cpp   uci.cpp \
-	bitbase.cpp    endgame.cpp   material.cpp  movepick.cpp  position.cpp  timeman.cpp  ucioption.cpp \
-	bitboard.cpp   evaluate.cpp  misc.cpp	   notation.cpp  search.cpp    tt.cpp tbprobe.cpp
+	benchmark.cpp main.cpp movegen.cpp pawns.cpp thread.cpp uci.cpp \
+	bitbase.cpp endgame.cpp material.cpp movepick.cpp position.cpp timeman.cpp ucioption.cpp \
+	bitboard.cpp evaluate.cpp misc.cpp search.cpp tt.cpp syzygy/tbprobe.cpp
 
 include $(CLEAR_VARS)
 LOCAL_MODULE    := stockfish-nopie

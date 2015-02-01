@@ -1,7 +1,7 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2014 Marco Costalba, Joona Kiiski, Tord Romstad
+  Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ namespace {
 
   // Unary predicate used by std::partition to split positive values from remaining
   // ones so as to sort the two sets separately, with the second sort delayed.
-  inline bool has_positive_value(const ExtMove& ms) { return ms.value > 0; }
+  inline bool has_positive_value(const ExtMove& move) { return move.value > VALUE_ZERO; }
 
   // Picks the best move in the range (begin, end) and moves it to the front.
   // It's faster than sorting all the moves in advance when there are few
@@ -61,7 +61,7 @@ namespace {
       std::swap(*begin, *std::max_element(begin, end));
       return begin;
   }
-}
+} // namespace
 
 
 /// Constructors of the MovePicker class. As arguments we pass information
@@ -103,15 +103,8 @@ MovePicker::MovePicker(const Position& p, Move ttm, Depth d, const HistoryStats&
       stage = QSEARCH_0;
 
   else if (d > DEPTH_QS_RECAPTURES)
-  {
       stage = QSEARCH_1;
 
-      // Skip TT move if is not a capture or a promotion. This avoids qsearch
-      // tree explosion due to a possible perpetual check or similar rare cases
-      // when TT table is full.
-      if (ttm && !pos.capture_or_promotion(ttm))
-          ttm = MOVE_NONE;
-  }
   else
   {
       stage = RECAPTURE;
