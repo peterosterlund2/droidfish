@@ -1670,7 +1670,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
     @Override
     public Context getContext() {
-        return getApplicationContext();
+        return this;
     }
 
     @Override

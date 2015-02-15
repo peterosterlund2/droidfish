@@ -13,6 +13,7 @@
   <string name="scroll_sensitivity_default">2</string>
   <string name="book_line_length_default">1000000</string>
   <string name="viewPieceType_default">1</string>
+  <string name="autoDelay_default">5000</string>
   <string name="cpu_warning">\
 <b>Usage CPU</b>\n\
 Si vous laissez DroidFish tourner en tâche de fond et que le <i>Mode de jeu</i> est sur \ <i>Analyse</i> ou <i>Ordinateur vs Ordinateur</i>, ou si <i>Temps de réflexion</i> \
@@ -112,6 +113,8 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="goto_end_variation">Aller à la fin de la variation</string>
   <string name="goto_next_variation">Aller à la variation suivante</string>
   <string name="load_next_game">Charger la partie suivante</string>
+  <string name="auto_forward">Auto Forward</string>
+  <string name="auto_backward">Auto Backward</string>
   <string name="no_prev_game">Aucune partie précédente</string>
   <string name="no_next_game">Aucune partie suivante</string>
   <string name="no_prev_fen">Aucune position précédente</string>
@@ -268,6 +271,8 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="prefs_timeControl_summary">Temps maximum de réflexion entre deux paliers temporels</string>
   <string name="prefs_timeIncrement_title">Incrément</string>
   <string name="prefs_timeIncrement_summary">Temps supplémentaire pour chaque coup joué</string>
+  <string name="prefs_autoDelay_title">Auto Move Delay</string>
+  <string name="prefs_autoDelay_summary">Delay between moves in automatic forward/backward mode</string>
   <string name="prefs_hints">Conseils</string>
   <string name="prefs_showThinking_title">Montrer la réflexion de l\'ordinateur</string>
   <string name="prefs_showThinking_summary">Afficher les informations d\'algorithme informatique</string>
@@ -541,6 +546,28 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
     <item>5000</item>
     <item>10000</item>
     <item>12000</item>
+    <item>15000</item>
+    <item>30000</item>
+    <item>60000</item>
+  </string-array>
+  <string-array name="autoDelay_texts">
+    <item>0.5s</item>
+    <item>1s</item>
+    <item>2s</item>
+    <item>3s</item>
+    <item>5s</item>
+    <item>10s</item>
+    <item>15s</item>
+    <item>30s</item>
+    <item>60s</item>
+  </string-array>
+  <string-array name="autoDelay_values">
+    <item>500</item>
+    <item>1000</item>
+    <item>2000</item>
+    <item>3000</item>
+    <item>5000</item>
+    <item>10000</item>
     <item>15000</item>
     <item>30000</item>
     <item>60000</item>

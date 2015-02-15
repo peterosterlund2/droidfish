@@ -13,6 +13,7 @@
   <string name="scroll_sensitivity_default">2</string>
   <string name="book_line_length_default">1000000</string>
   <string name="viewPieceType_default">1</string>
+  <string name="autoDelay_default">5000</string>
   <string name="cpu_warning">\
 <b>Prozessor-Nutzung</b>\n\
 Wenn Sie DroidFish im Hintergrund in der Spielmodus-Einstellung <i>Analyse</i> \
@@ -115,6 +116,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="goto_end_variation">Zum Ende der Variante</string>
   <string name="goto_next_variation">Zur nächsten Variante</string>
   <string name="load_next_game">Nächste Partie laden</string>
+  <string name="auto_forward">Automatisch vorwärts</string>
+  <string name="auto_backward">Automatisch zurück</string>
   <string name="no_prev_game">Keine vorherige Partie</string>
   <string name="no_next_game">Keine nächste Partie</string>
   <string name="no_prev_fen">Keine vorherige Position</string>
@@ -271,6 +274,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_timeControl_summary">Zeitspanne für die Vorgabe</string>
   <string name="prefs_timeIncrement_title">Erhöhung</string>
   <string name="prefs_timeIncrement_summary">Zusätzliche Zeit pro vollständigem Zug</string>
+  <string name="prefs_autoDelay_title">Pause vor Zugausführung</string>
+  <string name="prefs_autoDelay_summary">Pause zwischen den Zügen bei Automatisch-vorwärts-/ Automatisch-zurück-Modus</string>
   <string name="prefs_hints">Hinweise</string>
   <string name="prefs_showThinking_title">Berechnungen anzeigen</string>
   <string name="prefs_showThinking_summary">Computeralgorithmus-Informationen während der Zugsuche anzeigen</string>
@@ -544,6 +549,28 @@ wenn Sie es nicht aktiv nutzen.\
     <item>5000</item>
     <item>10000</item>
     <item>12000</item>
+    <item>15000</item>
+    <item>30000</item>
+    <item>60000</item>
+  </string-array>
+  <string-array name="autoDelay_texts">
+    <item>0.5s</item>
+    <item>1s</item>
+    <item>2s</item>
+    <item>3s</item>
+    <item>5s</item>
+    <item>10s</item>
+    <item>15s</item>
+    <item>30s</item>
+    <item>60s</item>
+  </string-array>
+  <string-array name="autoDelay_values">
+    <item>500</item>
+    <item>1000</item>
+    <item>2000</item>
+    <item>3000</item>
+    <item>5000</item>
+    <item>10000</item>
     <item>15000</item>
     <item>30000</item>
     <item>60000</item>

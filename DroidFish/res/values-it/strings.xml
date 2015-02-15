@@ -13,6 +13,7 @@
   <string name="scroll_sensitivity_default">2</string>
   <string name="book_line_length_default">1000000</string>
   <string name="viewPieceType_default">1</string>
+  <string name="autoDelay_default">5000</string>
   <string name="cpu_warning">\
 <b>Utilizzo CPU</b>\n\ se si lascia DroidFish in esecuzione in background e <i>la modalità di gioco</i> è impostata su \ <i>Analisi</i> o <i>Computer contro Computer</i>, o se <i>il Tempo per la riflessione</i> \ è impostato su un valore elevato, o se è attivo <i>Valutando</i>, è possibile che DroidFish usi \ molte risorse della CPU.\n\ \n\ Se l\'alimentazione è a batteria, è consigliabile modificare le impostazioni per \ risparmiare la batteria, o uscire da <i>DroidFish</i> usando il tasto Indietro quando \ non si sta utilizzando in modo attivo il programma. \     </string>
   <string name="offer_draw">Offri la patta</string>
@@ -106,6 +107,8 @@
   <string name="goto_end_variation">Vai alla fine della variante</string>
   <string name="goto_next_variation">Vai alla prossima variante</string>
   <string name="load_next_game">Carica la prossima partita</string>
+  <string name="auto_forward">Avanzamento automatico</string>
+  <string name="auto_backward">Torna indietro automaticamente</string>
   <string name="no_prev_game">Non ci sono partite precedenti</string>
   <string name="no_next_game">Non ci sono giochi successivi</string>
   <string name="no_prev_fen">Nessuna posizione precedente</string>
@@ -262,6 +265,8 @@
   <string name="prefs_timeControl_summary">Massimo tempo di riflessione durante il controllo di tempo</string>
   <string name="prefs_timeIncrement_title">Incremento</string>
   <string name="prefs_timeIncrement_summary">Tempo extra per pensare per ogni mossa completata</string>
+  <string name="prefs_autoDelay_title">Ritardo mossa automatica</string>
+  <string name="prefs_autoDelay_summary">Ritardo tra mosse automatiche in avanti o all\'indietro</string>
   <string name="prefs_hints">Suggerimenti</string>
   <string name="prefs_showThinking_title">Visualizza l\'attività di riflessione del Computer</string>
   <string name="prefs_showThinking_summary">Mostra informazioni sugli algoritmi del computer durante la ricerca</string>
@@ -535,6 +540,28 @@
     <item>5000</item>
     <item>10000</item>
     <item>12000</item>
+    <item>15000</item>
+    <item>30000</item>
+    <item>60000</item>
+  </string-array>
+  <string-array name="autoDelay_texts">
+    <item>0.5s</item>
+    <item>1s</item>
+    <item>2s</item>
+    <item>3s</item>
+    <item>5s</item>
+    <item>10s</item>
+    <item>15s</item>
+    <item>30s</item>
+    <item>60s</item>
+  </string-array>
+  <string-array name="autoDelay_values">
+    <item>500</item>
+    <item>1000</item>
+    <item>2000</item>
+    <item>3000</item>
+    <item>5000</item>
+    <item>10000</item>
     <item>15000</item>
     <item>30000</item>
     <item>60000</item>
