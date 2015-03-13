@@ -603,7 +603,6 @@ public class Search {
         }
 
         // Try null-move pruning
-        // FIXME! Try null-move verification in late endgames. See loss in round 21.
         sti.currentMove = emptyMove;
         if (    (depth >= 3*plyScale) && !inCheck && sti.allowNullMove &&
                 (Math.abs(beta) <= MATE0 / 2)) {
@@ -692,7 +691,6 @@ public class Search {
         }
 
         // Start searching move alternatives
-        // FIXME! Try hash move before generating move list.
         MoveGen.MoveList moves;
         if (inCheck)
             moves = moveGen.checkEvasions(pos);
@@ -732,7 +730,6 @@ public class Search {
             boolean isCapture = (pos.getPiece(m.to) != Piece.EMPTY);
             boolean isPromotion = (m.promoteTo != Piece.EMPTY);
             int sVal = Integer.MIN_VALUE;
-            // FIXME! Test extending pawn pushes to 7:th rank
             boolean mayReduce = (m.score < 53) && (!isCapture || m.score < 0) && !isPromotion;
             boolean givesCheck = MoveGen.givesCheck(pos, m); 
             boolean doFutility = false;

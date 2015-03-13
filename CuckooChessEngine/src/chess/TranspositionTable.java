@@ -34,7 +34,6 @@ public class TranspositionTable {
         byte generation;        // Increase when OTB position changes
         public byte type;       // exact score, lower bound, upper bound
         short evalScore;        // Score from static evaluation 
-        // FIXME!!! Test storing both upper and lower bound in each hash entry.
 
         static public final int T_EXACT = 0;   // Exact score
         static public final int T_GE = 1;      // True score >= this.score

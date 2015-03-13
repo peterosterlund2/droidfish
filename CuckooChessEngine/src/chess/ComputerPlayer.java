@@ -245,6 +245,4 @@ public class ComputerPlayer implements Player {
         double w = 100*Math.exp(-d*d/2);
         return (int)Math.ceil(w);
     }
-
-    // FIXME!!! Test Botvinnik-Markoff extension
 }

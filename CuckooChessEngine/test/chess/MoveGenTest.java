@@ -430,7 +430,6 @@ public class MoveGenTest {
         List<String> swapList = getMoveList0(swap, onlyLegal);
         List<String> ret = getMoveList0(pos, onlyLegal);
         assertEquals(swapList.size(), ret.size());
-        // FIXME! Test that swapList contains swapped moves compared to ret
         return ret;
     }
 

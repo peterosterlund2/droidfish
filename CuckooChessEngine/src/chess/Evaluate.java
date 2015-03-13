@@ -291,10 +291,6 @@ public class Evaluate {
         if (!pos.whiteMove)
             score = -score;
         return score;
-
-        // FIXME! Test penalty if side to move has >1 hanging piece
-        
-        // FIXME! Test "tempo value"
     }
 
     /** Compute white_material - black_material. */
@@ -756,8 +752,6 @@ public class Evaluate {
             score -= 28 + (8 - numPawns) * 3;
         }
     
-        // FIXME!!! Bad bishop
-    
         if ((numWhite == 1) && (numBlack == 1) && (whiteDark != blackDark) &&
             (pos.wMtrl - pos.wMtrlPawns == pos.bMtrl - pos.bMtrlPawns)) {
             final int penalty = (oldScore + score) / 2;
@@ -791,7 +785,6 @@ public class Evaluate {
     }
 
     private int threatBonus(Position pos) {
-        // FIXME!! Try higher weight for attacks on more valuable pieces.
         int score = 0;
 
         // Sum values for all black pieces under attack
@@ -896,7 +889,6 @@ public class Evaluate {
     }
 
     private final int kingSafetyKPPart(Position pos) {
-        // FIXME!!! Try non-linear king safety
         final long key = pos.pawnZobristHash() ^ pos.kingZobristHash();
         KingSafetyHashData ksh = kingSafetyHash[(int)key & (kingSafetyHash.length - 1)];
         if (ksh.key != key) {
@@ -1145,9 +1137,6 @@ public class Evaluate {
             }
         }
         return score;
-
-        // FIXME! Add evaluation of KRPKR   : eg 8/8/8/5pk1/1r6/R7/8/4K3 w - - 0 74
-        // FIXME! KRBKR is very hard to draw
     }
 
     private static final int evalKQKP(int wKing, int wQueen, int bKing, int bPawn, boolean whiteMove) {
