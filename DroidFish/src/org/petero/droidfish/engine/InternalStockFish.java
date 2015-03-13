@@ -79,14 +79,14 @@ public class InternalStockFish extends ExternalEngine {
     }
 
     private final void writeCheckSum(File f, long checkSum) {
-        OutputStream os = null;
+        DataOutputStream dos = null;
         try {
-            os = new FileOutputStream(f);
-            DataOutputStream dos = new DataOutputStream(os);
+            OutputStream os = new FileOutputStream(f);
+            dos = new DataOutputStream(os);
             dos.writeLong(checkSum);
         } catch (IOException e) {
         } finally {
-            if (os != null) try { os.close(); } catch (IOException ex) {}
+            if (dos != null) try { dos.close(); } catch (IOException ex) {}
         }
     }
 

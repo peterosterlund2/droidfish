@@ -81,9 +81,9 @@ public final class TreeLogger {
 
     /** Get a logger object set up for analyzing a log file. */
     public static final TreeLogger getAnalyzer(String filename) {
+        RandomAccessFile raf =  null;
         try {
             TreeLogger log = new TreeLogger();
-            RandomAccessFile raf;
             raf = new RandomAccessFile(filename, "rw");
             log.fc = raf.getChannel();
             long len = raf.length();
@@ -95,6 +95,8 @@ public final class TreeLogger {
             throw new RuntimeException();
         } catch (IOException e) {
             throw new RuntimeException();
+        } finally {
+            if (raf != null) try { raf.close(); } catch (IOException e) {}
         }
     }
 

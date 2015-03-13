@@ -255,6 +255,8 @@ public class EditOptions extends Activity {
                                 modified = true;
                             break;
                         }
+                        case BUTTON:
+                            break;
                         }
                     }
                     if (modified)

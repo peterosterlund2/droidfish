@@ -303,15 +303,13 @@ public class LoadFEN extends ListActivity {
         Pair<FenInfoResult, ArrayList<FenInfo>> p = fenFile.getFenInfo(this, progress);
         if (p.first != FenInfoResult.OK) {
             fensInFile = new ArrayList<FenInfo>();
-            switch (p.first) {
-            case OUT_OF_MEMORY:
+            if (p.first == FenInfoResult.OUT_OF_MEMORY) {
                 runOnUiThread(new Runnable() {
                     public void run() {
                         Toast.makeText(getApplicationContext(), R.string.file_too_large,
                                        Toast.LENGTH_SHORT).show();
                     }
                 });
-                break;
             }
             setResult(RESULT_CANCELED);
             finish();

@@ -432,6 +432,9 @@ public class EditPGN extends ListActivity {
                     }
                 });
                 break;
+            case CANCEL:
+            case OK:
+                break;
             }
             setResult(RESULT_CANCELED);
             finish();

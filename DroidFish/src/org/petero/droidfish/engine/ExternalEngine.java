@@ -288,17 +288,19 @@ public class ExternalEngine extends UCIEngineBase {
         if (to.exists())
             to.delete();
         to.createNewFile();
-        FileChannel inFC = null;
-        FileChannel outFC = null;
+        FileInputStream fis = null;
+        FileOutputStream fos = null;
         try {
-            inFC = new FileInputStream(from).getChannel();
-            outFC = new FileOutputStream(to).getChannel();
+            fis = new FileInputStream(from);
+            FileChannel inFC = fis.getChannel();
+            fos = new FileOutputStream(to);
+            FileChannel outFC = fos.getChannel();
             long cnt = outFC.transferFrom(inFC, 0, inFC.size());
             if (cnt < inFC.size())
                 throw new IOException("File copy failed");
         } finally {
-            if (inFC != null) { try { inFC.close(); } catch (IOException ex) {} }
-            if (outFC != null) { try { outFC.close(); } catch (IOException ex) {} }
+            if (fis != null) { try { fis.close(); } catch (IOException ex) {} }
+            if (fos != null) { try { fos.close(); } catch (IOException ex) {} }
             to.setLastModified(from.lastModified());
         }
         return to.getAbsolutePath();

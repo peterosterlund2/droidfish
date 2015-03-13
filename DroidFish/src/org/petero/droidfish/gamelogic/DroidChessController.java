@@ -1089,6 +1089,7 @@ public class DroidChessController {
             case SEARCH:  s.thinking  = true; break;
             case PONDER:  s.ponder    = true; break;
             case ANALYZE: s.analyzing = true; break;
+            case NONE: break;
             }
         } else {
             if ((s.state == GameState.DRAW_REP) || (s.state == GameState.DRAW_50))

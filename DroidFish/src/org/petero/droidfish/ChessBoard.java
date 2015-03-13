@@ -705,6 +705,8 @@ public abstract class ChessBoard extends View {
                 else
                     s = "0";
                 break;
+            case NONE:
+                break;
             }
             if (s != null) {
                 Rect bounds = new Rect();

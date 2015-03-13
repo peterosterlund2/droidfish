@@ -268,6 +268,7 @@ public class ChessController {
                 }
             }
             pgn = out.toString();
+            sc.close();
         }
 
         // Parse tag section
@@ -315,6 +316,7 @@ public class ChessController {
         }
 
         // Parse move text section
+        sc.close();
         sc = new Scanner(pgn);
         sc.useDelimiter("\\s+");
         while (sc.hasNext()) {
@@ -326,6 +328,7 @@ public class ChessController {
                 break;
             game.processString(strMove);
         }
+        sc.close();
     }
 
     public void setFENOrPGN(String fenPgn) throws ChessParseError {
