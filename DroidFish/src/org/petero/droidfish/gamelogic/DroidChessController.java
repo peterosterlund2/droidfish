@@ -568,7 +568,7 @@ public class DroidChessController {
 
     /** Get multi-PV mode setting. */
     public final synchronized int getNumPV() {
-        return this.numPV;
+        return numPV;
     }
 
     /** Set multi-PV mode. */
