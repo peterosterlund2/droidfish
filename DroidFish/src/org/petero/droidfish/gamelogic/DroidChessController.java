@@ -794,7 +794,7 @@ public class DroidChessController {
         @Override
         public void notifyPV(int id, Position pos, ArrayList<PvInfo> pvInfo, Move ponderMove) {
             this.ponderMove = ponderMove;
-            this.pvInfoSearchId = id;
+            pvInfoSearchId = id;
             pvInfoV = (ArrayList<PvInfo>) pvInfo.clone();
             for (PvInfo pv : pvInfo) {
                 currTime = pv.time;
