@@ -33,9 +33,6 @@ public class EngineUtil {
         System.loadLibrary("nativeutil");
     }
 
-    /** Return number of physical processors, i.e. hyper-threading ignored. */
-    final static native int getNPhysicalProcessors();
-
     /** Return file name of the internal stockfish executable. */
     public static String internalStockFishName() {
         String abi = Build.CPU_ABI;

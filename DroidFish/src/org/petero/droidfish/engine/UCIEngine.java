@@ -85,7 +85,4 @@ public interface UCIEngine {
     /** Register an option as supported by the engine.
      * @param tokens  The UCI option line sent by the engine, split in words. */
     public UCIOptions.OptionBase registerOption(String[] tokens);
-
-    /** Set number of search threads to use. */
-    public void setNThreads(int nThreads);
 }

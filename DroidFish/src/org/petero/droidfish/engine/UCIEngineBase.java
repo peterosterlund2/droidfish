@@ -140,7 +140,7 @@ public abstract class UCIEngineBase implements UCIEngine {
         name = name.toLowerCase(Locale.US);
         if (name.startsWith("uci_") || name.equals("hash") || name.equals("ponder") ||
             name.equals("multipv") || name.equals("gaviotatbpath") ||
-            name.equals("syzygypath") || name.equals("threads") || name.equals("cores"))
+            name.equals("syzygypath"))
             return false;
         return true;
     }
@@ -284,13 +284,5 @@ public abstract class UCIEngineBase implements UCIEngine {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public final void setNThreads(int nThreads) {
-        if (options.contains("Threads"))
-            setOption("Threads", nThreads);
-        else if (options.contains("Cores"))
-            setOption("Cores", nThreads);
     }
 }

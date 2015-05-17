@@ -43,14 +43,6 @@
             android:defaultValue="false">
         </CheckBoxPreference>
         <ListPreference
-            android:key="threads"
-            android:title="@string/prefs_threads_title"
-            android:summary="@string/prefs_threads_summary"
-            android:entryValues="@array/engine_threads_values"
-            android:entries="@array/engine_threads_texts"
-            android:defaultValue="@string/engine_threads_default">
-        </ListPreference>
-        <ListPreference
             android:key="hashMB"
             android:title="@string/prefs_hash_title"
             android:summary="@string/prefs_hash_summary"

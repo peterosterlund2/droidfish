@@ -938,8 +938,7 @@ public class DroidChessController {
                 SearchRequest sr = DroidComputerPlayer.SearchRequest.analyzeRequest(
                         searchId, ph.first, ph.second,
                         new Position(game.currPos()),
-                        game.haveDrawOffer(), engine,
-                        gui.engineThreads(), numPV);
+                        game.haveDrawOffer(), engine, numPV);
                 computerPlayer.queueAnalyzeRequest(sr);
             } else if (computersTurn || ponder) {
                 listener.clearSearchInfo(searchId);
@@ -963,8 +962,7 @@ public class DroidChessController {
                         game.haveDrawOffer(),
                         wTime, bTime, wInc, bInc, movesToGo,
                         gui.ponderMode(), fPonderMove,
-                        engine, gui.engineThreads(),
-                        strength);
+                        engine, strength);
                 computerPlayer.queueSearchRequest(sr);
             } else {
                 computerPlayer.queueStartEngine(searchId, engine);
