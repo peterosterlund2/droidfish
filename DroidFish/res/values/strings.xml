@@ -205,6 +205,7 @@ you are not actively using the program.\
     <string name="stockfish_engine">Stockfish</string>
     <string name="cuckoochess_engine">CuckooChess</string>
     <string name="select_engine">Select Engine</string>
+    <string name="engine_options">Engine Options</string>
     <string name="set_engine_options">Set options</string>
     <string name="configure_network_engine">Configure Network Engine</string>
     <string name="create_network_engine">Create Network Engine</string>
@@ -638,6 +639,7 @@ you are not actively using the program.\
         <item>@string/toggle_blind_mode</item>
         <item>@string/load_last_file</item>
         <item>@string/select_engine</item>
+        <item>@string/engine_options</item>
         </string-array>
     <string-array name="button_action_values">
         <item></item>
@@ -652,5 +654,6 @@ you are not actively using the program.\
         <item>blindMode</item>
         <item>loadLastFile</item>
         <item>selectEngine</item>
+        <item>engineOptions</item>
     </string-array>
 </resources>

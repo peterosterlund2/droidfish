@@ -370,6 +370,15 @@ public class DroidFish extends Activity implements GUIInterface {
                     showDialog(SELECT_ENGINE_DIALOG_NOMANAGE);
                 }
             });
+            addAction(new UIAction() {
+                public String getId() { return "engineOptions"; }
+                public int getName() { return R.string.engine_options; }
+                public int getIcon() { return R.raw.custom; }
+                public boolean enabled() { return canSetEngineOptions(); }
+                public void run() {
+                    setEngineOptions();
+                }
+            });
         }
 
         @Override
@@ -2826,20 +2835,9 @@ public class DroidFish extends Activity implements GUIInterface {
         List<CharSequence> lst = new ArrayList<CharSequence>();
         List<Integer> actions = new ArrayList<Integer>();
         lst.add(getString(R.string.select_engine)); actions.add(SELECT_ENGINE);
-        if (ctrl.computerIdle()) {
-            UCIOptions uciOpts = ctrl.getUCIOptions();
-            if (uciOpts != null) {
-                boolean visible = false;
-                for (String name : uciOpts.getOptionNames())
-                    if (uciOpts.getOption(name).visible) {
-                        visible = true;
-                        break;
-                    }
-                if (visible) {
-                    lst.add(getString(R.string.set_engine_options));
-                    actions.add(SET_ENGINE_OPTIONS);
-                }
-            }
+        if (canSetEngineOptions()) {
+            lst.add(getString(R.string.set_engine_options));
+            actions.add(SET_ENGINE_OPTIONS);
         }
         lst.add(getString(R.string.configure_network_engine)); actions.add(CONFIG_NET_ENGINE);
         final List<Integer> finalActions = actions;
@@ -2852,15 +2850,9 @@ public class DroidFish extends Activity implements GUIInterface {
                     removeDialog(SELECT_ENGINE_DIALOG);
                     showDialog(SELECT_ENGINE_DIALOG);
                     break;
-                case SET_ENGINE_OPTIONS: {
-                    Intent i = new Intent(DroidFish.this, EditOptions.class);
-                    UCIOptions uciOpts = ctrl.getUCIOptions();
-                    if (uciOpts != null) {
-                        i.putExtra("org.petero.droidfish.ucioptions", uciOpts);
-                        startActivityForResult(i, RESULT_EDITOPTIONS);
-                    }
+                case SET_ENGINE_OPTIONS:
+                    setEngineOptions();
                     break;
-                }
                 case CONFIG_NET_ENGINE:
                     removeDialog(NETWORK_ENGINE_DIALOG);
                     showDialog(NETWORK_ENGINE_DIALOG);
@@ -2870,6 +2862,29 @@ public class DroidFish extends Activity implements GUIInterface {
         });
         AlertDialog alert = builder.create();
         return alert;
+    }
+
+    /** Return true if engine UCI options can be set now. */
+    private final boolean canSetEngineOptions() {
+        if (!ctrl.computerIdle())
+            return false;
+        UCIOptions uciOpts = ctrl.getUCIOptions();
+        if (uciOpts == null)
+            return false;
+        for (String name : uciOpts.getOptionNames())
+            if (uciOpts.getOption(name).visible)
+                return true;
+        return false;
+    }
+
+    /** Start activity to set engine options. */
+    private final void setEngineOptions() {
+        Intent i = new Intent(DroidFish.this, EditOptions.class);
+        UCIOptions uciOpts = ctrl.getUCIOptions();
+        if (uciOpts != null) {
+            i.putExtra("org.petero.droidfish.ucioptions", uciOpts);
+            startActivityForResult(i, RESULT_EDITOPTIONS);
+        }
     }
 
     private final Dialog networkEngineDialog() {

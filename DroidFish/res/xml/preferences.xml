@@ -389,7 +389,7 @@
                     android:title="@string/prefs_button_action_2_title" 
                     android:entryValues="@array/button_action_values" 
                     android:entries="@array/button_action_texts" 
-                    android:defaultValue="">
+                    android:defaultValue="engineOptions">
                 </ListPreference>
                 <ListPreference
                     android:key="button_action_custom2_3" 
