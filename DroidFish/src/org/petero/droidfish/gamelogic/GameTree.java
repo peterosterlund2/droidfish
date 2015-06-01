@@ -380,7 +380,7 @@ public class GameTree {
             try {
                 while (true) {
                     char c = data.charAt(idx++);
-                    if (Character.isWhitespace(c)) {
+                    if (Character.isWhitespace(c) || c == '\u00a0') {
                         // Skip
                     } else if (c == '.') {
                         ret.type = PgnToken.PERIOD;
