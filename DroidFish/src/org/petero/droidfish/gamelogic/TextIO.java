@@ -130,10 +130,21 @@ public class TextIO {
             // En passant target square
             String epString = words[3];
             if (!epString.equals("-")) {
-                if (epString.length() < 2) {
+                if (epString.length() < 2)
                     throw new ChessParseError(R.string.err_invalid_en_passant_square, pos);
+                int epSq = getSquare(epString);
+                if (epSq != -1) {
+                    if (pos.whiteMove) {
+                        if ((Position.getY(epSq) != 5) || (pos.getPiece(epSq) != Piece.EMPTY) ||
+                                (pos.getPiece(epSq - 8) != Piece.BPAWN))
+                            epSq = -1;
+                    } else {
+                        if ((Position.getY(epSq) != 2) || (pos.getPiece(epSq) != Piece.EMPTY) ||
+                                (pos.getPiece(epSq + 8) != Piece.WPAWN))
+                            epSq = -1;
+                    }
+                    pos.setEpSquare(epSq);
                 }
-                pos.setEpSquare(getSquare(epString));
             }
         }
 

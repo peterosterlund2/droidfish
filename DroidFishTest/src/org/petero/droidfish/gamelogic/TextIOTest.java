@@ -99,6 +99,28 @@ public class TextIOTest extends TestCase {
         // (excessive memory usage) for the clock history class.
         pos = TextIO.readFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 10000");
         assertEquals(10000, pos.fullMoveCounter);
+
+        // Test invalid en passant square detection
+        pos = TextIO.readFEN("rnbqkbnr/pp1ppppp/8/8/2pPP3/8/PPP2PPP/RNBQKBNR b KQkq d3 0 1");
+        assertEquals(TextIO.getSquare("d3"), pos.getEpSquare());
+
+        pos = TextIO.readFEN("rnbqkbnr/pp1ppppp/8/8/2pPP3/8/PPP2PPP/RNBQKBNR w KQkq d3 0 1");
+        assertTrue(pos.equals(TextIO.readFEN("rnbqkbnr/pp1ppppp/8/8/2pPP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 1")));
+
+        pos = TextIO.readFEN("rnbqkbnr/ppp2ppp/8/2Ppp3/8/8/PP1PPPPP/RNBQKBNR w KQkq d6 0 1");
+        assertEquals(TextIO.getSquare("d6"), pos.getEpSquare());
+
+        pos = TextIO.readFEN("rnbqkbnr/ppp2ppp/8/2Ppp3/8/8/PP1PPPPP/RNBQKBNR b KQkq d6 0 1");
+        assertTrue(pos.equals(TextIO.readFEN("rnbqkbnr/ppp2ppp/8/2Ppp3/8/8/PP1PPPPP/RNBQKBNR b KQkq - 0 1")));
+
+        pos = TextIO.readFEN("rnbqkbnr/pppppppp/8/8/3PP3/8/PPP2PPP/RNBQKBNR b KQkq d3 0 1");
+        assertEquals(-1, pos.getEpSquare());
+
+        pos = TextIO.readFEN("rnbqkbnr/ppp2ppp/8/3pp3/8/8/PPPPPPPP/RNBQKBNR w KQkq e6 0 1");
+        assertEquals(-1, pos.getEpSquare());
+
+        pos = TextIO.readFEN("rnbqkbnr/pp1ppppp/8/8/2pPP3/3P4/PP3PPP/RNBQKBNR b KQkq d3 0 1");
+        assertTrue(pos.equals(TextIO.readFEN("rnbqkbnr/pp1ppppp/8/8/2pPP3/3P4/PP3PPP/RNBQKBNR b KQkq - 0 1")));
     }
 
     /**
