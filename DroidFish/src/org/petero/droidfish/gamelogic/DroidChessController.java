@@ -30,6 +30,7 @@ import java.util.Map;
 
 import org.petero.droidfish.EngineOptions;
 import org.petero.droidfish.GUIInterface;
+import org.petero.droidfish.GUIInterface.ThinkingInfo;
 import org.petero.droidfish.GameMode;
 import org.petero.droidfish.PGNOptions;
 import org.petero.droidfish.Util;
@@ -67,6 +68,7 @@ public class DroidChessController {
     private Move promoteMove;
 
     private int searchId;
+    private volatile ThinkingInfo latestThinkingInfo = null;
 
     /** Constructor. */
     public DroidChessController(GUIInterface gui, PgnToken.PgnTokenReceiver gameTextListener, PGNOptions options) {
@@ -769,9 +771,17 @@ public class DroidChessController {
                     pvMoves.add(pvInfoV.get(i).pv);
                 }
             }
+            final ThinkingInfo ti = new ThinkingInfo();
+            ti.id = id;
+            ti.pvStr = newPV;
+            ti.statStr = statStr;
+            ti.bookInfo = newBookInfo;
+            ti.pvMoves = pvMoves;
+            ti.bookMoves = bookMoves;
+            latestThinkingInfo = ti;
             gui.runOnUIThread(new Runnable() {
                 public void run() {
-                    setThinkingInfo(id, pvMoves, newPV, statStr, newBookInfo, bookMoves);
+                    setThinkingInfo(ti);
                 }
             });
         }
@@ -1122,10 +1132,9 @@ public class DroidChessController {
         gui.updateMaterialDifferenceTitle(Util.getMaterialDiff(game.currPos()));
     }
 
-    private final synchronized void setThinkingInfo(int id, ArrayList<ArrayList<Move>> pvMoves, String pvStr,
-                                                    String statStr, String bookInfo, ArrayList<Move> bookMoves) {
-        if (id == searchId)
-            gui.setThinkingInfo(pvStr, statStr, bookInfo, pvMoves, bookMoves);
+    private final synchronized void setThinkingInfo(ThinkingInfo ti) {
+        if ((ti.id == searchId) && (ti == latestThinkingInfo))
+            gui.setThinkingInfo(ti);
     }
 
     private final void updateMoveList() {

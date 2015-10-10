@@ -52,9 +52,17 @@ public interface GUIInterface {
     /** Update the list of moves. */
     public void moveListUpdated();
 
+    final public static class ThinkingInfo {
+        public int id;
+        public String pvStr;
+        public String statStr;
+        public String bookInfo;
+        public ArrayList<ArrayList<Move>> pvMoves;
+        public ArrayList<Move> bookMoves;
+    }
+
     /** Update the computer thinking information. */
-    public void setThinkingInfo(String pvStr, String statStr, String bookInfo,
-                                ArrayList<ArrayList<Move>> pvMoves, ArrayList<Move> bookMoves);
+    public void setThinkingInfo(ThinkingInfo ti);
 
     /** Ask what to promote a pawn to. Should call reportPromotePiece() when done. */
     public void requestPromotePiece();

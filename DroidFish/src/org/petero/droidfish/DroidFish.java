@@ -1709,13 +1709,12 @@ public class DroidFish extends Activity implements GUIInterface {
     private ArrayList<Move> variantMoves = null;
 
     @Override
-    public void setThinkingInfo(String pvStr, String statStr, String bookInfo,
-                                ArrayList<ArrayList<Move>> pvMoves, ArrayList<Move> bookMoves) {
-        thinkingStr1 = pvStr;
-        thinkingStr2 = statStr;
-        bookInfoStr = bookInfo;
-        this.pvMoves = pvMoves;
-        this.bookMoves = bookMoves;
+    public void setThinkingInfo(ThinkingInfo ti) {
+        thinkingStr1 = ti.pvStr;
+        thinkingStr2 = ti.statStr;
+        bookInfoStr = ti.bookInfo;
+        this.pvMoves = ti.pvMoves;
+        this.bookMoves = ti.bookMoves;
         updateThinkingInfo();
 
         if (ctrl.computerBusy()) {
