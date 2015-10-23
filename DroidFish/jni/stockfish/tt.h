@@ -43,14 +43,22 @@ struct TTEntry {
 
   void save(Key k, Value v, Bound b, Depth d, Move m, Value ev, uint8_t g) {
 
-    if (m || (k >> 48) != key16) // Preserve any existing move for the same position
+    // Preserve any existing move for the same position
+    if (m || (k >> 48) != key16)
         move16 = (uint16_t)m;
 
-    key16     = (uint16_t)(k >> 48);
-    value16   = (int16_t)v;
-    eval16    = (int16_t)ev;
-    genBound8 = (uint8_t)(g | b);
-    depth8    = (int8_t)d;
+    // Don't overwrite more valuable entries
+    if (  (k >> 48) != key16
+        || d > depth8 - 2
+     /* || g != (genBound8 & 0xFC) // Matching non-zero keys are already refreshed by probe() */
+        || b == BOUND_EXACT)
+    {
+        key16     = (uint16_t)(k >> 48);
+        value16   = (int16_t)v;
+        eval16    = (int16_t)ev;
+        genBound8 = (uint8_t)(g | b);
+        depth8    = (int8_t)d;
+    }
   }
 
 private:
@@ -81,11 +89,14 @@ class TranspositionTable {
     char padding[2]; // Align to the cache line size
   };
 
+  static_assert(sizeof(Cluster) == CacheLineSize / 2, "Cluster size incorrect");
+
 public:
  ~TranspositionTable() { free(mem); }
   void new_search() { generation8 += 4; } // Lower 2 bits are used by Bound
   uint8_t generation() const { return generation8; }
   TTEntry* probe(const Key key, bool& found) const;
+  int hashfull() const;
   void resize(size_t mbSize);
   void clear();
 

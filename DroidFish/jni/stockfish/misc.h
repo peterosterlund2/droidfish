@@ -21,36 +21,36 @@
 #define MISC_H_INCLUDED
 
 #include <cassert>
+#include <chrono>
 #include <ostream>
 #include <string>
 #include <vector>
+#include <sstream>
 
 #include "types.h"
 
 const std::string engine_info(bool to_uci = false);
-void timed_wait(WaitCondition&, Lock&, int);
-void prefetch(char* addr);
+void prefetch(void* addr);
 void start_logger(bool b);
 
 void dbg_hit_on(bool b);
-void dbg_hit_on_c(bool c, bool b);
+void dbg_hit_on(bool c, bool b);
 void dbg_mean_of(int v);
 void dbg_print();
 
+typedef std::chrono::milliseconds::rep TimePoint; // A value in milliseconds
 
-namespace Time {
-  typedef int64_t point;
-  inline point now() { return system_time_to_msec(); }
+inline TimePoint now() {
+  return std::chrono::duration_cast<std::chrono::milliseconds>
+        (std::chrono::steady_clock::now().time_since_epoch()).count();
 }
-
 
 template<class Entry, int Size>
 struct HashTable {
-  HashTable() : table(Size, Entry()) {}
   Entry* operator[](Key key) { return &table[(uint32_t)key & (Size - 1)]; }
 
 private:
-  std::vector<Entry> table;
+  std::vector<Entry> table = std::vector<Entry>(Size);
 };
 
 
@@ -96,5 +96,18 @@ public:
   template<typename T> T sparse_rand()
   { return T(rand64() & rand64() & rand64()); }
 };
+
+inline int stoi(const std::string& s) { 
+    std::stringstream ss(s); 
+    int result = 0; 
+    ss >> result; 
+    return result; 
+} 
+ 
+inline std::string to_string(int v) { 
+    char buf[32]; 
+    sprintf(buf, "%d", v); 
+    return buf; 
+} 
 
 #endif // #ifndef MISC_H_INCLUDED
