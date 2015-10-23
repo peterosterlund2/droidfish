@@ -77,6 +77,7 @@ public class ExternalEngine extends UCIEngineBase {
             synchronized (EngineUtil.nativeLock) {
                 engineProc = pb.start();
             }
+            reNice(engineProc);
 
             startupThread = new Thread(new Runnable() {
                 @Override
@@ -165,6 +166,17 @@ public class ExternalEngine extends UCIEngineBase {
             stdErrThread.start();
         } catch (IOException ex) {
             report.reportError(ex.getMessage());
+        }
+    }
+
+    /** Try to change the engine process priority to 5. */
+    private void reNice(Process proc) {
+        try {
+            java.lang.reflect.Field f = engineProc.getClass().getDeclaredField("pid");
+            f.setAccessible(true);
+            int pid = f.getInt(engineProc);
+            EngineUtil.reNice(pid, 10);
+        } catch (Throwable t) {
         }
     }
 

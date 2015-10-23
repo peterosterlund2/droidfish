@@ -20,6 +20,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#include <sys/time.h>
+#include <sys/resource.h>
 
 /*
  * Class:     org_petero_droidfish_engine_EngineUtil
@@ -27,8 +29,7 @@
  * Signature: (Ljava/lang/String;)Z
  */
 extern "C" JNIEXPORT jboolean JNICALL Java_org_petero_droidfish_engine_EngineUtil_chmod
-  (JNIEnv *env, jclass, jstring jExePath)
-{
+  (JNIEnv *env, jclass, jstring jExePath) {
     const char* exePath = (*env).GetStringUTFChars(jExePath, NULL);
     if (!exePath)
         return false;
@@ -36,3 +37,14 @@ extern "C" JNIEXPORT jboolean JNICALL Java_org_petero_droidfish_engine_EngineUti
     (*env).ReleaseStringUTFChars(jExePath, exePath);
     return ret;
 }
+
+/*
+ * Class:     org_petero_droidfish_engine_EngineUtil
+ * Method:    reNice
+ * Signature: (II)V
+ */
+extern "C" JNIEXPORT void JNICALL Java_org_petero_droidfish_engine_EngineUtil_reNice
+  (JNIEnv *env, jclass, jint pid, jint prio) {
+    setpriority(PRIO_PROCESS, pid, prio);
+}
+

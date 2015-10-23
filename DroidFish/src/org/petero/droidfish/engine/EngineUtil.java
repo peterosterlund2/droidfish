@@ -107,6 +107,9 @@ public class EngineUtil {
     /** Executes chmod 744 exePath. */
     final static native boolean chmod(String exePath);
 
+    /** Change the priority of a process. */
+    final static native void reNice(int pid, int prio);
+
     /** For synchronizing non thread safe native calls. */
     public static Object nativeLock = new Object();
 }
