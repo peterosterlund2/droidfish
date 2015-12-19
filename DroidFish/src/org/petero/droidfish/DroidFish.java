@@ -73,6 +73,9 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -96,12 +99,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v4.view.MotionEventCompat;
-import android.text.ClipboardManager;
 import android.text.Html;
 import android.text.Layout;
 import android.text.Spannable;
@@ -128,6 +128,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -230,7 +231,6 @@ public class DroidFish extends Activity implements GUIInterface {
 
     PgnScreenText gameTextListener;
 
-    private WakeLock wakeLock = null;
     private boolean useWakeLock = false;
 
     private Typeface figNotation;
@@ -407,10 +407,7 @@ public class DroidFish extends Activity implements GUIInterface {
             }
         });
 
-        PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
         setWakeLock(false);
-        wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "droidfish");
-        wakeLock.setReferenceCounted(false);
 
         custom1ButtonActions = new ButtonActions("custom1", CUSTOM1_BUTTON_DIALOG,
                                                  R.string.select_action);
@@ -929,7 +926,6 @@ public class DroidFish extends Activity implements GUIInterface {
             ctrl.setGuiPaused(false);
         notificationActive = true;
         updateNotification();
-        setWakeLock(useWakeLock);
         super.onResume();
     }
 
@@ -947,7 +943,6 @@ public class DroidFish extends Activity implements GUIInterface {
         }
         lastVisibleMillis = System.currentTimeMillis();
         updateNotification();
-        setWakeLock(false);
         super.onPause();
     }
 
@@ -1173,13 +1168,10 @@ public class DroidFish extends Activity implements GUIInterface {
 
     @SuppressLint("Wakelock")
     private synchronized final void setWakeLock(boolean enableLock) {
-        WakeLock wl = wakeLock;
-        if (wl != null) {
-            if (wl.isHeld())
-                wl.release();
-            if (enableLock)
-                wl.acquire();
-        }
+        if (enableLock)
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        else
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     private final void setEngineStrength(String engine, int strength) {
@@ -1851,19 +1843,19 @@ public class DroidFish extends Activity implements GUIInterface {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.option_new_game);
         builder.setMessage(R.string.start_new_game);
-        builder.setPositiveButton(R.string.yes, new Dialog.OnClickListener() {
+        builder.setNeutralButton(R.string.yes, new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 startNewGame(2);
             }
         });
-        builder.setNeutralButton(R.string.white, new Dialog.OnClickListener() {
+        builder.setNegativeButton(R.string.white, new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 startNewGame(0);
             }
         });
-        builder.setNegativeButton(R.string.black, new Dialog.OnClickListener() {
+        builder.setPositiveButton(R.string.black, new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 startNewGame(1);
@@ -1926,21 +1918,28 @@ public class DroidFish extends Activity implements GUIInterface {
                 case COPY_GAME: {
                     String pgn = ctrl.getPGN();
                     ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-                    clipboard.setText(pgn);
+                    clipboard.setPrimaryClip(new ClipData("DroidFish game",
+                            new String[]{ "application/x-chess-pgn", ClipDescription.MIMETYPE_TEXT_PLAIN },
+                            new ClipData.Item(pgn)));
                     break;
                 }
                 case COPY_POSITION: {
                     String fen = ctrl.getFEN() + "\n";
                     ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-                    clipboard.setText(fen);
+                    clipboard.setPrimaryClip(new ClipData(fen,
+                            new String[]{ "application/x-chess-fen", ClipDescription.MIMETYPE_TEXT_PLAIN },
+                            new ClipData.Item(fen)));
                     break;
                 }
                 case PASTE: {
                     ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-                    if (clipboard.hasText()) {
-                        String fenPgn = clipboard.getText().toString();
+                    if (clipboard.hasPrimaryClip()) {
+                        ClipData clip = clipboard.getPrimaryClip();
+                        StringBuilder fenPgn = new StringBuilder();
+                        for (int i = 0; i < clip.getItemCount(); i++)
+                            fenPgn.append(clip.getItemAt(i).coerceToText(getApplicationContext()));
                         try {
-                            ctrl.setFENOrPGN(fenPgn);
+                            ctrl.setFENOrPGN(fenPgn.toString());
                             setBoardFlip(true);
                         } catch (ChessParseError e) {
                             Toast.makeText(getApplicationContext(), getParseErrString(e), Toast.LENGTH_SHORT).show();

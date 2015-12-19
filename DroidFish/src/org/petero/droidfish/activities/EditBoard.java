@@ -42,6 +42,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -53,7 +56,6 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v4.view.MotionEventCompat;
-import android.text.ClipboardManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -450,15 +452,20 @@ public class EditBoard extends Activity {
                         setPosFields();
                         String fen = TextIO.toFEN(cb.pos) + "\n";
                         ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-                        clipboard.setText(fen);
+                        clipboard.setPrimaryClip(new ClipData(fen,
+                                new String[]{ "application/x-chess-fen", ClipDescription.MIMETYPE_TEXT_PLAIN },
+                                new ClipData.Item(fen)));
                         setSelection(-1);
                         break;
                     }
                     case PASTE_POSITION: {
                         ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-                        if (clipboard.hasText()) {
-                            String fen = clipboard.getText().toString();
-                            setFEN(fen);
+                        if (clipboard.hasPrimaryClip()) {
+                            ClipData clip = clipboard.getPrimaryClip();
+                            if (clip.getItemCount() > 0) {
+                                String fen = clip.getItemAt(0).coerceToText(getApplicationContext()).toString();
+                                setFEN(fen);
+                            }
                         }
                         break;
                     }

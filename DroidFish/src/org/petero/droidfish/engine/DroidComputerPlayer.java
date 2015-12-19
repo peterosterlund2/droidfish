@@ -18,15 +18,9 @@
 
 package org.petero.droidfish.engine;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import org.petero.droidfish.EngineOptions;
 import org.petero.droidfish.book.BookOptions;

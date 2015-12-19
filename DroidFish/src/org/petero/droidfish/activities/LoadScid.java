@@ -28,9 +28,12 @@ import org.petero.droidfish.Util;
 
 import android.app.Dialog;
 import android.app.ListActivity;
+import android.app.LoaderManager;
 import android.app.ProgressDialog;
+import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.Loader;
 import android.content.SharedPreferences;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.SharedPreferences.Editor;
@@ -71,6 +74,41 @@ public class LoadScid extends ListActivity {
     private long lastModTime = -1;
 
     Thread workThread = null;
+    private int idIdx;
+    private int summaryIdx;
+    private boolean resultSentBack = false;
+
+
+    private interface OnCursorReady {
+        void run(Cursor cursor);
+    }
+    
+    private void startReadFile(final OnCursorReady r) {
+        getLoaderManager().restartLoader(0, null, new LoaderManager.LoaderCallbacks<Cursor>() {
+            @Override
+            public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+                String scidFileName = fileName.substring(0, fileName.indexOf("."));
+                String[] proj = new String[]{"_id", "summary"};
+                return new CursorLoader(getApplicationContext(),
+                                        Uri.parse("content://org.scid.database.scidprovider/games"),
+                                        proj, scidFileName, null, null);
+            }
+            @Override
+            public void onLoadFinished(Loader<Cursor> loader, final Cursor cursor) {
+                idIdx = cursor.getColumnIndex("_id");
+                summaryIdx = cursor.getColumnIndex("summary");
+                workThread = new Thread(new Runnable() {
+                    public void run() {
+                        r.run(cursor);
+                    }
+                });
+                workThread.start();
+            }
+            @Override
+            public void onLoaderReset(Loader<Cursor> loader) {
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,12 +129,14 @@ public class LoadScid extends ListActivity {
         Intent i = getIntent();
         String action = i.getAction();
         fileName = i.getStringExtra("org.petero.droidfish.pathname");
+        resultSentBack = false;
         if (action.equals("org.petero.droidfish.loadScid")) {
             showDialog(PROGRESS_DIALOG);
             final LoadScid lpgn = this;
-            workThread = new Thread(new Runnable() {
-                public void run() {
-                    if (!readFile())
+            startReadFile(new OnCursorReady() {
+                @Override
+                public void run(Cursor cursor) {
+                    if (!readFile(cursor))
                         return;
                     runOnUiThread(new Runnable() {
                         public void run() {
@@ -105,20 +145,20 @@ public class LoadScid extends ListActivity {
                     });
                 }
             });
-            workThread.start();
         } else if (action.equals("org.petero.droidfish.loadScidNextGame") ||
                    action.equals("org.petero.droidfish.loadScidPrevGame")) {
             boolean next = action.equals("org.petero.droidfish.loadScidNextGame");
             final int loadItem = defaultItem + (next ? 1 : -1);
             if (loadItem < 0) {
                 Toast.makeText(getApplicationContext(), R.string.no_prev_game,
-                        Toast.LENGTH_SHORT).show();
+                               Toast.LENGTH_SHORT).show();
                 setResult(RESULT_CANCELED);
                 finish();
             } else {
-                workThread = new Thread(new Runnable() {
-                    public void run() {
-                        if (!readFile())
+                startReadFile(new OnCursorReady() {
+                    @Override
+                    public void run(Cursor cursor) {
+                        if (!readFile(cursor))
                             return;
                         runOnUiThread(new Runnable() {
                             public void run() {
@@ -135,7 +175,6 @@ public class LoadScid extends ListActivity {
                         });
                     }
                 });
-                workThread.start();
             }
         } else { // Unsupported action
             setResult(RESULT_CANCELED);
@@ -225,7 +264,7 @@ public class LoadScid extends ListActivity {
         }
     }
 
-    private final boolean readFile() {
+    private final boolean readFile(Cursor cursor) {
         if (!fileName.equals(lastFileName))
             defaultItem = 0;
         long modTime = new File(fileName).lastModified();
@@ -235,7 +274,6 @@ public class LoadScid extends ListActivity {
         lastFileName = fileName;
 
         gamesInFile.clear();
-        Cursor cursor = getListCursor();
         if (cursor != null) {
             int noGames = cursor.getCount();
             gamesInFile.ensureCapacity(noGames);
@@ -269,36 +307,6 @@ public class LoadScid extends ListActivity {
         return true;
     }
 
-    private int idIdx;
-    private int summaryIdx;
-
-    private Cursor getListCursor() {
-        String scidFileName = fileName.substring(0, fileName.indexOf("."));
-        String[] proj = new String[]{"_id", "summary"};
-        try {
-            Cursor cursor = managedQuery(Uri.parse("content://org.scid.database.scidprovider/games"),
-                    proj, scidFileName, null, null);
-            idIdx = cursor.getColumnIndex("_id");
-            summaryIdx = cursor.getColumnIndex("summary");
-            return cursor;
-        } catch (Throwable t) {
-            return null;
-        }
-    }
-
-    private Cursor getOneGameCursor(int gameId) {
-        String scidFileName = fileName.substring(0, fileName.indexOf("."));
-        String[] proj = new String[]{"pgn"};
-        try {
-            String uri = String.format(Locale.US, "content://org.scid.database.scidprovider/games/%d", gameId);
-            Cursor cursor = managedQuery(Uri.parse(uri),
-                                         proj, scidFileName, null, null);
-            return cursor;
-        } catch (Throwable t) {
-            return null;
-        }
-    }
-
     private void addGameInfo(Cursor cursor) {
         GameInfo gi = new GameInfo();
         gi.gameId = cursor.getInt(idIdx);
@@ -306,19 +314,42 @@ public class LoadScid extends ListActivity {
         gamesInFile.add(gi);
     }
 
-    private final void sendBackResult(GameInfo gi) {
-        if (gi.gameId >= 0) {
-            Cursor cursor = getOneGameCursor(gi.gameId);
-            if (cursor != null && cursor.moveToFirst()) {
-                String pgn = cursor.getString(cursor.getColumnIndex("pgn"));
-                if (pgn != null && pgn.length() > 0) {
-                    setResult(RESULT_OK, (new Intent()).setAction(pgn));
-                    finish();
-                    return;
-                }
-            }
+    private final void sendBackResult(final GameInfo gi) {
+        if (resultSentBack)
+            return;
+        resultSentBack = true;
+        if (gi.gameId < 0) {
+            setResult(RESULT_CANCELED);
+            finish();
         }
-        setResult(RESULT_CANCELED);
-        finish();
+
+        getLoaderManager().restartLoader(1, null, new LoaderManager.LoaderCallbacks<Cursor>() {
+            @Override
+            public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+                String scidFileName = fileName.substring(0, fileName.indexOf("."));
+                String[] proj = new String[]{"pgn"};
+                String uri = String.format(Locale.US, "content://org.scid.database.scidprovider/games/%d",
+                                           gi.gameId);
+                return new CursorLoader(getApplicationContext(),
+                                        Uri.parse(uri),
+                                        proj, scidFileName, null, null);                        
+            }
+            @Override
+            public void onLoadFinished(Loader<Cursor> loader, final Cursor cursor) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    String pgn = cursor.getString(cursor.getColumnIndex("pgn"));
+                    if (pgn != null && pgn.length() > 0) {
+                        setResult(RESULT_OK, (new Intent()).setAction(pgn));
+                        finish();
+                        return;
+                    }
+                }
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+            @Override
+            public void onLoaderReset(Loader<Cursor> loader) {
+            }
+        });
     }
 }
