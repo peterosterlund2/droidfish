@@ -3384,17 +3384,20 @@ public class DroidFish extends Activity implements GUIInterface {
             int icon = R.drawable.icon;
             CharSequence tickerText = getString(R.string.heavy_cpu_usage);
             long when = System.currentTimeMillis();
-            Notification notification = new Notification(icon, tickerText, when);
-            notification.flags |= Notification.FLAG_ONGOING_EVENT;
-
             Context context = getApplicationContext();
             CharSequence contentTitle = getString(R.string.background_processing);
             CharSequence contentText = getString(R.string.lot_cpu_power);
             Intent notificationIntent = new Intent(this, CPUWarning.class);
-
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-            notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
-
+            Notification notification = new Notification.Builder(context)
+                    .setSmallIcon(icon)
+                    .setTicker(tickerText)
+                    .setWhen(when)
+                    .setOngoing(true)
+                    .setContentTitle(contentTitle)
+                    .setContentText(contentText)
+                    .setContentIntent(contentIntent)
+                    .getNotification();
             mNotificationManager.notify(cpuUsage, notification);
         } else {
             mNotificationManager.cancel(cpuUsage);
