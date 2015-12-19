@@ -94,7 +94,7 @@ public class SeekBarPreference extends Preference
         bar.setMax(maxValue);
         bar.setProgress(currVal);
         bar.setOnSeekBarChangeListener(this);
-        lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+        lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                                            LinearLayout.LayoutParams.WRAP_CONTENT);
         lp.gravity = Gravity.RIGHT;
         bar.setLayoutParams(lp);
