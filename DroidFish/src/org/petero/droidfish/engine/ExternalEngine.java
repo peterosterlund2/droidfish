@@ -169,7 +169,7 @@ public class ExternalEngine extends UCIEngineBase {
         }
     }
 
-    /** Try to change the engine process priority to 5. */
+    /** Try to lower the engine process priority. */
     private void reNice() {
         try {
             java.lang.reflect.Field f = engineProc.getClass().getDeclaredField("pid");
