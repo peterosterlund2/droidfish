@@ -29,7 +29,7 @@ import android.preference.PreferenceManager;
 
 public class Preferences extends PreferenceActivity {
 
-    private static class Fragment extends PreferenceFragment {
+    public static class Fragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
