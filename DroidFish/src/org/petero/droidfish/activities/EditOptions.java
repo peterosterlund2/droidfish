@@ -25,7 +25,6 @@ import org.petero.droidfish.R;
 import org.petero.droidfish.Util;
 import org.petero.droidfish.engine.UCIOptions;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -85,7 +84,6 @@ public class EditOptions extends Activity {
         return super.onKeyDown(keyCode, event);
     }
 
-    @SuppressLint("CutPasteId")
     private final void initUI() {
         setContentView(R.layout.editoptions);
         Util.overrideFonts(findViewById(android.R.id.content));
