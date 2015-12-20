@@ -16,7 +16,7 @@
                  android:allowBackup="true">
         <activity android:name=".DroidFish"
                   android:label="@string/app_name"
-                  android:configChanges="orientation|keyboardHidden">
+                  android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -96,23 +96,23 @@
         </activity>
         <activity android:name=".activities.EditBoard"
                   android:label="@string/edit_board"
-                  android:configChanges="orientation">
+                  android:configChanges="orientation|screenSize">
         </activity>
         <activity android:name=".activities.EditPGNLoad"
                   android:label="@string/load_game_title"
-                  android:configChanges="orientation">
+                  android:configChanges="orientation|screenSize">
         </activity>
         <activity android:name=".activities.EditPGNSave"
                   android:label="@string/save_game_title"
-                  android:configChanges="orientation">
+                  android:configChanges="orientation|screenSize">
         </activity>
         <activity android:name=".activities.LoadScid"
                   android:label="@string/load_scid_game_title"
-                  android:configChanges="orientation">
+                  android:configChanges="orientation|screenSize">
         </activity>
         <activity android:name=".activities.LoadFEN"
                   android:label="@string/load_fen_title"
-                  android:configChanges="orientation">
+                  android:configChanges="orientation|screenSize">
         </activity>
         <activity android:name=".activities.CPUWarning"
                   android:label="@string/cpu_warning_title">
