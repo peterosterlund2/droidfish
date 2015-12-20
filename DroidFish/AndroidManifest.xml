@@ -12,6 +12,7 @@
     <uses-sdk android:minSdkVersion="11"
               android:targetSdkVersion="23"/>
     <application android:icon="@drawable/icon"
+                 android:theme="@android:style/Theme.Holo"
                  android:label="@string/app_name"
                  android:allowBackup="true">
         <activity android:name=".DroidFish"
