@@ -27,16 +27,16 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
             <Button
-                android:text="@android:string/ok"
-                android:id="@+id/loadfen_ok"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-            </Button>
-            <Button
                 android:id="@+id/loadfen_cancel"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/cancel">
+            </Button>
+            <Button
+                android:text="@android:string/ok"
+                android:id="@+id/loadfen_ok"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
             </Button>
         </LinearLayout>
     </LinearLayout>

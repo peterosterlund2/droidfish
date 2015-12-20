@@ -75,6 +75,18 @@
             android:textSize="10dip"/>
         <LinearLayout
             android:orientation="horizontal"
+            android:id="@+id/LinearLayout03"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/eb_cancel"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/cancel" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
             android:id="@+id/LinearLayout02"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
@@ -85,18 +97,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
             </Button>
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:id="@+id/LinearLayout03"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/eb_cancel"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/cancel" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/footer"
