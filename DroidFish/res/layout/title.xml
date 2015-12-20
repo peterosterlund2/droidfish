@@ -28,6 +28,7 @@
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="false"
             android:singleLine="true"
+            android:textSize="14sp"
             android:tag="title" >
         </TextView>
         <TextView
@@ -37,6 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:textSize="14sp"
             android:tag="title"
             android:text="@string/app_name">
         </TextView>
@@ -53,6 +55,7 @@
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:singleLine="true"
+            android:textSize="14sp"
             android:tag="title" >
         </TextView>
     </LinearLayout>
@@ -76,6 +79,7 @@
             android:marqueeRepeatLimit="marquee_forever"
             android:singleLine="true"
             android:tag="title"
+            android:textSize="14sp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold">
         </TextView>
@@ -87,6 +91,7 @@
             android:layout_weight="1"
             android:gravity="center|center_vertical"
             android:tag="title"
+            android:textSize="14sp"
             android:text="">
         </TextView>
         <TextView
@@ -103,6 +108,7 @@
             android:scrollHorizontally="true"
             android:singleLine="true"
             android:tag="title"
+            android:textSize="14sp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold">
         </TextView>

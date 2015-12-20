@@ -67,8 +67,9 @@
             android:layout_width="fill_parent" 
             android:layout_height="wrap_content" 
             android:includeFontPadding="true"
+            android:fontFamily="monospace"
             android:typeface="monospace"
-            android:textSize="10dip"/>
+            android:textSize="12sp"/>
         <RelativeLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
@@ -84,8 +85,9 @@
                     android:layout_width="fill_parent" 
                     android:layout_height="wrap_content" 
                     android:includeFontPadding="true"
+                    android:fontFamily="monospace"
                     android:typeface="monospace"
-                    android:textSize="10dip"/>
+                    android:textSize="12sp"/>
             </view>
             <ScrollView
                 android:id="@+id/scrollView"
@@ -97,8 +99,9 @@
                     android:layout_width="fill_parent" 
                     android:layout_height="wrap_content" 
                     android:includeFontPadding="true"
+                    android:fontFamily="monospace"
                     android:typeface="monospace"
-                    android:textSize="10dip"/>
+                    android:textSize="12sp"/>
             </ScrollView>
         </RelativeLayout>
     </LinearLayout>
