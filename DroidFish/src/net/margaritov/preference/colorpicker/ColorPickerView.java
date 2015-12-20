@@ -196,7 +196,7 @@ public class ColorPickerView extends View {
 		mAlphaTextPaint.setTextAlign(Align.CENTER);
 		mAlphaTextPaint.setFakeBoldText(true);
 
-
+		setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 	}
 
 	private float calculateRequiredOffset(){
