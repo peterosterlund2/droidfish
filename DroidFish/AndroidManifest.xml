@@ -118,7 +118,6 @@
                   android:label="@string/cpu_warning_title">
         </activity>
         <activity android:name=".activities.EditOptions"
-                  android:label="@string/edit_options_title"
                   android:configChanges="orientation">
         </activity>
         </application>

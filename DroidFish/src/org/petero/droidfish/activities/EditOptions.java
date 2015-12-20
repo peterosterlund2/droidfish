@@ -51,6 +51,7 @@ import android.widget.ToggleButton;
 /** Edit UCI options. */
 public class EditOptions extends Activity {
     private UCIOptions uciOpts = null;
+    private String engineName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class EditOptions extends Activity {
 
         Intent i = getIntent();
         uciOpts = (UCIOptions)i.getSerializableExtra("org.petero.droidfish.ucioptions");
+        engineName = (String)i.getSerializableExtra("org.petero.droidfish.enginename");
         if (uciOpts != null) {
             initUI();
         } else {
@@ -87,6 +89,7 @@ public class EditOptions extends Activity {
     private final void initUI() {
         setContentView(R.layout.editoptions);
         Util.overrideFonts(findViewById(android.R.id.content));
+        setTitle(getString(R.string.edit_options_title) + ": " + engineName);
 
         LinearLayout content = (LinearLayout)findViewById(R.id.eo_content);
         Button okButton = (Button)findViewById(R.id.eo_ok);

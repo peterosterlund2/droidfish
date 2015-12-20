@@ -2881,6 +2881,7 @@ public class DroidFish extends Activity implements GUIInterface {
         UCIOptions uciOpts = ctrl.getUCIOptions();
         if (uciOpts != null) {
             i.putExtra("org.petero.droidfish.ucioptions", uciOpts);
+            i.putExtra("org.petero.droidfish.enginename", engineTitleText.getText());
             startActivityForResult(i, RESULT_EDITOPTIONS);
         }
     }
