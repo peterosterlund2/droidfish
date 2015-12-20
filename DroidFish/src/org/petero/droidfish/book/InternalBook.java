@@ -33,7 +33,6 @@ import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gamelogic.UndoInfo;
 
 import android.annotation.SuppressLint;
-import android.util.FloatMath;
 
 @SuppressLint("UseSparseArrays")
 final class InternalBook implements IOpeningBook {
@@ -69,7 +68,7 @@ final class InternalBook implements IOpeningBook {
         ArrayList<BookEntry> ret = new ArrayList<BookEntry>();
         for (BookEntry be : ents) {
             BookEntry be2 = new BookEntry(be.move);
-            be2.weight = FloatMath.sqrt(be.weight) * 100 + 1;
+            be2.weight = (float)(Math.sqrt(be.weight) * 100 + 1);
             ret.add(be2);
         }
         return ret;
