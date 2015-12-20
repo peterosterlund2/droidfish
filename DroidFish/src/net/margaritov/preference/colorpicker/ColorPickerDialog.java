@@ -22,9 +22,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 public class ColorPickerDialog 
