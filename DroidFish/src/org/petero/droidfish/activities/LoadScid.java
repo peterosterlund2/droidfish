@@ -214,7 +214,8 @@ public class LoadScid extends ListActivity {
     }
 
     private final void showList() {
-        progress.dismiss();
+        progress = null;
+        removeDialog(PROGRESS_DIALOG);
         final ArrayAdapter<GameInfo> aa =
             new ArrayAdapter<GameInfo>(this, R.layout.select_game_list_item, gamesInFile) {
             @Override

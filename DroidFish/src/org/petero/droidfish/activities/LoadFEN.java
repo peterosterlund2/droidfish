@@ -181,7 +181,8 @@ public class LoadFEN extends ListActivity {
     }
 
     private final void showList() {
-        progress.dismiss();
+        progress = null;
+        removeDialog(PROGRESS_DIALOG);
         setContentView(R.layout.load_fen);
 
         cb = (ChessBoardPlay)findViewById(R.id.loadfen_chessboard);

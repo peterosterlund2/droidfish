@@ -237,7 +237,8 @@ public class EditPGN extends ListActivity {
     }
 
     private final void showList() {
-        progress.dismiss();
+        progress = null;
+        removeDialog(PROGRESS_DIALOG);
         setContentView(R.layout.select_game);
         Util.overrideFonts(findViewById(android.R.id.content));
         aa = new ArrayAdapter<GameInfo>(this, R.layout.select_game_list_item, gamesInFile) {
@@ -282,7 +283,6 @@ public class EditPGN extends ListActivity {
             }
         });
 
-//      lv.setTextFilterEnabled(true);
         filterText = (EditText)findViewById(R.id.select_game_filter);
         filterText.addTextChangedListener(new TextWatcher() {
             @Override
