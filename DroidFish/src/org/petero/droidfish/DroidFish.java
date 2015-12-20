@@ -1149,6 +1149,7 @@ public class DroidFish extends Activity implements GUIInterface {
         setButtonData(redoButton, bWidth, bHeight, R.raw.right, svg);
     }
 
+    @SuppressWarnings("deprecation")
     private final void setButtonData(ImageButton button, int bWidth, int bHeight,
                                      int svgResId, SVG touched) {
         SVG svg = SVGParser.getSVGFromResource(getResources(), svgResId);
@@ -3390,6 +3391,7 @@ public class DroidFish extends Activity implements GUIInterface {
             CharSequence contentText = getString(R.string.lot_cpu_power);
             Intent notificationIntent = new Intent(this, CPUWarning.class);
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+            @SuppressWarnings("deprecation")
             Notification notification = new Notification.Builder(context)
                     .setSmallIcon(icon)
                     .setTicker(tickerText)
