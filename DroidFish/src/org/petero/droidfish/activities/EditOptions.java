@@ -87,16 +87,15 @@ public class EditOptions extends Activity {
     }
 
     private final void initUI() {
-        setContentView(R.layout.editoptions);
-        Util.overrideFonts(findViewById(android.R.id.content));
-        setTitle(getString(R.string.edit_options_title) + ": " + engineName);
+        String title = getString(R.string.edit_options_title);
+        if (engineName != null)
+            title = title + ": " + engineName;
+        setTitle(title);
 
-        LinearLayout content = (LinearLayout)findViewById(R.id.eo_content);
-        Button okButton = (Button)findViewById(R.id.eo_ok);
-        Button cancelButton = (Button)findViewById(R.id.eo_cancel);
-        Button resetButton = (Button)findViewById(R.id.eo_reset);
+        View view = View.inflate(this, R.layout.editoptions, null);
 
         if (uciOpts != null) {
+            LinearLayout content = (LinearLayout)view.findViewById(R.id.eo_content);
             for (String name : uciOpts.getOptionNames()) {
                 UCIOptions.OptionBase o = uciOpts.getOption(name);
                 if (!o.visible)
@@ -208,6 +207,12 @@ public class EditOptions extends Activity {
                 }
             }
         }
+
+        setContentView(view);
+        Util.overrideFonts(findViewById(android.R.id.content));
+        Button okButton = (Button)findViewById(R.id.eo_ok);
+        Button cancelButton = (Button)findViewById(R.id.eo_cancel);
+        Button resetButton = (Button)findViewById(R.id.eo_reset);
 
         okButton.setOnClickListener(new OnClickListener() {
             @Override
