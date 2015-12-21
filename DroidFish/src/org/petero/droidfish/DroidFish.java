@@ -418,7 +418,6 @@ public class DroidFish extends Activity implements GUIInterface {
 
         figNotation = Typeface.createFromAsset(getAssets(), "fonts/DroidFishChessNotationDark.otf");
         setPieceNames(PGNOptions.PT_LOCAL);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         initUI();
 
         gameTextListener = new PgnScreenText(this, pgnOptions);

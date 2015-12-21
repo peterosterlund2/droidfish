@@ -17,6 +17,7 @@
                  android:allowBackup="true">
         <activity android:name=".DroidFish"
                   android:label="@string/app_name"
+                  android:theme="@android:style/Theme.Holo.NoActionBar"
                   android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
