@@ -244,7 +244,6 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="option_resign_game">Partie aufgeben</string>
   <string name="option_edit_board">Stellung bearbeiten</string>
   <string name="option_settings">Einstellungen</string>
-  <string name="option_goto_move">Gehe zu Zug</string>
   <string name="option_force_computer_move">Computerzug erzwingen</string>
   <string name="option_draw">Remis anbieten/annehmen</string>
   <string name="option_select_book">Eröffnungsbuch auswählen</string>

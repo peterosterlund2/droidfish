@@ -242,7 +242,6 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="option_resign_game">Opgeven</string>
   <string name="option_edit_board">Bord bewerken</string>
   <string name="option_settings">Instellingen</string>
-  <string name="option_goto_move">Ga naar zet</string>
   <string name="option_force_computer_move">Forceer computer zet</string>
   <string name="option_draw">Remise aanbieden/accepteren</string>
   <string name="option_select_book">Selecteer openingsboek</string>

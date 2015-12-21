@@ -241,7 +241,6 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="option_resign_game">Abandonner</string>
   <string name="option_edit_board">Rentrer une position</string>
   <string name="option_settings">Paramètres</string>
-  <string name="option_goto_move">Aller au coup</string>
   <string name="option_force_computer_move">Forcer le coup de l\'ordinateur</string>
   <string name="option_draw">Proposer/Accepter la Nulle</string>
   <string name="option_select_book">Sélectionner le livre d\'ouverture</string>

@@ -243,7 +243,6 @@ you are not actively using the program.\
     <string name="option_resign_game">Resign game</string>
     <string name="option_edit_board">Edit Board</string>
     <string name="option_settings">Settings</string>
-    <string name="option_goto_move">Goto Move</string>
     <string name="option_force_computer_move">Force Computer Move</string>
     <string name="option_draw">Claim/Offer/Accept Draw</string>
     <string name="option_select_book">Select Opening Book</string>

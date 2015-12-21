@@ -1339,10 +1339,6 @@ public class DroidFish extends Activity implements GUIInterface {
             showDialog(dialog);
             return true;
         }
-        case R.id.item_goto_move: {
-            showDialog(SELECT_MOVE_DIALOG);
-            return true;
-        }
         case R.id.item_force_move: {
             ctrl.stopSearch();
             return true;
@@ -1779,7 +1775,6 @@ public class DroidFish extends Activity implements GUIInterface {
     static private final int PROMOTE_DIALOG = 0;
     static private final int BOARD_MENU_DIALOG = 1;
     static private final int ABOUT_DIALOG = 2;
-    static private final int SELECT_MOVE_DIALOG = 3;
     static private final int SELECT_BOOK_DIALOG = 4;
     static private final int SELECT_ENGINE_DIALOG = 5;
     static private final int SELECT_ENGINE_DIALOG_NOMANAGE = 6;
@@ -1813,7 +1808,6 @@ public class DroidFish extends Activity implements GUIInterface {
         case BOARD_MENU_DIALOG:              return boardMenuDialog();
         case FILE_MENU_DIALOG:               return fileMenuDialog();
         case ABOUT_DIALOG:                   return aboutDialog();
-        case SELECT_MOVE_DIALOG:             return selectMoveDialog();
         case SELECT_BOOK_DIALOG:             return selectBookDialog();
         case SELECT_ENGINE_DIALOG:           return selectEngineDialog(false);
         case SELECT_ENGINE_DIALOG_NOMANAGE:  return selectEngineDialog(true);
@@ -2101,46 +2095,6 @@ public class DroidFish extends Activity implements GUIInterface {
         builder.setTitle(title);
         AlertDialog alert = builder.create();
         return alert;
-    }
-
-    private final Dialog selectMoveDialog() {
-        setAutoMode(AutoMode.OFF);
-        View content = View.inflate(this, R.layout.select_move_number, null);
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(content);
-        builder.setTitle(R.string.goto_move);
-        final EditText moveNrView = (EditText)content.findViewById(R.id.selmove_number);
-        moveNrView.setText("1");
-        final Runnable gotoMove = new Runnable() {
-            public void run() {
-                try {
-                    int moveNr = Integer.parseInt(moveNrView.getText().toString());
-                    ctrl.gotoMove(moveNr);
-                } catch (NumberFormatException nfe) {
-                    Toast.makeText(getApplicationContext(), R.string.invalid_number_format, Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
-        builder.setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                gotoMove.run();
-            }
-        });
-        builder.setNegativeButton(R.string.cancel, null);
-
-        final AlertDialog dialog = builder.create();
-
-        moveNrView.setOnKeyListener(new OnKeyListener() {
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    gotoMove.run();
-                    dialog.cancel();
-                    return true;
-                }
-                return false;
-            }
-        });
-        return dialog;
     }
 
     private final Dialog selectBookDialog() {

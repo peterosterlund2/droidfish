@@ -243,7 +243,6 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="option_resign_game">Poddaj partię</string>
   <string name="option_edit_board">Edytuj pozycję</string>
   <string name="option_settings">Ustawienia</string>
-  <string name="option_goto_move">Idź do posunięcia</string>
   <string name="option_force_computer_move">Wymuś ruch komputera</string>
   <string name="option_draw">Zaproponuj/przyjmij remis</string>
   <string name="option_select_book">Wybierz książkę otwarć</string>

@@ -243,7 +243,6 @@ não estiver usando o programa diretamente.\</string>
   <string name="option_resign_game">Abandonar partida</string>
   <string name="option_edit_board">Editar tabuleiro</string>
   <string name="option_settings">Configurações</string>
-  <string name="option_goto_move">Ir para o lance</string>
   <string name="option_force_computer_move">Forçar lance do software</string>
   <string name="option_draw">Pedir/Aceitar empate</string>
   <string name="option_select_book">Livro de aberturas</string>

@@ -242,7 +242,6 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="option_resign_game">Rendir partida</string>
   <string name="option_edit_board">Editar Posición</string>
   <string name="option_settings">Ajustes/Opciones</string>
-  <string name="option_goto_move">Ir a la jugada</string>
   <string name="option_force_computer_move">Obligar a jugar al Programa</string>
   <string name="option_draw">Ofrecer / Aceptar Tablas</string>
   <string name="option_select_book">Seleccionar Libro</string>

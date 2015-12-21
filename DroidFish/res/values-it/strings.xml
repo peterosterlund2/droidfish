@@ -235,7 +235,6 @@
   <string name="option_resign_game">Abbandona la partita</string>
   <string name="option_edit_board">Modifica la scacchiera</string>
   <string name="option_settings">Impostazioni</string>
-  <string name="option_goto_move">Vai alla mossa</string>
   <string name="option_force_computer_move">Forza mossa del Computer</string>
   <string name="option_draw">Chiedi/Offri/Accetta la patta</string>
   <string name="option_select_book">Seleziona Libro delle Aperture</string>

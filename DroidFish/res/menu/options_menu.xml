@@ -7,16 +7,6 @@
         android:icon="@android:drawable/ic_menu_add">
     </item>
     <item
-        android:id="@+id/item_file_menu"
-        android:title="@string/option_file"
-        android:icon="@android:drawable/ic_menu_save">
-    </item>
-    <item
-        android:id="@+id/item_resign"
-        android:title="@string/option_resign_game"
-        android:icon="@android:drawable/ic_menu_delete">
-    </item>
-    <item
         android:id="@+id/item_editboard"
         android:title="@string/option_edit_board"
         android:icon="@android:drawable/ic_menu_edit">
@@ -27,9 +17,14 @@
         android:icon="@android:drawable/ic_menu_preferences">
     </item>
     <item
-        android:id="@+id/item_goto_move"
-        android:title="@string/option_goto_move"
-        android:icon="@android:drawable/ic_menu_mylocation">
+        android:id="@+id/item_file_menu"
+        android:title="@string/option_file"
+        android:icon="@android:drawable/ic_menu_save">
+    </item>
+    <item
+        android:id="@+id/item_resign"
+        android:title="@string/option_resign_game"
+        android:icon="@android:drawable/ic_menu_delete">
     </item>
     <item
         android:id="@+id/item_force_move"

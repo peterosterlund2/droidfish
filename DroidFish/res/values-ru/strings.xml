@@ -234,7 +234,6 @@
   <string name="option_resign_game">Сдаться</string>
   <string name="option_edit_board">Редактировать доску</string>
   <string name="option_settings">Настройки</string>
-  <string name="option_goto_move">Перейти на ход</string>
   <string name="option_force_computer_move">Форсировать ход компьютера</string>
   <string name="option_draw">Заявить/Предложить/Принять ничью</string>
   <string name="option_select_book">Выбрать открываемую книгу</string>
