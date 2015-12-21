@@ -139,7 +139,7 @@ import android.widget.Toast;
 
 @SuppressLint("ClickableViewAccessibility")
 public class DroidFish extends Activity implements GUIInterface {
-    // FIXME!!! book.txt (and test classes) should not be included in apk
+    // FIXME!!! book.txt should not be included in apk
 
     // FIXME!!! PGN view option: game continuation (for training)
     // FIXME!!! Remove invalid playerActions in PGN import (should be done in verifyChildren)
