@@ -96,6 +96,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.StateListDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -3319,7 +3320,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private final void updateNotification() {
         boolean warn = false;
         if (lastVisibleMillis != 0) { // GUI not visible
-            warn = lastComputationMillis >= lastVisibleMillis + 9000;
+            warn = lastComputationMillis >= lastVisibleMillis + 60000;
         }
         setNotification(warn);
     }
@@ -3335,7 +3336,8 @@ public class DroidFish extends Activity implements GUIInterface {
         String ns = Context.NOTIFICATION_SERVICE;
         NotificationManager mNotificationManager = (NotificationManager)getSystemService(ns);
         if (show) {
-            int icon = R.drawable.icon;
+            boolean silhouette = Build.VERSION.SDK_INT >= 21;
+            int icon = silhouette ? R.drawable.silhouette : R.drawable.icon;
             CharSequence tickerText = getString(R.string.heavy_cpu_usage);
             long when = System.currentTimeMillis();
             Context context = getApplicationContext();
