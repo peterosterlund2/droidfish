@@ -123,7 +123,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.View.OnLongClickListener;
@@ -3320,7 +3319,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private final void updateNotification() {
         boolean warn = false;
         if (lastVisibleMillis != 0) { // GUI not visible
-            warn = lastComputationMillis >= lastVisibleMillis + 90000;
+            warn = lastComputationMillis >= lastVisibleMillis + 9000;
         }
         setNotification(warn);
     }
