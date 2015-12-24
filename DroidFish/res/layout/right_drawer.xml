@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/right_drawer"
+    android:tag="drawer"
+    android:layout_width="280dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="right"
+    android:choiceMode="singleChoice"
+    android:background="#F0282828"
+    android:dividerHeight="1dp" />
