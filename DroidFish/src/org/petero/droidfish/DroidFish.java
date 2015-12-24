@@ -678,14 +678,26 @@ public class DroidFish extends Activity implements GUIInterface {
 
         initDrawers();
 
-        OnClickListener listener = new OnClickListener() {
+        class ClickListener implements OnClickListener, OnTouchListener {
+            private float touchX = -1;
             @Override
             public void onClick(View v) {
-                drawerLayout.openDrawer(Gravity.LEFT);
+                boolean left = touchX <= v.getWidth() / 2.0;
+                drawerLayout.openDrawer(left ? Gravity.LEFT : Gravity.RIGHT);
+                touchX = -1;
             }
-        };
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                touchX = event.getX();
+                return false;
+            }
+        }
+        ClickListener listener = new ClickListener();
         firstTitleLine.setOnClickListener(listener);
+        firstTitleLine.setOnTouchListener(listener);
         secondTitleLine.setOnClickListener(listener);
+        secondTitleLine.setOnTouchListener(listener);
 
         cb = (ChessBoardPlay)findViewById(R.id.chessboard);
         cb.setFocusable(true);
