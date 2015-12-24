@@ -19,7 +19,6 @@
 package org.petero.droidfish.activities;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import org.petero.droidfish.ChessBoard;
@@ -56,7 +55,9 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v4.view.MotionEventCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -66,8 +67,12 @@ import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -83,6 +88,9 @@ public class EditBoard extends Activity {
     private TextView whiteFigText;
     private TextView blackFigText;
     private Typeface figNotation;
+
+    private DrawerLayout drawerLayout;
+    private ListView leftDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,18 +169,16 @@ public class EditBoard extends Activity {
         whiteFigText.setEllipsize(where);
         blackFigText.setEllipsize(where);
 
-        firstTitleLine.setOnClickListener(new OnClickListener() {
+        initDrawers();
+
+        OnClickListener listener = new OnClickListener() {
             @Override
             public void onClick(View v) {
-                openOptionsMenu();
+                drawerLayout.openDrawer(Gravity.LEFT);
             }
-        });
-        secondTitleLine.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openOptionsMenu();
-            }
-        });
+        };
+        firstTitleLine.setOnClickListener(listener);
+        secondTitleLine.setOnClickListener(listener);
 
         okButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -199,7 +205,7 @@ public class EditBoard extends Activity {
                     pending = false;
                     handler.removeCallbacks(runnable);
                     ((Vibrator)getSystemService(Context.VIBRATOR_SERVICE)).vibrate(20);
-                    showDialog(EDIT_DIALOG);
+                    drawerLayout.openDrawer(Gravity.LEFT);
                 }
             };
             public boolean onTouch(View v, MotionEvent event) {
@@ -241,9 +247,136 @@ public class EditBoard extends Activity {
         });
     }
 
+    /** Initialize the drawer part of the user interface. */
+    private void initDrawers() {
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        leftDrawer = (ListView)findViewById(R.id.left_drawer);
+
+        class DrawerItem {
+            int id;
+            int itemId; // Item string resource id
+
+            DrawerItem(int id, int itemId) {
+                this.id = id;
+                this.itemId = itemId;
+            }
+
+            @Override
+            public String toString() {
+                return getString(itemId);
+            }
+        }
+
+        final int SIDE_TO_MOVE    = 0;
+        final int CLEAR_BOARD     = 1;
+        final int INITIAL_POS     = 2;
+        final int CASTLING_FLAGS  = 3;
+        final int EN_PASSANT_FILE = 4;
+        final int MOVE_COUNTERS   = 5;
+        final int COPY_POSITION   = 6;
+        final int PASTE_POSITION  = 7;
+        final int GET_FEN         = 8;
+
+        final ArrayList<DrawerItem> leftItems = new ArrayList<DrawerItem>();
+        leftItems.add(new DrawerItem(SIDE_TO_MOVE, R.string.side_to_move));
+        leftItems.add(new DrawerItem(CLEAR_BOARD, R.string.clear_board));
+        leftItems.add(new DrawerItem(INITIAL_POS, R.string.initial_position));
+        leftItems.add(new DrawerItem(CASTLING_FLAGS, R.string.castling_flags));
+        leftItems.add(new DrawerItem(EN_PASSANT_FILE, R.string.en_passant_file));
+        leftItems.add(new DrawerItem(MOVE_COUNTERS, R.string.move_counters));
+        leftItems.add(new DrawerItem(COPY_POSITION, R.string.copy_position));
+        leftItems.add(new DrawerItem(PASTE_POSITION, R.string.paste_position));
+        if (DroidFish.hasFenProvider(getPackageManager()))
+            leftItems.add(new DrawerItem(GET_FEN, R.string.get_fen));
+
+        leftDrawer.setAdapter(new ArrayAdapter<DrawerItem>(this,
+                                                           R.layout.drawer_list_item,
+                                                           leftItems.toArray(new DrawerItem[0])));
+        leftDrawer.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                drawerLayout.closeDrawer(Gravity.LEFT);
+                leftDrawer.clearChoices();
+                DrawerItem di = leftItems.get(position);
+                switch (di.id) {
+                case SIDE_TO_MOVE:
+                    showDialog(SIDE_DIALOG);
+                    setSelection(-1);
+                    checkValidAndUpdateMaterialDiff();
+                    break;
+                case CLEAR_BOARD: {
+                    Position pos = new Position();
+                    cb.setPosition(pos);
+                    setSelection(-1);
+                    checkValidAndUpdateMaterialDiff();
+                    break;
+                }
+                case INITIAL_POS: {
+                    try {
+                        Position pos = TextIO.readFEN(TextIO.startPosFEN);
+                        cb.setPosition(pos);
+                        setSelection(-1);
+                        checkValidAndUpdateMaterialDiff();
+                    } catch (ChessParseError e) {
+                    }
+                    break;
+                }
+                case CASTLING_FLAGS:
+                    removeDialog(CASTLE_DIALOG);
+                    showDialog(CASTLE_DIALOG);
+                    setSelection(-1);
+                    checkValidAndUpdateMaterialDiff();
+                    break;
+                case EN_PASSANT_FILE:
+                    removeDialog(EP_DIALOG);
+                    showDialog(EP_DIALOG);
+                    setSelection(-1);
+                    checkValidAndUpdateMaterialDiff();
+                    break;
+                case MOVE_COUNTERS:
+                    removeDialog(MOVCNT_DIALOG);
+                    showDialog(MOVCNT_DIALOG);
+                    setSelection(-1);
+                    checkValidAndUpdateMaterialDiff();
+                    break;
+                case COPY_POSITION: {
+                    setPosFields();
+                    String fen = TextIO.toFEN(cb.pos) + "\n";
+                    ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+                    clipboard.setPrimaryClip(new ClipData(fen,
+                            new String[]{ "application/x-chess-fen", ClipDescription.MIMETYPE_TEXT_PLAIN },
+                            new ClipData.Item(fen)));
+                    setSelection(-1);
+                    break;
+                }
+                case PASTE_POSITION: {
+                    ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+                    if (clipboard.hasPrimaryClip()) {
+                        ClipData clip = clipboard.getPrimaryClip();
+                        if (clip.getItemCount() > 0) {
+                            String fen = clip.getItemAt(0).coerceToText(getApplicationContext()).toString();
+                            setFEN(fen);
+                        }
+                    }
+                    break;
+                }
+                case GET_FEN:
+                    Intent i = new Intent(Intent.ACTION_GET_CONTENT); 
+                    i.setType("application/x-chess-fen");
+                    try {
+                        startActivityForResult(i, RESULT_GET_FEN);
+                    } catch (ActivityNotFoundException e) {
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        });
+    }
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        showDialog(EDIT_DIALOG);
+        drawerLayout.openDrawer(Gravity.LEFT);
         return false;
     }
 
@@ -369,7 +502,6 @@ public class EditBoard extends Activity {
             return getString(e.resourceId);
     }
 
-    static final int EDIT_DIALOG = 0;
     static final int SIDE_DIALOG = 1;
     static final int CASTLE_DIALOG = 2;
     static final int EP_DIALOG = 3;
@@ -378,111 +510,6 @@ public class EditBoard extends Activity {
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
-        case EDIT_DIALOG: {
-            final int SIDE_TO_MOVE    = 0;
-            final int CLEAR_BOARD     = 1;
-            final int INITIAL_POS     = 2;
-            final int CASTLING_FLAGS  = 3;
-            final int EN_PASSANT_FILE = 4;
-            final int MOVE_COUNTERS   = 5;
-            final int COPY_POSITION   = 6;
-            final int PASTE_POSITION  = 7;
-            final int GET_FEN         = 8;
-
-            List<CharSequence> lst = new ArrayList<CharSequence>();
-            List<Integer> actions = new ArrayList<Integer>();
-            lst.add(getString(R.string.side_to_move));     actions.add(SIDE_TO_MOVE);
-            lst.add(getString(R.string.clear_board));      actions.add(CLEAR_BOARD);
-            lst.add(getString(R.string.initial_position)); actions.add(INITIAL_POS);
-            lst.add(getString(R.string.castling_flags));   actions.add(CASTLING_FLAGS);
-            lst.add(getString(R.string.en_passant_file));  actions.add(EN_PASSANT_FILE);
-            lst.add(getString(R.string.move_counters));    actions.add(MOVE_COUNTERS);
-            lst.add(getString(R.string.copy_position));    actions.add(COPY_POSITION);
-            lst.add(getString(R.string.paste_position));   actions.add(PASTE_POSITION);
-            if (DroidFish.hasFenProvider(getPackageManager())) {
-                lst.add(getString(R.string.get_fen)); actions.add(GET_FEN);
-            }
-            final List<Integer> finalActions = actions;
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.edit_board);
-            builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
-                    switch (finalActions.get(item)) {
-                    case SIDE_TO_MOVE:
-                        showDialog(SIDE_DIALOG);
-                        setSelection(-1);
-                        checkValidAndUpdateMaterialDiff();
-                        break;
-                    case CLEAR_BOARD: {
-                        Position pos = new Position();
-                        cb.setPosition(pos);
-                        setSelection(-1);
-                        checkValidAndUpdateMaterialDiff();
-                        break;
-                    }
-                    case INITIAL_POS: {
-                        try {
-                            Position pos = TextIO.readFEN(TextIO.startPosFEN);
-                            cb.setPosition(pos);
-                            setSelection(-1);
-                            checkValidAndUpdateMaterialDiff();
-                        } catch (ChessParseError e) {
-                        }
-                        break;
-                    }
-                    case CASTLING_FLAGS:
-                        removeDialog(CASTLE_DIALOG);
-                        showDialog(CASTLE_DIALOG);
-                        setSelection(-1);
-                        checkValidAndUpdateMaterialDiff();
-                        break;
-                    case EN_PASSANT_FILE:
-                        removeDialog(EP_DIALOG);
-                        showDialog(EP_DIALOG);
-                        setSelection(-1);
-                        checkValidAndUpdateMaterialDiff();
-                        break;
-                    case MOVE_COUNTERS:
-                        removeDialog(MOVCNT_DIALOG);
-                        showDialog(MOVCNT_DIALOG);
-                        setSelection(-1);
-                        checkValidAndUpdateMaterialDiff();
-                        break;
-                    case COPY_POSITION: {
-                        setPosFields();
-                        String fen = TextIO.toFEN(cb.pos) + "\n";
-                        ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-                        clipboard.setPrimaryClip(new ClipData(fen,
-                                new String[]{ "application/x-chess-fen", ClipDescription.MIMETYPE_TEXT_PLAIN },
-                                new ClipData.Item(fen)));
-                        setSelection(-1);
-                        break;
-                    }
-                    case PASTE_POSITION: {
-                        ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-                        if (clipboard.hasPrimaryClip()) {
-                            ClipData clip = clipboard.getPrimaryClip();
-                            if (clip.getItemCount() > 0) {
-                                String fen = clip.getItemAt(0).coerceToText(getApplicationContext()).toString();
-                                setFEN(fen);
-                            }
-                        }
-                        break;
-                    }
-                    case GET_FEN:
-                        Intent i = new Intent(Intent.ACTION_GET_CONTENT); 
-                        i.setType("application/x-chess-fen");
-                        try {
-                            startActivityForResult(i, RESULT_GET_FEN);
-                        } catch (ActivityNotFoundException e) {
-                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }
-            });
-            AlertDialog alert = builder.create();
-            return alert;
-        }
         case SIDE_DIALOG: {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.select_side_to_move_first);

@@ -199,11 +199,11 @@ public class DroidFish extends Activity implements GUIInterface {
     private TextView whiteFigText, blackFigText, summaryTitleText;
     private static Dialog moveListMenuDlg;
 
-    DrawerLayout drawerLayout;
-    ListView leftDrawer;
-    ListView rightDrawer;
+    private DrawerLayout drawerLayout;
+    private ListView leftDrawer;
+    private ListView rightDrawer;
 
-    SharedPreferences settings;
+    private SharedPreferences settings;
 
     private float scrollSensitivity;
     private boolean invertScrollDirection;
@@ -236,7 +236,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private long lastVisibleMillis; // Time when GUI became invisible. 0 if currently visible.
     private long lastComputationMillis; // Time when engine last showed that it was computing.
 
-    PgnScreenText gameTextListener;
+    private PgnScreenText gameTextListener;
 
     private boolean useWakeLock = false;
 
@@ -1300,12 +1300,12 @@ public class DroidFish extends Activity implements GUIInterface {
     private class DrawerItem {
         int id;
         int itemId; // Item string resource id
-    
+
         DrawerItem(int id, int itemId) {
             this.id = id;
             this.itemId = itemId;
         }
-    
+
         @Override
         public String toString() {
             return getString(itemId);
@@ -1329,6 +1329,7 @@ public class DroidFish extends Activity implements GUIInterface {
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         leftDrawer = (ListView)findViewById(R.id.left_drawer);
         rightDrawer = (ListView)findViewById(R.id.right_drawer);
+
         final DrawerItem[] leftItems = new DrawerItem[] {
             new DrawerItem(ITEM_EDIT_BOARD, R.string.option_edit_board),
             new DrawerItem(ITEM_FILE_MENU, R.string.option_file),
@@ -1349,7 +1350,7 @@ public class DroidFish extends Activity implements GUIInterface {
                 handleDrawerSelection(di.id);
             }
         });
-    
+
         final DrawerItem[] rightItems = new DrawerItem[] {
             new DrawerItem(ITEM_NEW_GAME, R.string.option_new_game),
             new DrawerItem(ITEM_RESIGN, R.string.option_resign_game),
@@ -1381,9 +1382,9 @@ public class DroidFish extends Activity implements GUIInterface {
         drawerLayout.closeDrawer(Gravity.RIGHT);
         leftDrawer.clearChoices();
         rightDrawer.clearChoices();
-    
+
         setAutoMode(AutoMode.OFF);
-    
+
         switch (itemId) {
         case ITEM_NEW_GAME:
             showDialog(NEW_GAME_DIALOG);
