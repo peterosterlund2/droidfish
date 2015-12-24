@@ -175,7 +175,7 @@ public class ColorPickerPreference
     @Override
     public void onColorChanged(int color) {
         if (isPersistent()) {
-            /* for Droidfish: the colors are stored as strings [2012-08-30; leo] */
+            /* for DroidFish: the colors are stored as strings [2012-08-30; leo] */
             persistString(convertToARGB(color));
         }
         mValue = color;
