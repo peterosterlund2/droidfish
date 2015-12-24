@@ -103,6 +103,7 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v4.view.MotionEventCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
 import android.text.Layout;
 import android.text.Spannable;
@@ -117,10 +118,10 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.LeadingMarginSpan;
 import android.text.style.StyleSpan;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.ViewConfiguration;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -130,17 +131,19 @@ import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.webkit.WebView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView.ScaleType;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 @SuppressLint("ClickableViewAccessibility")
 public class DroidFish extends Activity implements GUIInterface {
-    // FIXME!!! book.txt should not be included in apk
-
     // FIXME!!! PGN view option: game continuation (for training)
     // FIXME!!! Remove invalid playerActions in PGN import (should be done in verifyChildren)
     // FIXME!!! Implement bookmark mechanism for positions in pgn files
@@ -195,6 +198,10 @@ public class DroidFish extends Activity implements GUIInterface {
     private View firstTitleLine, secondTitleLine;
     private TextView whiteFigText, blackFigText, summaryTitleText;
     private static Dialog moveListMenuDlg;
+
+    DrawerLayout drawerLayout;
+    ListView leftDrawer;
+    ListView rightDrawer;
 
     SharedPreferences settings;
 
@@ -669,18 +676,16 @@ public class DroidFish extends Activity implements GUIInterface {
         moveList.setMovementMethod(LinkMovementMethod.getInstance());
         thinking.setFocusable(false);
 
-        firstTitleLine.setOnClickListener(new OnClickListener() {
+        initDrawers();
+
+        OnClickListener listener = new OnClickListener() {
             @Override
             public void onClick(View v) {
-                openOptionsMenu();
+                drawerLayout.openDrawer(Gravity.LEFT);
             }
-        });
-        secondTitleLine.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openOptionsMenu();
-            }
-        });
+        };
+        firstTitleLine.setOnClickListener(listener);
+        secondTitleLine.setOnClickListener(listener);
 
         cb = (ChessBoardPlay)findViewById(R.id.chessboard);
         cb.setFocusable(true);
@@ -870,7 +875,7 @@ public class DroidFish extends Activity implements GUIInterface {
         modeButton.setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                openOptionsMenu();
+                drawerLayout.openDrawer(Gravity.LEFT);
                 return true;
             }
         });
@@ -1292,17 +1297,139 @@ public class DroidFish extends Activity implements GUIInterface {
         cb.setSquareDecorations(sd);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.options_menu, menu);
-        return true;
+    private class DrawerItem {
+        int id;
+        int itemId; // Item string resource id
+    
+        DrawerItem(int id, int itemId) {
+            this.id = id;
+            this.itemId = itemId;
+        }
+    
+        @Override
+        public String toString() {
+            return getString(itemId);
+        }
+    }
+
+    static private final int ITEM_NEW_GAME = 0;
+    static private final int ITEM_EDIT_BOARD = 1;
+    static private final int ITEM_SETTINGS = 2;
+    static private final int ITEM_FILE_MENU = 3;
+    static private final int ITEM_RESIGN = 4;
+    static private final int ITEM_FORCE_MOVE = 5;
+    static private final int ITEM_DRAW = 6;
+    static private final int ITEM_SELECT_BOOK = 7;
+    static private final int ITEM_MANAGE_ENGINES = 8;
+    static private final int ITEM_SET_COLOR_THEME = 9;
+    static private final int ITEM_ABOUT = 10;
+
+    /** Initialize the drawer part of the user interface. */
+    private void initDrawers() {
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        leftDrawer = (ListView)findViewById(R.id.left_drawer);
+        rightDrawer = (ListView)findViewById(R.id.right_drawer);
+        final DrawerItem[] leftItems = new DrawerItem[] {
+            new DrawerItem(ITEM_EDIT_BOARD, R.string.option_edit_board),
+            new DrawerItem(ITEM_FILE_MENU, R.string.option_file),
+            new DrawerItem(ITEM_SELECT_BOOK, R.string.option_select_book),
+            new DrawerItem(ITEM_MANAGE_ENGINES, R.string.option_manage_engines),
+            new DrawerItem(ITEM_SET_COLOR_THEME, R.string.option_color_theme),
+            new DrawerItem(ITEM_SETTINGS, R.string.option_settings),
+            new DrawerItem(ITEM_ABOUT, R.string.option_about)
+        };
+        leftDrawer.setAdapter(new ArrayAdapter<DrawerItem>(this,
+                                                           R.layout.drawer_list_item,
+                                                           leftItems));
+        leftDrawer.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                DrawerItem di = leftItems[position];
+                handleDrawerSelection(di.id);
+            }
+        });
+    
+        final DrawerItem[] rightItems = new DrawerItem[] {
+            new DrawerItem(ITEM_NEW_GAME, R.string.option_new_game),
+            new DrawerItem(ITEM_RESIGN, R.string.option_resign_game),
+            new DrawerItem(ITEM_FORCE_MOVE, R.string.option_force_computer_move),
+            new DrawerItem(ITEM_DRAW, R.string.option_draw)
+        };
+        rightDrawer.setAdapter(new ArrayAdapter<DrawerItem>(this,
+                                                            R.layout.drawer_list_item,
+                                                            rightItems));
+        rightDrawer.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                DrawerItem di = rightItems[position];
+                handleDrawerSelection(di.id);
+            }
+        });
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem item = menu.findItem(R.id.item_file_menu);
-        item.setTitle(R.string.option_file);
-        return true;
+        drawerLayout.openDrawer(Gravity.LEFT);
+        return false;
+    }
+
+    /** React to a selection in the left/right drawers. */
+    private void handleDrawerSelection(int itemId) {
+        drawerLayout.closeDrawer(Gravity.LEFT);
+        drawerLayout.closeDrawer(Gravity.RIGHT);
+        leftDrawer.clearChoices();
+        rightDrawer.clearChoices();
+    
+        setAutoMode(AutoMode.OFF);
+    
+        switch (itemId) {
+        case ITEM_NEW_GAME:
+            showDialog(NEW_GAME_DIALOG);
+            break;
+        case ITEM_EDIT_BOARD:
+            startEditBoard(ctrl.getFEN());
+            break;
+        case ITEM_SETTINGS: {
+            Intent i = new Intent(DroidFish.this, Preferences.class);
+            startActivityForResult(i, RESULT_SETTINGS);
+            break;
+        }
+        case ITEM_FILE_MENU:
+            removeDialog(FILE_MENU_DIALOG);
+            showDialog(FILE_MENU_DIALOG);
+            break;
+        case ITEM_RESIGN:
+            if (ctrl.humansTurn())
+                ctrl.resignGame();
+            break;
+        case ITEM_FORCE_MOVE:
+            ctrl.stopSearch();
+            break;
+        case ITEM_DRAW:
+            if (ctrl.humansTurn()) {
+                if (ctrl.claimDrawIfPossible())
+                    ctrl.stopPonder();
+                else
+                    Toast.makeText(getApplicationContext(), R.string.offer_draw, Toast.LENGTH_SHORT).show();
+            }
+            break;
+        case ITEM_SELECT_BOOK:
+            removeDialog(SELECT_BOOK_DIALOG);
+            showDialog(SELECT_BOOK_DIALOG);
+            break;
+        case ITEM_MANAGE_ENGINES:
+            removeDialog(MANAGE_ENGINES_DIALOG);
+            showDialog(MANAGE_ENGINES_DIALOG);
+            break;
+        case ITEM_SET_COLOR_THEME:
+            showDialog(SET_COLOR_THEME_DIALOG);
+            break;
+        case ITEM_ABOUT:
+            showDialog(ABOUT_DIALOG);
+            break;
+        }
     }
 
     static private final int RESULT_EDITBOARD = 0;
@@ -1315,66 +1442,6 @@ public class DroidFish extends Activity implements GUIInterface {
     static private final int RESULT_OI_FEN_LOAD = 7;
     static private final int RESULT_GET_FEN = 8;
     static private final int RESULT_EDITOPTIONS = 9;
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        setAutoMode(AutoMode.OFF);
-        switch (item.getItemId()) {
-        case R.id.item_new_game:
-            showDialog(NEW_GAME_DIALOG);
-            return true;
-        case R.id.item_editboard: {
-            startEditBoard(ctrl.getFEN());
-            return true;
-        }
-        case R.id.item_settings: {
-            Intent i = new Intent(DroidFish.this, Preferences.class);
-            startActivityForResult(i, RESULT_SETTINGS);
-            return true;
-        }
-        case R.id.item_file_menu: {
-            int dialog = FILE_MENU_DIALOG;
-            removeDialog(dialog);
-            showDialog(dialog);
-            return true;
-        }
-        case R.id.item_force_move: {
-            ctrl.stopSearch();
-            return true;
-        }
-        case R.id.item_draw: {
-            if (ctrl.humansTurn()) {
-                if (ctrl.claimDrawIfPossible()) {
-                    ctrl.stopPonder();
-                } else {
-                    Toast.makeText(getApplicationContext(), R.string.offer_draw, Toast.LENGTH_SHORT).show();
-                }
-            }
-            return true;
-        }
-        case R.id.item_resign: {
-            if (ctrl.humansTurn()) {
-                ctrl.resignGame();
-            }
-            return true;
-        }
-        case R.id.select_book:
-            removeDialog(SELECT_BOOK_DIALOG);
-            showDialog(SELECT_BOOK_DIALOG);
-            return true;
-        case R.id.manage_engines:
-            removeDialog(MANAGE_ENGINES_DIALOG);
-            showDialog(MANAGE_ENGINES_DIALOG);
-            return true;
-        case R.id.set_color_theme:
-            showDialog(SET_COLOR_THEME_DIALOG);
-            return true;
-        case R.id.item_about:
-            showDialog(ABOUT_DIALOG);
-            return true;
-        }
-        return false;
-    }
 
     private void startEditBoard(String fen) {
         Intent i = new Intent(DroidFish.this, EditBoard.class);

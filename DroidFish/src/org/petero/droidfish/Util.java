@@ -123,8 +123,11 @@ public final class Util {
                                       v instanceof EditText ||
                                       v instanceof ImageButton ||
                                       "title".equals(v.getTag());
-        if (!excludedItems)
+        if (!excludedItems) {
+            if ("drawer".equals(v.getTag()))
+                return;
             v.setBackgroundColor(bg);
+        }
         if (v instanceof ListView)
             ((ListView) v).setCacheColorHint(bg);
         if (v instanceof ViewGroup) {
@@ -133,7 +136,7 @@ public final class Util {
                 View child = vg.getChildAt(i);
                 overrideFonts(child);
             }
-        } else if ((v instanceof TextView) && !excludedItems) {
+        } else if (!excludedItems && (v instanceof TextView)) {
             int fg = ColorTheme.instance().getColor(ColorTheme.FONT_FOREGROUND);
             ((TextView) v).setTextColor(fg);
         }
