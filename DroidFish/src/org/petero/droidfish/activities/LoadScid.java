@@ -21,12 +21,16 @@ package org.petero.droidfish.activities;
 import java.io.File;
 import java.util.Locale;
 import java.util.Vector;
+import java.util.concurrent.CountDownLatch;
 
 import org.petero.droidfish.ColorTheme;
 import org.petero.droidfish.R;
 import org.petero.droidfish.Util;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.Fragment;
 import android.app.ListActivity;
 import android.app.LoaderManager;
 import android.app.ProgressDialog;
@@ -35,7 +39,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.net.Uri;
@@ -73,7 +76,9 @@ public class LoadScid extends ListActivity {
     private String lastFileName = "";
     private long lastModTime = -1;
 
-    Thread workThread = null;
+    private Thread workThread = null;
+    private CountDownLatch progressLatch = null;
+
     private int idIdx;
     private int summaryIdx;
     private boolean resultSentBack = false;
@@ -131,11 +136,19 @@ public class LoadScid extends ListActivity {
         fileName = i.getStringExtra("org.petero.droidfish.pathname");
         resultSentBack = false;
         if (action.equals("org.petero.droidfish.loadScid")) {
-            showDialog(PROGRESS_DIALOG);
+            progressLatch = new CountDownLatch(1);
+            showProgressDialog();
             final LoadScid lpgn = this;
             startReadFile(new OnCursorReady() {
                 @Override
                 public void run(Cursor cursor) {
+                    try {
+                        progressLatch.await();
+                    } catch (InterruptedException e) {
+                        setResult(RESULT_CANCELED);
+                        finish();
+                        return;
+                    }
                     if (!readFile(cursor))
                         return;
                     runOnUiThread(new Runnable() {
@@ -215,7 +228,7 @@ public class LoadScid extends ListActivity {
 
     private final void showList() {
         progress = null;
-        removeDialog(PROGRESS_DIALOG);
+        removeProgressDialog();
         final ArrayAdapter<GameInfo> aa =
             new ArrayAdapter<GameInfo>(this, R.layout.select_game_list_item, gamesInFile) {
             @Override
@@ -242,27 +255,38 @@ public class LoadScid extends ListActivity {
         });
     }
 
-    final static int PROGRESS_DIALOG = 0;
-
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-        case PROGRESS_DIALOG:
-            progress = new ProgressDialog(this);
+    public static class ProgressFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            LoadScid a = (LoadScid)getActivity();
+            ProgressDialog progress = new ProgressDialog(a);
             progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progress.setTitle(R.string.reading_scid_file);
-            progress.setOnCancelListener(new OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    Thread thr = workThread;
-                    if (thr != null)
-                        thr.interrupt();
-                }
-            });
+            a.progress = progress;
+            a.progressLatch.countDown();
             return progress;
-        default:
-            return null;
         }
+        @Override
+        public void onCancel(DialogInterface dialog) {
+            super.onCancel(dialog);
+            Activity a = getActivity();
+            if (a instanceof LoadScid) {
+                Thread thr = ((LoadScid)a).workThread;
+                if (thr != null)
+                    thr.interrupt();
+            }
+        }
+    }
+
+    private void showProgressDialog() {
+        ProgressFragment f = new ProgressFragment();
+        f.show(getFragmentManager(), "progress");
+    }
+
+    private void removeProgressDialog() {
+        Fragment f = getFragmentManager().findFragmentByTag("progress");
+        if (f instanceof DialogFragment)
+            ((DialogFragment)f).dismiss();
     }
 
     private final boolean readFile(Cursor cursor) {

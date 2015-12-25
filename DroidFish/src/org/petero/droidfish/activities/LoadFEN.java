@@ -20,6 +20,7 @@ package org.petero.droidfish.activities;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 
 import org.petero.droidfish.ChessBoardPlay;
 import org.petero.droidfish.ColorTheme;
@@ -32,13 +33,15 @@ import org.petero.droidfish.gamelogic.Pair;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.Fragment;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -69,6 +72,7 @@ public class LoadFEN extends ListActivity {
     private long lastModTime = -1;
 
     private Thread workThread = null;
+    private CountDownLatch progressLatch = null;
 
     private ChessBoardPlay cb;
     private Button okButton;
@@ -97,10 +101,18 @@ public class LoadFEN extends ListActivity {
         String fileName = i.getStringExtra("org.petero.droidfish.pathname");
         if (action.equals("org.petero.droidfish.loadFen")) {
             fenFile = new FENFile(fileName);
-            showDialog(PROGRESS_DIALOG);
+            progressLatch = new CountDownLatch(1);
+            showProgressDialog();
             final LoadFEN lfen = this;
             workThread = new Thread(new Runnable() {
                 public void run() {
+                    try {
+                        progressLatch.await();
+                    } catch (InterruptedException e) {
+                        setResult(RESULT_CANCELED);
+                        finish();
+                        return;
+                    }
                     if (!readFile())
                         return;
                     runOnUiThread(new Runnable() {
@@ -182,7 +194,7 @@ public class LoadFEN extends ListActivity {
 
     private final void showList() {
         progress = null;
-        removeDialog(PROGRESS_DIALOG);
+        removeProgressDialog();
         setContentView(R.layout.load_fen);
 
         cb = (ChessBoardPlay)findViewById(R.id.loadfen_chessboard);
@@ -270,27 +282,38 @@ public class LoadFEN extends ListActivity {
         }
     }
 
-    final static int PROGRESS_DIALOG = 0;
-
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-        case PROGRESS_DIALOG:
-            progress = new ProgressDialog(this);
+    public static class ProgressFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            LoadFEN a = (LoadFEN)getActivity();
+            ProgressDialog progress = new ProgressDialog(a);
             progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progress.setTitle(R.string.reading_fen_file);
-            progress.setOnCancelListener(new OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    Thread thr = workThread;
-                    if (thr != null)
-                        thr.interrupt();
-                }
-            });
+            a.progress = progress;
+            a.progressLatch.countDown();
             return progress;
-        default:
-            return null;
         }
+        @Override
+        public void onCancel(DialogInterface dialog) {
+            super.onCancel(dialog);
+            Activity a = getActivity();
+            if (a instanceof LoadFEN) {
+                Thread thr = ((LoadFEN)a).workThread;
+                if (thr != null)
+                    thr.interrupt();
+            }
+        }
+    }
+
+    private void showProgressDialog() {
+        ProgressFragment f = new ProgressFragment();
+        f.show(getFragmentManager(), "progress");
+    }
+
+    private void removeProgressDialog() {
+        Fragment f = getFragmentManager().findFragmentByTag("progress");
+        if (f instanceof DialogFragment)
+            ((DialogFragment)f).dismiss();
     }
 
     private final boolean readFile() {

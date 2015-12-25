@@ -19,37 +19,36 @@
 package org.petero.droidfish.activities;
 
 import org.petero.droidfish.R;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
 
 public class CPUWarning extends Activity {
+    public static class Fragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            return new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.app_name)
+                    .setMessage(R.string.cpu_warning)
+                    .create();
+        }
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            super.onDismiss(dialog);
+            Activity a = getActivity();
+            if (a != null)
+                a.finish();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        showDialog(CPU_WARNING_DIALOG);
-    }
-
-    static final int CPU_WARNING_DIALOG = 1;
-
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-        case CPU_WARNING_DIALOG:
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.app_name).setMessage(R.string.cpu_warning);
-            AlertDialog alert = builder.create();
-            alert.setOnDismissListener(new OnDismissListener() {
-                public void onDismiss(DialogInterface dialog) {
-                    finish();
-                }
-            });
-            return alert;
-        }
-        return null;
+        DialogFragment df = new Fragment();
+        df.show(getFragmentManager(), "");
     }
 }
