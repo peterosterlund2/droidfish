@@ -3198,11 +3198,12 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     private final boolean hasScidProvider() {
-        List<ProviderInfo> providers = getPackageManager().queryContentProviders(null, 0, 0);
-        for (ProviderInfo info : providers)
-            if (info.authority.equals("org.scid.database.scidprovider"))
-                return true;
-        return false;
+        try {
+            getPackageManager().getPackageInfo("org.scid.android", 0);
+            return true;
+        } catch (PackageManager.NameNotFoundException ex) {
+            return false;
+        }
     }
 
     private final void selectScidFile() {
