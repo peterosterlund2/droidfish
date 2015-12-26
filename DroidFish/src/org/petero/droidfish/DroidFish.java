@@ -3417,7 +3417,7 @@ public class DroidFish extends Activity implements GUIInterface {
         NotificationManager mNotificationManager = (NotificationManager)getSystemService(ns);
         if (show) {
             boolean silhouette = Build.VERSION.SDK_INT >= 21;
-            int icon = silhouette ? R.drawable.silhouette : R.drawable.icon;
+            int icon = silhouette ? R.drawable.silhouette : R.mipmap.icon;
             CharSequence tickerText = getString(R.string.heavy_cpu_usage);
             long when = System.currentTimeMillis();
             Context context = getApplicationContext();
