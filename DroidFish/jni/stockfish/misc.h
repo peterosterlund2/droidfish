@@ -97,17 +97,17 @@ public:
   { return T(rand64() & rand64() & rand64()); }
 };
 
-inline int stoi(const std::string& s) { 
-    std::stringstream ss(s); 
-    int result = 0; 
-    ss >> result; 
-    return result; 
-} 
- 
-inline std::string to_string(int v) { 
-    char buf[32]; 
-    sprintf(buf, "%d", v); 
-    return buf; 
-} 
+inline int stoi(const std::string& s) {
+    std::stringstream ss(s);
+    int result = 0;
+    ss >> result;
+    return result;
+}
+
+inline std::string to_string(int v) {
+    std::stringstream ss;
+    ss << v;
+    return ss.str();
+}
 
 #endif // #ifndef MISC_H_INCLUDED
