@@ -33,7 +33,7 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="paste">Coller depuis le presse-papier</string>
   <string name="share">Partager</string>
   <string name="share_pgn_game">Partager une partie PGN</string>
-  <string name="load_last_file">Charger le dernier fichier</string>
+  <string name="load_last_file">Charger depuis le dernier fichier</string>
   <string name="load_game">Charger une partie PGN</string>
   <string name="load_position">Charger une position depuis un fichier</string>
   <string name="load_scid_game">Charger une partie Scid</string>
@@ -112,8 +112,8 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="goto_end_variation">Aller à la fin de la variation</string>
   <string name="goto_next_variation">Aller à la variation suivante</string>
   <string name="load_next_game">Charger la partie suivante</string>
-  <string name="auto_forward">Auto Forward</string>
-  <string name="auto_backward">Auto Backward</string>
+  <string name="auto_forward">Avance auto</string>
+  <string name="auto_backward">Retour Auto</string>
   <string name="no_prev_game">Aucune partie précédente</string>
   <string name="no_next_game">Aucune partie suivante</string>
   <string name="no_prev_fen">Aucune position précédente</string>
@@ -203,8 +203,8 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="stockfish_engine">Stockfish</string>
   <string name="cuckoochess_engine">CuckooChess</string>
   <string name="select_engine">Sélectionner le module</string>
-  <string name="engine_options">Engine Options</string>
-  <string name="set_engine_options">Set options</string>
+  <string name="engine_options">Options du Moteur</string>
+  <string name="set_engine_options">Modifier Options</string>
   <string name="configure_network_engine">Configurer le module réseau</string>
   <string name="create_network_engine">Créer un module réseau</string>
   <string name="delete_network_engine">Supprimer le module réseau?</string>
@@ -269,7 +269,7 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="prefs_timeIncrement_title">Incrément</string>
   <string name="prefs_timeIncrement_summary">Temps supplémentaire pour chaque coup joué</string>
   <string name="prefs_autoDelay_title">Auto Move Delay</string>
-  <string name="prefs_autoDelay_summary">Delay between moves in automatic forward/backward mode</string>
+  <string name="prefs_autoDelay_summary">Délai entre les coups en mode Avance/retour Auto</string>
   <string name="prefs_hints">Conseils</string>
   <string name="prefs_showThinking_title">Montrer la réflexion de l\'ordinateur</string>
   <string name="prefs_showThinking_summary">Afficher les informations d\'algorithme informatique</string>

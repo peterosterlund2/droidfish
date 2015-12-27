@@ -204,7 +204,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="stockfish_engine">Stockfish</string>
   <string name="cuckoochess_engine">CuckooChess</string>
   <string name="select_engine">Seleccionar motor</string>
-  <string name="engine_options">Engine Options</string>
+  <string name="engine_options">Opciones del motor</string>
   <string name="set_engine_options">Ajuste de opciones</string>
   <string name="configure_network_engine">Configurar motor en la red</string>
   <string name="create_network_engine">Crear motor en la red</string>
