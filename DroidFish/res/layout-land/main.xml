@@ -28,7 +28,8 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginRight="6dp">
             <ImageButton
                 android:id="@+id/custom3Button"
                 android:contentDescription="@string/buttonDesc_custom3"
