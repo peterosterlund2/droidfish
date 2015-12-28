@@ -35,7 +35,7 @@ import android.content.Context;
 public abstract class UCIEngineBase implements UCIEngine {
 
     private boolean processAlive;
-    UCIOptions options;
+    private UCIOptions options;
     protected boolean isUCI;
 
     public static UCIEngine getEngine(Context context, String engine,
@@ -99,7 +99,7 @@ public abstract class UCIEngineBase implements UCIEngine {
     }
 
     @Override
-    public final void setUCIOptions(Map<String,String> uciOptions) {
+    public final boolean setUCIOptions(Map<String,String> uciOptions) {
         boolean modified = false;
         for (Map.Entry<String,String> ent : uciOptions.entrySet()) {
             String key = ((String)ent.getKey()).toLowerCase(Locale.US);
@@ -107,23 +107,26 @@ public abstract class UCIEngineBase implements UCIEngine {
             if (configurableOption(key))
                 modified |= setOption(key, value);
         }
-        if (modified) { // Save .ini file
-            Properties iniOptions = new Properties();
-            for (String name : options.getOptionNames()) {
-                UCIOptions.OptionBase o = options.getOption(name);
-                if (configurableOption(name) && o.modified())
-                    iniOptions.put(o.name, o.getStringValue());
-            }
-            File optionsFile = getOptionsFile();
-            FileOutputStream os = null;
-            try {
-                os = new FileOutputStream(optionsFile);
-                iniOptions.store(os, null);
-            } catch (IOException ex) {
-            } finally {
-                if (os != null)
-                    try { os.close(); } catch (IOException ex) {}
-            }
+        return modified;
+    }
+
+    @Override
+    public final void saveIniFile(UCIOptions options) {
+        Properties iniOptions = new Properties();
+        for (String name : options.getOptionNames()) {
+            UCIOptions.OptionBase o = options.getOption(name);
+            if (configurableOption(name) && o.modified())
+                iniOptions.put(o.name, o.getStringValue());
+        }
+        File optionsFile = getOptionsFile();
+        FileOutputStream os = null;
+        try {
+            os = new FileOutputStream(optionsFile);
+            iniOptions.store(os, null);
+        } catch (IOException ex) {
+        } finally {
+            if (os != null)
+                try { os.close(); } catch (IOException ex) {}
         }
     }
 

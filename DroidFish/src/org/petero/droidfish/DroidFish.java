@@ -2897,8 +2897,6 @@ public class DroidFish extends Activity implements GUIInterface {
 
     /** Return true if engine UCI options can be set now. */
     private final boolean canSetEngineOptions() {
-        if (!ctrl.computerIdle())
-            return false;
         UCIOptions uciOpts = ctrl.getUCIOptions();
         if (uciOpts == null)
             return false;

@@ -86,7 +86,7 @@ public class ButtonActions {
         for (UIAction a : menuActions) {
             if (a != null) {
                 haveActions = true;
-                if  (a.enabled())
+                if (a.enabled())
                     haveEnabledActions = true;
             }
         }

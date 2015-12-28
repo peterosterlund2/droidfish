@@ -6,7 +6,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class UCIOptions implements Serializable {
+public class UCIOptions implements Serializable, Cloneable {
     private static final long serialVersionUID = 1L;
     private ArrayList<String> names;
     private Map<String, OptionBase> options;
@@ -19,11 +19,16 @@ public class UCIOptions implements Serializable {
         STRING
     }
 
-    public abstract static class OptionBase implements Serializable {
+    public abstract static class OptionBase implements Serializable, Cloneable {
         private static final long serialVersionUID = 1L;
         public String name;
         public Type type;
         public boolean visible = true;
+
+        @Override
+        public OptionBase clone() throws CloneNotSupportedException {
+            return (OptionBase)super.clone();
+        }
 
         /** Return true if current value != default value. */
         abstract public boolean modified();
@@ -204,7 +209,22 @@ public class UCIOptions implements Serializable {
         options = new TreeMap<String, OptionBase>();
     }
 
+    @Override
+    public UCIOptions clone() throws CloneNotSupportedException {
+        UCIOptions copy = new UCIOptions();
+
+        copy.names = new ArrayList<String>();
+        copy.names.addAll(names);
+
+        copy.options = new TreeMap<String, OptionBase>();
+        for (Map.Entry<String, OptionBase> e : options.entrySet())
+            copy.options.put(e.getKey(), e.getValue().clone());
+
+        return copy;
+    }
+
     public void clear() {
+        names.clear();
         options.clear();
     }
 

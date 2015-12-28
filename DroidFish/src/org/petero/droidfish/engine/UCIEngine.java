@@ -40,7 +40,10 @@ public interface UCIEngine {
     public void applyIniFile();
 
     /** Set engine UCI options. */
-    public void setUCIOptions(Map<String,String> uciOptions);
+    public boolean setUCIOptions(Map<String,String> uciOptions);
+
+    /** Save non-default UCI option values to file. */
+    public void saveIniFile(UCIOptions options);
 
     /** Get engine UCI options. */
     public UCIOptions getUCIOptions();

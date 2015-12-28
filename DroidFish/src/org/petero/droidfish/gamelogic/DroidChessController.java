@@ -94,7 +94,7 @@ public class DroidChessController {
         computerPlayer.queueStartEngine(searchId, engine);
         searchId++;
         game = new Game(gameTextListener, tcData);
-        computerPlayer.clearTT();
+        computerPlayer.uciNewGame();
         setPlayerNames(game);
         updateGameMode();
     }
@@ -279,7 +279,7 @@ public class DroidChessController {
         gameTextListener.clear();
         updateGameMode();
         abortSearch();
-        computerPlayer.clearTT();
+        computerPlayer.uciNewGame();
         updateComputeThreads();
         gui.setSelection(-1);
         updateGUI();
@@ -297,13 +297,10 @@ public class DroidChessController {
         return (computerPlayer != null) && computerPlayer.computerBusy();
     }
 
-    /** Return true if computer player is in IDLE state. */
-    public final synchronized boolean computerIdle() {
-        return (computerPlayer != null) && computerPlayer.computerIdle();
-    }
-    
+    /** Return engine UCI options if an engine has been loaded and has
+     *  reported its UCI options. */
     public final synchronized UCIOptions getUCIOptions() {
-        if (!computerIdle() || computerPlayer == null)
+        if (computerPlayer == null || !computerPlayer.computerLoaded())
             return null;
         return computerPlayer.getUCIOptions();
     }
