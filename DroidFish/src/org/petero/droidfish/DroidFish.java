@@ -1048,27 +1048,24 @@ public class DroidFish extends Activity implements GUIInterface {
         bookOptions.random = (settings.getInt("bookRandom", 500) - 500) * (3.0 / 500);
         setBookOptions();
 
+        File extDir = Environment.getExternalStorageDirectory();
+        String sep = File.separator;
         engineOptions.hashMB = getIntSetting("hashMB", 16);
+        engineOptions.unSafeHash = new File(extDir + sep + engineDir + sep + ".unsafehash").exists();
         engineOptions.hints = settings.getBoolean("tbHints", false);
         engineOptions.hintsEdit = settings.getBoolean("tbHintsEdit", false);
         engineOptions.rootProbe = settings.getBoolean("tbRootProbe", true);
         engineOptions.engineProbe = settings.getBoolean("tbEngineProbe", true);
 
         String gtbPath = settings.getString("gtbPath", "").trim();
-        if (gtbPath.length() == 0) {
-            File extDir = Environment.getExternalStorageDirectory();
-            String sep = File.separator;
+        if (gtbPath.length() == 0)
             gtbPath = extDir.getAbsolutePath() + sep + gtbDefaultDir;
-        }
         engineOptions.gtbPath = gtbPath;
         String gtbPathNet = settings.getString("gtbPathNet", "").trim();
         engineOptions.gtbPathNet = gtbPathNet;
         String rtbPath = settings.getString("rtbPath", "").trim();
-        if (rtbPath.length() == 0) {
-            File extDir = Environment.getExternalStorageDirectory();
-            String sep = File.separator;
+        if (rtbPath.length() == 0)
             rtbPath = extDir.getAbsolutePath() + sep + rtbDefaultDir;
-        }
         engineOptions.rtbPath = rtbPath;
         String rtbPathNet = settings.getString("rtbPathNet", "").trim();
         engineOptions.rtbPathNet = rtbPathNet;

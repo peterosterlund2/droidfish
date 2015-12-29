@@ -21,6 +21,7 @@ package org.petero.droidfish;
 /** Engine options, including endgame tablebase probing options. */
 public final class EngineOptions {
     public int hashMB;          // Engine hash table size in MB
+    public boolean unSafeHash;  // True if allocating very large hash is allowed
     public boolean hints;       // Hints when playing/analyzing
     public boolean hintsEdit;   // Hints in "edit board" mode
     public boolean rootProbe;   // Only search optimal moves at root
@@ -33,6 +34,7 @@ public final class EngineOptions {
 
     public EngineOptions() {
         hashMB = 16;
+        unSafeHash = false;
         hints = false;
         hintsEdit = false;
         rootProbe = false;
@@ -46,6 +48,7 @@ public final class EngineOptions {
 
     public EngineOptions(EngineOptions other) {
         hashMB = other.hashMB;
+        unSafeHash = other.unSafeHash;
         hints = other.hints;
         hintsEdit = other.hintsEdit;
         rootProbe = other.rootProbe;
@@ -78,6 +81,7 @@ public final class EngineOptions {
         EngineOptions other = (EngineOptions)o;
 
         return ((hashMB == other.hashMB) &&
+                (unSafeHash == other.unSafeHash) &&
                 (hints == other.hints) &&
                 (hintsEdit == other.hintsEdit) &&
                 (rootProbe == other.rootProbe) &&
