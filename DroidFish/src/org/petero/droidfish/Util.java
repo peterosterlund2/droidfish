@@ -119,12 +119,13 @@ public final class Util {
         if (v == null)
             return;
         final int bg = ColorTheme.instance().getColor(ColorTheme.GENERAL_BACKGROUND);
+        Object tag = v.getTag();
         final boolean excludedItems = v instanceof Button ||
-                                      v instanceof EditText ||
+                                      ((v instanceof EditText) && !"moveList".equals(tag)) ||
                                       v instanceof ImageButton ||
-                                      "title".equals(v.getTag());
+                                      "title".equals(tag);
         if (!excludedItems) {
-            if ("drawer".equals(v.getTag()))
+            if ("drawer".equals(tag))
                 return;
             v.setBackgroundColor(bg);
         }

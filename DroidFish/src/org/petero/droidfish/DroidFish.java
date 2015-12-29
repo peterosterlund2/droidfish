@@ -139,6 +139,7 @@ import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.TextView.BufferType;
 import android.widget.Toast;
 
 @SuppressLint("ClickableViewAccessibility")
@@ -1716,7 +1717,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
     @Override
     public void moveListUpdated() {
-        moveList.setText(gameTextListener.getSpannableData());
+        moveList.setText(gameTextListener.getSpannableData(), BufferType.SPANNABLE);
         Layout layout = moveList.getLayout();
         if (layout != null) {
             int currPos = gameTextListener.getCurrPos();
