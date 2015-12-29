@@ -175,8 +175,6 @@ public class DroidChessController {
      * @param strength Engine strength, 0 - 1000. */
     public final synchronized void setEngineStrength(String engine, int strength) {
         boolean newEngine = !engine.equals(this.engine);
-        if (newEngine)
-            numPV = 1;
         if (newEngine || (strength != this.strength)) {
             this.engine = engine;
             this.strength = strength;
@@ -565,17 +563,13 @@ public class DroidChessController {
         return computerPlayer.getMaxPV();
     }
 
-    /** Get multi-PV mode setting. */
-    public final synchronized int getNumPV() {
-        return numPV;
-    }
-
     /** Set multi-PV mode. */
     public final synchronized void setMultiPVMode(int numPV) {
-        if (numPV < 1) numPV = 1;
-        if (numPV > maxPV()) numPV = maxPV();
-        if (numPV != this.numPV) {
-            this.numPV = numPV;
+        int clampedNumPV = Math.min(numPV, maxPV());
+        clampedNumPV = Math.max(clampedNumPV, 1);
+        boolean modified = clampedNumPV != this.numPV;
+        this.numPV = numPV;
+        if (modified) {
             abortSearch();
             updateComputeThreads();
             updateGUI();

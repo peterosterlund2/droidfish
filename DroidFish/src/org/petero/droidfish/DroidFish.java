@@ -172,6 +172,7 @@ public class DroidFish extends Activity implements GUIInterface {
     private static DroidChessController ctrl = null;
     private boolean mShowThinking;
     private boolean mShowStats;
+    private int numPV;
     private boolean mWhiteBasedScores;
     private boolean mShowBookHints;
     private int maxNumArrows;
@@ -994,6 +995,8 @@ public class DroidFish extends Activity implements GUIInterface {
 
         mShowThinking = settings.getBoolean("showThinking", false);
         mShowStats = settings.getBoolean("showStats", true);
+        numPV = settings.getInt("numPV", 1);
+        ctrl.setMultiPVMode(numPV);
         mWhiteBasedScores = settings.getBoolean("whiteBasedScores", false);
         maxNumArrows = getIntSetting("thinkingArrows", 2);
         mShowBookHints = settings.getBoolean("bookHints", false);
@@ -2651,9 +2654,11 @@ public class DroidFish extends Activity implements GUIInterface {
         List<CharSequence> lst = new ArrayList<CharSequence>();
         List<Integer> actions = new ArrayList<Integer>();
         lst.add(getString(R.string.add_analysis)); actions.add(ADD_ANALYSIS);
-        final int numPV = ctrl.getNumPV();
+        int numPV = this.numPV;
         if (gameMode.analysisMode()) {
             int maxPV = ctrl.maxPV();
+            numPV = Math.min(numPV, maxPV);
+            numPV = Math.max(numPV, 1);
             if (numPV > 1) {
                 lst.add(getString(R.string.fewer_variations)); actions.add(MULTIPV_DEC);
             }
@@ -2661,6 +2666,7 @@ public class DroidFish extends Activity implements GUIInterface {
                 lst.add(getString(R.string.more_variations)); actions.add(MULTIPV_INC);
             }
         }
+        final int numPVF = numPV;
         if (thinkingStr1.length() > 0) {
             if (mShowStats) {
                 lst.add(getString(R.string.hide_statistics)); actions.add(HIDE_STATISTICS);
@@ -2696,10 +2702,10 @@ public class DroidFish extends Activity implements GUIInterface {
                     break;
                 }
                 case MULTIPV_DEC:
-                    ctrl.setMultiPVMode(numPV - 1);
+                    setMultiPVMode(numPVF - 1);
                     break;
                 case MULTIPV_INC:
-                    ctrl.setMultiPVMode(numPV + 1);
+                    setMultiPVMode(numPVF + 1);
                     break;
                 case HIDE_STATISTICS:
                 case SHOW_STATISTICS: {
@@ -2715,6 +2721,14 @@ public class DroidFish extends Activity implements GUIInterface {
         });
         AlertDialog alert = builder.create();
         return alert;
+    }
+
+    private void setMultiPVMode(int nPV) {
+        numPV = nPV;
+        Editor editor = settings.edit();
+        editor.putInt("numPV", numPV);
+        editor.commit();
+        ctrl.setMultiPVMode(numPV);
     }
 
     private final Dialog goBackMenuDialog() {
