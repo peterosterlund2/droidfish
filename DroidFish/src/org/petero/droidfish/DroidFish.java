@@ -107,10 +107,8 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
-import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.LeadingMarginSpan;
 import android.text.style.StyleSpan;
@@ -425,6 +423,7 @@ public class DroidFish extends Activity implements GUIInterface {
         initUI();
 
         gameTextListener = new PgnScreenText(this, pgnOptions);
+        moveList.setOnLinkClickListener(gameTextListener);
         if (ctrl != null)
             ctrl.shutdownEngine();
         ctrl = new DroidChessController(this, gameTextListener, pgnOptions);
@@ -616,6 +615,7 @@ public class DroidFish extends Activity implements GUIInterface {
         setSelection(oldCB.selectedSquare);
         cb.userSelectedSquare = oldCB.userSelectedSquare;
         setStatusString(statusStr);
+        moveList.setOnLinkClickListener(gameTextListener);
         moveListUpdated();
         updateThinkingInfo();
         ctrl.updateRemainingTime();
@@ -3526,8 +3526,10 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     /** PngTokenReceiver implementation that renders PGN data for screen display. */
-    static class PgnScreenText implements PgnToken.PgnTokenReceiver {
+    static class PgnScreenText implements PgnToken.PgnTokenReceiver,
+                                          MoveListView.OnLinkClickListener {
         private SpannableStringBuilder sb = new SpannableStringBuilder();
+        private TreeMap<Integer,Node> offs2Node = new TreeMap<Integer,Node>();
         private int prevType = PgnToken.EOF;
         int nestLevel = 0;
         boolean col0 = true;
@@ -3592,28 +3594,31 @@ public class DroidFish extends Activity implements GUIInterface {
 
         boolean pendingNewLine = false;
 
-        /** Makes moves in the move list clickable. */
-        private final class MoveLink extends ClickableSpan {
-            private Node node;
-            MoveLink(Node n) {
-                node = n;
+        private void addMoveLink(Node node, int l0, int l1) {
+            offs2Node.put(l0, node);
+            offs2Node.put(l1, null);
+        }
+
+        @Override
+        public boolean onLinkClick(int offs) {
+            if (ctrl == null)
+                return false;
+            Map.Entry<Integer, Node> e = offs2Node.floorEntry(offs);
+            if (e == null)
+                return false;
+            Node node = e.getValue();
+            if (node == null)
+                return false;
+
+            // On android 4.1 this onClick method is called
+            // even when you long click the move list. The test
+            // below works around the problem.
+            Dialog mlmd = moveListMenuDlg;
+            if ((mlmd == null) || !mlmd.isShowing()) {
+                df.setAutoMode(AutoMode.OFF);
+                ctrl.goNode(node);
             }
-            @Override
-            public void onClick(View widget) {
-                if (ctrl != null) {
-                    // On android 4.1 this onClick method is called
-                    // even when you long click the move list. The test
-                    // below works around the problem.
-                    Dialog mlmd = moveListMenuDlg;
-                    if ((mlmd == null) || !mlmd.isShowing()) {
-                        df.setAutoMode(AutoMode.OFF);
-                        ctrl.goNode(node);
-                    }
-                }
-            }
-            @Override
-            public void updateDrawState(TextPaint ds) {
-            }
+            return true;
         }
 
         public void processToken(Node node, int type, String token) {
@@ -3677,7 +3682,7 @@ public class DroidFish extends Activity implements GUIInterface {
                 sb.append(token);
                 int l1 = sb.length();
                 nodeToCharPos.put(node, new NodeInfo(l0, l1));
-                sb.setSpan(new MoveLink(node), l0, l1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                addMoveLink(node, l0, l1);
                 if (endPos < l0) endPos = l0;
                 col0 = false;
                 if (nestLevel == 0) paraBold = true;
@@ -3714,6 +3719,7 @@ public class DroidFish extends Activity implements GUIInterface {
         @Override
         public void clear() {
             sb = new SpannableStringBuilder();
+            offs2Node.clear();
             prevType = PgnToken.EOF;
             nestLevel = 0;
             col0 = true;

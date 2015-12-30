@@ -25,10 +25,8 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.Layout;
 import android.text.Layout.Alignment;
-import android.text.Spannable;
 import android.text.StaticLayout;
 import android.text.TextPaint;
-import android.text.style.ClickableSpan;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
@@ -154,23 +152,28 @@ public class MoveListView extends View {
         }
     }
 
+    public interface OnLinkClickListener {
+        boolean onLinkClick(int offs);
+    }
+    private OnLinkClickListener onLinkClickListener;
+
+    public void setOnLinkClickListener(OnLinkClickListener listener) {
+        onLinkClickListener = listener;
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getActionMasked();
         boolean ret = super.onTouchEvent(event);
         if ((action == MotionEvent.ACTION_UP) && (layout != null) &&
-            (text instanceof Spannable)) {
-            Spannable spannable = (Spannable)text;
+            (onLinkClickListener != null)) {
             int x = (int)event.getX() - getPaddingLeft() + getScrollX();
             int y = (int)event.getY() - getPaddingTop()  + getScrollY();
             int line = layout.getLineForVertical(y);
             int offs = layout.getOffsetForHorizontal(line, x);
-            ClickableSpan[] link = spannable.getSpans(offs, offs, ClickableSpan.class);
-            if (link.length > 0) {
-                link[0].onClick(this);
+            if (onLinkClickListener.onLinkClick(offs))
                 return true;
-            }
         }
         return ret;
     }
