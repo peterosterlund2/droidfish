@@ -104,13 +104,11 @@ import android.preference.PreferenceManager;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
-import android.text.Layout;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
@@ -139,7 +137,6 @@ import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.TextView.BufferType;
 import android.widget.Toast;
 
 @SuppressLint("ClickableViewAccessibility")
@@ -190,7 +187,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
     private TextView status;
     private ScrollView moveListScroll;
-    private TextView moveList;
+    private MoveListView moveList;
     private TextView thinking;
     private ImageButton custom1Button, custom2Button, custom3Button;
     private ImageButton modeButton, undoButton, redoButton;
@@ -242,7 +239,6 @@ public class DroidFish extends Activity implements GUIInterface {
     private boolean useWakeLock = false;
 
     private Typeface figNotation;
-    private Typeface defaultMoveListTypeFace;
     private Typeface defaultThinkingListTypeFace;
 
 
@@ -667,14 +663,12 @@ public class DroidFish extends Activity implements GUIInterface {
 
         status = (TextView)findViewById(R.id.status);
         moveListScroll = (ScrollView)findViewById(R.id.scrollView);
-        moveList = (TextView)findViewById(R.id.moveList);
-        defaultMoveListTypeFace = moveList.getTypeface();
+        moveList = (MoveListView)findViewById(R.id.moveList);
         thinking = (TextView)findViewById(R.id.thinking);
         defaultThinkingListTypeFace = thinking.getTypeface();
         status.setFocusable(false);
         moveListScroll.setFocusable(false);
         moveList.setFocusable(false);
-        moveList.setMovementMethod(LinkMovementMethod.getInstance());
         thinking.setFocusable(false);
 
         initDrawers();
@@ -1029,8 +1023,6 @@ public class DroidFish extends Activity implements GUIInterface {
         if (config.orientation == Configuration.ORIENTATION_PORTRAIT)
             statusFontSize = Math.min(statusFontSize, 16);
         status.setTextSize(statusFontSize);
-        moveList.setTextSize(fontSize);
-        thinking.setTextSize(fontSize);
         soundEnabled = settings.getBoolean("soundEnabled", false);
         vibrateEnabled = settings.getBoolean("vibrateEnabled", false);
         animateMoves = settings.getBoolean("animateMoves", true);
@@ -1114,13 +1106,13 @@ public class DroidFish extends Activity implements GUIInterface {
         if (displayAsFigures) {
             // increase the font cause it has different kerning and looks small
             float increaseFontSize = fontSize * 1.1f;
-            moveList.setTypeface(figNotation);
-            moveList.setTextSize(increaseFontSize);
+            moveList.setTypeface(figNotation, increaseFontSize);
             thinking.setTypeface(figNotation);
             thinking.setTextSize(increaseFontSize);
         } else {
-            moveList.setTypeface(defaultMoveListTypeFace);
+            moveList.setTypeface(null, fontSize);
             thinking.setTypeface(defaultThinkingListTypeFace);
+            thinking.setTextSize(fontSize);
         }
     }
 
@@ -1717,12 +1709,11 @@ public class DroidFish extends Activity implements GUIInterface {
 
     @Override
     public void moveListUpdated() {
-        moveList.setText(gameTextListener.getSpannableData(), BufferType.SPANNABLE);
-        Layout layout = moveList.getLayout();
-        if (layout != null) {
-            int currPos = gameTextListener.getCurrPos();
-            int line = layout.getLineForOffset(currPos);
-            int y = (int) ((line - 1.5) * moveList.getLineHeight());
+        moveList.setText(gameTextListener.getText());
+        int currPos = gameTextListener.getCurrPos();
+        int line = moveList.getLineForOffset(currPos);
+        if (line >= 0) {
+            int y = (line - 1) * moveList.getLineHeight();
             moveListScroll.scrollTo(0, y);
         }
     }
@@ -3562,7 +3553,7 @@ public class DroidFish extends Activity implements GUIInterface {
             this.options = options;
         }
 
-        public final SpannableStringBuilder getSpannableData() {
+        public final CharSequence getText() {
             return sb;
         }
         public final int getCurrPos() {
@@ -3722,7 +3713,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
         @Override
         public void clear() {
-            sb.clear();
+            sb = new SpannableStringBuilder();
             prevType = PgnToken.EOF;
             nestLevel = 0;
             col0 = true;

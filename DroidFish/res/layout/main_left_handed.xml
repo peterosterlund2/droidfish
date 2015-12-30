@@ -94,17 +94,13 @@
                 android:layout_above="@+id/scrollViewBot"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
-                <EditText
+                <view
+                    class="org.petero.droidfish.MoveListView"
                     android:id="@+id/moveList"
-                    android:tag="moveList"
                     android:layout_width="fill_parent" 
                     android:layout_height="wrap_content" 
                     android:includeFontPadding="true"
-                    android:editable="false"
-                    android:padding="0dp"
-                    android:fontFamily="monospace"
-                    android:typeface="monospace"
-                    android:textSize="12sp"/>
+                    android:padding="0dp"/>
             </ScrollView>
         </RelativeLayout>
     </LinearLayout>

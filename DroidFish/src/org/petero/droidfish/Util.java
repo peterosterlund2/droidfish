@@ -121,7 +121,7 @@ public final class Util {
         final int bg = ColorTheme.instance().getColor(ColorTheme.GENERAL_BACKGROUND);
         Object tag = v.getTag();
         final boolean excludedItems = v instanceof Button ||
-                                      ((v instanceof EditText) && !"moveList".equals(tag)) ||
+                                      ((v instanceof EditText) && !(v instanceof MoveListView)) ||
                                       v instanceof ImageButton ||
                                       "title".equals(tag);
         if (!excludedItems) {
@@ -140,6 +140,9 @@ public final class Util {
         } else if (!excludedItems && (v instanceof TextView)) {
             int fg = ColorTheme.instance().getColor(ColorTheme.FONT_FOREGROUND);
             ((TextView) v).setTextColor(fg);
+        } else if (!excludedItems && (v instanceof MoveListView)) {
+            int fg = ColorTheme.instance().getColor(ColorTheme.FONT_FOREGROUND);
+            ((MoveListView) v).setTextColor(fg);
         }
     }
 }
