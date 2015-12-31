@@ -3607,6 +3607,11 @@ public class DroidFish extends Activity implements GUIInterface {
             if (e == null)
                 return false;
             Node node = e.getValue();
+            if (node == null && e.getKey() == offs) {
+                e = offs2Node.lowerEntry(e.getKey());
+                if (e != null)
+                    node = e.getValue();
+            }
             if (node == null)
                 return false;
 
