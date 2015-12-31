@@ -31,6 +31,7 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewParent;
 
 /** Custom view for displaying move list.
  *  This is much faster than using a TextView. */
@@ -125,8 +126,14 @@ public class MoveListView extends View {
             createLayout(width);
 
         int height = 0;
-        if (layout != null)
+        if (layout != null) {
             height = layout.getLineCount() * getLineHeight();
+            ViewParent p = getParent();
+            if (p != null)
+                p = p.getParent();
+            if (p instanceof MyRelativeLayout)
+                height += -getLineHeight() + ((MyRelativeLayout)p).getNewHeight();
+        }
         switch (MeasureSpec.getMode(heightMeasureSpec)) {
         case MeasureSpec.UNSPECIFIED:
             break;

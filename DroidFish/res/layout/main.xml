@@ -69,10 +69,23 @@
             android:layout_height="32dp">
         </ImageButton>
     </LinearLayout>
-    <RelativeLayout
+    <view
+        class="org.petero.droidfish.MyRelativeLayout"
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <view
+                class="org.petero.droidfish.MoveListView"
+                android:id="@+id/moveList"
+                android:layout_width="fill_parent" 
+                android:layout_height="wrap_content" 
+                android:includeFontPadding="true"
+                android:padding="0dp"/>
+        </ScrollView>
         <view
             class="org.petero.droidfish.MyScrollView"
             android:id="@+id/scrollViewBot"
@@ -88,20 +101,7 @@
                 android:typeface="monospace"
                 android:textSize="12sp"/>
         </view>
-        <ScrollView
-            android:id="@+id/scrollView"
-            android:layout_above="@+id/scrollViewBot"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-            <view
-                class="org.petero.droidfish.MoveListView"
-                android:id="@+id/moveList"
-                android:layout_width="fill_parent" 
-                android:layout_height="wrap_content" 
-                android:includeFontPadding="true"
-                android:padding="0dp"/>
-        </ScrollView>
-    </RelativeLayout>
+    </view>
 </LinearLayout>
 <include layout="@layout/left_drawer"/>
 <include layout="@layout/right_drawer"/>
