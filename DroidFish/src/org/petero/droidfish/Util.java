@@ -13,6 +13,7 @@ import org.petero.droidfish.gamelogic.Position;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,7 +128,14 @@ public final class Util {
         if (!excludedItems) {
             if ("drawer".equals(tag))
                 return;
-            v.setBackgroundColor(bg);
+            int c = bg;
+            if ("thinking".equals(tag)) {
+                float[] hsv = new float[3];
+                Color.colorToHSV(c, hsv);
+                hsv[2] += hsv[2] > 0.5f ? -0.1f : 0.1f;
+                c = Color.HSVToColor(Color.alpha(c), hsv);
+            }
+            v.setBackgroundColor(c);
         }
         if (v instanceof ListView)
             ((ListView) v).setCacheColorHint(bg);
