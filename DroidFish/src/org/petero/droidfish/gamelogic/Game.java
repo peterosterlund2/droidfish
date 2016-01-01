@@ -163,11 +163,9 @@ public class Game {
     private final void addToGameTree(Move m, String playerAction) {
         if (m.equals(new Move(0, 0, 0))) { // Don't create more than one game-ending move at a node
             List<Move> varMoves = tree.variations();
-            for (int i = varMoves.size() - 1; i >= 0; i--) {
-                if (varMoves.get(i).equals(m)) {
+            for (int i = varMoves.size() - 1; i >= 0; i--)
+                if (varMoves.get(i).equals(m))
                     tree.deleteVariation(i);
-                }
-            }
         }
 
         boolean movePresent = false;
@@ -190,8 +188,16 @@ public class Game {
             }
             for (varNo = 0; varNo < nVars; varNo++) {
                 if (varMoves.get(varNo).equals(m)) {
-                    movePresent = true;
-                    break;
+                    boolean match = true;
+                    if (playerAction.isEmpty()) {
+                        tree.goForward(varNo, false);
+                        match = tree.getGameState() == GameState.ALIVE;
+                        tree.goBack();
+                    }
+                    if (match) {
+                        movePresent = true;
+                        break;
+                    }
                 }
             }
         }
