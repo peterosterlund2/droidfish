@@ -196,7 +196,7 @@
   <string name="stockfish_engine">Stockfish</string>
   <string name="cuckoochess_engine">CuckooChess</string>
   <string name="select_engine">Выбрать движок</string>
-  <string name="engine_options">Engine Options</string>
+  <string name="engine_options">Параметры движка</string>
   <string name="set_engine_options">Параметры SET</string>
   <string name="configure_network_engine">Настройка сетевого движка</string>
   <string name="create_network_engine">Создать сетевой движок</string>
