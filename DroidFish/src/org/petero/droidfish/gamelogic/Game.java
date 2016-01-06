@@ -39,7 +39,7 @@ public class Game {
     /** If true, add new moves as mainline moves. */
     private AddMoveBehavior addMoveBehavior;
 
-    PgnToken.PgnTokenReceiver gameTextListener;
+    private PgnToken.PgnTokenReceiver gameTextListener;
 
     public Game(PgnToken.PgnTokenReceiver gameTextListener, TimeControlData tcData) {
         this.gameTextListener = gameTextListener;
@@ -140,7 +140,7 @@ public class Game {
             return false;
         if (str.startsWith("draw ")) {
             String drawCmd = str.substring(str.indexOf(" ") + 1);
-            handleDrawCmd(drawCmd);
+            handleDrawCmd(drawCmd, true);
             return true;
         } else if (str.equals("resign")) {
             addToGameTree(new Move(0, 0, 0), "resign");
@@ -158,6 +158,15 @@ public class Game {
 
         addToGameTree(m, pendingDrawOffer ? "draw offer" : "");
         return true;
+    }
+
+    /** Try claim a draw using a command string. Does not play the move involved
+     *  in the draw claim if the draw claim is invalid. */
+    public final void tryClaimDraw(String str) {
+        if (str.startsWith("draw ")) {
+            String drawCmd = str.substring(str.indexOf(" ") + 1);
+            handleDrawCmd(drawCmd, false);
+        }
     }
 
     private final void addToGameTree(Move m, String playerAction) {
@@ -446,7 +455,7 @@ public class Game {
         return new Pair<Position, ArrayList<Move>>(pos, mList);
     }
 
-    private final void handleDrawCmd(String drawCmd) {
+    private final void handleDrawCmd(String drawCmd, boolean playDrawMove) {
         Position pos = tree.currentPos;
         if (drawCmd.startsWith("rep") || drawCmd.startsWith("50")) {
             boolean rep = drawCmd.startsWith("rep");
@@ -499,7 +508,7 @@ public class Game {
                 addToGameTree(new Move(0, 0, 0), playerAction);
             } else {
                 pendingDrawOffer = true;
-                if (m != null) {
+                if (m != null && playDrawMove) {
                     processString(ms);
                 }
             }

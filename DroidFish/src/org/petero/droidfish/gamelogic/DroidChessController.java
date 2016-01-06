@@ -305,22 +305,36 @@ public class DroidChessController {
 
     /** Make a move for a human player. */
     public final synchronized void makeHumanMove(Move m) {
-        if (humansTurn()) {
-            Position oldPos = new Position(game.currPos());
-            if (doMove(m)) {
-                if (m.equals(ponderMove) && !gameMode.analysisMode() &&
-                    (computerPlayer.getSearchType() == SearchType.PONDER)) {
-                    computerPlayer.ponderHit(searchId);
-                    ponderMove = null;
-                } else {
-                    abortSearch();
-                    updateComputeThreads();
+        if (!humansTurn())
+            return;
+        Position oldPos = new Position(game.currPos());
+        if (game.pendingDrawOffer) {
+            ArrayList<Move> moves = new MoveGen().legalMoves(oldPos);
+            for (Move m2 : moves) {
+                if (m2.equals(m)) {
+                    if (findValidDrawClaim(TextIO.moveToUCIString(m))) {
+                        stopPonder();
+                        updateGUI();
+                        gui.setSelection(-1);
+                        return;
+                    }
+                    break;
                 }
-                setAnimMove(oldPos, m, true);
-                updateGUI();
-            } else {
-                gui.setSelection(-1);
             }
+        }
+        if (doMove(m)) {
+            if (m.equals(ponderMove) && !gameMode.analysisMode() &&
+                    (computerPlayer.getSearchType() == SearchType.PONDER)) {
+                computerPlayer.ponderHit(searchId);
+                ponderMove = null;
+            } else {
+                abortSearch();
+                updateComputeThreads();
+            }
+            setAnimMove(oldPos, m, true);
+            updateGUI();
+        } else {
+            gui.setSelection(-1);
         }
     }
 
@@ -365,7 +379,7 @@ public class DroidChessController {
 
     /** Help human to claim a draw by trying to find and execute a valid draw claim. */
     public final synchronized boolean claimDrawIfPossible() {
-        if (!findValidDrawClaim())
+        if (!findValidDrawClaim(""))
             return false;
         updateGUI();
         return true;
@@ -1158,13 +1172,15 @@ public class DroidChessController {
         gui.setAnimMove(sourcePos, move, forward);
     }
 
-    private final boolean findValidDrawClaim() {
+    private final boolean findValidDrawClaim(String ms) {
+        if (!ms.isEmpty())
+            ms = " " + ms;
         if (game.getGameState() != GameState.ALIVE) return true;
-        game.processString("draw accept");
+        game.tryClaimDraw("draw accept");
         if (game.getGameState() != GameState.ALIVE) return true;
-        game.processString("draw rep");
+        game.tryClaimDraw("draw rep" + ms);
         if (game.getGameState() != GameState.ALIVE) return true;
-        game.processString("draw 50");
+        game.tryClaimDraw("draw 50" + ms);
         if (game.getGameState() != GameState.ALIVE) return true;
         return false;
     }
