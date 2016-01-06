@@ -65,6 +65,7 @@ import com.kalab.chess.enginesupport.ChessEngineResolver;
 import com.larvalabs.svgandroid.SVG;
 import com.larvalabs.svgandroid.SVGParser;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -101,6 +102,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
@@ -138,7 +141,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 @SuppressLint("ClickableViewAccessibility")
-public class DroidFish extends Activity implements GUIInterface {
+public class DroidFish extends Activity
+                       implements GUIInterface,
+                                  ActivityCompat.OnRequestPermissionsResultCallback {
     // FIXME!!! PGN view option: game continuation (for training)
     // FIXME!!! Remove invalid playerActions in PGN import (should be done in verifyChildren)
     // FIXME!!! Implement bookmark mechanism for positions in pgn files
@@ -218,6 +223,16 @@ public class DroidFish extends Activity implements GUIInterface {
         OFF, FORWARD, BACKWARD;
     }
     private AutoMode autoMode = AutoMode.OFF;
+
+    /** State of requested permissions. */
+    private static enum PermissionState {
+        UNKNOWN,
+        REQUESTED,
+        GRANTED,
+        DENIED
+    }
+    /** State of WRITE_EXTERNAL_STORAGE permission. */
+    private PermissionState storagePermission = PermissionState.UNKNOWN;
 
     private final static String bookDir = "DroidFish/book";
     private final static String pgnDir = "DroidFish/pgn";
@@ -357,7 +372,7 @@ public class DroidFish extends Activity implements GUIInterface {
                 public String getId() { return "loadLastFile"; }
                 public int getName() { return R.string.load_last_file; }
                 public int getIcon() { return R.raw.open_last_file; }
-                public boolean enabled() { return currFileType() != FT_NONE; }
+                public boolean enabled() { return currFileType() != FT_NONE && storageAvailable(); }
                 public void run() {
                     loadLastFile();
                 }
@@ -491,6 +506,19 @@ public class DroidFish extends Activity implements GUIInterface {
 
     /** Create directory structure on SD card. */
     private final void createDirectories() {
+        if (storagePermission == PermissionState.UNKNOWN) {
+            String extStorage = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+            if (ContextCompat.checkSelfPermission(this, extStorage) == 
+                    PackageManager.PERMISSION_GRANTED) {
+                storagePermission = PermissionState.GRANTED;
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{extStorage}, 0);
+                storagePermission = PermissionState.REQUESTED;
+            }
+        }
+        if (storagePermission != PermissionState.GRANTED)
+            return;
+
         File extDir = Environment.getExternalStorageDirectory();
         String sep = File.separator;
         new File(extDir + sep + bookDir).mkdirs();
@@ -500,6 +528,22 @@ public class DroidFish extends Activity implements GUIInterface {
         new File(extDir + sep + engineDir + sep + EngineUtil.openExchangeDir).mkdirs();
         new File(extDir + sep + gtbDefaultDir).mkdirs();
         new File(extDir + sep + rtbDefaultDir).mkdirs();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int code, String[] permissions, int[] results) {
+        if (storagePermission == PermissionState.REQUESTED) {
+            if ((results.length > 0) && (results[0] == PackageManager.PERMISSION_GRANTED))
+                storagePermission = PermissionState.GRANTED;
+            else
+                storagePermission = PermissionState.DENIED;
+        }
+        createDirectories();
+    }
+
+    /** Return true if the WRITE_EXTERNAL_STORAGE permission has been granted. */
+    private boolean storageAvailable() {
+        return storagePermission == PermissionState.GRANTED;
     }
 
     /**
@@ -1184,6 +1228,10 @@ public class DroidFish extends Activity implements GUIInterface {
     }
 
     private final void setEngineStrength(String engine, int strength) {
+        if (!storageAvailable()) {
+            if (!"stockfish".equals(engine) && !"cuckoochess".equals(engine))
+                engine = "stockfish";
+        }
         ctrl.setEngineStrength(engine, strength);
         setEngineTitle(engine, strength);
     }
@@ -1402,8 +1450,10 @@ public class DroidFish extends Activity implements GUIInterface {
             break;
         }
         case ITEM_FILE_MENU:
-            removeDialog(FILE_MENU_DIALOG);
-            showDialog(FILE_MENU_DIALOG);
+            if (storageAvailable()) {
+                removeDialog(FILE_MENU_DIALOG);
+                showDialog(FILE_MENU_DIALOG);
+            }
             break;
         case ITEM_RESIGN:
             if (ctrl.humansTurn())
@@ -1421,12 +1471,19 @@ public class DroidFish extends Activity implements GUIInterface {
             }
             break;
         case ITEM_SELECT_BOOK:
-            removeDialog(SELECT_BOOK_DIALOG);
-            showDialog(SELECT_BOOK_DIALOG);
+            if (storageAvailable()) {
+                removeDialog(SELECT_BOOK_DIALOG);
+                showDialog(SELECT_BOOK_DIALOG);
+            }
             break;
         case ITEM_MANAGE_ENGINES:
-            removeDialog(MANAGE_ENGINES_DIALOG);
-            showDialog(MANAGE_ENGINES_DIALOG);
+            if (storageAvailable()) {
+                removeDialog(MANAGE_ENGINES_DIALOG);
+                showDialog(MANAGE_ENGINES_DIALOG);
+            } else {
+                removeDialog(SELECT_ENGINE_DIALOG_NOMANAGE);
+                showDialog(SELECT_ENGINE_DIALOG_NOMANAGE);
+            }
             break;
         case ITEM_SET_COLOR_THEME:
             showDialog(SET_COLOR_THEME_DIALOG);
@@ -2029,7 +2086,9 @@ public class DroidFish extends Activity implements GUIInterface {
         List<CharSequence> lst = new ArrayList<CharSequence>();
         List<Integer> actions = new ArrayList<Integer>();
         lst.add(getString(R.string.clipboard));     actions.add(CLIPBOARD);
-        lst.add(getString(R.string.option_file));   actions.add(FILEMENU);
+        if (storageAvailable()) {
+            lst.add(getString(R.string.option_file));   actions.add(FILEMENU);
+        }
         lst.add(getString(R.string.share));         actions.add(SHARE);
         if (hasFenProvider(getPackageManager())) {
             lst.add(getString(R.string.get_fen)); actions.add(GET_FEN);
@@ -2222,40 +2281,42 @@ public class DroidFish extends Activity implements GUIInterface {
         ids.add("stockfish"); items.add(getString(R.string.stockfish_engine));
         ids.add("cuckoochess"); items.add(getString(R.string.cuckoochess_engine));
 
-        final String sep = File.separator;
-        final String base = Environment.getExternalStorageDirectory() + sep + engineDir + sep;
-        {
-            ChessEngineResolver resolver = new ChessEngineResolver(this);
-            List<ChessEngine> engines = resolver.resolveEngines();
-            ArrayList<Pair<String,String>> oexEngines = new ArrayList<Pair<String,String>>();
-            for (ChessEngine engine : engines) {
-                if ((engine.getName() != null) && (engine.getFileName() != null) &&
-                    (engine.getPackageName() != null)) {
-                    oexEngines.add(new Pair<String,String>(EngineUtil.openExchangeFileName(engine),
-                                                           engine.getName()));
+        if (storageAvailable()) {
+            final String sep = File.separator;
+            final String base = Environment.getExternalStorageDirectory() + sep + engineDir + sep;
+            {
+                ChessEngineResolver resolver = new ChessEngineResolver(this);
+                List<ChessEngine> engines = resolver.resolveEngines();
+                ArrayList<Pair<String,String>> oexEngines = new ArrayList<Pair<String,String>>();
+                for (ChessEngine engine : engines) {
+                    if ((engine.getName() != null) && (engine.getFileName() != null) &&
+                            (engine.getPackageName() != null)) {
+                        oexEngines.add(new Pair<String,String>(EngineUtil.openExchangeFileName(engine),
+                                engine.getName()));
+                    }
+                }
+                Collections.sort(oexEngines, new Comparator<Pair<String,String>>() {
+                    @Override
+                    public int compare(Pair<String, String> lhs, Pair<String, String> rhs) {
+                        return lhs.second.compareTo(rhs.second);
+                    }
+                });
+                for (Pair<String,String> eng : oexEngines) {
+                    ids.add(base + EngineUtil.openExchangeDir + sep + eng.first);
+                    items.add(eng.second);
                 }
             }
-            Collections.sort(oexEngines, new Comparator<Pair<String,String>>() {
+
+            String[] fileNames = findFilesInDirectory(engineDir, new FileNameFilter() {
                 @Override
-                public int compare(Pair<String, String> lhs, Pair<String, String> rhs) {
-                    return lhs.second.compareTo(rhs.second);
+                public boolean accept(String filename) {
+                    return !reservedEngineName(filename);
                 }
             });
-            for (Pair<String,String> eng : oexEngines) {
-                ids.add(base + EngineUtil.openExchangeDir + sep + eng.first);
-                items.add(eng.second);
+            for (String file : fileNames) {
+                ids.add(base + file);
+                items.add(file);
             }
-        }
-
-        String[] fileNames = findFilesInDirectory(engineDir, new FileNameFilter() {
-            @Override
-            public boolean accept(String filename) {
-                return !reservedEngineName(filename);
-            }
-        });
-        for (String file : fileNames) {
-            ids.add(base + file);
-            items.add(file);
         }
 
         String currEngine = ctrl.getEngine();
@@ -2900,6 +2961,8 @@ public class DroidFish extends Activity implements GUIInterface {
 
     /** Return true if engine UCI options can be set now. */
     private final boolean canSetEngineOptions() {
+        if (!storageAvailable())
+            return false;
         UCIOptions uciOpts = ctrl.getUCIOptions();
         if (uciOpts == null)
             return false;
