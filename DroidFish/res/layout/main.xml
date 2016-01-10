@@ -25,49 +25,55 @@
         android:paddingTop="1dp">
         <TextView
             android:id="@+id/status"
-            android:layout_width="0dp" 
+            android:layout_width="fill_parent" 
             android:layout_height="wrap_content" 
             android:layout_weight="1"
             android:includeFontPadding="true"
             android:fontFamily="monospace"
             android:typeface="monospace"
             android:textSize="12sp"/>
-        <ImageButton
-            android:id="@+id/custom3Button"
-            android:contentDescription="@string/buttonDesc_custom3"
-            android:layout_width="36dp"
-            android:layout_height="32dp">
-        </ImageButton>
-        <ImageButton
-            android:id="@+id/custom2Button"
-            android:contentDescription="@string/buttonDesc_custom2"
-            android:layout_width="36dp"
-            android:layout_height="32dp">
-        </ImageButton>
-        <ImageButton
-            android:id="@+id/custom1Button"
-            android:contentDescription="@string/buttonDesc_custom1"
-            android:layout_width="36dp"
-            android:layout_height="32dp">
-        </ImageButton>
-        <ImageButton
-            android:id="@+id/modeButton"
-            android:contentDescription="@string/buttonDesc_mode"
-            android:layout_width="36dp"
-            android:layout_height="32dp">
-        </ImageButton>
-        <ImageButton
-            android:id="@+id/undoButton"
-            android:contentDescription="@string/buttonDesc_back"
-            android:layout_width="36dp"
-            android:layout_height="32dp">
-        </ImageButton>
-        <ImageButton
-            android:id="@+id/redoButton"
-            android:contentDescription="@string/buttonDesc_forward"
-            android:layout_width="36dp"
-            android:layout_height="32dp">
-        </ImageButton>
+        <LinearLayout
+            android:id="@+id/buttons"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/custom3Button"
+                android:contentDescription="@string/buttonDesc_custom3"
+                android:layout_width="36dp"
+                android:layout_height="32dp">
+            </ImageButton>
+            <ImageButton
+                android:id="@+id/custom2Button"
+                android:contentDescription="@string/buttonDesc_custom2"
+                android:layout_width="36dp"
+                android:layout_height="32dp">
+            </ImageButton>
+            <ImageButton
+                android:id="@+id/custom1Button"
+                android:contentDescription="@string/buttonDesc_custom1"
+                android:layout_width="36dp"
+                android:layout_height="32dp">
+            </ImageButton>
+            <ImageButton
+                android:id="@+id/modeButton"
+                android:contentDescription="@string/buttonDesc_mode"
+                android:layout_width="36dp"
+                android:layout_height="32dp">
+            </ImageButton>
+            <ImageButton
+                android:id="@+id/undoButton"
+                android:contentDescription="@string/buttonDesc_back"
+                android:layout_width="36dp"
+                android:layout_height="32dp">
+            </ImageButton>
+            <ImageButton
+                android:id="@+id/redoButton"
+                android:contentDescription="@string/buttonDesc_forward"
+                android:layout_width="36dp"
+                android:layout_height="32dp">
+            </ImageButton>
+        </LinearLayout>
     </LinearLayout>
     <view
         class="org.petero.droidfish.MyRelativeLayout"

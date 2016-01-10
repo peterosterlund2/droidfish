@@ -518,6 +518,12 @@
         </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/prefs_other">
+        <CheckBoxPreference
+            android:key="guideShowOnStart"
+            android:title="@string/prefs_guideShowOnStart_title"
+            android:summary="@string/prefs_guideShowOnStart_summary"
+            android:defaultValue="true">
+        </CheckBoxPreference>
         <PreferenceScreen
             android:key="bookSettings"
             android:title="@string/prefs_bookSettings_title"

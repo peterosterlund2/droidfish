@@ -21,6 +21,7 @@
             layout="@layout/title">
         </include>
         <LinearLayout
+            android:id="@+id/buttons"
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

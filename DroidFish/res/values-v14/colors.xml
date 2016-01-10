@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="default_normal">@android:color/holo_blue_dark</color>
+    <color name="default_pressed">@android:color/holo_blue_light</color>
+    <color name="default_disabled">@android:color/darker_gray</color>
+    <color name="White">#FFFFFF</color>
+</resources>

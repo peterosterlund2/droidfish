@@ -60,6 +60,12 @@ import org.petero.droidfish.gamelogic.TimeControlData;
 import org.petero.droidfish.tb.Probe;
 import org.petero.droidfish.tb.ProbeResult;
 
+import tourguide.tourguide.Overlay;
+import tourguide.tourguide.Pointer;
+import tourguide.tourguide.Sequence;
+import tourguide.tourguide.ToolTip;
+import tourguide.tourguide.TourGuide;
+
 import com.kalab.chess.enginesupport.ChessEngine;
 import com.kalab.chess.enginesupport.ChessEngineResolver;
 import com.larvalabs.svgandroid.SVG;
@@ -191,7 +197,9 @@ public class DroidFish extends Activity
     private TextView status;
     private ScrollView moveListScroll;
     private MoveListView moveList;
+    private View thinkingScroll;
     private TextView thinking;
+    private View buttons;
     private ImageButton custom1Button, custom2Button, custom3Button;
     private ImageButton modeButton, undoButton, redoButton;
     private ButtonActions custom1ButtonActions, custom2ButtonActions, custom3ButtonActions;
@@ -253,6 +261,9 @@ public class DroidFish extends Activity
 
     private Typeface figNotation;
     private Typeface defaultThinkingListTypeFace;
+
+    private boolean guideShowOnStart;
+    private TourGuide tourGuide;
 
 
     /** Defines all configurable button actions. */
@@ -486,6 +497,94 @@ public class DroidFish extends Activity
             else
                 loadPGNFromFile(intentFilename);
         }
+
+        startTourGuide();
+    }
+
+    private void startTourGuide(){
+        if (!guideShowOnStart)
+            return;
+
+        tourGuide = TourGuide.init(this);
+        ArrayList<TourGuide> guides = new ArrayList<TourGuide>();
+
+        TourGuide tg = TourGuide.init(this);
+        tg.setToolTip(new ToolTip()
+                      .setTitle(getString(R.string.tour_leftMenu_title))
+                      .setDescription(getString(R.string.tour_leftMenu_desc))
+                      .setGravity(Gravity.BOTTOM | Gravity.RIGHT));
+        tg.playLater(whiteTitleText);
+        guides.add(tg);
+
+        tg = TourGuide.init(this);
+        tg.setToolTip(new ToolTip()
+                      .setTitle(getString(R.string.tour_rightMenu_title))
+                      .setDescription(getString(R.string.tour_rightMenu_desc))
+                      .setGravity(Gravity.BOTTOM | Gravity.LEFT));
+        tg.playLater(blackTitleText);
+        guides.add(tg);
+
+        tg = TourGuide.init(this);
+        int gravity = !landScapeView() ? Gravity.BOTTOM : leftHandedView() ? Gravity.LEFT : Gravity.RIGHT;
+        tg.setToolTip(new ToolTip()
+                      .setTitle(getString(R.string.tour_chessBoard_title))
+                      .setDescription(getString(R.string.tour_chessBoard_desc))
+                      .setGravity(gravity));
+        tg.playLater(cb);
+        guides.add(tg);
+
+        tg = TourGuide.init(this);
+        gravity = !landScapeView() ? Gravity.TOP : Gravity.BOTTOM;
+        tg.setToolTip(new ToolTip()
+                      .setTitle(getString(R.string.tour_buttons_title))
+                      .setDescription(getString(R.string.tour_buttons_desc))
+                      .setGravity(gravity));
+        tg.playLater(buttons);
+        guides.add(tg);
+
+        tg = TourGuide.init(this);
+        gravity = !landScapeView() ? Gravity.TOP : leftHandedView() ? Gravity.RIGHT : Gravity.LEFT;
+        tg.setToolTip(new ToolTip()
+                      .setTitle(getString(R.string.tour_moveList_title))
+                      .setDescription(getString(R.string.tour_moveList_desc))
+                      .setGravity(gravity));
+        tg.playLater(moveListScroll);
+        guides.add(tg);
+
+        tg = TourGuide.init(this);
+        tg.setToolTip(new ToolTip()
+                      .setTitle(getString(R.string.tour_analysis_title))
+                      .setDescription(getString(R.string.tour_analysis_desc))
+                      .setGravity(Gravity.TOP));
+        tg.playLater(thinkingScroll);
+        guides.add(tg);
+
+        tg.setOverlay(new Overlay()
+                      .setOnClickListener(new View.OnClickListener() {
+                          @Override
+                          public void onClick(View v) {
+                              guideShowOnStart = false;
+                              Editor editor = settings.edit();
+                              editor.putBoolean("guideShowOnStart", false);
+                              editor.commit();
+                              tourGuide.next();
+                              tourGuide = null;
+                          }
+                      }));
+
+        Sequence sequence = new Sequence.SequenceBuilder()
+                .add(guides.toArray(new TourGuide[guides.size()]))
+                .setDefaultOverlay(new Overlay()
+                                   .setOnClickListener(new View.OnClickListener() {
+                                       @Override
+                                       public void onClick(View v) {
+                                           tourGuide.next();
+                                       }
+                                   }))
+                .setDefaultPointer(new Pointer())
+                .setContinueMethod(Sequence.ContinueMethod.OverlayListener)
+                .build();
+        tourGuide.playInSequence(sequence);
     }
 
     // Unicode code points for chess pieces
@@ -664,12 +763,20 @@ public class DroidFish extends Activity
         updateThinkingInfo();
         ctrl.updateRemainingTime();
         ctrl.updateMaterialDiffList();
+        if (tourGuide != null) {
+            tourGuide.cleanUp();
+            tourGuide = null;
+        }
     }
 
+    /** Return true if the current orientation is landscape. */
+    private final boolean landScapeView() {
+        return getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+    }
+    
     /** Return true if left-handed layout should be used. */
     private final boolean leftHandedView() {
-        return settings.getBoolean("leftHanded", false) &&
-               (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
+        return settings.getBoolean("leftHanded", false) && landScapeView();
     }
 
     /** Re-read preferences settings. */
@@ -708,6 +815,7 @@ public class DroidFish extends Activity
         status = (TextView)findViewById(R.id.status);
         moveListScroll = (ScrollView)findViewById(R.id.scrollView);
         moveList = (MoveListView)findViewById(R.id.moveList);
+        thinkingScroll = (View)findViewById(R.id.scrollViewBot);
         thinking = (TextView)findViewById(R.id.thinking);
         defaultThinkingListTypeFace = thinking.getTypeface();
         status.setFocusable(false);
@@ -909,6 +1017,7 @@ public class DroidFish extends Activity
             }
         });
 
+        buttons = (View)findViewById(R.id.buttons);
         custom1Button = (ImageButton)findViewById(R.id.custom1Button);
         custom1ButtonActions.setImageButton(custom1Button, this);
         custom2Button = (ImageButton)findViewById(R.id.custom2Button);
@@ -1077,6 +1186,8 @@ public class DroidFish extends Activity
         custom2ButtonActions.readPrefs(settings, actionFactory);
         custom3ButtonActions.readPrefs(settings, actionFactory);
         updateButtons();
+
+        guideShowOnStart = settings.getBoolean("guideShowOnStart", true);
 
         bookOptions.filename = settings.getString("bookFile", "");
         bookOptions.maxLength = getIntSetting("bookMaxLength", 1000000);
