@@ -2,18 +2,15 @@ package tourguide.tourguide;
 
 import android.animation.AnimatorSet;
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Path.FillType;
 import android.graphics.Point;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.support.v4.view.MotionEventCompat;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,12 +25,9 @@ public class FrameLayoutWithHole extends FrameLayout {
     private TextPaint mTextPaint;
     private Activity mActivity;
     private TourGuide.MotionType mMotionType;
-    private Paint mEraser;
 
-    Bitmap mEraserBitmap;
-    private Canvas mEraserCanvas;
+    private Path mPath;
     private Paint mPaint;
-    private Paint transparentPaint;
     private View mViewHole; // This is the targeted view to be highlighted, where the hole should be placed
     private int mRadius;
     private int [] mPos;
@@ -115,27 +109,10 @@ public class FrameLayoutWithHole extends FrameLayout {
         mTextPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
         mTextPaint.setTextAlign(Paint.Align.LEFT);
 
-        Point size = new Point();
-        size.x = mActivity.getResources().getDisplayMetrics().widthPixels;
-        size.y = mActivity.getResources().getDisplayMetrics().heightPixels;
-
-        mEraserBitmap = Bitmap.createBitmap(size.x, size.y, Bitmap.Config.ARGB_8888);
-        mEraserCanvas = new Canvas(mEraserBitmap);
+        mPath = new Path();
 
         mPaint = new Paint();
-        mPaint.setColor(0xcc000000);
-        transparentPaint = new Paint();
-        transparentPaint.setColor(getResources().getColor(android.R.color.transparent));
-        transparentPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-
-        mEraser = new Paint();
-        mEraser.setColor(0xFFFFFFFF);
-        mEraser.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        mEraser.setFlags(Paint.ANTI_ALIAS_FLAG);
-
-        Log.d("tourguide","getHeight: "+ size.y);
-        Log.d("tourguide","getWidth: " + size.x);
-
+        mPaint.setAntiAlias(true);
     }
 
     private boolean mCleanUpLock = false;
@@ -168,9 +145,6 @@ public class FrameLayoutWithHole extends FrameLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        /* cleanup reference to prevent memory leak */
-        mEraserCanvas.setBitmap(null);
-        mEraserBitmap = null;
 
         if (mAnimatorSetArrayList != null && mAnimatorSetArrayList.size() > 0){
             for(int i=0;i<mAnimatorSetArrayList.size();i++){
@@ -266,19 +240,24 @@ public class FrameLayoutWithHole extends FrameLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        mEraserBitmap.eraseColor(Color.TRANSPARENT);
-
-        if (mOverlay!=null) {
-            mEraserCanvas.drawColor(mOverlay.mBackgroundColor);
-            int padding = (int) (10 * mDensity);
+        if (mOverlay != null) {
+            mPath.rewind();
+            mPath.addRect(0, 0, canvas.getWidth(), canvas.getHeight(), Path.Direction.CW);
             if (mOverlay.mStyle == Overlay.Style.Rectangle) {
-                mEraserCanvas.drawRect(mPos[0] - padding, mPos[1] - padding, mPos[0] + mViewHole.getWidth() + padding, mPos[1] + mViewHole.getHeight() + padding, mEraser);
+                int padding = (int) (10 * mDensity);
+                mPath.addRect(mPos[0] - padding, mPos[1] - padding,
+                              mPos[0] + mViewHole.getWidth() + padding,
+                              mPos[1] + mViewHole.getHeight() + padding,
+                              Path.Direction.CCW);
             } else {
-                mEraserCanvas.drawCircle(mPos[0] + mViewHole.getWidth() / 2, mPos[1] + mViewHole.getHeight() / 2, mRadius, mEraser);
+                mPath.addCircle(mPos[0] + mViewHole.getWidth() / 2,
+                                mPos[1] + mViewHole.getHeight() / 2,
+                                mRadius, Path.Direction.CCW);
             }
+            mPath.setFillType(FillType.WINDING);
+            mPaint.setColor(mOverlay.mBackgroundColor);
+            canvas.drawPath(mPath, mPaint);
         }
-        canvas.drawBitmap(mEraserBitmap, 0, 0, null);
-
     }
     @Override
     protected void onAttachedToWindow() {
