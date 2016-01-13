@@ -413,7 +413,7 @@
   <string name="tour_buttons_title">Кнопки</string>
   <string name="tour_buttons_desc">Нажмите кнопку для вызова его действия. Нажмите и удерживайте кнопку, чтобы открыть меню, содержащее дополнительные действия. Для настройки действия кнопки перейдите в левом меню &gt; Настройки &gt; Поведение &gt; Настроить кнопки.</string>
   <string name="tour_moveList_title">Перемещение списка</string>
-  <string name="tour_moveList_desc">Tap a move in the move list to set the chess board to the corresponding position. Touch and hold the move list to open the Edit Game menu.</string>
+  <string name="tour_moveList_desc">Нажмите Переместить в списке перемещения чтобы установить шахматную доску в нужное положение. Коснитесь и удерживайте список перемещения чтобы открыть меню редактирования игры.</string>
   <string name="tour_analysis_title">Анализ информации</string>
   <string name="tour_analysis_desc">Когда движок думает, коснитесь и удерживайте анализируемую информацию, чтобы открыть меню анализа.</string>
   <string name="buttonDesc_custom1">@string/prefs_custom_button_1</string>
