@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Path.FillType;
-import android.graphics.Point;
 import android.support.v4.view.MotionEventCompat;
 import android.text.TextPaint;
 import android.util.AttributeSet;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
  */
 public class FrameLayoutWithHole extends FrameLayout {
     private TextPaint mTextPaint;
-    private Activity mActivity;
     private TourGuide.MotionType mMotionType;
 
     private Path mPath;
@@ -76,7 +74,6 @@ public class FrameLayoutWithHole extends FrameLayout {
 
     public FrameLayoutWithHole(Activity context, View view, TourGuide.MotionType motionType, Overlay overlay) {
         super(context);
-        mActivity = context;
         mViewHole = view;
         init(null, 0);
         enforceMotionType();
@@ -148,8 +145,8 @@ public class FrameLayoutWithHole extends FrameLayout {
 
         if (mAnimatorSetArrayList != null && mAnimatorSetArrayList.size() > 0){
             for(int i=0;i<mAnimatorSetArrayList.size();i++){
-                mAnimatorSetArrayList.get(i).end();
                 mAnimatorSetArrayList.get(i).removeAllListeners();
+                mAnimatorSetArrayList.get(i).end();
             }
         }
     }
