@@ -240,7 +240,7 @@ public class EditPGN extends ListActivity {
         progress = null;
         removeDialog(PROGRESS_DIALOG);
         setContentView(R.layout.select_game);
-        Util.overrideFonts(findViewById(android.R.id.content));
+        Util.overrideViewAttribs(findViewById(android.R.id.content));
         aa = new ArrayAdapter<GameInfo>(this, R.layout.select_game_list_item, gamesInFile) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {

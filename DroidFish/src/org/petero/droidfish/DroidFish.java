@@ -90,7 +90,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -428,12 +427,6 @@ public class DroidFish extends Activity
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         settings = PreferenceManager.getDefaultSharedPreferences(this);
-        settings.registerOnSharedPreferenceChangeListener(new OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                handlePrefsChange();
-            }
-        });
 
         setWakeLock(false);
 
@@ -792,7 +785,7 @@ public class DroidFish extends Activity
     private final void initUI() {
         leftHanded = leftHandedView();
         setContentView(leftHanded ? R.layout.main_left_handed : R.layout.main);
-        Util.overrideFonts(findViewById(android.R.id.content));
+        overrideViewAttribs();
 
         // title lines need to be regenerated every time due to layout changes (rotations)
         firstTitleLine = findViewById(R.id.first_title_line);
@@ -1241,7 +1234,7 @@ public class DroidFish extends Activity
 
         ColorTheme.instance().readColors(settings);
         cb.setColors();
-        Util.overrideFonts(findViewById(android.R.id.content));
+        overrideViewAttribs();
 
         gameTextListener.clear();
         setPieceNames(pgnOptions.view.pieceType);
@@ -1252,6 +1245,10 @@ public class DroidFish extends Activity
 
         showMaterialDiff = settings.getBoolean("materialDiff", false);
         secondTitleLine.setVisibility(showMaterialDiff ? View.VISIBLE : View.GONE);
+    }
+
+    private void overrideViewAttribs() {
+        Util.overrideViewAttribs(findViewById(R.id.main));
     }
 
     /**
@@ -2619,7 +2616,7 @@ public class DroidFish extends Activity
                 gameTextListener.clear();
                 ctrl.prefsChanged(false);
                 dialog.dismiss();
-                Util.overrideFonts(findViewById(android.R.id.content));
+                overrideViewAttribs();
             }
         });
         return builder.create();

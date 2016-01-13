@@ -116,7 +116,7 @@ public final class Util {
     }
 
     /** Change foreground/background color in a view. */
-    public static void overrideFonts(final View v) {
+    public static void overrideViewAttribs(final View v) {
         if (v == null)
             return;
         final int bg = ColorTheme.instance().getColor(ColorTheme.GENERAL_BACKGROUND);
@@ -126,8 +126,6 @@ public final class Util {
                                       v instanceof ImageButton ||
                                       "title".equals(tag);
         if (!excludedItems) {
-            if ("drawer".equals(tag))
-                return;
             int c = bg;
             if ("thinking".equals(tag)) {
                 float[] hsv = new float[3];
@@ -143,7 +141,7 @@ public final class Util {
             ViewGroup vg = (ViewGroup) v;
             for (int i = 0; i < vg.getChildCount(); i++) {
                 View child = vg.getChildAt(i);
-                overrideFonts(child);
+                overrideViewAttribs(child);
             }
         } else if (!excludedItems && (v instanceof TextView)) {
             int fg = ColorTheme.instance().getColor(ColorTheme.FONT_FOREGROUND);

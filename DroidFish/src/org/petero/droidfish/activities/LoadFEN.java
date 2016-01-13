@@ -215,7 +215,7 @@ public class LoadFEN extends ListActivity {
             }
         });
 
-        Util.overrideFonts(findViewById(android.R.id.content));
+        Util.overrideViewAttribs(findViewById(android.R.id.content));
         aa = new ArrayAdapter<FenInfo>(this, R.layout.select_game_list_item, fensInFile) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {

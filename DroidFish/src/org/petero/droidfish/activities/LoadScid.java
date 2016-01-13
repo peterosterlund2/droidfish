@@ -243,7 +243,7 @@ public class LoadScid extends ListActivity {
         };
         setListAdapter(aa);
         ListView lv = getListView();
-        Util.overrideFonts(lv);
+        Util.overrideViewAttribs(lv);
         lv.setSelectionFromTop(defaultItem, 0);
         lv.setFastScrollEnabled(true);
         lv.setOnItemClickListener(new OnItemClickListener() {

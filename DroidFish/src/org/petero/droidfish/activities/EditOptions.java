@@ -209,7 +209,7 @@ public class EditOptions extends Activity {
         }
 
         setContentView(view);
-        Util.overrideFonts(findViewById(android.R.id.content));
+        Util.overrideViewAttribs(findViewById(android.R.id.content));
         Button okButton = (Button)findViewById(R.id.eo_ok);
         Button cancelButton = (Button)findViewById(R.id.eo_cancel);
         Button resetButton = (Button)findViewById(R.id.eo_reset);
