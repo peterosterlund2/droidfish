@@ -39,7 +39,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="load_position">Cargar posición desde el archivo</string>
   <string name="load_scid_game">Cargar partida desde archivo Scid</string>
   <string name="save_game">Guardar partida en archivo PGN</string>
-  <string name="get_fen">Recuperar Posición</string>
+  <string name="get_fen">Importar Posición</string>
   <string name="truncate_gametree">Podar Árbol de Variantes</string>
   <string name="move_var_up">Subir Variante </string>
   <string name="move_var_down">Bajar Variante </string>
@@ -129,7 +129,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="toggle_pgn_headers">Activar cabeceras</string>
   <string name="toggle_analysis">Activar análisis del motor</string>
   <string name="toggle_large_buttons">Activar botones grandes</string>
-  <string name="toggle_blind_mode">Conectar modo a la ciega</string>
+  <string name="toggle_blind_mode">Commutar modo a la ciega</string>
   <string name="cancel">Cancelar</string>
   <string name="reset">Reinicio</string>
   <string name="yes">Sí</string>
