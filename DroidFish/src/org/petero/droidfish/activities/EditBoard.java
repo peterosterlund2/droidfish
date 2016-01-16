@@ -137,7 +137,7 @@ public class EditBoard extends Activity {
 
     private final void initUI() {
         setContentView(R.layout.editboard);
-        Util.overrideViewAttribs(findViewById(android.R.id.content));
+        Util.overrideViewAttribs(findViewById(R.id.main));
 
         View firstTitleLine = findViewById(R.id.first_title_line);
         View secondTitleLine = findViewById(R.id.second_title_line);
