@@ -280,18 +280,26 @@ public class Probe {
         UndoInfo ui = new UndoInfo();
         for (Move m : moveList) {
             pos.makeMove(m, ui);
+            int pliesToDraw = Math.max(100 - pos.halfMoveClock, 1);
             GtbProbeResult res = gtbProbe(pos);
             pos.unMakeMove(m, ui);
             if (res.result == GtbProbeResult.UNKNOWN) {
                 unknownMoves.add(m);
             } else {
                 int wScore;
-                if (res.result == GtbProbeResult.WMATE)
-                    wScore = MATE0 - res.pliesToMate;
-                else if (res.result == GtbProbeResult.BMATE)
-                    wScore = -(MATE0 - res.pliesToMate);
-                else
+                if (res.result == GtbProbeResult.WMATE) {
+                    if (res.pliesToMate <= pliesToDraw)
+                        wScore = MATE0 - res.pliesToMate;
+                    else
+                        wScore = 1;
+                } else if (res.result == GtbProbeResult.BMATE) {
+                    if (res.pliesToMate <= pliesToDraw)
+                        wScore = -(MATE0 - res.pliesToMate);
+                    else
+                        wScore = -1;
+                } else {
                     wScore = 0;
+                }
                 int score = pos.whiteMove ? wScore : -wScore;
                 if (score > bestScore) {
                     optimalMoves.clear();
