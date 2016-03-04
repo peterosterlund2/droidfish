@@ -271,7 +271,7 @@ void MainThread::search() {
               TB::RootInTB = Tablebases::root_probe_wdl(rootPos, rootMoves, TB::Score);
 
               // Only probe during search if winning
-              if (TB::Score <= VALUE_DRAW)
+              if (TB::RootInTB && TB::Score <= VALUE_DRAW)
                   TB::Cardinality = 0;
           }
 
