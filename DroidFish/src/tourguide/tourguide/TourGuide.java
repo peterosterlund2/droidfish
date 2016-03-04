@@ -10,7 +10,6 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -128,7 +127,8 @@ public class TourGuide {
      * Clean up the tutorial that is added to the activity
      */
      public void cleanUp(){
-         mFrameLayout.cleanUp();
+         if (mFrameLayout != null)
+             mFrameLayout.cleanUp();
          if (mToolTipViewGroup!=null) {
              ((ViewGroup) mActivity.getWindow().getDecorView()).removeView(mToolTipViewGroup);
          }
