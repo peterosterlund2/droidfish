@@ -59,5 +59,5 @@ public class PgnToken {
 
         /** Change current move number. */
         public void setCurrent(GameTree.Node node);
-    };
+    }
 }
