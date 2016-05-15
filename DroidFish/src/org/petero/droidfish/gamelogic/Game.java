@@ -79,7 +79,7 @@ public class Game {
         ADD_LAST,
         /** Remove all variations not matching the new move. */
         REPLACE
-    };
+    }
 
     /** Set whether new moves are entered as mainline moves or variations. */
     public final void setAddFirst(AddMoveBehavior amb) {
