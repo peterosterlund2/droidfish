@@ -164,7 +164,6 @@ public class DroidFish extends Activity
     // FIXME!!! Green color for "main move". Red color for "don't play in tournaments" moves.
     // FIXME!!! ECO opening codes
 
-    // FIXME!!! Remember multi-PV analysis setting when program restarted.
     // FIXME!!! Option to display coordinates in border outside chess board.
 
     // FIXME!!! Better behavior if engine is terminated. How exactly?
