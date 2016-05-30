@@ -15,7 +15,6 @@
 #include "../movegen.h"
 #include "../bitboard.h"
 #include "../search.h"
-#include "../bitcount.h"
 
 #include "tbprobe.h"
 #include "tbcore.h"
@@ -39,12 +38,12 @@ static void prt_str(Position& pos, char *str, int mirror)
 
   color = !mirror ? WHITE : BLACK;
   for (pt = KING; pt >= PAWN; --pt)
-    for (i = popcount<Max15>(pos.pieces(color, pt)); i > 0; i--)
+    for (i = popcount(pos.pieces(color, pt)); i > 0; i--)
       *str++ = pchr[6 - pt];
   *str++ = 'v';
   color = ~color;
   for (pt = KING; pt >= PAWN; --pt)
-    for (i = popcount<Max15>(pos.pieces(color, pt)); i > 0; i--)
+    for (i = popcount(pos.pieces(color, pt)); i > 0; i--)
       *str++ = pchr[6 - pt];
   *str++ = 0;
 }
@@ -60,11 +59,11 @@ static uint64 calc_key(Position& pos, int mirror)
 
   color = !mirror ? WHITE : BLACK;
   for (pt = PAWN; pt <= KING; ++pt)
-    for (i = popcount<Max15>(pos.pieces(color, pt)); i > 0; i--)
+    for (i = popcount(pos.pieces(color, pt)); i > 0; i--)
       key ^= Zobrist::psq[WHITE][pt][i - 1];
   color = ~color;
   for (pt = PAWN; pt <= KING; ++pt)
-    for (i = popcount<Max15>(pos.pieces(color, pt)); i > 0; i--)
+    for (i = popcount(pos.pieces(color, pt)); i > 0; i--)
       key ^= Zobrist::psq[BLACK][pt][i - 1];
 
   return key;
@@ -689,7 +688,7 @@ static Value wdl_to_Value[5] = {
 //
 // A return value false indicates that not all probes were successful and that
 // no moves were filtered out.
-bool Tablebases::root_probe(Position& pos, Search::RootMoveVector& rootMoves, Value& score)
+bool Tablebases::root_probe(Position& pos, Search::RootMoves& rootMoves, Value& score)
 {
   int success;
 
@@ -796,7 +795,7 @@ bool Tablebases::root_probe(Position& pos, Search::RootMoveVector& rootMoves, Va
 //
 // A return value false indicates that not all probes were successful and that
 // no moves were filtered out.
-bool Tablebases::root_probe_wdl(Position& pos, Search::RootMoveVector& rootMoves, Value& score)
+bool Tablebases::root_probe_wdl(Position& pos, Search::RootMoves& rootMoves, Value& score)
 {
   int success;
 

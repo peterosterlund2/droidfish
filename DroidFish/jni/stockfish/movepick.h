@@ -46,29 +46,25 @@ struct Stats {
   T* operator[](Piece pc) { return table[pc]; }
   void clear() { std::memset(table, 0, sizeof(table)); }
 
-  void update(Piece pc, Square to, Move m) {
-
-    if (m != table[pc][to])
-        table[pc][to] = m;
-  }
+  void update(Piece pc, Square to, Move m) { table[pc][to] = m; }
 
   void update(Piece pc, Square to, Value v) {
 
     if (abs(int(v)) >= 324)
         return;
 
-    table[pc][to] -= table[pc][to] * abs(int(v)) / (CM ? 512 : 324);
-    table[pc][to] += int(v) * (CM ? 64 : 32);
+    table[pc][to] -= table[pc][to] * abs(int(v)) / (CM ? 936 : 324);
+    table[pc][to] += int(v) * 32;
   }
 
 private:
   T table[PIECE_NB][SQUARE_NB];
 };
 
-typedef Stats<Move> MovesStats;
+typedef Stats<Move> MoveStats;
 typedef Stats<Value, false> HistoryStats;
-typedef Stats<Value,  true> CounterMovesStats;
-typedef Stats<CounterMovesStats> CounterMovesHistoryStats;
+typedef Stats<Value,  true> CounterMoveStats;
+typedef Stats<CounterMoveStats> CounterMoveHistoryStats;
 
 
 /// MovePicker class is used to pick one pseudo legal move at a time from the
@@ -83,9 +79,9 @@ public:
   MovePicker(const MovePicker&) = delete;
   MovePicker& operator=(const MovePicker&) = delete;
 
-  MovePicker(const Position&, Move, Depth, const HistoryStats&, Square);
-  MovePicker(const Position&, Move, const HistoryStats&, Value);
-  MovePicker(const Position&, Move, Depth, const HistoryStats&, const CounterMovesStats&, Move, Search::Stack*);
+  MovePicker(const Position&, Move, Value);
+  MovePicker(const Position&, Move, Depth, Square);
+  MovePicker(const Position&, Move, Depth, Search::Stack*);
 
   Move next_move();
 
@@ -96,9 +92,7 @@ private:
   ExtMove* end() { return endMoves; }
 
   const Position& pos;
-  const HistoryStats& history;
-  const CounterMovesStats* counterMovesHistory;
-  Search::Stack* ss;
+  const Search::Stack* ss;
   Move countermove;
   Depth depth;
   Move ttMove;
@@ -106,7 +100,7 @@ private:
   Square recaptureSquare;
   Value threshold;
   int stage;
-  ExtMove *endQuiets, *endBadCaptures = moves + MAX_MOVES - 1;
+  ExtMove* endBadCaptures = moves + MAX_MOVES - 1;
   ExtMove moves[MAX_MOVES], *cur = moves, *endMoves = moves;
 };
 

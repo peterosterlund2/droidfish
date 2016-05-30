@@ -33,20 +33,20 @@ namespace {
   enum TimeType { OptimumTime, MaxTime };
 
   const int MoveHorizon   = 50;   // Plan time management at most this many moves ahead
-  const double MaxRatio   = 6.93;  // When in trouble, we can step over reserved time with this ratio
-  const double StealRatio = 0.36; // However we must not steal time from remaining moves over this ratio
+  const double MaxRatio   = 7.09; // When in trouble, we can step over reserved time with this ratio
+  const double StealRatio = 0.35; // However we must not steal time from remaining moves over this ratio
 
 
   // move_importance() is a skew-logistic function based on naive statistical
   // analysis of "how many games are still undecided after n half-moves". Game
   // is considered "undecided" as long as neither side has >275cp advantage.
-  // Data was extracted from CCRL game database with some simple filtering criteria.
+  // Data was extracted from the CCRL game database with some simple filtering criteria.
 
   double move_importance(int ply) {
 
-    const double XScale = 8.27;
-    const double XShift = 59.;
-    const double Skew   = 0.179;
+    const double XScale = 7.64;
+    const double XShift = 58.4;
+    const double Skew   = 0.183;
 
     return pow((1 + exp((ply - XShift) / XScale)), -Skew) + DBL_MIN; // Ensure non-zero
   }
@@ -66,7 +66,7 @@ namespace {
     double ratio1 = (TMaxRatio * moveImportance) / (TMaxRatio * moveImportance + otherMovesImportance);
     double ratio2 = (moveImportance + TStealRatio * otherMovesImportance) / (moveImportance + otherMovesImportance);
 
-    return int(myTime * std::min(ratio1, ratio2)); // Intel C++ asks an explicit cast
+    return int(myTime * std::min(ratio1, ratio2)); // Intel C++ asks for an explicit cast
   }
 
 } // namespace
@@ -91,7 +91,7 @@ void TimeManagement::init(Search::LimitsType& limits, Color us, int ply)
   // If we have to play in 'nodes as time' mode, then convert from time
   // to nodes, and use resulting values in time management formulas.
   // WARNING: Given npms (nodes per millisecond) must be much lower then
-  // real engine speed to avoid time losses.
+  // the real engine speed to avoid time losses.
   if (npmsec)
   {
       if (!availableNodes) // Only once at game start
@@ -104,7 +104,6 @@ void TimeManagement::init(Search::LimitsType& limits, Color us, int ply)
   }
 
   startTime = limits.startTime;
-  unstablePvFactor = 1;
   optimumTime = maximumTime = std::max(limits.time[us], minThinkingTime);
 
   const int MaxMTG = limits.movestogo ? std::min(limits.movestogo, MoveHorizon) : MoveHorizon;

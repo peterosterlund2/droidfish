@@ -18,7 +18,13 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <algorithm>
+
 #include "types.h"
+
+Value PieceValue[PHASE_NB][PIECE_NB] = {
+{ VALUE_ZERO, PawnValueMg, KnightValueMg, BishopValueMg, RookValueMg, QueenValueMg },
+{ VALUE_ZERO, PawnValueEg, KnightValueEg, BishopValueEg, RookValueEg, QueenValueEg } };
 
 namespace PSQT {
 
@@ -32,13 +38,12 @@ const Score Bonus[][RANK_NB][int(FILE_NB) / 2] = {
   { },
   { // Pawn
    { S(  0, 0), S(  0, 0), S(  0, 0), S( 0, 0) },
-   { S(-19, 5), S(  1,-4), S(  7, 8), S( 3,-2) },
-   { S(-26,-6), S( -7,-5), S( 19, 5), S(24, 4) },
-   { S(-25, 1), S(-14, 3), S( 16,-8), S(31,-3) },
-   { S(-14, 6), S(  0, 9), S( -1, 7), S(17,-6) },
-   { S(-14, 6), S(-13,-5), S(-10, 2), S(-6, 4) },
-   { S(-12, 1), S( 15,-9), S( -8, 1), S(-4,18) },
-   { S(  0, 0), S(  0, 0), S(  0, 0), S( 0, 0) }
+   { S(-16, 7), S(  1,-4), S(  7, 8), S( 3,-2) },
+   { S(-23,-4), S( -7,-5), S( 19, 5), S(24, 4) },
+   { S(-22, 3), S(-14, 3), S( 20,-8), S(35,-3) },
+   { S(-11, 8), S(  0, 9), S(  3, 7), S(21,-6) },
+   { S(-11, 8), S(-13,-5), S( -6, 2), S(-2, 4) },
+   { S( -9, 3), S( 15,-9), S( -8, 1), S(-4,18) }
   },
   { // Knight
    { S(-143, -97), S(-96,-82), S(-80,-46), S(-73,-14) },
@@ -96,7 +101,7 @@ const Score Bonus[][RANK_NB][int(FILE_NB) / 2] = {
 
 Score psq[COLOR_NB][PIECE_TYPE_NB][SQUARE_NB];
 
-// init() initializes piece square tables: the white halves of the tables are
+// init() initializes piece-square tables: the white halves of the tables are
 // copied from Bonus[] adding the piece value, then the black halves of the
 // tables are initialized by flipping and changing the sign of the white scores.
 void init() {
@@ -110,8 +115,9 @@ void init() {
 
       for (Square s = SQ_A1; s <= SQ_H8; ++s)
       {
-          int edgeDistance = file_of(s) < FILE_E ? file_of(s) : FILE_H - file_of(s);
-          psq[BLACK][pt][~s] = -(psq[WHITE][pt][s] = v + Bonus[pt][rank_of(s)][edgeDistance]);
+          File f = std::min(file_of(s), FILE_H - file_of(s));
+          psq[WHITE][pt][ s] = v + Bonus[pt][rank_of(s)][f];
+          psq[BLACK][pt][~s] = -psq[WHITE][pt][s];
       }
   }
 }

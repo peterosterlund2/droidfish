@@ -3,7 +3,7 @@
   This file may be redistributed and/or modified without restrictions.
 
   tbcore.c contains engine-independent routines of the tablebase probing code.
-  This file should not need to much adaptation to add tablebase probing to
+  This file should not need too much adaptation to add tablebase probing to
   a particular engine, provided the engine is written in C or C++.
 */
 
@@ -343,30 +343,31 @@ void Tablebases::init(const std::string& path)
         init_tb(str);
       }
 
+
   if (sizeof(char*) >= 8) {
-  for (i = 1; i < 6; i++)
-    for (j = i; j < 6; j++)
-      for (k = i; k < 6; k++)
-        for (l = (i == k) ? j : k; l < 6; l++) {
-          sprintf(str, "K%c%cvK%c%c", pchr[i], pchr[j], pchr[k], pchr[l]);
-          init_tb(str);
-        }
-
-  for (i = 1; i < 6; i++)
-    for (j = i; j < 6; j++)
-      for (k = j; k < 6; k++)
-        for (l = 1; l < 6; l++) {
-          sprintf(str, "K%c%c%cvK%c", pchr[i], pchr[j], pchr[k], pchr[l]);
-          init_tb(str);
-        }
-
-  for (i = 1; i < 6; i++)
-    for (j = i; j < 6; j++)
-      for (k = j; k < 6; k++)
-        for (l = k; l < 6; l++) {
-          sprintf(str, "K%c%c%c%cvK", pchr[i], pchr[j], pchr[k], pchr[l]);
-          init_tb(str);
-        }
+    for (i = 1; i < 6; i++)
+      for (j = i; j < 6; j++)
+        for (k = i; k < 6; k++)
+          for (l = (i == k) ? j : k; l < 6; l++) {
+            sprintf(str, "K%c%cvK%c%c", pchr[i], pchr[j], pchr[k], pchr[l]);
+            init_tb(str);
+          }
+  
+    for (i = 1; i < 6; i++)
+      for (j = i; j < 6; j++)
+        for (k = j; k < 6; k++)
+          for (l = 1; l < 6; l++) {
+            sprintf(str, "K%c%c%cvK%c", pchr[i], pchr[j], pchr[k], pchr[l]);
+            init_tb(str);
+          }
+  
+    for (i = 1; i < 6; i++)
+      for (j = i; j < 6; j++)
+        for (k = j; k < 6; k++)
+          for (l = k; l < 6; l++) {
+            sprintf(str, "K%c%c%c%cvK", pchr[i], pchr[j], pchr[k], pchr[l]);
+            init_tb(str);
+          }
   }
 
   printf("info string Found %d tablebases.\n", TBnum_piece + TBnum_pawn);

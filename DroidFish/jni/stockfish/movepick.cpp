@@ -26,7 +26,7 @@
 namespace {
 
   enum Stages {
-    MAIN_SEARCH, GOOD_CAPTURES, KILLERS, GOOD_QUIETS, BAD_QUIETS, BAD_CAPTURES,
+    MAIN_SEARCH, GOOD_CAPTURES, KILLERS, QUIET, BAD_CAPTURES,
     EVASION, ALL_EVASIONS,
     QSEARCH_WITH_CHECKS, QCAPTURES_1, CHECKS,
     QSEARCH_WITHOUT_CHECKS, QCAPTURES_2,
@@ -51,7 +51,7 @@ namespace {
 
   // pick_best() finds the best move in the range (begin, end) and moves it to
   // the front. It's faster than sorting all the moves in advance when there
-  // are few moves e.g. the possible captures.
+  // are few moves, e.g., the possible captures.
   Move pick_best(ExtMove* begin, ExtMove* end)
   {
       std::swap(*begin, *std::max_element(begin, end));
@@ -64,23 +64,24 @@ namespace {
 /// Constructors of the MovePicker class. As arguments we pass information
 /// to help it to return the (presumably) good moves first, to decide which
 /// moves to return (in the quiescence search, for instance, we only want to
-/// search captures, promotions and some checks) and how important good move
+/// search captures, promotions, and some checks) and how important good move
 /// ordering is at the current node.
 
-MovePicker::MovePicker(const Position& p, Move ttm, Depth d, const HistoryStats& h,
-                       const CounterMovesStats& cmh, Move cm, Search::Stack* s)
-           : pos(p), history(h), counterMovesHistory(&cmh), ss(s), countermove(cm), depth(d) {
+MovePicker::MovePicker(const Position& p, Move ttm, Depth d, Search::Stack* s)
+           : pos(p), ss(s), depth(d) {
 
   assert(d > DEPTH_ZERO);
+
+  Square prevSq = to_sq((ss-1)->currentMove);
+  countermove = pos.this_thread()->counterMoves[pos.piece_on(prevSq)][prevSq];
 
   stage = pos.checkers() ? EVASION : MAIN_SEARCH;
   ttMove = ttm && pos.pseudo_legal(ttm) ? ttm : MOVE_NONE;
   endMoves += (ttMove != MOVE_NONE);
 }
 
-MovePicker::MovePicker(const Position& p, Move ttm, Depth d,
-                       const HistoryStats& h, Square s)
-           : pos(p), history(h), counterMovesHistory(nullptr) {
+MovePicker::MovePicker(const Position& p, Move ttm, Depth d, Square s)
+           : pos(p) {
 
   assert(d <= DEPTH_ZERO);
 
@@ -104,8 +105,8 @@ MovePicker::MovePicker(const Position& p, Move ttm, Depth d,
   endMoves += (ttMove != MOVE_NONE);
 }
 
-MovePicker::MovePicker(const Position& p, Move ttm, const HistoryStats& h, Value th)
-           : pos(p), history(h), counterMovesHistory(nullptr), threshold(th) {
+MovePicker::MovePicker(const Position& p, Move ttm, Value th)
+           : pos(p), threshold(th) {
 
   assert(!pos.checkers());
 
@@ -127,9 +128,9 @@ template<>
 void MovePicker::score<CAPTURES>() {
   // Winning and equal captures in the main search are ordered by MVV, preferring
   // captures near our home rank. Surprisingly, this appears to perform slightly
-  // better than SEE based move ordering: exchanging big pieces before capturing
+  // better than SEE-based move ordering: exchanging big pieces before capturing
   // a hanging piece probably helps to reduce the subtree size.
-  // In main search we want to push captures with negative SEE values to the
+  // In the main search we want to push captures with negative SEE values to the
   // badCaptures[] array, but instead of doing it now we delay until the move
   // has been picked up, saving some SEE calls in case we get a cutoff.
   for (auto& m : *this)
@@ -140,16 +141,25 @@ void MovePicker::score<CAPTURES>() {
 template<>
 void MovePicker::score<QUIETS>() {
 
+  const HistoryStats& history = pos.this_thread()->history;
+
+  const CounterMoveStats* cm = (ss-1)->counterMoves;
+  const CounterMoveStats* fm = (ss-2)->counterMoves;
+  const CounterMoveStats* f2 = (ss-4)->counterMoves;
+
   for (auto& m : *this)
-      m.value =  history[pos.moved_piece(m)][to_sq(m)]
-               + (*counterMovesHistory)[pos.moved_piece(m)][to_sq(m)];
+      m.value =      history[pos.moved_piece(m)][to_sq(m)]
+               + (cm ? (*cm)[pos.moved_piece(m)][to_sq(m)] : VALUE_ZERO)
+               + (fm ? (*fm)[pos.moved_piece(m)][to_sq(m)] : VALUE_ZERO)
+               + (f2 ? (*f2)[pos.moved_piece(m)][to_sq(m)] : VALUE_ZERO);
 }
 
 template<>
 void MovePicker::score<EVASIONS>() {
-  // Try winning and equal captures captures ordered by MVV/LVA, then non-captures
-  // ordered by history value, then bad-captures and quiet moves with a negative
-  // SEE ordered by SEE value.
+  // Try winning and equal captures ordered by MVV/LVA, then non-captures ordered
+  // by history value, then bad captures and quiet moves with a negative SEE ordered
+  // by SEE value.
+  const HistoryStats& history = pos.this_thread()->history;
   Value see;
 
   for (auto& m : *this)
@@ -164,7 +174,7 @@ void MovePicker::score<EVASIONS>() {
 }
 
 
-/// generate_next_stage() generates, scores and sorts the next bunch of moves,
+/// generate_next_stage() generates, scores, and sorts the next bunch of moves
 /// when there are no more moves to try for the current stage.
 
 void MovePicker::generate_next_stage() {
@@ -189,17 +199,15 @@ void MovePicker::generate_next_stage() {
       endMoves = cur + 2 + (countermove != killers[0] && countermove != killers[1]);
       break;
 
-  case GOOD_QUIETS:
-      endQuiets = endMoves = generate<QUIETS>(pos, moves);
+  case QUIET:
+      endMoves = generate<QUIETS>(pos, moves);
       score<QUIETS>();
-      endMoves = std::partition(cur, endMoves, [](const ExtMove& m) { return m.value > VALUE_ZERO; });
-      insertion_sort(cur, endMoves);
-      break;
-
-  case BAD_QUIETS:
-      cur = endMoves;
-      endMoves = endQuiets;
-      if (depth >= 3 * ONE_PLY)
+      if (depth < 3 * ONE_PLY)
+      {
+          ExtMove* goodQuiet = std::partition(cur, endMoves, [](const ExtMove& m)
+                                             { return m.value > VALUE_ZERO; });
+          insertion_sort(cur, goodQuiet);
+      } else
           insertion_sort(cur, endMoves);
       break;
 
@@ -272,7 +280,7 @@ Move MovePicker::next_move() {
               return move;
           break;
 
-      case GOOD_QUIETS: case BAD_QUIETS:
+      case QUIET:
           move = *cur++;
           if (   move != ttMove
               && move != killers[0]

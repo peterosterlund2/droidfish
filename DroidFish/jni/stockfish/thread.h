@@ -36,7 +36,7 @@
 #include "thread_win32.h"
 
 
-/// Thread struct keeps together all the thread related stuff. We also use
+/// Thread struct keeps together all the thread-related stuff. We also use
 /// per-thread pawn and material hash tables so that once we get a pointer to an
 /// entry its life time is unlimited and we don't have to care about someone
 /// changing the entry under our feet.
@@ -64,10 +64,10 @@ public:
   int maxPly, callsCnt;
 
   Position rootPos;
-  Search::RootMoveVector rootMoves;
+  Search::RootMoves rootMoves;
   Depth rootDepth;
   HistoryStats history;
-  MovesStats counterMoves;
+  MoveStats counterMoves;
   Depth completedDepth;
   std::atomic_bool resetCalls;
 };
@@ -80,10 +80,11 @@ struct MainThread : public Thread {
 
   bool easyMovePlayed, failedLow;
   double bestMoveChanges;
+  Value previousScore;
 };
 
 
-/// ThreadPool struct handles all the threads related stuff like init, starting,
+/// ThreadPool struct handles all the threads-related stuff like init, starting,
 /// parking and, most importantly, launching a thread. All the access to threads
 /// data is done through this class.
 
@@ -93,9 +94,12 @@ struct ThreadPool : public std::vector<Thread*> {
   void exit(); // be initialized and valid during the whole thread lifetime.
 
   MainThread* main() { return static_cast<MainThread*>(at(0)); }
-  void start_thinking(const Position&, const Search::LimitsType&, Search::StateStackPtr&);
+  void start_thinking(const Position&, StateListPtr&, const Search::LimitsType&);
   void read_uci_options();
   int64_t nodes_searched();
+
+private:
+  StateListPtr setupStates;
 };
 
 extern ThreadPool Threads;

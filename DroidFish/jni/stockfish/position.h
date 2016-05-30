@@ -23,7 +23,10 @@
 
 #include <cassert>
 #include <cstddef>  // For offsetof()
+#include <deque>
+#include <memory>   // For std::unique_ptr
 #include <string>
+#include <vector>
 
 #include "bitboard.h"
 #include "types.h"
@@ -75,6 +78,9 @@ struct StateInfo {
   StateInfo* previous;
 };
 
+// In a std::deque references to elements are unaffected upon resizing
+typedef std::unique_ptr<std::deque<StateInfo>> StateListPtr;
+
 
 /// Position class stores information regarding the board representation as
 /// pieces, side to move, hash keys, castling info, etc. Important methods are
@@ -86,14 +92,12 @@ class Position {
 public:
   static void init();
 
-  Position() = default; // To define the global object RootPos
+  Position() = default;
   Position(const Position&) = delete;
-  Position(const Position& pos, Thread* th) { *this = pos; thisThread = th; }
-  Position(const std::string& f, bool c960, Thread* th) { set(f, c960, th); }
-  Position& operator=(const Position&); // To assign RootPos from UCI
+  Position& operator=(const Position&) = delete;
 
   // FEN string input/output
-  void set(const std::string& fenStr, bool isChess960, Thread* th);
+  Position& set(const std::string& fenStr, bool isChess960, StateInfo* si, Thread* th);
   const std::string fen() const;
 
   // Position representation
@@ -127,6 +131,7 @@ public:
   Bitboard attacks_from(Piece pc, Square s) const;
   template<PieceType> Bitboard attacks_from(Square s) const;
   template<PieceType> Bitboard attacks_from(Square s, Color c) const;
+  Bitboard slider_blockers(Bitboard target, Bitboard sliders, Square s) const;
 
   // Properties of moves
   bool legal(Move m, Bitboard pinned) const;
@@ -178,12 +183,10 @@ public:
 
 private:
   // Initialization helpers (used while setting up a position)
-  void clear();
   void set_castling_right(Color c, Square rfrom);
   void set_state(StateInfo* si) const;
 
   // Other helpers
-  Bitboard check_blockers(Color c, Color kingColor) const;
   void put_piece(Color c, PieceType pt, Square s);
   void remove_piece(Color c, PieceType pt, Square s);
   void move_piece(Color c, PieceType pt, Square from, Square to);
@@ -200,7 +203,6 @@ private:
   int castlingRightsMask[SQUARE_NB];
   Square castlingRookSquare[CASTLING_RIGHT_NB];
   Bitboard castlingPath[CASTLING_RIGHT_NB];
-  StateInfo startState;
   uint64_t nodes;
   int gamePly;
   Color sideToMove;
@@ -309,11 +311,11 @@ inline Bitboard Position::checkers() const {
 }
 
 inline Bitboard Position::discovered_check_candidates() const {
-  return check_blockers(sideToMove, ~sideToMove);
+  return slider_blockers(pieces(sideToMove), pieces(sideToMove), square<KING>(~sideToMove));
 }
 
 inline Bitboard Position::pinned_pieces(Color c) const {
-  return check_blockers(c, c);
+  return slider_blockers(pieces(c), pieces(~c), square<KING>(c));
 }
 
 inline bool Position::pawn_passed(Color c, Square s) const {

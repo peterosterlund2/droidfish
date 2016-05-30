@@ -26,11 +26,9 @@
 #include "thread.h"
 #include "uci.h"
 
-using namespace Search;
-
 ThreadPool Threads; // Global object
 
-/// Thread constructor launch the thread and then wait until it goes to sleep
+/// Thread constructor launches the thread and then waits until it goes to sleep
 /// in idle_loop().
 
 Thread::Thread() {
@@ -48,7 +46,7 @@ Thread::Thread() {
 }
 
 
-/// Thread destructor wait for thread termination before returning
+/// Thread destructor waits for thread termination before returning
 
 Thread::~Thread() {
 
@@ -60,7 +58,8 @@ Thread::~Thread() {
 }
 
 
-/// Thread::wait_for_search_finished() wait on sleep condition until not searching
+/// Thread::wait_for_search_finished() waits on sleep condition
+/// until not searching
 
 void Thread::wait_for_search_finished() {
 
@@ -69,7 +68,7 @@ void Thread::wait_for_search_finished() {
 }
 
 
-/// Thread::wait() wait on sleep condition until condition is true
+/// Thread::wait() waits on sleep condition until condition is true
 
 void Thread::wait(std::atomic_bool& condition) {
 
@@ -78,7 +77,7 @@ void Thread::wait(std::atomic_bool& condition) {
 }
 
 
-/// Thread::start_searching() wake up the thread that will start the search
+/// Thread::start_searching() wakes up the thread that will start the search
 
 void Thread::start_searching(bool resume) {
 
@@ -115,7 +114,7 @@ void Thread::idle_loop() {
 }
 
 
-/// ThreadPool::init() create and launch requested threads, that will go
+/// ThreadPool::init() creates and launches requested threads that will go
 /// immediately to sleep. We cannot use a constructor because Threads is a
 /// static object and we need a fully initialized engine at this point due to
 /// allocation of Endgames in the Thread constructor.
@@ -127,9 +126,9 @@ void ThreadPool::init() {
 }
 
 
-/// ThreadPool::exit() terminate threads before the program exits. Cannot be
+/// ThreadPool::exit() terminates threads before the program exits. Cannot be
 /// done in destructor because threads must be terminated before deleting any
-/// static objects, so while still in main().
+/// static objects while still in main().
 
 void ThreadPool::exit() {
 
@@ -156,7 +155,7 @@ void ThreadPool::read_uci_options() {
 }
 
 
-/// ThreadPool::nodes_searched() return the number of nodes searched
+/// ThreadPool::nodes_searched() returns the number of nodes searched
 
 int64_t ThreadPool::nodes_searched() {
 
@@ -167,29 +166,41 @@ int64_t ThreadPool::nodes_searched() {
 }
 
 
-/// ThreadPool::start_thinking() wake up the main thread sleeping in idle_loop()
-/// and start a new search, then return immediately.
+/// ThreadPool::start_thinking() wakes up the main thread sleeping in idle_loop()
+/// and starts a new search, then returns immediately.
 
-void ThreadPool::start_thinking(const Position& pos, const LimitsType& limits,
-                                StateStackPtr& states) {
+void ThreadPool::start_thinking(const Position& pos, StateListPtr& states,
+                                const Search::LimitsType& limits) {
 
   main()->wait_for_search_finished();
 
-  Signals.stopOnPonderhit = Signals.stop = false;
-
-  main()->rootMoves.clear();
-  main()->rootPos = pos;
-  Limits = limits;
-  if (states.get()) // If we don't set a new position, preserve current state
-  {
-      SetupStates = std::move(states); // Ownership transfer here
-      assert(!states.get());
-  }
+  Search::Signals.stopOnPonderhit = Search::Signals.stop = false;
+  Search::Limits = limits;
+  Search::RootMoves rootMoves;
 
   for (const auto& m : MoveList<LEGAL>(pos))
       if (   limits.searchmoves.empty()
           || std::count(limits.searchmoves.begin(), limits.searchmoves.end(), m))
-          main()->rootMoves.push_back(RootMove(m));
+          rootMoves.push_back(Search::RootMove(m));
+
+  // After ownership transfer 'states' becomes empty, so if we stop the search
+  // and call 'go' again without setting a new position states.get() == NULL.
+  assert(states.get() || setupStates.get());
+
+  if (states.get())
+      setupStates = std::move(states); // Ownership transfer, states is now empty
+
+  StateInfo tmp = setupStates->back();
+
+  for (Thread* th : Threads)
+  {
+      th->maxPly = 0;
+      th->rootDepth = DEPTH_ZERO;
+      th->rootMoves = rootMoves;
+      th->rootPos.set(pos.fen(), pos.is_chess960(), &setupStates->back(), th);
+  }
+
+  setupStates->back() = tmp; // Restore st->previous, cleared by Position::set()
 
   main()->start_searching();
 }
