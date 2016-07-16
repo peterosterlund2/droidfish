@@ -343,31 +343,30 @@ void Tablebases::init(const std::string& path)
         init_tb(str);
       }
 
-
   if (sizeof(char*) >= 8) {
-    for (i = 1; i < 6; i++)
-      for (j = i; j < 6; j++)
-        for (k = i; k < 6; k++)
-          for (l = (i == k) ? j : k; l < 6; l++) {
-            sprintf(str, "K%c%cvK%c%c", pchr[i], pchr[j], pchr[k], pchr[l]);
-            init_tb(str);
-          }
-  
-    for (i = 1; i < 6; i++)
-      for (j = i; j < 6; j++)
-        for (k = j; k < 6; k++)
-          for (l = 1; l < 6; l++) {
-            sprintf(str, "K%c%c%cvK%c", pchr[i], pchr[j], pchr[k], pchr[l]);
-            init_tb(str);
-          }
-  
-    for (i = 1; i < 6; i++)
-      for (j = i; j < 6; j++)
-        for (k = j; k < 6; k++)
-          for (l = k; l < 6; l++) {
-            sprintf(str, "K%c%c%c%cvK", pchr[i], pchr[j], pchr[k], pchr[l]);
-            init_tb(str);
-          }
+  for (i = 1; i < 6; i++)
+    for (j = i; j < 6; j++)
+      for (k = i; k < 6; k++)
+        for (l = (i == k) ? j : k; l < 6; l++) {
+          sprintf(str, "K%c%cvK%c%c", pchr[i], pchr[j], pchr[k], pchr[l]);
+          init_tb(str);
+        }
+
+  for (i = 1; i < 6; i++)
+    for (j = i; j < 6; j++)
+      for (k = j; k < 6; k++)
+        for (l = 1; l < 6; l++) {
+          sprintf(str, "K%c%c%cvK%c", pchr[i], pchr[j], pchr[k], pchr[l]);
+          init_tb(str);
+        }
+
+  for (i = 1; i < 6; i++)
+    for (j = i; j < 6; j++)
+      for (k = j; k < 6; k++)
+        for (l = k; l < 6; l++) {
+          sprintf(str, "K%c%c%c%cvK", pchr[i], pchr[j], pchr[k], pchr[l]);
+          init_tb(str);
+        }
   }
 
   printf("info string Found %d tablebases.\n", TBnum_piece + TBnum_pawn);
