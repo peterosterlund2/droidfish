@@ -270,8 +270,10 @@ public class ExternalEngine extends UCIEngineBase {
         data += "\n";
         try {
             Process ep = engineProc;
-            if (ep != null)
+            if (ep != null) {
                 ep.getOutputStream().write(data.getBytes());
+                ep.getOutputStream().flush();
+            }
         } catch (IOException e) {
         }
     }
