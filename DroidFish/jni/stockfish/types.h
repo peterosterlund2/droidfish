@@ -183,13 +183,13 @@ enum Value : int {
   VALUE_MATE_IN_MAX_PLY  =  VALUE_MATE - 2 * MAX_PLY,
   VALUE_MATED_IN_MAX_PLY = -VALUE_MATE + 2 * MAX_PLY,
 
-  PawnValueMg   = 198,   PawnValueEg   = 258,
-  KnightValueMg = 817,   KnightValueEg = 896,
-  BishopValueMg = 836,   BishopValueEg = 907,
-  RookValueMg   = 1270,  RookValueEg   = 1356,
-  QueenValueMg  = 2521,  QueenValueEg  = 2658,
+  PawnValueMg   = 188,   PawnValueEg   = 248,
+  KnightValueMg = 753,   KnightValueEg = 832,
+  BishopValueMg = 826,   BishopValueEg = 897,
+  RookValueMg   = 1285,  RookValueEg   = 1371,
+  QueenValueMg  = 2513,  QueenValueEg  = 2650,
 
-  MidgameLimit  = 15581, EndgameLimit  = 3998
+  MidgameLimit  = 15258, EndgameLimit  = 3915
 };
 
 enum PieceType {
@@ -204,6 +204,10 @@ enum Piece {
   B_PAWN = 9, B_KNIGHT, B_BISHOP, B_ROOK, B_QUEEN, B_KING,
   PIECE_NB = 16
 };
+
+const Piece Pieces[] = { W_PAWN, W_KNIGHT, W_BISHOP, W_ROOK, W_QUEEN, W_KING,
+                         B_PAWN, B_KNIGHT, B_BISHOP, B_ROOK, B_QUEEN, B_KING };
+extern Value PieceValue[PHASE_NB][PIECE_NB];
 
 enum Depth {
 
@@ -261,22 +265,22 @@ enum Rank {
 enum Score : int { SCORE_ZERO };
 
 inline Score make_score(int mg, int eg) {
-  return Score((mg << 16) + eg);
+  return Score((eg << 16) + mg);
 }
 
 /// Extracting the signed lower and upper 16 bits is not so trivial because
 /// according to the standard a simple cast to short is implementation defined
 /// and so is a right shift of a signed integer.
-inline Value mg_value(Score s) {
-
-  union { uint16_t u; int16_t s; } mg = { uint16_t(unsigned(s + 0x8000) >> 16) };
-  return Value(mg.s);
-}
-
 inline Value eg_value(Score s) {
 
-  union { uint16_t u; int16_t s; } eg = { uint16_t(unsigned(s)) };
+  union { uint16_t u; int16_t s; } eg = { uint16_t(unsigned(s + 0x8000) >> 16) };
   return Value(eg.s);
+}
+
+inline Value mg_value(Score s) {
+
+  union { uint16_t u; int16_t s; } mg = { uint16_t(unsigned(s)) };
+  return Value(mg.s);
 }
 
 #define ENABLE_BASE_OPERATORS_ON(T)                             \
@@ -326,14 +330,16 @@ inline Score operator/(Score s, int i) {
   return make_score(mg_value(s) / i, eg_value(s) / i);
 }
 
-extern Value PieceValue[PHASE_NB][PIECE_NB];
-
 inline Color operator~(Color c) {
-  return Color(c ^ BLACK);
+  return Color(c ^ BLACK); // Toggle color
 }
 
 inline Square operator~(Square s) {
   return Square(s ^ SQ_A8); // Vertical flip SQ_A1 -> SQ_A8
+}
+
+inline Piece operator~(Piece pc) {
+  return Piece(pc ^ 8); // Swap color of piece B_KNIGHT -> W_KNIGHT
 }
 
 inline CastlingRight operator|(Color c, CastlingSide s) {
@@ -349,11 +355,11 @@ inline Value mated_in(int ply) {
 }
 
 inline Square make_square(File f, Rank r) {
-  return Square((r << 3) | f);
+  return Square((r << 3) + f);
 }
 
 inline Piece make_piece(Color c, PieceType pt) {
-  return Piece((c << 3) | pt);
+  return Piece((c << 3) + pt);
 }
 
 inline PieceType type_of(Piece pc) {
@@ -415,12 +421,12 @@ inline PieceType promotion_type(Move m) {
 }
 
 inline Move make_move(Square from, Square to) {
-  return Move(to | (from << 6));
+  return Move((from << 6) + to);
 }
 
 template<MoveType T>
 inline Move make(Square from, Square to, PieceType pt = KNIGHT) {
-  return Move(to | (from << 6) | T | ((pt - KNIGHT) << 12));
+  return Move(T + ((pt - KNIGHT) << 12) + (from << 6) + to);
 }
 
 inline bool is_ok(Move m) {
