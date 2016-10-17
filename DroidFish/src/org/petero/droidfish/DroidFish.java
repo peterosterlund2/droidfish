@@ -21,6 +21,7 @@ package org.petero.droidfish;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,6 +44,7 @@ import org.petero.droidfish.activities.EditPGNLoad;
 import org.petero.droidfish.activities.EditPGNSave;
 import org.petero.droidfish.activities.LoadFEN;
 import org.petero.droidfish.activities.LoadScid;
+import org.petero.droidfish.activities.PGNFile;
 import org.petero.droidfish.activities.Preferences;
 import org.petero.droidfish.book.BookOptions;
 import org.petero.droidfish.engine.EngineUtil;
@@ -162,7 +164,6 @@ public class DroidFish extends Activity
 
     // FIXME!!! Show extended book info. (Win percent, number of games, performance rating, etc.)
     // FIXME!!! Green color for "main move". Red color for "don't play in tournaments" moves.
-    // FIXME!!! ECO opening codes
 
     // FIXME!!! Option to display coordinates in border outside chess board.
 
@@ -262,6 +263,11 @@ public class DroidFish extends Activity
 
     private boolean guideShowOnStart;
     private TourGuide tourGuide;
+    
+    private Thread thread;
+    private TextView eco_tv;
+    private PGNFile eco_pgn;
+    private String prevMoves;
 
 
     /** Defines all configurable button actions. */
@@ -417,6 +423,8 @@ public class DroidFish extends Activity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        initECO();
 
         Pair<String,String> pair = getPgnOrFenIntent();
         String intentPgnOrFen = pair.first;
@@ -759,6 +767,8 @@ public class DroidFish extends Activity
             tourGuide.cleanUp();
             tourGuide = null;
         }
+        clearECO();
+        updateECO();
     }
 
     /** Return true if the current orientation is landscape. */
@@ -787,6 +797,7 @@ public class DroidFish extends Activity
         overrideViewAttribs();
 
         // title lines need to be regenerated every time due to layout changes (rotations)
+        eco_tv = (TextView)findViewById(R.id.eco_code);
         firstTitleLine = findViewById(R.id.first_title_line);
         secondTitleLine = findViewById(R.id.second_title_line);
         whiteTitleText = (TextView)findViewById(R.id.white_clock);
@@ -1880,6 +1891,7 @@ public class DroidFish extends Activity
             int y = (line - 1) * moveList.getLineHeight();
             moveListScroll.scrollTo(0, y);
         }
+        updateECO();
     }
 
     @Override
@@ -2109,6 +2121,7 @@ public class DroidFish extends Activity
         ctrl.startGame();
         setBoardFlip(true);
         updateEngineTitle();
+        clearECO();
     }
 
     private final Dialog promoteDialog() {
@@ -3928,5 +3941,70 @@ public class DroidFish extends Activity
             }
             currNode = node;
         }
+    }
+    
+    private  void initECO(){
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                File f = new File(getFilesDir()+"/eco.pgn");
+                try {
+                    InputStream is = getAssets().open("eco.pgn");
+                    int size = is.available();
+                    byte[] buffer = new byte[size];
+                    is.read(buffer);
+                    is.close();
+                    FileOutputStream fos = new FileOutputStream(f);
+                    fos.write(buffer);
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                eco_pgn = new PGNFile(f.getPath());
+            }
+        })).start();
+    }
+
+    private void clearECO(){
+        prevMoves = "";
+        eco_tv.setText("");
+    }
+
+    private void updateECO(){
+        if(eco_pgn == null) return;
+        if(thread != null && thread.isAlive()) thread.interrupt();
+        thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Pair<List<Node>, Integer> mvList = ctrl.getMvList();
+                String lsMove = "";
+                String ECO = null;
+                for(int i = 0; i < (mvList.first.size() > 28 ? 28 : mvList.first.size()); i++){
+                    if(thread.isInterrupted()) return;
+                    lsMove = lsMove + mvList.first.get(i).moveStr + " ";
+                }
+                if(lsMove.length() <= 0) return;
+                if(lsMove.equals(prevMoves)) return;
+                prevMoves = lsMove;
+                while ((lsMove.lastIndexOf(" ") > 0 || lsMove.length() == 2) && !thread.isInterrupted()) {
+                    ECO = eco_pgn.getECO(lsMove);
+                    if (ECO != null)
+                        break;
+                    lsMove = lsMove.substring(0, lsMove.lastIndexOf(" "));
+                }
+                if(!thread.isInterrupted())
+                    writeECO(ECO);
+            }
+        });
+        thread.start();
+    }
+
+    public void writeECO(final String ECO){
+        runOnUIThread(new Runnable() {
+            @Override
+            public void run() {
+                if(ECO != null) eco_tv.setText(ECO);
+            }
+        });
     }
 }

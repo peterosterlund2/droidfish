@@ -335,4 +335,52 @@ public class PGNFile {
     final boolean delete() {
         return fileName.delete();
     }
+    
+    public final String getECO(String pgn) {
+        try {
+            BufferedRandomAccessFileReader f = new BufferedRandomAccessFileReader(fileName.getAbsolutePath());
+            String ECO = null;
+            String Opening = null;
+            String Variation = null;
+            while (true) {
+                String line = f.readLine();
+                if (line == null)
+                    break; // EOF
+                int len = line.length();
+                if (len == 0)
+                    continue;
+                if (line.startsWith("[ECO ")) {
+                    if (len >= 9) {
+                        ECO = line.substring(6, len - 2);
+                        continue;
+                    }
+                }
+                if (line.startsWith("[Opening ")) {
+                    if (len >= 9) {
+                        Opening = line.substring(10, len - 2);
+                        continue;
+                    }
+                }
+                if (line.startsWith("[Variation ")) {
+                    if (len >= 9) {
+                        Variation = line.substring(12, len - 2);
+                        continue;
+                    }
+                }
+                if(line.startsWith(pgn)){
+                    if(line.length() >= pgn.length() + 2){
+                        String text = line.substring(line.indexOf(pgn), line.indexOf(pgn) + pgn.length() + 2);
+                        if(text.contains("*")){
+                            if(Variation != null)
+                                return ECO + ": " + Opening + ", " + Variation;
+                            else
+                                return ECO + ": " + Opening;
+                        }
+                    }
+                }
+                Variation = null;
+            }
+        }catch (IOException e){}
+        return null;
+    }
 }

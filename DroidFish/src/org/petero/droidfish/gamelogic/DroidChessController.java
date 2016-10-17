@@ -1189,4 +1189,8 @@ public class DroidChessController {
         if (game.getGameState() != GameState.ALIVE) return true;
         return false;
     }
+    
+    public Pair<List<Node>, Integer> getMvList(){
+    	return game.tree.getMoveList();
+    }
 }

@@ -999,7 +999,7 @@ public class GameTree {
      *  The root node is special in that it doesn't have a move.
      */
     public static class Node {
-        String moveStr;             // String representation of move leading to this node. Empty string in root node.
+        public String moveStr;             // String representation of move leading to this node. Empty string in root node.
         String moveStrLocal;        // Localized version of moveStr
         Move move;                  // Computed on demand for better PGN parsing performance.
                                     // Subtrees of invalid moves will be dropped when detected.

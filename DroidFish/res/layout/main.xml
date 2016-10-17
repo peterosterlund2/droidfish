@@ -76,6 +76,11 @@
             </ImageButton>
         </LinearLayout>
     </LinearLayout>
+    <TextView
+        android:id="@+id/eco_code"
+        android:textSize="12sp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
     <view
         class="org.petero.droidfish.MyRelativeLayout"
         android:orientation="vertical"
