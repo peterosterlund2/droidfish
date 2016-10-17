@@ -676,6 +676,7 @@ public class DroidChessController {
         private long currNodes = 0;
         private int currNps = 0;
         private long currTBHits = 0;
+        private int currHash = 0;
         private int currTime = 0;
 
         private boolean whiteMove = true;
@@ -760,6 +761,8 @@ public class DroidChessController {
                     }
                     statStrTmp.append(String.format(Locale.US, " tb:%d%s", tbHits, tbHitsPrefix));
                 }
+                if (currHash > 0)
+                    statStrTmp.append(String.format(Locale.US, " h:%d", currHash / 10));
             }
             final String statStr = statStrTmp.toString();
             final String newPV = buf.toString();
@@ -816,6 +819,7 @@ public class DroidChessController {
                 currNodes = pv.nodes;
                 currNps = pv.nps;
                 currTBHits = pv.tbHits;
+                currHash = pv.hash;
 
                 StringBuilder buf = new StringBuilder();
                 Position tmpPos = new Position(pos);
@@ -842,10 +846,11 @@ public class DroidChessController {
         }
 
         @Override
-        public void notifyStats(int id, long nodes, int nps, long tbHits, int time) {
+        public void notifyStats(int id, long nodes, int nps, long tbHits, int hash, int time) {
             currNodes = nodes;
             currNps = nps;
             currTBHits = tbHits;
+            currHash = hash;
             currTime = time;
             setSearchInfo(id);
         }
