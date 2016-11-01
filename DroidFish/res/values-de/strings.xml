@@ -326,7 +326,9 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_custom_button_2">Benutzerdefinierte Taste 2</string>
   <string name="prefs_custom_button_3">Benutzerdefinierte Taste 3</string>
   <string name="prefs_colors_title">Farbeinstellungen</string>
+  <!-- Color Picker -->
   <string name="press_color_to_apply">Gewählte Farbe wird verwendet</string>
+  <!--  End color Picker -->
   <string name="prefs_colors_summary">Einzelne Farben ändern</string>
   <string name="prefs_chess_board">Spielfeld</string>
   <string name="prefs_color_brightSquare_title">Helle Felder</string>

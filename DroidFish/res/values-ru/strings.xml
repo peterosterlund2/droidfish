@@ -47,7 +47,7 @@
   <string name="initial_position">Начальная позиция</string>
   <string name="castling_flags">Метки рокировки</string>
   <string name="en_passant_file">Взятие на проходе</string>
-  <string name="move_counters">Счетчик ходов</string>
+  <string name="move_counters">Переместить счетчики</string>
   <string name="paste_position">Вставить позицию</string>
   <string name="edit_board">Редактировать доску</string>
   <string name="select_side_to_move_first">Выбрать место для перемещения фигуры</string>
@@ -316,7 +316,9 @@
   <string name="prefs_custom_button_2">Пользовательская кнопка 2</string>
   <string name="prefs_custom_button_3">Пользовательская кнопка 3</string>
   <string name="prefs_colors_title">Настройка цвета</string>
+  <!-- Color Picker -->
   <string name="press_color_to_apply">Нажмите на цвет, чтобы применить</string>
+  <!--  End color Picker -->
   <string name="prefs_colors_summary">Изменить индивидуальные настройки цвета</string>
   <string name="prefs_chess_board">Шахматная доска</string>
   <string name="prefs_color_brightSquare_title">Светлые клетки</string>

@@ -323,7 +323,9 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="prefs_custom_button_2">Bouton personnalisé 2</string>
   <string name="prefs_custom_button_3">Bouton personnalisé 3</string>
   <string name="prefs_colors_title">Paramètres des couleurs</string>
+  <!-- Color Picker -->
   <string name="press_color_to_apply">Toucher la Couleur pour l\'appliquer</string>
+  <!--  End color Picker -->
   <string name="prefs_colors_summary">Changer les couleurs séparément</string>
   <string name="prefs_chess_board">Échiquier</string>
   <string name="prefs_color_brightSquare_title">Cases claires</string>
@@ -412,17 +414,17 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="prefs_guideShowOnStart_title">Guide de démarrage</string>
   <string name="prefs_guideShowOnStart_summary">Afficher le guide de démarrage à la prochaine ouverture du programme.</string>
   <string name="tour_leftMenu_title">Menu de gauche</string>
-  <string name="tour_leftMenu_desc">To open the left menu, tap on the left side of the title bar or swipe from the left side of the screen towards the right side.</string>
-  <string name="tour_rightMenu_title">Right Menu</string>
-  <string name="tour_rightMenu_desc">To open the right menu, tap on the right side of the title bar or swipe from the right side of the screen towards the left side.</string>
-  <string name="tour_chessBoard_title">Chess Board</string>
-  <string name="tour_chessBoard_desc">Touch and hold the chess board to open the tools menu.</string>
-  <string name="tour_buttons_title">Buttons</string>
-  <string name="tour_buttons_desc">Tap a button to invoke its action. Touch and hold a button to open a menu containing secondary actions. To configure button actions go to Left Menu &gt; Settings &gt; Behavior &gt; Configure Buttons.</string>
-  <string name="tour_moveList_title">Move List</string>
-  <string name="tour_moveList_desc">Tap a move in the move list to set the chess board to the corresponding position. Touch and hold the move list to open the Edit Game menu.</string>
-  <string name="tour_analysis_title">Analysis information</string>
-  <string name="tour_analysis_desc">When the engine is thinking, touch and hold the analysis information to open the Analysis menu.</string>
+  <string name="tour_leftMenu_desc">Pour ouvrir le menu gauche, appuyer sur le coté gauche de la barre de titre, ou faire glisser du coté gauche de l’écran vers la droite.</string>
+  <string name="tour_rightMenu_title">Menu de droite</string>
+  <string name="tour_rightMenu_desc">Pour ouvrir le menu droite, appuyer sur le coté droit de la barre de titre, ou faire glisser du coté droit de l’écran vers la gauche.</string>
+  <string name="tour_chessBoard_title">Echiquier</string>
+  <string name="tour_chessBoard_desc">Toucher l’échiquier et rester Appuyé pour ouvrir le menu outils.</string>
+  <string name="tour_buttons_title">Boutons</string>
+  <string name="tour_buttons_desc">Appuie sur un bouton pour exécuter son action. Reste appuyé sur un bouton pour ouvrir le menu contenant des actions secondaires. Pour configurer les actions des boutons, va dans Left Menu &gt; Settings &gt; Behavior &gt; Configure Buttons.</string>
+  <string name="tour_moveList_title">Liste des coups</string>
+  <string name="tour_moveList_desc">Entre un coup dans la liste de coups pour faire mettre la position correspondante en place. Reste appuyé sur la liste de coups pour faire apparaître le menu d\'édition du jeu.</string>
+  <string name="tour_analysis_title">Information d\'analyses</string>
+  <string name="tour_analysis_desc">Quand l\'ordinateur réfléchit, reste appuyé sur les données d\'information pour ouvrir le menu d\'analyses.</string>
   <string name="buttonDesc_custom1">@string/prefs_custom_button_1</string>
   <string name="buttonDesc_custom2">@string/prefs_custom_button_2</string>
   <string name="buttonDesc_custom3">@string/prefs_custom_button_3</string>
