@@ -131,6 +131,7 @@ you are not actively using the program.\
     <string name="toggle_analysis">Toggle Engine Analysis</string>
     <string name="toggle_large_buttons">Toggle Large Buttons</string>
     <string name="toggle_blind_mode">Toggle Blindfold Mode</string>
+    <string name="toggle_arrows">Toggle Arrows</string>
     <string name="cancel">Cancel</string>
     <string name="reset">Reset</string>
     <string name="yes">Yes</string>
@@ -650,6 +651,7 @@ you are not actively using the program.\
         <item>@string/toggle_pgn_headers</item>
         <item>@string/toggle_large_buttons</item>
         <item>@string/toggle_blind_mode</item>
+        <item>@string/toggle_arrows</item>
         <item>@string/load_last_file</item>
         <item>@string/select_engine</item>
         <item>@string/engine_options</item>
@@ -665,6 +667,7 @@ you are not actively using the program.\
         <item>viewHeaders</item>
         <item>largeButtons</item>
         <item>blindMode</item>
+        <item>toggleArrows</item>
         <item>loadLastFile</item>
         <item>selectEngine</item>
         <item>engineOptions</item>

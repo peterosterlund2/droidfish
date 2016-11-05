@@ -405,6 +405,28 @@ public class DroidFish extends Activity
                     setEngineOptions();
                 }
             });
+            addAction(new UIAction() {
+                public String getId() { return "toggleArrows"; }
+                public int getName() { return R.string.toggle_arrows; }
+                public int getIcon() { return R.raw.custom; }
+                public boolean enabled() { return true; }
+                public void run() {
+                    String numArrows = settings.getString("thinkingArrows", "4");
+                    Editor editor = settings.edit();
+                    if (!numArrows.equals("0")) {
+                        editor.putString("thinkingArrows", "0");
+                        editor.putString("oldThinkingArrows", numArrows);
+                    } else {
+                        String oldNumArrows = settings.getString("oldThinkingArrows", "0");
+                        if (oldNumArrows.equals("0"))
+                            oldNumArrows = "4";
+                        editor.putString("thinkingArrows", oldNumArrows);
+                    }
+                    editor.commit();
+                    maxNumArrows = getIntSetting("thinkingArrows", 4);
+                    updateThinkingInfo();
+                }
+            });
         }
 
         @Override
@@ -1138,7 +1160,7 @@ public class DroidFish extends Activity
         numPV = settings.getInt("numPV", 1);
         ctrl.setMultiPVMode(numPV);
         mWhiteBasedScores = settings.getBoolean("whiteBasedScores", false);
-        maxNumArrows = getIntSetting("thinkingArrows", 2);
+        maxNumArrows = getIntSetting("thinkingArrows", 4);
         mShowBookHints = settings.getBoolean("bookHints", false);
 
         String engine = settings.getString("engine", "stockfish");
