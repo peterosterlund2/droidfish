@@ -122,7 +122,7 @@ public abstract class ChessBoard extends View {
         decorationPaint.setAntiAlias(true);
 
         moveMarkPaint = new ArrayList<Paint>();
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < ColorTheme.MAX_ARROWS; i++) {
             Paint p = new Paint();
             p.setStyle(Paint.Style.FILL);
             p.setAntiAlias(true);
@@ -150,7 +150,7 @@ public abstract class ChessBoard extends View {
         blackPiecePaint.setColor(ct.getColor(ColorTheme.DARK_PIECE));
         labelPaint.setColor(ct.getColor(ColorTheme.SQUARE_LABEL));
         decorationPaint.setColor(ct.getColor(ColorTheme.DECORATION));
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < ColorTheme.MAX_ARROWS; i++)
             moveMarkPaint.get(i).setColor(ct.getColor(ColorTheme.ARROW_0 + i));
 
         invalidate();

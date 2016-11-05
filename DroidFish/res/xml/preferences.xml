@@ -254,15 +254,27 @@
                     android:key="color_arrow4" 
                     android:title="@string/prefs_color_arrow4_title" 
                     alphaSlider="true" 
-                    android:defaultValue="#1E1F1FFF">
+                    android:defaultValue="#371F1FFF">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
                 <net.margaritov.preference.colorpicker.ColorPickerPreference 
                     android:key="color_arrow5" 
                     android:title="@string/prefs_color_arrow5_title" 
                     alphaSlider="true" 
+                    android:defaultValue="#3C1FFF1F">
+                </net.margaritov.preference.colorpicker.ColorPickerPreference>
+                <net.margaritov.preference.colorpicker.ColorPickerPreference 
+                    android:key="color_arrow6"
+                    android:title="@string/prefs_color_arrow6_title"
+                    alphaSlider="true"
+                    android:defaultValue="#1E1F1FFF">
+                </net.margaritov.preference.colorpicker.ColorPickerPreference>
+                <net.margaritov.preference.colorpicker.ColorPickerPreference 
+                    android:key="color_arrow7"
+                    android:title="@string/prefs_color_arrow7_title"
+                    alphaSlider="true"
                     android:defaultValue="#281FFF1F">
-                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
-                 <net.margaritov.preference.colorpicker.ColorPickerPreference 
+                </net.margaritov.preference.colorpicker.ColorPickerPreference>
+                <net.margaritov.preference.colorpicker.ColorPickerPreference 
                      android:key="color_squareLabel" 
                      android:title="@string/prefs_color_squareLabel_title" 
                      alphaSlider="true" 
