@@ -39,7 +39,7 @@ public class GameTree {
     String event, site, date, round, white, black;
     // Result is the last tag pair in the STR, but it is computed on demand from the game tree.
 
-    Position startPos;
+    public Position startPos;
     private String timeControl, whiteTimeControl, blackTimeControl;
 
     // Non-standard tags
@@ -49,8 +49,8 @@ public class GameTree {
     }
     private List<TagPair> tagPairs;
 
-    Node rootNode;
-    Node currentNode;
+    public Node rootNode;
+    public Node currentNode;
     Position currentPos;    // Cached value. Computable from "currentNode".
 
     private final PgnToken.PgnTokenReceiver gameStateListener;
@@ -1001,7 +1001,7 @@ public class GameTree {
     public static class Node {
         String moveStr;             // String representation of move leading to this node. Empty string in root node.
         String moveStrLocal;        // Localized version of moveStr
-        Move move;                  // Computed on demand for better PGN parsing performance.
+        public Move move;           // Computed on demand for better PGN parsing performance.
                                     // Subtrees of invalid moves will be dropped when detected.
                                     // Always valid for current node.
         private UndoInfo ui;        // Computed when move is computed
@@ -1014,7 +1014,7 @@ public class GameTree {
 
         private Node parent;        // Null if root node
         int defaultChild;
-        private List<Node> children;
+        private ArrayList<Node> children;
 
         public Node() {
             this.moveStr = "";
@@ -1073,7 +1073,7 @@ public class GameTree {
                 }
             }
             if (anyToRemove) {
-                List<Node> validChildren = new ArrayList<Node>();
+                ArrayList<Node> validChildren = new ArrayList<Node>();
                 for (Node child : children)
                     if (child.move != null)
                         validChildren.add(child);
@@ -1510,7 +1510,7 @@ public class GameTree {
     }
 
     /** Get PGN header tags and values. */
-    void getHeaders(Map<String,String> headers) {
+    public void getHeaders(Map<String,String> headers) {
         headers.put("Event", event);
         headers.put("Site",  site);
         headers.put("Date",  date);

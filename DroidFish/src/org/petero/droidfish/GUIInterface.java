@@ -59,6 +59,7 @@ public interface GUIInterface {
         public String bookInfo;
         public ArrayList<ArrayList<Move>> pvMoves;
         public ArrayList<Move> bookMoves;
+        public String eco;
     }
 
     /** Update the computer thinking information. */

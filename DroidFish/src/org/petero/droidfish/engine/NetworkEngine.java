@@ -27,8 +27,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import org.petero.droidfish.EngineOptions;
+import org.petero.droidfish.FileUtil;
 import org.petero.droidfish.R;
-import org.petero.droidfish.Util;
 
 import android.content.Context;
 
@@ -71,7 +71,7 @@ public class NetworkEngine extends UCIEngineBase {
             boolean ok = false;
             if (EngineUtil.isNetEngine(fileName)) {
                 try {
-                    String[] lines = Util.readFile(fileName);
+                    String[] lines = FileUtil.readFile(fileName);
                     if (lines.length >= 3) {
                         host = lines[1];
                         port = lines[2];

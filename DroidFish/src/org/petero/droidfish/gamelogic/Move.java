@@ -45,6 +45,11 @@ public class Move {
         this.promoteTo = m.promoteTo;
     }
 
+    /** Create object from compressed representation. */
+    public static Move fromCompressed(int cm) {
+        return new Move((cm >> 10) & 63, (cm >> 4) & 63, cm & 15);
+    }
+
     @Override
     public boolean equals(Object o) {
         if ((o == null) || (o.getClass() != this.getClass()))
@@ -60,6 +65,11 @@ public class Move {
     }
     @Override
     public int hashCode() {
+        return getCompressedMove();
+    }
+
+    /** Get move as a 16-bit value. */
+    public int getCompressedMove() {
         return (from * 64 + to) * 16 + promoteTo;
     }
 

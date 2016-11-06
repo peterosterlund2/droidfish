@@ -87,7 +87,7 @@ final class InternalBook implements IOpeningBook {
         try {
             InputStream inStream = getClass().getResourceAsStream("/book.bin");
             if (inStream == null)
-                throw new IOException();
+                throw new IOException("Can't read internal opening book");
             List<Byte> buf = new ArrayList<Byte>(8192);
             byte[] tmpBuf = new byte[1024];
             while (true) {
@@ -120,8 +120,7 @@ final class InternalBook implements IOpeningBook {
         } catch (ChessParseError ex) {
             throw new RuntimeException();
         } catch (IOException ex) {
-            System.out.println("Can't read opening book resource");
-            throw new RuntimeException();
+            throw new RuntimeException("Can't read internal opening book");
         }
 /*        {
             long t1 = System.currentTimeMillis();

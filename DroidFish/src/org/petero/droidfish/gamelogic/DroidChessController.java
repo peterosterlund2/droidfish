@@ -35,6 +35,7 @@ import org.petero.droidfish.GameMode;
 import org.petero.droidfish.PGNOptions;
 import org.petero.droidfish.Util;
 import org.petero.droidfish.book.BookOptions;
+import org.petero.droidfish.book.EcoDb;
 import org.petero.droidfish.engine.DroidComputerPlayer;
 import org.petero.droidfish.engine.UCIOptions;
 import org.petero.droidfish.engine.DroidComputerPlayer.SearchRequest;
@@ -682,6 +683,7 @@ public class DroidChessController {
         private boolean whiteMove = true;
         private String bookInfo = "";
         private ArrayList<Move> bookMoves = null;
+        private String eco = ""; // ECO classification
 
         private Move ponderMove = null;
         private ArrayList<PvInfo> pvInfoV = new ArrayList<PvInfo>();
@@ -694,6 +696,7 @@ public class DroidChessController {
             currDepth = 0;
             bookInfo = "";
             bookMoves = null;
+            eco = "";
             setSearchInfo(id);
         }
 
@@ -766,7 +769,6 @@ public class DroidChessController {
             }
             final String statStr = statStrTmp.toString();
             final String newPV = buf.toString();
-            final String newBookInfo = bookInfo;
             final ArrayList<ArrayList<Move>> pvMoves = new ArrayList<ArrayList<Move>>();
             for (int i = 0; i < pvInfoV.size(); i++) {
                 if (ponderMove != null) {
@@ -783,7 +785,8 @@ public class DroidChessController {
             ti.id = id;
             ti.pvStr = newPV;
             ti.statStr = statStr;
-            ti.bookInfo = newBookInfo;
+            ti.bookInfo = bookInfo;
+            ti.eco = eco;
             ti.pvMoves = pvMoves;
             ti.bookMoves = bookMoves;
             latestThinkingInfo = ti;
@@ -856,9 +859,11 @@ public class DroidChessController {
         }
 
         @Override
-        public void notifyBookInfo(int id, String bookInfo, ArrayList<Move> moveList) {
+        public void notifyBookInfo(int id, String bookInfo, ArrayList<Move> moveList,
+                                   String eco) {
             this.bookInfo = bookInfo;
             bookMoves = moveList;
+            this.eco = eco;
             setSearchInfo(id);
         }
 
@@ -922,7 +927,8 @@ public class DroidChessController {
     private final void updateBookHints() {
         if (humansTurn()) {
             Pair<String, ArrayList<Move>> bi = computerPlayer.getBookHints(game.currPos(), localPt());
-            listener.notifyBookInfo(searchId, bi.first, bi.second);
+            String eco = EcoDb.getInstance(gui.getContext()).getEco(game.tree, game.tree.currentNode);
+            listener.notifyBookInfo(searchId, bi.first, bi.second, eco);
         }
     }
 
@@ -962,7 +968,7 @@ public class DroidChessController {
                 computerPlayer.queueAnalyzeRequest(sr);
             } else if (computersTurn || ponder) {
                 listener.clearSearchInfo(searchId);
-                listener.notifyBookInfo(searchId, "", null);
+                listener.notifyBookInfo(searchId, "", null, "");
                 final Pair<Position, ArrayList<Move>> ph = game.getUCIHistory();
                 Position currPos = new Position(game.currPos());
                 long now = System.currentTimeMillis();

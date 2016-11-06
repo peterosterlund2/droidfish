@@ -33,7 +33,7 @@ import org.petero.droidfish.gamelogic.GameTree.Node;
  */
 public class Game {
     boolean pendingDrawOffer;
-    GameTree tree;
+    public GameTree tree;
     TimeControl timeController;
     private boolean gamePaused;
     /** If true, add new moves as mainline moves. */
@@ -92,7 +92,7 @@ public class Game {
         updateTimeControl(false);
     }
 
-    final boolean readPGN(String pgn, PGNOptions options) throws ChessParseError {
+    final public boolean readPGN(String pgn, PGNOptions options) throws ChessParseError {
         boolean ret = tree.readPGN(pgn, options);
         if (ret) {
             TimeControlData tcData = tree.getTimeControlData();

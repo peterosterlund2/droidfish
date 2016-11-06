@@ -162,7 +162,6 @@ public class DroidFish extends Activity
 
     // FIXME!!! Show extended book info. (Win percent, number of games, performance rating, etc.)
     // FIXME!!! Green color for "main move". Red color for "don't play in tournaments" moves.
-    // FIXME!!! ECO opening codes
 
     // FIXME!!! Option to display coordinates in border outside chess board.
 
@@ -1450,7 +1449,7 @@ public class DroidFish extends Activity
         try {
             String engine = settings.getString("engine", "stockfish");
             if (EngineUtil.isNetEngine(engine)) {
-                String[] lines = Util.readFile(engine);
+                String[] lines = FileUtil.readFile(engine);
                 if (lines.length >= 3)
                     id = lines[1] + ":" + lines[2];
             }
@@ -1948,6 +1947,7 @@ public class DroidFish extends Activity
     private String thinkingStr1 = "";
     private String thinkingStr2 = "";
     private String bookInfoStr = "";
+    private String ecoInfoStr = "";
     private String variantStr = "";
     private ArrayList<ArrayList<Move>> pvMoves = new ArrayList<ArrayList<Move>>();
     private ArrayList<Move> bookMoves = null;
@@ -1958,8 +1958,9 @@ public class DroidFish extends Activity
         thinkingStr1 = ti.pvStr;
         thinkingStr2 = ti.statStr;
         bookInfoStr = ti.bookInfo;
-        this.pvMoves = ti.pvMoves;
-        this.bookMoves = ti.bookMoves;
+        ecoInfoStr = ti.eco;
+        pvMoves = ti.pvMoves;
+        bookMoves = ti.bookMoves;
         updateThinkingInfo();
 
         if (ctrl.computerBusy()) {
@@ -1986,18 +1987,20 @@ public class DroidFish extends Activity
             }
             thinking.setText(s, TextView.BufferType.SPANNABLE);
         }
-        if (mShowBookHints && (bookInfoStr.length() > 0)) {
-            String s = "";
-            if (!thinkingEmpty)
-                s += "<br>";
+        if (mShowBookHints && !ecoInfoStr.isEmpty()) {
+            String s = thinkingEmpty ? "" : "<br>";
+            s += ecoInfoStr;
+            thinking.append(Html.fromHtml(s));
+            thinkingEmpty = false;
+        }
+        if (mShowBookHints && !bookInfoStr.isEmpty()) {
+            String s = thinkingEmpty ? "" : "<br>";
             s += Util.boldStart + getString(R.string.book) + Util.boldStop + bookInfoStr;
             thinking.append(Html.fromHtml(s));
             thinkingEmpty = false;
         }
         if (showVariationLine && (variantStr.indexOf(' ') >= 0)) {
-            String s = "";
-            if (!thinkingEmpty)
-                s += "<br>";
+            String s = thinkingEmpty ? "" : "<br>";
             s += Util.boldStart + getString(R.string.variation) + Util.boldStop + variantStr;
             thinking.append(Html.fromHtml(s));
             thinkingEmpty = false;
@@ -2340,7 +2343,7 @@ public class DroidFish extends Activity
         WebView wv = new WebView(this);
         builder.setView(wv);
         InputStream is = getResources().openRawResource(R.raw.about);
-        String data = Util.readFromStream(is);
+        String data = FileUtil.readFromStream(is);
         if (data == null)
             data = "";
         try { is.close(); } catch (IOException e1) {}
@@ -3251,7 +3254,7 @@ public class DroidFish extends Activity
         String port = "0";
         try {
             if (EngineUtil.isNetEngine(networkEngineToConfig)) {
-                String[] lines = Util.readFile(networkEngineToConfig);
+                String[] lines = FileUtil.readFile(networkEngineToConfig);
                 if (lines.length > 1)
                     hostName = lines[1];
                 if (lines.length > 2)
@@ -3754,6 +3757,7 @@ public class DroidFish extends Activity
             return currPos;
         }
 
+        @Override
         public boolean isUpToDate() {
             return upToDate;
         }
@@ -3818,6 +3822,7 @@ public class DroidFish extends Activity
             return true;
         }
 
+        @Override
         public void processToken(Node node, int type, String token) {
             if (    (prevType == PgnToken.RIGHT_BRACKET) &&
                     (type != PgnToken.LEFT_BRACKET))  {
