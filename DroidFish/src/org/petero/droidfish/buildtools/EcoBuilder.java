@@ -44,7 +44,6 @@ public class EcoBuilder {
         int nameIdx; // Index in names array, or -1
         ArrayList<Node> children = new ArrayList<Node>();
         Node parent;
-        int lineLength; // Length in plies of line this node came from
     }
     private ArrayList<Node> nodes;
     private ArrayList<String> names;
@@ -59,7 +58,6 @@ public class EcoBuilder {
         rootNode.index = 0;
         rootNode.move = new Move(0, 0, 0);
         rootNode.nameIdx = -1;
-        rootNode.lineLength = 0;
         nodes.add(rootNode);
     }
 
@@ -80,8 +78,20 @@ public class EcoBuilder {
             gotMoves |= !isHeader;
         }
         readGame(pgn.toString());
+        setNameIndices(0);
 
         writeDataFile(ecoDatFile);
+    }
+
+    /** For all tree nodes, if nameIndex not already set,
+     *  set it from parent node nameIndex. */
+    private void setNameIndices(int nodeIdx) {
+        Node n = nodes.get(nodeIdx);
+        for (Node c : n.children) {
+            if (c.nameIdx == -1)
+                c.nameIdx = n.nameIdx;
+            setNameIndices(c.index);
+        }
     }
 
     /** Read and process one game. */
@@ -111,22 +121,14 @@ public class EcoBuilder {
             names.add(name);
         }
 
-        int lineLength = 0;
-        while (true) {
-            if (tree.variations().isEmpty())
-                break;
-            lineLength++;
-            tree.goForward(0);
-        }
-        while (tree.currentNode.getParent() != null)
-            tree.goBack();
-        
         // Add corresponding moves to data structures
         Node parent = nodes.get(0);
         while (true) {
             ArrayList<Move> moves = tree.variations();
-            if (moves.isEmpty())
+            if (moves.isEmpty()) {
+                parent.nameIdx = nameIdx;
                 break;
+            }
             Move m = moves.get(0);
             tree.goForward(0);
             int oldIdx = -1; 
@@ -140,18 +142,13 @@ public class EcoBuilder {
                 Node node = new Node();
                 node.index = nodes.size();
                 node.move = m;
-                node.nameIdx = nameIdx;
+                node.nameIdx = parent.nameIdx;
                 node.parent = parent;
-                node.lineLength = lineLength;
                 nodes.add(node);
                 parent.children.add(node);
                 parent = node;
             } else {
                 parent = parent.children.get(oldIdx);
-                if (parent.lineLength > lineLength) {
-                    parent.lineLength = lineLength;
-                    parent.nameIdx = nameIdx;
-                }
             }
         }
     }
