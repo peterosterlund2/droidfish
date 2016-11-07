@@ -130,6 +130,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="toggle_analysis">Activar análisis del motor</string>
   <string name="toggle_large_buttons">Activar botones grandes</string>
   <string name="toggle_blind_mode">Commutar modo a la ciega</string>
+  <string name="toggle_arrows">Toggle Arrows</string>
   <string name="cancel">Cancelar</string>
   <string name="reset">Reinicio</string>
   <string name="yes">Sí</string>
@@ -324,7 +325,9 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="prefs_custom_button_2">Personalización del botón 2</string>
   <string name="prefs_custom_button_3">Personalización del botón 3</string>
   <string name="prefs_colors_title">Ajustes de Color</string>
+  <!-- Color Picker -->
   <string name="press_color_to_apply">Presione en Ajustes de Color para adaptarlo</string>
+  <!--  End color Picker -->
   <string name="prefs_colors_summary">Cambia los colores individuales</string>
   <string name="prefs_chess_board">Tablero de Ajedrez</string>
   <string name="prefs_color_brightSquare_title">Casillas Blancas</string>
@@ -339,6 +342,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="prefs_color_arrow3_title">Flecha 4</string>
   <string name="prefs_color_arrow4_title">Flecha 5</string>
   <string name="prefs_color_arrow5_title">Flecha 6</string>
+  <string name="prefs_color_arrow6_title">Flecha 7</string>
+  <string name="prefs_color_arrow7_title">Flecha 8</string>
   <string name="prefs_color_squareLabel_title">Coordenadas</string>
   <string name="prefs_color_decoration_title">Recomendaciones de las Tablas</string>
   <string name="prefs_move_list">Lista de Jugadas</string>
@@ -592,6 +597,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <item>Máx. 4 Flechas</item>
     <item>Máx. 5 Flechas</item>
     <item>Máx. 6 Flechas</item>
+    <item>Máx. 7 Flechas</item>
+    <item>Máx. 8 Flechas</item>
   </string-array>
   <string-array name="thinking_arrows_values">
     <item>0</item>
@@ -601,6 +608,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <item>4</item>
     <item>5</item>
     <item>6</item>
+    <item>7</item>
+    <item>8</item>
   </string-array>
   <string-array name="scroll_sensitivity_texts">
     <item>Desconectado</item>
@@ -647,6 +656,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <item>@string/toggle_pgn_headers</item>
     <item>@string/toggle_large_buttons</item>
     <item>@string/toggle_blind_mode</item>
+    <item>@string/toggle_arrows</item>
     <item>@string/load_last_file</item>
     <item>@string/select_engine</item>
     <item>@string/engine_options</item>
@@ -662,6 +672,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <item>viewHeaders</item>
     <item>largeButtons</item>
     <item>blindMode</item>
+    <item>toggleArrows</item>
     <item>loadLastFile</item>
     <item>selectEngine</item>
     <item>engineOptions</item>

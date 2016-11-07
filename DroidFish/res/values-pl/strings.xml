@@ -131,6 +131,7 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="toggle_analysis">Włącz/wyłącz analizę przez silnik</string>
   <string name="toggle_large_buttons">Włącz/wyłącz duże przyciski</string>
   <string name="toggle_blind_mode">Włącz/wyłącz tryb \'na ślepo\'</string>
+  <string name="toggle_arrows">Toggle Arrows</string>
   <string name="cancel">Anuluj</string>
   <string name="reset">Reset</string>
   <string name="yes">Tak</string>
@@ -325,7 +326,9 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="prefs_custom_button_2">Przycisk użytkownika 2</string>
   <string name="prefs_custom_button_3">Przycisk użytkownika 3</string>
   <string name="prefs_colors_title">Ustawienia kolorów</string>
+  <!-- Color Picker -->
   <string name="press_color_to_apply">Przyciśnij kolor, żeby wybrać</string>
+  <!--  End color Picker -->
   <string name="prefs_colors_summary">Zmień poszczególne kolory</string>
   <string name="prefs_chess_board">Szachownica</string>
   <string name="prefs_color_brightSquare_title">Jasne pola</string>
@@ -340,6 +343,8 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="prefs_color_arrow3_title">Strzałka 4</string>
   <string name="prefs_color_arrow4_title">Strzałka 5</string>
   <string name="prefs_color_arrow5_title">Strzałka 6</string>
+  <string name="prefs_color_arrow6_title">Strzałka 7</string>
+  <string name="prefs_color_arrow7_title">Strzałka 8</string>
   <string name="prefs_color_squareLabel_title">Etykiety pól</string>
   <string name="prefs_color_decoration_title">Wskazówki z bazy końcówek</string>
   <string name="prefs_move_list">Lista posunięć</string>
@@ -593,6 +598,8 @@ nie korzystasz aktywnie z programu.\</string>
     <item>Maks. 4 strzałki</item>
     <item>Maks. 5 strzałek</item>
     <item>Maks. 6 strzałek</item>
+    <item>Maks. 7 strzałek</item>
+    <item>Maks. 8 strzałek</item>
   </string-array>
   <string-array name="thinking_arrows_values">
     <item>0</item>
@@ -602,6 +609,8 @@ nie korzystasz aktywnie z programu.\</string>
     <item>4</item>
     <item>5</item>
     <item>6</item>
+    <item>7</item>
+    <item>8</item>
   </string-array>
   <string-array name="scroll_sensitivity_texts">
     <item>Wyłączone</item>
@@ -648,6 +657,7 @@ nie korzystasz aktywnie z programu.\</string>
     <item>@string/toggle_pgn_headers</item>
     <item>@string/toggle_large_buttons</item>
     <item>@string/toggle_blind_mode</item>
+    <item>@string/toggle_arrows</item>
     <item>@string/load_last_file</item>
     <item>@string/select_engine</item>
     <item>@string/engine_options</item>
@@ -663,6 +673,7 @@ nie korzystasz aktywnie z programu.\</string>
     <item>viewHeaders</item>
     <item>largeButtons</item>
     <item>blindMode</item>
+    <item>toggleArrows</item>
     <item>loadLastFile</item>
     <item>selectEngine</item>
     <item>engineOptions</item>

@@ -123,6 +123,7 @@
   <string name="toggle_analysis">Passa all\'Analisi del Motore</string>
   <string name="toggle_large_buttons">Passa ai Pulsanti Grandi</string>
   <string name="toggle_blind_mode">Passa alla modalità \'alla cieca\'</string>
+  <string name="toggle_arrows">Toggle Arrows</string>
   <string name="cancel">Annulla</string>
   <string name="reset">Reset</string>
   <string name="yes">Sì</string>
@@ -317,7 +318,9 @@
   <string name="prefs_custom_button_2">Pulsante personalizzato 2</string>
   <string name="prefs_custom_button_3">Pulsante personalizzato 3</string>
   <string name="prefs_colors_title">Impostazioni colore</string>
+  <!-- Color Picker -->
   <string name="press_color_to_apply">Premere sul colore da applicare</string>
+  <!--  End color Picker -->
   <string name="prefs_colors_summary">Modificare singoli colori</string>
   <string name="prefs_chess_board">Scacchiera</string>
   <string name="prefs_color_brightSquare_title">Case chiare</string>
@@ -332,6 +335,8 @@
   <string name="prefs_color_arrow3_title">Freccia 4</string>
   <string name="prefs_color_arrow4_title">Freccia 5</string>
   <string name="prefs_color_arrow5_title">Freccia 6</string>
+  <string name="prefs_color_arrow6_title">Freccia 7</string>
+  <string name="prefs_color_arrow7_title">Freccia 8</string>
   <string name="prefs_color_squareLabel_title">Etichette di riga e colonna</string>
   <string name="prefs_color_decoration_title">Suggerimenti dal libro dei finali</string>
   <string name="prefs_move_list">Elenco mosse</string>
@@ -585,6 +590,8 @@
     <item>Al massimo 4 frecce</item>
     <item>Al massimo 5 frecce</item>
     <item>Al massimo 6 frecce</item>
+    <item>Al massimo 7 frecce</item>
+    <item>Al massimo 8 frecce</item>
   </string-array>
   <string-array name="thinking_arrows_values">
     <item>0</item>
@@ -594,6 +601,8 @@
     <item>4</item>
     <item>5</item>
     <item>6</item>
+    <item>7</item>
+    <item>8</item>
   </string-array>
   <string-array name="scroll_sensitivity_texts">
     <item>Spento</item>
@@ -640,6 +649,7 @@
     <item>@string/toggle_pgn_headers</item>
     <item>@string/toggle_large_buttons</item>
     <item>@string/toggle_blind_mode</item>
+    <item>@string/toggle_arrows</item>
     <item>@string/load_last_file</item>
     <item>@string/select_engine</item>
     <item>@string/engine_options</item>
@@ -655,6 +665,7 @@
     <item>viewHeaders</item>
     <item>largeButtons</item>
     <item>blindMode</item>
+    <item>toggleArrows</item>
     <item>loadLastFile</item>
     <item>selectEngine</item>
     <item>engineOptions</item>

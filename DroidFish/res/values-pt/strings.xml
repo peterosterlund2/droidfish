@@ -131,6 +131,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="toggle_analysis">Mostrar/Ocultar análise do software</string>
   <string name="toggle_large_buttons">Mostrar/Ocultar botões grandes</string>
   <string name="toggle_blind_mode">Trocar modo às cegas</string>
+  <string name="toggle_arrows">Toggle Arrows</string>
   <string name="cancel">Cancelar</string>
   <string name="reset">Redefinir</string>
   <string name="yes">Sim</string>
@@ -325,7 +326,9 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_custom_button_2">Botão personalizado 2</string>
   <string name="prefs_custom_button_3">Botão personalizado 3</string>
   <string name="prefs_colors_title">Configurações de cores</string>
+  <!-- Color Picker -->
   <string name="press_color_to_apply">Toque na cor para aplicar</string>
+  <!--  End color Picker -->
   <string name="prefs_colors_summary">Mudar cores individualmente</string>
   <string name="prefs_chess_board">Tabuleiro</string>
   <string name="prefs_color_brightSquare_title">Casas brancas</string>
@@ -340,6 +343,8 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_color_arrow3_title">Seta 4</string>
   <string name="prefs_color_arrow4_title">Seta 5</string>
   <string name="prefs_color_arrow5_title">Seta 6</string>
+  <string name="prefs_color_arrow6_title">Seta 7</string>
+  <string name="prefs_color_arrow7_title">Seta 8</string>
   <string name="prefs_color_squareLabel_title">Rótulos nas casas</string>
   <string name="prefs_color_decoration_title">Dicas de bases de dados</string>
   <string name="prefs_move_list">Lista de lances</string>
@@ -593,6 +598,8 @@ não estiver usando o programa diretamente.\</string>
     <item>Máximo 4 setas</item>
     <item>Máximo 5 setas</item>
     <item>Máximo 6 setas</item>
+    <item>Máximo 7 setas</item>
+    <item>Máximo 8 setas</item>
   </string-array>
   <string-array name="thinking_arrows_values">
     <item>0</item>
@@ -602,6 +609,8 @@ não estiver usando o programa diretamente.\</string>
     <item>4</item>
     <item>5</item>
     <item>6</item>
+    <item>7</item>
+    <item>8</item>
   </string-array>
   <string-array name="scroll_sensitivity_texts">
     <item>Desligado</item>
@@ -648,6 +657,7 @@ não estiver usando o programa diretamente.\</string>
     <item>@string/toggle_pgn_headers</item>
     <item>@string/toggle_large_buttons</item>
     <item>@string/toggle_blind_mode</item>
+    <item>@string/toggle_arrows</item>
     <item>@string/load_last_file</item>
     <item>@string/select_engine</item>
     <item>@string/engine_options</item>
@@ -663,6 +673,7 @@ não estiver usando o programa diretamente.\</string>
     <item>viewHeaders</item>
     <item>largeButtons</item>
     <item>blindMode</item>
+    <item>toggleArrows</item>
     <item>loadLastFile</item>
     <item>selectEngine</item>
     <item>engineOptions</item>

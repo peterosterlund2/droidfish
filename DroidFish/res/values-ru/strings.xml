@@ -122,6 +122,7 @@
   <string name="toggle_analysis">Переключатель анализа движка</string>
   <string name="toggle_large_buttons">Переключатель больших кнопок</string>
   <string name="toggle_blind_mode">Переключатель режима игры в слепую</string>
+  <string name="toggle_arrows">Toggle Arrows</string>
   <string name="cancel">Отмена</string>
   <string name="reset">Сброс</string>
   <string name="yes">Да</string>
@@ -333,6 +334,8 @@
   <string name="prefs_color_arrow3_title">Стрелка 4</string>
   <string name="prefs_color_arrow4_title">Стрелка 5</string>
   <string name="prefs_color_arrow5_title">Стрелка 6</string>
+  <string name="prefs_color_arrow6_title">Стрелка 7</string>
+  <string name="prefs_color_arrow7_title">Стрелка 8</string>
   <string name="prefs_color_squareLabel_title">Обозначения клеток</string>
   <string name="prefs_color_decoration_title">Подсказки базы данных</string>
   <string name="prefs_move_list">Список ходов</string>
@@ -586,6 +589,8 @@
     <item>Макс. 4 стрелки</item>
     <item>Макс. 5 стрелок</item>
     <item>Макс. 6 стрелок</item>
+    <item>Макс. 7 стрелок</item>
+    <item>Макс. 8 стрелок</item>
   </string-array>
   <string-array name="thinking_arrows_values">
     <item>0</item>
@@ -595,6 +600,8 @@
     <item>4</item>
     <item>5</item>
     <item>6</item>
+    <item>7</item>
+    <item>8</item>
   </string-array>
   <string-array name="scroll_sensitivity_texts">
     <item>Выкл.</item>
@@ -641,6 +648,7 @@
     <item>@string/toggle_pgn_headers</item>
     <item>@string/toggle_large_buttons</item>
     <item>@string/toggle_blind_mode</item>
+    <item>@string/toggle_arrows</item>
     <item>@string/load_last_file</item>
     <item>@string/select_engine</item>
     <item>@string/engine_options</item>
@@ -656,6 +664,7 @@
     <item>viewHeaders</item>
     <item>largeButtons</item>
     <item>blindMode</item>
+    <item>toggleArrows</item>
     <item>loadLastFile</item>
     <item>selectEngine</item>
     <item>engineOptions</item>

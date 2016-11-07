@@ -132,6 +132,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="toggle_analysis">Engine-Analyse an/aus</string>
   <string name="toggle_large_buttons">Große Tasten ein/aus</string>
   <string name="toggle_blind_mode">Blindspiel-Modus an/aus</string>
+  <string name="toggle_arrows">Pfeile an/aus</string>
   <string name="cancel">Abbrechen</string>
   <string name="reset">Zurücksetzen</string>
   <string name="yes">Ja</string>
@@ -343,6 +344,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_color_arrow3_title">Pfeil 4</string>
   <string name="prefs_color_arrow4_title">Pfeil 5</string>
   <string name="prefs_color_arrow5_title">Pfeil 6</string>
+  <string name="prefs_color_arrow6_title">Pfeil 7</string>
+  <string name="prefs_color_arrow7_title">Pfeil 8</string>
   <string name="prefs_color_squareLabel_title">Feldbeschriftung</string>
   <string name="prefs_color_decoration_title">Datenbank-Hinweise</string>
   <string name="prefs_move_list">Zugliste</string>
@@ -596,6 +599,8 @@ wenn Sie es nicht aktiv nutzen.\
     <item>Max. 4 Pfeile</item>
     <item>Max. 5 Pfeile</item>
     <item>Max. 6 Pfeile</item>
+    <item>Max. 7 Pfeile</item>
+    <item>Max. 8 Pfeile</item>
   </string-array>
   <string-array name="thinking_arrows_values">
     <item>0</item>
@@ -605,6 +610,8 @@ wenn Sie es nicht aktiv nutzen.\
     <item>4</item>
     <item>5</item>
     <item>6</item>
+    <item>7</item>
+    <item>8</item>
   </string-array>
   <string-array name="scroll_sensitivity_texts">
     <item>Aus</item>
@@ -651,6 +658,7 @@ wenn Sie es nicht aktiv nutzen.\
     <item>@string/toggle_pgn_headers</item>
     <item>@string/toggle_large_buttons</item>
     <item>@string/toggle_blind_mode</item>
+    <item>@string/toggle_arrows</item>
     <item>@string/load_last_file</item>
     <item>@string/select_engine</item>
     <item>@string/engine_options</item>
@@ -666,6 +674,7 @@ wenn Sie es nicht aktiv nutzen.\
     <item>viewHeaders</item>
     <item>largeButtons</item>
     <item>blindMode</item>
+    <item>toggleArrows</item>
     <item>loadLastFile</item>
     <item>selectEngine</item>
     <item>engineOptions</item>

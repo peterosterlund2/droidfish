@@ -130,6 +130,7 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="toggle_analysis">Engine-analyse aan/uit</string>
   <string name="toggle_large_buttons">Grote knoppen aan/uit</string>
   <string name="toggle_blind_mode">Blindschaak mode aan/uit</string>
+  <string name="toggle_arrows">Toggle Arrows</string>
   <string name="cancel">Annuleren</string>
   <string name="reset">Reset</string>
   <string name="yes">Ja</string>
@@ -324,7 +325,9 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="prefs_custom_button_2">Aangepaste knop 2</string>
   <string name="prefs_custom_button_3">Aangepaste knop 3</string>
   <string name="prefs_colors_title">Kleurinstellingen</string>
+  <!-- Color Picker -->
   <string name="press_color_to_apply">Druk op de kleur om toe te passen</string>
+  <!--  End color Picker -->
   <string name="prefs_colors_summary">Kleuren wijzigen</string>
   <string name="prefs_chess_board">Schaakbord</string>
   <string name="prefs_color_brightSquare_title">Lichte velden</string>
@@ -339,6 +342,8 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="prefs_color_arrow3_title">Pijl 4</string>
   <string name="prefs_color_arrow4_title">Pijl 5</string>
   <string name="prefs_color_arrow5_title">Pijl 6</string>
+  <string name="prefs_color_arrow6_title">Pijl 7</string>
+  <string name="prefs_color_arrow7_title">Pijl 8</string>
   <string name="prefs_color_squareLabel_title">Veld aanduidingen</string>
   <string name="prefs_color_decoration_title">Database hints</string>
   <string name="prefs_move_list">Zetten lijst</string>
@@ -592,6 +597,8 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
     <item>Max 4 pijlen</item>
     <item>Max 5 pijlen</item>
     <item>Max 6 pijlen</item>
+    <item>Max 7 pijlen</item>
+    <item>Max 8 pijlen</item>
   </string-array>
   <string-array name="thinking_arrows_values">
     <item>0</item>
@@ -601,6 +608,8 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
     <item>4</item>
     <item>5</item>
     <item>6</item>
+    <item>7</item>
+    <item>8</item>
   </string-array>
   <string-array name="scroll_sensitivity_texts">
     <item>Uit</item>
@@ -647,6 +656,7 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
     <item>@string/toggle_pgn_headers</item>
     <item>@string/toggle_large_buttons</item>
     <item>@string/toggle_blind_mode</item>
+    <item>@string/toggle_arrows</item>
     <item>@string/load_last_file</item>
     <item>@string/select_engine</item>
     <item>@string/engine_options</item>
@@ -662,6 +672,7 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
     <item>viewHeaders</item>
     <item>largeButtons</item>
     <item>blindMode</item>
+    <item>toggleArrows</item>
     <item>loadLastFile</item>
     <item>selectEngine</item>
     <item>engineOptions</item>
