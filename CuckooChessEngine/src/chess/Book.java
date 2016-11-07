@@ -189,7 +189,7 @@ public class Book {
     /** Creates the book.bin file. */
     public static void main(String[] args) throws IOException {
         List<Byte> binBook = createBinBook();
-        FileOutputStream out = new FileOutputStream("../src/book.bin");
+        FileOutputStream out = new FileOutputStream("src/book.bin");
         int bookLen = binBook.size();
         byte[] binBookA = new byte[bookLen];
         for (int i = 0; i < bookLen; i++)

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="build_binbook" name="Build assets/eco.dat">
+    <target name="build_binbook">
+        <java classpath="bin"
+              classname="chess.Book"
+              fork="yes">
+        </java>
+    </target>
+</project>
