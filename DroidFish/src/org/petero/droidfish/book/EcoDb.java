@@ -52,10 +52,14 @@ public class EcoDb {
     public String getEco(GameTree gt, GameTree.Node node) {
         ArrayList<GameTree.Node> gtNodePath = new ArrayList<GameTree.Node>();
         int nodeIdx = -1;
+        boolean inEcoTree = true;
         while (node != null) {
-            nodeIdx = findNode(node);
-            if (nodeIdx != -1)
+            CacheEntry e = findNode(node);
+            if (e != null) {
+                nodeIdx = e.nodeIdx;
+                inEcoTree = e.inEcoTree;
                 break;
+            }
             if (node == gt.rootNode) {
                 Short idx = posHashToNodeIdx.get(gt.startPos.zobristHash());
                 if (idx != null) {
@@ -68,11 +72,10 @@ public class EcoDb {
         }
         if (nodeIdx != -1) {
             Node ecoNode = readNode(nodeIdx);
-            boolean childFound = true;
             for (int i = gtNodePath.size() - 1; i >= 0; i--) {
                 GameTree.Node gtNode = gtNodePath.get(i);
                 int m = gtNode.move.getCompressedMove();
-                int child = childFound ? ecoNode.firstChild : -1;
+                int child = inEcoTree ? ecoNode.firstChild : -1;
                 while (child != -1) {
                     Node cNode = readNode(child);
                     if (cNode.move == m)
@@ -83,8 +86,8 @@ public class EcoDb {
                     nodeIdx = child;
                     ecoNode = readNode(nodeIdx);
                 } else
-                    childFound = false;
-                cacheNode(gtNode, nodeIdx);
+                    inEcoTree = false;
+                cacheNode(gtNode, nodeIdx, inEcoTree);
             }
         }
 
@@ -107,23 +110,31 @@ public class EcoDb {
     private byte[] nodesBuffer;
     private String[] ecoNames;
     private HashMap<Long, Short> posHashToNodeIdx;
-    private WeakLRUCache<GameTree.Node, Integer> gtNodeToIdx;
+
+    private static class CacheEntry {
+        final int nodeIdx;
+        final boolean inEcoTree;
+        CacheEntry(int n, boolean i) {
+            nodeIdx = n;
+            inEcoTree = i;
+        }
+    }
+    private WeakLRUCache<GameTree.Node, CacheEntry> gtNodeToIdx;
 
     /** Return cached Node index corresponding to a GameTree.Node, or -1 if not found. */
-    private int findNode(GameTree.Node node) {
-        Integer idx = gtNodeToIdx.get(node);
-        return idx == null ? -1 : idx;
+    private CacheEntry findNode(GameTree.Node node) {
+        return gtNodeToIdx.get(node);
     }
 
     /** Store GameTree.Node to Node index in cache. */
-    private void cacheNode(GameTree.Node node, int nodeIdx) {
-        gtNodeToIdx.put(node, nodeIdx);
+    private void cacheNode(GameTree.Node node, int nodeIdx, boolean inTree) {
+        gtNodeToIdx.put(node, new CacheEntry(nodeIdx, inTree));
     }
 
     /** Constructor. */
     private EcoDb(Context context) {
         posHashToNodeIdx = new HashMap<Long, Short>();
-        gtNodeToIdx = new WeakLRUCache<GameTree.Node, Integer>(50);
+        gtNodeToIdx = new WeakLRUCache<GameTree.Node, CacheEntry>(50);
         try {
             ByteArrayOutputStream bufStream = new ByteArrayOutputStream();
             InputStream inStream = context.getAssets().open("eco.dat");
