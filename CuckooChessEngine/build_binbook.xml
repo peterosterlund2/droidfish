@@ -2,8 +2,9 @@
 <project default="build_binbook" name="Build assets/eco.dat">
     <target name="build_binbook">
         <java classpath="bin"
-              classname="chess.Book"
-              fork="yes">
+              classname="chess.Book">
+            <arg value="${basedir}/src/book.txt"/>  
+            <arg value="${basedir}/src/book.bin"/>
         </java>
     </target>
 </project>

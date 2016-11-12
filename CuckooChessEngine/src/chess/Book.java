@@ -19,6 +19,7 @@
 package chess;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -188,8 +189,10 @@ public class Book {
 
     /** Creates the book.bin file. */
     public static void main(String[] args) throws IOException {
-        List<Byte> binBook = createBinBook();
-        FileOutputStream out = new FileOutputStream("src/book.bin");
+        String inFile = args[0];
+        String outFile = args[1];
+        List<Byte> binBook = createBinBook(inFile);
+        FileOutputStream out = new FileOutputStream(outFile);
         int bookLen = binBook.size();
         byte[] binBookA = new byte[bookLen];
         for (int i = 0; i < bookLen; i++)
@@ -197,11 +200,11 @@ public class Book {
         out.write(binBookA);
         out.close();
     }
-    
-    public static List<Byte> createBinBook() {
+
+    public static List<Byte> createBinBook(String inFileName) {
         List<Byte> binBook = new ArrayList<Byte>(0);
         try {
-            InputStream inStream = new Object().getClass().getResourceAsStream("/book.txt");
+            InputStream inStream = new FileInputStream(inFileName);
             InputStreamReader inFile = new InputStreamReader(inStream);
             BufferedReader inBuf = new BufferedReader(inFile);
             LineNumberReader lnr = new LineNumberReader(inBuf);

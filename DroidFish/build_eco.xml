@@ -2,10 +2,9 @@
 <project default="build_eco" name="Build assets/eco.dat">
     <target name="build_eco">
         <java classpath="bin/classes"
-              classname="org.petero.droidfish.buildtools.EcoBuilder"
-              fork="yes">
-            <arg value="src/org/petero/droidfish/buildtools/eco.pgn"/>  
-            <arg value="assets/eco.dat"/>
+              classname="org.petero.droidfish.buildtools.EcoBuilder">
+            <arg value="${basedir}/src/org/petero/droidfish/buildtools/eco.pgn"/>  
+            <arg value="${basedir}/assets/eco.dat"/>
         </java>
     </target>
 </project>
