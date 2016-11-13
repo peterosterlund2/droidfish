@@ -31,6 +31,7 @@ import java.util.WeakHashMap;
 import org.petero.droidfish.gamelogic.ChessParseError;
 import org.petero.droidfish.gamelogic.GameTree;
 import org.petero.droidfish.gamelogic.Move;
+import org.petero.droidfish.gamelogic.Pair;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gamelogic.UndoInfo;
@@ -49,7 +50,7 @@ public class EcoDb {
     }
 
     /** Get ECO classification for a given tree node. */
-    public String getEco(GameTree gt, GameTree.Node node) {
+    public Pair<String,Boolean> getEco(GameTree gt, GameTree.Node node) {
         ArrayList<GameTree.Node> gtNodePath = new ArrayList<GameTree.Node>();
         int nodeIdx = -1;
         boolean inEcoTree = true;
@@ -94,9 +95,9 @@ public class EcoDb {
         if (nodeIdx != -1) {
             Node n = readNode(nodeIdx);
             if (n.nameIdx >= 0)
-                return ecoNames[n.nameIdx];
+                return new Pair<String, Boolean>(ecoNames[n.nameIdx], inEcoTree);
         }
-        return "";
+        return new Pair<String, Boolean>("", false);
     }
 
 

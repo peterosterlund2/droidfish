@@ -71,7 +71,8 @@ public interface SearchListener {
     public void notifyStats(int id, long nodes, int nps, long tbHits, int hash, int time);
 
     /** Report opening book information. */
-    public void notifyBookInfo(int id, String bookInfo, ArrayList<Move> moveList, String eco);
+    public void notifyBookInfo(int id, String bookInfo, ArrayList<Move> moveList,
+                               String eco, boolean ecoInTree);
 
     /** Report move (or command, such as "resign") played by the engine. */
     public void notifySearchResult(int id, String cmd, Move ponder);

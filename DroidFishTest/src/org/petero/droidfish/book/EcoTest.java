@@ -36,27 +36,27 @@ public class EcoTest extends AndroidTestCase {
         {
             String pgn = "e4 e5 Nf3 Nc6 Bb5 a6 Ba4 Nf6 O-O Be7 Re1";
             GameTree gt = readPGN(pgn);
-            String eco = ecoDb.getEco(gt, gt.currentNode);
+            String eco = ecoDb.getEco(gt, gt.currentNode).first;
             assertEquals("", eco);
 
             gt.goForward(0);
-            eco = ecoDb.getEco(gt, gt.currentNode);
+            eco = ecoDb.getEco(gt, gt.currentNode).first;
             assertEquals("B00: King's pawn opening", eco);
 
             gt.goForward(0);
-            eco = ecoDb.getEco(gt, gt.currentNode);
+            eco = ecoDb.getEco(gt, gt.currentNode).first;
             assertEquals("C20: King's pawn game", eco);
 
             gt.goForward(0);
-            eco = ecoDb.getEco(gt, gt.currentNode);
+            eco = ecoDb.getEco(gt, gt.currentNode).first;
             assertEquals("C40: King's knight opening", eco);
         
             gt.goForward(0);
-            eco = ecoDb.getEco(gt, gt.currentNode);
+            eco = ecoDb.getEco(gt, gt.currentNode).first;
             assertEquals("C44: King's pawn game", eco);
         
             gt.goForward(0);
-            eco = ecoDb.getEco(gt, gt.currentNode);
+            eco = ecoDb.getEco(gt, gt.currentNode).first;
             assertEquals("C60: Ruy Lopez (Spanish opening)", eco);
         }
         {
@@ -65,48 +65,48 @@ public class EcoTest extends AndroidTestCase {
             game.processString("e5");
             game.processString("Nf3");
             game.processString("Nf6");
-            String eco = ecoDb.getEco(game.tree, game.tree.currentNode);
+            String eco = ecoDb.getEco(game.tree, game.tree.currentNode).first;
             assertEquals("C42: Petrov's defence", eco);
 
             game.processString("Nxe5");
-            eco = ecoDb.getEco(game.tree, game.tree.currentNode);
+            eco = ecoDb.getEco(game.tree, game.tree.currentNode).first;
             assertEquals("C42: Petrov's defence", eco);
 
             game.processString("d6");
-            eco = ecoDb.getEco(game.tree, game.tree.currentNode);
+            eco = ecoDb.getEco(game.tree, game.tree.currentNode).first;
             assertEquals("C42: Petrov's defence", eco);
 
             game.processString("Nxf7");
-            eco = ecoDb.getEco(game.tree, game.tree.currentNode);
+            eco = ecoDb.getEco(game.tree, game.tree.currentNode).first;
             assertEquals("C42: Petrov, Cochrane gambit", eco);
 
             game.undoMove();
-            eco = ecoDb.getEco(game.tree, game.tree.currentNode);
+            eco = ecoDb.getEco(game.tree, game.tree.currentNode).first;
             assertEquals("C42: Petrov's defence", eco);
 
             game.processString("Nf3");
             game.processString("Nxe4");
             game.processString("d4");
-            eco = ecoDb.getEco(game.tree, game.tree.currentNode);
+            eco = ecoDb.getEco(game.tree, game.tree.currentNode).first;
             assertEquals("C42: Petrov, classical attack", eco);
         }
         {
             Game game = new Game(null, new TimeControlData());
             game.processString("e4");
             game.processString("c5");
-            String eco = ecoDb.getEco(game.tree, game.tree.currentNode);
+            String eco = ecoDb.getEco(game.tree, game.tree.currentNode).first;
             assertEquals("B20: Sicilian defence", eco);
 
             game.processString("h3");
-            eco = ecoDb.getEco(game.tree, game.tree.currentNode);
+            eco = ecoDb.getEco(game.tree, game.tree.currentNode).first;
             assertEquals("B20: Sicilian defence", eco);
 
             game.processString("Nc6");
-            eco = ecoDb.getEco(game.tree, game.tree.currentNode);
+            eco = ecoDb.getEco(game.tree, game.tree.currentNode).first;
             assertEquals("B20: Sicilian defence", eco);
 
             game.processString("g3");
-            eco = ecoDb.getEco(game.tree, game.tree.currentNode);
+            eco = ecoDb.getEco(game.tree, game.tree.currentNode).first;
             assertEquals("B20: Sicilian defence", eco);
         }
     }
@@ -114,11 +114,11 @@ public class EcoTest extends AndroidTestCase {
     public void testEcoFromFEN() throws Throwable {
         EcoDb ecoDb = EcoDb.getInstance(getContext());
         GameTree gt = gtFromFEN("rnbqkbnr/ppp2ppp/8/3p4/3P4/8/PPP2PPP/RNBQKBNR w KQkq - 0 4");
-        String eco = ecoDb.getEco(gt, gt.currentNode);
+        String eco = ecoDb.getEco(gt, gt.currentNode).first;
         assertEquals("C01: French, exchange variation", eco);
 
         gt = gtFromFEN("rnbqk1nr/ppppppbp/6p1/8/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 1 3");
-        eco = ecoDb.getEco(gt, gt.currentNode);
+        eco = ecoDb.getEco(gt, gt.currentNode).first;
         assertEquals("B06: Robatsch (modern) defence", eco);
     }
 

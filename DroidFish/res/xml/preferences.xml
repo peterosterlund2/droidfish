@@ -71,6 +71,14 @@
             android:summary="@string/prefs_bookHints_summary"
             android:defaultValue="true">
         </CheckBoxPreference>
+        <ListPreference
+            android:key="ecoHints"
+            android:title="@string/prefs_ecoHints_title"
+            android:summary="@string/prefs_ecoHints_summary" 
+            android:entryValues="@array/ecoHints_values"
+            android:entries="@array/ecoHints_texts"
+            android:defaultValue="1">
+        </ListPreference>
         <ListPreference 
             android:key="thinkingArrows"
             android:title="@string/prefs_thinkingArrows_title"

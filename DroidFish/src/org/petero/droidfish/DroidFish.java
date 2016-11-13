@@ -179,6 +179,7 @@ public class DroidFish extends Activity
     private int numPV;
     private boolean mWhiteBasedScores;
     private boolean mShowBookHints;
+    private int mEcoHints;
     private int maxNumArrows;
     private GameMode gameMode;
     private boolean mPonderMode;
@@ -228,6 +229,10 @@ public class DroidFish extends Activity
         OFF, FORWARD, BACKWARD;
     }
     private AutoMode autoMode = AutoMode.OFF;
+
+    private final int ECO_HINTS_OFF = 0;
+    private final int ECO_HINTS_AUTO = 1;
+    private final int ECO_HINTS_ALWAYS = 2;
 
     /** State of requested permissions. */
     private static enum PermissionState {
@@ -1161,6 +1166,7 @@ public class DroidFish extends Activity
         mWhiteBasedScores = settings.getBoolean("whiteBasedScores", false);
         maxNumArrows = getIntSetting("thinkingArrows", 4);
         mShowBookHints = settings.getBoolean("bookHints", false);
+        mEcoHints = getIntSetting("ecoHints", ECO_HINTS_AUTO);
 
         String engine = settings.getString("engine", "stockfish");
         int strength = settings.getInt("strength", 1000);
@@ -1948,6 +1954,7 @@ public class DroidFish extends Activity
     private String thinkingStr2 = "";
     private String bookInfoStr = "";
     private String ecoInfoStr = "";
+    private boolean ecoInTree = false;
     private String variantStr = "";
     private ArrayList<ArrayList<Move>> pvMoves = new ArrayList<ArrayList<Move>>();
     private ArrayList<Move> bookMoves = null;
@@ -1959,6 +1966,7 @@ public class DroidFish extends Activity
         thinkingStr2 = ti.statStr;
         bookInfoStr = ti.bookInfo;
         ecoInfoStr = ti.eco;
+        ecoInTree = ti.ecoInTree;
         pvMoves = ti.pvMoves;
         bookMoves = ti.bookMoves;
         updateThinkingInfo();
@@ -1987,13 +1995,14 @@ public class DroidFish extends Activity
             }
             thinking.setText(s, TextView.BufferType.SPANNABLE);
         }
-        if (mShowBookHints && !ecoInfoStr.isEmpty()) {
+        if ((mEcoHints == ECO_HINTS_ALWAYS || (mEcoHints == ECO_HINTS_AUTO && ecoInTree)) &&
+            !ecoInfoStr.isEmpty()) {
             String s = thinkingEmpty ? "" : "<br>";
             s += ecoInfoStr;
             thinking.append(Html.fromHtml(s));
             thinkingEmpty = false;
         }
-        if (mShowBookHints && !bookInfoStr.isEmpty()) {
+        if (mShowBookHints && !bookInfoStr.isEmpty() && ctrl.humansTurn()) {
             String s = thinkingEmpty ? "" : "<br>";
             s += Util.boldStart + getString(R.string.book) + Util.boldStop + bookInfoStr;
             thinking.append(Html.fromHtml(s));
