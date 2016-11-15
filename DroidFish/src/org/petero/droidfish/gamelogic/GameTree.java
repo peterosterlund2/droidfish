@@ -51,7 +51,7 @@ public class GameTree {
 
     public Node rootNode;
     public Node currentNode;
-    Position currentPos;    // Cached value. Computable from "currentNode".
+    public Position currentPos;    // Cached value. Computable from "currentNode".
 
     private final PgnToken.PgnTokenReceiver gameStateListener;
 
@@ -1086,19 +1086,20 @@ public class GameTree {
             ArrayList<Integer> ret = new ArrayList<Integer>(64);
             Node node = this;
             while (node.parent != null) {
-                Node p = node.parent;
-                int childNo = -1;
-                for (int i = 0; i < p.children.size(); i++)
-                    if (p.children.get(i) == node) {
-                        childNo = i;
-                        break;
-                    }
-                if (childNo == -1) throw new RuntimeException();
-                ret.add(childNo);
+                ret.add(node.getChildNo());
                 node = node.parent;
             }
             Collections.reverse(ret);
             return ret;
+        }
+
+        /** Return this node's position in the parent node child list. */
+        public final int getChildNo() {
+            Node p = parent;
+            for (int i = 0; i < p.children.size(); i++)
+                if (p.children.get(i) == this)
+                    return i;
+            throw new RuntimeException();
         }
 
         static final void writeToStream(DataOutputStream dos, Node node) throws IOException {

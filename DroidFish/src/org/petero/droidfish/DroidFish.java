@@ -1954,7 +1954,7 @@ public class DroidFish extends Activity
     private String thinkingStr2 = "";
     private String bookInfoStr = "";
     private String ecoInfoStr = "";
-    private boolean ecoInTree = false;
+    private int distToEcoTree = 0;
     private String variantStr = "";
     private ArrayList<ArrayList<Move>> pvMoves = new ArrayList<ArrayList<Move>>();
     private ArrayList<Move> bookMoves = null;
@@ -1966,7 +1966,7 @@ public class DroidFish extends Activity
         thinkingStr2 = ti.statStr;
         bookInfoStr = ti.bookInfo;
         ecoInfoStr = ti.eco;
-        ecoInTree = ti.ecoInTree;
+        distToEcoTree = ti.distToEcoTree;
         pvMoves = ti.pvMoves;
         bookMoves = ti.bookMoves;
         updateThinkingInfo();
@@ -1995,7 +1995,9 @@ public class DroidFish extends Activity
             }
             thinking.setText(s, TextView.BufferType.SPANNABLE);
         }
-        if ((mEcoHints == ECO_HINTS_ALWAYS || (mEcoHints == ECO_HINTS_AUTO && ecoInTree)) &&
+        int maxDistToEcoTree = 10;
+        if ((mEcoHints == ECO_HINTS_ALWAYS ||
+            (mEcoHints == ECO_HINTS_AUTO && distToEcoTree <= maxDistToEcoTree)) &&
             !ecoInfoStr.isEmpty()) {
             String s = thinkingEmpty ? "" : "<br>";
             s += ecoInfoStr;

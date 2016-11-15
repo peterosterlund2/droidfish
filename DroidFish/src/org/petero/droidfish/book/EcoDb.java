@@ -49,55 +49,103 @@ public class EcoDb {
         return instance;
     }
 
-    /** Get ECO classification for a given tree node. */
-    public Pair<String,Boolean> getEco(GameTree gt, GameTree.Node node) {
-        ArrayList<GameTree.Node> gtNodePath = new ArrayList<GameTree.Node>();
+    /** Get ECO classification for a given tree node. Also returns distance in plies to "ECO tree". */
+    public Pair<String,Integer> getEco(GameTree gt) {
+        ArrayList<Integer> treePath = new ArrayList<Integer>(); // Path to restore gt to original node
+        ArrayList<Pair<GameTree.Node,Boolean>> toCache = new ArrayList<Pair<GameTree.Node,Boolean>>();
+
         int nodeIdx = -1;
-        boolean inEcoTree = true;
-        while (node != null) {
+        int distToEcoTree = 0;
+
+        // Find matching node furtherest from root in the ECO tree
+        boolean checkForDup = true;
+        while (true) {
+            GameTree.Node node = gt.currentNode;
             CacheEntry e = findNode(node);
             if (e != null) {
                 nodeIdx = e.nodeIdx;
-                inEcoTree = e.inEcoTree;
+                distToEcoTree = e.distToEcoTree;
+                checkForDup = false;
                 break;
             }
-            if (node == gt.rootNode) {
-                Short idx = posHashToNodeIdx.get(gt.startPos.zobristHash());
-                if (idx != null) {
+            Short idx = posHashToNodeIdx.get(gt.currentPos.zobristHash());
+            boolean inEcoTree = idx != null;
+            toCache.add(new Pair<GameTree.Node,Boolean>(node, inEcoTree));
+
+            if (idx != null) {
+                Node ecoNode = readNode(idx);
+                if (ecoNode.nameIdx != -1) {
                     nodeIdx = idx;
                     break;
                 }
             }
-            gtNodePath.add(node);
-            node = node.getParent();
+
+            if (node == gt.rootNode)
+                break;
+
+            treePath.add(node.getChildNo());
+            gt.goBack();
         }
-        if (nodeIdx != -1) {
-            Node ecoNode = readNode(nodeIdx);
-            for (int i = gtNodePath.size() - 1; i >= 0; i--) {
-                GameTree.Node gtNode = gtNodePath.get(i);
-                int m = gtNode.move.getCompressedMove();
-                int child = inEcoTree ? ecoNode.firstChild : -1;
-                while (child != -1) {
-                    Node cNode = readNode(child);
-                    if (cNode.move == m)
-                        break;
-                    child = cNode.nextSibling;
+
+        // Handle duplicates in ECO tree (same position reachable from more than one path)
+        if (nodeIdx != -1 && checkForDup && gt.startPos.zobristHash() == startPosHash) {
+            ArrayList<Short> dups = posHashToNodeIdx2.get(gt.currentPos.zobristHash());
+            if (dups != null) {
+                while (gt.currentNode != gt.rootNode) {
+                    treePath.add(gt.currentNode.getChildNo());
+                    gt.goBack();
                 }
-                if (child != -1) {
-                    nodeIdx = child;
-                    ecoNode = readNode(nodeIdx);
-                } else
-                    inEcoTree = false;
-                cacheNode(gtNode, nodeIdx, inEcoTree);
+
+                int currEcoNode = 0;
+                boolean foundDup = false;
+                while (!treePath.isEmpty()) {
+                    gt.goForward(treePath.get(treePath.size() - 1));
+                    treePath.remove(treePath.size() - 1);
+                    int m = gt.currentNode.move.getCompressedMove();
+
+                    Node ecoNode = readNode(currEcoNode);
+                    boolean foundChild = false;
+                    int child = ecoNode.firstChild;
+                    while (child != -1) {
+                        ecoNode = readNode(child);
+                        if (ecoNode.move == m) {
+                            foundChild = true;
+                            break;
+                        }
+                        child = ecoNode.nextSibling;
+                    }
+                    if (!foundChild)
+                        break;
+                    currEcoNode = child;
+                    for (Short dup : dups) {
+                        if (dup == currEcoNode) {
+                            nodeIdx = currEcoNode;
+                            foundDup = true;
+                            break;
+                        }
+                    }
+                    if (foundDup)
+                        break;
+                }
             }
+        }
+
+        for (int i = treePath.size() - 1; i >= 0; i--)
+            gt.goForward(treePath.get(i));
+        for (int i = toCache.size() - 1; i >= 0; i--) {
+            Pair<GameTree.Node,Boolean> p = toCache.get(i);
+            distToEcoTree++;
+            if (p.second)
+                distToEcoTree = 0;
+            cacheNode(p.first, nodeIdx, distToEcoTree);
         }
 
         if (nodeIdx != -1) {
             Node n = readNode(nodeIdx);
             if (n.nameIdx >= 0)
-                return new Pair<String, Boolean>(ecoNames[n.nameIdx], inEcoTree);
+                return new Pair<String, Integer>(ecoNames[n.nameIdx], distToEcoTree);
         }
-        return new Pair<String, Boolean>("", false);
+        return new Pair<String, Integer>("", 0);
     }
 
 
@@ -111,13 +159,15 @@ public class EcoDb {
     private byte[] nodesBuffer;
     private String[] ecoNames;
     private HashMap<Long, Short> posHashToNodeIdx;
+    private HashMap<Long, ArrayList<Short>> posHashToNodeIdx2; // Handles collisions
+    private final long startPosHash; // Zobrist hash for standard starting position
 
     private static class CacheEntry {
         final int nodeIdx;
-        final boolean inEcoTree;
-        CacheEntry(int n, boolean i) {
+        final int distToEcoTree;
+        CacheEntry(int n, int d) {
             nodeIdx = n;
-            inEcoTree = i;
+            distToEcoTree = d;
         }
     }
     private WeakLRUCache<GameTree.Node, CacheEntry> gtNodeToIdx;
@@ -128,13 +178,14 @@ public class EcoDb {
     }
 
     /** Store GameTree.Node to Node index in cache. */
-    private void cacheNode(GameTree.Node node, int nodeIdx, boolean inTree) {
-        gtNodeToIdx.put(node, new CacheEntry(nodeIdx, inTree));
+    private void cacheNode(GameTree.Node node, int nodeIdx, int distToEcoTree) {
+        gtNodeToIdx.put(node, new CacheEntry(nodeIdx, distToEcoTree));
     }
 
     /** Constructor. */
     private EcoDb(Context context) {
         posHashToNodeIdx = new HashMap<Long, Short>();
+        posHashToNodeIdx2 = new HashMap<Long, ArrayList<Short>>();
         gtNodeToIdx = new WeakLRUCache<GameTree.Node, CacheEntry>(50);
         try {
             ByteArrayOutputStream bufStream = new ByteArrayOutputStream();
@@ -174,19 +225,32 @@ public class EcoDb {
             throw new RuntimeException("Can't read ECO database");
         }
         try {
+            Position pos = TextIO.readFEN(TextIO.startPosFEN);
+            startPosHash = pos.zobristHash();
             if (nodesBuffer.length > 0) {
-                Position pos = TextIO.readFEN(TextIO.startPosFEN);
                 populateCache(pos, 0);
             }
         } catch (ChessParseError e) {
+            throw new RuntimeException("Internal error");
         }
     }
 
-    /** Initialize popHashToNodeIdx. */
+    /** Initialize posHashToNodeIdx. */
     private void populateCache(Position pos, int nodeIdx) {
-        if (posHashToNodeIdx.get(pos.zobristHash()) == null)
-            posHashToNodeIdx.put(pos.zobristHash(), (short)nodeIdx);
         Node node = readNode(nodeIdx);
+        long hash = pos.zobristHash();
+        if (posHashToNodeIdx.get(hash) == null) {
+            posHashToNodeIdx.put(hash, (short)nodeIdx);
+        } else if (node.nameIdx != -1) {
+            ArrayList<Short> lst = null;
+            if (posHashToNodeIdx2.get(hash) == null) {
+                lst = new ArrayList<Short>();
+                posHashToNodeIdx2.put(hash, lst);
+            } else {
+                lst = posHashToNodeIdx2.get(hash);
+            }
+            lst.add((short)nodeIdx);
+        }
         int child = node.firstChild;
         UndoInfo ui = new UndoInfo();
         while (child != -1) {

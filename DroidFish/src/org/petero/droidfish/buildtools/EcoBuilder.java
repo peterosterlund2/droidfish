@@ -78,20 +78,8 @@ public class EcoBuilder {
             gotMoves |= !isHeader;
         }
         readGame(pgn.toString());
-        setNameIndices(0);
 
         writeDataFile(ecoDatFile);
-    }
-
-    /** For all tree nodes, if nameIndex not already set,
-     *  set it from parent node nameIndex. */
-    private void setNameIndices(int nodeIdx) {
-        Node n = nodes.get(nodeIdx);
-        for (Node c : n.children) {
-            if (c.nameIdx == -1)
-                c.nameIdx = n.nameIdx;
-            setNameIndices(c.index);
-        }
     }
 
     /** Read and process one game. */
@@ -142,7 +130,7 @@ public class EcoBuilder {
                 Node node = new Node();
                 node.index = nodes.size();
                 node.move = m;
-                node.nameIdx = parent.nameIdx;
+                node.nameIdx = -1;
                 node.parent = parent;
                 nodes.add(node);
                 parent.children.add(node);

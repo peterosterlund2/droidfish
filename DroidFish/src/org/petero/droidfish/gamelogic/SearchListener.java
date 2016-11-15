@@ -72,7 +72,7 @@ public interface SearchListener {
 
     /** Report opening book information. */
     public void notifyBookInfo(int id, String bookInfo, ArrayList<Move> moveList,
-                               String eco, boolean ecoInTree);
+                               String eco, int distToEcoTree);
 
     /** Report move (or command, such as "resign") played by the engine. */
     public void notifySearchResult(int id, String cmd, Move ponder);

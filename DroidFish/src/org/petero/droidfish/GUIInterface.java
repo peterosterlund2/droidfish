@@ -60,7 +60,7 @@ public interface GUIInterface {
         public ArrayList<ArrayList<Move>> pvMoves;
         public ArrayList<Move> bookMoves;
         public String eco;
-        public boolean ecoInTree;
+        public int distToEcoTree;
     }
 
     /** Update the computer thinking information. */

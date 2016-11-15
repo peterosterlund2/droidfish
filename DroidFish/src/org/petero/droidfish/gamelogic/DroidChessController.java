@@ -684,7 +684,7 @@ public class DroidChessController {
         private String bookInfo = "";
         private ArrayList<Move> bookMoves = null;
         private String eco = ""; // ECO classification
-        private boolean ecoInTree = false; // True if current position is inside the EcoDB tree
+        private int distToEcoTree = 0; // Number of plies since game was in the "ECO tree".
 
         private Move ponderMove = null;
         private ArrayList<PvInfo> pvInfoV = new ArrayList<PvInfo>();
@@ -698,7 +698,7 @@ public class DroidChessController {
             bookInfo = "";
             bookMoves = null;
             eco = "";
-            ecoInTree = false;
+            distToEcoTree = 0;
             setSearchInfo(id);
         }
 
@@ -789,7 +789,7 @@ public class DroidChessController {
             ti.statStr = statStr;
             ti.bookInfo = bookInfo;
             ti.eco = eco;
-            ti.ecoInTree = ecoInTree;
+            ti.distToEcoTree = distToEcoTree;
             ti.pvMoves = pvMoves;
             ti.bookMoves = bookMoves;
             latestThinkingInfo = ti;
@@ -863,11 +863,11 @@ public class DroidChessController {
 
         @Override
         public void notifyBookInfo(int id, String bookInfo, ArrayList<Move> moveList,
-                                   String eco, boolean ecoInTree) {
+                                   String eco, int distToEcoTree) {
             this.bookInfo = bookInfo;
             bookMoves = moveList;
             this.eco = eco;
-            this.ecoInTree = ecoInTree;
+            this.distToEcoTree = distToEcoTree;
             setSearchInfo(id);
         }
 
@@ -931,11 +931,10 @@ public class DroidChessController {
     private final void updateBookHints() {
         if (game != null) {
             Pair<String, ArrayList<Move>> bi = computerPlayer.getBookHints(game.currPos(), localPt());
-            Pair<String, Boolean> ecoData =
-                    EcoDb.getInstance(gui.getContext()).getEco(game.tree, game.tree.currentNode);
+            Pair<String, Integer> ecoData =
+                    EcoDb.getInstance(gui.getContext()).getEco(game.tree);
             String eco = ecoData.first;
-            boolean ecoInTree = ecoData.second;
-            listener.notifyBookInfo(searchId, bi.first, bi.second, eco, ecoInTree);
+            listener.notifyBookInfo(searchId, bi.first, bi.second, eco, ecoData.second);
         }
     }
 
@@ -975,11 +974,10 @@ public class DroidChessController {
                 computerPlayer.queueAnalyzeRequest(sr);
             } else if (computersTurn || ponder) {
                 listener.clearSearchInfo(searchId);
-                Pair<String, Boolean> ecoData =
-                        EcoDb.getInstance(gui.getContext()).getEco(game.tree, game.tree.currentNode);
+                Pair<String, Integer> ecoData =
+                        EcoDb.getInstance(gui.getContext()).getEco(game.tree);
                 String eco = ecoData.first;
-                boolean ecoInTree = ecoData.second;
-                listener.notifyBookInfo(searchId, "", null, eco, ecoInTree);
+                listener.notifyBookInfo(searchId, "", null, eco, ecoData.second);
                 final Pair<Position, ArrayList<Move>> ph = game.getUCIHistory();
                 Position currPos = new Position(game.currPos());
                 long now = System.currentTimeMillis();
