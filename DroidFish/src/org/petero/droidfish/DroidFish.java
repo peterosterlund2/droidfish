@@ -1430,7 +1430,9 @@ public class DroidFish extends Activity
 
     private final void setBookOptions() {
         BookOptions options = new BookOptions(bookOptions);
-        if (options.filename.length() > 0) {
+        if (options.filename.isEmpty())
+            options.filename = "internal:";
+        if (!options.filename.equals("internal:") && !options.filename.equals("eco:")) {
             String sep = File.separator;
             if (!options.filename.startsWith(sep)) {
                 File extDir = Environment.getExternalStorageDirectory();
@@ -2376,12 +2378,13 @@ public class DroidFish extends Activity
             }
         });
         final int numFiles = fileNames.length;
-        CharSequence[] items = new CharSequence[numFiles + 1];
+        CharSequence[] items = new CharSequence[numFiles + 2];
         for (int i = 0; i < numFiles; i++)
             items[i] = fileNames[i];
         items[numFiles] = getString(R.string.internal_book);
+        items[numFiles + 1] = getString(R.string.eco_book);
         final CharSequence[] finalItems = items;
-        int defaultItem = numFiles;
+        int defaultItem = bookOptions.filename.equals("eco:") ? numFiles + 1 : numFiles;
         for (int i = 0; i < numFiles; i++) {
             if (bookOptions.filename.equals(items[i])) {
                 defaultItem = i;
@@ -2393,8 +2396,12 @@ public class DroidFish extends Activity
         builder.setSingleChoiceItems(items, defaultItem, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 Editor editor = settings.edit();
-                String bookFile = "";
-                if (item < numFiles)
+                final String bookFile;
+                if (item == numFiles)
+                    bookFile = "internal:";
+                else if (item == numFiles + 1)
+                    bookFile = "eco:";
+                else
                     bookFile = finalItems[item].toString();
                 editor.putString("bookFile", bookFile);
                 editor.commit();

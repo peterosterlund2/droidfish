@@ -38,6 +38,7 @@ import android.annotation.SuppressLint;
 final class InternalBook implements IOpeningBook {
     private static HashMap<Long, ArrayList<BookEntry>> bookMap;
     private static int numBookMoves = -1;
+    private boolean enabled = false;
 
     InternalBook() {
         Thread t = new Thread(new Runnable() {
@@ -50,13 +51,9 @@ final class InternalBook implements IOpeningBook {
         t.start();
     }
 
-    static boolean canHandle(String filename) {
-        return filename.length() == 0;
-    }
-
     @Override
     public boolean enabled() {
-        return true;
+        return enabled;
     }
 
     @Override
@@ -76,6 +73,7 @@ final class InternalBook implements IOpeningBook {
 
     @Override
     public void setOptions(BookOptions options) {
+        enabled = options.filename.equals("internal:");
     }
 
     private synchronized final void initInternalBook() {

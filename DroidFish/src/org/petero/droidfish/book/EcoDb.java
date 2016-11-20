@@ -148,6 +148,37 @@ public class EcoDb {
         return new Pair<String, Integer>("", 0);
     }
 
+    /** Get all moves in the ECO tree from a given position. */
+    public ArrayList<Move> getMoves(Position pos) {
+        ArrayList<Move> moves = new ArrayList<Move>();
+        long hash = pos.zobristHash();
+        Short idx = posHashToNodeIdx.get(hash);
+        if (idx != null) {
+            Node node = readNode(idx);
+            int child = node.firstChild;
+            while (child != -1) {
+                node = readNode(child);
+                moves.add(Move.fromCompressed(node.move));
+                child = node.nextSibling;
+            }
+            ArrayList<Short> lst = posHashToNodeIdx2.get(hash);
+            if (lst != null) {
+                for (Short idx2 : lst) {
+                    node = readNode(idx2);
+                    child = node.firstChild;
+                    while (child != -1) {
+                        node = readNode(child);
+                        Move m = Move.fromCompressed(node.move);
+                        if (!moves.contains(m))
+                            moves.add(m);
+                        child = node.nextSibling;
+                    }
+                }
+            }
+        }
+        return moves;
+    }
+
 
     private static class Node {
         int move;       // Move (compressed) leading to the position corresponding to this node

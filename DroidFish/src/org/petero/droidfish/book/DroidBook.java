@@ -54,6 +54,7 @@ public final class DroidBook {
     private Random rndGen = new SecureRandom();
 
     private IOpeningBook externalBook = new NullBook();
+    private IOpeningBook ecoBook = new EcoBook();
     private IOpeningBook internalBook = new InternalBook();
     private BookOptions options = null;
 
@@ -78,6 +79,7 @@ public final class DroidBook {
         else
             externalBook = new NullBook();
         externalBook.setOptions(options);
+        ecoBook.setOptions(options);
         internalBook.setOptions(options);
     }
 
@@ -86,7 +88,7 @@ public final class DroidBook {
         if ((options != null) && (pos.fullMoveCounter > options.maxLength))
             return null;
         List<BookEntry> bookMoves = getBook().getBookEntries(pos);
-        if (bookMoves == null)
+        if (bookMoves == null || bookMoves.isEmpty())
             return null;
 
         ArrayList<Move> legalMoves = new MoveGen().legalMoves(pos);
@@ -178,6 +180,8 @@ public final class DroidBook {
     private final IOpeningBook getBook() {
         if (externalBook.enabled()) {
             return externalBook;
+        } else if (ecoBook.enabled()) {
+            return ecoBook;
         } else {
             return internalBook;
         }

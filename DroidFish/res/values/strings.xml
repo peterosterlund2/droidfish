@@ -72,6 +72,7 @@ you are not actively using the program.\
     <string name="select_en_passant_file">Select En Passant File</string>
     <string name="edit_move_counters">Edit Move Counters</string>
     <string name="internal_book">&lt;Internal Book&gt;</string>
+    <string name="eco_book">&lt;ECO Book&gt;</string>
     <string name="select_opening_book_file">Select opening book file</string>
     <string name="select_chess_engine">Select Chess Engine</string>
     <string name="select_pgn_file">Open PGN file</string>
