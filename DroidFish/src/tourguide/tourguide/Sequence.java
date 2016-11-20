@@ -121,13 +121,6 @@ public class Sequence {
             return this;
         }
 
-        // TODO: this is an uncompleted feature, make it private first
-        // This is intended to be used to disable the button, so people cannot click on in during a Tour, instead, people can only click on Next button or Overlay to proceed
-        private SequenceBuilder setDisableButton(boolean disableTargetButton){
-            mDisableTargetButton = disableTargetButton;
-            return this;
-        }
-
         /**
          * @param continueMethod ContinueMethod.Overlay or ContinueMethod.OverlayListener
          *                       ContnueMethod.Overlay - clicking on Overlay will make TourGuide proceed to the next one.
