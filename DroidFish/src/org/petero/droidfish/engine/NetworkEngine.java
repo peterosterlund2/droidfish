@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import org.petero.droidfish.DroidFishApp;
 import org.petero.droidfish.EngineOptions;
 import org.petero.droidfish.FileUtil;
 import org.petero.droidfish.R;
@@ -49,8 +50,8 @@ public class NetworkEngine extends UCIEngineBase {
     private boolean isRunning;
     private boolean isError;
 
-    public NetworkEngine(Context context, String engine, EngineOptions engineOptions, Report report) {
-        this.context = context;
+    public NetworkEngine(String engine, EngineOptions engineOptions, Report report) {
+        context = DroidFishApp.getContext();
         this.report = report;
         fileName = engine;
         networkID = engineOptions.networkID;

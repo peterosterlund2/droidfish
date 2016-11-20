@@ -19,7 +19,6 @@
 package org.petero.droidfish.book;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.WeakHashMap;
 
+import org.petero.droidfish.DroidFishApp;
 import org.petero.droidfish.gamelogic.ChessParseError;
 import org.petero.droidfish.gamelogic.GameTree;
 import org.petero.droidfish.gamelogic.Move;
@@ -42,9 +42,9 @@ public class EcoDb {
     private static EcoDb instance;
 
     /** Get singleton instance. */
-    public static EcoDb getInstance(Context context) {
+    public static EcoDb getInstance() {
         if (instance == null) {
-            instance = new EcoDb(context);
+            instance = new EcoDb();
         }
         return instance;
     }
@@ -183,13 +183,13 @@ public class EcoDb {
     }
 
     /** Constructor. */
-    private EcoDb(Context context) {
+    private EcoDb() {
         posHashToNodeIdx = new HashMap<Long, Short>();
         posHashToNodeIdx2 = new HashMap<Long, ArrayList<Short>>();
         gtNodeToIdx = new WeakLRUCache<GameTree.Node, CacheEntry>(50);
         try {
             ByteArrayOutputStream bufStream = new ByteArrayOutputStream();
-            InputStream inStream = context.getAssets().open("eco.dat");
+            InputStream inStream = DroidFishApp.getContext().getAssets().open("eco.dat");
             if (inStream == null)
                 throw new IOException("Can't read ECO database");
             byte[] buf = new byte[1024];

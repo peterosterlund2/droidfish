@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.channels.FileChannel;
 
+import org.petero.droidfish.DroidFishApp;
 import org.petero.droidfish.EngineOptions;
 import org.petero.droidfish.R;
 import android.content.Context;
@@ -46,8 +47,8 @@ public class ExternalEngine extends UCIEngineBase {
     private boolean startedOk;
     private boolean isRunning;
 
-    public ExternalEngine(Context context, String engine, Report report) {
-        this.context = context;
+    public ExternalEngine(String engine, Report report) {
+        context = DroidFishApp.getContext();
         this.report = report;
         engineFileName = new File(engine);
         engineProc = null;

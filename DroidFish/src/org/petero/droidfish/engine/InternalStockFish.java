@@ -30,14 +30,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 
-import android.content.Context;
 import android.os.Environment;
 
 /** Stockfish engine running as process, started from assets resource. */
 public class InternalStockFish extends ExternalEngine {
 
-    public InternalStockFish(Context context, Report report) {
-        super(context, "", report);
+    public InternalStockFish(Report report) {
+        super("", report);
     }
 
     @Override

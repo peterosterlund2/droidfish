@@ -30,28 +30,26 @@ import java.util.Properties;
 import org.petero.droidfish.EngineOptions;
 import org.petero.droidfish.engine.cuckoochess.CuckooChessEngine;
 
-import android.content.Context;
-
 public abstract class UCIEngineBase implements UCIEngine {
 
     private boolean processAlive;
     private UCIOptions options;
     protected boolean isUCI;
 
-    public static UCIEngine getEngine(Context context, String engine,
+    public static UCIEngine getEngine(String engine,
                                       EngineOptions engineOptions, Report report) {
         if ("stockfish".equals(engine) && (EngineUtil.internalStockFishName() == null))
             engine = "cuckoochess";
         if ("cuckoochess".equals(engine))
             return new CuckooChessEngine(report);
         else if ("stockfish".equals(engine))
-            return new InternalStockFish(context, report);
+            return new InternalStockFish(report);
         else if (EngineUtil.isOpenExchangeEngine(engine))
-            return new OpenExchangeEngine(context, engine, report);
+            return new OpenExchangeEngine(engine, report);
         else if (EngineUtil.isNetEngine(engine))
-            return new NetworkEngine(context, engine, engineOptions, report);
+            return new NetworkEngine(engine, engineOptions, report);
         else
-            return new ExternalEngine(context, engine, report);
+            return new ExternalEngine(engine, report);
     }
 
     protected UCIEngineBase() {

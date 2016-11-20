@@ -32,7 +32,7 @@ public class EcoTest extends AndroidTestCase {
     }
 
     public void testEco() throws Throwable {
-        EcoDb ecoDb = EcoDb.getInstance(getContext());
+        EcoDb ecoDb = EcoDb.getInstance();
         {
             String pgn = "e4 e5 Nf3 Nc6 Bb5 a6 Ba4 Nf6 O-O Be7 Re1";
             GameTree gt = readPGN(pgn);
@@ -137,7 +137,7 @@ public class EcoTest extends AndroidTestCase {
     }
 
     public void testEcoFromFEN() throws Throwable {
-        EcoDb ecoDb = EcoDb.getInstance(getContext());
+        EcoDb ecoDb = EcoDb.getInstance();
         GameTree gt = gtFromFEN("rnbqkbnr/ppp2ppp/4p3/3P4/3P4/8/PPP2PPP/RNBQKBNR b KQkq - 0 3");
         String eco = ecoDb.getEco(gt).first;
         assertEquals("C01: French, exchange variation", eco);

@@ -7,13 +7,11 @@ import java.util.List;
 import com.kalab.chess.enginesupport.ChessEngine;
 import com.kalab.chess.enginesupport.ChessEngineResolver;
 
-import android.content.Context;
-
 /** Engine imported from a different android app, resolved using the open exchange format. */
 public class OpenExchangeEngine extends ExternalEngine {
 
-    public OpenExchangeEngine(Context context, String engine, Report report) {
-        super(context, engine, report);
+    public OpenExchangeEngine(String engine, Report report) {
+        super(engine, report);
     }
 
     @Override

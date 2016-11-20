@@ -88,7 +88,7 @@ public class DroidChessController {
             updateGUI();
         this.gameMode = gameMode;
         if (computerPlayer == null) {
-            computerPlayer = new DroidComputerPlayer(gui.getContext(), listener);
+            computerPlayer = new DroidComputerPlayer(listener);
             computerPlayer.setBookOptions(bookOptions);
             computerPlayer.setEngineOptions(engineOptions);
         }
@@ -932,7 +932,7 @@ public class DroidChessController {
         if (game != null) {
             Pair<String, ArrayList<Move>> bi = computerPlayer.getBookHints(game.currPos(), localPt());
             Pair<String, Integer> ecoData =
-                    EcoDb.getInstance(gui.getContext()).getEco(game.tree);
+                    EcoDb.getInstance().getEco(game.tree);
             String eco = ecoData.first;
             listener.notifyBookInfo(searchId, bi.first, bi.second, eco, ecoData.second);
         }
@@ -975,7 +975,7 @@ public class DroidChessController {
             } else if (computersTurn || ponder) {
                 listener.clearSearchInfo(searchId);
                 Pair<String, Integer> ecoData =
-                        EcoDb.getInstance(gui.getContext()).getEco(game.tree);
+                        EcoDb.getInstance().getEco(game.tree);
                 String eco = ecoData.first;
                 listener.notifyBookInfo(searchId, "", null, eco, ecoData.second);
                 final Pair<Position, ArrayList<Move>> ph = game.getUCIHistory();

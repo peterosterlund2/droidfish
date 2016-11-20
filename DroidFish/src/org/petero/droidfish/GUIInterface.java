@@ -24,8 +24,6 @@ import org.petero.droidfish.gamelogic.Game;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.Position;
 
-import android.content.Context;
-
 /** Interface between the GUI and the ChessController. */
 public interface GUIInterface {
 
@@ -104,9 +102,6 @@ public interface GUIInterface {
 
     /** Return true if pondering (permanent brain) is enabled. */
     public boolean ponderMode();
-
-    /** Return application context. */
-    public Context getContext();
 
     /** Get the default player name. */
     public String playerName();

@@ -36,15 +36,12 @@ import org.petero.droidfish.gamelogic.UndoInfo;
 import org.petero.droidfish.gamelogic.SearchListener.PvInfo;
 import org.petero.droidfish.tb.Probe;
 
-import android.content.Context;
-
 /**
  * A computer algorithm player.
  * @author petero
  */
 public class DroidComputerPlayer {
     private UCIEngine uciEngine = null;
-    private final Context context;
     private final SearchListener listener;
     private final DroidBook book;
     private EngineOptions engineOptions = new EngineOptions();
@@ -234,8 +231,7 @@ public class DroidComputerPlayer {
     private Thread engineMonitor;
 
     /** Constructor. Starts engine process if not already started. */
-    public DroidComputerPlayer(Context context, SearchListener listener) {
-        this.context = context;
+    public DroidComputerPlayer(SearchListener listener) {
         this.listener = listener;
         book = DroidBook.getInstance();
     }
@@ -654,7 +650,7 @@ public class DroidComputerPlayer {
         myAssert(searchRequest != null);
 
         engineName = "Computer";
-        uciEngine = UCIEngineBase.getEngine(context, searchRequest.engine,
+        uciEngine = UCIEngineBase.getEngine(searchRequest.engine,
                                             engineOptions,
                                             new UCIEngine.Report() {
             @Override

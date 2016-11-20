@@ -1920,11 +1920,6 @@ public class DroidFish extends Activity
     }
 
     @Override
-    public Context getContext() {
-        return this;
-    }
-
-    @Override
     public String playerName() {
         return playerName;
     }
