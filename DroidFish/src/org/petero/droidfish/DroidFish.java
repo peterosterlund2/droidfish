@@ -150,7 +150,6 @@ public class DroidFish extends Activity
                        implements GUIInterface,
                                   ActivityCompat.OnRequestPermissionsResultCallback {
     // FIXME!!! PGN view option: game continuation (for training)
-    // FIXME!!! Remove invalid playerActions in PGN import (should be done in verifyChildren)
     // FIXME!!! Implement bookmark mechanism for positions in pgn files
     // FIXME!!! Add support for "Chess Leipzig" font
 
@@ -165,7 +164,6 @@ public class DroidFish extends Activity
 
     // FIXME!!! Option to display coordinates in border outside chess board.
 
-    // FIXME!!! Better behavior if engine is terminated. How exactly?
     // FIXME!!! Handle PGN non-file intents with more than one game.
     // FIXME!!! Save position to fen/epd file
 
