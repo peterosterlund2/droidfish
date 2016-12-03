@@ -72,6 +72,7 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="select_en_passant_file">Wybierz kolumnę en passant</string>
   <string name="edit_move_counters">Edytuj liczniki posunięć</string>
   <string name="internal_book">&lt;Książka wbudowana&gt;</string>
+  <string name="eco_book">&lt;ECO Book&gt;</string>
   <string name="select_opening_book_file">Wybierz plik z książką otwarć</string>
   <string name="select_chess_engine">Wybierz silnik szachowy</string>
   <string name="select_pgn_file">Otwórz plik PGN</string>
@@ -282,6 +283,8 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="prefs_bookHints_summary">Pokaż wskazówki z książki otwarć dla posunięć człowieka</string>
   <string name="prefs_thinkingArrows_title">Używaj strzałek</string>
   <string name="prefs_thinkingArrows_summary">Używaj strzałek, żeby pokazać posunięcia na szachownicy</string>
+  <string name="prefs_ecoHints_title">Show ECO codes</string>
+  <string name="prefs_ecoHints_summary">Show \'Encyclopedia of Chess Openings\' classification of openings</string>
   <string name="prefs_user_interface_appearance">Wygląd</string>
   <string name="prefs_user_interface_behavior">Zachowanie</string>
   <string name="prefs_animateMoves_title">Animuj posunięcia</string>
@@ -303,6 +306,8 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="prefs_scrollSensitivity_summary">Szybkość przewijania przy nawigowaniu po partii</string>
   <string name="prefs_invertScrollDirection_title">Odwróć kierunek przwijania</string>
   <string name="prefs_invertScrollDirection_summary">Włącz, jeśli uważasz że ruchy przy przewijaniu wykonywane są w złym kierunku</string>
+  <string name="prefs_autoScrollMoveList_title">Auto scroll move list</string>
+  <string name="prefs_autoScrollMoveList_summary">Automatically scroll the move list to the current board position</string>
   <string name="prefs_discardVariations_title">Odrzuć warianty</string>
   <string name="prefs_discardVariations_summary">Pomiń posunięcia spoza głównych linii na liście posunięć</string>
   <string name="prefs_leftHanded_title">Tryb leworęczny</string>
@@ -589,6 +594,16 @@ nie korzystasz aktywnie z programu.\</string>
     <item>12</item>
     <item>16</item>
     <item>21</item>
+  </string-array>
+  <string-array name="ecoHints_texts">
+    <item>Off</item>
+    <item>Auto</item>
+    <item>Always</item>
+  </string-array>
+  <string-array name="ecoHints_values">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
   </string-array>
   <string-array name="thinking_arrows_texts">
     <item>Bez strzałek</item>

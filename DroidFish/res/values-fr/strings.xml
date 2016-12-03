@@ -70,6 +70,7 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="select_en_passant_file">Sélectionner la colonne En Passant</string>
   <string name="edit_move_counters">Modifier le compteur de coups</string>
   <string name="internal_book">&lt;Livre interne&gt;</string>
+  <string name="eco_book">&lt;ECO Book&gt;</string>
   <string name="select_opening_book_file">Sélectionner le livre d\'ouverture</string>
   <string name="select_chess_engine">Sélectionner le module d\'analyse</string>
   <string name="select_pgn_file">Ouvrir un fichier PGN</string>
@@ -280,6 +281,8 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="prefs_bookHints_summary">Afficher les coups d\'ouverture du livre pour le joueur</string>
   <string name="prefs_thinkingArrows_title">Utiliser les flèches</string>
   <string name="prefs_thinkingArrows_summary">Utiliser les flèches pour afficher les coups sur l\'échiquier</string>
+  <string name="prefs_ecoHints_title">Show ECO codes</string>
+  <string name="prefs_ecoHints_summary">Show \'Encyclopedia of Chess Openings\' classification of openings</string>
   <string name="prefs_user_interface_appearance">Apparence</string>
   <string name="prefs_user_interface_behavior">Comportement</string>
   <string name="prefs_animateMoves_title">Animation des coups</string>
@@ -301,6 +304,8 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="prefs_scrollSensitivity_summary">Vitesse de défilement lors de la navigation dans la partie</string>
   <string name="prefs_invertScrollDirection_title">Inverser le sens de défilement</string>
   <string name="prefs_invertScrollDirection_summary">Activer cela si vous pensez que le défilement des coups se fait dans le mauvais sens</string>
+  <string name="prefs_autoScrollMoveList_title">Auto scroll move list</string>
+  <string name="prefs_autoScrollMoveList_summary">Automatically scroll the move list to the current board position</string>
   <string name="prefs_discardVariations_title">Ignorer les variations</string>
   <string name="prefs_discardVariations_summary">Ignorer les coups secondaires de la liste de coups</string>
   <string name="prefs_leftHanded_title">Mode gaucher</string>
@@ -587,6 +592,16 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
     <item>12</item>
     <item>16</item>
     <item>21</item>
+  </string-array>
+  <string-array name="ecoHints_texts">
+    <item>Off</item>
+    <item>Auto</item>
+    <item>Always</item>
+  </string-array>
+  <string-array name="ecoHints_values">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
   </string-array>
   <string-array name="thinking_arrows_texts">
     <item>Aucune flèche</item>

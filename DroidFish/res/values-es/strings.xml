@@ -71,6 +71,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="select_en_passant_file">Seleccionar Comer al Paso</string>
   <string name="edit_move_counters">Editar Contadores de Jugadas</string>
   <string name="internal_book">&lt;Libro Interno;</string>
+  <string name="eco_book">&lt;ECO Book&gt;</string>
   <string name="select_opening_book_file">Seleccionar archivo de Libro de Aperturas</string>
   <string name="select_chess_engine">Seleccionar motor de ajedrez</string>
   <string name="select_pgn_file">Abrir archivo PGN</string>
@@ -281,6 +282,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="prefs_bookHints_summary">Muestra en pantalla los movimientos del Libro de Aperturas al jugador humano</string>
   <string name="prefs_thinkingArrows_title">Usar Flechas</string>
   <string name="prefs_thinkingArrows_summary">Utilización de Flechas para mostrar las jugadas en el tablero</string>
+  <string name="prefs_ecoHints_title">Show ECO codes</string>
+  <string name="prefs_ecoHints_summary">Show \'Encyclopedia of Chess Openings\' classification of openings</string>
   <string name="prefs_user_interface_appearance">Aspecto</string>
   <string name="prefs_user_interface_behavior">Comportamiento</string>
   <string name="prefs_animateMoves_title">Animación de Jugadas</string>
@@ -302,6 +305,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="prefs_scrollSensitivity_summary">Velocidad de desplazamiento de la información durante la partida </string>
   <string name="prefs_invertScrollDirection_title">Invertir dirección desplazamiento</string>
   <string name="prefs_invertScrollDirection_summary">Permitirlo si usted piensa que el desplazamiento de jugadas se hace en la dirección equivocada.</string>
+  <string name="prefs_autoScrollMoveList_title">Auto scroll move list</string>
+  <string name="prefs_autoScrollMoveList_summary">Automatically scroll the move list to the current board position</string>
   <string name="prefs_discardVariations_title">Descartar variantes</string>
   <string name="prefs_discardVariations_summary">Descartar jugadas de líneas secundarias de la lista de movimientos</string>
   <string name="prefs_leftHanded_title">Modo zurdo</string>
@@ -588,6 +593,16 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <item>12</item>
     <item>16</item>
     <item>21</item>
+  </string-array>
+  <string-array name="ecoHints_texts">
+    <item>Off</item>
+    <item>Auto</item>
+    <item>Always</item>
+  </string-array>
+  <string-array name="ecoHints_values">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
   </string-array>
   <string-array name="thinking_arrows_texts">
     <item>Sin Flechas</item>

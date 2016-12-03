@@ -73,6 +73,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="select_en_passant_file">En passant möglich?</string>
   <string name="edit_move_counters">Zug-Zähler einstellen</string>
   <string name="internal_book">&lt;Internes Buch&gt;</string>
+  <string name="eco_book">&lt;ECO Book&gt;</string>
   <string name="select_opening_book_file">Eröffnungsbuch wählen</string>
   <string name="select_chess_engine">Schach-Engine auswählen</string>
   <string name="select_pgn_file">PGN-Datei zum Öffnen wählen</string>
@@ -283,6 +284,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_bookHints_summary">Hinweise aus dem Eröffnungsbuch für den Spieler anzeigen</string>
   <string name="prefs_thinkingArrows_title">Pfeile nutzen</string>
   <string name="prefs_thinkingArrows_summary">Pfeile zur Anzeige von Zügen auf dem Spielfeld nutzen</string>
+  <string name="prefs_ecoHints_title">Show ECO codes</string>
+  <string name="prefs_ecoHints_summary">Show \'Encyclopedia of Chess Openings\' classification of openings</string>
   <string name="prefs_user_interface_appearance">Aussehen</string>
   <string name="prefs_user_interface_behavior">Verhalten</string>
   <string name="prefs_animateMoves_title">Zuganimation</string>
@@ -304,6 +307,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_scrollSensitivity_summary">Wischgeschwindigkeit für Partie-Navigation einstellen</string>
   <string name="prefs_invertScrollDirection_title">Wischrichtung</string>
   <string name="prefs_invertScrollDirection_summary">Wischrichtung für Partie-Navigation umkehren</string>
+  <string name="prefs_autoScrollMoveList_title">Auto scroll move list</string>
+  <string name="prefs_autoScrollMoveList_summary">Automatically scroll the move list to the current board position</string>
   <string name="prefs_discardVariations_title">Varianten verwerfen</string>
   <string name="prefs_discardVariations_summary">Nicht-Hauptlinienzüge aus der Zugliste verwerfen</string>
   <string name="prefs_leftHanded_title">Linkshänder-Modus</string>
@@ -590,6 +595,16 @@ wenn Sie es nicht aktiv nutzen.\
     <item>12</item>
     <item>16</item>
     <item>21</item>
+  </string-array>
+  <string-array name="ecoHints_texts">
+    <item>Off</item>
+    <item>Auto</item>
+    <item>Always</item>
+  </string-array>
+  <string-array name="ecoHints_values">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
   </string-array>
   <string-array name="thinking_arrows_texts">
     <item>Keine Pfeile</item>

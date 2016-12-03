@@ -64,6 +64,7 @@
   <string name="select_en_passant_file">Seleziona la colonna en passant</string>
   <string name="edit_move_counters">Modifica il contatore delle mosse</string>
   <string name="internal_book">&lt; libro interno &gt;</string>
+  <string name="eco_book">&lt;ECO Book&gt;</string>
   <string name="select_opening_book_file">Seleziona il file del libro delle aperture</string>
   <string name="select_chess_engine">Seleziona il motore scacchistico</string>
   <string name="select_pgn_file">Apri un file PGN</string>
@@ -274,6 +275,8 @@
   <string name="prefs_bookHints_summary">Mostra suggerimenti dalle Aperture per il giocatore umano</string>
   <string name="prefs_thinkingArrows_title">Usa le frecce</string>
   <string name="prefs_thinkingArrows_summary">Usa le frecce per mostrare le mosse su ogni scacchiera</string>
+  <string name="prefs_ecoHints_title">Show ECO codes</string>
+  <string name="prefs_ecoHints_summary">Show \'Encyclopedia of Chess Openings\' classification of openings</string>
   <string name="prefs_user_interface_appearance">Aspetto</string>
   <string name="prefs_user_interface_behavior">Comportamento</string>
   <string name="prefs_animateMoves_title">Mosse animate</string>
@@ -295,6 +298,8 @@
   <string name="prefs_scrollSensitivity_summary">Velocità di scorrimento per la navigazione nel gioco</string>
   <string name="prefs_invertScrollDirection_title">Inverti la direzione di scorrimento</string>
   <string name="prefs_invertScrollDirection_summary">Abilitalo se pensi che lo scorrimento vada nella direzione sbagliata</string>
+  <string name="prefs_autoScrollMoveList_title">Auto scroll move list</string>
+  <string name="prefs_autoScrollMoveList_summary">Automatically scroll the move list to the current board position</string>
   <string name="prefs_discardVariations_title">Scarta le varianti</string>
   <string name="prefs_discardVariations_summary">Scarta dalla lista delle mosse quelle che non sono nella linea principale</string>
   <string name="prefs_leftHanded_title">Modalità Mancini</string>
@@ -581,6 +586,16 @@
     <item>12</item>
     <item>16</item>
     <item>21</item>
+  </string-array>
+  <string-array name="ecoHints_texts">
+    <item>Off</item>
+    <item>Auto</item>
+    <item>Always</item>
+  </string-array>
+  <string-array name="ecoHints_values">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
   </string-array>
   <string-array name="thinking_arrows_texts">
     <item>Nessuna freccia</item>

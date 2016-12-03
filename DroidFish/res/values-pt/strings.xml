@@ -35,9 +35,9 @@ não estiver usando o programa diretamente.\</string>
   <string name="paste">Colar do clipboard</string>
   <string name="share">Compartilhar</string>
   <string name="share_pgn_game">Compartilhar partida em PGN</string>
-  <string name="load_last_file">Carregar do arquivo mais recente</string>
+  <string name="load_last_file">Carregar do último ficheiro</string>
   <string name="load_game">Carregar partida de arquivo PGN</string>
-  <string name="load_position">Carregar posição do arquivo</string>
+  <string name="load_position">Carregar posição de um ficheiro</string>
   <string name="load_scid_game">Carregar partida de arquivo Scid</string>
   <string name="save_game">Salvar partida em arquivo PGN</string>
   <string name="get_fen">Recuperar posição</string>
@@ -72,16 +72,17 @@ não estiver usando o programa diretamente.\</string>
   <string name="select_en_passant_file">Escolha coluna En Passant</string>
   <string name="edit_move_counters">Alterar contador de lances</string>
   <string name="internal_book">&lt;Livro interno&gt;</string>
+  <string name="eco_book">&lt;ECO Book&gt;</string>
   <string name="select_opening_book_file">Escolher arquivo de livro de aberturas</string>
   <string name="select_chess_engine">Escolher software de Xadrez</string>
   <string name="select_pgn_file">Abrir arquivo PGN</string>
   <string name="select_pgn_file_save">Salvar em arquivo PGN</string>
-  <string name="select_fen_file">Abrir arquivo FEN/EPD</string>
+  <string name="select_fen_file">Abrir ficheiro FEN/EPD</string>
   <string name="pgn_load">Carregar</string>
   <string name="pgn_save">Salvar</string>
-  <string name="reading_pgn_file">Lendo arquivo PGN&#8230;</string>
-  <string name="reading_fen_file">Lendo arquivo FEN/EPD&#8230;</string>
-  <string name="reading_scid_file">Lendo arquivo Scid&#8230;</string>
+  <string name="reading_pgn_file">A ler ficheiro PGN&#8230;</string>
+  <string name="reading_fen_file">A ler ficheiro FEN/EPD&#8230;</string>
+  <string name="reading_scid_file">A ler ficheiro Scid&#8230;</string>
   <string name="new_file">&lt;Novo arquivo&gt;</string>
   <string name="new_engine">&lt;Novo software&gt;</string>
   <string name="no_pgn_files">Nenhum arquivo encontrado no diretório DroidFish/pgn no cartão SD</string>
@@ -131,7 +132,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="toggle_analysis">Mostrar/Ocultar análise do software</string>
   <string name="toggle_large_buttons">Mostrar/Ocultar botões grandes</string>
   <string name="toggle_blind_mode">Trocar modo às cegas</string>
-  <string name="toggle_arrows">Toggle Arrows</string>
+  <string name="toggle_arrows">Alternar setas</string>
   <string name="cancel">Cancelar</string>
   <string name="reset">Redefinir</string>
   <string name="yes">Sim</string>
@@ -282,6 +283,8 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_bookHints_summary">Exibir sugestões de lances de abertura do livro para o jogador humano</string>
   <string name="prefs_thinkingArrows_title">Usar setas</string>
   <string name="prefs_thinkingArrows_summary">Usar setas para exibir lances no tabuleiro</string>
+  <string name="prefs_ecoHints_title">Show ECO codes</string>
+  <string name="prefs_ecoHints_summary">Show \'Encyclopedia of Chess Openings\' classification of openings</string>
   <string name="prefs_user_interface_appearance">Aparência</string>
   <string name="prefs_user_interface_behavior">Comportamento</string>
   <string name="prefs_animateMoves_title">Movimentos animados</string>
@@ -303,6 +306,8 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_scrollSensitivity_summary">Velocidade do movimento para navegação em partida</string>
   <string name="prefs_invertScrollDirection_title">Inverter rolagem</string>
   <string name="prefs_invertScrollDirection_summary">Habilite se você acha que os movimentos estão na direção errada</string>
+  <string name="prefs_autoScrollMoveList_title">Auto scroll move list</string>
+  <string name="prefs_autoScrollMoveList_summary">Automatically scroll the move list to the current board position</string>
   <string name="prefs_discardVariations_title">Descartar variantes</string>
   <string name="prefs_discardVariations_summary">Descartar da lista lances fora da linha principal</string>
   <string name="prefs_leftHanded_title">Modo canhoto</string>
@@ -589,6 +594,16 @@ não estiver usando o programa diretamente.\</string>
     <item>12</item>
     <item>16</item>
     <item>21</item>
+  </string-array>
+  <string-array name="ecoHints_texts">
+    <item>Off</item>
+    <item>Auto</item>
+    <item>Always</item>
+  </string-array>
+  <string-array name="ecoHints_values">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
   </string-array>
   <string-array name="thinking_arrows_texts">
     <item>Sem setas</item>
