@@ -521,6 +521,12 @@
             android:summary="@string/prefs_invertScrollDirection_summary"
             android:defaultValue="false">
         </CheckBoxPreference>
+        <CheckBoxPreference
+            android:key="autoScrollMoveList"
+            android:title="@string/prefs_autoScrollMoveList_title"
+            android:summary="@string/prefs_autoScrollMoveList_summary"
+            android:defaultValue="true">
+        </CheckBoxPreference>
         <ListPreference
             android:key="autoDelay"
             android:title="@string/prefs_autoDelay_title"

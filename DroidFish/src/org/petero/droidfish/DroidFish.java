@@ -212,6 +212,7 @@ public class DroidFish extends Activity
 
     private float scrollSensitivity;
     private boolean invertScrollDirection;
+    private boolean autoScrollMoveList;
 
     private boolean leftHanded;
     private boolean soundEnabled;
@@ -1182,6 +1183,7 @@ public class DroidFish extends Activity
 
         scrollSensitivity = Float.parseFloat(settings.getString("scrollSensitivity", "2"));
         invertScrollDirection = settings.getBoolean("invertScrollDirection", false);
+        autoScrollMoveList = settings.getBoolean("autoScrollMoveList", true);
         discardVariations = settings.getBoolean("discardVariations", false);
         Util.setFullScreenMode(this, settings);
         useWakeLock = settings.getBoolean("wakeLock", false);
@@ -1903,7 +1905,7 @@ public class DroidFish extends Activity
         moveList.setText(gameTextListener.getText());
         int currPos = gameTextListener.getCurrPos();
         int line = moveList.getLineForOffset(currPos);
-        if (line >= 0) {
+        if (line >= 0 && autoScrollMoveList) {
             int y = (line - 1) * moveList.getLineHeight();
             moveListScroll.scrollTo(0, y);
         }
