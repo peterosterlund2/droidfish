@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
@@ -139,11 +140,14 @@ public abstract class UCIEngineBase implements UCIEngine {
     /** Return true if the UCI option can be changed by the user. */
     protected boolean configurableOption(String name) {
         name = name.toLowerCase(Locale.US);
-        if (name.startsWith("uci_") || name.equals("hash") || name.equals("ponder") ||
-            name.equals("multipv") || name.equals("gaviotatbpath") ||
-            name.equals("syzygypath"))
-            return false;
-        return true;
+        if (name.startsWith("uci_")) {
+            String[] allowed = { "uci_limitstrength", "uci_elo" };
+            return Arrays.asList(allowed).contains(name);
+        } else {
+            String[] ignored = { "hash", "ponder", "multipv",
+                                 "gaviotatbpath", "syzygypath" };
+            return !Arrays.asList(ignored).contains(name);
+        }
     }
 
     @Override
