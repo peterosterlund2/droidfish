@@ -33,8 +33,9 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="copy_game">Skopiuj partię do schowka</string>
   <string name="copy_position">Skopiuj ustawienie do schowka</string>
   <string name="paste">Wklej ze schowka</string>
-  <string name="share">Udostępnij</string>
-  <string name="share_pgn_game">Udostępnij partię jako PGN</string>
+  <string name="share_game">Share Game</string>
+  <string name="share_text">Share as Text</string>
+  <string name="share_image">Share as Image</string>
   <string name="load_last_file">Załaduj z ostatnio używanego pliku</string>
   <string name="load_game">Załaduj partię z pliku PGN</string>
   <string name="load_position">Załaduj ustawienie z pliku</string>

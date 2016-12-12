@@ -34,8 +34,9 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="copy_game">Partie in die Zwischenablage kopieren</string>
   <string name="copy_position">Stellung in die Zwischenablage kopieren</string>
   <string name="paste">Aus der Zwischenablage einfügen</string>
-  <string name="share">Freigeben</string>
-  <string name="share_pgn_game">PGN-Partie freigeben</string>
+  <string name="share_game">Share Game</string>
+  <string name="share_text">Share as Text</string>
+  <string name="share_image">Share as Image</string>
   <string name="load_last_file">Aus der letzten Datei laden</string>
   <string name="load_game">Partie aus einer PGN-Datei laden</string>
   <string name="load_position">Position aus Datei laden</string>

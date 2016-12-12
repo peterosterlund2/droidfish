@@ -31,8 +31,9 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="copy_game">Copier la partie dans le presse-papier</string>
   <string name="copy_position">Copier la position dans le presse-papier</string>
   <string name="paste">Coller depuis le presse-papier</string>
-  <string name="share">Partager</string>
-  <string name="share_pgn_game">Partager une partie PGN</string>
+  <string name="share_game">Share Game</string>
+  <string name="share_text">Share as Text</string>
+  <string name="share_image">Share as Image</string>
   <string name="load_last_file">Charger depuis le dernier fichier</string>
   <string name="load_game">Charger une partie PGN</string>
   <string name="load_position">Charger une position depuis un fichier</string>

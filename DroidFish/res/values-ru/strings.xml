@@ -24,8 +24,9 @@
   <string name="copy_game">Скопировать партию в буфер обмена</string>
   <string name="copy_position">Скопировать позицию в буфер обмена</string>
   <string name="paste">Вставить из буфера обмена</string>
-  <string name="share">Поделитесь</string>
-  <string name="share_pgn_game">Поделиться игрой PGN</string>
+  <string name="share_game">Share Game</string>
+  <string name="share_text">Share as Text</string>
+  <string name="share_image">Share as Image</string>
   <string name="load_last_file">Загрузить из последнего файла</string>
   <string name="load_game">Загрузить партию из PGN файла</string>
   <string name="load_position">Загрузить позицию из файла</string>

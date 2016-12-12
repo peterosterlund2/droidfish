@@ -32,8 +32,9 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="copy_game">Copiar Partida al Portapapeles</string>
   <string name="copy_position">Copiar Posición al Portapapeles</string>
   <string name="paste">Pegar desde el Portapapeles</string>
-  <string name="share">Compartir</string>
-  <string name="share_pgn_game">Compartir partida PGN</string>
+  <string name="share_game">Share Game</string>
+  <string name="share_text">Share as Text</string>
+  <string name="share_image">Share as Image</string>
   <string name="load_last_file">Cargar desde el último archivo</string>
   <string name="load_game">Cargar partida desde archivo PGN</string>
   <string name="load_position">Cargar posición desde el archivo</string>

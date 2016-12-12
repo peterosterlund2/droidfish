@@ -25,8 +25,9 @@
   <string name="copy_game">Copia la partita negli Appunti</string>
   <string name="copy_position">Copia la posizione negli appunti</string>
   <string name="paste">Incolla dagli Appunti</string>
-  <string name="share">Condividi</string>
-  <string name="share_pgn_game">Condividi in formato PGN</string>
+  <string name="share_game">Share Game</string>
+  <string name="share_text">Share as Text</string>
+  <string name="share_image">Share as Image</string>
   <string name="load_last_file">Carica dall\'ultimo file</string>
   <string name="load_game">Carica una partita da un file PGN</string>
   <string name="load_position">Carica posizione dal file</string>

@@ -32,8 +32,9 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="copy_game">Kopieer de partij naar het klembord</string>
   <string name="copy_position">Kopieer de positie naar het klembord</string>
   <string name="paste">Plakken vanuit klembord</string>
-  <string name="share">Delen</string>
-  <string name="share_pgn_game">Deel PGN partij</string>
+  <string name="share_game">Share Game</string>
+  <string name="share_text">Share as Text</string>
+  <string name="share_image">Share as Image</string>
   <string name="load_last_file">Laden vanuit laatste bestand</string>
   <string name="load_game">Partij laden vanuit PGN bestand</string>
   <string name="load_position">Positie uit bestand ophalen</string>

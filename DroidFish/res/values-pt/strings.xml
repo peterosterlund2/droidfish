@@ -33,8 +33,9 @@ não estiver usando o programa diretamente.\</string>
   <string name="copy_game">Copiar partida para o clipboard</string>
   <string name="copy_position">Copiar posição para o clipboard</string>
   <string name="paste">Colar do clipboard</string>
-  <string name="share">Compartilhar</string>
-  <string name="share_pgn_game">Compartilhar partida em PGN</string>
+  <string name="share_game">Share Game</string>
+  <string name="share_text">Share as Text</string>
+  <string name="share_image">Share as Image</string>
   <string name="load_last_file">Carregar do último ficheiro</string>
   <string name="load_game">Carregar partida de arquivo PGN</string>
   <string name="load_position">Carregar posição de um ficheiro</string>
