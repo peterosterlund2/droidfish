@@ -262,6 +262,8 @@ public class DroidChessController {
 
     /** Parse a string as FEN or PGN data. */
     public final synchronized void setFENOrPGN(String fenPgn) throws ChessParseError {
+        if (!fenPgn.isEmpty() && fenPgn.charAt(0) == '\ufeff')
+            fenPgn = fenPgn.substring(1); // Remove BOM
         Game newGame = new Game(gameTextListener, game.timeController.tcData);
         try {
             Position pos = TextIO.readFEN(fenPgn);

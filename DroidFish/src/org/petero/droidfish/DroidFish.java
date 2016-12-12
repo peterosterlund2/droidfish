@@ -693,7 +693,7 @@ public class DroidFish extends Activity
                      "application/x-chess-fen".equals(intent.getType())))
                     pgnOrFen = intent.getStringExtra(Intent.EXTRA_TEXT);
             } else {
-                String scheme = intent.getScheme();
+                String scheme = data.getScheme();
                 if ("file".equals(scheme)) {
                     filename = data.getEncodedPath();
                     if (filename != null)
@@ -703,7 +703,7 @@ public class DroidFish extends Activity
                     ("content".equals(scheme) ||
                      "file".equals(scheme))) {
                     ContentResolver resolver = getContentResolver();
-                    InputStream in = resolver.openInputStream(intent.getData());
+                    InputStream in = resolver.openInputStream(data);
                     StringBuilder sb = new StringBuilder();
                     while (true) {
                         byte[] buffer = new byte[16384];
