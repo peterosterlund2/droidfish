@@ -33,8 +33,9 @@ you are not actively using the program.\
     <string name="copy_game">Copy Game to Clipboard</string>
     <string name="copy_position">Copy Position to Clipboard</string>
     <string name="paste">Paste from Clipboard</string>
-    <string name="share">Share</string>
-    <string name="share_pgn_game">Share PGN game</string>
+    <string name="share_game">Share Game</string>
+    <string name="share_text">Share as Text</string>
+    <string name="share_image">Share as Image</string>
     <string name="load_last_file">Load from last file</string>
     <string name="load_game">Load game from PGN file</string>
     <string name="load_position">Load position from file</string>

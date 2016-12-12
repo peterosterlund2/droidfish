@@ -21,9 +21,11 @@ package org.petero.droidfish;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -97,6 +99,8 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.Resources.NotFoundException;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Typeface;
 import android.graphics.drawable.StateListDrawable;
 import android.media.MediaPlayer;
@@ -108,7 +112,9 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
@@ -2217,10 +2223,12 @@ public class DroidFish extends Activity
     }
 
     private final Dialog boardMenuDialog() {
-        final int CLIPBOARD = 0;
-        final int FILEMENU  = 1;
-        final int SHARE     = 2;
-        final int GET_FEN   = 3;
+        final int CLIPBOARD  = 0;
+        final int FILEMENU   = 1;
+        final int SHARE_GAME = 2;
+        final int SHARE_TEXT = 3;
+        final int SHARE_IMAG = 4;
+        final int GET_FEN    = 5;
 
         setAutoMode(AutoMode.OFF);
         List<CharSequence> lst = new ArrayList<CharSequence>();
@@ -2229,7 +2237,9 @@ public class DroidFish extends Activity
         if (storageAvailable()) {
             lst.add(getString(R.string.option_file));   actions.add(FILEMENU);
         }
-        lst.add(getString(R.string.share));         actions.add(SHARE);
+        lst.add(getString(R.string.share_game));         actions.add(SHARE_GAME);
+        lst.add(getString(R.string.share_text));         actions.add(SHARE_TEXT);
+        lst.add(getString(R.string.share_image));        actions.add(SHARE_IMAG);
         if (hasFenProvider(getPackageManager())) {
             lst.add(getString(R.string.get_fen)); actions.add(GET_FEN);
         }
@@ -2239,19 +2249,22 @@ public class DroidFish extends Activity
         builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 switch (finalActions.get(item)) {
-                case CLIPBOARD: {
+                case CLIPBOARD:
                     showDialog(CLIPBOARD_DIALOG);
                     break;
-                }
-                case FILEMENU: {
+                case FILEMENU:
                     removeDialog(FILE_MENU_DIALOG);
                     showDialog(FILE_MENU_DIALOG);
                     break;
-                }
-                case SHARE: {
-                    shareGame();
+                case SHARE_GAME:
+                    shareGameOrText(true);
                     break;
-                }
+                case SHARE_TEXT:
+                    shareGameOrText(false);
+                    break;
+                case SHARE_IMAG:
+                    shareImage();
+                    break;
                 case GET_FEN:
                     getFen();
                     break;
@@ -2262,15 +2275,50 @@ public class DroidFish extends Activity
         return alert;
     }
 
-    private final void shareGame() {
+    private final void shareGameOrText(boolean game) {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        i.setType("text/plain");
+        i.setType(game ? "application/x-chess-pgn" : "text/plain");
         i.putExtra(Intent.EXTRA_TEXT, ctrl.getPGN());
         try {
-            startActivity(Intent.createChooser(i, getString(R.string.share_pgn_game)));
+            startActivity(Intent.createChooser(i, getString(game ? R.string.share_game :
+                                                                   R.string.share_text)));
         } catch (ActivityNotFoundException ex) {
-            // Ignore
+        }
+    }
+
+    private final void shareImage() {
+        View v = findViewById(R.id.main);
+        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
+                                       Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(b);
+        v.draw(c);
+        File imgDir = new File(getFilesDir(), "images");
+        imgDir.mkdirs();
+        File file = new File(imgDir, "screenshot.png");
+        try {
+            OutputStream os = null;
+            try {
+                os = new FileOutputStream(file);
+                b.compress(Bitmap.CompressFormat.PNG, 100, os);
+            } finally {
+                if (os != null)
+                    os.close();
+            }
+        } catch (IOException e) {
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        String authority = "org.petero.droidfish.fileprovider";
+        Uri uri = FileProvider.getUriForFile(this, authority, file);
+
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.putExtra(Intent.EXTRA_STREAM, uri);
+        i.setType("image/png");
+        try {
+            startActivity(Intent.createChooser(i, getString(R.string.share_image)));
+        } catch (ActivityNotFoundException ex) {
         }
     }
 
