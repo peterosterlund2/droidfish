@@ -19,8 +19,10 @@
 package org.petero.droidfish.activities;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
@@ -113,43 +115,215 @@ public class PGNFile {
         NOT_PGN,
         OUT_OF_MEMORY;
     }
+    
+    private static class BytesToString {
+        private byte[] buf = new byte[256];
+        private int len = 0;
+
+        public void write(int c) {
+            if (len < 256)
+                buf[len++] = (byte)c;
+        }
+        public void reset() {
+            len = 0;
+        }
+        public String toString() {
+            return new String(buf, 0, len);
+        }
+    }
+    
+    private static class BufferedInput {
+        private byte buf[] = new byte[8192];
+        private int bufLen = 0;
+        private int pos = 0;
+        private InputStream is;
+        public BufferedInput(InputStream is) {
+            this.is = is;
+        }
+        public int read() throws IOException {
+            if (pos >= bufLen) {
+                int len = is.read(buf);
+                if (len <= 0)
+                    return -1;
+                pos = 0;
+                bufLen = len;
+            }
+            return buf[pos++] & 0xff;
+        }
+        public void close() {
+            try {
+                is.close();
+            } catch (IOException ex) {
+            }
+        }
+        
+    }
 
     /** Return info about all PGN games in a file. */
     public final Pair<GameInfoResult,ArrayList<GameInfo>> getGameInfo(Activity activity,
                                                                       final ProgressDialog progress) {
         ArrayList<GameInfo> gamesInFile = new ArrayList<GameInfo>();
+        gamesInFile.clear();
         long fileLen = 0;
+        BufferedInput f = null;
         try {
             int percent = -1;
-            gamesInFile.clear();
-            BufferedRandomAccessFileReader f = new BufferedRandomAccessFileReader(fileName.getAbsolutePath());
-            fileLen = f.length();
+            {
+                RandomAccessFile raf = new RandomAccessFile(fileName, "r");
+                fileLen = raf.length();
+                raf.close();
+            }
+            f = new BufferedInput(new FileInputStream(fileName));
+
             GameInfo gi = null;
             HeaderInfo hi = null;
             boolean inHeader = false;
+            boolean inHeaderSection = false;
             long filePos = 0;
+            long nRead = 0;
             int gameNo = 1;
-            while (true) {
-                filePos = f.getFilePointer();
-                String line = f.readLine();
-                if (line == null)
-                    break; // EOF
-                int len = line.length();
-                if (len == 0)
+
+            final int INITIAL       = 0;
+            final int NORMAL        = 1;
+            final int BRACE_COMMENT = 2;
+            final int LINE_COMMENT  = 3;
+            final int STRING        = 4;
+            final int STRING_ESCAPE = 5;
+            final int HEADER        = 6;
+            final int HEADER_SYMBOL = 7;
+            final int EOF           = 8;
+            int state = INITIAL;
+
+            boolean firstColumn = true;
+            BytesToString lastSymbol = new BytesToString();
+            BytesToString lastString = new BytesToString();
+            while (state != EOF) {
+                filePos = nRead;
+                int c = f.read();
+                nRead++;
+
+                if (c == -1) {
+                    state = EOF;
                     continue;
-                if ((filePos == 0) && (len > 1) && (line.charAt(0) == '\uFEFF')) {
-                    line = line.substring(1);
-                    len--;
-                    filePos += 3;
                 }
-                boolean isHeader = line.charAt(0) == '[';
-                if (isHeader) {
-                    if (!line.contains("\"")) // Try to avoid some false positives
-                        isHeader = false;
+
+                if (firstColumn) { // Handle % escape mechanism
+                    if (c == '%') {
+                        state = LINE_COMMENT;
+                        continue;
+                    }
                 }
-                if (isHeader) {
-                    if (!inHeader) { // Start of game
+                firstColumn = (c == '\n' || c == '\r');
+
+                switch (state) {
+                case BRACE_COMMENT:
+                    if (c == '}')
+                        state = NORMAL;
+                    break;
+                case LINE_COMMENT:
+                    if (c == '\n' || c == '\r')
+                        state = NORMAL;
+                    break;
+                case STRING:
+                    if (c == '"')
+                        state = NORMAL;
+                    else if (c == '\\')
+                        state = STRING_ESCAPE;
+                    else
+                        lastString.write(c);
+                    break;
+                case STRING_ESCAPE:
+                    lastString.write(c);
+                    state = STRING;
+                    break;
+                case HEADER_SYMBOL:
+                    switch (c) {
+                    case '"':
+                        state = STRING;
+                        lastString.reset();
+                        break;
+                    case ' ': case '\n': case '\r': case '\t': case 160: case ']':
+                        state = NORMAL;
+                        break;
+                    default:
+                        lastSymbol.write(c);
+                        break;
+                    }
+                    break;
+                case HEADER:
+                case INITIAL:
+                case NORMAL:
+                    switch (c) {
+                    case -1:
+                        state = EOF;
+                        break;
+                    case '.':
+                        break;
+                    case '*':
+                        break;
+                    case '[':
+                        state = HEADER;
                         inHeader = true;
+                        break;
+                    case ']':
+                        if (inHeader) {
+                            inHeader = false;
+                            String tag = lastSymbol.toString();
+                            String value = lastString.toString();
+                            if ("Event".equals(tag)) {
+                                hi.event = value.equals("?") ? "" : value;
+                            } else if ("Site".equals(tag)) {
+                                hi.site = value.equals("?") ? "" : value;
+                            } else if ("Date".equals(tag)) {
+                                hi.date = value.equals("?") ? "" : value;
+                            } else if ("Round".equals(tag)) {
+                                hi.round = value.equals("?") ? "" : value;
+                            } else if ("White".equals(tag)) {
+                                hi.white = value;
+                            } else if ("Black".equals(tag)) {
+                                hi.black = value;
+                            } else if ("Result".equals(tag)) {
+                                if (value.equals("1-0")) hi.result = "1-0";
+                                else if (value.equals("0-1")) hi.result = "0-1";
+                                else if ((value.equals("1/2-1/2")) || (value.equals("1/2"))) hi.result = "1/2-1/2";
+                                else hi.result = "*";
+                            }
+                        }
+                        state = NORMAL;
+                        break;
+                    case '(':
+                        break;
+                    case ')':
+                        break;
+                    case '{':
+                        state = BRACE_COMMENT;
+                        break;
+                    case ';':
+                        state = LINE_COMMENT;
+                        break;
+                    case '"':
+                        state = STRING;
+                        lastString.reset();
+                        break;
+                    case '$':
+                        break;
+                    case ' ': case '\n': case '\r': case '\t': case 160:
+                        break;
+                    default:
+                        if (inHeader) {
+                            state = HEADER_SYMBOL;
+                            lastSymbol.reset();
+                            lastSymbol.write(c);
+                        } else {
+                            inHeaderSection = false;
+                        }
+                        break;
+                    }
+                }
+
+                if (state == HEADER) {
+                    if (!inHeaderSection) { // Start of game
+                        inHeaderSection = true;
                         if (gi != null) {
                             gi.endPos = filePos;
                             gi.info = hi.toString();
@@ -173,43 +347,6 @@ public class PGNFile {
                         gi.endPos = -1;
                         hi = new HeaderInfo(gameNo++);
                     }
-                    if (line.startsWith("[Event ")) {
-                        if (len >= 10) {
-                            hi.event = line.substring(8, len - 2);
-                            if (hi.event.equals("?")) hi.event = "";
-                        }
-                    } else if (line.startsWith("[Site ")) {
-                        if (len >= 9) {
-                            hi.site = line.substring(7, len - 2);
-                            if (hi.site.equals("?")) hi.site = "";
-                        }
-                    } else if (line.startsWith("[Date ")) {
-                        if (len >= 9) {
-                            hi.date = line.substring(7, len - 2);
-                            if (hi.date.equals("?")) hi.date = "";
-                        }
-                    } else if (line.startsWith("[Round ")) {
-                        if (len >= 10) {
-                            hi.round = line.substring(8, len - 2);
-                            if (hi.round.equals("?")) hi.round = "";
-                        }
-                    } else if (line.startsWith("[White ")) {
-                        if (len >= 10)
-                            hi.white = line.substring(8, len - 2);
-                    } else if (line.startsWith("[Black ")) {
-                        if (len >= 10)
-                            hi.black = line.substring(8, len - 2);
-                    } else if (line.startsWith("[Result ")) {
-                        if (len >= 11) {
-                            hi.result = line.substring(9, len - 2);
-                            if (hi.result.equals("1-0")) hi.result = "1-0";
-                            else if (hi.result.equals("0-1")) hi.result = "0-1";
-                            else if ((hi.result.equals("1/2-1/2")) || (hi.result.equals("1/2"))) hi.result = "1/2-1/2";
-                            else hi.result = "*";
-                        }
-                    }
-                } else {
-                    inHeader = false;
                 }
             }
             if (gi != null) {
@@ -217,12 +354,14 @@ public class PGNFile {
                 gi.info = hi.toString();
                 gamesInFile.add(gi);
             }
-            f.close();
         } catch (IOException e) {
         } catch (OutOfMemoryError e) {
             gamesInFile.clear();
             gamesInFile = null;
             return new Pair<GameInfoResult,ArrayList<GameInfo>>(GameInfoResult.OUT_OF_MEMORY, null);
+        } finally {
+            if (f != null)
+              f.close();
         }
         if ((gamesInFile.size() == 0) && (fileLen > 0))
             return new Pair<GameInfoResult,ArrayList<GameInfo>>(GameInfoResult.NOT_PGN, null);
