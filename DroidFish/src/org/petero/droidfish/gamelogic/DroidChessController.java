@@ -933,10 +933,9 @@ public class DroidChessController {
     private final void updateBookHints() {
         if (game != null) {
             Pair<String, ArrayList<Move>> bi = computerPlayer.getBookHints(game.currPos(), localPt());
-            Pair<String, Integer> ecoData =
-                    EcoDb.getInstance().getEco(game.tree);
-            String eco = ecoData.first;
-            listener.notifyBookInfo(searchId, bi.first, bi.second, eco, ecoData.second);
+            EcoDb.Result ecoData = EcoDb.getInstance().getEco(game.tree);
+            String eco = ecoData.getName();
+            listener.notifyBookInfo(searchId, bi.first, bi.second, eco, ecoData.distToEcoTree);
         }
     }
 
@@ -976,10 +975,9 @@ public class DroidChessController {
                 computerPlayer.queueAnalyzeRequest(sr);
             } else if (computersTurn || ponder) {
                 listener.clearSearchInfo(searchId);
-                Pair<String, Integer> ecoData =
-                        EcoDb.getInstance().getEco(game.tree);
-                String eco = ecoData.first;
-                listener.notifyBookInfo(searchId, "", null, eco, ecoData.second);
+                EcoDb.Result ecoData = EcoDb.getInstance().getEco(game.tree);
+                String eco = ecoData.getName();
+                listener.notifyBookInfo(searchId, "", null, eco, ecoData.distToEcoTree);
                 final Pair<Position, ArrayList<Move>> ph = game.getUCIHistory();
                 Position currPos = new Position(game.currPos());
                 long now = System.currentTimeMillis();

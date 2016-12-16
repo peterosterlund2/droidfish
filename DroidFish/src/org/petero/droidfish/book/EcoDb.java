@@ -48,9 +48,32 @@ public class EcoDb {
         }
         return instance;
     }
+    
+    public static class Result {
+        public final String eco; // The ECO code
+        public final String opn; // The opening name, or null
+        public final String var; // The variation name, or null
+        public final int distToEcoTree;
+        Result(String eco, String opn, String var, int d) {
+            this.eco = eco;
+            this.opn = opn;
+            this.var = var;
+            distToEcoTree = d;
+        }
+        /** Return string formatted as "eco: opn, var". */
+        public String getName() {
+            String s = eco;
+            if (!opn.isEmpty()) {
+                s = s + ": " + opn;
+                if (!var.isEmpty())
+                    s = s + ", " + var;
+            }
+            return s;
+        }
+    }
 
     /** Get ECO classification for a given tree node. Also returns distance in plies to "ECO tree". */
-    public Pair<String,Integer> getEco(GameTree gt) {
+    public Result getEco(GameTree gt) {
         ArrayList<Integer> treePath = new ArrayList<Integer>(); // Path to restore gt to original node
         ArrayList<Pair<GameTree.Node,Boolean>> toCache = new ArrayList<Pair<GameTree.Node,Boolean>>();
 
@@ -74,7 +97,7 @@ public class EcoDb {
 
             if (idx != null) {
                 Node ecoNode = readNode(idx);
-                if (ecoNode.nameIdx != -1) {
+                if (ecoNode.ecoIdx != -1) {
                     nodeIdx = idx;
                     break;
                 }
@@ -142,10 +165,18 @@ public class EcoDb {
 
         if (nodeIdx != -1) {
             Node n = readNode(nodeIdx);
-            if (n.nameIdx >= 0)
-                return new Pair<String, Integer>(ecoNames[n.nameIdx], distToEcoTree);
+            String eco = "", opn = "", var = "";
+            if (n.ecoIdx >= 0) {
+                eco = strPool[n.ecoIdx];
+                if (n.opnIdx >= 0) {
+                    opn = strPool[n.opnIdx];
+                    if (n.varIdx >= 0)
+                        var = strPool[n.varIdx];
+                }
+                return new Result(eco, opn, var, distToEcoTree);
+            }
         }
-        return new Pair<String, Integer>("", 0);
+        return new Result("", "", "", 0);
     }
 
     /** Get all moves in the ECO tree from a given position. */
@@ -182,13 +213,15 @@ public class EcoDb {
 
     private static class Node {
         int move;       // Move (compressed) leading to the position corresponding to this node
-        int nameIdx;    // Index in names array, or -1
+        int ecoIdx;     // Index in string array, or -1
+        int opnIdx;     // Index in string array, or -1
+        int varIdx;     // Index in string array, or -1
         int firstChild;
         int nextSibling;
     }
 
     private byte[] nodesBuffer;
-    private String[] ecoNames;
+    private String[] strPool;
     private HashMap<Long, Short> posHashToNodeIdx;
     private HashMap<Long, ArrayList<Short>> posHashToNodeIdx2; // Handles collisions
     private final long startPosHash; // Zobrist hash for standard starting position
@@ -239,11 +272,11 @@ public class EcoDb {
                     break;
                 nNodes++;
             }
-            nodesBuffer = new byte[nNodes * 8];
-            System.arraycopy(buf, 0, nodesBuffer, 0, nNodes * 8);
+            nodesBuffer = new byte[nNodes * 12];
+            System.arraycopy(buf, 0, nodesBuffer, 0, nNodes * 12);
 
             ArrayList<String> names = new ArrayList<String>();
-            int idx = (nNodes + 1) * 8;
+            int idx = (nNodes + 1) * 12;
             int start = idx;
             for (int i = idx; i < buf.length; i++) {
                 if (buf[i] == 0) {
@@ -251,7 +284,7 @@ public class EcoDb {
                     start = i + 1;
                 }
             }
-            ecoNames = names.toArray(new String[names.size()]);
+            strPool = names.toArray(new String[names.size()]);
         } catch (IOException ex) {
             throw new RuntimeException("Can't read ECO database");
         }
@@ -272,7 +305,7 @@ public class EcoDb {
         long hash = pos.zobristHash();
         if (posHashToNodeIdx.get(hash) == null) {
             posHashToNodeIdx.put(hash, (short)nodeIdx);
-        } else if (node.nameIdx != -1) {
+        } else if (node.ecoIdx != -1) {
             ArrayList<Short> lst = null;
             if (posHashToNodeIdx2.get(hash) == null) {
                 lst = new ArrayList<Short>();
@@ -300,11 +333,13 @@ public class EcoDb {
 
     private static Node readNode(int index, byte[] buf) {
         Node n = new Node();
-        int o = index * 8;
+        int o = index * 12;
         n.move = getU16(buf, o);
-        n.nameIdx = getS16(buf, o + 2);
-        n.firstChild = getS16(buf, o + 4);
-        n.nextSibling = getS16(buf, o + 6);
+        n.ecoIdx = getS16(buf, o + 2);
+        n.opnIdx = getS16(buf, o + 4);
+        n.varIdx = getS16(buf, o + 6);
+        n.firstChild = getS16(buf, o + 8);
+        n.nextSibling = getS16(buf, o + 10);
         return n;
     }
 

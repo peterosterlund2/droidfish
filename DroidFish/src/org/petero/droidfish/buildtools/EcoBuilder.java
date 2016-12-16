@@ -41,23 +41,28 @@ public class EcoBuilder {
     private static class Node {
         int index;   // Index in nodes array
         Move move;   // Move leading to the position corresponding to this node
-        int nameIdx; // Index in names array, or -1
+        int ecoIdx;  // Index in string array, or -1
+        int opnIdx;  // Index in string array, or -1
+        int varIdx;  // Index in string array, or -1
         ArrayList<Node> children = new ArrayList<Node>();
         Node parent;
     }
     private ArrayList<Node> nodes;
-    private ArrayList<String> names;
-    private HashMap<String, Integer> nameToIndex;
+    private ArrayList<String> strs;
+    private HashMap<String, Integer> strToIndex;
+
 
     /** Constructor. */
     private EcoBuilder() {
         nodes = new ArrayList<Node>();
-        names = new ArrayList<String>();
-        nameToIndex = new HashMap<String, Integer>();
+        strs = new ArrayList<String>();
+        strToIndex = new HashMap<String, Integer>();
         Node rootNode = new Node();
         rootNode.index = 0;
         rootNode.move = new Move(0, 0, 0);
-        rootNode.nameIdx = -1;
+        rootNode.ecoIdx = -1;
+        rootNode.opnIdx = -1;
+        rootNode.varIdx = -1;
         nodes.add(rootNode);
     }
 
@@ -94,27 +99,18 @@ public class EcoBuilder {
         HashMap<String,String> headers = new HashMap<String,String>();
         GameTree tree = game.tree;
         tree.getHeaders(headers);
-        String eco = headers.get("ECO");
-        String opening = headers.get("Opening");
-        String variation = headers.get("Variation");
-        String name = eco + ": " + opening;
-        if (variation != null)
-            name = name + ", " + variation;
-
-        // Add name to data structures
-        Integer nameIdx = nameToIndex.get(name);
-        if (nameIdx == null) {
-            nameIdx = nameToIndex.size();
-            nameToIndex.put(name, nameIdx);
-            names.add(name);
-        }
+        int ecoIdx = addData(headers, "ECO");
+        int opnIdx = addData(headers, "Opening");
+        int varIdx = addData(headers, "Variation");
 
         // Add corresponding moves to data structures
         Node parent = nodes.get(0);
         while (true) {
             ArrayList<Move> moves = tree.variations();
             if (moves.isEmpty()) {
-                parent.nameIdx = nameIdx;
+                parent.ecoIdx = ecoIdx;
+                parent.opnIdx = opnIdx;
+                parent.varIdx = varIdx;
                 break;
             }
             Move m = moves.get(0);
@@ -130,7 +126,9 @@ public class EcoBuilder {
                 Node node = new Node();
                 node.index = nodes.size();
                 node.move = m;
-                node.nameIdx = -1;
+                node.ecoIdx = -1;
+                node.opnIdx = -1;
+                node.varIdx = -1;
                 node.parent = parent;
                 nodes.add(node);
                 parent.children.add(node);
@@ -141,24 +139,42 @@ public class EcoBuilder {
         }
     }
 
+    /** Add ECO, opening or variation data to string pool. */
+    private int addData(HashMap<String, String> headers, String hdrName) {
+        String s = headers.get(hdrName);
+        if (s == null)
+            return -1;
+        Integer idx = strToIndex.get(s);
+        if (idx == null) {
+            idx = strToIndex.size();
+            strToIndex.put(s, idx);
+            strs.add(s);
+        }
+        return idx;
+    }
+
     /** Write the binary ECO code data file. */
     private void writeDataFile(String ecoDatFile) throws Throwable {
         FileOutputStream out = new FileOutputStream(ecoDatFile);
 
         // Write nodes
-        byte[] buf = new byte[8];
+        byte[] buf = new byte[12];
         for (int i = 0; i < nodes.size(); i++) {
             Node n = nodes.get(i);
             int cm = n.move == null ? 0 : n.move.getCompressedMove();
             buf[0] = (byte)(cm >> 8);             // Move, high byte
             buf[1] = (byte)(cm & 255);            // Move, low byte
-            buf[2] = (byte)(n.nameIdx >> 8);      // Index, high byte
-            buf[3] = (byte)(n.nameIdx & 255);     // Index, low byte
+            buf[2] = (byte)(n.ecoIdx >> 8);      // Index, high byte
+            buf[3] = (byte)(n.ecoIdx & 255);     // Index, low byte
+            buf[4] = (byte)(n.opnIdx >> 8);      // Index, high byte
+            buf[5] = (byte)(n.opnIdx & 255);     // Index, low byte
+            buf[6] = (byte)(n.varIdx >> 8);      // Index, high byte
+            buf[7] = (byte)(n.varIdx & 255);     // Index, low byte
             int firstChild = -1;
             if (n.children.size() > 0)
                 firstChild = n.children.get(0).index;
-            buf[4] = (byte)(firstChild >> 8);
-            buf[5] = (byte)(firstChild & 255);
+            buf[8] = (byte)(firstChild >> 8);
+            buf[9] = (byte)(firstChild & 255);
             int nextSibling = -1;
             if (n.parent != null) {
                 ArrayList<Node> siblings = n.parent.children;
@@ -169,17 +185,17 @@ public class EcoBuilder {
                     }
                 }
             }
-            buf[6] = (byte)(nextSibling >> 8);
-            buf[7] = (byte)(nextSibling & 255);
+            buf[10] = (byte)(nextSibling >> 8);
+            buf[11] = (byte)(nextSibling & 255);
             out.write(buf);
         }
         for (int i = 0; i < buf.length; i++)
             buf[i] = -1;
         out.write(buf);
 
-        // Write names
+        // Write strings
         buf = new byte[]{0};
-        for (String name : names) {
+        for (String name : strs) {
             out.write(name.getBytes("UTF-8"));
             out.write(buf);
         }

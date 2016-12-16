@@ -36,27 +36,27 @@ public class EcoTest extends AndroidTestCase {
         {
             String pgn = "e4 e5 Nf3 Nc6 Bb5 a6 Ba4 Nf6 O-O Be7 Re1";
             GameTree gt = readPGN(pgn);
-            String eco = ecoDb.getEco(gt).first;
+            String eco = ecoDb.getEco(gt).getName();
             assertEquals("", eco);
 
             gt.goForward(0);
-            eco = ecoDb.getEco(gt).first;
+            eco = ecoDb.getEco(gt).getName();
             assertEquals("B00: King's pawn opening", eco);
 
             gt.goForward(0);
-            eco = ecoDb.getEco(gt).first;
+            eco = ecoDb.getEco(gt).getName();
             assertEquals("C20: King's pawn game", eco);
 
             gt.goForward(0);
-            eco = ecoDb.getEco(gt).first;
+            eco = ecoDb.getEco(gt).getName();
             assertEquals("C40: King's knight opening", eco);
         
             gt.goForward(0);
-            eco = ecoDb.getEco(gt).first;
+            eco = ecoDb.getEco(gt).getName();
             assertEquals("C44: King's pawn game", eco);
         
             gt.goForward(0);
-            eco = ecoDb.getEco(gt).first;
+            eco = ecoDb.getEco(gt).getName();
             assertEquals("C60: Ruy Lopez (Spanish opening)", eco);
         }
         {
@@ -65,85 +65,85 @@ public class EcoTest extends AndroidTestCase {
             game.processString("e5");
             game.processString("Nf3");
             game.processString("Nf6");
-            String eco = ecoDb.getEco(game.tree).first;
+            String eco = ecoDb.getEco(game.tree).getName();
             assertEquals("C42: Petrov's defence", eco);
 
             game.processString("Nxe5");
-            eco = ecoDb.getEco(game.tree).first;
+            eco = ecoDb.getEco(game.tree).getName();
             assertEquals("C42: Petrov's defence", eco);
 
             game.processString("d6");
-            eco = ecoDb.getEco(game.tree).first;
+            eco = ecoDb.getEco(game.tree).getName();
             assertEquals("C42: Petrov's defence", eco);
 
             game.processString("Nxf7");
-            eco = ecoDb.getEco(game.tree).first;
+            eco = ecoDb.getEco(game.tree).getName();
             assertEquals("C42: Petrov, Cochrane gambit", eco);
 
             game.undoMove();
-            eco = ecoDb.getEco(game.tree).first;
+            eco = ecoDb.getEco(game.tree).getName();
             assertEquals("C42: Petrov's defence", eco);
 
             game.processString("Nf3");
             game.processString("Nxe4");
             game.processString("d4");
-            eco = ecoDb.getEco(game.tree).first;
+            eco = ecoDb.getEco(game.tree).getName();
             assertEquals("C42: Petrov, classical attack", eco);
         }
         {
             Game game = new Game(null, new TimeControlData());
             game.processString("e4");
             game.processString("c5");
-            String eco = ecoDb.getEco(game.tree).first;
+            String eco = ecoDb.getEco(game.tree).getName();
             assertEquals("B20: Sicilian defence", eco);
 
             game.processString("h3");
-            eco = ecoDb.getEco(game.tree).first;
+            eco = ecoDb.getEco(game.tree).getName();
             assertEquals("B20: Sicilian defence", eco);
 
             game.processString("Nc6");
-            eco = ecoDb.getEco(game.tree).first;
+            eco = ecoDb.getEco(game.tree).getName();
             assertEquals("B20: Sicilian defence", eco);
 
             game.processString("g3");
-            eco = ecoDb.getEco(game.tree).first;
+            eco = ecoDb.getEco(game.tree).getName();
             assertEquals("B20: Sicilian defence", eco);
         }
         {
             Game game = new Game(null, new TimeControlData());
             for (String m : new String[]{"d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "g6"})
                 game.processString(m);
-            String eco = ecoDb.getEco(game.tree).first;
+            String eco = ecoDb.getEco(game.tree).getName();
             assertEquals("D15: QGD Slav, Schlechter variation", eco);
-            assertEquals(0, ecoDb.getEco(game.tree).second.intValue());
+            assertEquals(0, ecoDb.getEco(game.tree).distToEcoTree);
             game.processString("a4");
             assertEquals("D15: QGD Slav, Schlechter variation", eco);
-            assertEquals(1, ecoDb.getEco(game.tree).second.intValue());
+            assertEquals(1, ecoDb.getEco(game.tree).distToEcoTree);
         }
         {
             Game game = new Game(null, new TimeControlData());
             for (String m : new String[]{"d4", "Nf6", "c4", "g6", "Nc3", "d5", "Nf3", "c6"})
                 game.processString(m);
-            String eco = ecoDb.getEco(game.tree).first;
+            String eco = ecoDb.getEco(game.tree).getName();
             assertEquals("D90: Gruenfeld, Schlechter variation", eco);
-            assertEquals(0, ecoDb.getEco(game.tree).second.intValue());
+            assertEquals(0, ecoDb.getEco(game.tree).distToEcoTree);
             game.processString("h4");
             assertEquals("D90: Gruenfeld, Schlechter variation", eco);
-            assertEquals(1, ecoDb.getEco(game.tree).second.intValue());
+            assertEquals(1, ecoDb.getEco(game.tree).distToEcoTree);
             game.processString("h5");
             assertEquals("D90: Gruenfeld, Schlechter variation", eco);
-            assertEquals(2, ecoDb.getEco(game.tree).second.intValue());
+            assertEquals(2, ecoDb.getEco(game.tree).distToEcoTree);
         }
     }
 
     public void testEcoFromFEN() throws Throwable {
         EcoDb ecoDb = EcoDb.getInstance();
         GameTree gt = gtFromFEN("rnbqkbnr/ppp2ppp/4p3/3P4/3P4/8/PPP2PPP/RNBQKBNR b KQkq - 0 3");
-        String eco = ecoDb.getEco(gt).first;
+        String eco = ecoDb.getEco(gt).getName();
         assertEquals("C01: French, exchange variation", eco);
         
         gt = gtFromFEN("rnbqk1nr/ppppppbp/6p1/8/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 1 3");
-        eco = ecoDb.getEco(gt).first;
+        eco = ecoDb.getEco(gt).getName();
         assertEquals("B06: Robatsch (modern) defence", eco);
     }
 
