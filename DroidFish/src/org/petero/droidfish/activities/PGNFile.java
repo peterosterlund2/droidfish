@@ -45,10 +45,10 @@ public class PGNFile {
         return fileName.getAbsolutePath();
     }
 
-    static final class GameInfo {
-        String info = "";
-        long startPos;
-        long endPos;
+    public static final class GameInfo {
+        public String info = "";
+        public long startPos;
+        public long endPos;
 
         final GameInfo setNull(long currPos) {
             info = null;
@@ -156,7 +156,6 @@ public class PGNFile {
             } catch (IOException ex) {
             }
         }
-        
     }
 
     /** Return info about all PGN games in a file. */
@@ -257,10 +256,6 @@ public class PGNFile {
                     case -1:
                         state = EOF;
                         break;
-                    case '.':
-                        break;
-                    case '*':
-                        break;
                     case '[':
                         state = HEADER;
                         inHeader = true;
@@ -291,21 +286,24 @@ public class PGNFile {
                         }
                         state = NORMAL;
                         break;
+                    case '.':
+                    case '*':
                     case '(':
-                        break;
                     case ')':
+                    case '$':
+                        inHeaderSection = false;
                         break;
                     case '{':
                         state = BRACE_COMMENT;
+                        inHeaderSection = false;
                         break;
                     case ';':
                         state = LINE_COMMENT;
+                        inHeaderSection = false;
                         break;
                     case '"':
                         state = STRING;
                         lastString.reset();
-                        break;
-                    case '$':
                         break;
                     case ' ': case '\n': case '\r': case '\t': case 160:
                         break;
