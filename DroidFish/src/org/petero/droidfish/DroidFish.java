@@ -112,7 +112,6 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.MotionEventCompat;
@@ -2752,10 +2751,11 @@ public class DroidFish extends Activity
     private final Dialog moveListMenuDialog() {
         final int EDIT_HEADERS   = 0;
         final int EDIT_COMMENTS  = 1;
-        final int REMOVE_SUBTREE = 2;
-        final int MOVE_VAR_UP    = 3;
-        final int MOVE_VAR_DOWN  = 4;
-        final int ADD_NULL_MOVE  = 5;
+        final int ADD_ECO        = 2;
+        final int REMOVE_SUBTREE = 3;
+        final int MOVE_VAR_UP    = 4;
+        final int MOVE_VAR_DOWN  = 5;
+        final int ADD_NULL_MOVE  = 6;
 
         setAutoMode(AutoMode.OFF);
         List<CharSequence> lst = new ArrayList<CharSequence>();
@@ -2764,6 +2764,7 @@ public class DroidFish extends Activity
         if (ctrl.humansTurn()) {
             lst.add(getString(R.string.edit_comments)); actions.add(EDIT_COMMENTS);
         }
+        lst.add(getString(R.string.add_eco));           actions.add(ADD_ECO);
         lst.add(getString(R.string.truncate_gametree)); actions.add(REMOVE_SUBTREE);
         if (ctrl.canMoveVariationUp()) {
             lst.add(getString(R.string.move_var_up));   actions.add(MOVE_VAR_UP);
@@ -2867,6 +2868,9 @@ public class DroidFish extends Activity
                     builder.show();
                     break;
                 }
+                case ADD_ECO:
+                    ctrl.addECO();
+                    break;
                 case REMOVE_SUBTREE:
                     ctrl.removeSubTree();
                     break;

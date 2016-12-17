@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.petero.droidfish.PGNOptions;
+import org.petero.droidfish.book.EcoDb;
 import org.petero.droidfish.gamelogic.Game.GameState;
 import org.petero.droidfish.gamelogic.TimeControlData.TimeControlField;
 
@@ -270,6 +271,21 @@ public class GameTree {
         options.exp.pieceType = PGNOptions.PT_ENGLISH;
         pgnTreeWalker(options, pgnText);
         return pgnText.getPgnString();
+    }
+
+    /** Get ECO classification corresponding to the end of mainline. */
+    public final EcoDb.Result getGameECO() {
+        ArrayList<Integer> currPath = currentNode.getPathFromRoot();
+        while (currentNode != rootNode)
+            goBack();
+        while (variations().size() > 0)
+            goForward(0, false);
+        EcoDb.Result ecoData = EcoDb.getInstance().getEco(this);
+        while (currentNode != rootNode)
+            goBack();
+        for (int i : currPath)
+            goForward(i, false);
+        return ecoData;
     }
 
     /** Walks the game tree in PGN export order. */
@@ -1480,7 +1496,8 @@ public class GameTree {
         }
     }
 
-    /** Set PGN header tags and values. */
+    /** Set PGN header tags and values. Setting a non-required
+     *  tag to null causes it to be removed. */
     void setHeaders(Map<String,String> headers) {
         for (Entry<String, String> entry : headers.entrySet()) {
             String tag = entry.getKey();
@@ -1492,19 +1509,28 @@ public class GameTree {
             else if (tag.equals("White")) white = val;
             else if (tag.equals("Black")) black = val;
             else {
-                boolean found = false;
-                for (TagPair t : tagPairs) {
-                    if (t.tagName.equals(tag)) {
-                        t.tagValue = val;
-                        found = true;
-                        break;
+                if (val != null) {
+                    boolean found = false;
+                    for (TagPair t : tagPairs) {
+                        if (t.tagName.equals(tag)) {
+                            t.tagValue = val;
+                            found = true;
+                            break;
+                        }
                     }
-                }
-                if (!found) {
-                    TagPair tp = new TagPair();
-                    tp.tagName = tag;
-                    tp.tagValue = val;
-                    tagPairs.add(tp);
+                    if (!found) {
+                        TagPair tp = new TagPair();
+                        tp.tagName = tag;
+                        tp.tagValue = val;
+                        tagPairs.add(tp);
+                    }
+                } else {
+                    for (int i = 0; i < tagPairs.size(); i++) {
+                        if (tagPairs.get(i).tagName.equals(tag)) {
+                            tagPairs.remove(i);
+                            break;
+                        }
+                    }
                 }
             }
         }

@@ -107,6 +107,7 @@ you are not actively using the program.\
     <string name="edit_game">Edit Game</string>
     <string name="edit_headers">Edit Headers</string>
     <string name="edit_comments">Edit Comments</string>
+    <string name="add_eco">Add opening name</string>
     <string name="go_back">Go Back</string>
     <string name="go_forward">Go Forward</string>
     <string name="goto_start_game">Goto Start of Game</string>

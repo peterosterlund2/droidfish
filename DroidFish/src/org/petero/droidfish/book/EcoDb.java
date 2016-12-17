@@ -122,7 +122,7 @@ public class EcoDb {
                 int currEcoNode = 0;
                 boolean foundDup = false;
                 while (!treePath.isEmpty()) {
-                    gt.goForward(treePath.get(treePath.size() - 1));
+                    gt.goForward(treePath.get(treePath.size() - 1), false);
                     treePath.remove(treePath.size() - 1);
                     int m = gt.currentNode.move.getCompressedMove();
 
@@ -154,7 +154,7 @@ public class EcoDb {
         }
 
         for (int i = treePath.size() - 1; i >= 0; i--)
-            gt.goForward(treePath.get(i));
+            gt.goForward(treePath.get(i), false);
         for (int i = toCache.size() - 1; i >= 0; i--) {
             Pair<GameTree.Node,Boolean> p = toCache.get(i);
             distToEcoTree++;

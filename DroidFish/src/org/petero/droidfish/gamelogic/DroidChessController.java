@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.petero.droidfish.EngineOptions;
 import org.petero.droidfish.GUIInterface;
@@ -625,6 +626,18 @@ public class DroidChessController {
 
     /** Set PGN header tags and values. */
     public final synchronized void setHeaders(Map<String,String> headers) {
+        game.tree.setHeaders(headers);
+        gameTextListener.clear();
+        updateGUI();
+    }
+
+    /** Add ECO classification headers. */
+    public final synchronized void addECO() {
+        EcoDb.Result r = game.tree.getGameECO();
+        Map<String,String> headers = new TreeMap<String,String>();
+        headers.put("ECO",       r.eco.isEmpty() ? null : r.eco);
+        headers.put("Opening",   r.opn.isEmpty() ? null : r.opn);
+        headers.put("Variation", r.var.isEmpty() ? null : r.var);
         game.tree.setHeaders(headers);
         gameTextListener.clear();
         updateGUI();
