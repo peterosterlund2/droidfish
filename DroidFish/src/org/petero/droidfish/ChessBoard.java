@@ -202,10 +202,12 @@ public abstract class ChessBoard extends View {
         private void drawAnimPiece(Canvas canvas, int piece, int from, int to, double animState) {
             if (piece == Piece.EMPTY)
                 return;
-            final int xCrd1 = getXCrd(Position.getX(from));
-            final int yCrd1 = getYCrd(Position.getY(from));
-            final int xCrd2 = getXCrd(Position.getX(to));
-            final int yCrd2 = getYCrd(Position.getY(to));
+            XYCoord crd1 = sqToPix(Position.getX(from), Position.getY(from));
+            final int xCrd1 = crd1.x;
+            final int yCrd1 = crd1.y;
+            XYCoord crd2 = sqToPix(Position.getX(to), Position.getY(to));
+            final int xCrd2 = crd2.x;
+            final int yCrd2 = crd2.y;
             final int xCrd = xCrd1 + (int)Math.round((xCrd2 - xCrd1) * animState);
             final int yCrd = yCrd1 + (int)Math.round((yCrd2 - yCrd1) * animState);
             drawPiece(canvas, xCrd, yCrd, piece);
@@ -323,7 +325,7 @@ public abstract class ChessBoard extends View {
         }
     }
 
-    /** Set/clear the board flipped status. */
+    /** Set/clear the drawSquareLabels status. */
     final public void setDrawSquareLabels(boolean drawSquareLabels) {
         if (this.drawSquareLabels != drawSquareLabels) {
             this.drawSquareLabels = drawSquareLabels;
@@ -398,8 +400,9 @@ public abstract class ChessBoard extends View {
         computeOrigin(width, height);
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                final int xCrd = getXCrd(x);
-                final int yCrd = getYCrd(y);
+                XYCoord crd = sqToPix(x, y);
+                final int xCrd = crd.x;
+                final int yCrd = crd.y;
                 Paint paint = Position.darkSquare(x, y) ? darkPaint : brightPaint;
                 canvas.drawRect(xCrd, yCrd, xCrd+sqSize, yCrd+sqSize, paint);
 
@@ -423,15 +426,17 @@ public abstract class ChessBoard extends View {
             int selX = getXFromSq(selectedSquare);
             int selY = getYFromSq(selectedSquare);
             selectedSquarePaint.setStrokeWidth(sqSize/(float)16);
-            int x0 = getXCrd(selX);
-            int y0 = getYCrd(selY);
+            XYCoord crd = sqToPix(selX, selY);
+            int x0 = crd.x;
+            int y0 = crd.y;
             canvas.drawRect(x0, y0, x0 + sqSize, y0 + sqSize, selectedSquarePaint);
         }
         if (cursorVisible) {
             int x = Math.round(cursorX);
             int y = Math.round(cursorY);
-            int x0 = getXCrd(x);
-            int y0 = getYCrd(y);
+            XYCoord crd = sqToPix(x, y);
+            int x0 = crd.x;
+            int y0 = crd.y;
             cursorSquarePaint.setStrokeWidth(sqSize/(float)16);
             canvas.drawRect(x0, y0, x0 + sqSize, y0 + sqSize, cursorSquarePaint);
         }
@@ -459,10 +464,12 @@ public abstract class ChessBoard extends View {
             Move m = moveHints.get(i);
             if ((m == null) || (m.from == m.to))
                 continue;
-            float x0 = getXCrd(Position.getX(m.from)) + h;
-            float y0 = getYCrd(Position.getY(m.from)) + h;
-            float x1 = getXCrd(Position.getX(m.to)) + h;
-            float y1 = getYCrd(Position.getY(m.to)) + h;
+            XYCoord crd0 = sqToPix(Position.getX(m.from), Position.getY(m.from));
+            XYCoord crd1 = sqToPix(Position.getX(m.to), Position.getY(m.to));
+            float x0 = crd0.x + h;
+            float y0 = crd0.y + h;
+            float x1 = crd1.x + h;
+            float y1 = crd1.y + h;
 
             float x2 = (float)(Math.hypot(x1 - x0, y1 - y0) + d);
             float y2 = 0;
@@ -562,10 +569,17 @@ public abstract class ChessBoard extends View {
         canvas.drawText(s, xCrd, yCrd, labelPaint);
     }
 
-    protected abstract int getXCrd(int x);
-    protected abstract int getYCrd(int y);
-    protected abstract int getXSq(int xCrd);
-    protected abstract int getYSq(int yCrd);
+    protected static class XYCoord {
+        public int x;
+        public int y;
+        public XYCoord(int x, int y) { this.x = x; this.y = y; }
+    }
+
+    /** Convert square coordinates to pixel coordinates. */
+    protected abstract XYCoord sqToPix(int x, int y);
+
+    /** Convert pixel coordinates to square coordinates. */
+    protected abstract XYCoord pixToSq(int xCrd, int yCrd);
 
     /**
      * Compute the square corresponding to the coordinates of a mouse event.
@@ -578,8 +592,9 @@ public abstract class ChessBoard extends View {
 
         int sq = -1;
         if (sqSize > 0) {
-            int x = getXSq(xCrd);
-            int y = getYSq(yCrd);
+            XYCoord xy = pixToSq(xCrd, yCrd);
+            int x = xy.x;
+            int y = xy.y;
             if ((x >= 0) && (x < 8) && (y >= 0) && (y < 8)) {
                 sq = Position.getSquare(x, y);
             }
@@ -674,8 +689,9 @@ public abstract class ChessBoard extends View {
             if (((1L << sq) & decorated) != 0)
                 continue;
             decorated |= 1L << sq;
-            int xCrd = getXCrd(Position.getX(sq));
-            int yCrd = getYCrd(Position.getY(sq));
+            XYCoord crd = sqToPix(Position.getX(sq), Position.getY(sq));
+            int xCrd = crd.x;
+            int yCrd = crd.y;
 
             String s = null;
             int wdl = sd.tbData.wdl;

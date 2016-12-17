@@ -179,8 +179,9 @@ public class ChessBoardEdit extends ChessBoard {
         int yMax = landScape ?  8 :  0;
         for (int x = xMin; x < xMax; x++) {
             for (int y = yMin; y < yMax; y++) {
-                final int xCrd = getXCrd(x);
-                final int yCrd = getYCrd(y);
+                XYCoord crd = sqToPix(x, y);
+                final int xCrd = crd.x;
+                final int yCrd = crd.y;
                 Paint paint = Position.darkSquare(x, y) ? darkPaint : brightPaint;
                 canvas.drawRect(xCrd, yCrd, xCrd+sqSize, yCrd+sqSize, paint);
                 int p = extraPieces(x, y);
@@ -218,29 +219,31 @@ public class ChessBoardEdit extends ChessBoard {
     }
 
     @Override
-    protected int getXCrd(int x) {
-        return x0 + sqSize * x + ((x >= 8) ? getGap(sqSize) : 0);
+    protected XYCoord sqToPix(int x, int y) {
+        if (flipped && (x >= 0) && (x < 8) && (y >= 0) && (y < 8)) {
+            x = 7 - x;
+            y = 7 - y;
+        }
+        int xPix = x0 + sqSize * x + ((x >= 8) ? getGap(sqSize) : 0);
+        int yPix = y0 + sqSize * (7 - y) + ((y < 0) ? getGap(sqSize) : 0);
+        return new XYCoord(xPix, yPix);
     }
 
     @Override
-    protected int getYCrd(int y) {
-        return y0 + sqSize * (7 - y) + ((y < 0) ? getGap(sqSize) : 0);
-    }
-
-    @Override
-    protected int getXSq(int xCrd) {
+    protected XYCoord pixToSq(int xCrd, int yCrd) {
         int x = (xCrd - x0) / sqSize;
-        if (x < 8)
-            return x;
-        return (xCrd - x0 - getGap(sqSize)) / sqSize;
-    }
+        if (x >= 8)
+            x = (xCrd - x0 - getGap(sqSize)) / sqSize;
 
-    @Override
-    protected int getYSq(int yCrd) {
         int y = 7 - (yCrd - y0) / sqSize;
-        if (y >= 0)
-            return y;
-        return 7 - (yCrd - y0 - getGap(sqSize)) / sqSize;
+        if (y < 0)
+            y = 7 - (yCrd - y0 - getGap(sqSize)) / sqSize;
+
+        if (flipped && (x >= 0) && (x < 8) && (y >= 0) && (y < 8)) {
+            x = 7 - x;
+            y = 7 - y;
+        }
+        return new XYCoord(x, y);
     }
 
     /**
@@ -258,8 +261,9 @@ public class ChessBoardEdit extends ChessBoard {
         int yCrd = (int)(evt.getY());
 
         if (sqSize > 0) {
-            int x = getXSq(xCrd);
-            int y = getYSq(yCrd);
+            XYCoord xy = pixToSq(xCrd, yCrd);
+            int x = xy.x;
+            int y = xy.y;
             if ( landScape && (x >= 0) && (x < 10) && (y >= 0) && (y < 8) ||
                 !landScape && (x >= 0) && (x < 8) && (y >= -2) && (y < 0)) {
                 int p = extraPieces(x, y);

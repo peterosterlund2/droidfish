@@ -48,13 +48,18 @@ public class ChessBoardPlay extends ChessBoard {
     }
 
     @Override
-    protected int getXCrd(int x) { return x0 + sqSize * (flipped ? 7 - x : x); }
+    protected XYCoord sqToPix(int x, int y) {
+        int xPix = x0 + sqSize * (flipped ? 7 - x : x);
+        int yPix = y0 + sqSize * (flipped ? y : 7 - y);
+        return new XYCoord(xPix, yPix);
+    }
+
     @Override
-    protected int getYCrd(int y) { return y0 + sqSize * (flipped ? y : 7 - y); }
-    @Override
-    protected int getXSq(int xCrd) { int t = (xCrd - x0) / sqSize; return flipped ? 7 - t : t; }
-    @Override
-    protected int getYSq(int yCrd) { int t = (yCrd - y0) / sqSize; return flipped ? t : 7 - t; }
+    protected XYCoord pixToSq(int xCrd, int yCrd) {
+        int x = (xCrd - x0) / sqSize; if (flipped) x = 7 - x;
+        int y = (yCrd - y0) / sqSize; if (!flipped) y = 7 - y;
+        return new XYCoord(x, y);
+    }
 
     @Override
     protected int getWidth(int sqSize) { return sqSize * 8; }

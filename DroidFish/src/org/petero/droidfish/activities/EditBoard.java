@@ -85,6 +85,7 @@ public class EditBoard extends Activity {
 
     private boolean egtbHints;
     private boolean autoScrollTitle;
+    private boolean boardFlipped;
     private TextView whiteFigText;
     private TextView blackFigText;
     private Typeface figNotation;
@@ -102,6 +103,7 @@ public class EditBoard extends Activity {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         egtbHints = settings.getBoolean("tbHintsEdit", false);
         autoScrollTitle = settings.getBoolean("autoScrollTitle", true);
+        boardFlipped = settings.getBoolean("boardFlipped", false);
 
         initUI();
 
@@ -142,6 +144,7 @@ public class EditBoard extends Activity {
         View firstTitleLine = findViewById(R.id.first_title_line);
         View secondTitleLine = findViewById(R.id.second_title_line);
         cb = (ChessBoardEdit)findViewById(R.id.eb_chessboard);
+        cb.setFlipped(boardFlipped);
         status = (TextView)findViewById(R.id.eb_status);
         okButton = (Button)findViewById(R.id.eb_ok);
         cancelButton = (Button)findViewById(R.id.eb_cancel);
