@@ -105,6 +105,7 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="edit_game">Modifier la partie</string>
   <string name="edit_headers">Modifier les en-têtes</string>
   <string name="edit_comments">Modifier les commentaires</string>
+  <string name="add_eco">Add opening name</string>
   <string name="go_back">Retourner</string>
   <string name="go_forward">Avancer</string>
   <string name="goto_start_game">Aller au début de la partie</string>

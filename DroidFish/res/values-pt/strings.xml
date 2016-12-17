@@ -107,6 +107,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="edit_game">Editar partida</string>
   <string name="edit_headers">Editar cabeçalho</string>
   <string name="edit_comments">Editar comentários</string>
+  <string name="add_eco">Add opening name</string>
   <string name="go_back">Voltar</string>
   <string name="go_forward">Avançar</string>
   <string name="goto_start_game">Ir para o início da partida</string>

@@ -24,9 +24,9 @@
   <string name="copy_game">Скопировать партию в буфер обмена</string>
   <string name="copy_position">Скопировать позицию в буфер обмена</string>
   <string name="paste">Вставить из буфера обмена</string>
-  <string name="share_game">Share Game</string>
-  <string name="share_text">Share as Text</string>
-  <string name="share_image">Share as Image</string>
+  <string name="share_game">Поделиться игрой</string>
+  <string name="share_text">Отправить как текст</string>
+  <string name="share_image">Отправить как картинку</string>
   <string name="load_last_file">Загрузить из последнего файла</string>
   <string name="load_game">Загрузить партию из PGN файла</string>
   <string name="load_position">Загрузить позицию из файла</string>
@@ -64,7 +64,7 @@
   <string name="select_en_passant_file">Выбрать взятие на проходе</string>
   <string name="edit_move_counters">Редактировать счетчик ходов</string>
   <string name="internal_book">&lt;Внутренняя книга&gt;</string>
-  <string name="eco_book">&lt;ECO Book&gt;</string>
+  <string name="eco_book">&lt;ЭКО Книга&gt;</string>
   <string name="select_opening_book_file">Выбрать файл дебютной книги</string>
   <string name="select_chess_engine">Выбрать движок</string>
   <string name="select_pgn_file">Открыть PGN файл</string>
@@ -98,6 +98,7 @@
   <string name="edit_game">Редактировать партию</string>
   <string name="edit_headers">Редактировать заголовки</string>
   <string name="edit_comments">Редактировать комментарии</string>
+  <string name="add_eco">Add opening name</string>
   <string name="go_back">Перейти назад</string>
   <string name="go_forward">Перейти вперед</string>
   <string name="goto_start_game">Перейти в начало партии</string>
@@ -124,7 +125,7 @@
   <string name="toggle_analysis">Переключатель анализа движка</string>
   <string name="toggle_large_buttons">Переключатель больших кнопок</string>
   <string name="toggle_blind_mode">Переключатель режима игры в слепую</string>
-  <string name="toggle_arrows">Toggle Arrows</string>
+  <string name="toggle_arrows">Переключить стрелки</string>
   <string name="cancel">Отмена</string>
   <string name="reset">Сброс</string>
   <string name="yes">Да</string>
@@ -275,8 +276,8 @@
   <string name="prefs_bookHints_summary">Отображать подсказки из книг для ходов игрока</string>
   <string name="prefs_thinkingArrows_title">Использовать стрелки</string>
   <string name="prefs_thinkingArrows_summary">Использовать стрелки для отображения ходов на доске</string>
-  <string name="prefs_ecoHints_title">Show ECO codes</string>
-  <string name="prefs_ecoHints_summary">Show \'Encyclopedia of Chess Openings\' classification of openings</string>
+  <string name="prefs_ecoHints_title">Показать ЭКО коды</string>
+  <string name="prefs_ecoHints_summary">Показать \'Энциклопедию шахматных дебютов\' классификацию дебютов</string>
   <string name="prefs_user_interface_appearance">Внешний вид</string>
   <string name="prefs_user_interface_behavior">Поведение</string>
   <string name="prefs_animateMoves_title">Анимировать ходы</string>
@@ -298,8 +299,8 @@
   <string name="prefs_scrollSensitivity_summary">скорость прокрутки для навигации в партии</string>
   <string name="prefs_invertScrollDirection_title">Инвертировать направление прокрутки</string>
   <string name="prefs_invertScrollDirection_summary">Позволить, если вы считаете, что прокрутка осуществляется в неправильном направлении</string>
-  <string name="prefs_autoScrollMoveList_title">Auto scroll move list</string>
-  <string name="prefs_autoScrollMoveList_summary">Automatically scroll the move list to the current board position</string>
+  <string name="prefs_autoScrollMoveList_title">Автоскроллинг списка ходов</string>
+  <string name="prefs_autoScrollMoveList_summary">Автоматически листать список ходов до текущей позиции на доске</string>
   <string name="prefs_discardVariations_title">Отменить изменения</string>
   <string name="prefs_discardVariations_summary">Отказаться от хода не главной линии из списка ходов</string>
   <string name="prefs_leftHanded_title">Левосторонний режим</string>
@@ -588,9 +589,9 @@
     <item>21</item>
   </string-array>
   <string-array name="ecoHints_texts">
-    <item>Off</item>
-    <item>Auto</item>
-    <item>Always</item>
+    <item>Выкл.</item>
+    <item>Авто</item>
+    <item>Всегда</item>
   </string-array>
   <string-array name="ecoHints_values">
     <item>0</item>

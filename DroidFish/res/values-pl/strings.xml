@@ -107,6 +107,7 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="edit_game">Edytuj partię</string>
   <string name="edit_headers">Edytuj nagłówki</string>
   <string name="edit_comments">Edytuj komentarze</string>
+  <string name="add_eco">Add opening name</string>
   <string name="go_back">Wstecz</string>
   <string name="go_forward">Naprzód</string>
   <string name="goto_start_game">Idź do początku parii</string>

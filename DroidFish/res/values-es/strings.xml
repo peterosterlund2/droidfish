@@ -106,6 +106,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="edit_game">Editar Partida</string>
   <string name="edit_headers">Editar Datos de Partida</string>
   <string name="edit_comments">Editar Comentarios</string>
+  <string name="add_eco">Add opening name</string>
   <string name="go_back">Retroceder</string>
   <string name="go_forward">Avanzar</string>
   <string name="goto_start_game">Ir al inicio de la Partida</string>

@@ -108,6 +108,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="edit_game">Partie bearbeiten</string>
   <string name="edit_headers">Informationen</string>
   <string name="edit_comments">Kommentare</string>
+  <string name="add_eco">Add opening name</string>
   <string name="go_back">Zurück</string>
   <string name="go_forward">Vorwärts</string>
   <string name="goto_start_game">Zum Partiebeginn</string>
