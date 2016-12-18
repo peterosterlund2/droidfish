@@ -99,7 +99,7 @@
   <string name="edit_game">Modifica la partita</string>
   <string name="edit_headers">Modifica le intestazioni</string>
   <string name="edit_comments">Modifica i commenti</string>
-  <string name="add_eco">Add opening name</string>
+  <string name="add_eco">Aggiungi nome dell\'apertura</string>
   <string name="go_back">Indietro</string>
   <string name="go_forward">Avanti</string>
   <string name="goto_start_game">Vai all\'inizio della partita</string>
