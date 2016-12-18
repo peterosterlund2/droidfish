@@ -116,11 +116,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.text.Editable;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.LeadingMarginSpan;
@@ -147,6 +149,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -2893,24 +2897,20 @@ public class DroidFish extends Activity
     }
 
     private final Dialog thinkingMenuDialog() {
-        final int ADD_ANALYSIS = 0;
-        final int MULTIPV_DEC = 1;
-        final int MULTIPV_INC = 2;
-        final int HIDE_STATISTICS = 3;
-        final int SHOW_STATISTICS = 4;
+        final int ADD_ANALYSIS    = 0;
+        final int MULTIPV_SET     = 1;
+        final int HIDE_STATISTICS = 2;
+        final int SHOW_STATISTICS = 3;
         List<CharSequence> lst = new ArrayList<CharSequence>();
         List<Integer> actions = new ArrayList<Integer>();
         lst.add(getString(R.string.add_analysis)); actions.add(ADD_ANALYSIS);
         int numPV = this.numPV;
+        final int maxPV = ctrl.maxPV();
         if (gameMode.analysisMode()) {
-            int maxPV = ctrl.maxPV();
             numPV = Math.min(numPV, maxPV);
             numPV = Math.max(numPV, 1);
-            if (numPV > 1) {
-                lst.add(getString(R.string.fewer_variations)); actions.add(MULTIPV_DEC);
-            }
-            if (numPV < maxPV) {
-                lst.add(getString(R.string.more_variations)); actions.add(MULTIPV_INC);
+            if (maxPV > 1) {
+                lst.add(getString(R.string.num_variations)); actions.add(MULTIPV_SET);
             }
         }
         final int numPVF = numPV;
@@ -2948,12 +2948,11 @@ public class DroidFish extends Activity
                     }
                     break;
                 }
-                case MULTIPV_DEC:
-                    setMultiPVMode(numPVF - 1);
+                case MULTIPV_SET: {
+                    MultiPVSet m = new MultiPVSet();
+                    m.multiPVDialog(numPVF, maxPV);
                     break;
-                case MULTIPV_INC:
-                    setMultiPVMode(numPVF + 1);
-                    break;
+                }
                 case HIDE_STATISTICS:
                 case SHOW_STATISTICS: {
                     mShowStats = finalActions.get(item) == SHOW_STATISTICS;
@@ -2970,12 +2969,106 @@ public class DroidFish extends Activity
         return alert;
     }
 
-    private void setMultiPVMode(int nPV) {
-        numPV = nPV;
-        Editor editor = settings.edit();
-        editor.putInt("numPV", numPV);
-        editor.commit();
-        ctrl.setMultiPVMode(numPV);
+    /** Handle user interface to set MultiPV value. */
+    private class MultiPVSet {
+        private void setMultiPVMode(int nPV) {
+            numPV = nPV;
+            Editor editor = settings.edit();
+            editor.putInt("numPV", numPV);
+            editor.commit();
+            ctrl.setMultiPVMode(numPV);
+        }
+
+        private int maxProgress(int maxPV) { // [1,maxPV] -> [0, maxProgress]
+            return (maxPV - 1) * 10;
+        }
+
+        private int progressToNumPV(int p, int maxPV) {
+            int maxProg = maxProgress(maxPV);
+            p = Math.max(0, p);
+            p = Math.min(maxProg, p);
+            double x = p / (double)maxProg;
+            return (int)Math.round(x * x * (maxPV - 1) + 1);
+        }
+
+        private int numPVToProgress(int nPV, int maxPV) {
+            nPV = Math.max(1, nPV);
+            nPV = Math.min(maxPV, nPV);
+            double x = Math.sqrt((nPV - 1) / (double)(maxPV - 1));
+            return (int)Math.round(x * maxProgress(maxPV));
+        }
+        
+        private void updateText(EditText editTxt, int nPV) {
+            String txt = Integer.valueOf(nPV).toString();
+            if (!txt.equals(editTxt.getText().toString())) {
+                editTxt.setText(txt);
+                editTxt.setSelection(txt.length());
+            }
+        }
+
+        /** Ask user what MultiPV value to use. */
+        public void multiPVDialog(int numPV, int maxPV0) {
+            final int maxPV = Math.min(100, maxPV0);
+            numPV = Math.min(maxPV, numPV);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(DroidFish.this);
+            builder.setTitle(R.string.num_variations);
+            View content = View.inflate(DroidFish.this, R.layout.num_variations, null);
+            builder.setView(content);
+
+            final SeekBar seekBar = (SeekBar)content.findViewById(R.id.numvar_seekbar);
+            final EditText editTxt = (EditText)content.findViewById(R.id.numvar_edittext);
+
+            seekBar.setMax(numPVToProgress(maxPV, maxPV));
+            seekBar.setProgress(numPVToProgress(numPV, maxPV));
+            updateText(editTxt, numPV);
+
+            seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    int nPV = progressToNumPV(progress, maxPV);
+                    updateText(editTxt, nPV);
+                }
+            });
+            editTxt.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    String txt = editTxt.getText().toString();
+                    try {
+                        int nPV = Integer.parseInt(txt);
+                        int p = numPVToProgress(nPV, maxPV);
+                        if (p != seekBar.getProgress())
+                            seekBar.setProgress(p);
+                        updateText(editTxt, progressToNumPV(p, maxPV));
+                        
+                    } catch (NumberFormatException ex) {
+                    }
+                }
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
+
+            builder.setNegativeButton(R.string.cancel, null);
+            builder.setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    int p = seekBar.getProgress();
+                    int nPV = progressToNumPV(p, maxPV);
+                    setMultiPVMode(nPV);
+                }
+            });
+
+            builder.show();
+        }
     }
 
     private final Dialog goBackMenuDialog() {
