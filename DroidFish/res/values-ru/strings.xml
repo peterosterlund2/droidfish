@@ -171,8 +171,7 @@
   <string name="failed_to_read_pgn_data">Не удалось прочесть pgn данные</string>
   <string name="variation">Изменение:</string>
   <string name="add_analysis">Добавить анализ</string>
-  <string name="fewer_variations">Сократить количество изменений</string>
-  <string name="more_variations">Увеличить количество изменений</string>
+  <string name="num_variations">Number of Variations</string>
   <string name="hide_statistics">Скрыть статистику</string>
   <string name="show_statistics">Показать статистику</string>
   <string name="heavy_cpu_usage">Повышенное использование процессора (CPU)</string>

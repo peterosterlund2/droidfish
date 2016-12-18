@@ -180,8 +180,7 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="failed_to_read_pgn_data">Błąd przy odczycie danych w formacie PGN</string>
   <string name="variation">Wariant:</string>
   <string name="add_analysis">Dodaj analizę</string>
-  <string name="fewer_variations">Mniej wariantów</string>
-  <string name="more_variations">Więcej wariantów</string>
+  <string name="num_variations">Number of Variations</string>
   <string name="hide_statistics">Schowaj statystyki</string>
   <string name="show_statistics">Pokaż statystyki</string>
   <string name="heavy_cpu_usage">Wysokie obciążenie procesora</string>

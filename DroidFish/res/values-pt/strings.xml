@@ -180,8 +180,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="failed_to_read_pgn_data">Falha na leitura de arquivo PGN</string>
   <string name="variation">Var:</string>
   <string name="add_analysis">Adicionar análise</string>
-  <string name="fewer_variations">Menos variantes</string>
-  <string name="more_variations">Mais variantes</string>
+  <string name="num_variations">Number of Variations</string>
   <string name="hide_statistics">Ocultar estatísticas</string>
   <string name="show_statistics">Mostrar estatísticas</string>
   <string name="heavy_cpu_usage">Uso intenso de CPU</string>

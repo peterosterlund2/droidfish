@@ -181,8 +181,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="failed_to_read_pgn_data">PGN-Daten konnten nicht gelesen werden</string>
   <string name="variation">Variante:</string>
   <string name="add_analysis">Analyse hinzufügen</string>
-  <string name="fewer_variations">Weniger Varianten</string>
-  <string name="more_variations">Mehr Varianten</string>
+  <string name="num_variations">Number of Variations</string>
   <string name="hide_statistics">Statistik verbergen</string>
   <string name="show_statistics">Statistik anzeigen</string>
   <string name="heavy_cpu_usage">Starke Prozessor-Nutzung</string>

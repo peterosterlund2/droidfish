@@ -179,8 +179,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="failed_to_read_pgn_data">Fallo al leer datos PGN</string>
   <string name="variation">Variante:</string>
   <string name="add_analysis">Añadir Análisis</string>
-  <string name="fewer_variations">Menos Variantes</string>
-  <string name="more_variations">Más Variantes</string>
+  <string name="num_variations">Number of Variations</string>
   <string name="hide_statistics">Ocultar Estadísticas</string>
   <string name="show_statistics">Mostrar Estadísticas</string>
   <string name="heavy_cpu_usage">Procesador/CPU muy cargado</string>

@@ -179,8 +179,7 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="failed_to_read_pgn_data">De PGN data kon niet gelezen worden</string>
   <string name="variation">Variant:</string>
   <string name="add_analysis">Analyse toevoegen</string>
-  <string name="fewer_variations">Minder varianten</string>
-  <string name="more_variations">Meer varianten</string>
+  <string name="num_variations">Number of Variations</string>
   <string name="hide_statistics">Statistieken verbergen</string>
   <string name="show_statistics">Statistieken tonen</string>
   <string name="heavy_cpu_usage">Zwaar CPU gebruik</string>

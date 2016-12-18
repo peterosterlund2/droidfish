@@ -178,8 +178,7 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="failed_to_read_pgn_data">Impossible de lire les données PGN</string>
   <string name="variation">Var:</string>
   <string name="add_analysis">Ajouter l\'analyse</string>
-  <string name="fewer_variations">Moins de variations</string>
-  <string name="more_variations">Plus de variations</string>
+  <string name="num_variations">Number of Variations</string>
   <string name="hide_statistics">Masquer les statistiques</string>
   <string name="show_statistics">Afficher les statistiques</string>
   <string name="heavy_cpu_usage">Usage CPU important</string>
