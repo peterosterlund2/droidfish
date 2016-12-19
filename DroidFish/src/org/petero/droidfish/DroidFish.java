@@ -452,9 +452,13 @@ public class DroidFish extends Activity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Pair<String,String> pair = getPgnOrFenIntent();
-        String intentPgnOrFen = pair.first;
-        String intentFilename = pair.second;
+        String intentPgnOrFen = null;
+        String intentFilename = null;
+        if (savedInstanceState == null) {
+            Pair<String,String> pair = getPgnOrFenIntent();
+            intentPgnOrFen = pair.first;
+            intentFilename = pair.second;
+        }
 
         createDirectories();
 
