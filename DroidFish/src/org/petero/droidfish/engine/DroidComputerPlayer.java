@@ -687,6 +687,16 @@ public class DroidComputerPlayer {
             if (Thread.currentThread().isInterrupted())
                 return;
             String s = uci.readLineFromEngine(timeout);
+            long t0 = System.currentTimeMillis();
+            while (s != null && !s.isEmpty()) {
+                if (Thread.currentThread().isInterrupted())
+                    return;
+                processEngineOutput(uci, s);
+                s = uci.readLineFromEngine(1);
+                long t1 = System.currentTimeMillis();
+                if (t1 - t0 >= 1000)
+                    break;
+            }
             if ((s == null) || Thread.currentThread().isInterrupted())
                 return;
             processEngineOutput(uci, s);
@@ -1041,6 +1051,7 @@ public class DroidComputerPlayer {
             listener.notifyStats(id, statNodes, statNps, statTBHits, statHash, statTime);
             statsModified = false;
         }
+        lastGUIUpdate = System.currentTimeMillis();
     }
 
     private final static void myAssert(boolean b) {
