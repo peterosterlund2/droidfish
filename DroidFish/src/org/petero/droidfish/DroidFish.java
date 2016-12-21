@@ -1485,8 +1485,8 @@ public class DroidFish extends Activity
             return;
         }
 
-        Probe gtbProbe = Probe.getInstance();
-        ArrayList<Pair<Integer,ProbeResult>> x = gtbProbe.movePieceProbe(cb.pos, sq);
+        Probe probe = Probe.getInstance();
+        ArrayList<Pair<Integer,ProbeResult>> x = probe.movePieceProbe(cb.pos, sq);
         if (x == null) {
             cb.setSquareDecorations(null);
             return;
@@ -2295,7 +2295,7 @@ public class DroidFish extends Activity
     }
 
     private final void shareImage() {
-        View v = findViewById(R.id.main);
+        View v = findViewById(R.id.chessboard);
         Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
                                        Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(b);
