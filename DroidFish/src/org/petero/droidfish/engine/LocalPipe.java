@@ -21,6 +21,12 @@ public class LocalPipe {
     }
 
     public final synchronized void addLine(String line) {
+        while (lines.size() > 10000) {
+            try {
+                wait(10);
+            } catch (InterruptedException e) {
+            }
+        }
         lines.add(line);
         notify();
     }
