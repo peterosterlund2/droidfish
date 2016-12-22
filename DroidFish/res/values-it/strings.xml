@@ -172,7 +172,7 @@
   <string name="failed_to_read_pgn_data">Impossibile leggere dati dal file PGN</string>
   <string name="variation">Var:</string>
   <string name="add_analysis">Aggiungi Analisi</string>
-  <string name="num_variations">Number of Variations</string>
+  <string name="num_variations">Numero di Variazioni</string>
   <string name="hide_statistics">Nascondi le statistiche</string>
   <string name="show_statistics">Visualizza le statistiche</string>
   <string name="heavy_cpu_usage">Intenso utilizzo della CPU</string>

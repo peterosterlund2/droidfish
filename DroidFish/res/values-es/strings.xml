@@ -32,9 +32,9 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="copy_game">Copiar Partida al Portapapeles</string>
   <string name="copy_position">Copiar Posición al Portapapeles</string>
   <string name="paste">Pegar desde el Portapapeles</string>
-  <string name="share_game">Share Game</string>
-  <string name="share_text">Share as Text</string>
-  <string name="share_image">Share as Image</string>
+  <string name="share_game">Compartir la Partida</string>
+  <string name="share_text">Compartir como Texto</string>
+  <string name="share_image">Compartir como Imagen</string>
   <string name="load_last_file">Cargar desde el último archivo</string>
   <string name="load_game">Cargar partida desde archivo PGN</string>
   <string name="load_position">Cargar posición desde el archivo</string>
@@ -71,8 +71,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="none">Ninguno</string>
   <string name="select_en_passant_file">Seleccionar Comer al Paso</string>
   <string name="edit_move_counters">Editar Contadores de Jugadas</string>
-  <string name="internal_book">&lt;Libro Interno;</string>
-  <string name="eco_book">&lt;ECO Book&gt;</string>
+  <string name="internal_book">&lt;Libro Interno&gt;</string>
+  <string name="eco_book">&lt;Libro (de códigos) ECO&gt;</string>
   <string name="select_opening_book_file">Seleccionar archivo de Libro de Aperturas</string>
   <string name="select_chess_engine">Seleccionar motor de ajedrez</string>
   <string name="select_pgn_file">Abrir archivo PGN</string>
@@ -106,7 +106,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="edit_game">Editar Partida</string>
   <string name="edit_headers">Editar Datos de Partida</string>
   <string name="edit_comments">Editar Comentarios</string>
-  <string name="add_eco">Add opening name</string>
+  <string name="add_eco">Añadir nombre de la apertura</string>
   <string name="go_back">Retroceder</string>
   <string name="go_forward">Avanzar</string>
   <string name="goto_start_game">Ir al inicio de la Partida</string>
@@ -133,7 +133,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="toggle_analysis">Activar análisis del motor</string>
   <string name="toggle_large_buttons">Activar botones grandes</string>
   <string name="toggle_blind_mode">Commutar modo a la ciega</string>
-  <string name="toggle_arrows">Toggle Arrows</string>
+  <string name="toggle_arrows">Activar / Desactivar Flechas</string>
   <string name="cancel">Cancelar</string>
   <string name="reset">Reinicio</string>
   <string name="yes">Sí</string>
@@ -179,7 +179,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="failed_to_read_pgn_data">Fallo al leer datos PGN</string>
   <string name="variation">Variante:</string>
   <string name="add_analysis">Añadir Análisis</string>
-  <string name="num_variations">Number of Variations</string>
+  <string name="num_variations">Número de Variantes</string>
   <string name="hide_statistics">Ocultar Estadísticas</string>
   <string name="show_statistics">Mostrar Estadísticas</string>
   <string name="heavy_cpu_usage">Procesador/CPU muy cargado</string>
@@ -283,8 +283,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="prefs_bookHints_summary">Muestra en pantalla los movimientos del Libro de Aperturas al jugador humano</string>
   <string name="prefs_thinkingArrows_title">Usar Flechas</string>
   <string name="prefs_thinkingArrows_summary">Utilización de Flechas para mostrar las jugadas en el tablero</string>
-  <string name="prefs_ecoHints_title">Show ECO codes</string>
-  <string name="prefs_ecoHints_summary">Show \'Encyclopedia of Chess Openings\' classification of openings</string>
+  <string name="prefs_ecoHints_title">Mostrar los códigos ECO</string>
+  <string name="prefs_ecoHints_summary">Mostrar la clasificación de aperturas de la \"Enciclopedia de Aperturas de Ajedrez\"</string>
   <string name="prefs_user_interface_appearance">Aspecto</string>
   <string name="prefs_user_interface_behavior">Comportamiento</string>
   <string name="prefs_animateMoves_title">Animación de Jugadas</string>
@@ -306,8 +306,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="prefs_scrollSensitivity_summary">Velocidad de desplazamiento de la información durante la partida </string>
   <string name="prefs_invertScrollDirection_title">Invertir dirección desplazamiento</string>
   <string name="prefs_invertScrollDirection_summary">Permitirlo si usted piensa que el desplazamiento de jugadas se hace en la dirección equivocada.</string>
-  <string name="prefs_autoScrollMoveList_title">Auto scroll move list</string>
-  <string name="prefs_autoScrollMoveList_summary">Automatically scroll the move list to the current board position</string>
+  <string name="prefs_autoScrollMoveList_title">Lista de jugadas con desplazamiento automático</string>
+  <string name="prefs_autoScrollMoveList_summary">Desplazar automáticamente la lista de jugadas a la posición actual del tablero</string>
   <string name="prefs_discardVariations_title">Descartar variantes</string>
   <string name="prefs_discardVariations_summary">Descartar jugadas de líneas secundarias de la lista de movimientos</string>
   <string name="prefs_leftHanded_title">Modo zurdo</string>
@@ -418,7 +418,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="prefs_gtbPathNet_title">Directorio GTB en red</string>
   <string name="prefs_gtbPathNet_summary">Directorio de los motores en red, donde se instalan las tablas Gaviota.</string>
   <string name="prefs_rtbPath_title">Directorio Syzygy</string>
-  <string name="prefs_rtbPath_summary">Directorio donde se instalan las tablas Syzygy. Si se deja en blanco, el programa lo utilizará como directorio por defecto</string>
+  <string name="prefs_rtbPath_summary">Directorio donde se instalan las tablas Syzygy. Dejar en blanco para usar la ubicación por defecto</string>
   <string name="prefs_rtbPathNet_title">Directorio Syzygy en red</string>
   <string name="prefs_rtbPathNet_summary">Directorio de los motores en red, donde se instalan las tablas Syzygy.</string>
   <string name="prefs_guideShowOnStart_title">Guía de Inicio</string>
@@ -596,9 +596,9 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <item>21</item>
   </string-array>
   <string-array name="ecoHints_texts">
-    <item>Off</item>
-    <item>Auto</item>
-    <item>Always</item>
+    <item>Desconectado</item>
+    <item>Automático</item>
+    <item>Siempre</item>
   </string-array>
   <string-array name="ecoHints_values">
     <item>0</item>
