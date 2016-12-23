@@ -22,12 +22,21 @@ import org.petero.droidfish.R;
 import org.petero.droidfish.Util;
 
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.ListView;
 
 public class Preferences extends PreferenceActivity {
+    private static int currentItem = -1;
+    private static int initialItem = -1;
 
     public static class Fragment extends PreferenceFragment {
         @Override
@@ -35,15 +44,56 @@ public class Preferences extends PreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
         }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View v = super.onCreateView(inflater, container, savedInstanceState);
+            if (v == null)
+                return null;
+
+            final ListView lv = (ListView) v.findViewById(android.R.id.list);
+            if (lv != null) {
+                lv.setOnScrollListener(new OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(AbsListView view, int scrollState) {
+                    }
+                    @Override
+                    public void onScroll(AbsListView view, int firstVisibleItem,
+                                         int visibleItemCount, int totalItemCount) {
+                        currentItem = firstVisibleItem;
+                    }
+                });
+                lv.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (initialItem >= 0)
+                            lv.setSelection(initialItem);
+                    }
+                });
+            }
+
+            return v;
+        }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        initialItem = settings.getInt("prefsViewInitialItem", -1);
         getFragmentManager().beginTransaction()
                             .replace(android.R.id.content, new Fragment())
                             .commit();
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         Util.setFullScreenMode(this, settings);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        Editor editor = settings.edit();
+        editor.putInt("prefsViewInitialItem", currentItem);
+        editor.commit();
     }
 }
