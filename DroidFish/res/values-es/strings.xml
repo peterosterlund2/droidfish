@@ -182,6 +182,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="num_variations">Número de Variantes</string>
   <string name="hide_statistics">Ocultar Estadísticas</string>
   <string name="show_statistics">Mostrar Estadísticas</string>
+  <string name="show_whole_variations">Show whole variations</string>
+  <string name="truncate_variations">Truncate variations</string>
   <string name="heavy_cpu_usage">Procesador/CPU muy cargado</string>
   <string name="background_processing">Proceso en segundo plano</string>
   <string name="lot_cpu_power">DroidFish está utilizando mucha potencia del procesador/CPU</string>

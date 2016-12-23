@@ -184,6 +184,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="num_variations">Number of Variations</string>
   <string name="hide_statistics">Statistik verbergen</string>
   <string name="show_statistics">Statistik anzeigen</string>
+  <string name="show_whole_variations">Show whole variations</string>
+  <string name="truncate_variations">Truncate variations</string>
   <string name="heavy_cpu_usage">Starke Prozessor-Nutzung</string>
   <string name="background_processing">Verarbeitung im Hintergrund</string>
   <string name="lot_cpu_power">DroidFish nutzt viel Prozessor-Rechenzeit</string>

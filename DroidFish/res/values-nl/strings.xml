@@ -182,6 +182,8 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="num_variations">Number of Variations</string>
   <string name="hide_statistics">Statistieken verbergen</string>
   <string name="show_statistics">Statistieken tonen</string>
+  <string name="show_whole_variations">Show whole variations</string>
+  <string name="truncate_variations">Truncate variations</string>
   <string name="heavy_cpu_usage">Zwaar CPU gebruik</string>
   <string name="background_processing">Achtergrond verwerking</string>
   <string name="lot_cpu_power">DroidFish heeft een hoog CPU gebruik</string>

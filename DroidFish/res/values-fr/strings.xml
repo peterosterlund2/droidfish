@@ -181,6 +181,8 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="num_variations">Number of Variations</string>
   <string name="hide_statistics">Masquer les statistiques</string>
   <string name="show_statistics">Afficher les statistiques</string>
+  <string name="show_whole_variations">Show whole variations</string>
+  <string name="truncate_variations">Truncate variations</string>
   <string name="heavy_cpu_usage">Usage CPU important</string>
   <string name="background_processing">Traitement en arrière-plan</string>
   <string name="lot_cpu_power">DroidFish utilise beaucoup de puissance CPU</string>
