@@ -183,6 +183,8 @@ you are not actively using the program.\
     <string name="num_variations">Number of Variations</string>
     <string name="hide_statistics">Hide statistics</string>
     <string name="show_statistics">Show statistics</string>
+    <string name="show_whole_variations">Show whole variations</string>
+    <string name="truncate_variations">Truncate variations</string>
     <string name="heavy_cpu_usage">Heavy CPU usage</string>
     <string name="background_processing">Background processing</string>
     <string name="lot_cpu_power">DroidFish is using a lot of CPU power</string>

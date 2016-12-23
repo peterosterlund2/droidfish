@@ -183,6 +183,7 @@ public class DroidFish extends Activity
     private static DroidChessController ctrl = null;
     private boolean mShowThinking;
     private boolean mShowStats;
+    private boolean fullPVLines;
     private int numPV;
     private boolean mWhiteBasedScores;
     private boolean mShowBookHints;
@@ -1173,6 +1174,7 @@ public class DroidFish extends Activity
 
         mShowThinking = settings.getBoolean("showThinking", false);
         mShowStats = settings.getBoolean("showStats", true);
+        fullPVLines = settings.getBoolean("fullPVLines", false);
         numPV = settings.getInt("numPV", 1);
         ctrl.setMultiPVMode(numPV);
         mWhiteBasedScores = settings.getBoolean("whiteBasedScores", false);
@@ -1989,21 +1991,46 @@ public class DroidFish extends Activity
         updateNotification();
     }
 
+    /** Truncate line to max "maxLen" characters. Truncates at
+     *  space character if possible. */
+    private String truncateLine(String line, int maxLen) {
+        if (line.length() <= maxLen || maxLen <= 0)
+            return line;
+        int idx = line.lastIndexOf(' ', maxLen-1);
+        if (idx > 0)
+            return line.substring(0, idx);
+        return line.substring(0, maxLen);
+    }
+
     private final void updateThinkingInfo() {
         boolean thinkingEmpty = true;
         {
-            String s = "";
+            StringBuilder sb = new StringBuilder(128);
             if (mShowThinking || gameMode.analysisMode()) {
-                s = thinkingStr1;
-                if (s.length() > 0) thinkingEmpty = false;
+                if (!thinkingStr1.isEmpty()) {
+                    if (fullPVLines) {
+                        sb.append(thinkingStr1);
+                    } else {
+                        String[] lines = thinkingStr1.split("\n");
+                        int w = thinking.getWidth();
+                        for (int i = 0; i < lines.length; i++) {
+                            String line = lines[i];
+                            if (i > 0)
+                                sb.append('\n');
+                            int n = thinking.getPaint().breakText(line, thinkingEmpty, w, null);
+                            sb.append(truncateLine(lines[i], n));
+                        }
+                    }
+                    thinkingEmpty = false;
+                }
                 if (mShowStats) {
                     if (!thinkingEmpty)
-                        s += "\n";
-                    s += thinkingStr2;
-                    if (s.length() > 0) thinkingEmpty = false;
+                        sb.append('\n');
+                    sb.append(thinkingStr2);
+                    if (!thinkingStr2.isEmpty()) thinkingEmpty = false;
                 }
             }
-            thinking.setText(s, TextView.BufferType.SPANNABLE);
+            thinking.setText(sb.toString(), TextView.BufferType.SPANNABLE);
         }
         int maxDistToEcoTree = 10;
         if ((mEcoHints == ECO_HINTS_ALWAYS ||
@@ -2180,16 +2207,15 @@ public class DroidFish extends Activity
 
         setAutoMode(AutoMode.OFF);
         List<CharSequence> lst = new ArrayList<CharSequence>();
-        List<Integer> actions = new ArrayList<Integer>();
+        final List<Integer> actions = new ArrayList<Integer>();
         lst.add(getString(R.string.copy_game));     actions.add(COPY_GAME);
         lst.add(getString(R.string.copy_position)); actions.add(COPY_POSITION);
         lst.add(getString(R.string.paste));         actions.add(PASTE);
-        final List<Integer> finalActions = actions;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.tools_menu);
         builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                switch (finalActions.get(item)) {
+                switch (actions.get(item)) {
                 case COPY_GAME: {
                     String pgn = ctrl.getPGN();
                     ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
@@ -2239,7 +2265,7 @@ public class DroidFish extends Activity
 
         setAutoMode(AutoMode.OFF);
         List<CharSequence> lst = new ArrayList<CharSequence>();
-        List<Integer> actions = new ArrayList<Integer>();
+        final List<Integer> actions = new ArrayList<Integer>();
         lst.add(getString(R.string.clipboard));     actions.add(CLIPBOARD);
         if (storageAvailable()) {
             lst.add(getString(R.string.option_file));   actions.add(FILEMENU);
@@ -2250,12 +2276,11 @@ public class DroidFish extends Activity
         if (hasFenProvider(getPackageManager())) {
             lst.add(getString(R.string.get_fen)); actions.add(GET_FEN);
         }
-        final List<Integer> finalActions = actions;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.tools_menu);
         builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                switch (finalActions.get(item)) {
+                switch (actions.get(item)) {
                 case CLIPBOARD:
                     showDialog(CLIPBOARD_DIALOG);
                     break;
@@ -2338,7 +2363,7 @@ public class DroidFish extends Activity
 
         setAutoMode(AutoMode.OFF);
         List<CharSequence> lst = new ArrayList<CharSequence>();
-        List<Integer> actions = new ArrayList<Integer>();
+        final List<Integer> actions = new ArrayList<Integer>();
         if (currFileType() != FT_NONE) {
             lst.add(getString(R.string.load_last_file)); actions.add(LOAD_LAST_FILE);
         }
@@ -2348,12 +2373,11 @@ public class DroidFish extends Activity
             lst.add(getString(R.string.load_scid_game)); actions.add(LOAD_SCID_GAME);
         }
         lst.add(getString(R.string.save_game));     actions.add(SAVE_GAME);
-        final List<Integer> finalActions = actions;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.load_save_menu);
         builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                switch (finalActions.get(item)) {
+                switch (actions.get(item)) {
                 case LOAD_LAST_FILE:
                     loadLastFile();
                     break;
@@ -2767,7 +2791,7 @@ public class DroidFish extends Activity
 
         setAutoMode(AutoMode.OFF);
         List<CharSequence> lst = new ArrayList<CharSequence>();
-        List<Integer> actions = new ArrayList<Integer>();
+        final List<Integer> actions = new ArrayList<Integer>();
         lst.add(getString(R.string.edit_headers));      actions.add(EDIT_HEADERS);
         if (ctrl.humansTurn()) {
             lst.add(getString(R.string.edit_comments)); actions.add(EDIT_COMMENTS);
@@ -2788,12 +2812,11 @@ public class DroidFish extends Activity
         if (allowNullMove) {
             lst.add(getString(R.string.add_null_move)); actions.add(ADD_NULL_MOVE);
         }
-        final List<Integer> finalActions = actions;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.edit_game);
         builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                switch (finalActions.get(item)) {
+                switch (actions.get(item)) {
                 case EDIT_HEADERS: {
                     final TreeMap<String,String> headers = new TreeMap<String,String>();
                     ctrl.getHeaders(headers);
@@ -2903,10 +2926,12 @@ public class DroidFish extends Activity
     private final Dialog thinkingMenuDialog() {
         final int ADD_ANALYSIS    = 0;
         final int MULTIPV_SET     = 1;
-        final int HIDE_STATISTICS = 2;
-        final int SHOW_STATISTICS = 3;
+        final int SHOW_WHOLE_VARS = 2;
+        final int TRUNCATE_VARS   = 3;
+        final int HIDE_STATISTICS = 4;
+        final int SHOW_STATISTICS = 5;
         List<CharSequence> lst = new ArrayList<CharSequence>();
-        List<Integer> actions = new ArrayList<Integer>();
+        final List<Integer> actions = new ArrayList<Integer>();
         lst.add(getString(R.string.add_analysis)); actions.add(ADD_ANALYSIS);
         int numPV = this.numPV;
         final int maxPV = ctrl.maxPV();
@@ -2919,18 +2944,22 @@ public class DroidFish extends Activity
         }
         final int numPVF = numPV;
         if (thinkingStr1.length() > 0) {
+            if (fullPVLines) {
+                lst.add(getString(R.string.truncate_variations)); actions.add(TRUNCATE_VARS);
+            } else {
+                lst.add(getString(R.string.show_whole_variations)); actions.add(SHOW_WHOLE_VARS);
+            }
             if (mShowStats) {
                 lst.add(getString(R.string.hide_statistics)); actions.add(HIDE_STATISTICS);
             } else {
                 lst.add(getString(R.string.show_statistics)); actions.add(SHOW_STATISTICS);
             }
         }
-        final List<Integer> finalActions = actions;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.analysis);
         builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                switch (finalActions.get(item)) {
+                switch (actions.get(item)) {
                 case ADD_ANALYSIS: {
                     ArrayList<ArrayList<Move>> pvMovesTmp = pvMoves;
                     String[] pvStrs = thinkingStr1.split("\n");
@@ -2957,9 +2986,18 @@ public class DroidFish extends Activity
                     m.multiPVDialog(numPVF, maxPV);
                     break;
                 }
+                case SHOW_WHOLE_VARS:
+                case TRUNCATE_VARS: {
+                    fullPVLines = actions.get(item) == SHOW_WHOLE_VARS;
+                    Editor editor = settings.edit();
+                    editor.putBoolean("fullPVLines", fullPVLines);
+                    editor.commit();
+                    updateThinkingInfo();
+                    break;
+                }
                 case HIDE_STATISTICS:
                 case SHOW_STATISTICS: {
-                    mShowStats = finalActions.get(item) == SHOW_STATISTICS;
+                    mShowStats = actions.get(item) == SHOW_STATISTICS;
                     Editor editor = settings.edit();
                     editor.putBoolean("showStats", mShowStats);
                     editor.commit();
@@ -3084,7 +3122,7 @@ public class DroidFish extends Activity
 
         setAutoMode(AutoMode.OFF);
         List<CharSequence> lst = new ArrayList<CharSequence>();
-        List<Integer> actions = new ArrayList<Integer>();
+        final List<Integer> actions = new ArrayList<Integer>();
         lst.add(getString(R.string.goto_start_game));      actions.add(GOTO_START_GAME);
         lst.add(getString(R.string.goto_start_variation)); actions.add(GOTO_START_VAR);
         if (ctrl.currVariation() > 0) {
@@ -3098,12 +3136,11 @@ public class DroidFish extends Activity
         if (!gameMode.clocksActive()) {
             lst.add(getString(R.string.auto_backward)); actions.add(AUTO_BACKWARD);
         }
-        final List<Integer> finalActions = actions;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.go_back);
         builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                switch (finalActions.get(item)) {
+                switch (actions.get(item)) {
                 case GOTO_START_GAME: ctrl.gotoMove(0); break;
                 case GOTO_START_VAR:  ctrl.gotoStartOfVariation(); break;
                 case GOTO_PREV_VAR:   ctrl.changeVariation(-1); break;
@@ -3144,7 +3181,7 @@ public class DroidFish extends Activity
 
         setAutoMode(AutoMode.OFF);
         List<CharSequence> lst = new ArrayList<CharSequence>();
-        List<Integer> actions = new ArrayList<Integer>();
+        final List<Integer> actions = new ArrayList<Integer>();
         lst.add(getString(R.string.goto_end_variation)); actions.add(GOTO_END_VAR);
         if (ctrl.currVariation() < ctrl.numVariations() - 1) {
             lst.add(getString(R.string.goto_next_variation)); actions.add(GOTO_NEXT_VAR);
@@ -3157,12 +3194,11 @@ public class DroidFish extends Activity
         if (!gameMode.clocksActive()) {
             lst.add(getString(R.string.auto_forward)); actions.add(AUTO_FORWARD);
         }
-        final List<Integer> finalActions = actions;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.go_forward);
         builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                switch (finalActions.get(item)) {
+                switch (actions.get(item)) {
                 case GOTO_END_VAR:  ctrl.gotoMove(Integer.MAX_VALUE); break;
                 case GOTO_NEXT_VAR: ctrl.changeVariation(1); break;
                 case LOAD_NEXT_GAME:
@@ -3222,19 +3258,18 @@ public class DroidFish extends Activity
         final int SET_ENGINE_OPTIONS = 1;
         final int CONFIG_NET_ENGINE = 2;
         List<CharSequence> lst = new ArrayList<CharSequence>();
-        List<Integer> actions = new ArrayList<Integer>();
+        final List<Integer> actions = new ArrayList<Integer>();
         lst.add(getString(R.string.select_engine)); actions.add(SELECT_ENGINE);
         if (canSetEngineOptions()) {
             lst.add(getString(R.string.set_engine_options));
             actions.add(SET_ENGINE_OPTIONS);
         }
         lst.add(getString(R.string.configure_network_engine)); actions.add(CONFIG_NET_ENGINE);
-        final List<Integer> finalActions = actions;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.option_manage_engines);
         builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                switch (finalActions.get(item)) {
+                switch (actions.get(item)) {
                 case SELECT_ENGINE:
                     removeDialog(SELECT_ENGINE_DIALOG);
                     showDialog(SELECT_ENGINE_DIALOG);
