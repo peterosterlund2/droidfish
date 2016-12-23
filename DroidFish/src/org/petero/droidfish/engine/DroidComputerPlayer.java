@@ -1018,12 +1018,11 @@ public class DroidComputerPlayer {
         if (Thread.currentThread().isInterrupted())
             return;
 
+        if ((searchRequest == null) || (searchRequest.currPos == null))
+            return;
+
         long now = System.currentTimeMillis();
         if (now < lastGUIUpdate + guiUpdateInterval)
-            return;
-        lastGUIUpdate = now;
-
-        if ((searchRequest == null) || (searchRequest.currPos == null))
             return;
 
         int id = engineState.searchId;
