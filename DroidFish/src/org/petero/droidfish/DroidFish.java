@@ -2017,7 +2017,7 @@ public class DroidFish extends Activity
                             String line = lines[i];
                             if (i > 0)
                                 sb.append('\n');
-                            int n = thinking.getPaint().breakText(line, thinkingEmpty, w, null);
+                            int n = thinking.getPaint().breakText(line, true, w, null);
                             sb.append(truncateLine(lines[i], n));
                         }
                     }
