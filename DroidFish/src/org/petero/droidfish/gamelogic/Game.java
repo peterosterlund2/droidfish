@@ -88,6 +88,7 @@ public class Game {
         updateTimeControl(false);
     }
 
+    /** Set game state from a PGN string. */
     final public boolean readPGN(String pgn, PGNOptions options) throws ChessParseError {
         boolean ret = tree.readPGN(pgn, options);
         if (ret) {
@@ -192,13 +193,18 @@ public class Game {
                     nVars = varMoves.size();
                 }
             }
+            Boolean gameEndingMove = null;
             for (varNo = 0; varNo < nVars; varNo++) {
                 if (varMoves.get(varNo).equals(m)) {
                     boolean match = true;
                     if (playerAction.isEmpty()) {
-                        tree.goForward(varNo, false);
-                        match = tree.getGameState() == GameState.ALIVE;
-                        tree.goBack();
+                        if (gameEndingMove == null)
+                            gameEndingMove = gameEndingMove(m);
+                        if (!gameEndingMove) {
+                            tree.goForward(varNo, false);
+                            match = tree.getGameState() == GameState.ALIVE;
+                            tree.goBack();
+                        }
                     }
                     if (match) {
                         movePresent = true;
@@ -220,6 +226,16 @@ public class Game {
         tree.setRemainingTime(remaining);
         updateTimeControl(true);
         pendingDrawOffer = false;
+    }
+
+    /** Return true if move "m" in the current position ends the game (mate or stalemate). */
+    private boolean gameEndingMove(Move m) {
+        Position pos = currPos();
+        UndoInfo ui = new UndoInfo();
+        pos.makeMove(m, ui);
+        boolean gameEnd = MoveGen.instance.legalMoves(pos).isEmpty();
+        pos.unMakeMove(m, ui);
+        return gameEnd;
     }
 
     private final void updateTimeControl(boolean discardElapsed) {

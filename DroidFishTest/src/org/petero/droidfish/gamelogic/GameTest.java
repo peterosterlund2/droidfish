@@ -20,6 +20,8 @@ package org.petero.droidfish.gamelogic;
 
 import java.util.ArrayList;
 
+import org.petero.droidfish.PGNOptions;
+
 import junit.framework.TestCase;
 
 
@@ -484,5 +486,79 @@ public class GameTest extends TestCase {
         assertEquals(0, hist.second.size());
         expectedPos = TextIO.readFEN(TextIO.startPosFEN);
         assertEquals(expectedPos, hist.first);
+    }
+
+    public final void testDuplicateMoves() throws ChessParseError {
+        PGNOptions options = new PGNOptions();
+        options.imp.variations = true;
+        options.imp.comments = true;
+        options.imp.nag = true;
+
+        {
+            Game game = new Game(null, new TimeControlData());
+            boolean res = game.readPGN("[Event \"\"]\n[Result \"0-1\"]\n\ne4 0-1", options);
+            assertEquals(true, res);
+            assertEquals("e4", GameTreeTest.getVariationsAsString(game.tree));
+
+            Pair<Boolean,Move> p = game.processString("e4");
+            assertEquals(true, (boolean)p.first);
+            assertEquals(TextIO.UCIstringToMove("e2e4"), p.second);
+            game.undoMove();
+            assertEquals("e4 e4", GameTreeTest.getVariationsAsString(game.tree));
+
+            p = game.processString("e4");
+            assertEquals(true, (boolean)p.first);
+            assertEquals(TextIO.UCIstringToMove("e2e4"), p.second);
+            game.undoMove();
+            assertEquals("e4 e4", GameTreeTest.getVariationsAsString(game.tree));
+
+            p = game.processString("d4");
+            assertEquals(true, (boolean)p.first);
+            assertEquals(TextIO.UCIstringToMove("d2d4"), p.second);
+            game.undoMove();
+            assertEquals("d4 e4 e4", GameTreeTest.getVariationsAsString(game.tree));
+        }
+        {
+            Game game = new Game(null, new TimeControlData());
+            game.setPos(TextIO.readFEN("k7/5R2/6R1/2K5/8/8/8/8 w - - 0 1"));
+            Pair<Boolean,Move> p = game.processString("Rg8");
+            assertEquals(true, (boolean)p.first);
+            assertEquals(TextIO.UCIstringToMove("g6g8"), p.second);
+            game.undoMove();
+            assertEquals("Rg8#", GameTreeTest.getVariationsAsString(game.tree));
+
+            p = game.processString("Rg8");
+            assertEquals(true, (boolean)p.first);
+            assertEquals(TextIO.UCIstringToMove("g6g8"), p.second);
+            game.undoMove();
+            assertEquals("Rg8#", GameTreeTest.getVariationsAsString(game.tree));
+
+            p = game.processString("Rgg7");
+            assertEquals(true, (boolean)p.first);
+            assertEquals(TextIO.UCIstringToMove("g6g7"), p.second);
+            game.undoMove();
+            assertEquals("Rgg7 Rg8#", GameTreeTest.getVariationsAsString(game.tree));
+        }
+        {
+            Game game = new Game(null, new TimeControlData());
+            game.setPos(TextIO.readFEN("k7/8/1K6/8/8/8/2Q5/8 w - - 0 1"));
+            Pair<Boolean,Move> p = game.processString("Qc7");
+            assertEquals(true, (boolean)p.first);
+            assertEquals(TextIO.UCIstringToMove("c2c7"), p.second);
+            game.undoMove();
+            assertEquals("Qc7", GameTreeTest.getVariationsAsString(game.tree));
+
+            p = game.processString("Qc7");
+            assertEquals(true, (boolean)p.first);
+            assertEquals(TextIO.UCIstringToMove("c2c7"), p.second);
+            game.undoMove();
+            assertEquals("Qc7", GameTreeTest.getVariationsAsString(game.tree));
+
+            p = game.processString("Qc8");
+            assertEquals(true, (boolean)p.first);
+            assertEquals(TextIO.UCIstringToMove("c2c8"), p.second);
+            game.undoMove();
+            assertEquals("Qc8# Qc7", GameTreeTest.getVariationsAsString(game.tree));
+        }
     }
 }

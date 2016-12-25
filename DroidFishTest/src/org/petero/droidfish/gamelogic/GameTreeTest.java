@@ -242,7 +242,7 @@ public class GameTreeTest extends TestCase {
         assertEquals(0, gt.currentNode.defaultChild);
     }
 
-    private final String getVariationsAsString(GameTree gt) {
+    final static String getVariationsAsString(GameTree gt) {
         StringBuilder ret = new StringBuilder();
         List<Move> vars = gt.variations();
         for (int i = 0; i < vars.size(); i++) {
