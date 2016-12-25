@@ -25,10 +25,6 @@ import chess.HumanPlayer;
 import chess.Player;
 import chess.TreeLogger;
 
-/**
- *
- * @author petero
- */
 public class Main {
 
     /**

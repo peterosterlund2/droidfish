@@ -30,10 +30,6 @@ import org.petero.droidfish.gamelogic.MoveGen;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
 
-/**
- *
- * @author petero
- */
 public class BookTest extends TestCase {
 
     public BookTest() {

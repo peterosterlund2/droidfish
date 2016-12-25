@@ -23,10 +23,6 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-/**
- *
- * @author petero
- */
 public class PositionTest extends TestCase {
 
     public PositionTest() {

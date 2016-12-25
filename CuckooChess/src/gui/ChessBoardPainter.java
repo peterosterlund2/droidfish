@@ -35,10 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import javax.swing.JLabel;
 
-/**
- * Draws a graphical chess board. Also handles user interaction.
- * @author petero
- */
+/** Draws a graphical chess board. Also handles user interaction. */
 public class ChessBoardPainter extends JLabel {
     private static final long serialVersionUID = -1319250011487017825L;
     private Position pos;

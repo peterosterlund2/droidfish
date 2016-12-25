@@ -23,10 +23,6 @@ import java.util.ArrayList;
 import junit.framework.TestCase;
 
 
-/**
- *
- * @author petero
- */
 public class GameTest extends TestCase {
 
     public GameTest() {

@@ -24,10 +24,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * A player that reads input from the keyboard.
- * @author petero
- */
+/** A player that reads input from the keyboard. */
 public class HumanPlayer implements Player {
     private String lastCmd = "";
     private BufferedReader in;

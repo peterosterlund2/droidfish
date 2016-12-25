@@ -18,10 +18,7 @@
 
 package chess;
 
-/**
- * Implements the relative history heuristic.
- * @author petero
- */
+/** Implements the relative history heuristic. */
 public final class History {
     private int countSuccess[][];
     private int countFail[][];

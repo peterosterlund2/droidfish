@@ -26,10 +26,7 @@ import org.petero.droidfish.PGNOptions;
 import org.petero.droidfish.R;
 
 
-/**
- * Handle conversion of positions and moves to/from text format.
- * @author petero
- */
+/** Handle conversion of positions and moves to/from text format. */
 public class TextIO {
     static public final String startPosFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 

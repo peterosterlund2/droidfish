@@ -25,10 +25,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author petero
- */
 public class SearchTest {
     static final long[] nullHist = new long[200];
     static TranspositionTable tt = new TranspositionTable(19);

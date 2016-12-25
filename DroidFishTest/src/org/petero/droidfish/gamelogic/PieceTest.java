@@ -21,10 +21,6 @@ package org.petero.droidfish.gamelogic;
 
 import junit.framework.TestCase;
 
-/**
- *
- * @author petero
- */
 public class PieceTest extends TestCase {
 
     public PieceTest() {

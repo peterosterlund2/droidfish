@@ -21,10 +21,6 @@ package org.petero.droidfish.gamelogic;
 
 import junit.framework.TestCase;
 
-/**
- *
- * @author petero
- */
 public class TextIOTest extends TestCase {
 
     public TextIOTest() {

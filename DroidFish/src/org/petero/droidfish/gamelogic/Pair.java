@@ -18,10 +18,7 @@
 
 package org.petero.droidfish.gamelogic;
 
-/**
- * A small helper class that makes it possible to return two values from a function.
- * @author petero
- */
+/** A helper class that makes it possible to return two values from a function. */
 public final class Pair<T1, T2> {
     public final T1 first;
     public final T2 second;

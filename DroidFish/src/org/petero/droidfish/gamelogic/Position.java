@@ -27,7 +27,6 @@ import java.security.NoSuchAlgorithmException;
  * since the last capture or pawn move. That state is only needed
  * for three-fold repetition draw detection, and is better stored
  * in a separate hash table.
- * @author petero
  */
 public class Position {
     private int[] squares;

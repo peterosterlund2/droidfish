@@ -20,10 +20,6 @@ package chess;
 
 import java.util.Locale;
 
-/**
- *
- * @author petero
- */
 public class TextIO {
     static public final String startPosFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 

@@ -24,10 +24,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
-/**
- *
- * @author petero
- */
 public class Search {
     final static int plyScale = 8; // Fractional ply resolution
 

@@ -39,10 +39,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
-/**
- * The glue between the chess engine and the GUI.
- * @author petero
- */
+/** The glue between the chess engine and the GUI. */
 public class ChessController {
     Player humanPlayer;
     ComputerPlayer computerPlayer;

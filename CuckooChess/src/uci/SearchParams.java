@@ -22,10 +22,7 @@ import chess.Move;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Store search parameters (times, increments, max depth, etc).
- * @author petero
- */
+/** Store search parameters (times, increments, max depth, etc). */
 public class SearchParams {
     List<Move> searchMoves;  // If non-empty, search only these moves
     int wTime;               // White remaining time, ms

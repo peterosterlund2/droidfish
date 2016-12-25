@@ -23,10 +23,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author petero
- */
 public class EvaluateTest {
 
     public EvaluateTest() {

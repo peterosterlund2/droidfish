@@ -21,11 +21,7 @@ package chess;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * Position evaluation routines.
- * 
- * @author petero
- */
+/** Position evaluation routines. */
 public class Evaluate {
     static final int pV =   92 + Parameters.instance().getIntPar("pV");
     static final int nV =  385 + Parameters.instance().getIntPar("nV");

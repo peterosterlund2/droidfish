@@ -32,10 +32,7 @@ import org.petero.droidfish.EngineOptions;
 import org.petero.droidfish.engine.LocalPipe;
 import org.petero.droidfish.engine.UCIEngineBase;
 
-/**
- * UCI interface to cuckoochess engine.
- * @author petero
- */
+/** UCI interface to cuckoochess engine. */
 public class CuckooChessEngine extends UCIEngineBase {
 
     // Data set by the "position" command.

@@ -30,10 +30,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 
-/**
- * Handle the UCI protocol mode.
- * @author petero
- */
+/** Handle the UCI protocol mode. */
 public class UCIProtocol {
     // Data set by the "position" command.
     Position pos;

@@ -22,10 +22,7 @@ import java.security.SecureRandom;
 import java.util.List;
 import java.util.Random;
 
-/**
- * A computer algorithm player.
- * @author petero
- */
+/** A computer algorithm player. */
 public class ComputerPlayer implements Player {
     public static final String engineName;
 

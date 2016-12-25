@@ -18,10 +18,7 @@
 
 package chess;
 
-/**
- * Implement a table of killer moves for the killer heuristic.
- * @author petero
- */
+/** Implement a table of killer moves for the killer heuristic. */
 public class KillerTable {
     /** There is one KTEntry for each ply in the search tree. */
     static final class KTEntry {

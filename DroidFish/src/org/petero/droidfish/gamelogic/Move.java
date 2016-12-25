@@ -18,10 +18,6 @@
 
 package org.petero.droidfish.gamelogic;
 
-/**
- *
- * @author petero
- */
 public class Move {
     /** From square, 0-63. */
     public int from;

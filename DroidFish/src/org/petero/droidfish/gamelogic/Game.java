@@ -27,10 +27,6 @@ import java.util.List;
 import org.petero.droidfish.PGNOptions;
 import org.petero.droidfish.gamelogic.GameTree.Node;
 
-/**
- *
- * @author petero
- */
 public class Game {
     boolean pendingDrawOffer;
     public GameTree tree;

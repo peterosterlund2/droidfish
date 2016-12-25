@@ -36,10 +36,7 @@ import org.petero.droidfish.gamelogic.UndoInfo;
 import org.petero.droidfish.gamelogic.SearchListener.PvInfo;
 import org.petero.droidfish.tb.Probe;
 
-/**
- * A computer algorithm player.
- * @author petero
- */
+/** A computer algorithm player. */
 public class DroidComputerPlayer {
     private UCIEngine uciEngine = null;
     private final SearchListener listener;

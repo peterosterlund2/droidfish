@@ -33,10 +33,7 @@ import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gamelogic.Pair;
 
-/**
- * Implements an opening book.
- * @author petero
- */
+/** Implements an opening book. */
 public final class DroidBook {
     static final class BookEntry {
         Move move;

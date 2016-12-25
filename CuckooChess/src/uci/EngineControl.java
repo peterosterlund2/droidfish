@@ -41,10 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Control the search thread.
- * @author petero
- */
+/** Control the search thread. */
 public class EngineControl {
     PrintStream os;
 

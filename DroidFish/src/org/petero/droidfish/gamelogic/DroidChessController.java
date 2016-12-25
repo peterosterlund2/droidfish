@@ -44,10 +44,7 @@ import org.petero.droidfish.engine.DroidComputerPlayer.SearchType;
 import org.petero.droidfish.gamelogic.Game.GameState;
 import org.petero.droidfish.gamelogic.GameTree.Node;
 
-/**
- * The glue between the chess engine and the GUI.
- * @author petero
- */
+/** The glue between the chess engine and the GUI. */
 public class DroidChessController {
     private DroidComputerPlayer computerPlayer = null;
     private PgnToken.PgnTokenReceiver gameTextListener = null;

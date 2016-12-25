@@ -28,10 +28,7 @@ import chess.ComputerPlayer;
 import chess.Move;
 import chess.Position;
 
-/**
- * The main class for the chess GUI.
- * @author petero
- */
+/** The main class for the chess GUI. */
 public class AppletGUI extends javax.swing.JApplet implements GUIInterface {
     private static final long serialVersionUID = 7357610346389734323L;
     ChessBoardPainter cbp;

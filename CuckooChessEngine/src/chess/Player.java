@@ -20,10 +20,7 @@ package chess;
 
 import java.util.List;
 
-/**
- * Interface for human/computer players.
- * @author petero
- */
+/** Interface for human/computer players. */
 public interface Player {
     /**
      * Get a command from a player.

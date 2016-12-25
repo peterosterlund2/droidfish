@@ -23,10 +23,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-/**
- *
- * @author petero
- */
 public class Game {
     protected List<Move> moveList = null;
     protected List<UndoInfo> uiInfoList = null;

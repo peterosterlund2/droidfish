@@ -32,10 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-/**
- * Implements an opening book.
- * @author petero
- */
+/** Implements an opening book. */
 public class Book {
     public static class BookEntry {
         Move move;

@@ -19,10 +19,7 @@
 
 package org.petero.droidfish.gamelogic;
 
-/**
- * Constants for different piece types.
- * @author petero
- */
+/** Constants for different piece types. */
 public class Piece {
     public static final int EMPTY = 0;
 

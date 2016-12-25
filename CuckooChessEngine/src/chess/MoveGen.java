@@ -20,10 +20,6 @@ package chess;
 
 import java.util.List;
 
-/**
- *
- * @author petero
- */
 public final class MoveGen {
     static final MoveGen instance;
     static {

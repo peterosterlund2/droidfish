@@ -18,10 +18,7 @@
 
 package org.petero.droidfish.gamelogic;
 
-/**
- * Exception class to represent parse errors in FEN or algebraic notation.
- * @author petero
- */
+/** Exception class to represent parse errors in FEN or algebraic notation. */
 public class ChessParseError extends Exception {
     private static final long serialVersionUID = -6051856171275301175L;
 

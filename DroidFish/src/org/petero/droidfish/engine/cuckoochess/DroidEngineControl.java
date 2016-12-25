@@ -38,10 +38,7 @@ import java.util.Random;
 
 import org.petero.droidfish.engine.LocalPipe;
 
-/**
- * Control the search thread.
- * @author petero
- */
+/** Control the search thread. */
 public class DroidEngineControl {
     LocalPipe os;
 

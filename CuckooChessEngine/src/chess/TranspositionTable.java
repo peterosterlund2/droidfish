@@ -21,10 +21,6 @@ package chess;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author petero
- */
 public class TranspositionTable {
     static final public class TTEntry {
         long key;               // Zobrist hash key

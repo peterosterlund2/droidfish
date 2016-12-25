@@ -21,10 +21,6 @@ package org.petero.droidfish.gamelogic;
 import java.util.ArrayList;
 
 
-/**
- *
- * @author petero
- */
 public class MoveGen {
     public static MoveGen instance;
     static {

@@ -20,10 +20,6 @@ package org.petero.droidfish.gamelogic;
 
 import junit.framework.TestCase;
 
-/**
- *
- * @author petero
- */
 public class MoveTest extends TestCase {
 
     public MoveTest() {
