@@ -33,11 +33,33 @@ import android.widget.Toast;
 /** Handles text to speech translation. */
 public class Speech {
     private TextToSpeech tts;
-    boolean initialized = false;
-    boolean supported = false;
-    String toSpeak = null;
+    private boolean initialized = false;
+    private String toSpeak = null;
 
-    public void initialize(final Context context) {
+    public enum Language {
+        EN,   // English
+        DE,   // German
+        NONE; // Not supported
+
+        public static Language fromString(String langStr) {
+            if ("en".equals(langStr))
+                return EN;
+            if ("de".equals(langStr))
+                return DE;
+            return NONE;
+        }
+    }
+    private Language lang;
+
+    
+    /** Initialize the text to speech engine for a given language. */
+    public void initialize(final Context context, final String langStr) {
+        Language newLang = Language.fromString(langStr);
+        if (newLang != lang)
+            shutdown();
+        final Locale loc = getLocale(newLang);
+        if (loc == null)
+            initialized = true;
         if (initialized)
             return;
         tts = new TextToSpeech(context, new OnInitListener() {
@@ -46,12 +68,12 @@ public class Speech {
                 initialized = true;
                 int toast = -1;
                 if (status == TextToSpeech.SUCCESS) {
-                    int code = tts.setLanguage(Locale.US);
+                    int code = tts.setLanguage(loc);
                     switch (code) {
                     case TextToSpeech.LANG_AVAILABLE:
                     case TextToSpeech.LANG_COUNTRY_AVAILABLE:
                     case TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE:
-                        supported = true;
+                        lang = Language.fromString(langStr);
                         say(toSpeak);
                         break;
                     case TextToSpeech.LANG_MISSING_DATA:
@@ -75,7 +97,7 @@ public class Speech {
     @SuppressWarnings("deprecation")
     public void say(String text) {
         if (initialized) {
-            if (supported && text != null)
+            if (lang != Language.NONE && text != null)
                 tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
             toSpeak = null;
         } else {
@@ -95,22 +117,22 @@ public class Speech {
         if (tts != null) {
             tts.shutdown();
             tts = null;
+            lang = Language.NONE;
             initialized = false;
-            supported = false;
         }
     }
 
     /** Convert move "move" in position "pos" to a sentence and speak it. */
-    public void say(Position pos, Move move, String langStr) {
-        String s = moveToText(pos, move, langStr);
+    public void say(Position pos, Move move) {
+        String s = moveToText(pos, move, lang);
 //        System.out.printf("%.3f Speech.say(): %s\n", System.currentTimeMillis() * 1e-3, s);
         if (!s.isEmpty())
             say(s);
     }
 
     /** Convert move "move" in position "pos" to a sentence that can be spoken. */
-    public static String moveToText(Position pos, Move move, String langStr) {
-        if (move == null || !langStr.equals("en"))
+    public static String moveToText(Position pos, Move move, Language lang) {
+        if (move == null)
             return "";
 
         String moveStr = TextIO.moveToString(pos, move, false, false);
@@ -120,12 +142,15 @@ public class Speech {
         boolean check = moveStr.endsWith("+");
         boolean checkMate = moveStr.endsWith("#");
         boolean castle = false;
+        boolean enPassant = false;
 
         if (piece == Piece.WPAWN && !capture) {
             int fx = Position.getX(move.from);
             int tx = Position.getX(move.to);
-            if (fx != tx)
+            if (fx != tx) {
                 capture = true; // En passant
+                enPassant = true;
+            }
         }
 
         StringBuilder sentence = new StringBuilder();
@@ -134,10 +159,10 @@ public class Speech {
             int fx = Position.getX(move.from);
             int tx = Position.getX(move.to);
             if (fx == 4 && tx == 6) {
-                sentence.append("Short castle");
+                addWord(sentence, castleToString(true, lang));
                 castle = true;
             } else if (fx == 4 && (tx == 2)) {
-                sentence.append("Long castle");
+                addWord(sentence, castleToString(false, lang));
                 castle = true;
             }
         }
@@ -145,65 +170,178 @@ public class Speech {
         if (!castle) {
             boolean pawnMove = piece == Piece.WPAWN;
             if (!pawnMove)
-                sentence.append(pieceName(piece)).append(' ');
+                addWord(sentence, pieceName(piece, lang));
 
             if (capture) {
                 int i = moveStr.indexOf("x");
                 String from = moveStr.substring(pawnMove ? 0 : 1, i);
                 if (!from.isEmpty())
-                    sentence.append(getFromWord(from)).append(' ');
+                    addWord(sentence, fromToString(from, lang));
                 String to = moveStr.substring(i + 1, i + 3);
-                sentence.append(to.startsWith("e") ? "take " : "takes ");
-                sentence.append(to).append(' ');
+                addWord(sentence, captureToString(to, lang));
+                addWord(sentence, toToString(to, lang));
+                if (enPassant)
+                    addWord(sentence, epToString(lang));
             } else {
                 int nSkip = (promotion ? 1 : 0) + ((check | checkMate) ? 1 : 0);
                 int i = moveStr.length() - nSkip;
                 String from = moveStr.substring(pawnMove ? 0 : 1, i - 2);
                 if (!from.isEmpty())
-                    sentence.append(from).append(' ');
+                    addWord(sentence, fromToString(from, lang));
                 String to = moveStr.substring(i - 2, i);
-                sentence.append(to).append(' ');
+                addWord(sentence, toToString(to, lang));
             }
 
             if (promotion)
-                sentence.append(pieceName(move.promoteTo)).append(' ');
+                addWord(sentence, promToString(move.promoteTo, lang));
         }
 
         if (checkMate) {
-            removeLastSpace(sentence);
-            sentence.append(". Check mate!");
+            addWord(sentence, checkMateToString(lang));
         } else if (check) {
-            removeLastSpace(sentence);
-            sentence.append(". Check!");
+            addWord(sentence, checkToString(lang));
         }
 
         return sentence.toString().trim();
     }
 
+    /** Return the locale corresponding to a language string,
+     *  or null if language not supported. */
+    private static Locale getLocale(Language lang) {
+        switch (lang) {
+        case EN:
+            return Locale.US;
+        case DE:
+            return Locale.GERMAN;
+        case NONE:
+            return null;
+        }
+        throw new IllegalArgumentException();
+    }
+
+    /** Add zero or more words to the string builder.
+     *  If anything was added, an extra space is also added at the end. */
+    private static void addWord(StringBuilder sb, String words) {
+        if (!words.isEmpty())
+            sb.append(words).append(' ');
+    }
+
     /** Get the name of a non-pawn piece. Return empty string if no such piece. */
-    private static String pieceName(int piece) {
+    private static String pieceName(int piece, Language lang) {
         piece = Piece.makeWhite(piece);
-        switch (piece) {
-        case Piece.WKING:   return "King";
-        case Piece.WQUEEN:  return "Queen";
-        case Piece.WROOK:   return "Rook";
-        case Piece.WBISHOP: return "Bishop";
-        case Piece.WKNIGHT: return "Knight";
-        default:            return "";
-        }            
+        switch (lang) {
+        case EN:
+            switch (piece) {
+            case Piece.WKING:   return "King";
+            case Piece.WQUEEN:  return "Queen";
+            case Piece.WROOK:   return "Rook";
+            case Piece.WBISHOP: return "Bishop";
+            case Piece.WKNIGHT: return "Knight";
+            default:            return "";
+            }            
+        case DE:
+            switch (piece) {
+            case Piece.WKING:   return "König";
+            case Piece.WQUEEN:  return "Dame";
+            case Piece.WROOK:   return "Turm";
+            case Piece.WBISHOP: return "Läufer";
+            case Piece.WKNIGHT: return "Springer";
+            default:            return "";
+            }            
+        case NONE:
+            return "";
+        }
+        throw new IllegalArgumentException();
     }
 
-    /** Transform a "from" file or file+rank to a word. */
-    private static String getFromWord(String from) {
-        if ("a".equals(from))
-            return "ae";
-        return from;
+    private static String fromToString(String from, Language lang) {
+        switch (lang) {
+        case EN:
+            if ("a".equals(from))
+                return "ae";
+            return from;
+        case DE:
+            return from;
+        case NONE:
+            return "";
+        }
+        throw new IllegalArgumentException();
     }
 
-    /** If the last character in the StringBuilder is a space, remove it. */
-    private static void removeLastSpace(StringBuilder sb) {
-        int len = sb.length();
-        if (len > 0 && sb.charAt(len - 1) == ' ')
-            sb.setLength(len - 1);
+    private static String toToString(String to, Language lang) {
+        return to;
+    }
+
+    private static String captureToString(String to, Language lang) {
+        switch (lang) {
+        case EN:
+            return to.startsWith("e") ? "take" : "takes";
+        case DE:
+            return "schlägt";
+        case NONE:
+            return "";
+        }
+        throw new IllegalArgumentException();
+    }
+
+    private static String castleToString(boolean kingSide, Language lang) {
+        switch (lang) {
+        case EN:
+            return kingSide ? "Short castle" : "Long castle";
+        case DE:
+            return kingSide ? "Kleine Rochade" : "Große Rochade";
+        case NONE:
+            return "";
+        }
+        throw new IllegalArgumentException();
+    }
+
+    private static String epToString(Language lang) {
+        switch (lang) {
+        case EN:
+            return "";
+        case DE:
+            return "en passant";
+        case NONE:
+            return "";
+        }
+        throw new IllegalArgumentException();
+    }
+
+    private static String promToString(int piece, Language lang) {
+        String pn = pieceName(piece, lang);
+        switch (lang) {
+        case EN:
+            return pn;
+        case DE:
+            return "Umwandlung zu " + pn;
+        case NONE:
+            return "";
+        }
+        throw new IllegalArgumentException();
+    }
+
+    private static String checkToString(Language lang) {
+        switch (lang) {
+        case EN:
+            return "check!";
+        case DE:
+            return "Schach!";
+        case NONE:
+            return "";
+        }
+        throw new IllegalArgumentException();
+    }
+
+    private static String checkMateToString(Language lang) {
+        switch (lang) {
+        case EN:
+            return "check mate!";
+        case DE:
+            return "Schach matt!";
+        case NONE:
+            return "";
+        }
+        throw new IllegalArgumentException();
     }
 }

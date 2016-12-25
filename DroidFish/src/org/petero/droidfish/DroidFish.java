@@ -3776,7 +3776,7 @@ public class DroidFish extends Activity
     /** Initialize text to speech if enabled in settings. */
     private void initSpeech() {
         if (moveAnnounceType.startsWith("speech_"))
-            speech.initialize(this);
+            speech.initialize(this, moveAnnounceType.substring(7));
     }
 
     @Override
@@ -3793,7 +3793,7 @@ public class DroidFish extends Activity
                 }
             }
         } else if (moveAnnounceType.startsWith("speech_")) {
-            speech.say(pos, move, moveAnnounceType.substring(7));
+            speech.say(pos, move);
         }
         if (vibrateEnabled) {
             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
