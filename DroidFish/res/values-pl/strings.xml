@@ -13,6 +13,7 @@
   <string name="book_line_length_default">1000000</string>
   <string name="viewPieceType_default">1</string>
   <string name="autoDelay_default">5000</string>
+  <string name="move_announce_type_default">off</string>
   <string name="cpu_warning">\
 <b>Obciążenie procesora</b>\n\
 Jeśli pozostawisz DroidFish\'a działającego w tle a <i>Tryb gry</i> jest ustawiony na \
@@ -219,6 +220,9 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="network_port">Port</string>
   <string name="network_engine">Silnik sieciowy</string>
   <string name="failed_to_start_engine">Błąd podczas startu silnika</string>
+  <string name="tts_failed_to_init">Failed to initialize text to speech</string>
+  <string name="tts_data_missing">Text to speech data missing</string>
+  <string name="tts_not_supported_for_lang">Text to speech not supported for this language</string>
   <string name="engine_terminated">Silnik został zatrzymany</string>
   <string name="uci_protocol_error">Błąd potokołu UCI</string>
   <string name="network_engine_config_error">Błąd konfiguracji silnika sieciowego</string>
@@ -296,8 +300,8 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="prefs_autoScrollTitle_summary">Automatycznie przewijaj wiersz tytułowy jeśli nazwiska graczy są zbyt długie</string>
   <string name="prefs_quickMoveInput_title">Szybkie wprowadzanie ruchów</string>
   <string name="prefs_quickMoveInput_summary">Pola początkowe i końcowe ruchu mogą być wskazane w dowolnej kolejności. Jeśli posunięcie jest jednoznacznie określone, jest ono natychmiast wykonywane.</string>
-  <string name="prefs_soundEnabled_title">Włącz dźwięki</string>
-  <string name="prefs_soundEnabled_summary">Odtwórz dźwięk gdy komputer wykona posunięcie</string>
+  <string name="prefs_moveAnnounceType_title">Move Announcement</string>
+  <string name="prefs_moveAnnounceType_summary">Announcement sound when computer makes a move</string>
   <string name="prefs_vibrateEnabled_title">Włącz wibracje</string>
   <string name="prefs_vibrateEnabled_summary">Wibruj gdy komputer wykona posunięcie</string>
   <string name="prefs_fullScreenMode_title">Tryb pełnoekranowy</string>
@@ -695,5 +699,15 @@ nie korzystasz aktywnie z programu.\</string>
     <item>loadLastFile</item>
     <item>selectEngine</item>
     <item>engineOptions</item>
+  </string-array>
+  <string-array name="move_announce_type_values">
+    <item>off</item>
+    <item>sound</item>
+    <item>speech_en</item>
+  </string-array>
+  <string-array name="move_announce_type_texts">
+    <item>Off</item>
+    <item>Play sound</item>
+    <item>English Speech</item>
   </string-array>
 </resources>

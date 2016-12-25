@@ -13,6 +13,7 @@
   <string name="book_line_length_default">1000000</string>
   <string name="viewPieceType_default">1</string>
   <string name="autoDelay_default">5000</string>
+  <string name="move_announce_type_default">off</string>
   <string name="cpu_warning">\
 <b>Prozessor-Nutzung</b>\n\
 Wenn Sie DroidFish im Hintergrund in der Spielmodus-Einstellung <i>Analyse</i> \
@@ -220,6 +221,9 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="network_port">Netzwerkport</string>
   <string name="network_engine">Netzserver-Engine</string>
   <string name="failed_to_start_engine">Fehler beim Starten der Engine</string>
+  <string name="tts_failed_to_init">Failed to initialize text to speech</string>
+  <string name="tts_data_missing">Text to speech data missing</string>
+  <string name="tts_not_supported_for_lang">Text to speech not supported for this language</string>
   <string name="engine_terminated">Engine beendet</string>
   <string name="uci_protocol_error">UCI-Protokollfehler</string>
   <string name="network_engine_config_error">Fehler bei der Konfiguration der Netzserver-Engine</string>
@@ -297,8 +301,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_autoScrollTitle_summary">Titelleiste bei zu langen Spielernamen automatisch scrollen</string>
   <string name="prefs_quickMoveInput_title">Schnelle Zugeingabe</string>
   <string name="prefs_quickMoveInput_summary">Die Reihenfolge der Auswahl für einen Zug (von bzw. nach) ist beliebig. Eindeutige Züge werden sofort durchgeführt.</string>
-  <string name="prefs_soundEnabled_title">Töne</string>
-  <string name="prefs_soundEnabled_summary">Ton bei Computer-Zug ausgeben</string>
+  <string name="prefs_moveAnnounceType_title">Move Announcement</string>
+  <string name="prefs_moveAnnounceType_summary">Announcement sound when computer makes a move</string>
   <string name="prefs_vibrateEnabled_title">Vibration aktivieren</string>
   <string name="prefs_vibrateEnabled_summary">Bei Zug des Computers vibrieren</string>
   <string name="prefs_fullScreenMode_title">Vollbildanzeige</string>
@@ -600,9 +604,9 @@ wenn Sie es nicht aktiv nutzen.\
     <item>21</item>
   </string-array>
   <string-array name="ecoHints_texts">
-    <item>Off</item>
+    <item>Nie</item>
     <item>Auto</item>
-    <item>Always</item>
+    <item>Immer</item>
   </string-array>
   <string-array name="ecoHints_values">
     <item>0</item>
@@ -696,5 +700,15 @@ wenn Sie es nicht aktiv nutzen.\
     <item>loadLastFile</item>
     <item>selectEngine</item>
     <item>engineOptions</item>
+  </string-array>
+  <string-array name="move_announce_type_values">
+    <item>off</item>
+    <item>sound</item>
+    <item>speech_en</item>
+  </string-array>
+  <string-array name="move_announce_type_texts">
+    <item>Off</item>
+    <item>Play sound</item>
+    <item>English Speech</item>
   </string-array>
 </resources>

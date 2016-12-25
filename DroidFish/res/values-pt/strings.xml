@@ -13,6 +13,7 @@
   <string name="book_line_length_default">1000000</string>
   <string name="viewPieceType_default">1</string>
   <string name="autoDelay_default">5000</string>
+  <string name="move_announce_type_default">off</string>
   <string name="cpu_warning">\
 <b>Uso de CPU</b>\n\
 Se você deixar o DroidFish rodando em background e <i>Modo de jogo</i> estiver configurado para \
@@ -219,6 +220,9 @@ não estiver usando o programa diretamente.\</string>
   <string name="network_port">Porto</string>
   <string name="network_engine">Software de rede</string>
   <string name="failed_to_start_engine">Falha ao iniciar o software</string>
+  <string name="tts_failed_to_init">Failed to initialize text to speech</string>
+  <string name="tts_data_missing">Text to speech data missing</string>
+  <string name="tts_not_supported_for_lang">Text to speech not supported for this language</string>
   <string name="engine_terminated">Software encerrado</string>
   <string name="uci_protocol_error">Erro de protocolo UCI</string>
   <string name="network_engine_config_error">Erro na configuração da rede do software</string>
@@ -296,8 +300,8 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_autoScrollTitle_summary">Rolar automaticamente barra de título se os nomes dos jogadores forem muito longos</string>
   <string name="prefs_quickMoveInput_title">Modo de lance rápido</string>
   <string name="prefs_quickMoveInput_summary">Casas de origem e destino podem ser tocadas em qualquer ordem.</string>
-  <string name="prefs_soundEnabled_title">Habilitar sons</string>
-  <string name="prefs_soundEnabled_summary">Tocar som quando o software fizer um lance</string>
+  <string name="prefs_moveAnnounceType_title">Move Announcement</string>
+  <string name="prefs_moveAnnounceType_summary">Announcement sound when computer makes a move</string>
   <string name="prefs_vibrateEnabled_title">Habilitar vibração</string>
   <string name="prefs_vibrateEnabled_summary">Vibrar quando o software fizer um lance</string>
   <string name="prefs_fullScreenMode_title">Modo tela cheia</string>
@@ -695,5 +699,15 @@ não estiver usando o programa diretamente.\</string>
     <item>loadLastFile</item>
     <item>selectEngine</item>
     <item>engineOptions</item>
+  </string-array>
+  <string-array name="move_announce_type_values">
+    <item>off</item>
+    <item>sound</item>
+    <item>speech_en</item>
+  </string-array>
+  <string-array name="move_announce_type_texts">
+    <item>Off</item>
+    <item>Play sound</item>
+    <item>English Speech</item>
   </string-array>
 </resources>

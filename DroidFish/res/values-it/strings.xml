@@ -13,6 +13,7 @@
   <string name="book_line_length_default">1000000</string>
   <string name="viewPieceType_default">1</string>
   <string name="autoDelay_default">5000</string>
+  <string name="move_announce_type_default">off</string>
   <string name="cpu_warning">\
 <b>Utilizzo CPU</b>\n\ se si lascia DroidFish in esecuzione in background e <i>la modalità di gioco</i> è impostata su \ <i>Analisi</i> o <i>Computer contro Computer</i>, o se <i>il Tempo per la riflessione</i> \ è impostato su un valore elevato, o se è attivo <i>Valutando</i>, è possibile che DroidFish usi \ molte risorse della CPU.\n\ \n\ Se l\'alimentazione è a batteria, è consigliabile modificare le impostazioni per \ risparmiare la batteria, o uscire da <i>DroidFish</i> usando il tasto Indietro quando \ non si sta utilizzando in modo attivo il programma. \     </string>
   <string name="offer_draw">Offri la patta</string>
@@ -211,6 +212,9 @@
   <string name="network_port">Porta</string>
   <string name="network_engine">Motore di Rete</string>
   <string name="failed_to_start_engine">Impossibile avviare il motore</string>
+  <string name="tts_failed_to_init">Failed to initialize text to speech</string>
+  <string name="tts_data_missing">Text to speech data missing</string>
+  <string name="tts_not_supported_for_lang">Text to speech not supported for this language</string>
   <string name="engine_terminated">Motore terminato</string>
   <string name="uci_protocol_error">Errore di protocollo UCI</string>
   <string name="network_engine_config_error">Errore di configurazione del Motore di Rete</string>
@@ -288,8 +292,8 @@
   <string name="prefs_autoScrollTitle_summary">Auto-scorrimento della barra del titolo se i nomi dei giocatori sono troppo lunghi</string>
   <string name="prefs_quickMoveInput_title">Inserimento veloce delle mosse</string>
   <string name="prefs_quickMoveInput_summary">Il tocco da e per la casa può essere effettuato in qualsiasi ordine.</string>
-  <string name="prefs_soundEnabled_title">Abilita i suoni</string>
-  <string name="prefs_soundEnabled_summary">Emetti un suono quando il Computer muove</string>
+  <string name="prefs_moveAnnounceType_title">Move Announcement</string>
+  <string name="prefs_moveAnnounceType_summary">Announcement sound when computer makes a move</string>
   <string name="prefs_vibrateEnabled_title">Abilita la vibrazione</string>
   <string name="prefs_vibrateEnabled_summary">Vibra quando il computer fa una mossa</string>
   <string name="prefs_fullScreenMode_title">Modalità a schermo intero</string>
@@ -687,5 +691,15 @@
     <item>loadLastFile</item>
     <item>selectEngine</item>
     <item>engineOptions</item>
+  </string-array>
+  <string-array name="move_announce_type_values">
+    <item>off</item>
+    <item>sound</item>
+    <item>speech_en</item>
+  </string-array>
+  <string-array name="move_announce_type_texts">
+    <item>Off</item>
+    <item>Play sound</item>
+    <item>English Speech</item>
   </string-array>
 </resources>

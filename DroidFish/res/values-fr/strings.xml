@@ -13,6 +13,7 @@
   <string name="book_line_length_default">1000000</string>
   <string name="viewPieceType_default">1</string>
   <string name="autoDelay_default">5000</string>
+  <string name="move_announce_type_default">off</string>
   <string name="cpu_warning">\
 <b>Usage CPU</b>\n\
 Si vous laissez DroidFish tourner en tâche de fond et que le <i>Mode de jeu</i> est sur \ <i>Analyse</i> ou <i>Ordinateur vs Ordinateur</i>, ou si <i>Temps de réflexion</i> \
@@ -217,6 +218,9 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="network_port">Port</string>
   <string name="network_engine">Module réseau</string>
   <string name="failed_to_start_engine">Initialisation du module impossible</string>
+  <string name="tts_failed_to_init">Failed to initialize text to speech</string>
+  <string name="tts_data_missing">Text to speech data missing</string>
+  <string name="tts_not_supported_for_lang">Text to speech not supported for this language</string>
   <string name="engine_terminated">Module arrété</string>
   <string name="uci_protocol_error">Erreur du protocole UCI</string>
   <string name="network_engine_config_error">Erreur de configuration du module réseau</string>
@@ -294,8 +298,8 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="prefs_autoScrollTitle_summary">Défilement automatique de la barre principale si les noms sont trop longs</string>
   <string name="prefs_quickMoveInput_title">Entrée rapide des coups</string>
   <string name="prefs_quickMoveInput_summary">Les cases de départ et d\'arrivée peuvent être touchées dans n\'importe quel ordre. Le coup est joué lorsqu\'il n\'y a plus d’ambiguïté.</string>
-  <string name="prefs_soundEnabled_title">Activer les sons</string>
-  <string name="prefs_soundEnabled_summary">Jouer un son lorsque l\'ordinateur joue un coup</string>
+  <string name="prefs_moveAnnounceType_title">Move Announcement</string>
+  <string name="prefs_moveAnnounceType_summary">Announcement sound when computer makes a move</string>
   <string name="prefs_vibrateEnabled_title">Activer les vibrations</string>
   <string name="prefs_vibrateEnabled_summary">Vibrer lorsque l\'ordinateur joue un coup</string>
   <string name="prefs_fullScreenMode_title">Mode Plein écran</string>
@@ -693,5 +697,15 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
     <item>loadLastFile</item>
     <item>selectEngine</item>
     <item>engineOptions</item>
+  </string-array>
+  <string-array name="move_announce_type_values">
+    <item>off</item>
+    <item>sound</item>
+    <item>speech_en</item>
+  </string-array>
+  <string-array name="move_announce_type_texts">
+    <item>Off</item>
+    <item>Play sound</item>
+    <item>English Speech</item>
   </string-array>
 </resources>

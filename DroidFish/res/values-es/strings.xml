@@ -13,6 +13,7 @@
   <string name="book_line_length_default">1000000</string>
   <string name="viewPieceType_default">1</string>
   <string name="autoDelay_default">5000</string>
+  <string name="move_announce_type_default">off</string>
   <string name="cpu_warning">\
 <b>Utilización de la CPU </b>\n\
 Si deja a DroidFish analizando en segundo plano, y el<i> Modo Partida</i> está ajustado en \
@@ -218,6 +219,9 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="network_port">Puerto</string>
   <string name="network_engine">Motor en la red</string>
   <string name="failed_to_start_engine">Fallo de arranque del motor</string>
+  <string name="tts_failed_to_init">Failed to initialize text to speech</string>
+  <string name="tts_data_missing">Text to speech data missing</string>
+  <string name="tts_not_supported_for_lang">Text to speech not supported for this language</string>
   <string name="engine_terminated">Ruptura del motor</string>
   <string name="uci_protocol_error">Fallo en el protocolo UCI</string>
   <string name="network_engine_config_error">Error de configuración en el motor de la red</string>
@@ -295,8 +299,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="prefs_autoScrollTitle_summary">Desplaza automáticamente la barra de título si los nombres de los jugadores son demasiado largos</string>
   <string name="prefs_quickMoveInput_title">Introducción rápida de la jugada</string>
   <string name="prefs_quickMoveInput_summary">Las casillas de origen y destino pueden ser pulsadas en cualquier orden. El movimiento se lleva a cabo tan pronto como se define de forma inequívoca (jugada única posible).</string>
-  <string name="prefs_soundEnabled_title">Permitir Sonidos</string>
-  <string name="prefs_soundEnabled_summary">Suena cuando la computadora efectúa una jugada</string>
+  <string name="prefs_moveAnnounceType_title">Move Announcement</string>
+  <string name="prefs_moveAnnounceType_summary">Announcement sound when computer makes a move</string>
   <string name="prefs_vibrateEnabled_title">Permitir vibración</string>
   <string name="prefs_vibrateEnabled_summary">Vibra cuando la computadora efectúa una jugada</string>
   <string name="prefs_fullScreenMode_title">Modo Pantalla Completa</string>
@@ -694,5 +698,15 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <item>loadLastFile</item>
     <item>selectEngine</item>
     <item>engineOptions</item>
+  </string-array>
+  <string-array name="move_announce_type_values">
+    <item>off</item>
+    <item>sound</item>
+    <item>speech_en</item>
+  </string-array>
+  <string-array name="move_announce_type_texts">
+    <item>Off</item>
+    <item>Play sound</item>
+    <item>English Speech</item>
   </string-array>
 </resources>

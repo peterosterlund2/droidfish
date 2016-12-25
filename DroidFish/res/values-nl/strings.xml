@@ -13,6 +13,7 @@
   <string name="book_line_length_default">1000000</string>
   <string name="viewPieceType_default">1</string>
   <string name="autoDelay_default">5000</string>
+  <string name="move_announce_type_default">off</string>
   <string name="cpu_warning">\
 <b>CPU Gebruik</b>\n\
 Als DroidFish op de achtergrond aan staat en de <i>Spelmodus</i> staat op \
@@ -218,6 +219,9 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="network_port">Poort</string>
   <string name="network_engine">Netwerk engine</string>
   <string name="failed_to_start_engine">Engine kon niet gestart worden</string>
+  <string name="tts_failed_to_init">Failed to initialize text to speech</string>
+  <string name="tts_data_missing">Text to speech data missing</string>
+  <string name="tts_not_supported_for_lang">Text to speech not supported for this language</string>
   <string name="engine_terminated">Engine gestopt</string>
   <string name="uci_protocol_error">UCI protocol fout</string>
   <string name="network_engine_config_error">Netwerk engine configuratie fout</string>
@@ -295,8 +299,8 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="prefs_autoScrollTitle_summary">Automatisch de titelbalk scrollen als spelersnamen te lang zijn</string>
   <string name="prefs_quickMoveInput_title">Snelle zet invoer</string>
   <string name="prefs_quickMoveInput_summary">Van- en naar velden kunnen in willekeurige volgorde worden aangegeven.</string>
-  <string name="prefs_soundEnabled_title">Geluiden</string>
-  <string name="prefs_soundEnabled_summary">Speel geluid bij een zet van de computer</string>
+  <string name="prefs_moveAnnounceType_title">Move Announcement</string>
+  <string name="prefs_moveAnnounceType_summary">Announcement sound when computer makes a move</string>
   <string name="prefs_vibrateEnabled_title">Trillen</string>
   <string name="prefs_vibrateEnabled_summary">Trillen bij een zet van de computer</string>
   <string name="prefs_fullScreenMode_title">Volledig scherm</string>
@@ -694,5 +698,15 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
     <item>loadLastFile</item>
     <item>selectEngine</item>
     <item>engineOptions</item>
+  </string-array>
+  <string-array name="move_announce_type_values">
+    <item>off</item>
+    <item>sound</item>
+    <item>speech_en</item>
+  </string-array>
+  <string-array name="move_announce_type_texts">
+    <item>Off</item>
+    <item>Play sound</item>
+    <item>English Speech</item>
   </string-array>
 </resources>
