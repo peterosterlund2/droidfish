@@ -39,36 +39,48 @@ public class GameTest extends TestCase {
         Game game = new Game(null, new TimeControlData());
         assertEquals(false, game.haveDrawOffer());
 
-        boolean res = game.processString("e4");
+        Pair<Boolean,Move> p = game.processString("e4");
+        boolean res = p.first;
         assertEquals(true, res);
+        assertEquals(TextIO.UCIstringToMove("e2e4"), p.second);
         assertEquals(false, game.haveDrawOffer());
 
-        res = game.processString("draw offer e5");
+        p = game.processString("draw offer e5");
+        res = p.first;
         assertEquals(true, res);
+        assertEquals(TextIO.UCIstringToMove("e7e5"), p.second);
         assertEquals(true, game.haveDrawOffer());
         assertEquals(Game.GameState.ALIVE, game.getGameState());    // Draw offer does not imply draw
         assertEquals(Piece.BPAWN, game.currPos().getPiece(Position.getSquare(4, 4))); // e5 move made
 
-        res = game.processString("draw offer Nf3");
+        p = game.processString("draw offer Nf3");
+        res = p.first;
         assertEquals(true, res);
+        assertEquals(TextIO.UCIstringToMove("g1f3"), p.second);
         assertEquals(true, game.haveDrawOffer());
         assertEquals(Game.GameState.ALIVE, game.getGameState());    // Draw offer does not imply draw
         assertEquals(Piece.WKNIGHT, game.currPos().getPiece(Position.getSquare(5, 2))); // Nf3 move made
 
-        res = game.processString("Nc6");
+        p = game.processString("Nc6");
+        res = p.first;
         assertEquals(true, res);
+        assertEquals(TextIO.UCIstringToMove("b8c6"), p.second);
         assertEquals(false, game.haveDrawOffer());
         assertEquals(Game.GameState.ALIVE, game.getGameState());
         assertEquals(Piece.BKNIGHT, game.currPos().getPiece(Position.getSquare(2, 5))); // Nc6 move made
 
-        res = game.processString("draw offer Bb5");
+        p = game.processString("draw offer Bb5");
+        res = p.first;
         assertEquals(true, res);
+        assertEquals(TextIO.UCIstringToMove("f1b5"), p.second);
         assertEquals(true, game.haveDrawOffer());
         assertEquals(Game.GameState.ALIVE, game.getGameState());
         assertEquals(Piece.WBISHOP, game.currPos().getPiece(Position.getSquare(1, 4))); // Bb5 move made
 
-        res = game.processString("draw accept");
+        p = game.processString("draw accept");
+        res = p.first;
         assertEquals(true, res);
+        assertEquals(null, p.second);
         assertEquals(Game.GameState.DRAW_AGREE, game.getGameState());    // Draw by agreement
 
         game.undoMove(); // Undo "draw accept"
@@ -100,11 +112,15 @@ public class GameTest extends TestCase {
         assertEquals(false, game.haveDrawOffer());
         assertEquals(Game.GameState.ALIVE, game.getGameState());
 
-        res = game.processString("draw offer e5");
+        p = game.processString("draw offer e5");
+        res = p.first;
         assertEquals(true, res);
+        assertEquals(null, p.second);
         assertEquals(TextIO.startPosFEN, TextIO.toFEN(game.currPos()));   // Move invalid, not executed
-        res = game.processString("e4");
+        p = game.processString("e4");
+        res = p.first;
         assertEquals(true, res);
+        assertEquals(TextIO.UCIstringToMove("e2e4"), p.second);
         assertEquals(true, game.haveDrawOffer());   // Previous draw offer still valid
         assertEquals(Piece.WPAWN, game.currPos().getPiece(Position.getSquare(4, 3))); // e4 move made
 
@@ -126,15 +142,20 @@ public class GameTest extends TestCase {
     public void testDraw50() throws ChessParseError {
         Game game = new Game(null, new TimeControlData());
         assertEquals(false, game.haveDrawOffer());
-        boolean res = game.processString("draw 50");
+        Pair<Boolean,Move> p = game.processString("draw 50");
+        boolean res = p.first;
         assertEquals(true, res);
+        assertEquals(null, p.second);
         assertEquals(Game.GameState.ALIVE, game.getGameState());    // Draw claim invalid
-        res = game.processString("e4");
+        p = game.processString("e4");
+        res = p.first;
+        assertEquals(true, res);
+        assertEquals(TextIO.UCIstringToMove("e2e4"), p.second);
         assertEquals(true, game.haveDrawOffer());   // Invalid claim converted to draw offer
 
         String fen = "8/4k3/8/P7/8/8/8/1N2K2R w K - 99 83";
         game.setPos(TextIO.readFEN(fen));
-        res = game.processString("draw 50");
+        game.processString("draw 50");
         assertEquals(Game.GameState.ALIVE, game.getGameState());      // Draw claim invalid
 
         game.setPos(TextIO.readFEN(fen));
@@ -163,8 +184,10 @@ public class GameTest extends TestCase {
         assertEquals(true, game.haveDrawOffer());   // Previous invalid claim converted to offer
         game.processString("draw 50");
         assertEquals(Game.GameState.ALIVE, game.getGameState());  // 50 move counter reset.
-        res = game.processString("draw accept");
+        p = game.processString("draw accept");
+        res = p.first;
         assertEquals(true, res);
+        assertEquals(null, p.second);
         assertEquals(Game.GameState.DRAW_AGREE, game.getGameState()); // Can accept previous implicit offer
 
         fen = "3k4/R7/3K4/8/8/8/8/8 w - - 99 78";
@@ -301,12 +324,16 @@ public class GameTest extends TestCase {
     public void testProcessString() throws ChessParseError {
         Game game = new Game(null, new TimeControlData());
         assertEquals(TextIO.startPosFEN, TextIO.toFEN(game.currPos()));
-        boolean res = game.processString("Nf3");
+        Pair<Boolean,Move> p = game.processString("Nf3");
+        boolean res = p.first;
         assertEquals(true, res);
+        assertEquals(TextIO.UCIstringToMove("g1f3"), p.second);
         assertEquals(1, game.currPos().halfMoveClock);
         assertEquals(1, game.currPos().fullMoveCounter);
-        res = game.processString("d5");
+        p = game.processString("d5");
+        res = p.first;
         assertEquals(true, res);
+        assertEquals(TextIO.UCIstringToMove("d7d5"), p.second);
         assertEquals(0, game.currPos().halfMoveClock);
         assertEquals(2, game.currPos().fullMoveCounter);
 
@@ -336,12 +363,16 @@ public class GameTest extends TestCase {
         game.setPos(TextIO.readFEN(fen));
         assertEquals(pos, game.currPos());
 
-        res = game.processString("junk");
+        p = game.processString("junk");
+        res = p.first;
         assertEquals(false, res);
+        assertEquals(null, p.second);
 
         game.newGame();
-        res = game.processString("e7e5");
+        p = game.processString("e7e5");
+        res = p.first;
         assertEquals(false, res);
+        assertEquals(null, p.second);
     }
 
     /**

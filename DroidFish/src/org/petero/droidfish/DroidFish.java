@@ -225,7 +225,7 @@ public class DroidFish extends Activity
     private boolean autoScrollMoveList;
 
     private boolean leftHanded;
-    private boolean soundEnabled;
+    private String moveAnnounceType;
     private MediaPlayer moveSound;
     private boolean vibrateEnabled;
     private boolean animateMoves;
@@ -275,6 +275,8 @@ public class DroidFish extends Activity
 
     private boolean guideShowOnStart;
     private TourGuide tourGuide;
+
+    private Speech speech;
 
 
     /** Defines all configurable button actions. */
@@ -485,6 +487,8 @@ public class DroidFish extends Activity
             ctrl.shutdownEngine();
         ctrl = new DroidChessController(this, gameTextListener, pgnOptions);
         egtbForceReload = true;
+        if (speech == null)
+            speech = new Speech();
         readPrefs();
         TimeControlData tcData = new TimeControlData();
         tcData.setTimeControl(timeControl, movesPerSession, timeIncrement);
@@ -1147,6 +1151,8 @@ public class DroidFish extends Activity
         if (ctrl != null)
             ctrl.shutdownEngine();
         setNotification(false);
+        if (speech != null)
+            speech.shutdown();
         super.onDestroy();
     }
 
@@ -1210,7 +1216,8 @@ public class DroidFish extends Activity
         if (config.orientation == Configuration.ORIENTATION_PORTRAIT)
             statusFontSize = Math.min(statusFontSize, 16);
         status.setTextSize(statusFontSize);
-        soundEnabled = settings.getBoolean("soundEnabled", false);
+        moveAnnounceType = settings.getString("moveAnnounceType", "off");
+        initSpeech();
         vibrateEnabled = settings.getBoolean("vibrateEnabled", false);
         animateMoves = settings.getBoolean("animateMoves", true);
         autoScrollTitle = settings.getBoolean("autoScrollTitle", true);
@@ -3766,17 +3773,27 @@ public class DroidFish extends Activity
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
     }
 
+    /** Initialize text to speech if enabled in settings. */
+    private void initSpeech() {
+        if (moveAnnounceType.startsWith("speech_"))
+            speech.initialize(this);
+    }
+
     @Override
-    public void computerMoveMade() {
-        if (soundEnabled) {
-            if (moveSound != null)
-                moveSound.release();
-            try {
-                moveSound = MediaPlayer.create(this, R.raw.movesound);
+    public void movePlayed(Position pos, Move move, boolean computerMove) {
+        if ("sound".equals(moveAnnounceType)) {
+            if (computerMove) {
                 if (moveSound != null)
-                    moveSound.start();
-            } catch (NotFoundException ex) {
+                    moveSound.release();
+                try {
+                    moveSound = MediaPlayer.create(this, R.raw.movesound);
+                    if (moveSound != null)
+                        moveSound.start();
+                } catch (NotFoundException ex) {
+                }
             }
+        } else if (moveAnnounceType.startsWith("speech_")) {
+            speech.say(pos, move, moveAnnounceType.substring(7));
         }
         if (vibrateEnabled) {
             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);

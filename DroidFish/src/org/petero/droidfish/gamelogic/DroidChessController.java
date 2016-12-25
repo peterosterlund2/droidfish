@@ -1023,10 +1023,10 @@ public class DroidChessController {
             return;
         searchId++;
         Position oldPos = new Position(game.currPos());
-        game.processString(cmd);
+        Pair<Boolean,Move> res = game.processString(cmd);
         ponderMove = ponder;
         updateGameMode();
-        gui.computerMoveMade();
+        gui.movePlayed(game.prevPos(), res.second, true);
         listener.clearSearchInfo(searchId);
         updateComputeThreads();
         setSelection();
@@ -1113,7 +1113,8 @@ public class DroidChessController {
                 }
                 if (m.promoteTo == promoteTo) {
                     String strMove = TextIO.moveToString(pos, m, false, false, moves);
-                    game.processString(strMove);
+                    Pair<Boolean,Move> res = game.processString(strMove);
+                    gui.movePlayed(game.prevPos(), res.second, false);
                     return true;
                 }
             }

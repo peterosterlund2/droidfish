@@ -79,8 +79,8 @@ public interface GUIInterface {
     /** Report UCI engine error message. */
     public void reportEngineError(String errMsg);
 
-    /** Called when computer made a move. GUI can notify user, for example by playing a sound. */
-    public void computerMoveMade();
+    /** Called when a move is played. GUI can notify user, for example by playing a sound. */
+    public void movePlayed(Position pos, Move move, boolean computerMove);
 
     /** Report remaining thinking time to GUI. */
     public void setRemainingTime(int wTime, int bTime, int nextUpdate);

@@ -157,12 +157,14 @@
             android:summary="@string/prefs_vibrateEnabled_summary" 
             android:defaultValue="false">
         </CheckBoxPreference>
-        <CheckBoxPreference 
-            android:key="soundEnabled"
-            android:title="@string/prefs_soundEnabled_title" 
-            android:summary="@string/prefs_soundEnabled_summary" 
-            android:defaultValue="false">
-        </CheckBoxPreference>
+        <ListPreference
+            android:key="moveAnnounceType"
+            android:title="@string/prefs_moveAnnounceType_title"
+            android:summary="@string/prefs_moveAnnounceType_summary"
+            android:entryValues="@array/move_announce_type_values"
+            android:entries="@array/move_announce_type_texts"
+            android:defaultValue="@string/move_announce_type_default">
+        </ListPreference>
         <CheckBoxPreference
             android:key="wakeLock" 
             android:title="@string/prefs_wakeLock_title" 

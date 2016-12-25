@@ -12,6 +12,7 @@
     <string name="book_line_length_default">1000000</string>
     <string name="viewPieceType_default">1</string>
     <string name="autoDelay_default">5000</string>
+    <string name="move_announce_type_default">off</string>
     <string name="cpu_warning">\
 <b>CPU Usage</b>\n\
 If you leave DroidFish running in the background and <i>GameMode</i> is set to \
@@ -219,6 +220,9 @@ you are not actively using the program.\
     <string name="network_port">Port</string>
     <string name="network_engine">Network Engine</string>
     <string name="failed_to_start_engine">Failed to start engine</string>
+    <string name="tts_failed_to_init">Failed to initialize text to speech</string>
+    <string name="tts_data_missing">Text to speech data missing</string>
+    <string name="tts_not_supported_for_lang">Text to speech not supported for this language</string>
     <string name="engine_terminated">Engine terminated</string>
     <string name="uci_protocol_error">UCI protocol error</string>
     <string name="network_engine_config_error">Network engine configuration error</string>
@@ -296,8 +300,8 @@ you are not actively using the program.\
     <string name="prefs_autoScrollTitle_summary">Auto scroll titlebar if player names are too long</string>
     <string name="prefs_quickMoveInput_title">Quick Move Input</string>
     <string name="prefs_quickMoveInput_summary">From and To squares can be touched in any order. Move is played as soon as uniquely defined.</string>
-    <string name="prefs_soundEnabled_title">Enable Sounds</string>
-    <string name="prefs_soundEnabled_summary">Play sound when computer makes a move</string>
+    <string name="prefs_moveAnnounceType_title">Move Announcement</string>
+    <string name="prefs_moveAnnounceType_summary">Announcement sound when computer makes a move</string>
     <string name="prefs_vibrateEnabled_title">Enable Vibration</string>
     <string name="prefs_vibrateEnabled_summary">Vibrate when computer makes a move</string>
     <string name="prefs_fullScreenMode_title">Fullscreen Mode</string>
@@ -695,5 +699,15 @@ you are not actively using the program.\
         <item>loadLastFile</item>
         <item>selectEngine</item>
         <item>engineOptions</item>
+    </string-array>
+    <string-array name="move_announce_type_values">
+        <item>off</item>
+        <item>sound</item>
+        <item>speech_en</item>
+    </string-array>
+    <string-array name="move_announce_type_texts">
+        <item>Off</item>
+        <item>Play sound</item>
+        <item>English Speech</item>
     </string-array>
 </resources>
