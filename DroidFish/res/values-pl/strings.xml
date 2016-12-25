@@ -34,9 +34,9 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="copy_game">Skopiuj partię do schowka</string>
   <string name="copy_position">Skopiuj ustawienie do schowka</string>
   <string name="paste">Wklej ze schowka</string>
-  <string name="share_game">Share Game</string>
-  <string name="share_text">Share as Text</string>
-  <string name="share_image">Share as Image</string>
+  <string name="share_game">Udostępnij grę</string>
+  <string name="share_text">Udostępnij jako tekst</string>
+  <string name="share_image">Udostępnij jako obraz</string>
   <string name="load_last_file">Załaduj z ostatnio używanego pliku</string>
   <string name="load_game">Załaduj partię z pliku PGN</string>
   <string name="load_position">Załaduj ustawienie z pliku</string>
@@ -74,8 +74,8 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="select_en_passant_file">Wybierz kolumnę en passant</string>
   <string name="edit_move_counters">Edytuj liczniki posunięć</string>
   <string name="internal_book">&lt;Książka wbudowana&gt;</string>
-  <string name="eco_book">&lt;ECO Book&gt;</string>
-  <string name="select_opening_book_file">Wybierz plik z książką otwarć</string>
+  <string name="eco_book">&lt;Książka ECO&gt;</string>
+  <string name="select_opening_book_file">Wybierz plik z książką debiutów</string>
   <string name="select_chess_engine">Wybierz silnik szachowy</string>
   <string name="select_pgn_file">Otwórz plik PGN</string>
   <string name="select_pgn_file_save">Zapisz do pliku PGN</string>
@@ -108,7 +108,7 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="edit_game">Edytuj partię</string>
   <string name="edit_headers">Edytuj nagłówki</string>
   <string name="edit_comments">Edytuj komentarze</string>
-  <string name="add_eco">Add opening name</string>
+  <string name="add_eco">Dodaj nazwę debiutu</string>
   <string name="go_back">Wstecz</string>
   <string name="go_forward">Naprzód</string>
   <string name="goto_start_game">Idź do początku parii</string>
@@ -135,7 +135,7 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="toggle_analysis">Włącz/wyłącz analizę przez silnik</string>
   <string name="toggle_large_buttons">Włącz/wyłącz duże przyciski</string>
   <string name="toggle_blind_mode">Włącz/wyłącz tryb \'na ślepo\'</string>
-  <string name="toggle_arrows">Toggle Arrows</string>
+  <string name="toggle_arrows">Przełącz strzałki</string>
   <string name="cancel">Anuluj</string>
   <string name="reset">Reset</string>
   <string name="yes">Tak</string>
@@ -181,11 +181,11 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="failed_to_read_pgn_data">Błąd przy odczycie danych w formacie PGN</string>
   <string name="variation">Wariant:</string>
   <string name="add_analysis">Dodaj analizę</string>
-  <string name="num_variations">Number of Variations</string>
+  <string name="num_variations">Liczba wariantów</string>
   <string name="hide_statistics">Schowaj statystyki</string>
   <string name="show_statistics">Pokaż statystyki</string>
-  <string name="show_whole_variations">Show whole variations</string>
-  <string name="truncate_variations">Truncate variations</string>
+  <string name="show_whole_variations">Pokaż wszystkie warianty</string>
+  <string name="truncate_variations">Obetnij warianty</string>
   <string name="heavy_cpu_usage">Wysokie obciążenie procesora</string>
   <string name="background_processing">Przetwarzanie w tle</string>
   <string name="lot_cpu_power">DroidFish zużywa wiele mocy procesora</string>
@@ -220,9 +220,9 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="network_port">Port</string>
   <string name="network_engine">Silnik sieciowy</string>
   <string name="failed_to_start_engine">Błąd podczas startu silnika</string>
-  <string name="tts_failed_to_init">Failed to initialize text to speech</string>
-  <string name="tts_data_missing">Text to speech data missing</string>
-  <string name="tts_not_supported_for_lang">Text to speech not supported for this language</string>
+  <string name="tts_failed_to_init">Nie można zainicjować przetwarzania tekstu na mowę</string>
+  <string name="tts_data_missing">Brak danych dla przetwarzania tekstu na mowę</string>
+  <string name="tts_not_supported_for_lang">Przetwarzanie tekstu na mowę dla tego języka nie jest wspierane</string>
   <string name="engine_terminated">Silnik został zatrzymany</string>
   <string name="uci_protocol_error">Błąd potokołu UCI</string>
   <string name="network_engine_config_error">Błąd konfiguracji silnika sieciowego</string>
@@ -254,7 +254,7 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="option_settings">Ustawienia</string>
   <string name="option_force_computer_move">Wymuś ruch komputera</string>
   <string name="option_draw">Zaproponuj/przyjmij remis</string>
-  <string name="option_select_book">Wybierz książkę otwarć</string>
+  <string name="option_select_book">Wybierz książkę debiutów</string>
   <string name="option_manage_engines">Zarządzaj silnikami szachowymi</string>
   <string name="option_color_theme">Ustaw schemat kolorów</string>
   <string name="option_about">O programie/pomoc</string>
@@ -287,11 +287,11 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="prefs_whiteBasedScores_title">Wyniki dla białych</string>
   <string name="prefs_whiteBasedScores_summary">Dodatnie wyniki analizy są korzystne dla białych</string>
   <string name="prefs_bookHints_title">Pokaż wskazówki z książki</string>
-  <string name="prefs_bookHints_summary">Pokaż wskazówki z książki otwarć dla posunięć człowieka</string>
+  <string name="prefs_bookHints_summary">Pokaż wskazówki z książki debiutów dla posunięć człowieka</string>
   <string name="prefs_thinkingArrows_title">Używaj strzałek</string>
   <string name="prefs_thinkingArrows_summary">Używaj strzałek, żeby pokazać posunięcia na szachownicy</string>
-  <string name="prefs_ecoHints_title">Show ECO codes</string>
-  <string name="prefs_ecoHints_summary">Show \'Encyclopedia of Chess Openings\' classification of openings</string>
+  <string name="prefs_ecoHints_title">Pokaż kody ECO</string>
+  <string name="prefs_ecoHints_summary">Pokaż klasyfikację debiutów z \'Encyklopedii debiutów szachowych (ECO)\'</string>
   <string name="prefs_user_interface_appearance">Wygląd</string>
   <string name="prefs_user_interface_behavior">Zachowanie</string>
   <string name="prefs_animateMoves_title">Animuj posunięcia</string>
@@ -300,8 +300,8 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="prefs_autoScrollTitle_summary">Automatycznie przewijaj wiersz tytułowy jeśli nazwiska graczy są zbyt długie</string>
   <string name="prefs_quickMoveInput_title">Szybkie wprowadzanie ruchów</string>
   <string name="prefs_quickMoveInput_summary">Pola początkowe i końcowe ruchu mogą być wskazane w dowolnej kolejności. Jeśli posunięcie jest jednoznacznie określone, jest ono natychmiast wykonywane.</string>
-  <string name="prefs_moveAnnounceType_title">Move Announcement</string>
-  <string name="prefs_moveAnnounceType_summary">Announcement sound when computer makes a move</string>
+  <string name="prefs_moveAnnounceType_title">Powiadomienie o posunięciu</string>
+  <string name="prefs_moveAnnounceType_summary">Dźwięk powiadomienia gdy komputer wykona posunięcie</string>
   <string name="prefs_vibrateEnabled_title">Włącz wibracje</string>
   <string name="prefs_vibrateEnabled_summary">Wibruj gdy komputer wykona posunięcie</string>
   <string name="prefs_fullScreenMode_title">Tryb pełnoekranowy</string>
@@ -313,8 +313,8 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="prefs_scrollSensitivity_summary">Szybkość przewijania przy nawigowaniu po partii</string>
   <string name="prefs_invertScrollDirection_title">Odwróć kierunek przwijania</string>
   <string name="prefs_invertScrollDirection_summary">Włącz, jeśli uważasz że ruchy przy przewijaniu wykonywane są w złym kierunku</string>
-  <string name="prefs_autoScrollMoveList_title">Auto scroll move list</string>
-  <string name="prefs_autoScrollMoveList_summary">Automatically scroll the move list to the current board position</string>
+  <string name="prefs_autoScrollMoveList_title">Automatyczne przewijanie listy posunięć</string>
+  <string name="prefs_autoScrollMoveList_summary">Automatycznie przewiń listę posunięć do bieżącej pozycji</string>
   <string name="prefs_discardVariations_title">Odrzuć warianty</string>
   <string name="prefs_discardVariations_summary">Pomiń posunięcia spoza głównych linii na liście posunięć</string>
   <string name="prefs_leftHanded_title">Tryb leworęczny</string>
@@ -365,8 +365,8 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="prefs_color_fontForeground_title">Czcionka</string>
   <string name="prefs_color_generalBackground_title">Tło</string>
   <string name="prefs_other">Inne</string>
-  <string name="prefs_bookSettings_title">Ustawienia książki otwarć</string>
-  <string name="prefs_bookSettings_summary">Ustawienia dla użycia książki otwarć</string>
+  <string name="prefs_bookSettings_title">Ustawienia książki debiutów</string>
+  <string name="prefs_bookSettings_summary">Ustawienia dla użycia książki debiutów</string>
   <string name="prefs_bookMaxLength_title">Długość książki</string>
   <string name="prefs_bookMaxLength_summary">Maksymalna długość linii książki</string>
   <string name="prefs_bookPreferMainLines_title">Preferuj główne linie</string>
@@ -603,9 +603,9 @@ nie korzystasz aktywnie z programu.\</string>
     <item>21</item>
   </string-array>
   <string-array name="ecoHints_texts">
-    <item>Off</item>
-    <item>Auto</item>
-    <item>Always</item>
+    <item>Wyłączone</item>
+    <item>Automatycznie</item>
+    <item>Zawsze</item>
   </string-array>
   <string-array name="ecoHints_values">
     <item>0</item>
@@ -704,10 +704,12 @@ nie korzystasz aktywnie z programu.\</string>
     <item>off</item>
     <item>sound</item>
     <item>speech_en</item>
+    <item>speech_de</item>
   </string-array>
   <string-array name="move_announce_type_texts">
-    <item>Off</item>
-    <item>Play sound</item>
-    <item>English Speech</item>
+    <item>Wyłączone</item>
+    <item>Odtwórz dźwięk</item>
+    <item>Wymowa angielska</item>
+    <item>German Speech</item>
   </string-array>
 </resources>

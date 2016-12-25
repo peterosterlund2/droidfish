@@ -702,10 +702,12 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
     <item>off</item>
     <item>sound</item>
     <item>speech_en</item>
+    <item>speech_de</item>
   </string-array>
   <string-array name="move_announce_type_texts">
     <item>Off</item>
     <item>Play sound</item>
     <item>English Speech</item>
+    <item>German Speech</item>
   </string-array>
 </resources>
