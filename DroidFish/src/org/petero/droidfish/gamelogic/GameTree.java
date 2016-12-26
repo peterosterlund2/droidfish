@@ -290,24 +290,7 @@ public class GameTree {
 
     /** Walks the game tree in PGN export order. */
     public final void pgnTreeWalker(PGNOptions options, PgnToken.PgnTokenReceiver out) {
-        // Go to end of mainline to evaluate PGN result string.
-        String pgnResultString;
-        {
-            List<Integer> currPath = new ArrayList<Integer>();
-            while (currentNode != rootNode) {
-                Node child = currentNode;
-                goBack();
-                int childNum = currentNode.children.indexOf(child);
-                currPath.add(childNum);
-            }
-            while (variations().size() > 0)
-                goForward(0, false);
-            pgnResultString = getPGNResultString();
-            while (currentNode != rootNode)
-                goBack();
-            for (int i = currPath.size() - 1; i >= 0; i--)
-                goForward(currPath.get(i), false);
-        }
+        String pgnResultString = getPGNResultStringMainLine();
 
         // Write seven tag roster
         addTagPair(out, "Event",  event);
@@ -600,24 +583,8 @@ public class GameTree {
             while (variations().size() > 0)
                 goForward(0);
             GameState state = getGameState();
-            if (state == GameState.ALIVE) {
-                if (result.equals("1-0")) {
-                    if (currentPos.whiteMove) {
-                        currentNode.playerAction = "resign";
-                    } else {
-                        addMove("--", "resign", 0, "", "");
-                    }
-                } else if (result.equals("0-1")) {
-                    if (!currentPos.whiteMove) {
-                        currentNode.playerAction = "resign";
-                    } else {
-                        addMove("--", "resign", 0, "", "");
-                    }
-                } else if (result.equals("1/2-1/2") || result.equals("1/2")) {
-                    currentNode.playerAction = "draw offer";
-                    addMove("--", "draw accept", 0, "", "");
-                }
-            }
+            if (state == GameState.ALIVE)
+                addResult(result);
             // Go back to the root
             while (currentNode != rootNode)
                 goBack();
@@ -625,6 +592,26 @@ public class GameTree {
 
         updateListener();
         return true;
+    }
+
+    /** Add game result to the tree. currentNode must be at the end of the main line. */
+    private void addResult(String result) {
+        if (result.equals("1-0")) {
+            if (currentPos.whiteMove) {
+                currentNode.playerAction = "resign";
+            } else {
+                addMove("--", "resign", 0, "", "");
+            }
+        } else if (result.equals("0-1")) {
+            if (!currentPos.whiteMove) {
+                currentNode.playerAction = "resign";
+            } else {
+                addMove("--", "resign", 0, "", "");
+            }
+        } else if (result.equals("1/2-1/2") || result.equals("1/2")) {
+            currentNode.playerAction = "draw offer";
+            addMove("--", "draw accept", 0, "", "");
+        }
     }
 
     /** Serialize to output stream. */
@@ -928,6 +915,7 @@ public class GameTree {
         return ret;
     }
 
+    /** Get PGN result string corresponding to the current position. */
     public final String getPGNResultString() {
         String gameResult = "*";
         switch (getGameState()) {
@@ -951,6 +939,25 @@ public class GameTree {
                 break;
         }
         return gameResult;
+    }
+
+    /** Evaluate PGN result string at the end of the main line. */
+    public final String getPGNResultStringMainLine() {
+        List<Integer> currPath = new ArrayList<Integer>();
+        while (currentNode != rootNode) {
+            Node child = currentNode;
+            goBack();
+            int childNum = currentNode.children.indexOf(child);
+            currPath.add(childNum);
+        }
+        while (variations().size() > 0)
+            goForward(0, false);
+        String res = getPGNResultString();
+        while (currentNode != rootNode)
+            goBack();
+        for (int i = currPath.size() - 1; i >= 0; i--)
+            goForward(currPath.get(i), false);
+        return res;
     }
 
     private static final boolean insufficientMaterial(Position pos) {
@@ -1497,8 +1504,10 @@ public class GameTree {
     }
 
     /** Set PGN header tags and values. Setting a non-required
-     *  tag to null causes it to be removed. */
-    void setHeaders(Map<String,String> headers) {
+     *  tag to null causes it to be removed.
+     *  @return True if game result changes, false otherwise. */
+    boolean setHeaders(Map<String,String> headers) {
+        boolean resultChanged = false;
         for (Entry<String, String> entry : headers.entrySet()) {
             String tag = entry.getKey();
             String val = entry.getValue();
@@ -1508,7 +1517,44 @@ public class GameTree {
             else if (tag.equals("Round")) round = val;
             else if (tag.equals("White")) white = val;
             else if (tag.equals("Black")) black = val;
-            else {
+            else if (tag.equals("Result")) {
+                List<Integer> currPath = new ArrayList<Integer>();
+                while (currentNode != rootNode) {
+                    Node child = currentNode;
+                    goBack();
+                    int childNum = currentNode.children.indexOf(child);
+                    currPath.add(childNum);
+                }
+                while (variations().size() > 0)
+                    goForward(0, false);
+                if (!val.equals(getPGNResultString())) {
+                    resultChanged = true;
+                    GameState state = getGameState();
+                    switch (state) {
+                    case ALIVE:
+                    case DRAW_50:
+                    case DRAW_AGREE:
+                    case DRAW_REP:
+                    case RESIGN_BLACK:
+                    case RESIGN_WHITE:
+                        currentNode.playerAction = "";
+                        if ("--".equals(currentNode.moveStr)) {
+                            Node child = currentNode;
+                            goBack();
+                            int childNum = currentNode.children.indexOf(child);
+                            deleteVariation(childNum);
+                        }
+                        addResult(val);
+                        break;
+                    default:
+                        break;
+                    }
+                }
+                while (currentNode != rootNode)
+                    goBack();
+                for (int i = currPath.size() - 1; i >= 0; i--)
+                    goForward(currPath.get(i), false);
+            } else {
                 if (val != null) {
                     boolean found = false;
                     for (TagPair t : tagPairs) {
@@ -1534,6 +1580,7 @@ public class GameTree {
                 }
             }
         }
+        return resultChanged;
     }
 
     /** Get PGN header tags and values. */
@@ -1544,6 +1591,7 @@ public class GameTree {
         headers.put("Round", round);
         headers.put("White", white);
         headers.put("Black", black);
+        headers.put("Result", getPGNResultStringMainLine());
         if (!timeControl.equals("?"))
             headers.put("TimeControl", timeControl);
         if (!whiteTimeControl.equals("?"))

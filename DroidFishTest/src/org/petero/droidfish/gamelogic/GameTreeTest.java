@@ -803,4 +803,51 @@ public class GameTreeTest extends TestCase {
         assertEquals(3140, tf.timeControl);
         assertEquals(2718, tf.increment);
     }
+
+    public final void testHeaders() throws Throwable {
+        PGNOptions options = new PGNOptions();
+        options.imp.variations = true;
+        options.imp.comments = true;
+        options.imp.nag = true;
+
+        {
+            GameTree gt = new GameTree(null);
+            boolean res = gt.readPGN("[White \"a\"][Black \"b\"] f4 *", options);
+            assertEquals(true, res);
+
+            TreeMap<String,String> headers = new TreeMap<String,String>();
+            headers.put("Event", "test");
+            gt.setHeaders(headers);
+            TreeMap<String,String> newHeaders = new TreeMap<String,String>();
+            gt.getHeaders(newHeaders);
+            assertEquals("test", newHeaders.get("Event"));
+
+            for (int i = 0; i < 2; i++) {
+                for (String r : new String[]{"1-0", "1/2-1/2", "0-1", "*"}) {
+                    headers.clear();
+                    headers.put("Result", r);
+                    gt.setHeaders(headers);
+                    newHeaders.clear();
+                    gt.getHeaders(newHeaders);
+                    assertEquals(r, newHeaders.get("Result"));
+                }
+            }
+        }
+        {
+            GameTree gt = new GameTree(null);
+            gt.readPGN("f3 e5 g4 Qh4", options);
+            TreeMap<String,String> headers = new TreeMap<String,String>();
+            gt.getHeaders(headers);
+            assertEquals("0-1", headers.get("Result"));
+
+            for (String r : new String[]{"1-0", "1/2-1/2", "0-1", "*"}) {
+                headers.clear();
+                headers.put("Result", r);
+                gt.setHeaders(headers);
+                headers.clear();
+                gt.getHeaders(headers);
+                assertEquals("0-1", headers.get("Result"));
+            }
+        }
+    }
 }

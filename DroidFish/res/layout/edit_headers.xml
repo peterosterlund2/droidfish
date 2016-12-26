@@ -93,5 +93,17 @@
               android:inputType="text">
           </EditText>
       </TableRow>
+      <TableRow>
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/header_result">
+          </TextView>
+          <Spinner
+              android:id="@+id/ed_game_result"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content">
+          </Spinner>
+      </TableRow>
     </TableLayout>
 </ScrollView>

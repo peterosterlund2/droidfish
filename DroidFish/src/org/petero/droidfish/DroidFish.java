@@ -151,6 +151,7 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -2824,88 +2825,12 @@ public class DroidFish extends Activity
         builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 switch (actions.get(item)) {
-                case EDIT_HEADERS: {
-                    final TreeMap<String,String> headers = new TreeMap<String,String>();
-                    ctrl.getHeaders(headers);
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(DroidFish.this);
-                    builder.setTitle(R.string.edit_headers);
-                    View content = View.inflate(DroidFish.this, R.layout.edit_headers, null);
-                    builder.setView(content);
-
-                    final TextView event, site, date, round, white, black;
-
-                    event = (TextView)content.findViewById(R.id.ed_header_event);
-                    site = (TextView)content.findViewById(R.id.ed_header_site);
-                    date = (TextView)content.findViewById(R.id.ed_header_date);
-                    round = (TextView)content.findViewById(R.id.ed_header_round);
-                    white = (TextView)content.findViewById(R.id.ed_header_white);
-                    black = (TextView)content.findViewById(R.id.ed_header_black);
-
-                    event.setText(headers.get("Event"));
-                    site .setText(headers.get("Site"));
-                    date .setText(headers.get("Date"));
-                    round.setText(headers.get("Round"));
-                    white.setText(headers.get("White"));
-                    black.setText(headers.get("Black"));
-
-                    builder.setNegativeButton(R.string.cancel, null);
-                    builder.setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            headers.put("Event", event.getText().toString().trim());
-                            headers.put("Site",  site .getText().toString().trim());
-                            headers.put("Date",  date .getText().toString().trim());
-                            headers.put("Round", round.getText().toString().trim());
-                            headers.put("White", white.getText().toString().trim());
-                            headers.put("Black", black.getText().toString().trim());
-                            ctrl.setHeaders(headers);
-                            setBoardFlip(true);
-                        }
-                    });
-
-                    builder.show();
+                case EDIT_HEADERS:
+                    editHeaders();
                     break;
-                }
-                case EDIT_COMMENTS: {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(DroidFish.this);
-                    builder.setTitle(R.string.edit_comments);
-                    View content = View.inflate(DroidFish.this, R.layout.edit_comments, null);
-                    builder.setView(content);
-
-                    DroidChessController.CommentInfo commInfo = ctrl.getComments();
-
-                    final TextView preComment, moveView, nag, postComment;
-                    preComment = (TextView)content.findViewById(R.id.ed_comments_pre);
-                    moveView = (TextView)content.findViewById(R.id.ed_comments_move);
-                    nag = (TextView)content.findViewById(R.id.ed_comments_nag);
-                    postComment = (TextView)content.findViewById(R.id.ed_comments_post);
-
-                    preComment.setText(commInfo.preComment);
-                    postComment.setText(commInfo.postComment);
-                    moveView.setText(commInfo.move);
-                    String nagStr = Node.nagStr(commInfo.nag).trim();
-                    if ((nagStr.length() == 0) && (commInfo.nag > 0))
-                        nagStr = String.format(Locale.US, "%d", commInfo.nag);
-                    nag.setText(nagStr);
-
-                    builder.setNegativeButton(R.string.cancel, null);
-                    builder.setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            String pre = preComment.getText().toString().trim();
-                            String post = postComment.getText().toString().trim();
-                            int nagVal = Node.strToNag(nag.getText().toString());
-
-                            DroidChessController.CommentInfo commInfo = new DroidChessController.CommentInfo();
-                            commInfo.preComment = pre;
-                            commInfo.postComment = post;
-                            commInfo.nag = nagVal;
-                            ctrl.setComments(commInfo);
-                        }
-                    });
-
-                    builder.show();
+                case EDIT_COMMENTS:
+                    editComments();
                     break;
-                }
                 case ADD_ECO:
                     ctrl.addECO();
                     break;
@@ -2928,6 +2853,102 @@ public class DroidFish extends Activity
         AlertDialog alert = builder.create();
         moveListMenuDlg = alert;
         return alert;
+    }
+
+    /** Let the user edit the PGN headers. */
+    private void editHeaders() {
+        final TreeMap<String,String> headers = new TreeMap<String,String>();
+        ctrl.getHeaders(headers);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(DroidFish.this);
+        builder.setTitle(R.string.edit_headers);
+        View content = View.inflate(DroidFish.this, R.layout.edit_headers, null);
+        builder.setView(content);
+
+        final TextView event, site, date, round, white, black;
+
+        event = (TextView)content.findViewById(R.id.ed_header_event);
+        site = (TextView)content.findViewById(R.id.ed_header_site);
+        date = (TextView)content.findViewById(R.id.ed_header_date);
+        round = (TextView)content.findViewById(R.id.ed_header_round);
+        white = (TextView)content.findViewById(R.id.ed_header_white);
+        black = (TextView)content.findViewById(R.id.ed_header_black);
+
+        event.setText(headers.get("Event"));
+        site .setText(headers.get("Site"));
+        date .setText(headers.get("Date"));
+        round.setText(headers.get("Round"));
+        white.setText(headers.get("White"));
+        black.setText(headers.get("Black"));
+
+        final Spinner gameResult = (Spinner)content.findViewById(R.id.ed_game_result);
+        final String[] items = new String[]{"1-0", "1/2-1/2", "0-1", "*"};
+        ArrayAdapter<CharSequence> adapt =
+                new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, items);
+        adapt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        gameResult.setAdapter(adapt);
+        gameResult.setSelection(Arrays.asList(items).indexOf(headers.get("Result")));
+
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                headers.put("Event", event.getText().toString().trim());
+                headers.put("Site",  site .getText().toString().trim());
+                headers.put("Date",  date .getText().toString().trim());
+                headers.put("Round", round.getText().toString().trim());
+                headers.put("White", white.getText().toString().trim());
+                headers.put("Black", black.getText().toString().trim());
+                int p = gameResult.getSelectedItemPosition();
+                String res = (p >= 0 && p < items.length) ? items[p] : "";
+                if (!res.isEmpty())
+                    headers.put("Result", res);
+                ctrl.setHeaders(headers);
+                setBoardFlip(true);
+            }
+        });
+
+        builder.show();
+    }
+
+    /** Let the user edit comments related to a move. */
+    private void editComments() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(DroidFish.this);
+        builder.setTitle(R.string.edit_comments);
+        View content = View.inflate(DroidFish.this, R.layout.edit_comments, null);
+        builder.setView(content);
+
+        DroidChessController.CommentInfo commInfo = ctrl.getComments();
+
+        final TextView preComment, moveView, nag, postComment;
+        preComment = (TextView)content.findViewById(R.id.ed_comments_pre);
+        moveView = (TextView)content.findViewById(R.id.ed_comments_move);
+        nag = (TextView)content.findViewById(R.id.ed_comments_nag);
+        postComment = (TextView)content.findViewById(R.id.ed_comments_post);
+
+        preComment.setText(commInfo.preComment);
+        postComment.setText(commInfo.postComment);
+        moveView.setText(commInfo.move);
+        String nagStr = Node.nagStr(commInfo.nag).trim();
+        if ((nagStr.length() == 0) && (commInfo.nag > 0))
+            nagStr = String.format(Locale.US, "%d", commInfo.nag);
+        nag.setText(nagStr);
+
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                String pre = preComment.getText().toString().trim();
+                String post = postComment.getText().toString().trim();
+                int nagVal = Node.strToNag(nag.getText().toString());
+
+                DroidChessController.CommentInfo commInfo = new DroidChessController.CommentInfo();
+                commInfo.preComment = pre;
+                commInfo.postComment = post;
+                commInfo.nag = nagVal;
+                ctrl.setComments(commInfo);
+            }
+        });
+
+        builder.show();
     }
 
     private final Dialog thinkingMenuDialog() {

@@ -623,8 +623,13 @@ public class DroidChessController {
 
     /** Set PGN header tags and values. */
     public final synchronized void setHeaders(Map<String,String> headers) {
-        game.tree.setHeaders(headers);
+        boolean resultChanged = game.tree.setHeaders(headers);
         gameTextListener.clear();
+        if (resultChanged) {
+            abortSearch();
+            updateComputeThreads();
+            setSelection();
+        }
         updateGUI();
     }
 
