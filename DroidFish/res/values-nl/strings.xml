@@ -149,6 +149,7 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="header_site">Kant:</string>
   <string name="header_date">Datum:</string>
   <string name="header_round">Ronde:</string>
+  <string name="header_result">Result:</string>
   <string name="comment_before">Voor:</string>
   <string name="comment_move">Zet:</string>
   <string name="comment_after">Na:</string>

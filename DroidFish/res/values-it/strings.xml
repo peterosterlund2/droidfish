@@ -142,6 +142,7 @@
   <string name="header_site">Luogo:</string>
   <string name="header_date">Data:</string>
   <string name="header_round">Turno:</string>
+  <string name="header_result">Result:</string>
   <string name="comment_before">Prima:</string>
   <string name="comment_move">Mossa:</string>
   <string name="comment_after">Dopo:</string>
@@ -176,8 +177,8 @@
   <string name="num_variations">Numero di Variazioni</string>
   <string name="hide_statistics">Nascondi le statistiche</string>
   <string name="show_statistics">Visualizza le statistiche</string>
-  <string name="show_whole_variations">Show whole variations</string>
-  <string name="truncate_variations">Truncate variations</string>
+  <string name="show_whole_variations">Visualizza le varianti intere</string>
+  <string name="truncate_variations">Tronca le varianti</string>
   <string name="heavy_cpu_usage">Intenso utilizzo della CPU</string>
   <string name="background_processing">Elaborazione in secondo piano</string>
   <string name="lot_cpu_power">DroidFish sta impegnando eccessivamente la CPU</string>
@@ -212,9 +213,9 @@
   <string name="network_port">Porta</string>
   <string name="network_engine">Motore di Rete</string>
   <string name="failed_to_start_engine">Impossibile avviare il motore</string>
-  <string name="tts_failed_to_init">Failed to initialize text to speech</string>
-  <string name="tts_data_missing">Text to speech data missing</string>
-  <string name="tts_not_supported_for_lang">Text to speech not supported for this language</string>
+  <string name="tts_failed_to_init">Impossibile inizializzare la sintesi vocale del testo</string>
+  <string name="tts_data_missing">Dati per il Text to speech mancanti</string>
+  <string name="tts_not_supported_for_lang">Text to speech non supportato per questa lingua</string>
   <string name="engine_terminated">Motore terminato</string>
   <string name="uci_protocol_error">Errore di protocollo UCI</string>
   <string name="network_engine_config_error">Errore di configurazione del Motore di Rete</string>
@@ -292,8 +293,8 @@
   <string name="prefs_autoScrollTitle_summary">Auto-scorrimento della barra del titolo se i nomi dei giocatori sono troppo lunghi</string>
   <string name="prefs_quickMoveInput_title">Inserimento veloce delle mosse</string>
   <string name="prefs_quickMoveInput_summary">Il tocco da e per la casa può essere effettuato in qualsiasi ordine.</string>
-  <string name="prefs_moveAnnounceType_title">Move Announcement</string>
-  <string name="prefs_moveAnnounceType_summary">Announcement sound when computer makes a move</string>
+  <string name="prefs_moveAnnounceType_title">Avviso della mossa</string>
+  <string name="prefs_moveAnnounceType_summary">Emetti un suono quando il Computer muove</string>
   <string name="prefs_vibrateEnabled_title">Abilita la vibrazione</string>
   <string name="prefs_vibrateEnabled_summary">Vibra quando il computer fa una mossa</string>
   <string name="prefs_fullScreenMode_title">Modalità a schermo intero</string>
@@ -699,9 +700,9 @@
     <item>speech_de</item>
   </string-array>
   <string-array name="move_announce_type_texts">
-    <item>Off</item>
-    <item>Play sound</item>
-    <item>English Speech</item>
-    <item>German Speech</item>
+    <item>Spento</item>
+    <item>Riproduci un suono</item>
+    <item>Parlato in inglese</item>
+    <item>Parlato in tedesco</item>
   </string-array>
 </resources>

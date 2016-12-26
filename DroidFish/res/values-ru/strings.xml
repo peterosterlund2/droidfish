@@ -141,6 +141,7 @@
   <string name="header_site">Место:</string>
   <string name="header_date">Дата:</string>
   <string name="header_round">Раунд:</string>
+  <string name="header_result">Result:</string>
   <string name="comment_before">До:</string>
   <string name="comment_move">Переместить:</string>
   <string name="comment_after">После:</string>

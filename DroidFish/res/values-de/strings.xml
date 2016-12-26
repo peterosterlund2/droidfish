@@ -35,9 +35,9 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="copy_game">Partie in die Zwischenablage kopieren</string>
   <string name="copy_position">Stellung in die Zwischenablage kopieren</string>
   <string name="paste">Aus der Zwischenablage einfügen</string>
-  <string name="share_game">Share Game</string>
-  <string name="share_text">Share as Text</string>
-  <string name="share_image">Share as Image</string>
+  <string name="share_game">Teile die Partie</string>
+  <string name="share_text">Teile die Partie als Textdatei</string>
+  <string name="share_image">Teile die Partie als Bilddatei</string>
   <string name="load_last_file">Aus der letzten Datei laden</string>
   <string name="load_game">Partie aus einer PGN-Datei laden</string>
   <string name="load_position">Position aus Datei laden</string>
@@ -75,7 +75,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="select_en_passant_file">En passant möglich?</string>
   <string name="edit_move_counters">Zug-Zähler einstellen</string>
   <string name="internal_book">&lt;Internes Buch&gt;</string>
-  <string name="eco_book">&lt;ECO Book&gt;</string>
+  <string name="eco_book">&lt;ECO Buch&gt;</string>
   <string name="select_opening_book_file">Eröffnungsbuch wählen</string>
   <string name="select_chess_engine">Schach-Engine auswählen</string>
   <string name="select_pgn_file">PGN-Datei zum Öffnen wählen</string>
@@ -109,7 +109,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="edit_game">Partie bearbeiten</string>
   <string name="edit_headers">Informationen</string>
   <string name="edit_comments">Kommentare</string>
-  <string name="add_eco">Add opening name</string>
+  <string name="add_eco">Füge den Namen der Eröffnung hinzu</string>
   <string name="go_back">Zurück</string>
   <string name="go_forward">Vorwärts</string>
   <string name="goto_start_game">Zum Partiebeginn</string>
@@ -151,6 +151,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="header_site">Ort:</string>
   <string name="header_date">Datum:</string>
   <string name="header_round">Runde:</string>
+  <string name="header_result">Result:</string>
   <string name="comment_before">Vorher:</string>
   <string name="comment_move">Zug:</string>
   <string name="comment_after">Nachher:</string>
@@ -182,11 +183,11 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="failed_to_read_pgn_data">PGN-Daten konnten nicht gelesen werden</string>
   <string name="variation">Variante:</string>
   <string name="add_analysis">Analyse hinzufügen</string>
-  <string name="num_variations">Number of Variations</string>
+  <string name="num_variations">Anzahl der Variationen</string>
   <string name="hide_statistics">Statistik verbergen</string>
   <string name="show_statistics">Statistik anzeigen</string>
-  <string name="show_whole_variations">Show whole variations</string>
-  <string name="truncate_variations">Truncate variations</string>
+  <string name="show_whole_variations">Zeige die volle Länge der Variationen</string>
+  <string name="truncate_variations">Kürze die Länge der Variationen</string>
   <string name="heavy_cpu_usage">Starke Prozessor-Nutzung</string>
   <string name="background_processing">Verarbeitung im Hintergrund</string>
   <string name="lot_cpu_power">DroidFish nutzt viel Prozessor-Rechenzeit</string>
@@ -221,9 +222,9 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="network_port">Netzwerkport</string>
   <string name="network_engine">Netzserver-Engine</string>
   <string name="failed_to_start_engine">Fehler beim Starten der Engine</string>
-  <string name="tts_failed_to_init">Failed to initialize text to speech</string>
-  <string name="tts_data_missing">Text to speech data missing</string>
-  <string name="tts_not_supported_for_lang">Text to speech not supported for this language</string>
+  <string name="tts_failed_to_init">Initialisierung der Sprachausgabe fehlgeschlagen</string>
+  <string name="tts_data_missing">Sprachausgabe: keine Daten vorhanden</string>
+  <string name="tts_not_supported_for_lang">Diese Sprache unterstützt die Sprachausgabe-Funktion nicht</string>
   <string name="engine_terminated">Engine beendet</string>
   <string name="uci_protocol_error">UCI-Protokollfehler</string>
   <string name="network_engine_config_error">Fehler bei der Konfiguration der Netzserver-Engine</string>
@@ -291,8 +292,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_bookHints_summary">Hinweise aus dem Eröffnungsbuch für den Spieler anzeigen</string>
   <string name="prefs_thinkingArrows_title">Pfeile nutzen</string>
   <string name="prefs_thinkingArrows_summary">Pfeile zur Anzeige von Zügen auf dem Spielfeld nutzen</string>
-  <string name="prefs_ecoHints_title">Show ECO codes</string>
-  <string name="prefs_ecoHints_summary">Show \'Encyclopedia of Chess Openings\' classification of openings</string>
+  <string name="prefs_ecoHints_title">ECO-Code</string>
+  <string name="prefs_ecoHints_summary">Zeige den ECO-Code der Eröffnung</string>
   <string name="prefs_user_interface_appearance">Aussehen</string>
   <string name="prefs_user_interface_behavior">Verhalten</string>
   <string name="prefs_animateMoves_title">Zuganimation</string>
@@ -301,8 +302,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_autoScrollTitle_summary">Titelleiste bei zu langen Spielernamen automatisch scrollen</string>
   <string name="prefs_quickMoveInput_title">Schnelle Zugeingabe</string>
   <string name="prefs_quickMoveInput_summary">Die Reihenfolge der Auswahl für einen Zug (von bzw. nach) ist beliebig. Eindeutige Züge werden sofort durchgeführt.</string>
-  <string name="prefs_moveAnnounceType_title">Move Announcement</string>
-  <string name="prefs_moveAnnounceType_summary">Announcement sound when computer makes a move</string>
+  <string name="prefs_moveAnnounceType_title">Benachrichtigung für Computerzüge</string>
+  <string name="prefs_moveAnnounceType_summary">Benachrichtigungston wenn der Computer einen Zug ausführt</string>
   <string name="prefs_vibrateEnabled_title">Vibration aktivieren</string>
   <string name="prefs_vibrateEnabled_summary">Bei Zug des Computers vibrieren</string>
   <string name="prefs_fullScreenMode_title">Vollbildanzeige</string>
@@ -314,8 +315,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_scrollSensitivity_summary">Wischgeschwindigkeit für Partie-Navigation einstellen</string>
   <string name="prefs_invertScrollDirection_title">Wischrichtung</string>
   <string name="prefs_invertScrollDirection_summary">Wischrichtung für Partie-Navigation umkehren</string>
-  <string name="prefs_autoScrollMoveList_title">Auto scroll move list</string>
-  <string name="prefs_autoScrollMoveList_summary">Automatically scroll the move list to the current board position</string>
+  <string name="prefs_autoScrollMoveList_title">Automatischer Bildlauf der Zugliste</string>
+  <string name="prefs_autoScrollMoveList_summary">Verschiebe die Zugliste automatisch bis zur aktuellen Brettposition</string>
   <string name="prefs_discardVariations_title">Varianten verwerfen</string>
   <string name="prefs_discardVariations_summary">Nicht-Hauptlinienzüge aus der Zugliste verwerfen</string>
   <string name="prefs_leftHanded_title">Linkshänder-Modus</string>
@@ -605,7 +606,7 @@ wenn Sie es nicht aktiv nutzen.\
   </string-array>
   <string-array name="ecoHints_texts">
     <item>Nie</item>
-    <item>Auto</item>
+    <item>Automatisch</item>
     <item>Immer</item>
   </string-array>
   <string-array name="ecoHints_values">
@@ -708,9 +709,9 @@ wenn Sie es nicht aktiv nutzen.\
     <item>speech_de</item>
   </string-array>
   <string-array name="move_announce_type_texts">
-    <item>Off</item>
-    <item>Play sound</item>
-    <item>English Speech</item>
-    <item>German Speech</item>
+    <item>Kein Ton</item>
+    <item>Erzeuge den Ton</item>
+    <item>Englisch</item>
+    <item>Deutsch</item>
   </string-array>
 </resources>

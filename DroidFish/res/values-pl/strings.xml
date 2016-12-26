@@ -150,6 +150,7 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="header_site">Miejsce:</string>
   <string name="header_date">Data:</string>
   <string name="header_round">Runda:</string>
+  <string name="header_result">Result:</string>
   <string name="comment_before">Przed:</string>
   <string name="comment_move">Posunięcie:</string>
   <string name="comment_after">Po:</string>

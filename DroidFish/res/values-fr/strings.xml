@@ -148,6 +148,7 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="header_site">Lieu:</string>
   <string name="header_date">Date:</string>
   <string name="header_round">Ronde:</string>
+  <string name="header_result">Result:</string>
   <string name="comment_before">Avant:</string>
   <string name="comment_move">Coup:</string>
   <string name="comment_after">Après:</string>

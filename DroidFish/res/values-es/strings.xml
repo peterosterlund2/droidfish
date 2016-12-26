@@ -149,6 +149,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="header_site">Lugar:</string>
   <string name="header_date">Fecha:</string>
   <string name="header_round">Ronda:</string>
+  <string name="header_result">Result:</string>
   <string name="comment_before">Antes:</string>
   <string name="comment_move">Jugada:</string>
   <string name="comment_after">Después:</string>
