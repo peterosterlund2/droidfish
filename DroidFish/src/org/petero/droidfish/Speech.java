@@ -99,7 +99,8 @@ public class Speech {
     public void say(String text) {
         if (initialized) {
             if (lang != Language.NONE && text != null) {
-                tts.playEarcon("[move]", TextToSpeech.QUEUE_ADD, null);
+                if (!tts.isSpeaking())
+                    tts.playEarcon("[move]", TextToSpeech.QUEUE_ADD, null);
                 tts.speak(text, TextToSpeech.QUEUE_ADD, null);
             }
             toSpeak = null;
