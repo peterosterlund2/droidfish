@@ -44,6 +44,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="load_scid_game">Partie aus einer Scid-Datei laden</string>
   <string name="save_game">Partie in eine PGN-Datei speichern</string>
   <string name="get_fen">Position auslesen</string>
+  <string name="repeat_last_move">Repeat last move</string>
   <string name="truncate_gametree">Spielbaum abschneiden</string>
   <string name="move_var_up">Variante nach oben verschieben</string>
   <string name="move_var_down">Variante nach unten verschieben</string>

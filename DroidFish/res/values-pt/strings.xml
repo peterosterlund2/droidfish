@@ -43,6 +43,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="load_scid_game">Carregar partida de arquivo Scid</string>
   <string name="save_game">Salvar partida em arquivo PGN</string>
   <string name="get_fen">Recuperar posição</string>
+  <string name="repeat_last_move">Repeat last move</string>
   <string name="truncate_gametree">Truncar árvore da partida</string>
   <string name="move_var_up">Mover variação para cima</string>
   <string name="move_var_down">Mover variação para baixo</string>

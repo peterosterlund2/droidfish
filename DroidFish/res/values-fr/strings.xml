@@ -41,6 +41,7 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="load_scid_game">Charger une partie Scid</string>
   <string name="save_game">Sauvegarder la partie au format PGN</string>
   <string name="get_fen">Récupérer la position</string>
+  <string name="repeat_last_move">Repeat last move</string>
   <string name="truncate_gametree">Tronquer la variation</string>
   <string name="move_var_up">Monter la variation</string>
   <string name="move_var_down">Descendre la variation</string>

@@ -42,6 +42,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="load_scid_game">Cargar partida desde archivo Scid</string>
   <string name="save_game">Guardar partida en archivo PGN</string>
   <string name="get_fen">Importar Posición</string>
+  <string name="repeat_last_move">Repeat last move</string>
   <string name="truncate_gametree">Podar Árbol de Variantes</string>
   <string name="move_var_up">Subir Variante </string>
   <string name="move_var_down">Bajar Variante </string>

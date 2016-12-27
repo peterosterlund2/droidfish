@@ -42,6 +42,7 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="load_scid_game">Partij laden vanuit Scid bestand</string>
   <string name="save_game">Partij opslaan als PGN bestand</string>
   <string name="get_fen">Positie ophalen</string>
+  <string name="repeat_last_move">Repeat last move</string>
   <string name="truncate_gametree">Partijboom afkappen</string>
   <string name="move_var_up">Variant omhoog</string>
   <string name="move_var_down">Variant omlaag</string>

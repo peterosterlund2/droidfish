@@ -35,6 +35,7 @@
   <string name="load_scid_game">Carica una partita da un file di Scid</string>
   <string name="save_game">Salva la partita in formato PGN</string>
   <string name="get_fen">Recupera la posizione</string>
+  <string name="repeat_last_move">Repeat last move</string>
   <string name="truncate_gametree">Interrompi la sequenza delle mosse</string>
   <string name="move_var_up">Sposta in alto la variante</string>
   <string name="move_var_down">Sposta la variante in basso</string>
