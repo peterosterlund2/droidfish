@@ -161,6 +161,13 @@ public class PGNFile {
     /** Return info about all PGN games in a file. */
     public final Pair<GameInfoResult,ArrayList<GameInfo>> getGameInfo(Activity activity,
                                                                       final ProgressDialog progress) {
+        return getGameInfo(activity, progress, -1);
+    }
+
+    /** Return info about all PGN games in a file. */
+    public final Pair<GameInfoResult,ArrayList<GameInfo>> getGameInfo(Activity activity,
+                                                                      final ProgressDialog progress,
+                                                                      int maxGames) {
         ArrayList<GameInfo> gamesInFile = new ArrayList<GameInfo>();
         gamesInFile.clear();
         long fileLen = 0;
@@ -326,6 +333,10 @@ public class PGNFile {
                             gi.endPos = filePos;
                             gi.info = hi.toString();
                             gamesInFile.add(gi);
+                            if ((maxGames > 0) && gamesInFile.size() >= maxGames) {
+                                gi = null;
+                                break;
+                            }
                             final int newPercent = (int)(filePos * 100 / fileLen);
                             if (newPercent > percent) {
                                 percent =  newPercent;

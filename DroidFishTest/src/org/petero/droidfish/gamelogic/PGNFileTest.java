@@ -135,6 +135,10 @@ public class PGNFileTest extends TestCase {
             assertEquals(80, gi.get(1).startPos);
             assertEquals(137, gi.get(1).endPos);
             assertEquals("2. w - b 1-0", gi.get(1).info);
+
+            res = pgnFile.getGameInfo(null, null, 1);
+            assertEquals(GameInfoResult.OK, res.first);
+            assertEquals(1, res.second.size());
         }
     }
     

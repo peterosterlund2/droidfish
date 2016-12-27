@@ -21,11 +21,13 @@ package org.petero.droidfish;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,6 +47,9 @@ import org.petero.droidfish.activities.EditPGNLoad;
 import org.petero.droidfish.activities.EditPGNSave;
 import org.petero.droidfish.activities.LoadFEN;
 import org.petero.droidfish.activities.LoadScid;
+import org.petero.droidfish.activities.PGNFile;
+import org.petero.droidfish.activities.PGNFile.GameInfo;
+import org.petero.droidfish.activities.PGNFile.GameInfoResult;
 import org.petero.droidfish.activities.Preferences;
 import org.petero.droidfish.book.BookOptions;
 import org.petero.droidfish.engine.EngineUtil;
@@ -163,7 +168,6 @@ public class DroidFish extends Activity
     // FIXME!!! Implement bookmark mechanism for positions in pgn files
     // FIXME!!! Add support for "Chess Leipzig" font
 
-    // FIXME!!! Computer clock should stop if phone turned off (computer stops thinking if unplugged)
     // FIXME!!! Add support for "no time control" and "hour-glass time control" as defined by the PGN standard
 
     // FIXME!!! Add chess960 support
@@ -174,7 +178,6 @@ public class DroidFish extends Activity
 
     // FIXME!!! Option to display coordinates in border outside chess board.
 
-    // FIXME!!! Handle PGN non-file intents with more than one game.
     // FIXME!!! Save position to fen/epd file
 
     // FIXME!!! Selection dialog for going into variation
@@ -719,19 +722,31 @@ public class DroidFish extends Activity
                         filename = Uri.decode(filename);
                 }
                 if ((filename == null) &&
-                    ("content".equals(scheme) ||
-                     "file".equals(scheme))) {
+                    ("content".equals(scheme) || "file".equals(scheme))) {
                     ContentResolver resolver = getContentResolver();
                     InputStream in = resolver.openInputStream(data);
-                    StringBuilder sb = new StringBuilder();
-                    while (true) {
-                        byte[] buffer = new byte[16384];
-                        int len = in.read(buffer);
-                        if (len <= 0)
-                            break;
-                        sb.append(new String(buffer, 0, len));
+                    String sep = File.separator;
+                    String fn = Environment.getExternalStorageDirectory() + sep +
+                                pgnDir + sep + ".sharedfile.pgn";
+                    try {
+                        FileUtil.writeFile(in, fn);
+                    } finally {
+                        in.close();
                     }
-                    pgnOrFen = sb.toString();
+                    PGNFile pgnFile = new PGNFile(fn);
+                    long fileLen = FileUtil.getFileLength(fn);
+                    Pair<GameInfoResult,ArrayList<GameInfo>> gi = pgnFile.getGameInfo(this, null, 2);
+                    int nGames = gi.second.size();
+                    if ((fileLen > 1024 * 1024) || (gi.first == GameInfoResult.OK && nGames > 1)) {
+                        filename = fn;
+                    } else {
+                        in = new FileInputStream(fn);
+                        try {
+                            pgnOrFen = FileUtil.readFromStream(in);
+                        } finally {
+                            in.close();
+                        }
+                    }
                 }
             }
         } catch (IOException e) {

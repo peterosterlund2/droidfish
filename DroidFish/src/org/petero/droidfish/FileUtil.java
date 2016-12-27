@@ -20,9 +20,12 @@ package org.petero.droidfish;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
@@ -58,6 +61,36 @@ public class FileUtil {
             return null;
         } catch (IOException e) {
             return null;
+        }
+    }
+
+    /** Read data from input stream and write to file. */
+    public static void writeFile(InputStream is, String outFile) throws IOException {
+        OutputStream os = new FileOutputStream(outFile);
+        try {
+            byte[] buffer = new byte[16384];
+            while (true) {
+                int len = is.read(buffer);
+                if (len <= 0)
+                    break;
+                os.write(buffer, 0, len);
+            }
+        } finally {
+            os.close();
+        }
+    }
+
+    /** Return the length of a file, or -1 if length can not be determined. */
+    public static final long getFileLength(String filename) {
+        try {
+            RandomAccessFile raf = new RandomAccessFile(filename, "r");
+            try {
+                return raf.length();
+            } finally {
+                raf.close();
+            }
+        } catch (IOException ex) {
+            return -1;
         }
     }
 }
