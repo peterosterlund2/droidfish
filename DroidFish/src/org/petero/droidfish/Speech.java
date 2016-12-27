@@ -74,6 +74,7 @@ public class Speech {
                     case TextToSpeech.LANG_COUNTRY_AVAILABLE:
                     case TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE:
                         lang = Language.fromString(langStr);
+                        tts.addEarcon("[move]", "org.petero.droidfish", R.raw.movesound);
                         say(toSpeak);
                         break;
                     case TextToSpeech.LANG_MISSING_DATA:
@@ -97,8 +98,10 @@ public class Speech {
     @SuppressWarnings("deprecation")
     public void say(String text) {
         if (initialized) {
-            if (lang != Language.NONE && text != null)
-                tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+            if (lang != Language.NONE && text != null) {
+                tts.playEarcon("[move]", TextToSpeech.QUEUE_ADD, null);
+                tts.speak(text, TextToSpeech.QUEUE_ADD, null);
+            }
             toSpeak = null;
         } else {
             toSpeak = text;

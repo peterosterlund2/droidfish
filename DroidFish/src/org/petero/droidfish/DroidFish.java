@@ -2186,6 +2186,7 @@ public class DroidFish extends Activity
 //        savePGNToFile(".autosave.pgn", true);
         TimeControlData tcData = new TimeControlData();
         tcData.setTimeControl(timeControl, movesPerSession, timeIncrement);
+        speech.flushQueue();
         ctrl.newGame(gameMode, tcData);
         ctrl.startGame();
         setBoardFlip(true);
@@ -2264,12 +2265,13 @@ public class DroidFish extends Activity
     }
 
     private final Dialog boardMenuDialog() {
-        final int CLIPBOARD  = 0;
-        final int FILEMENU   = 1;
-        final int SHARE_GAME = 2;
-        final int SHARE_TEXT = 3;
-        final int SHARE_IMAG = 4;
-        final int GET_FEN    = 5;
+        final int CLIPBOARD        = 0;
+        final int FILEMENU         = 1;
+        final int SHARE_GAME       = 2;
+        final int SHARE_TEXT       = 3;
+        final int SHARE_IMAG       = 4;
+        final int GET_FEN          = 5;
+        final int REPEAT_LAST_MOVE = 6;
 
         setAutoMode(AutoMode.OFF);
         List<CharSequence> lst = new ArrayList<CharSequence>();
@@ -2283,6 +2285,9 @@ public class DroidFish extends Activity
         lst.add(getString(R.string.share_image));        actions.add(SHARE_IMAG);
         if (hasFenProvider(getPackageManager())) {
             lst.add(getString(R.string.get_fen)); actions.add(GET_FEN);
+        }
+        if (moveAnnounceType.startsWith("speech_")) {
+            lst.add(getString(R.string.repeat_last_move)); actions.add(REPEAT_LAST_MOVE);
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.tools_menu);
@@ -2307,6 +2312,10 @@ public class DroidFish extends Activity
                     break;
                 case GET_FEN:
                     getFen();
+                    break;
+                case REPEAT_LAST_MOVE:
+                    speech.flushQueue();
+                    ctrl.repeatLastMove();
                     break;
                 }
             }

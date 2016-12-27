@@ -1036,6 +1036,10 @@ public class DroidChessController {
         updateGUI();
     }
 
+    public final void repeatLastMove() {
+        gui.movePlayed(game.prevPos(), game.tree.currentNode.move, true);
+    }
+
     private final void setPlayerNames(Game game) {
         if (game != null) {
             String engine = "Computer";
