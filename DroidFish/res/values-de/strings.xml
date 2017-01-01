@@ -76,7 +76,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="select_en_passant_file">En passant möglich?</string>
   <string name="edit_move_counters">Zug-Zähler einstellen</string>
   <string name="internal_book">&lt;Internes Buch&gt;</string>
-  <string name="eco_book">&lt;ECO-Buch (Kaffeehausmodus)&gt;</string>
+  <string name="eco_book">&lt;ECO-Buch&gt;</string>
   <string name="select_opening_book_file">Eröffnungsbuch wählen</string>
   <string name="select_chess_engine">Schach-Engine auswählen</string>
   <string name="select_pgn_file">PGN-Datei zum Öffnen wählen</string>

@@ -42,7 +42,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="load_scid_game">Cargar partida desde archivo Scid</string>
   <string name="save_game">Guardar partida en archivo PGN</string>
   <string name="get_fen">Importar Posición</string>
-  <string name="repeat_last_move">Repeat last move</string>
+  <string name="repeat_last_move">Repetir último movimiento</string>
   <string name="truncate_gametree">Podar Árbol de Variantes</string>
   <string name="move_var_up">Subir Variante </string>
   <string name="move_var_down">Bajar Variante </string>
@@ -150,7 +150,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="header_site">Lugar:</string>
   <string name="header_date">Fecha:</string>
   <string name="header_round">Ronda:</string>
-  <string name="header_result">Result:</string>
+  <string name="header_result">Resultado:</string>
   <string name="comment_before">Antes:</string>
   <string name="comment_move">Jugada:</string>
   <string name="comment_after">Después:</string>
@@ -185,8 +185,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="num_variations">Número de Variantes</string>
   <string name="hide_statistics">Ocultar Estadísticas</string>
   <string name="show_statistics">Mostrar Estadísticas</string>
-  <string name="show_whole_variations">Show whole variations</string>
-  <string name="truncate_variations">Truncate variations</string>
+  <string name="show_whole_variations">Mostrar variantes completas</string>
+  <string name="truncate_variations">Acotar variantes</string>
   <string name="heavy_cpu_usage">Procesador/CPU muy cargado</string>
   <string name="background_processing">Proceso en segundo plano</string>
   <string name="lot_cpu_power">DroidFish está utilizando mucha potencia del procesador/CPU</string>
@@ -221,9 +221,9 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="network_port">Puerto</string>
   <string name="network_engine">Motor en la red</string>
   <string name="failed_to_start_engine">Fallo de arranque del motor</string>
-  <string name="tts_failed_to_init">Failed to initialize text to speech</string>
-  <string name="tts_data_missing">Text to speech data missing</string>
-  <string name="tts_not_supported_for_lang">Text to speech not supported for this language</string>
+  <string name="tts_failed_to_init">Fallo al iniciar el texto hablado</string>
+  <string name="tts_data_missing">Pérdida de datos del texto hablado</string>
+  <string name="tts_not_supported_for_lang">No se incluye el texto hablado en este idioma</string>
   <string name="engine_terminated">Ruptura del motor</string>
   <string name="uci_protocol_error">Fallo en el protocolo UCI</string>
   <string name="network_engine_config_error">Error de configuración en el motor de la red</string>
@@ -709,10 +709,10 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <item>speech_es</item>
   </string-array>
   <string-array name="move_announce_type_texts">
-    <item>Off</item>
-    <item>Play sound</item>
-    <item>English Speech</item>
-    <item>German Speech</item>
-    <item>Spanish Speech</item>
+    <item>Anuncio de movimientos desconectado</item>
+    <item>Aviso de movimiento</item>
+    <item>Texto hablado en inglés</item>
+    <item>Texto hablado en alemán</item>
+    <item>Texto hablado en español</item>
   </string-array>
 </resources>
