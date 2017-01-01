@@ -279,6 +279,8 @@ public class Speech {
     }
 
     private static String fromToString(String from, Language lang) {
+        if ("b4".equals(from)) // Some TTS systems convert "b4" to "before"
+            from = "b 4";
         switch (lang) {
         case EN:
             if ("a".equals(from))
@@ -295,7 +297,19 @@ public class Speech {
     }
 
     private static String toToString(String to, Language lang) {
-        return to;
+        if ("b4".equals(to)) // Some TTS systems convert "b4" to "before"
+            to = "b 4";
+        switch (lang) {
+        case EN:
+            return to;
+        case DE:
+            return to;
+        case ES:
+            return to;
+        case NONE:
+            return "";
+        }
+        throw new IllegalArgumentException();
     }
 
     private static String captureToString(String to, Language lang) {
@@ -362,7 +376,7 @@ public class Speech {
         case DE:
             return "Schach!";
         case ES:
-            return ",jaque!";
+            return ", jaque!";
         case NONE:
             return "";
         }
@@ -376,7 +390,7 @@ public class Speech {
         case DE:
             return "Schach matt!";
         case ES:
-            return ",mate!";
+            return ", mate!";
         case NONE:
             return "";
         }
