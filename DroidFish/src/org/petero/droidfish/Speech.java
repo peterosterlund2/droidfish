@@ -39,6 +39,7 @@ public class Speech {
     public enum Language {
         EN,   // English
         DE,   // German
+        ES,   // Spanish
         NONE; // Not supported
 
         public static Language fromString(String langStr) {
@@ -46,6 +47,8 @@ public class Speech {
                 return EN;
             if ("de".equals(langStr))
                 return DE;
+            if ("es".equals(langStr))
+                return ES;
             return NONE;
         }
     }
@@ -223,6 +226,8 @@ public class Speech {
             return Locale.US;
         case DE:
             return Locale.GERMANY;
+        case ES:
+            return new Locale("es", "ES");
         case NONE:
             return null;
         }
@@ -248,7 +253,7 @@ public class Speech {
             case Piece.WBISHOP: return "Bishop";
             case Piece.WKNIGHT: return "Knight";
             default:            return "";
-            }            
+            }
         case DE:
             switch (piece) {
             case Piece.WKING:   return "König";
@@ -257,7 +262,16 @@ public class Speech {
             case Piece.WBISHOP: return "Läufer";
             case Piece.WKNIGHT: return "Springer";
             default:            return "";
-            }            
+            }
+        case ES:
+            switch (piece) {
+            case Piece.WKING:   return "Rey";
+            case Piece.WQUEEN:  return "Dama";
+            case Piece.WROOK:   return "Torre";
+            case Piece.WBISHOP: return "Alfil";
+            case Piece.WKNIGHT: return "Caballo";
+            default:            return "";
+            }
         case NONE:
             return "";
         }
@@ -271,6 +285,8 @@ public class Speech {
                 return "ae";
             return from;
         case DE:
+            return from;
+        case ES:
             return from;
         case NONE:
             return "";
@@ -288,6 +304,8 @@ public class Speech {
             return to.startsWith("e") ? "take" : "takes";
         case DE:
             return "schlägt";
+        case ES:
+            return "captura";
         case NONE:
             return "";
         }
@@ -300,6 +318,8 @@ public class Speech {
             return kingSide ? "Short castle" : "Long castle";
         case DE:
             return kingSide ? "Kleine Rochade" : "Große Rochade";
+        case ES:
+            return kingSide ? "Enroque corto" : "Enroque largo";
         case NONE:
             return "";
         }
@@ -312,6 +332,8 @@ public class Speech {
             return "";
         case DE:
             return "en passant";
+        case ES:
+            return "al paso";
         case NONE:
             return "";
         }
@@ -325,6 +347,8 @@ public class Speech {
             return pn;
         case DE:
             return "Umwandlung zu " + pn;
+        case ES:
+            return pn;
         case NONE:
             return "";
         }
@@ -337,6 +361,8 @@ public class Speech {
             return "check!";
         case DE:
             return "Schach!";
+        case ES:
+            return ",jaque!";
         case NONE:
             return "";
         }
@@ -349,6 +375,8 @@ public class Speech {
             return "check mate!";
         case DE:
             return "Schach matt!";
+        case ES:
+            return ",mate!";
         case NONE:
             return "";
         }

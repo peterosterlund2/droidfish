@@ -43,165 +43,168 @@ public class SpeechTest extends TestCase {
     }
 
     public void testEnglish() {
-        String[] lang = {"en", "de"};
+        String[] lang = {"en", "de", "es"};
         {
             Game game = new Game(null, new TimeControlData());
             Pair<Boolean,Move> res = game.processString("e4");
-            assertEquals(new String[]{"e4", "e4"},
+            assertEquals(new String[]{"e4", "e4", "e4"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("d5");
-            assertEquals(new String[]{"d5", "d5"},
+            assertEquals(new String[]{"d5", "d5", "d5"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("exd5");
-            assertEquals(new String[]{"e takes d5", "e schlägt d5"},
+            assertEquals(new String[]{"e takes d5", "e schlägt d5", "e captura d5"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("Qxd5");
-            assertEquals(new String[]{"Queen takes d5", "Dame schlägt d5"},
+            assertEquals(new String[]{"Queen takes d5", "Dame schlägt d5", "Dama captura d5"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("Ne2");
-            assertEquals(new String[]{"Knight e2", "Springer e2"},
+            assertEquals(new String[]{"Knight e2", "Springer e2", "Caballo e2"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("Nf6");
-            assertEquals(new String[]{"Knight f6", "Springer f6"},
+            assertEquals(new String[]{"Knight f6", "Springer f6", "Caballo f6"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("Nbc3");
-            assertEquals(new String[]{"Knight b c3", "Springer b c3"},
+            assertEquals(new String[]{"Knight b c3", "Springer b c3", "Caballo b c3"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("e5");
-            assertEquals(new String[]{"e5", "e5"},
+            assertEquals(new String[]{"e5", "e5", "e5"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("b4");
-            assertEquals(new String[]{"b4", "b4"},
+            assertEquals(new String[]{"b4", "b4", "b4"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("a5");
-            assertEquals(new String[]{"a5", "a5"},
+            assertEquals(new String[]{"a5", "a5", "a5"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("a3");
-            assertEquals(new String[]{"a3", "a3"},
+            assertEquals(new String[]{"a3", "a3", "a3"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("axb4");
-            assertEquals(new String[]{"ae takes b4", "a schlägt b4"},
+            assertEquals(new String[]{"ae takes b4", "a schlägt b4", "a captura b4"},
                     moveToText(game.prevPos(), res.second, lang));
         
             res = game.processString("axb4");
-            assertEquals(new String[]{"ae takes b4", "a schlägt b4"},
+            assertEquals(new String[]{"ae takes b4", "a schlägt b4", "a captura b4"},
                     moveToText(game.prevPos(), res.second, lang));
         }
         {
             Game game = new Game(null, new TimeControlData());
             Pair<Boolean,Move> res = game.processString("d4");
-            assertEquals(new String[]{"d4", "d4"},
+            assertEquals(new String[]{"d4", "d4", "d4"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("e5");
-            assertEquals(new String[]{"e5", "e5"}, moveToText(game.prevPos(), res.second, lang));
+            assertEquals(new String[]{"e5", "e5", "e5"}, moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("dxe5");
-            assertEquals(new String[]{"d take e5", "d schlägt e5"}, moveToText(game.prevPos(), res.second, lang));
+            assertEquals(new String[]{"d take e5", "d schlägt e5", "d captura e5"},
+                    moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("f6");
-            assertEquals(new String[]{"f6", "f6"}, moveToText(game.prevPos(), res.second, lang));
+            assertEquals(new String[]{"f6", "f6", "f6"}, moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("exf6");
-            assertEquals(new String[]{"e takes f6", "e schlägt f6"}, moveToText(game.prevPos(), res.second, lang));
+            assertEquals(new String[]{"e takes f6", "e schlägt f6", "e captura f6"},
+                    moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("Bb4");
-            assertEquals(new String[]{"Bishop b4 check!", "Läufer b4 Schach!"},
+            assertEquals(new String[]{"Bishop b4 check!", "Läufer b4 Schach!", "Alfil b4 ,jaque!"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("c3");
-            assertEquals(new String[]{"c3", "c3"},
+            assertEquals(new String[]{"c3", "c3", "c3"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("Ne7");
-            assertEquals(new String[]{"Knight e7", "Springer e7"},
+            assertEquals(new String[]{"Knight e7", "Springer e7", "Caballo e7"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("cxb4");
-            assertEquals(new String[]{"c takes b4", "c schlägt b4"},
+            assertEquals(new String[]{"c takes b4", "c schlägt b4", "c captura b4"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("O-O");
-            assertEquals(new String[]{"Short castle", "Kleine Rochade"},
+            assertEquals(new String[]{"Short castle", "Kleine Rochade", "Enroque corto"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("fxg7");
-            assertEquals(new String[]{"f takes g7", "f schlägt g7"},
+            assertEquals(new String[]{"f takes g7", "f schlägt g7", "f captura g7"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("h6");
-            assertEquals(new String[]{"h6", "h6"},
+            assertEquals(new String[]{"h6", "h6", "h6"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("gxf8Q+");
-            assertEquals(new String[]{"g takes f8 Queen check!", "g schlägt f8 Umwandlung zu Dame Schach!"},
+            assertEquals(new String[]{"g takes f8 Queen check!", "g schlägt f8 Umwandlung zu Dame Schach!",
+                                      "g captura f8 Dama ,jaque!"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("Kxf8");
-            assertEquals(new String[]{"King takes f8", "König schlägt f8"},
+            assertEquals(new String[]{"King takes f8", "König schlägt f8", "Rey captura f8"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("b5");
-            assertEquals(new String[]{"b5", "b5"},
+            assertEquals(new String[]{"b5", "b5", "b5"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("a5");
-            assertEquals(new String[]{"a5", "a5"},
+            assertEquals(new String[]{"a5", "a5", "a5"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("bxa6");
-            assertEquals(new String[]{"b takes a6", "b schlägt a6 en passant"},
+            assertEquals(new String[]{"b takes a6", "b schlägt a6 en passant", "b captura a6 al paso"},
                     moveToText(game.prevPos(), res.second, lang));
         }
         {
             Game game = new Game(null, new TimeControlData());
             Pair<Boolean,Move> res = game.processString("f4");
-            assertEquals(new String[]{"f4", "f4"},
+            assertEquals(new String[]{"f4", "f4", "f4"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("e5");
-            assertEquals(new String[]{"e5", "e5"},
+            assertEquals(new String[]{"e5", "e5", "e5"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("g4");
-            assertEquals(new String[]{"g4", "g4"},
+            assertEquals(new String[]{"g4", "g4", "g4"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("Qh4");
-            assertEquals(new String[]{"Queen h4 check mate!", "Dame h4 Schach matt!"},
+            assertEquals(new String[]{"Queen h4 check mate!", "Dame h4 Schach matt!", "Dama h4 ,mate!"},
                     moveToText(game.prevPos(), res.second, lang));
         }
         {
             Game game = new Game(null, new TimeControlData());
             playMoves(game, "d4 d5 Nc3 Nc6 Bf4 Bf5 Qd2 Qd7");
             Pair<Boolean,Move> res = game.processString("O-O-O");
-            assertEquals(new String[]{"Long castle", "Große Rochade"},
+            assertEquals(new String[]{"Long castle", "Große Rochade", "Enroque largo"},
                     moveToText(game.prevPos(), res.second, lang));
             playMoves(game, "Nxd4 Nxd5 Qxd5 Qxd4 Qxd4 Nf3 Qxd1 Kxd1");
             res = game.processString("O-O-O");
-            assertEquals(new String[]{"Long castle check!", "Große Rochade Schach!"},
+            assertEquals(new String[]{"Long castle check!", "Große Rochade Schach!", "Enroque largo ,jaque!"},
                     moveToText(game.prevPos(), res.second, lang));
             playMoves(game, "Kc1");
             res = game.processString("Rd7");
-            assertEquals(new String[]{"Rook d7", "Turm d7"},
+            assertEquals(new String[]{"Rook d7", "Turm d7", "Torre d7"},
                     moveToText(game.prevPos(), res.second, lang));
         }
         {
             Game game = new Game(null, new TimeControlData());
             playMoves(game, "e4 e5 h3 Bb4 Ne2 Bc3");
             Pair<Boolean,Move> res = game.processString("Nexc3");
-            assertEquals(new String[]{"Knight e takes c3", "Springer e schlägt c3"},
+            assertEquals(new String[]{"Knight e takes c3", "Springer e schlägt c3", "Caballo e captura c3"},
                     moveToText(game.prevPos(), res.second, lang));
         }
     }
