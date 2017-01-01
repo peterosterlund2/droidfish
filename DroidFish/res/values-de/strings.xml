@@ -76,7 +76,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="select_en_passant_file">En passant möglich?</string>
   <string name="edit_move_counters">Zug-Zähler einstellen</string>
   <string name="internal_book">&lt;Internes Buch&gt;</string>
-  <string name="eco_book">&lt;ECO Buch&gt;</string>
+  <string name="eco_book">&lt;ECO-Buch (Kaffeehausmodus)&gt;</string>
   <string name="select_opening_book_file">Eröffnungsbuch wählen</string>
   <string name="select_chess_engine">Schach-Engine auswählen</string>
   <string name="select_pgn_file">PGN-Datei zum Öffnen wählen</string>
@@ -223,9 +223,9 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="network_port">Netzwerkport</string>
   <string name="network_engine">Netzserver-Engine</string>
   <string name="failed_to_start_engine">Fehler beim Starten der Engine</string>
-  <string name="tts_failed_to_init">Initialisierung der Sprachausgabe fehlgeschlagen</string>
-  <string name="tts_data_missing">Sprachausgabe: keine Daten vorhanden</string>
-  <string name="tts_not_supported_for_lang">Diese Sprache unterstützt die Sprachausgabe-Funktion nicht</string>
+  <string name="tts_failed_to_init">Initialisierung der Zugansage fehlgeschlagen</string>
+  <string name="tts_data_missing">Zugansage: keine Daten vorhanden</string>
+  <string name="tts_not_supported_for_lang">Diese Sprache unterstützt die Zugansage-Funktion nicht</string>
   <string name="engine_terminated">Engine beendet</string>
   <string name="uci_protocol_error">UCI-Protokollfehler</string>
   <string name="network_engine_config_error">Fehler bei der Konfiguration der Netzserver-Engine</string>
@@ -303,8 +303,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_autoScrollTitle_summary">Titelleiste bei zu langen Spielernamen automatisch scrollen</string>
   <string name="prefs_quickMoveInput_title">Schnelle Zugeingabe</string>
   <string name="prefs_quickMoveInput_summary">Die Reihenfolge der Auswahl für einen Zug (von bzw. nach) ist beliebig. Eindeutige Züge werden sofort durchgeführt.</string>
-  <string name="prefs_moveAnnounceType_title">Benachrichtigung für Computerzüge</string>
-  <string name="prefs_moveAnnounceType_summary">Benachrichtigungston wenn der Computer einen Zug ausführt</string>
+  <string name="prefs_moveAnnounceType_title">Audioeinstellung</string>
+  <string name="prefs_moveAnnounceType_summary">Benachrichtigung wenn Züge ausgeführt wurden</string>
   <string name="prefs_vibrateEnabled_title">Vibration aktivieren</string>
   <string name="prefs_vibrateEnabled_summary">Bei Zug des Computers vibrieren</string>
   <string name="prefs_fullScreenMode_title">Vollbildanzeige</string>
@@ -708,11 +708,13 @@ wenn Sie es nicht aktiv nutzen.\
     <item>sound</item>
     <item>speech_en</item>
     <item>speech_de</item>
+    <item>speech_es</item>
   </string-array>
   <string-array name="move_announce_type_texts">
-    <item>Kein Ton</item>
-    <item>Erzeuge den Ton</item>
-    <item>Englisch</item>
-    <item>Deutsch</item>
+    <item>Keine Benachrichtigung</item>
+    <item>Durch Geräusche</item>
+    <item>Durch Zugansagen auf Englisch</item>
+    <item>Durch Zugansagen auf Deutsch</item>
+    <item>Spanish Speech</item>
   </string-array>
 </resources>

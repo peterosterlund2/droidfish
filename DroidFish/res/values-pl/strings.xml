@@ -707,11 +707,13 @@ nie korzystasz aktywnie z programu.\</string>
     <item>sound</item>
     <item>speech_en</item>
     <item>speech_de</item>
+    <item>speech_es</item>
   </string-array>
   <string-array name="move_announce_type_texts">
     <item>Wyłączone</item>
     <item>Odtwórz dźwięk</item>
     <item>Wymowa angielska</item>
     <item>German Speech</item>
+    <item>Spanish Speech</item>
   </string-array>
 </resources>
