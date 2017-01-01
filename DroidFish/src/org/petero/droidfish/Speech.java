@@ -68,7 +68,13 @@ public class Speech {
                 initialized = true;
                 int toast = -1;
                 if (status == TextToSpeech.SUCCESS) {
-                    int code = tts.setLanguage(loc);
+                    int code = TextToSpeech.LANG_NOT_SUPPORTED;
+                    try {
+                        code = tts.setLanguage(loc);
+                    } catch (Throwable t) {
+                        // Some Samsung devices are broken and throw an
+                        // exception if the language is not supported
+                    }
                     switch (code) {
                     case TextToSpeech.LANG_AVAILABLE:
                     case TextToSpeech.LANG_COUNTRY_AVAILABLE:
@@ -216,7 +222,7 @@ public class Speech {
         case EN:
             return Locale.US;
         case DE:
-            return Locale.GERMAN;
+            return Locale.GERMANY;
         case NONE:
             return null;
         }
