@@ -4,7 +4,7 @@
         <java classname="chess.Book">
         	<classpath>
                 <pathelement location="bin"/>
-                <pathelement location="bin/classes"/>
+                <pathelement location="../DroidFish/bin/classes"/>
         	</classpath>
             <arg value="${basedir}/src/book.txt"/>  
             <arg value="${basedir}/src/book.bin"/>
