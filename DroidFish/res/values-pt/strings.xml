@@ -34,16 +34,16 @@ não estiver usando o programa diretamente.\</string>
   <string name="copy_game">Copiar partida para o clipboard</string>
   <string name="copy_position">Copiar posição para o clipboard</string>
   <string name="paste">Colar do clipboard</string>
-  <string name="share_game">Share Game</string>
-  <string name="share_text">Share as Text</string>
-  <string name="share_image">Share as Image</string>
+  <string name="share_game">Compartilhar partida</string>
+  <string name="share_text">Compartilhar como texto</string>
+  <string name="share_image">Compartilhar como imagem</string>
   <string name="load_last_file">Carregar do último ficheiro</string>
   <string name="load_game">Carregar partida de arquivo PGN</string>
   <string name="load_position">Carregar posição de um ficheiro</string>
   <string name="load_scid_game">Carregar partida de arquivo Scid</string>
   <string name="save_game">Salvar partida em arquivo PGN</string>
   <string name="get_fen">Recuperar posição</string>
-  <string name="repeat_last_move">Repeat last move</string>
+  <string name="repeat_last_move">Repetir último lance</string>
   <string name="truncate_gametree">Truncar árvore da partida</string>
   <string name="move_var_up">Mover variação para cima</string>
   <string name="move_var_down">Mover variação para baixo</string>
@@ -75,7 +75,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="select_en_passant_file">Escolha coluna En Passant</string>
   <string name="edit_move_counters">Alterar contador de lances</string>
   <string name="internal_book">&lt;Livro interno&gt;</string>
-  <string name="eco_book">&lt;ECO Book&gt;</string>
+  <string name="eco_book">&lt;Livro ECO&gt;</string>
   <string name="select_opening_book_file">Escolher arquivo de livro de aberturas</string>
   <string name="select_chess_engine">Escolher software de Xadrez</string>
   <string name="select_pgn_file">Abrir arquivo PGN</string>
@@ -109,7 +109,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="edit_game">Editar partida</string>
   <string name="edit_headers">Editar cabeçalho</string>
   <string name="edit_comments">Editar comentários</string>
-  <string name="add_eco">Add opening name</string>
+  <string name="add_eco">Adicionar nome da abertura</string>
   <string name="go_back">Voltar</string>
   <string name="go_forward">Avançar</string>
   <string name="goto_start_game">Ir para o início da partida</string>
@@ -151,7 +151,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="header_site">Site:</string>
   <string name="header_date">Data:</string>
   <string name="header_round">Rodada:</string>
-  <string name="header_result">Result:</string>
+  <string name="header_result">Resultado:</string>
   <string name="comment_before">Antes:</string>
   <string name="comment_move">Lance:</string>
   <string name="comment_after">Após:</string>
@@ -183,11 +183,11 @@ não estiver usando o programa diretamente.\</string>
   <string name="failed_to_read_pgn_data">Falha na leitura de arquivo PGN</string>
   <string name="variation">Var:</string>
   <string name="add_analysis">Adicionar análise</string>
-  <string name="num_variations">Number of Variations</string>
+  <string name="num_variations">Número de variantes</string>
   <string name="hide_statistics">Ocultar estatísticas</string>
   <string name="show_statistics">Mostrar estatísticas</string>
-  <string name="show_whole_variations">Show whole variations</string>
-  <string name="truncate_variations">Truncate variations</string>
+  <string name="show_whole_variations">Mostrar variantes inteiras</string>
+  <string name="truncate_variations">Truncar variantes</string>
   <string name="heavy_cpu_usage">Uso intenso de CPU</string>
   <string name="background_processing">Processamento em segundo plano</string>
   <string name="lot_cpu_power">DroidFish está usando muita CPU</string>
@@ -222,9 +222,9 @@ não estiver usando o programa diretamente.\</string>
   <string name="network_port">Porto</string>
   <string name="network_engine">Software de rede</string>
   <string name="failed_to_start_engine">Falha ao iniciar o software</string>
-  <string name="tts_failed_to_init">Failed to initialize text to speech</string>
-  <string name="tts_data_missing">Text to speech data missing</string>
-  <string name="tts_not_supported_for_lang">Text to speech not supported for this language</string>
+  <string name="tts_failed_to_init">Falha ao iniciar texto para fala</string>
+  <string name="tts_data_missing">Faltam dados para texto para fala</string>
+  <string name="tts_not_supported_for_lang">Texto para fala não suportado para este idioma</string>
   <string name="engine_terminated">Software encerrado</string>
   <string name="uci_protocol_error">Erro de protocolo UCI</string>
   <string name="network_engine_config_error">Erro na configuração da rede do software</string>
@@ -292,8 +292,8 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_bookHints_summary">Exibir sugestões de lances de abertura do livro para o jogador humano</string>
   <string name="prefs_thinkingArrows_title">Usar setas</string>
   <string name="prefs_thinkingArrows_summary">Usar setas para exibir lances no tabuleiro</string>
-  <string name="prefs_ecoHints_title">Show ECO codes</string>
-  <string name="prefs_ecoHints_summary">Show \'Encyclopedia of Chess Openings\' classification of openings</string>
+  <string name="prefs_ecoHints_title">Mostrar códigos ECO</string>
+  <string name="prefs_ecoHints_summary">Mostrar a classificação da \'Encyclopedia of Chess Openings\' das aberturas</string>
   <string name="prefs_user_interface_appearance">Aparência</string>
   <string name="prefs_user_interface_behavior">Comportamento</string>
   <string name="prefs_animateMoves_title">Movimentos animados</string>
@@ -302,8 +302,8 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_autoScrollTitle_summary">Rolar automaticamente barra de título se os nomes dos jogadores forem muito longos</string>
   <string name="prefs_quickMoveInput_title">Modo de lance rápido</string>
   <string name="prefs_quickMoveInput_summary">Casas de origem e destino podem ser tocadas em qualquer ordem.</string>
-  <string name="prefs_moveAnnounceType_title">Move Announcement</string>
-  <string name="prefs_moveAnnounceType_summary">Announcement sound when computer makes a move</string>
+  <string name="prefs_moveAnnounceType_title">Anúncio do lance</string>
+  <string name="prefs_moveAnnounceType_summary">Som do anúncio quando o programa faz um lance</string>
   <string name="prefs_vibrateEnabled_title">Habilitar vibração</string>
   <string name="prefs_vibrateEnabled_summary">Vibrar quando o software fizer um lance</string>
   <string name="prefs_fullScreenMode_title">Modo tela cheia</string>
@@ -315,8 +315,8 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_scrollSensitivity_summary">Velocidade do movimento para navegação em partida</string>
   <string name="prefs_invertScrollDirection_title">Inverter rolagem</string>
   <string name="prefs_invertScrollDirection_summary">Habilite se você acha que os movimentos estão na direção errada</string>
-  <string name="prefs_autoScrollMoveList_title">Auto scroll move list</string>
-  <string name="prefs_autoScrollMoveList_summary">Automatically scroll the move list to the current board position</string>
+  <string name="prefs_autoScrollMoveList_title">Rolar automaticamente a lista de lances</string>
+  <string name="prefs_autoScrollMoveList_summary">Rolar a lista de lances automaticamente na posição atual do tabuleiro</string>
   <string name="prefs_discardVariations_title">Descartar variantes</string>
   <string name="prefs_discardVariations_summary">Descartar da lista lances fora da linha principal</string>
   <string name="prefs_leftHanded_title">Modo canhoto</string>
@@ -605,9 +605,9 @@ não estiver usando o programa diretamente.\</string>
     <item>21</item>
   </string-array>
   <string-array name="ecoHints_texts">
-    <item>Off</item>
+    <item>Desligado</item>
     <item>Auto</item>
-    <item>Always</item>
+    <item>Sempre</item>
   </string-array>
   <string-array name="ecoHints_values">
     <item>0</item>
@@ -710,10 +710,10 @@ não estiver usando o programa diretamente.\</string>
     <item>speech_es</item>
   </string-array>
   <string-array name="move_announce_type_texts">
-    <item>Off</item>
-    <item>Play sound</item>
-    <item>English Speech</item>
-    <item>German Speech</item>
-    <item>Spanish Speech</item>
+    <item>Desligado</item>
+    <item>Tocar som</item>
+    <item>Voz em inglês</item>
+    <item>Voz em alemão</item>
+    <item>Voz em espanhol</item>
   </string-array>
 </resources>
