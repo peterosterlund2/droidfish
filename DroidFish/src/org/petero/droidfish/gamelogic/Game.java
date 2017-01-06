@@ -132,7 +132,6 @@ public class Game {
      * @param str The move or command to process.
      * @return Pair where first item is true if str was understood, false otherwise.
      *         Second item is move played, or null if no move was played. */
-    /** Like processString, but also returns the move played, if any. */
     public final Pair<Boolean, Move> processString(String str) {
         if (getGameState() != GameState.ALIVE)
             return new Pair<Boolean,Move>(false, null);
