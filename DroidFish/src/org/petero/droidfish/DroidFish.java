@@ -27,7 +27,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -381,7 +380,7 @@ public class DroidFish extends Activity
                 public int getIcon() { return R.raw.magnify; }
                 public boolean enabled() { return true; }
                 public void run() {
-                    pgnOptions.view.headers = toggleBooleanPref("largeButtons");
+                    toggleBooleanPref("largeButtons");
                     updateButtons();
                 }
             });
