@@ -16,12 +16,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package org.petero.droidfish;
+package org.petero.droidfish.view;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.petero.droidfish.ColorTheme;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
@@ -48,13 +49,14 @@ public abstract class ChessBoard extends View {
                                         // false if selectedSquare used to highlight last move
     public float cursorX, cursorY;
     public boolean cursorVisible;
-    protected int x0, y0, sqSize;
+    protected int x0, y0;
+    public int sqSize;
     int pieceXDelta, pieceYDelta; // top/left pixel draw position relative to square
     public boolean flipped;
     public boolean drawSquareLabels;
-    boolean toggleSelection;
-    boolean highlightLastMove;         // If true, last move is marked with a rectangle
-    boolean blindMode;                 // If true, no chess pieces and arrows are drawn
+    public boolean toggleSelection;
+    public boolean highlightLastMove;         // If true, last move is marked with a rectangle
+    public boolean blindMode;                 // If true, no chess pieces and arrows are drawn
 
     List<Move> moveHints;
 
@@ -140,7 +142,7 @@ public abstract class ChessBoard extends View {
     }
 
     /** Must be called for new color theme to take effect. */
-    final void setColors() {
+    public final void setColors() {
         ColorTheme ct = ColorTheme.instance();
         darkPaint.setColor(ct.getColor(ColorTheme.DARK_SQUARE));
         brightPaint.setColor(ct.getColor(ColorTheme.BRIGHT_SQUARE));

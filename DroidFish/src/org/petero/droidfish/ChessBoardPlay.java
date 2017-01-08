@@ -26,6 +26,7 @@ import org.petero.droidfish.gamelogic.Pair;
 import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
+import org.petero.droidfish.view.ChessBoard;
 
 import android.content.Context;
 import android.content.res.Configuration;

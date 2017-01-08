@@ -20,6 +20,7 @@ package org.petero.droidfish;
 
 import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
+import org.petero.droidfish.view.MoveListView;
 
 import android.app.Activity;
 import android.content.SharedPreferences;

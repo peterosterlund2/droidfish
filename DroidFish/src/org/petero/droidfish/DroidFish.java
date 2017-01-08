@@ -38,7 +38,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.petero.droidfish.ChessBoard.SquareDecoration;
 import org.petero.droidfish.activities.CPUWarning;
 import org.petero.droidfish.activities.EditBoard;
 import org.petero.droidfish.activities.EditOptions;
@@ -65,6 +64,9 @@ import org.petero.droidfish.gamelogic.GameTree.Node;
 import org.petero.droidfish.gamelogic.TimeControlData;
 import org.petero.droidfish.tb.Probe;
 import org.petero.droidfish.tb.ProbeResult;
+import org.petero.droidfish.view.ChessBoard;
+import org.petero.droidfish.view.MoveListView;
+import org.petero.droidfish.view.ChessBoard.SquareDecoration;
 
 import tourguide.tourguide.Overlay;
 import tourguide.tourguide.Pointer;

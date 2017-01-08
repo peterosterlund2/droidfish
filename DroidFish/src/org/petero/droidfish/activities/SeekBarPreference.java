@@ -16,9 +16,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package org.petero.droidfish;
+package org.petero.droidfish.activities;
 
 import java.util.Locale;
+
+import org.petero.droidfish.R;
+import org.petero.droidfish.R.id;
+import org.petero.droidfish.R.layout;
+import org.petero.droidfish.R.string;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

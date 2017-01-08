@@ -21,10 +21,8 @@ package org.petero.droidfish.activities;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import org.petero.droidfish.ChessBoard;
 import org.petero.droidfish.DroidFish;
 import org.petero.droidfish.R;
-import org.petero.droidfish.ChessBoard.SquareDecoration;
 import org.petero.droidfish.Util;
 import org.petero.droidfish.Util.MaterialDiff;
 import org.petero.droidfish.gamelogic.ChessParseError;
@@ -35,6 +33,8 @@ import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.tb.Probe;
 import org.petero.droidfish.tb.ProbeResult;
+import org.petero.droidfish.view.ChessBoard;
+import org.petero.droidfish.view.ChessBoard.SquareDecoration;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

@@ -18,10 +18,10 @@
 
 package org.petero.droidfish.activities;
 
-import org.petero.droidfish.ChessBoard;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
+import org.petero.droidfish.view.ChessBoard;
 
 import android.content.Context;
 import android.content.res.Configuration;
