@@ -30,12 +30,12 @@
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/prefs_engine_settings">
-        <org.petero.droidfish.SeekBarPreference
+        <org.petero.droidfish.activities.SeekBarPreference
             android:key="strength"
             android:title="@string/prefs_strength_title"
             android:summary="@string/prefs_strength_summary"
             android:defaultValue="1000">
-        </org.petero.droidfish.SeekBarPreference>
+        </org.petero.droidfish.activities.SeekBarPreference>
         <CheckBoxPreference
             android:key="ponderMode"
             android:title="@string/prefs_ponderMode_title"
@@ -576,11 +576,11 @@
                 android:summary="@string/prefs_bookTournamentMode_summary"
                 android:defaultValue="false">
             </CheckBoxPreference>
-            <org.petero.droidfish.SeekBarPreference
+            <org.petero.droidfish.activities.SeekBarPreference
                 android:key="bookRandom"
                 android:defaultValue="500"
                 android:title="@string/prefs_bookRandom_title">
-            </org.petero.droidfish.SeekBarPreference>
+            </org.petero.droidfish.activities.SeekBarPreference>
             <EditTextPreference
                 android:key="bookFile"
                 android:title="@string/prefs_bookFile_title"
