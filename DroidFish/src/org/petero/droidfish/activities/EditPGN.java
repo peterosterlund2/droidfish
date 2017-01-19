@@ -275,7 +275,7 @@ public class EditPGN extends ListActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int pos, long id) {
                 selectedGi = aa.getItem(pos);
-                if (!selectedGi.isNull()) {
+                if (selectedGi != null && !selectedGi.isNull()) {
                     removeDialog(DELETE_GAME_DIALOG);
                     showDialog(DELETE_GAME_DIALOG);
                 }
@@ -334,6 +334,8 @@ public class EditPGN extends ListActivity {
         case DELETE_GAME_DIALOG: {
             final GameInfo gi = selectedGi;
             selectedGi = null;
+            if (gi == null)
+                return null;
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.delete_game);
             String msg = gi.toString();
@@ -355,6 +357,8 @@ public class EditPGN extends ListActivity {
         case SAVE_GAME_DIALOG: {
             final GameInfo gi = selectedGi;
             selectedGi = null;
+            if (gi == null)
+                return null;
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.save_game_question);
             final CharSequence[] items = {
