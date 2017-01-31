@@ -125,13 +125,13 @@ public class EcoTest extends AndroidTestCase {
             for (String m : new String[]{"d4", "Nf6", "c4", "g6", "Nc3", "d5", "Nf3", "c6"})
                 game.processString(m);
             String eco = ecoDb.getEco(game.tree).getName();
-            assertEquals("D90: Gruenfeld, Schlechter variation", eco);
+            assertEquals("D90: Grünfeld, Schlechter variation", eco);
             assertEquals(0, ecoDb.getEco(game.tree).distToEcoTree);
             game.processString("h4");
-            assertEquals("D90: Gruenfeld, Schlechter variation", eco);
+            assertEquals("D90: Grünfeld, Schlechter variation", eco);
             assertEquals(1, ecoDb.getEco(game.tree).distToEcoTree);
             game.processString("h5");
-            assertEquals("D90: Gruenfeld, Schlechter variation", eco);
+            assertEquals("D90: Grünfeld, Schlechter variation", eco);
             assertEquals(2, ecoDb.getEco(game.tree).distToEcoTree);
         }
     }
