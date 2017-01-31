@@ -35,16 +35,16 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="copy_game">Partie in die Zwischenablage kopieren</string>
   <string name="copy_position">Stellung in die Zwischenablage kopieren</string>
   <string name="paste">Aus der Zwischenablage einfügen</string>
-  <string name="share_game">Teile die Partie als .pgn</string>
-  <string name="share_text">Teile die Partie als Text</string>
-  <string name="share_image">Teile die Brettansicht als Bild</string>
+  <string name="share_game">Partie im PGN-Format freigeben</string>
+  <string name="share_text">Partie im Textformat freigeben</string>
+  <string name="share_image">Spielfeldansicht als Bild freigeben</string>
   <string name="load_last_file">Aus der letzten Datei laden</string>
   <string name="load_game">Partie aus einer PGN-Datei laden</string>
   <string name="load_position">Position aus Datei laden</string>
   <string name="load_scid_game">Partie aus einer Scid-Datei laden</string>
   <string name="save_game">Partie in eine PGN-Datei speichern</string>
   <string name="get_fen">Position auslesen</string>
-  <string name="repeat_last_move">Wiederhole den letzten Zug</string>
+  <string name="repeat_last_move">Letzten Zug wiederholen</string>
   <string name="truncate_gametree">Spielbaum abschneiden</string>
   <string name="move_var_up">Variante nach oben verschieben</string>
   <string name="move_var_down">Variante nach unten verschieben</string>
@@ -110,7 +110,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="edit_game">Partie bearbeiten</string>
   <string name="edit_headers">Informationen</string>
   <string name="edit_comments">Kommentare</string>
-  <string name="add_eco">Füge den Namen der Eröffnung hinzu</string>
+  <string name="add_eco">Namen der Eröffnung hinzufügen</string>
   <string name="go_back">Zurück</string>
   <string name="go_forward">Vorwärts</string>
   <string name="goto_start_game">Zum Partiebeginn</string>
@@ -184,11 +184,11 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="failed_to_read_pgn_data">PGN-Daten konnten nicht gelesen werden</string>
   <string name="variation">Variante:</string>
   <string name="add_analysis">Analyse hinzufügen</string>
-  <string name="num_variations">Anzahl der Variationen</string>
+  <string name="num_variations">Zahl der Varianten</string>
   <string name="hide_statistics">Statistik verbergen</string>
   <string name="show_statistics">Statistik anzeigen</string>
-  <string name="show_whole_variations">Zeige die volle Länge der Variationen</string>
-  <string name="truncate_variations">Kürze die Länge der Variationen</string>
+  <string name="show_whole_variations">Vollständige Varianten anzeigen</string>
+  <string name="truncate_variations">Varianten abschneiden</string>
   <string name="heavy_cpu_usage">Starke Prozessor-Nutzung</string>
   <string name="background_processing">Verarbeitung im Hintergrund</string>
   <string name="lot_cpu_power">DroidFish nutzt viel Prozessor-Rechenzeit</string>
@@ -223,9 +223,9 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="network_port">Netzwerkport</string>
   <string name="network_engine">Netzserver-Engine</string>
   <string name="failed_to_start_engine">Fehler beim Starten der Engine</string>
-  <string name="tts_failed_to_init">Initialisierung der Zugansage fehlgeschlagen</string>
-  <string name="tts_data_missing">Zugansage: keine Daten vorhanden</string>
-  <string name="tts_not_supported_for_lang">Diese Sprache unterstützt die Zugansage-Funktion nicht</string>
+  <string name="tts_failed_to_init">Initialisierung der Sprachausgabe fehlgeschlagen</string>
+  <string name="tts_data_missing">Daten für Sprachausgabe fehlen</string>
+  <string name="tts_not_supported_for_lang">Sprachausgabe für diese Sprache nicht unterstützt</string>
   <string name="engine_terminated">Engine beendet</string>
   <string name="uci_protocol_error">UCI-Protokollfehler</string>
   <string name="network_engine_config_error">Fehler bei der Konfiguration der Netzserver-Engine</string>
@@ -293,8 +293,8 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_bookHints_summary">Hinweise aus dem Eröffnungsbuch für den Spieler anzeigen</string>
   <string name="prefs_thinkingArrows_title">Pfeile nutzen</string>
   <string name="prefs_thinkingArrows_summary">Pfeile zur Anzeige von Zügen auf dem Spielfeld nutzen</string>
-  <string name="prefs_ecoHints_title">ECO-Code</string>
-  <string name="prefs_ecoHints_summary">Zeige den ECO-Code der Eröffnung</string>
+  <string name="prefs_ecoHints_title">ECO-Codes</string>
+  <string name="prefs_ecoHints_summary">ECO-Code der Eröffnung anzeigen</string>
   <string name="prefs_user_interface_appearance">Aussehen</string>
   <string name="prefs_user_interface_behavior">Verhalten</string>
   <string name="prefs_animateMoves_title">Zuganimation</string>
@@ -304,7 +304,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_quickMoveInput_title">Schnelle Zugeingabe</string>
   <string name="prefs_quickMoveInput_summary">Die Reihenfolge der Auswahl für einen Zug (von bzw. nach) ist beliebig. Eindeutige Züge werden sofort durchgeführt.</string>
   <string name="prefs_moveAnnounceType_title">Audioeinstellung</string>
-  <string name="prefs_moveAnnounceType_summary">Benachrichtigung wenn Züge ausgeführt wurden</string>
+  <string name="prefs_moveAnnounceType_summary">Benachrichtigung bei Ausführung eines Zuges</string>
   <string name="prefs_vibrateEnabled_title">Vibration aktivieren</string>
   <string name="prefs_vibrateEnabled_summary">Bei Zug des Computers vibrieren</string>
   <string name="prefs_fullScreenMode_title">Vollbildanzeige</string>
@@ -317,7 +317,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_invertScrollDirection_title">Wischrichtung</string>
   <string name="prefs_invertScrollDirection_summary">Wischrichtung für Partie-Navigation umkehren</string>
   <string name="prefs_autoScrollMoveList_title">Automatischer Bildlauf der Zugliste</string>
-  <string name="prefs_autoScrollMoveList_summary">Verschiebe die Zugliste automatisch bis zur aktuellen Brettposition</string>
+  <string name="prefs_autoScrollMoveList_summary">Zugliste automatisch bis zur aktuellen Spielfeldposition verschieben</string>
   <string name="prefs_discardVariations_title">Varianten verwerfen</string>
   <string name="prefs_discardVariations_summary">Nicht-Hauptlinienzüge aus der Zugliste verwerfen</string>
   <string name="prefs_leftHanded_title">Linkshänder-Modus</string>
@@ -395,7 +395,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="prefs_viewPieceType_title">Figurenbezeichnungen</string>
   <string name="prefs_viewPieceType_summary">Einstellung der Figurenbezeichnungen</string>
   <string name="prefs_blindMode_title">Blindspiel-Modus</string>
-  <string name="prefs_blindMode_summary">Leeres Brett anstelle von Figuren anzeigen</string>
+  <string name="prefs_blindMode_summary">Leeres Spielfeld anstelle von Figuren anzeigen</string>
   <string name="prefs_pgn_import">PGN-Import</string>
   <string name="prefs_importVariations_title">Varianten</string>
   <string name="prefs_importVariations_summary">Nicht-Hauptlinienzüge importieren</string>
@@ -606,7 +606,7 @@ wenn Sie es nicht aktiv nutzen.\
     <item>21</item>
   </string-array>
   <string-array name="ecoHints_texts">
-    <item>Nie</item>
+    <item>Aus</item>
     <item>Automatisch</item>
     <item>Immer</item>
   </string-array>
@@ -617,14 +617,14 @@ wenn Sie es nicht aktiv nutzen.\
   </string-array>
   <string-array name="thinking_arrows_texts">
     <item>Keine Pfeile</item>
-    <item>Max. 1 Pfeil</item>
-    <item>Max. 2 Pfeile</item>
-    <item>Max. 3 Pfeile</item>
-    <item>Max. 4 Pfeile</item>
-    <item>Max. 5 Pfeile</item>
-    <item>Max. 6 Pfeile</item>
-    <item>Max. 7 Pfeile</item>
-    <item>Max. 8 Pfeile</item>
+    <item>Maximal 1 Pfeil</item>
+    <item>Maximal 2 Pfeile</item>
+    <item>Maximal 3 Pfeile</item>
+    <item>Maximal 4 Pfeile</item>
+    <item>Maximal 5 Pfeile</item>
+    <item>Maximal 6 Pfeile</item>
+    <item>Maximal 7 Pfeile</item>
+    <item>Maximal 8 Pfeile</item>
   </string-array>
   <string-array name="thinking_arrows_values">
     <item>0</item>
@@ -712,9 +712,9 @@ wenn Sie es nicht aktiv nutzen.\
   </string-array>
   <string-array name="move_announce_type_texts">
     <item>Keine Benachrichtigung</item>
-    <item>Durch Geräusche</item>
-    <item>Durch Zugansagen auf Englisch</item>
-    <item>Durch Zugansagen auf Deutsch</item>
-    <item>Spanish Speech</item>
+    <item>Benachrichtigungston</item>
+    <item>Zugansage auf Englisch</item>
+    <item>Zugansage auf Deutsch</item>
+    <item>Zugansage auf Spanisch</item>
   </string-array>
 </resources>
