@@ -52,7 +52,7 @@ public class Speech {
             return NONE;
         }
     }
-    private Language lang;
+    private Language lang = Language.NONE;
 
     
     /** Initialize the text to speech engine for a given language. */
