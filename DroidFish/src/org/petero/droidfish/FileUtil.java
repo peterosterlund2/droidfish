@@ -34,7 +34,7 @@ public class FileUtil {
     public static String[] readFile(String filename) throws IOException {
         ArrayList<String> ret = new ArrayList<String>();
         InputStream inStream = new FileInputStream(filename);
-        InputStreamReader inFile = new InputStreamReader(inStream);
+        InputStreamReader inFile = new InputStreamReader(inStream, "UTF-8");
         BufferedReader inBuf = new BufferedReader(inFile);
         String line;
         while ((line = inBuf.readLine()) != null)
