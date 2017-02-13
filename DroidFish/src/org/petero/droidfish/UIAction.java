@@ -21,14 +21,14 @@ package org.petero.droidfish;
 /** Interface for user interface actions. */
 public interface UIAction extends Runnable {
     /** Get a unique identifier for this action. */
-    public String getId();
+    String getId();
 
     /** Get name resource for the action. */
-    public int getName();
+    int getName();
 
     /** Get icon SVG resource or -1 for no icon. */
-    public int getIcon();
+    int getIcon();
 
     /** Return true if the action is currently enabled. */
-    public boolean enabled();
+    boolean enabled();
 }

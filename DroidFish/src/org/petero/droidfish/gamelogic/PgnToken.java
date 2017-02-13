@@ -49,15 +49,15 @@ public class PgnToken {
     /** PGN parser visitor interface. */
     public interface PgnTokenReceiver {
         /** If this method returns false, the object needs a full re-initialization, using clear() and processToken(). */
-        public boolean isUpToDate();
+        boolean isUpToDate();
 
         /** Clear object state. */
-        public void clear();
+        void clear();
 
         /** Update object state with one token from a PGN game. */
-        public void processToken(GameTree.Node node, int type, String token);
+        void processToken(GameTree.Node node, int type, String token);
 
         /** Change current move number. */
-        public void setCurrent(GameTree.Node node);
+        void setCurrent(GameTree.Node node);
     }
 }

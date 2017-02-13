@@ -119,11 +119,11 @@ public class Search {
      * Used to get various search information during search
      */
     public interface Listener {
-        public void notifyDepth(int depth);
-        public void notifyCurrMove(Move m, int moveNr);
-        public void notifyPV(int depth, int score, int time, long nodes, int nps,
+        void notifyDepth(int depth);
+        void notifyCurrMove(Move m, int moveNr);
+        void notifyPV(int depth, int score, int time, long nodes, int nps,
                 boolean isMate, boolean upperBound, boolean lowerBound, ArrayList<Move> pv);
-        public void notifyStats(long nodes, int nps, int time);
+        void notifyStats(long nodes, int nps, int time);
     }
 
     Listener listener;

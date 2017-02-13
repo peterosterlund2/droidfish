@@ -31,29 +31,29 @@ public interface UCIEngine {
     }
 
     /** Start engine. */
-    public void initialize();
+    void initialize();
 
     /** Initialize default options. */
-    public void initOptions(EngineOptions engineOptions);
+    void initOptions(EngineOptions engineOptions);
 
     /** Read UCI options from .ini file and send them to the engine. */
-    public void applyIniFile();
+    void applyIniFile();
 
     /** Set engine UCI options. */
-    public boolean setUCIOptions(Map<String,String> uciOptions);
+    boolean setUCIOptions(Map<String,String> uciOptions);
 
     /** Save non-default UCI option values to file. */
-    public void saveIniFile(UCIOptions options);
+    void saveIniFile(UCIOptions options);
 
     /** Get engine UCI options. */
-    public UCIOptions getUCIOptions();
+    UCIOptions getUCIOptions();
 
     /** Return true if engine options have correct values.
      * If false is returned, engine will be restarted. */
-    public boolean optionsOk(EngineOptions engineOptions);
+    boolean optionsOk(EngineOptions engineOptions);
 
     /** Shut down engine. */
-    public void shutDown();
+    void shutDown();
 
     /**
      * Read a line from the engine.
@@ -62,30 +62,30 @@ public interface UCIEngine {
      *         or empty string if no data available,
      *         or null if I/O error.
      */
-    public String readLineFromEngine(int timeoutMillis);
+    String readLineFromEngine(int timeoutMillis);
 
     // FIXME!! Writes should be handled by separate thread.
     /** Write a line to the engine. \n will be added automatically. */
-    public void writeLineToEngine(String data);
+    void writeLineToEngine(String data);
 
     /** Set the engine strength, allowed values 0 - 1000. */
-    public void setStrength(int strength);
+    void setStrength(int strength);
 
     /** Set an engine integer option. */
-    public void setOption(String name, int value);
+    void setOption(String name, int value);
 
     /** Set an engine boolean option. */
-    public void setOption(String name, boolean value);
+    void setOption(String name, boolean value);
 
     /** Set an engine option. If the option is not a string option,
      * value is converted to the correct type.
      * @return True if the option was changed. */
-    public boolean setOption(String name, String value);
+    boolean setOption(String name, String value);
 
     /** Clear list of supported options. */
-    public void clearOptions();
+    void clearOptions();
 
     /** Register an option as supported by the engine.
      * @param tokens  The UCI option line sent by the engine, split in words. */
-    public UCIOptions.OptionBase registerOption(String[] tokens);
+    UCIOptions.OptionBase registerOption(String[] tokens);
 }

@@ -56,30 +56,30 @@ public interface SearchListener {
     }
 
     /** Report current engine search depth. */
-    public void notifyDepth(int id, int depth);
+    void notifyDepth(int id, int depth);
 
     /** Report the move, valid in position pos, that the engine is currently searching. */
-    public void notifyCurrMove(int id, Position pos, Move m, int moveNr);
+    void notifyCurrMove(int id, Position pos, Move m, int moveNr);
 
     /**
      * Report PV information. If ponderMove is non-null, ponderMove is the first move
      * to play from position pos.
      */
-    public void notifyPV(int id, Position pos, ArrayList<PvInfo> pvInfo, Move ponderMove);
+    void notifyPV(int id, Position pos, ArrayList<PvInfo> pvInfo, Move ponderMove);
 
     /** Report search statistics. */
-    public void notifyStats(int id, long nodes, int nps, long tbHits, int hash, int time);
+    void notifyStats(int id, long nodes, int nps, long tbHits, int hash, int time);
 
     /** Report opening book information. */
-    public void notifyBookInfo(int id, String bookInfo, ArrayList<Move> moveList,
-                               String eco, int distToEcoTree);
+    void notifyBookInfo(int id, String bookInfo, ArrayList<Move> moveList,
+                        String eco, int distToEcoTree);
 
     /** Report move (or command, such as "resign") played by the engine. */
-    public void notifySearchResult(int id, String cmd, Move ponder);
+    void notifySearchResult(int id, String cmd, Move ponder);
 
     /** Report engine name. */
-    public void notifyEngineName(String engineName);
+    void notifyEngineName(String engineName);
 
     /** Report engine error. */
-    public void reportEngineError(String errMsg);
+    void reportEngineError(String errMsg);
 }

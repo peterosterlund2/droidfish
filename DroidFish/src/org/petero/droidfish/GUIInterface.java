@@ -28,10 +28,10 @@ import org.petero.droidfish.gamelogic.Position;
 public interface GUIInterface {
 
     /** Update the displayed board position. */
-    public void setPosition(Position pos, String variantInfo, ArrayList<Move> variantMoves);
+    void setPosition(Position pos, String variantInfo, ArrayList<Move> variantMoves);
 
     /** Mark square sq as selected. Set to -1 to clear selection. */
-    public void setSelection(int sq);
+    void setSelection(int sq);
 
     final static class GameStatus {
         public Game.GameState state = Game.GameState.ALIVE;
@@ -45,10 +45,10 @@ public interface GUIInterface {
     }
 
     /** Set the status text. */
-    public void setStatus(GameStatus status);
+    void setStatus(GameStatus status);
 
     /** Update the list of moves. */
-    public void moveListUpdated();
+    void moveListUpdated();
 
     final public static class ThinkingInfo {
         public int id;
@@ -62,50 +62,50 @@ public interface GUIInterface {
     }
 
     /** Update the computer thinking information. */
-    public void setThinkingInfo(ThinkingInfo ti);
+    void setThinkingInfo(ThinkingInfo ti);
 
     /** Ask what to promote a pawn to. Should call reportPromotePiece() when done. */
-    public void requestPromotePiece();
+    void requestPromotePiece();
 
     /** Run code on the GUI thread. */
-    public void runOnUIThread(Runnable runnable);
+    void runOnUIThread(Runnable runnable);
 
     /** Report that user attempted to make an invalid move. */
-    public void reportInvalidMove(Move m);
+    void reportInvalidMove(Move m);
 
     /** Report UCI engine name. */
-    public void reportEngineName(String engine);
+    void reportEngineName(String engine);
 
     /** Report UCI engine error message. */
-    public void reportEngineError(String errMsg);
+    void reportEngineError(String errMsg);
 
     /** Called when a move is played. GUI can notify user, for example by playing a sound. */
-    public void movePlayed(Position pos, Move move, boolean computerMove);
+    void movePlayed(Position pos, Move move, boolean computerMove);
 
     /** Report remaining thinking time to GUI. */
-    public void setRemainingTime(int wTime, int bTime, int nextUpdate);
+    void setRemainingTime(int wTime, int bTime, int nextUpdate);
 
     /** Update engine title text. */
-    public void updateEngineTitle();
+    void updateEngineTitle();
 
     /** Update title with the material difference. */
-    public void updateMaterialDifferenceTitle(Util.MaterialDiff diff);
+    void updateMaterialDifferenceTitle(Util.MaterialDiff diff);
 
     /** Update title with time control information. */
-    public void updateTimeControlTitle();
+    void updateTimeControlTitle();
 
     /** Report a move made that is a candidate for GUI animation. */
-    public void setAnimMove(Position sourcePos, Move move, boolean forward);
+    void setAnimMove(Position sourcePos, Move move, boolean forward);
 
     /** Return true if positive analysis scores means good for white. */
-    public boolean whiteBasedScores();
+    boolean whiteBasedScores();
 
     /** Return true if pondering (permanent brain) is enabled. */
-    public boolean ponderMode();
+    boolean ponderMode();
 
     /** Get the default player name. */
-    public String playerName();
+    String playerName();
 
     /** Return true if only main-line moves are to be kept. */
-    public boolean discardVariations();
+    boolean discardVariations();
 }

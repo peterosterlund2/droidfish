@@ -31,26 +31,26 @@ public interface Player {
      *                This makes it possible for the player to correctly handle
      *                the draw by repetition rule.
      */
-    public String getCommand(Position pos, boolean drawOffer, List<Position> history);
+    String getCommand(Position pos, boolean drawOffer, List<Position> history);
     
     /** Return true if this player is a human player. */
-    public boolean isHumanPlayer();
+    boolean isHumanPlayer();
 
     /**
      * Inform player whether or not to use an opening book.
      * Of course, a human player is likely to ignore this.
      */
-    public void useBook(boolean bookOn);
+    void useBook(boolean bookOn);
 
     /**
      * Inform player about min recommended/max allowed thinking time per move.
      * Of course, a human player is likely to ignore this.
      */
-    public void timeLimit(int minTimeLimit, int maxTimeLimit, boolean randomMode);
+    void timeLimit(int minTimeLimit, int maxTimeLimit, boolean randomMode);
 
     /** 
      * Inform player that the transposition table should be cleared.
      * Of course, a human player has a hard time implementing this.
      */
-    public void clearTT();
+    void clearTT();
 }

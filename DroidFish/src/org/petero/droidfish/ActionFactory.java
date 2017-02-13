@@ -21,5 +21,5 @@ package org.petero.droidfish;
 public interface ActionFactory {
 
     /** Create action given an action ID. */
-    public UIAction getAction(String actionId);
+    UIAction getAction(String actionId);
 }
