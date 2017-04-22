@@ -755,7 +755,10 @@ public class DroidChessController {
                 }
                 int nps = currNps;
                 String npsPrefix = "";
-                if (nps > 100000) {
+                if (nps > 100000000) {
+                    nps /= 1000000;
+                    npsPrefix = "M";
+                } else if (nps > 100000) {
                     nps /= 1000;
                     npsPrefix = "k";
                 }
