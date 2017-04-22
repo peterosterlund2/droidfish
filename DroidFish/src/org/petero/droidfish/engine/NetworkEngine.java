@@ -158,7 +158,6 @@ public class NetworkEngine extends UCIEngineBase {
                         else
                             report.reportError(context.getString(R.string.engine_terminated));
                     }
-                    try { socket.close(); } catch (IOException e) {}
                 }
                 engineToGui.close();
             }
@@ -189,6 +188,7 @@ public class NetworkEngine extends UCIEngineBase {
                         report.reportError(context.getString(R.string.engine_terminated));
                     }
                     isRunning = false;
+                    try { socket.getOutputStream().write("quit\n".getBytes()); } catch (IOException e) {}
                     try { socket.close(); } catch (IOException ex) {}
                 }
             }
@@ -267,10 +267,6 @@ public class NetworkEngine extends UCIEngineBase {
         isRunning = false;
         if (startupThread != null)
             startupThread.interrupt();
-        if (socket != null) {
-            try { socket.getOutputStream().write("quit\n".getBytes()); } catch (IOException e) {}
-            try { socket.close(); } catch (IOException e) {}
-        }
         super.shutDown();
         if (stdOutThread != null)
             stdOutThread.interrupt();

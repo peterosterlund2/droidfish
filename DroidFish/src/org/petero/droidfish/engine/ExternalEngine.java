@@ -264,6 +264,7 @@ public class ExternalEngine extends UCIEngineBase {
         return ret;
     }
 
+    // FIXME!! Writes should be handled by separate thread.
     /** @inheritDoc */
     @Override
     public void writeLineToEngine(String data) {

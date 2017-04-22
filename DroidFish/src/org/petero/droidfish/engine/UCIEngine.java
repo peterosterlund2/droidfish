@@ -64,7 +64,6 @@ public interface UCIEngine {
      */
     String readLineFromEngine(int timeoutMillis);
 
-    // FIXME!! Writes should be handled by separate thread.
     /** Write a line to the engine. \n will be added automatically. */
     void writeLineToEngine(String data);
 
