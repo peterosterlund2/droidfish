@@ -79,8 +79,6 @@ public class LoadScid extends ListActivity {
     private Thread workThread = null;
     private CountDownLatch progressLatch = null;
 
-    private int idIdx;
-    private int summaryIdx;
     private boolean resultSentBack = false;
 
 
@@ -100,8 +98,6 @@ public class LoadScid extends ListActivity {
             }
             @Override
             public void onLoadFinished(Loader<Cursor> loader, final Cursor cursor) {
-                idIdx = cursor.getColumnIndex("_id");
-                summaryIdx = cursor.getColumnIndex("summary");
                 workThread = new Thread(new Runnable() {
                     public void run() {
                         r.run(cursor);
@@ -334,6 +330,8 @@ public class LoadScid extends ListActivity {
 
     private void addGameInfo(Cursor cursor) {
         GameInfo gi = new GameInfo();
+        int idIdx = cursor.getColumnIndex("_id");
+        int summaryIdx = cursor.getColumnIndex("summary");
         gi.gameId = cursor.getInt(idIdx);
         gi.summary = cursor.getString(summaryIdx);
         gamesInFile.add(gi);
