@@ -39,7 +39,7 @@ public class MoveGen {
      * Pseudo-legal means that the moves don't necessarily defend from check threats.
      */
     public final ArrayList<Move> pseudoLegalMoves(Position pos) {
-        ArrayList<Move> moveList = getMoveListObj();
+        ArrayList<Move> moveList = new ArrayList<Move>(60);
         final boolean wtm = pos.whiteMove;
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
@@ -119,8 +119,7 @@ public class MoveGen {
                         if (cap != Piece.EMPTY) {
                             if (Piece.isWhite(cap) != wtm) {
                                 if (cap == (wtm ? Piece.BKING : Piece.WKING)) {
-                                    returnMoveList(moveList);
-                                    moveList = getMoveListObj();
+                                    moveList.clear();
                                     moveList.add(getMoveObj(sq, toSq, Piece.EMPTY));
                                     return moveList;
                                 } else {
@@ -137,8 +136,7 @@ public class MoveGen {
                         if (cap != Piece.EMPTY) {
                             if (Piece.isWhite(cap) != wtm) {
                                 if (cap == (wtm ? Piece.BKING : Piece.WKING)) {
-                                    returnMoveList(moveList);
-                                    moveList = getMoveListObj();
+                                    moveList.clear();
                                     moveList.add(getMoveObj(sq, toSq, Piece.EMPTY));
                                     return moveList;
                                 } else {
@@ -258,8 +256,7 @@ public class MoveGen {
             } else {
                 if (Piece.isWhite(p) != wtm) {
                     if (p == oKing) {
-                        returnMoveList(moveList);
-                        moveList = getMoveListObj(); // Ugly! this only works because we get back the same object
+                        moveList.clear();
                         moveList.add(getMoveObj(sq0, sq, Piece.EMPTY));
                         return true;
                     } else {
@@ -310,49 +307,7 @@ public class MoveGen {
         return Piece.EMPTY;
     }
 
-    // Code to handle the Move cache.
-
-    private Move[] moveCache = new Move[2048];
-    private int movesInCache = 0;
-    private Object[] moveListCache = new Object[200];
-    private int moveListsInCache = 0;
-
-    private final Move getMoveObj(int from, int to, int promoteTo) {
-        if (movesInCache > 0) {
-            Move m = moveCache[--movesInCache];
-            m.from = from;
-            m.to = to;
-            m.promoteTo = promoteTo;
-            return m;
-        }
+    private static final Move getMoveObj(int from, int to, int promoteTo) {
         return new Move(from, to, promoteTo);
-    }
-
-    @SuppressWarnings("unchecked")
-    private final ArrayList<Move> getMoveListObj() {
-        if (moveListsInCache > 0) {
-            return (ArrayList<Move>)moveListCache[--moveListsInCache];
-        }
-        return new ArrayList<Move>(60);
-    }
-
-    /** Return all move objects in moveList to the move cache. */
-    public final void returnMoveList(ArrayList<Move> moveList) {
-        if (movesInCache + moveList.size() <= moveCache.length) {
-            int mlSize = moveList.size();
-            for (int mi = 0; mi < mlSize; mi++) {
-                moveCache[movesInCache++] = moveList.get(mi);
-            }
-        }
-        moveList.clear();
-        if (moveListsInCache < moveListCache.length) {
-            moveListCache[moveListsInCache++] = moveList;
-        }
-    }
-
-    public final void returnMove(Move m) {
-        if (movesInCache < moveCache.length) {
-            moveCache[movesInCache++] = m;
-        }
     }
 }
