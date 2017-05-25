@@ -744,24 +744,6 @@ public class DroidChessController {
             }
             StringBuilder statStrTmp = new StringBuilder();
             if (currDepth > 0) {
-                long nodes = currNodes;
-                String nodesPrefix = "";
-                if (nodes > 100000000) {
-                    nodes /= 1000000;
-                    nodesPrefix = "M";
-                } else if (nodes > 100000) {
-                    nodes /= 1000;
-                    nodesPrefix = "k";
-                }
-                int nps = currNps;
-                String npsPrefix = "";
-                if (nps > 100000000) {
-                    nps /= 1000000;
-                    npsPrefix = "M";
-                } else if (nps > 100000) {
-                    nps /= 1000;
-                    npsPrefix = "k";
-                }
                 statStrTmp.append(String.format(Locale.US, "d:%d", currDepth));
                 if (currMoveNr > 0)
                     statStrTmp.append(String.format(Locale.US, " %d:%s", currMoveNr, currMoveStr));
@@ -772,19 +754,13 @@ public class DroidChessController {
                 } else {
                     statStrTmp.append(String.format(Locale.US, " t:%d", (int)((currTime + 500) / 1000)));
                 }
-                statStrTmp.append(String.format(Locale.US, " n:%d%s nps:%d%s",
-                                                nodes, nodesPrefix, nps, npsPrefix));
+                statStrTmp.append(" n:");
+                appendWithPrefix(statStrTmp, currNodes);
+                statStrTmp.append(" nps:");
+                appendWithPrefix(statStrTmp, currNps);
                 if (currTBHits > 0) {
-                    long tbHits = currTBHits;
-                    String tbHitsPrefix = "";
-                    if (tbHits > 100000000) {
-                        tbHits /= 1000000;
-                        tbHitsPrefix = "M";
-                    } else if (tbHits > 100000) {
-                        tbHits /= 1000;
-                        tbHitsPrefix = "k";
-                    }
-                    statStrTmp.append(String.format(Locale.US, " tb:%d%s", tbHits, tbHitsPrefix));
+                    statStrTmp.append(" tb:");
+                    appendWithPrefix(statStrTmp, currTBHits);
                 }
                 if (currHash > 0)
                     statStrTmp.append(String.format(Locale.US, " h:%d", currHash / 10));
@@ -818,6 +794,22 @@ public class DroidChessController {
                     setThinkingInfo(ti);
                 }
             });
+        }
+
+        private void appendWithPrefix(StringBuilder sb, long value) {
+            if (value > 100000000000L) {
+                value /= 1000000000;
+                sb.append(value);
+                sb.append('G');
+            } else if (value > 100000000) {
+                value /= 1000000;
+                sb.append(value);
+                sb.append('M');
+            } else if (value > 100000) {
+                value /= 1000;
+                sb.append(value);
+                sb.append('k');
+            }
         }
 
         @Override
