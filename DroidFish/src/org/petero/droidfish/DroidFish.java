@@ -651,8 +651,8 @@ public class DroidFish extends Activity
                     PackageManager.PERMISSION_GRANTED) {
                 storagePermission = PermissionState.GRANTED;
             } else {
-                ActivityCompat.requestPermissions(this, new String[]{extStorage}, 0);
                 storagePermission = PermissionState.REQUESTED;
+                ActivityCompat.requestPermissions(this, new String[]{extStorage}, 0);
             }
         }
         if (storagePermission != PermissionState.GRANTED)
