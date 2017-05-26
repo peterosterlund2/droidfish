@@ -526,7 +526,7 @@ public class DroidFish extends Activity
                     TextIO.readFEN(intentPgnOrFen);
                 } catch (ChessParseError e2) {
                     if (e2.pos != null)
-                        startEditBoard(intentPgnOrFen);
+                        startEditBoard(TextIO.toFEN(e2.pos));
                 }
             }
         } else if (intentFilename != null) {
@@ -3757,7 +3757,7 @@ public class DroidFish extends Activity
                 TextIO.readFEN(fen);
             } catch (ChessParseError e2) {
                 if (e2.pos != null)
-                    startEditBoard(fen);
+                    startEditBoard(TextIO.toFEN(e2.pos));
             }
         }
     }
