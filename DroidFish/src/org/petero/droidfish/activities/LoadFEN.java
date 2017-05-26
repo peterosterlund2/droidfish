@@ -73,6 +73,7 @@ public class LoadFEN extends ListActivity {
 
     private Thread workThread = null;
     private CountDownLatch progressLatch = null;
+    private boolean canceled = false;
 
     private ChessBoardPlay cb;
     private Button okButton;
@@ -117,7 +118,12 @@ public class LoadFEN extends ListActivity {
                         return;
                     runOnUiThread(new Runnable() {
                         public void run() {
-                            lfen.showList();
+                            if (canceled) {
+                                setResult(RESULT_CANCELED);
+                                finish();
+                            } else {
+                                lfen.showList();
+                            }
                         }
                     });
                 }
@@ -298,7 +304,9 @@ public class LoadFEN extends ListActivity {
             super.onCancel(dialog);
             Activity a = getActivity();
             if (a instanceof LoadFEN) {
-                Thread thr = ((LoadFEN)a).workThread;
+                LoadFEN lf = (LoadFEN)a;
+                lf.canceled = true;
+                Thread thr = lf.workThread;
                 if (thr != null)
                     thr.interrupt();
             }

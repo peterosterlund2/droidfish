@@ -78,6 +78,7 @@ public class LoadScid extends ListActivity {
 
     private Thread workThread = null;
     private CountDownLatch progressLatch = null;
+    private boolean canceled = false;
 
     private boolean resultSentBack = false;
 
@@ -131,6 +132,7 @@ public class LoadScid extends ListActivity {
         String action = i.getAction();
         fileName = i.getStringExtra("org.petero.droidfish.pathname");
         resultSentBack = false;
+        canceled = false;
         if (action.equals("org.petero.droidfish.loadScid")) {
             progressLatch = new CountDownLatch(1);
             showProgressDialog();
@@ -149,7 +151,12 @@ public class LoadScid extends ListActivity {
                         return;
                     runOnUiThread(new Runnable() {
                         public void run() {
-                            lpgn.showList();
+                            if (canceled) {
+                                setResult(RESULT_CANCELED);
+                                finish();
+                            } else {
+                                lpgn.showList();
+                            }
                         }
                     });
                 }
@@ -267,7 +274,9 @@ public class LoadScid extends ListActivity {
             super.onCancel(dialog);
             Activity a = getActivity();
             if (a instanceof LoadScid) {
-                Thread thr = ((LoadScid)a).workThread;
+                LoadScid ls = (LoadScid)a;
+                ls.canceled = true;
+                Thread thr = ls.workThread;
                 if (thr != null)
                     thr.interrupt();
             }

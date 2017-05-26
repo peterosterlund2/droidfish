@@ -73,6 +73,7 @@ public class EditPGN extends ListActivity {
     long lastModTime = -1;
 
     Thread workThread = null;
+    boolean canceled = false;
 
     boolean loadGame; // True when loading game, false when saving
     String pgnToSave;
@@ -101,6 +102,7 @@ public class EditPGN extends ListActivity {
         Intent i = getIntent();
         String action = i.getAction();
         String fileName = i.getStringExtra("org.petero.droidfish.pathname");
+        canceled = false;
         if (action.equals("org.petero.droidfish.loadFile")) {
             pgnFile = new PGNFile(fileName);
             loadGame = true;
@@ -112,7 +114,12 @@ public class EditPGN extends ListActivity {
                         return;
                     runOnUiThread(new Runnable() {
                         public void run() {
-                            lpgn.showList();
+                            if (canceled) {
+                                setResult(RESULT_CANCELED);
+                                finish();
+                            } else {
+                                lpgn.showList();
+                            }
                         }
                     });
                 }
@@ -168,7 +175,10 @@ public class EditPGN extends ListActivity {
                             return;
                         runOnUiThread(new Runnable() {
                             public void run() {
-                                if (gamesInFile.size() == 0) {
+                                if (canceled) {
+                                    setResult(RESULT_CANCELED);
+                                    finish();
+                                } else if (gamesInFile.size() == 0) {
                                     pgnFile.appendPGN(pgnToSave, getApplicationContext());
                                     finish();
                                 } else {
@@ -327,6 +337,7 @@ public class EditPGN extends ListActivity {
             progress.setOnCancelListener(new OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
+                    canceled = true;
                     Thread thr = workThread;
                     if (thr != null)
                         thr.interrupt();
@@ -417,7 +428,6 @@ public class EditPGN extends ListActivity {
         long modTime = new File(fileName).lastModified();
         if (cacheValid && (modTime == lastModTime) && fileName.equals(lastFileName))
             return true;
-        pgnFile = new PGNFile(fileName);
         Pair<GameInfoResult, ArrayList<GameInfo>> p = pgnFile.getGameInfo(this, progress);
         if (p.first != GameInfoResult.OK) {
             gamesInFile = new ArrayList<GameInfo>();
