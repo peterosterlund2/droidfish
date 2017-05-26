@@ -809,6 +809,8 @@ public class DroidChessController {
                 value /= 1000;
                 sb.append(value);
                 sb.append('k');
+            } else {
+                sb.append(value);
             }
         }
 
