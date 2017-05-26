@@ -229,8 +229,7 @@ public class EditPGN extends ListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.item_delete_file:
-            removeDialog(DELETE_PGN_FILE_DIALOG);
-            showDialog(DELETE_PGN_FILE_DIALOG);
+            reShowDialog(DELETE_PGN_FILE_DIALOG);
             break;
         }
         return false;
@@ -266,8 +265,7 @@ public class EditPGN extends ListActivity {
                     defaultItem = pos;
                     sendBackResult(selectedGi);
                 } else {
-                    removeDialog(SAVE_GAME_DIALOG);
-                    showDialog(SAVE_GAME_DIALOG);
+                    reShowDialog(SAVE_GAME_DIALOG);
                 }
             }
         });
@@ -275,10 +273,8 @@ public class EditPGN extends ListActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int pos, long id) {
                 selectedGi = aa.getItem(pos);
-                if (selectedGi != null && !selectedGi.isNull()) {
-                    removeDialog(DELETE_GAME_DIALOG);
-                    showDialog(DELETE_GAME_DIALOG);
-                }
+                if (selectedGi != null && !selectedGi.isNull())
+                    reShowDialog(DELETE_GAME_DIALOG);
                 return true;
             }
         });
@@ -314,6 +310,12 @@ public class EditPGN extends ListActivity {
     final static int DELETE_GAME_DIALOG = 1;
     final static int SAVE_GAME_DIALOG = 2;
     final static int DELETE_PGN_FILE_DIALOG = 3;
+
+    /** Remove and show a dialog. */
+    private void reShowDialog(int id) {
+        removeDialog(id);
+        showDialog(id);
+    }
 
     @Override
     protected Dialog onCreateDialog(int id) {

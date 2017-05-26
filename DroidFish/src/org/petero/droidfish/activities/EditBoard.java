@@ -326,20 +326,17 @@ public class EditBoard extends Activity {
                     break;
                 }
                 case CASTLING_FLAGS:
-                    removeDialog(CASTLE_DIALOG);
-                    showDialog(CASTLE_DIALOG);
+                    reShowDialog(CASTLE_DIALOG);
                     setSelection(-1);
                     checkValidAndUpdateMaterialDiff();
                     break;
                 case EN_PASSANT_FILE:
-                    removeDialog(EP_DIALOG);
-                    showDialog(EP_DIALOG);
+                    reShowDialog(EP_DIALOG);
                     setSelection(-1);
                     checkValidAndUpdateMaterialDiff();
                     break;
                 case MOVE_COUNTERS:
-                    removeDialog(MOVCNT_DIALOG);
-                    showDialog(MOVCNT_DIALOG);
+                    reShowDialog(MOVCNT_DIALOG);
                     setSelection(-1);
                     checkValidAndUpdateMaterialDiff();
                     break;
@@ -509,6 +506,12 @@ public class EditBoard extends Activity {
     static final int CASTLE_DIALOG = 2;
     static final int EP_DIALOG = 3;
     static final int MOVCNT_DIALOG = 4;
+
+    /** Remove and show a dialog. */
+    private void reShowDialog(int id) {
+        removeDialog(id);
+        showDialog(id);
+    }
 
     @Override
     protected Dialog onCreateDialog(int id) {

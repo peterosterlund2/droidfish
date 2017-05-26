@@ -412,8 +412,7 @@ public class DroidFish extends Activity
                 public int getIcon() { return R.raw.engine; }
                 public boolean enabled() { return true; }
                 public void run() {
-                    removeDialog(SELECT_ENGINE_DIALOG_NOMANAGE);
-                    showDialog(SELECT_ENGINE_DIALOG_NOMANAGE);
+                    reShowDialog(SELECT_ENGINE_DIALOG_NOMANAGE);
                 }
             });
             addAction(new UIAction() {
@@ -917,8 +916,7 @@ public class DroidFish extends Activity
                     pending = false;
                     handler.removeCallbacks(runnable);
                     ((Vibrator)getSystemService(Context.VIBRATOR_SERVICE)).vibrate(20);
-                    removeDialog(BOARD_MENU_DIALOG);
-                    showDialog(BOARD_MENU_DIALOG);
+                    reShowDialog(BOARD_MENU_DIALOG);
                 }
             };
 
@@ -1051,19 +1049,15 @@ public class DroidFish extends Activity
 
         moveList.setOnLongClickListener(new OnLongClickListener() {
             public boolean onLongClick(View v) {
-                removeDialog(MOVELIST_MENU_DIALOG);
-                showDialog(MOVELIST_MENU_DIALOG);
+                reShowDialog(MOVELIST_MENU_DIALOG);
                 return true;
             }
         });
         thinking.setOnLongClickListener(new OnLongClickListener() {
             public boolean onLongClick(View v) {
-                if (mShowThinking || gameMode.analysisMode()) {
-                    if (!pvMoves.isEmpty()) {
-                        removeDialog(THINKING_MENU_DIALOG);
-                        showDialog(THINKING_MENU_DIALOG);
-                    }
-                }
+                if (mShowThinking || gameMode.analysisMode())
+                    if (!pvMoves.isEmpty())
+                        reShowDialog(THINKING_MENU_DIALOG);
                 return true;
             }
         });
@@ -1101,8 +1095,7 @@ public class DroidFish extends Activity
         undoButton.setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                removeDialog(GO_BACK_MENU_DIALOG);
-                showDialog(GO_BACK_MENU_DIALOG);
+                reShowDialog(GO_BACK_MENU_DIALOG);
                 return true;
             }
         });
@@ -1117,8 +1110,7 @@ public class DroidFish extends Activity
         redoButton.setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                removeDialog(GO_FORWARD_MENU_DIALOG);
-                showDialog(GO_FORWARD_MENU_DIALOG);
+                reShowDialog(GO_FORWARD_MENU_DIALOG);
                 return true;
             }
         });
@@ -1624,10 +1616,8 @@ public class DroidFish extends Activity
             break;
         }
         case ITEM_FILE_MENU:
-            if (storageAvailable()) {
-                removeDialog(FILE_MENU_DIALOG);
-                showDialog(FILE_MENU_DIALOG);
-            }
+            if (storageAvailable())
+                reShowDialog(FILE_MENU_DIALOG);
             break;
         case ITEM_RESIGN:
             if (ctrl.humansTurn())
@@ -1645,19 +1635,14 @@ public class DroidFish extends Activity
             }
             break;
         case ITEM_SELECT_BOOK:
-            if (storageAvailable()) {
-                removeDialog(SELECT_BOOK_DIALOG);
-                showDialog(SELECT_BOOK_DIALOG);
-            }
+            if (storageAvailable())
+                reShowDialog(SELECT_BOOK_DIALOG);
             break;
         case ITEM_MANAGE_ENGINES:
-            if (storageAvailable()) {
-                removeDialog(MANAGE_ENGINES_DIALOG);
-                showDialog(MANAGE_ENGINES_DIALOG);
-            } else {
-                removeDialog(SELECT_ENGINE_DIALOG_NOMANAGE);
-                showDialog(SELECT_ENGINE_DIALOG_NOMANAGE);
-            }
+            if (storageAvailable())
+                reShowDialog(MANAGE_ENGINES_DIALOG);
+            else
+                reShowDialog(SELECT_ENGINE_DIALOG_NOMANAGE);
             break;
         case ITEM_SET_COLOR_THEME:
             showDialog(SET_COLOR_THEME_DIALOG);
@@ -2130,6 +2115,12 @@ public class DroidFish extends Activity
     static private final int CLIPBOARD_DIALOG = 26;
     static private final int SELECT_FEN_FILE_DIALOG = 27;
 
+    /** Remove and show a dialog. */
+    private void reShowDialog(int id) {
+        removeDialog(id);
+        showDialog(id);
+    }
+
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
@@ -2313,8 +2304,7 @@ public class DroidFish extends Activity
                     showDialog(CLIPBOARD_DIALOG);
                     break;
                 case FILEMENU:
-                    removeDialog(FILE_MENU_DIALOG);
-                    showDialog(FILE_MENU_DIALOG);
+                    reShowDialog(FILE_MENU_DIALOG);
                     break;
                 case SHARE_GAME:
                     shareGameOrText(true);
@@ -2604,10 +2594,8 @@ public class DroidFish extends Activity
         builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                if (!abortOnCancel) {
-                    removeDialog(MANAGE_ENGINES_DIALOG);
-                    showDialog(MANAGE_ENGINES_DIALOG);
-                }
+                if (!abortOnCancel)
+                    reShowDialog(MANAGE_ENGINES_DIALOG);
             }
         });
         AlertDialog alert = builder.create();
@@ -3323,15 +3311,13 @@ public class DroidFish extends Activity
             public void onClick(DialogInterface dialog, int item) {
                 switch (actions.get(item)) {
                 case SELECT_ENGINE:
-                    removeDialog(SELECT_ENGINE_DIALOG);
-                    showDialog(SELECT_ENGINE_DIALOG);
+                    reShowDialog(SELECT_ENGINE_DIALOG);
                     break;
                 case SET_ENGINE_OPTIONS:
                     setEngineOptions();
                     break;
                 case CONFIG_NET_ENGINE:
-                    removeDialog(NETWORK_ENGINE_DIALOG);
-                    showDialog(NETWORK_ENGINE_DIALOG);
+                    reShowDialog(NETWORK_ENGINE_DIALOG);
                     break;
                 }
             }
@@ -3404,16 +3390,14 @@ public class DroidFish extends Activity
                     showDialog(NEW_NETWORK_ENGINE_DIALOG);
                 } else {
                     networkEngineToConfig = ids[item];
-                    removeDialog(NETWORK_ENGINE_CONFIG_DIALOG);
-                    showDialog(NETWORK_ENGINE_CONFIG_DIALOG);
+                    reShowDialog(NETWORK_ENGINE_CONFIG_DIALOG);
                 }
             }
         });
         builder.setOnCancelListener(new Dialog.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                removeDialog(MANAGE_ENGINES_DIALOG);
-                showDialog(MANAGE_ENGINES_DIALOG);
+                reShowDialog(MANAGE_ENGINES_DIALOG);
             }
         });
         AlertDialog alert = builder.create();
@@ -3448,13 +3432,11 @@ public class DroidFish extends Activity
                 }
                 if (!nameOk) {
                     Toast.makeText(getApplicationContext(), errMsg, Toast.LENGTH_LONG).show();
-                    removeDialog(NETWORK_ENGINE_DIALOG);
-                    showDialog(NETWORK_ENGINE_DIALOG);
+                    reShowDialog(NETWORK_ENGINE_DIALOG);
                     return;
                 }
                 networkEngineToConfig = pathName;
-                removeDialog(NETWORK_ENGINE_CONFIG_DIALOG);
-                showDialog(NETWORK_ENGINE_CONFIG_DIALOG);
+                reShowDialog(NETWORK_ENGINE_CONFIG_DIALOG);
             }
         };
         builder.setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
@@ -3465,15 +3447,13 @@ public class DroidFish extends Activity
         builder.setNegativeButton(R.string.cancel, new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                removeDialog(NETWORK_ENGINE_DIALOG);
-                showDialog(NETWORK_ENGINE_DIALOG);
+                reShowDialog(NETWORK_ENGINE_DIALOG);
             }
         });
         builder.setOnCancelListener(new Dialog.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                removeDialog(NETWORK_ENGINE_DIALOG);
-                showDialog(NETWORK_ENGINE_DIALOG);
+                reShowDialog(NETWORK_ENGINE_DIALOG);
             }
         });
 
@@ -3533,29 +3513,25 @@ public class DroidFish extends Activity
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 writeConfig.run();
-                removeDialog(NETWORK_ENGINE_DIALOG);
-                showDialog(NETWORK_ENGINE_DIALOG);
+                reShowDialog(NETWORK_ENGINE_DIALOG);
             }
         });
         builder.setNegativeButton(R.string.cancel, new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                removeDialog(NETWORK_ENGINE_DIALOG);
-                showDialog(NETWORK_ENGINE_DIALOG);
+                reShowDialog(NETWORK_ENGINE_DIALOG);
             }
         });
         builder.setOnCancelListener(new Dialog.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                removeDialog(NETWORK_ENGINE_DIALOG);
-                showDialog(NETWORK_ENGINE_DIALOG);
+                reShowDialog(NETWORK_ENGINE_DIALOG);
             }
         });
         builder.setNeutralButton(R.string.delete, new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                removeDialog(DELETE_NETWORK_ENGINE_DIALOG);
-                showDialog(DELETE_NETWORK_ENGINE_DIALOG);
+                reShowDialog(DELETE_NETWORK_ENGINE_DIALOG);
             }
         });
 
@@ -3565,8 +3541,7 @@ public class DroidFish extends Activity
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     writeConfig.run();
                     dialog.cancel();
-                    removeDialog(NETWORK_ENGINE_DIALOG);
-                    showDialog(NETWORK_ENGINE_DIALOG);
+                    reShowDialog(NETWORK_ENGINE_DIALOG);
                     return true;
                 }
                 return false;
@@ -3597,22 +3572,19 @@ public class DroidFish extends Activity
                     setEngineStrength(engine, strength);
                 }
                 dialog.cancel();
-                removeDialog(NETWORK_ENGINE_DIALOG);
-                showDialog(NETWORK_ENGINE_DIALOG);
+                reShowDialog(NETWORK_ENGINE_DIALOG);
             }
         });
         builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
-                removeDialog(NETWORK_ENGINE_DIALOG);
-                showDialog(NETWORK_ENGINE_DIALOG);
+                reShowDialog(NETWORK_ENGINE_DIALOG);
             }
         });
         builder.setOnCancelListener(new Dialog.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                removeDialog(NETWORK_ENGINE_DIALOG);
-                showDialog(NETWORK_ENGINE_DIALOG);
+                reShowDialog(NETWORK_ENGINE_DIALOG);
             }
         });
         AlertDialog alert = builder.create();
@@ -3636,8 +3608,7 @@ public class DroidFish extends Activity
         try {
             startActivityForResult(i, result);
         } catch (ActivityNotFoundException e) {
-            removeDialog(dialog);
-            showDialog(dialog);
+            reShowDialog(dialog);
         }
     }
 
