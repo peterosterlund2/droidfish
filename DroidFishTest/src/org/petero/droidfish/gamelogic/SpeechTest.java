@@ -55,11 +55,11 @@ public class SpeechTest extends TestCase {
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("exd5");
-            assertEquals(new String[]{"e takes d5", "e schlägt d5", "e captura d5"},
+            assertEquals(new String[]{"e takes, d5", "e schlägt d5", "e captura d5"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("Qxd5");
-            assertEquals(new String[]{"Queen takes d5", "Dame schlägt d5", "Dama captura d5"},
+            assertEquals(new String[]{"Queen takes, d5", "Dame schlägt d5", "Dama captura d5"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("Ne2");
@@ -91,11 +91,11 @@ public class SpeechTest extends TestCase {
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("axb4");
-            assertEquals(new String[]{"ae takes b 4", "a schlägt b 4", "a captura b 4"},
+            assertEquals(new String[]{"ae takes, b 4", "a schlägt b 4", "a captura b 4"},
                     moveToText(game.prevPos(), res.second, lang));
         
             res = game.processString("axb4");
-            assertEquals(new String[]{"ae takes b 4", "a schlägt b 4", "a captura b 4"},
+            assertEquals(new String[]{"ae takes, b 4", "a schlägt b 4", "a captura b 4"},
                     moveToText(game.prevPos(), res.second, lang));
         }
         {
@@ -108,18 +108,18 @@ public class SpeechTest extends TestCase {
             assertEquals(new String[]{"e5", "e5", "e5"}, moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("dxe5");
-            assertEquals(new String[]{"d take e5", "d schlägt e5", "d captura e5"},
+            assertEquals(new String[]{"d takes, e5", "d schlägt e5", "d captura e5"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("f6");
             assertEquals(new String[]{"f6", "f6", "f6"}, moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("exf6");
-            assertEquals(new String[]{"e takes f6", "e schlägt f6", "e captura f6"},
+            assertEquals(new String[]{"e takes, f6", "e schlägt f6", "e captura f6"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("Bb4");
-            assertEquals(new String[]{"Bishop b 4 check!", "Läufer b 4 Schach!", "Alfil b 4 , jaque!"},
+            assertEquals(new String[]{"Bishop b 4 , check!", "Läufer b 4 , Schach!", "Alfil b 4 , jaque!"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("c3");
@@ -131,7 +131,7 @@ public class SpeechTest extends TestCase {
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("cxb4");
-            assertEquals(new String[]{"c takes b 4", "c schlägt b 4", "c captura b 4"},
+            assertEquals(new String[]{"c takes, b 4", "c schlägt b 4", "c captura b 4"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("O-O");
@@ -139,7 +139,7 @@ public class SpeechTest extends TestCase {
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("fxg7");
-            assertEquals(new String[]{"f takes g7", "f schlägt g7", "f captura g7"},
+            assertEquals(new String[]{"f takes, g7", "f schlägt g7", "f captura g7"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("h6");
@@ -147,12 +147,12 @@ public class SpeechTest extends TestCase {
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("gxf8Q+");
-            assertEquals(new String[]{"g takes f8 Queen check!", "g schlägt f8 Umwandlung zu Dame Schach!",
+            assertEquals(new String[]{"g takes, f8 Queen , check!", "g schlägt f8 Umwandlung zu Dame , Schach!",
                                       "g captura f8 Dama , jaque!"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("Kxf8");
-            assertEquals(new String[]{"King takes f8", "König schlägt f8", "Rey captura f8"},
+            assertEquals(new String[]{"King takes, f8", "König schlägt f8", "Rey captura f8"},
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("b5");
@@ -164,7 +164,7 @@ public class SpeechTest extends TestCase {
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("bxa6");
-            assertEquals(new String[]{"b takes a6", "b schlägt a6 en passant", "b captura a6 al paso"},
+            assertEquals(new String[]{"b takes, a6", "b schlägt a6 en passant", "b captura a6 al paso"},
                     moveToText(game.prevPos(), res.second, lang));
         }
         {
@@ -182,7 +182,7 @@ public class SpeechTest extends TestCase {
                     moveToText(game.prevPos(), res.second, lang));
 
             res = game.processString("Qh4");
-            assertEquals(new String[]{"Queen h4 check mate!", "Dame h4 Schach matt!", "Dama h4 , mate!"},
+            assertEquals(new String[]{"Queen h4 , check mate!", "Dame h4 , Schach matt!", "Dama h4 , mate!"},
                     moveToText(game.prevPos(), res.second, lang));
         }
         {
@@ -193,7 +193,7 @@ public class SpeechTest extends TestCase {
                     moveToText(game.prevPos(), res.second, lang));
             playMoves(game, "Nxd4 Nxd5 Qxd5 Qxd4 Qxd4 Nf3 Qxd1 Kxd1");
             res = game.processString("O-O-O");
-            assertEquals(new String[]{"Long castle check!", "Große Rochade Schach!", "Enroque largo , jaque!"},
+            assertEquals(new String[]{"Long castle , check!", "Große Rochade , Schach!", "Enroque largo , jaque!"},
                     moveToText(game.prevPos(), res.second, lang));
             playMoves(game, "Kc1");
             res = game.processString("Rd7");
@@ -204,7 +204,7 @@ public class SpeechTest extends TestCase {
             Game game = new Game(null, new TimeControlData());
             playMoves(game, "e4 e5 h3 Bb4 Ne2 Bc3");
             Pair<Boolean,Move> res = game.processString("Nexc3");
-            assertEquals(new String[]{"Knight e takes c3", "Springer e schlägt c3", "Caballo e captura c3"},
+            assertEquals(new String[]{"Knight e takes, c3", "Springer e schlägt c3", "Caballo e captura c3"},
                     moveToText(game.prevPos(), res.second, lang));
         }
     }

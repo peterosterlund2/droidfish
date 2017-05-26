@@ -191,7 +191,7 @@ public class Speech {
                 if (!from.isEmpty())
                     addWord(sentence, fromToString(from, lang));
                 String to = moveStr.substring(i + 1, i + 3);
-                addWord(sentence, captureToString(to, lang));
+                addWord(sentence, captureToString(lang));
                 addWord(sentence, toToString(to, lang));
                 if (enPassant)
                     addWord(sentence, epToString(lang));
@@ -312,10 +312,10 @@ public class Speech {
         throw new IllegalArgumentException();
     }
 
-    private static String captureToString(String to, Language lang) {
+    private static String captureToString(Language lang) {
         switch (lang) {
         case EN:
-            return to.startsWith("e") ? "take" : "takes";
+            return "takes,";
         case DE:
             return "schlägt";
         case ES:
@@ -372,9 +372,9 @@ public class Speech {
     private static String checkToString(Language lang) {
         switch (lang) {
         case EN:
-            return "check!";
+            return ", check!";
         case DE:
-            return "Schach!";
+            return ", Schach!";
         case ES:
             return ", jaque!";
         case NONE:
@@ -386,9 +386,9 @@ public class Speech {
     private static String checkMateToString(Language lang) {
         switch (lang) {
         case EN:
-            return "check mate!";
+            return ", check mate!";
         case DE:
-            return "Schach matt!";
+            return ", Schach matt!";
         case ES:
             return ", mate!";
         case NONE:
