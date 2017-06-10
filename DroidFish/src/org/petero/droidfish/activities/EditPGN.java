@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import org.petero.droidfish.ColorTheme;
+import org.petero.droidfish.ObjectCache;
 import org.petero.droidfish.R;
 import org.petero.droidfish.Util;
 import org.petero.droidfish.activities.PGNFile.GameInfo;
@@ -160,7 +161,8 @@ public class EditPGN extends ListActivity {
             }
         } else if (action.equals("org.petero.droidfish.saveFile")) {
             loadGame = false;
-            pgnToSave = i.getStringExtra("org.petero.droidfish.pgn");
+            String token = i.getStringExtra("org.petero.droidfish.pgn");
+            pgnToSave = (new ObjectCache()).retrieveString(token);
             boolean silent = i.getBooleanExtra("org.petero.droidfish.silent", false);
             if (silent) { // Silently append to file
                 PGNFile pgnFile2 = new PGNFile(fileName);
@@ -466,7 +468,8 @@ public class EditPGN extends ListActivity {
     private final void sendBackResult(GameInfo gi) {
         String pgn = pgnFile.readOneGame(gi);
         if (pgn != null) {
-            setResult(RESULT_OK, (new Intent()).setAction(pgn));
+            String pgnToken = (new ObjectCache()).storeString(pgn);
+            setResult(RESULT_OK, (new Intent()).setAction(pgnToken));
             finish();
         } else {
             setResult(RESULT_CANCELED);

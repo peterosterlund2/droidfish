@@ -24,6 +24,7 @@ import java.util.Vector;
 import java.util.concurrent.CountDownLatch;
 
 import org.petero.droidfish.ColorTheme;
+import org.petero.droidfish.ObjectCache;
 import org.petero.droidfish.R;
 import org.petero.droidfish.Util;
 
@@ -371,7 +372,8 @@ public class LoadScid extends ListActivity {
                 if (cursor != null && cursor.moveToFirst()) {
                     String pgn = cursor.getString(cursor.getColumnIndex("pgn"));
                     if (pgn != null && pgn.length() > 0) {
-                        setResult(RESULT_OK, (new Intent()).setAction(pgn));
+                        String pgnToken = (new ObjectCache()).storeString(pgn);
+                        setResult(RESULT_OK, (new Intent()).setAction(pgnToken));
                         finish();
                         return;
                     }

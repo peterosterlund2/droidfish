@@ -27,6 +27,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -225,6 +226,7 @@ public class DroidFish extends Activity
     private ListView rightDrawer;
 
     private SharedPreferences settings;
+    private ObjectCache cache;
 
     private float scrollSensitivity;
     private boolean invertScrollDirection;
@@ -475,6 +477,7 @@ public class DroidFish extends Activity
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         settings = PreferenceManager.getDefaultSharedPreferences(this);
+        cache = new ObjectCache();
 
         setWakeLock(false);
 
@@ -506,7 +509,9 @@ public class DroidFish extends Activity
             byte[] data = null;
             int version = 1;
             if (savedInstanceState != null) {
-                data = savedInstanceState.getByteArray("gameState");
+                byte[] token = savedInstanceState.getByteArray("gameStateT");
+                if (token != null)
+                    data = cache.retrieveBytes(token);
                 version = savedInstanceState.getInt("gameStateVersion", version);
             } else {
                 String dataStr = settings.getString("gameState", null);
@@ -1125,7 +1130,8 @@ public class DroidFish extends Activity
         super.onSaveInstanceState(outState);
         if (ctrl != null) {
             byte[] data = ctrl.toByteArray();
-            outState.putByteArray("gameState", data);
+            byte[] token = data == null ? null : cache.storeBytes(data);
+            outState.putByteArray("gameStateT", token);
             outState.putInt("gameStateVersion", 3);
         }
     }
@@ -1693,7 +1699,8 @@ public class DroidFish extends Activity
         case RESULT_LOAD_PGN:
             if (resultCode == RESULT_OK) {
                 try {
-                    String pgn = data.getAction();
+                    String pgnToken = data.getAction();
+                    String pgn = cache.retrieveString(pgnToken);
                     int modeNr = ctrl.getGameMode().getModeNr();
                     if ((modeNr != GameMode.ANALYSIS) && (modeNr != GameMode.EDIT_GAME))
                         newGameMode(GameMode.EDIT_GAME);
@@ -2337,7 +2344,29 @@ public class DroidFish extends Activity
         Intent i = new Intent(Intent.ACTION_SEND);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         i.setType(game ? "application/x-chess-pgn" : "text/plain");
-        i.putExtra(Intent.EXTRA_TEXT, ctrl.getPGN());
+        String pgn = ctrl.getPGN();
+        if (pgn.length() < 32768) {
+            i.putExtra(Intent.EXTRA_TEXT, pgn);
+        } else {
+            File dir = new File(getFilesDir(), "shared");
+            dir.mkdirs();
+            File file = new File(dir, game ? "game.pgn" : "game.txt");
+            try {
+                FileOutputStream fos = new FileOutputStream(file);
+                OutputStreamWriter ow = new OutputStreamWriter(fos, "UTF-8");
+                try {
+                    ow.write(pgn);
+                } finally {
+                    ow.close();
+                }
+            } catch (IOException e) {
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                return;
+            }
+            String authority = "org.petero.droidfish.fileprovider";
+            Uri uri = FileProvider.getUriForFile(this, authority, file);
+            i.putExtra(Intent.EXTRA_STREAM, uri);
+        }
         try {
             startActivity(Intent.createChooser(i, getString(game ? R.string.share_game :
                                                                    R.string.share_text)));
@@ -2351,7 +2380,7 @@ public class DroidFish extends Activity
                                        Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(b);
         v.draw(c);
-        File imgDir = new File(getFilesDir(), "images");
+        File imgDir = new File(getFilesDir(), "shared");
         imgDir.mkdirs();
         File file = new File(imgDir, "screenshot.png");
         try {
@@ -3712,6 +3741,7 @@ public class DroidFish extends Activity
     /** Save current game to a PGN file. */
     private final void savePGNToFile(String pathName, boolean silent) {
         String pgn = ctrl.getPGN();
+        String pgnToken = cache.storeString(pgn);
         Editor editor = settings.edit();
         editor.putString("currentPGNFile", pathName);
         editor.putInt("currFT", FT_PGN);
@@ -3719,7 +3749,7 @@ public class DroidFish extends Activity
         Intent i = new Intent(DroidFish.this, EditPGNSave.class);
         i.setAction("org.petero.droidfish.saveFile");
         i.putExtra("org.petero.droidfish.pathname", pathName);
-        i.putExtra("org.petero.droidfish.pgn", pgn);
+        i.putExtra("org.petero.droidfish.pgn", pgnToken);
         i.putExtra("org.petero.droidfish.silent", silent);
         startActivity(i);
     }
