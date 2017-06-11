@@ -337,7 +337,7 @@ public class PGNFile {
                                 gi = null;
                                 break;
                             }
-                            final int newPercent = (int)(filePos * 100 / fileLen);
+                            final int newPercent = fileLen == 0 ? 0 : (int)(filePos * 100 / fileLen);
                             if (newPercent > percent) {
                                 percent =  newPercent;
                                 if (progress != null) {
