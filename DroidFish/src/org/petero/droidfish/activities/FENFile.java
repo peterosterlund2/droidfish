@@ -82,7 +82,7 @@ public class FENFile {
                     continue;
                 FenInfo fi = new FenInfo(fenNo++, line.trim());
                 fensInFile.add(fi);
-                final int newPercent = (int)(filePos * 100 / fileLen);
+                final int newPercent = fileLen == 0 ? 0 : (int)(filePos * 100 / fileLen);
                 if (newPercent > percent) {
                     percent =  newPercent;
                     if (progress != null) {
