@@ -1027,10 +1027,12 @@ public class DroidChessController {
         updateGameMode();
         gui.movePlayed(game.prevPos(), res.second, true);
         listener.clearSearchInfo(searchId);
-        updateComputeThreads();
-        setSelection();
-        setAnimMove(oldPos, game.getLastMove(), true);
-        updateGUI();
+        if (res.first) {
+            updateComputeThreads();
+            setSelection();
+            setAnimMove(oldPos, game.getLastMove(), true);
+            updateGUI();
+        }
     }
 
     public final void repeatLastMove() {

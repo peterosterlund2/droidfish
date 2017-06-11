@@ -2805,27 +2805,20 @@ public class DroidFish extends Activity
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 int gameModeType = -1;
-                /* only flip site in case the player was specified resp. changed */
-                boolean flipSite = false;
+                boolean matchPlayerNames = false;
                 switch (item) {
                 case 0: gameModeType = GameMode.ANALYSIS;      break;
                 case 1: gameModeType = GameMode.EDIT_GAME;     break;
-                case 2: gameModeType = GameMode.PLAYER_WHITE; flipSite = true; break;
-                case 3: gameModeType = GameMode.PLAYER_BLACK; flipSite = true; break;
+                case 2: gameModeType = GameMode.PLAYER_WHITE; matchPlayerNames = true; break;
+                case 3: gameModeType = GameMode.PLAYER_BLACK; matchPlayerNames = true; break;
                 case 4: gameModeType = GameMode.TWO_PLAYERS;   break;
                 case 5: gameModeType = GameMode.TWO_COMPUTERS; break;
                 default: break;
                 }
                 dialog.dismiss();
                 if (gameModeType >= 0) {
-                    Editor editor = settings.edit();
-                    String gameModeStr = String.format(Locale.US, "%d", gameModeType);
-                    editor.putString("gameMode", gameModeStr);
-                    editor.commit();
-                    gameMode = new GameMode(gameModeType);
-                    maybeAutoModeOff(gameMode);
-                    ctrl.setGameMode(gameMode);
-                    setBoardFlip(flipSite);
+                    newGameMode(gameModeType);
+                    setBoardFlip(matchPlayerNames);
                 }
             }
         });
@@ -3831,6 +3824,12 @@ public class DroidFish extends Activity
 
     @Override
     public void movePlayed(Position pos, Move move, boolean computerMove) {
+        if (move == null) {
+            Toast.makeText(getApplicationContext(), R.string.engine_error,
+                           Toast.LENGTH_SHORT).show();
+            newGameMode(GameMode.EDIT_GAME);
+            return;
+        }
         if ("sound".equals(moveAnnounceType)) {
             if (computerMove) {
                 if (moveSound != null)
@@ -3963,8 +3962,6 @@ public class DroidFish extends Activity
 
     /** Set automatic move forward/backward mode. */
     void setAutoMode(AutoMode am) {
-//        System.out.printf("%.3f DroidFish.setAutoMode(): %s\n",
-//                System.currentTimeMillis() * 1e-3, am.toString());
         autoMode = am;
         switch (am) {
         case BACKWARD:

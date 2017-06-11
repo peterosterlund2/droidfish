@@ -741,21 +741,24 @@ public class DroidComputerPlayer {
         case PONDER:
         case ANALYZE: {
             String[] tokens = tokenize(s);
-            if (tokens[0].equals("info")) {
-                parseInfoCmd(tokens);
-            } else if (tokens[0].equals("bestmove")) {
-                String bestMove = tokens[1];
-                String nextPonderMoveStr = "";
-                if ((tokens.length >= 4) && (tokens[2].equals("ponder")))
-                    nextPonderMoveStr = tokens[3];
-                Move nextPonderMove = TextIO.UCIstringToMove(nextPonderMoveStr);
+            int nTok = tokens.length;
+            if (nTok > 0) {
+                if (tokens[0].equals("info")) {
+                    parseInfoCmd(tokens);
+                } else if (tokens[0].equals("bestmove")) {
+                    String bestMove = nTok > 1 ? tokens[1] : "";
+                    String nextPonderMoveStr = "";
+                    if ((nTok >= 4) && (tokens[2].equals("ponder")))
+                        nextPonderMoveStr = tokens[3];
+                    Move nextPonderMove = TextIO.UCIstringToMove(nextPonderMoveStr);
 
-                if (engineState.state == MainState.SEARCH)
-                    reportMove(bestMove, nextPonderMove);
+                    if (engineState.state == MainState.SEARCH)
+                        reportMove(bestMove, nextPonderMove);
 
-                engineState.setState(MainState.IDLE);
-                searchRequest = null;
-                handleIdleState();
+                    engineState.setState(MainState.IDLE);
+                    searchRequest = null;
+                    handleIdleState();
+                }
             }
             break;
         }
