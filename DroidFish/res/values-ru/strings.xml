@@ -178,7 +178,7 @@
   <string name="hide_statistics">Скрыть статистику</string>
   <string name="show_statistics">Показать статистику</string>
   <string name="show_whole_variations">Show whole variations</string>
-  <string name="truncate_variations">Truncate variations</string>
+  <string name="truncate_variations">Варианты обрезания</string>
   <string name="heavy_cpu_usage">Повышенное использование процессора (CPU)</string>
   <string name="background_processing">Обработка в бэкграунде</string>
   <string name="lot_cpu_power">DroidFish потребляет много энергии от процессора (CPU)</string>
@@ -213,9 +213,9 @@
   <string name="network_port">Порт</string>
   <string name="network_engine">Сетевой движок</string>
   <string name="failed_to_start_engine">Не удалось запустить движок</string>
-  <string name="tts_failed_to_init">Failed to initialize text to speech</string>
-  <string name="tts_data_missing">Text to speech data missing</string>
-  <string name="tts_not_supported_for_lang">Text to speech not supported for this language</string>
+  <string name="tts_failed_to_init">Не удалось преобразовать текст в речь</string>
+  <string name="tts_data_missing">Текст для преобразования в речь отсутствует</string>
+  <string name="tts_not_supported_for_lang">Текст для преобразования в речь не поддерживается для этого языка</string>
   <string name="engine_terminated">Работа движка прекращена</string>
   <string name="uci_protocol_error">Ошибка UCI протокола</string>
   <string name="network_engine_config_error">Ошибка конфигурации сетевого движка</string>
@@ -293,8 +293,8 @@
   <string name="prefs_autoScrollTitle_summary">Автопрокрутка строки заголовка при слишком длинных именах игроков</string>
   <string name="prefs_quickMoveInput_title">Быстрый ввод хода</string>
   <string name="prefs_quickMoveInput_summary">Клетки Откуда и Куда могут быть нажаты в любом порядке. Ход играется сразу если является допустимым.</string>
-  <string name="prefs_moveAnnounceType_title">Move Announcement</string>
-  <string name="prefs_moveAnnounceType_summary">Announcement sound when computer makes a move</string>
+  <string name="prefs_moveAnnounceType_title">Объявление ходов</string>
+  <string name="prefs_moveAnnounceType_summary">Звуковое объявление хода компьютера</string>
   <string name="prefs_vibrateEnabled_title">Включить вибрирование</string>
   <string name="prefs_vibrateEnabled_summary">Вибрировать во время хода компьютера</string>
   <string name="prefs_fullScreenMode_title">Режим отображения на весь экран</string>
@@ -701,10 +701,10 @@
     <item>speech_es</item>
   </string-array>
   <string-array name="move_announce_type_texts">
-    <item>Off</item>
-    <item>Play sound</item>
-    <item>English Speech</item>
-    <item>German Speech</item>
-    <item>Spanish Speech</item>
+    <item>Выкл.</item>
+    <item>Воспроизведение звука</item>
+    <item>По-английски</item>
+    <item>По-немецки</item>
+    <item>По-испански</item>
   </string-array>
 </resources>
