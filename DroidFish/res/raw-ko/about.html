@@ -1,0 +1,283 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+  </head>
+  <body>
+
+<h2>소개</h2>
+<p>
+  <i>DroidFish</i> 는 기능이 풍부한 체스 그래픽 사용자 인터페이스이며, 아주 강력한 <i>Stockfish</i> 체스 엔진과
+ 결합되어 있습니다.
+</p>
+
+<h3>기능</h3>
+<ul>
+  <li>오프닝 북(Opening book)</li>
+  <li>제한없는 무르기(undo)/다시 하기(redo)</li>
+  <li>클립보드로 복사/붙여넣기</li>
+  <li>분석 모드</li>
+  <li>2인 플레이어 모드</li>
+  <li>컴퓨터 vs 컴퓨터 모드</li>
+  <li>포지션 설정</li>
+  <li>PGN 확장 지원</li>
+  <li>플레이 강도 조정 가능</li>
+  <li>서드 파티 UCI 엔진</li>
+  <li>Gaviota 엔드게임 테이블베이스</li>
+  <li>Syzygy 엔드게임 테이블베이스</li>
+</ul>
+
+<h3>힌트</h3>
+<ul>
+  <li>
+    추가적인 명령을 위해 '길게 누르기 모드'/ 왼쪽 및 오른쪽 버튼이 사용됩니다.
+  </li>
+  <li>
+    게임을 다시 플레이할때, 게임 모드를 '싱글 하프 무브'가 가능하도록 '편집/다시 플레이 게임' 모드로 변경하세요.
+  </li>
+</ul>
+
+<h3>오프닝 북(Opening books)</h3>
+<p>
+  DroidFish 는 작은 내장 오프닝 북을 포함하고 있습니다.  더 큰 북(Book)의 사용을 원하시면, DroidFish가 외장 <i>polyglot</i> 또는 <i>CTG</i> book
+ 파일을 사용하도록 설정할 수 있습니다 :
+</p>
+<ol>
+  <li>
+    1개 이상의 polyglot book 파일을 SD 카드상의  <i>DroidFish/book</i>  디렉토리에 복사하세요.
+ 
+    Polyglot book은 .bin 파일 확장자를 가져야 합니다.
+    <b>알림!</b>  안드로이드 파일 시스템은 대소문자 구분에 민감합니다. 따라서 확장자는 반드시 <i>.bin</i>으로 만들어야 하고,  <i>.Bin</i>이나  <i>.BIN</i> 은 불가합니다.
+  </li>
+  <li>
+    1개 이상의  CTG book 파일을 <i>DroidFish/book</i>  디렉토리에 복사하세요.
+    CTG book은 각각  <i>.ctg</i>, <i>.ctb</i> 그리고 <i>.cto</i> 의 파일 확장자를 가진 세 개의 파일로 구성되어 있습니다.
+    반드시 세 개 파일 모두를 복사하셔야 합니다.
+  </li>
+  <li>
+    프로그램 메뉴에서,  <i>오프닝 북 선택</i>  기능을 활성화하세요.
+  </li>
+  <li>
+    사용을 원하는 오프닝 북 파일을 선택하세요.
+  </li>
+</ol>
+
+<h3>PGN 파일</h3>
+<p>
+  DroidFish 는 PGN 파일로부터 게임을 불러올 수 있습니다.
+</p>
+<ol>
+  <li>
+    1개 이상의 PGN 파일을 SD 카드의 <i>DroidFish/pgn</i> 디렉토리에 복사하세요.
+  </li>
+  <li>
+    체스판을 길게 누르고  <i>PGN 파일로부터 게임 불러오기</i> 를 선택합니다.
+  </li>
+  <li>
+    파일을 선택하면, 게임이 로드됩니다.
+  </li>
+</ol>
+<p>
+  플레이어 이름과 같은 게임 머리말(Header)을 수정하기 위해서는, 이동 목록을 길게 누른 후,   <i>머리말 수정</i> 을 선택하세요. 이동을 위한 주석(Comment)을 수정하는 경우, 이동 목록을 길게 누른 후, <i>주석 수정</i> 을 선택하세요.
+</p>
+<p>
+  수정된 게임을 저장하려면, 체스 보드를 길게 누른 후, <i>PGN 파일로 게임 저장</i>을 선택하세요. 저장할 파일을 선택 후, 새 게임이 어디에 저장될 것인지 위치를 선택하세요.
+</p>
+<p>
+  <b>알림!</b> 만약, <a href="http://play.google.com/store/apps/details?id=org.openintents.filemanager">OI File Manager</a>가 설치된 경우, 디렉토리에 구애받지 않고 게임을 불러오거나 저장할 수 있습니다.
+</p>
+<p>
+  게임 트리(tree)에 컴퓨터 분석을 추가하려면, 컴퓨터가 생각하고 있을 때, 분석 정보를 길게 누른 후,  <i>분석 추가</i> 를 선택하세요.
+  현재의 주요 변수(Principal Variation)가 게임 트리에 변수로 추가됩니다.
+</p>
+<p>
+  분석모드에서는, 빈 이동(Null Move)을 게임 트리에 추가할 수 있습니다. 하지만 빈 이동은 PGN 표준(Standard)에 포함되지 않으며, 다른 PGN을 읽는 체스 프로그램에서는 작동하지 않을 수 있음을 유념하십시오.
+</p>
+
+<h3>Scid 파일</h3>
+<p>
+  만약, <a href="http://play.google.com/store/apps/details?id=org.scid.android">Scid on the go</a> 가 설치되어 있다면, DroidFish로 부터 바로 Scid 데이터베이스 파일을 읽을 수 있습니다.
+  체스 보드를 길게 누른 후 <i>파일로부터 게임 불러오기</i> 를 선택하세요
+</p>
+
+<h3>FEN/EPD 파일</h3>
+<p>
+  DroidFish는 FEN/EPD 파일로부터 포지션(Positions)을 불러올 수 있습니다.
+</p>
+<ol>
+  <li>
+    1개 이상의 FEN/EPD 파일을 SD 카드 상의 <i>DroidFish/epd</i>  디렉토리에 복사하세요.
+  </li>
+  <li>
+    체스 보드를 길게 누른 후 <i>파일에서 포지션 불러오기</i>를 선택하세요.
+  </li>
+  <li>
+    파일을 선택하면, 포지션이 로드됩니다.
+  </li>
+</ol>
+
+<p>
+  <a href="http://play.google.com/store/apps/details?id=com.kgroth.chessocr">ChessOcr</a>(유료) 같은 외장 프로그램으로부터 포지션을 불러들일 수 있으며, 이는 카메라를 사용하여 체스 다이어그램을 찍거나 자동으로 DroidFish의 포지션을 설정할 수 있습니다.
+</p>
+<ol>
+  <li>
+    체스 보드를 길게 누른 후 <i>포지션 찾기</i> 를 선택하세요.
+  </li>
+  <li>
+    외부 프로그램의 지시에 따르시기 바랍니다.
+  </li>
+</ol>
+
+<h3>UCI 엔진</h3>
+<p>
+  DroidFish 는 서드 파티 UCI 엔진을 사용할 수 있습니다.
+</p>
+<ol>
+  <li>
+    1개 이상의 UCI 엔진 바이너리를 SD 카드 상의 <i>DroidFish/uci</i> 디렉토리에 복사하세요.
+  </li>
+  <li>
+    프로그램 메뉴에서, <i>체스 엔진 관리</i> 를 선택하고, <i>체스 엔진
+ 선택</i> 을 누르고, 사용하고자 하는 엔진을 선택하세요.
+  </li>
+</ol>
+
+<h3>원격 서버상 UCI 엔진</h3>
+<p>
+  DroidFish는 원격 서버에서 실행되는 UCI 엔진을 사용할 수 있습니다.
+</p>
+<ol>
+  <li>
+    원격 컴퓨터에 체스 네트워크 서버 소프트웨어를 설치합니다.
+    <ol>
+      <li>
+        Windows는, <a href="http://home.arcor.de/bernhard.wallner/netChess.html">Computer Chess Utility</a> 페이지에서 서버 소프트웨어를 설치하십시오.
+      </li>
+      <li>
+        Linux는,  <tt>tcputils</tt> 패키지로부터 , <tt>mini-inetd</tt> 를 사용할 수 있습니다.
+      </li>
+    </ol>
+  </li>
+  <li>
+    프로그램 메뉴에서, <i>체스 엔진 관리</i> 를 선택하고, 새 네트워크 엔진을 생성 후, 원격 엔진의 호스트 네임과 포트 번호를 입력하세요.
+  </li>
+  <li>
+    프로그램 메뉴에서, <i>체스 엔진 관리</i> 를 선택하고, <i>체스 엔진
+ 선택</i> 을 누르고, 사용하고자 하는 엔진을 선택하세요.
+  </li>
+</ol>
+
+<h3>Gaviota 엔드게임 테이블베이스</h3>
+<p>
+  <a href="http://sites.google.com/site/gaviotachessengine/Home/endgame-tablebases-1">Gaviota 엔드게임 테이블베이스</a> 를 사용하려면 :
+</p>
+<ol>
+  <li>
+    .gtb.cp4 파일을 SD 카드 상의  <i>DroidFish/gtb</i> 디렉토리에 복사하세요.
+  </li>
+  <li>
+    테이블베이스가 어떻게 사용될 지를 조정하려면 <i>엔드게임 테이블베이스</i> 설정을 사용하세요.
+  </li>
+</ol>
+
+<h3>Syzygy 엔드게임 테이블베이스</h3>
+<p>
+  <a href="https://chessprogramming.wikispaces.com/Syzygy+Bases">Syzygy 엔드게임 테이블베이스</a> 를 사용하려면 :
+</p>
+<ol>
+  <li>
+    .rtbw 그리고 선택적으로 .rtbz 파일을 SD 카드 상의  <i>DroidFish/rtb</i> 디렉토리에 복사하세요.
+  </li>
+  <li>
+    테이블베이스가 어떻게 사용될 지를 조정하려면 <i>엔드게임 테이블베이스</i> 설정을 사용하세요.
+  </li>
+</ol>
+
+<h3>라이센스</h3>
+<p>
+  <a href="http://www.gnu.org/licenses/gpl.html">GNU GPL v3</a>
+</p>
+
+<h3>개발자</h3>
+<ul>
+  <li>
+    <i>DroidFish</i> 개발자 : Peter Österlund.
+  </li>
+  <li>
+    <i>Stockfish</i> 개발자 : Tord Romstad, Marco Costalba, Gary Linscott and Joona Kiiski.
+  </li>
+  <li>
+    사용자 인터페이스 개선 : Aaro Korhonen.
+  </li>
+  <li>
+    Gaviota 테이블베이스 탐색 코드 API, 저작권  © 2010 Miguel A. Ballicora.
+    <ul>
+      <li>
+        LZMA 압축 : Igor Pavlov.
+      </li>
+      <li>
+        ZLIB 압축, 저작권 © 1995-2005 Jean-loup Gailly & Mark Adler.
+      </li>
+      <li>
+        LZF 압축, 저작권 © 2000-2007 Marc Alexander Lehmann.
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="http://code.google.com/p/svg-android/">svg-android</a>  프로젝트의 SVG 리더
+  </li>
+  <li>
+    컬러 피커(Color picker), 저작권 © 2010 Daniel Nilsson & 저작권 © 2011 Sergey Margaritov.
+  </li>
+  <li>
+    오픈 익스체인지 체스 엔진 인터페이스 코드 : Gerhard Kalab, <a href="http://www.apache.org/licenses/LICENSE-2.0">아파치 2.0 라이센스</a>.
+  </li>
+  <li>
+    Syzygy 테이블베이스 탐색 코드, 저작권 © 2011-2013 Ronald de Man.
+  </li>
+  <li>
+    <a href="https://github.com/worker8/TourGuide">TourGuide</a> 라이브러리, 저작권  © 2015 Tan Jun Rong.
+  </li>
+  <li>
+    <a href="https://github.com/Tesla-Redux/android-floating-action-button">플로팅 액션 버튼</a> 라이브러리, 저작권 © 2014 str4d and Jerzy Chalupski.
+  </li>
+</ul>
+
+<h3>번역</h3>
+<p>
+  번역은 <a href="http://crowdin.net/project/droidfish-android-chess-app">crowdin.net</a>에 의해 관리됩니다.
+</p>
+<ul>
+  <li>
+    독일어 번역 - Uwe Walschus.
+  </li>
+  <li>
+    스페인어  번역 - Amador Cuesta.
+  </li>
+  <li>
+    러시아어 번역 - SWEN и dfuk (allBlackBerry).
+  </li>
+  <li>
+    포르투갈어 번역 - C. R. Zamana.
+  </li>
+  <li>
+    프랑스어 번역 - Eric Weibel (Thanvillé).
+  </li>
+  <li>
+    이탈리아어 번역 - Michele Carfora (suessola).
+  </li>
+  <li>
+    네덜란드어 번역 - David Pront.
+  </li>
+  <li>
+    폴란드어 번역 - Rafał Smyka.
+  </li>
+  <li>
+    우크라이나어 번역 : Mix Gerder & Toru Hasegawa.
+  </li>
+  <li>
+    벨라루스어 번역 : Mix Gerder.
+  </li>
+</ul>
+
+  </body>
+</html>
