@@ -43,7 +43,7 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="load_scid_game">Załaduj partię z pliku Scid</string>
   <string name="save_game">Zapisz partię w pliku PGN</string>
   <string name="get_fen">Pobierz ustawienie</string>
-  <string name="repeat_last_move">Repeat last move</string>
+  <string name="repeat_last_move">Powtórz ostatni ruch</string>
   <string name="truncate_gametree">Obetnij drzewo gry</string>
   <string name="move_var_up">Przenieś wariant w górę</string>
   <string name="move_var_down">Przenieś wariant w dół</string>
@@ -151,7 +151,7 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="header_site">Miejsce:</string>
   <string name="header_date">Data:</string>
   <string name="header_round">Runda:</string>
-  <string name="header_result">Result:</string>
+  <string name="header_result">Wynik:</string>
   <string name="comment_before">Przed:</string>
   <string name="comment_move">Posunięcie:</string>
   <string name="comment_after">Po:</string>
@@ -713,7 +713,7 @@ nie korzystasz aktywnie z programu.\</string>
     <item>Wyłączone</item>
     <item>Odtwórz dźwięk</item>
     <item>Wymowa angielska</item>
-    <item>German Speech</item>
-    <item>Spanish Speech</item>
+    <item>Mowa niemiecka</item>
+    <item>Mowa hiszpańska</item>
   </string-array>
 </resources>
