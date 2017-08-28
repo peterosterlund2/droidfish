@@ -16,15 +16,14 @@
   <string name="move_announce_type_default">off</string>
   <string name="cpu_warning">\
 <b>CPU 사용</b>\n\
-DroidFish를 백그라운드에서 실행 중인 상태에서 <i>게임모드</i> 가 \
-<i>분석</i> 또는 <i>컴퓨터 vs 컴퓨터</i>로 설정되어 있거나, <i>생각하는 시간</i> \
-값이 크게 설정되어 있거나, <i>숙고하기</i> 가 활성화되어 있으면, DroidFish는 \
-많은 CPU 전원을 소비할 수 있습니다.\n\
+DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설정 되어 있을 때, CPU 전원을 많이 사용할 수 있습니다. 
+
+<i>게임모드</i>가 <i>분석</i> 또는 <i>컴퓨터 vs 컴퓨터</i>로 설정되어 있는 경우.\
+<i>생각하는 시간</i>값이 크게 설정되어 있는 경우.\
+<i>숙고하기</i>가 활성화 되어 있는 경우\n\
 \n\
-배터리 전원을 사용한다면, 배터리를 아끼기 위해 설정을 바꾸거나,\
-적극적으로 프로그램을 사용하지 않을때, <i>DroidFish</i> 를 뒤로가기 버튼을 사용해서 \
-종료하는 것을 권장합니다.\
-</string>
+
+배터리를 아끼려면, 설정을 바꾸거나, 프로그램을 사용하지 않을 때, <i>DroidFish</i>를 뒤로가기 버튼을 사용해서 종료하는 것을 권장합니다.\</string>
   <string name="offer_draw">무승부 제안</string>
   <string name="queen">퀸</string>
   <string name="rook">룩</string>
@@ -235,7 +234,7 @@ DroidFish를 백그라운드에서 실행 중인 상태에서 <i>게임모드</i
   <string name="piece_names">P N B R Q K</string>
   <string name="highlight_last_move_title">마지막 이동 강조</string>
   <string name="highlight_last_move_summary">마지막 이동된 조각 주위에 사각형을 그립니다</string>
-  <string name="material_diff_title">소재 차이 보기</string>
+  <string name="material_diff_title">중요한 차이점 보기</string>
   <string name="material_diff_summary">잡은 피스에 대한 추가적인 자막 표시</string>
   <string name="err_too_few_spaces">공간이 너무 적습니다</string>
   <string name="err_invalid_piece">잘못된 피스</string>
@@ -265,7 +264,7 @@ DroidFish를 백그라운드에서 실행 중인 상태에서 <i>게임모드</i
   <string name="prefs_playerName_title">플레이어 이름</string>
   <string name="prefs_playerName_summary">새 게임에 사용할 기본 플레이어 이름</string>
   <string name="prefs_autoSwapSides_title">플립 보드: 자동</string>
-  <string name="prefs_autoSwapSides_summary">자동 플립보드를 위해 사이드로 이동을 사용합니다</string>
+  <string name="prefs_autoSwapSides_summary">자동 플립 보드를 위해 이동할 사이드를 사용합니다</string>
   <string name="prefs_playerNameFlip_title">플립 보드 : 플레이어</string>
   <string name="prefs_playerNameFlip_summary">자동 플립 보드를 위해 플레이어 이름을 사용합니다</string>
   <string name="prefs_engine_settings">엔진 설정</string>
@@ -274,12 +273,12 @@ DroidFish를 백그라운드에서 실행 중인 상태에서 <i>게임모드</i
   <string name="prefs_ponderMode_title">숙고하기</string>
   <string name="prefs_ponderMode_summary">상대방의 이동을 기다리는 동안 엔진이 생각하도록 합니다. 대부분의 엔진에 의해 지원됩니다.</string>
   <string name="prefs_hash_title">해시 테이블</string>
-  <string name="prefs_hash_summary">해시 테이블 크기를 메가바이트로 표현</string>
-  <string name="prefs_time_control">시간 제어</string>
+  <string name="prefs_hash_summary">해시 테이블 크기(MB)</string>
+  <string name="prefs_time_control">시간 컨트롤</string>
   <string name="prefs_movesPerSession_title">이동</string>
-  <string name="prefs_movesPerSession_summary">시간 제어 사이의 움직임의 수</string>
+  <string name="prefs_movesPerSession_summary">시간 컨트롤 간의 이동 횟수</string>
   <string name="prefs_timeControl_title">시간</string>
-  <string name="prefs_timeControl_summary">시간 제어 사이의 최대 생각하는 시간</string>
+  <string name="prefs_timeControl_summary">시간 컨트롤 사이의 최대 생각하는 시간</string>
   <string name="prefs_timeIncrement_title">증가분</string>
   <string name="prefs_timeIncrement_summary">각각의 완료된 이동에 대해 생각하는 시간 추가</string>
   <string name="prefs_autoDelay_title">자동 이동 지연</string>
@@ -288,13 +287,13 @@ DroidFish를 백그라운드에서 실행 중인 상태에서 <i>게임모드</i
   <string name="prefs_showThinking_title">컴퓨터 생각 보기</string>
   <string name="prefs_showThinking_summary">검색 중에 컴퓨터 알고리즘 정보 표시</string>
   <string name="prefs_whiteBasedScores_title">화이트-기반 점수</string>
-  <string name="prefs_whiteBasedScores_summary">긍정적인 분석 점수는 화이트에게 좋습니다</string>
+  <string name="prefs_whiteBasedScores_summary">긍정적인 분석 점수는 화이트에게 유리합니다</string>
   <string name="prefs_bookHints_title">북 힌트 표시</string>
   <string name="prefs_bookHints_summary">인간 플레이어를 위한 오프닝 북 이동 힌트를 표시</string>
   <string name="prefs_thinkingArrows_title">화살표 사용</string>
   <string name="prefs_thinkingArrows_summary">체스 보드 이동을 표시하기 위해 화살표 사용</string>
   <string name="prefs_ecoHints_title">ECO 코드 표시</string>
-  <string name="prefs_ecoHints_summary"> \' 체스 오프닝 백과사전(ECO) \' 오프닝 분류 보기</string>
+  <string name="prefs_ecoHints_summary"> \'체스 오프닝 백과사전(ECO)\' 오프닝 분류 보기</string>
   <string name="prefs_user_interface_appearance">모양</string>
   <string name="prefs_user_interface_behavior">행동</string>
   <string name="prefs_animateMoves_title">애니메이션 이동</string>
@@ -315,7 +314,7 @@ DroidFish를 백그라운드에서 실행 중인 상태에서 <i>게임모드</i
   <string name="prefs_scrollSensitivity_title">스크롤 속도</string>
   <string name="prefs_scrollSensitivity_summary">게임 탐색에 대한 스크롤 속도</string>
   <string name="prefs_invertScrollDirection_title">스크롤 방향 반전</string>
-  <string name="prefs_invertScrollDirection_summary">이동 스크롤이 잘못된 방항으로 된다고 생각될 때, 이것을 활성화 하세요</string>
+  <string name="prefs_invertScrollDirection_summary">이동 스크롤이 잘못된 방항으로 이뤄진다 생각될 때 활성화 하세요</string>
   <string name="prefs_autoScrollMoveList_title">이동 목록 자동 스크롤</string>
   <string name="prefs_autoScrollMoveList_summary">현재 보드 포지션에 자동으로 이동 목록 스크롤</string>
   <string name="prefs_discardVariations_title">변수 취소</string>
@@ -380,7 +379,7 @@ DroidFish를 백그라운드에서 실행 중인 상태에서 <i>게임모드</i
   <string name="prefs_bookFile_title">북 파일 이름</string>
   <string name="prefs_bookFile_summary">SD 카드의 DroidFish 디렉토리에 있는 Polyglot 또는 CTG 북 파일</string>
   <string name="prefs_pgnSettings_title">PGN 설정</string>
-  <string name="prefs_pgnSettings_summary">포터블 게임 노테이션(PGN) 자료의 불러오기 및 내보내기 설정</string>
+  <string name="prefs_pgnSettings_summary">포터블 게임 노테이션(PGN) 데이터 불러오기 &amp; 내보내기 설정</string>
   <string name="prefs_pgn_viewer">PGN 뷰어</string>
   <string name="prefs_viewVariations_title">변수</string>
   <string name="prefs_viewVariations_summary">논-메인라인 이동 포함</string>
@@ -432,11 +431,11 @@ DroidFish를 백그라운드에서 실행 중인 상태에서 <i>게임모드</i
   <string name="prefs_rtbPathNet_title">Syzygy 네트워크 디렉토리</string>
   <string name="prefs_rtbPathNet_summary">네트워크 엔진을 위한 Syzygy 테이블베이스가 설치되어 있는 디렉토리.</string>
   <string name="prefs_guideShowOnStart_title">시작 가이드</string>
-  <string name="prefs_guideShowOnStart_summary">다음에 프로그램을 시작할 때 시작 가이드 표시.</string>
+  <string name="prefs_guideShowOnStart_summary">다음에 프로그램을 시작할 때 시작 가이드 표시</string>
   <string name="tour_leftMenu_title">왼쪽 메뉴</string>
-  <string name="tour_leftMenu_desc">왼쪽 메뉴를 열려면, 타이틀 바의 왼쪽 사이드를 누르거나, 왼쪽에서 오른쪽으로 스와이프하세요.</string>
+  <string name="tour_leftMenu_desc">왼쪽 메뉴를 열려면, 타이틀 바의 왼쪽 사이드를 누르거나, 왼쪽에서 오른쪽으로 쓸어내세요.</string>
   <string name="tour_rightMenu_title">오른쪽 메뉴</string>
-  <string name="tour_rightMenu_desc">오른쪽 메뉴를 열려면, 타이틀 바의 오른쪽 사이드를 누르거나, 오른쪽에서 왼쪽으로 스와이프하세요.</string>
+  <string name="tour_rightMenu_desc">오른쪽 메뉴를 열려면, 타이틀 바의 오른쪽 사이드를 누르거나, 오른쪽에서 왼쪽으로 쓸어내세요.</string>
   <string name="tour_chessBoard_title">체스 보드</string>
   <string name="tour_chessBoard_desc">툴 메뉴를 열기 위해 체스 보드를 누르고 계세요.</string>
   <string name="tour_buttons_title">버튼</string>
@@ -586,7 +585,7 @@ DroidFish를 백그라운드에서 실행 중인 상태에서 <i>게임모드</i
     <item>60000</item>
   </string-array>
   <string-array name="squareSelectType_texts">
-    <item>붙기</item>
+    <item>스티키</item>
     <item>토글</item>
   </string-array>
   <string-array name="squareSelectType_values">
