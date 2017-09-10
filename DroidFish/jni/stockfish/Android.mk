@@ -20,6 +20,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE    := stockfish-nopie
 LOCAL_SRC_FILES := $(SF_SRC_FILES)
 LOCAL_CFLAGS    := -std=c++11 -O2 $(MY_ARCH_DEF)
+LOCAL_LDLIBS	+= -latomic
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
@@ -27,4 +28,5 @@ LOCAL_MODULE    := stockfish
 LOCAL_SRC_FILES := $(SF_SRC_FILES)
 LOCAL_CFLAGS    := -std=c++11 -O2 -fPIE $(MY_ARCH_DEF)
 LOCAL_LDFLAGS	+= -fPIE -pie
+LOCAL_LDLIBS	+= -latomic
 include $(BUILD_EXECUTABLE)

@@ -6,6 +6,8 @@
         <copy file="${basedir}/libs/armeabi/stockfish-nopie" tofile="${basedir}/assets/stockfish-armeabi-nopie"/>
         <copy file="${basedir}/libs/armeabi-v7a/stockfish" tofile="${basedir}/assets/stockfish-armeabi-v7a"/>
         <copy file="${basedir}/libs/armeabi-v7a/stockfish-nopie" tofile="${basedir}/assets/stockfish-armeabi-v7a-nopie"/>
+        <copy file="${basedir}/libs/mips/stockfish"        tofile="${basedir}/assets/stockfish-mips"/>
+        <copy file="${basedir}/libs/mips/stockfish-nopie"  tofile="${basedir}/assets/stockfish-mips-nopie"/>
         <copy file="${basedir}/libs/mips64/stockfish"      tofile="${basedir}/assets/stockfish-mips64"/>
         <copy file="${basedir}/libs/x86/stockfish"         tofile="${basedir}/assets/stockfish-x86"/>
         <copy file="${basedir}/libs/x86/stockfish-nopie"   tofile="${basedir}/assets/stockfish-x86-nopie"/>
