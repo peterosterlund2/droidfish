@@ -1472,7 +1472,7 @@ public class DroidFish extends Activity
         BookOptions options = new BookOptions(bookOptions);
         if (options.filename.isEmpty())
             options.filename = "internal:";
-        if (!options.filename.equals("internal:") && !options.filename.equals("eco:")) {
+        if (!options.filename.endsWith(":")) {
             String sep = File.separator;
             if (!options.filename.startsWith(sep)) {
                 File extDir = Environment.getExternalStorageDirectory();
@@ -2512,13 +2512,17 @@ public class DroidFish extends Activity
             }
         });
         final int numFiles = fileNames.length;
-        CharSequence[] items = new CharSequence[numFiles + 2];
+        final CharSequence[] items = new CharSequence[numFiles + 3];
         for (int i = 0; i < numFiles; i++)
             items[i] = fileNames[i];
         items[numFiles] = getString(R.string.internal_book);
         items[numFiles + 1] = getString(R.string.eco_book);
-        final CharSequence[] finalItems = items;
-        int defaultItem = bookOptions.filename.equals("eco:") ? numFiles + 1 : numFiles;
+        items[numFiles + 2] = getString(R.string.no_book);
+        int defaultItem = numFiles;
+        if (bookOptions.filename.equals("eco:"))
+            defaultItem = numFiles + 1;
+        else if (bookOptions.filename.equals("nobook:"))
+            defaultItem = numFiles + 2;
         for (int i = 0; i < numFiles; i++) {
             if (bookOptions.filename.equals(items[i])) {
                 defaultItem = i;
@@ -2535,8 +2539,10 @@ public class DroidFish extends Activity
                     bookFile = "internal:";
                 else if (item == numFiles + 1)
                     bookFile = "eco:";
+                else if (item == numFiles + 2)
+                    bookFile = "nobook:";
                 else
-                    bookFile = finalItems[item].toString();
+                    bookFile = items[item].toString();
                 editor.putString("bookFile", bookFile);
                 editor.commit();
                 bookOptions.filename = bookFile;
@@ -2707,14 +2713,13 @@ public class DroidFish extends Activity
                 break;
             }
         }
-        CharSequence[] items = new CharSequence[numFiles + 1];
+        final CharSequence[] items = new CharSequence[numFiles + 1];
         for (int i = 0; i < numFiles; i++)
             items[i] = fileNames[i];
         items[numFiles] = getString(R.string.new_file);
-        final CharSequence[] finalItems = items;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.select_pgn_file_save);
-        builder.setSingleChoiceItems(finalItems, defaultItem, new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(items, defaultItem, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 String pgnFile;
                 if (item >= numFiles) {

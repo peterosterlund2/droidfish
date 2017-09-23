@@ -1,6 +1,6 @@
 /*
     DroidFish - An Android chess program.
-    Copyright (C) 2011  Peter Österlund, peterosterlund2@gmail.com
+    Copyright (C) 2017  Peter Österlund, peterosterlund2@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,15 +23,17 @@ import java.util.ArrayList;
 import org.petero.droidfish.book.DroidBook.BookEntry;
 import org.petero.droidfish.gamelogic.Position;
 
-class NullBook implements IOpeningBook {
+class NoBook implements IOpeningBook {
+    private boolean enabled = false;
 
     @Override
     public boolean enabled() {
-        return false;
+        return enabled;
     }
 
     @Override
     public void setOptions(BookOptions options) {
+        enabled = options.filename.equals("nobook:");
     }
 
     @Override

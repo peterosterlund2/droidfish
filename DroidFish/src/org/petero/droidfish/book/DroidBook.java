@@ -53,6 +53,7 @@ public final class DroidBook {
     private IOpeningBook externalBook = new NullBook();
     private IOpeningBook ecoBook = new EcoBook();
     private IOpeningBook internalBook = new InternalBook();
+    private IOpeningBook noBook = new NoBook();
     private BookOptions options = null;
 
     private static final DroidBook INSTANCE = new DroidBook();
@@ -78,6 +79,7 @@ public final class DroidBook {
         externalBook.setOptions(options);
         ecoBook.setOptions(options);
         internalBook.setOptions(options);
+        noBook.setOptions(options);
     }
 
     /** Return a random book move for a position, or null if out of book. */
@@ -179,6 +181,8 @@ public final class DroidBook {
             return externalBook;
         } else if (ecoBook.enabled()) {
             return ecoBook;
+        } else if (noBook.enabled()) {
+            return noBook;
         } else {
             return internalBook;
         }
