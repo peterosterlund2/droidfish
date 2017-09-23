@@ -206,6 +206,8 @@ public class SpeechTest extends TestCase {
             Pair<Boolean,Move> res = game.processString("Nexc3");
             assertEquals(new String[]{"Knight e takes, c3", "Springer e schlägt c3", "Caballo e captura c3"},
                     moveToText(game.prevPos(), res.second, lang));
+            assertEquals(new String[]{"", "", ""},
+                    moveToText(game.prevPos(), new Move(0, 0, 0), lang));
         }
     }
 

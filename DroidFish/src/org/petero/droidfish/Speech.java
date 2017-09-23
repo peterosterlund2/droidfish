@@ -145,7 +145,7 @@ public class Speech {
 
     /** Convert move "move" in position "pos" to a sentence that can be spoken. */
     public static String moveToText(Position pos, Move move, Language lang) {
-        if (move == null)
+        if (move == null || move.from == move.to)
             return "";
 
         String moveStr = TextIO.moveToString(pos, move, false, false);
