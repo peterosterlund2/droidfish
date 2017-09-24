@@ -468,7 +468,9 @@ public class GameTest extends TestCase {
         assertEquals(TextIO.UCIstringToMove("b8c6"), hist.second.get(1));
         assertEquals(expectedPos, hist.first);
 
-        game.processString("--");
+        int varNo = game.tree.addMove("--", "", 0, "", "");
+        assertEquals(0, varNo);
+        game.tree.goForward(varNo);
         hist = game.getUCIHistory();
         expectedPos = new Position(game.currPos());
         assertEquals(0, hist.second.size());

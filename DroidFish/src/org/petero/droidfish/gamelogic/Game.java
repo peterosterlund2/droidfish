@@ -148,8 +148,11 @@ public class Game {
         if (m != null)
             if (!TextIO.isValid(currPos(), m))
                 m = null;
-        if (m == null)
+        if (m == null) {
             m = TextIO.stringToMove(currPos(), str);
+            if (!TextIO.isValid(currPos(), m))
+                m = null;
+        }
         if (m == null)
             return new Pair<Boolean,Move>(false, null);
 
