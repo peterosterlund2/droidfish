@@ -76,6 +76,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="edit_move_counters">Alterar contador de lances</string>
   <string name="internal_book">&lt;Livro interno&gt;</string>
   <string name="eco_book">&lt;Livro ECO&gt;</string>
+  <string name="no_book">&lt;No Book&gt;</string>
   <string name="select_opening_book_file">Escolher arquivo de livro de aberturas</string>
   <string name="select_chess_engine">Escolher software de Xadrez</string>
   <string name="select_pgn_file">Abrir arquivo PGN</string>

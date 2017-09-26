@@ -67,6 +67,7 @@
   <string name="edit_move_counters">Редагувати лічильник ходів</string>
   <string name="internal_book">&lt;Внутрішня книга&gt;</string>
   <string name="eco_book">&lt;ЕКО Книга&gt;</string>
+  <string name="no_book">&lt;Без книги&gt;</string>
   <string name="select_opening_book_file">Обрати файл дебютної книги</string>
   <string name="select_chess_engine">Обрати рушій</string>
   <string name="select_pgn_file">Відкрити PGN-файл</string>

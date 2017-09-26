@@ -75,6 +75,7 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="edit_move_counters">Bewerk zetten-tellers</string>
   <string name="internal_book">&lt;Ingebouwd Boek&gt;</string>
   <string name="eco_book">&lt;ECO Boek&gt;</string>
+  <string name="no_book">&lt;No Book&gt;</string>
   <string name="select_opening_book_file">Selecteer openingsboek</string>
   <string name="select_chess_engine">Selecteer Engine</string>
   <string name="select_pgn_file">Open PGN bestand</string>

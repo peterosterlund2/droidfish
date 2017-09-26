@@ -74,6 +74,7 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="edit_move_counters">Modifier le compteur de coups</string>
   <string name="internal_book">&lt;Livre interne&gt;</string>
   <string name="eco_book">&lt;ECO Book&gt;</string>
+  <string name="no_book">&lt;No Book&gt;</string>
   <string name="select_opening_book_file">Sélectionner le livre d\'ouverture</string>
   <string name="select_chess_engine">Sélectionner le module d\'analyse</string>
   <string name="select_pgn_file">Ouvrir un fichier PGN</string>

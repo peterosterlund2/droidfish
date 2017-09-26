@@ -75,6 +75,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="edit_move_counters">Editar Contadores de Jugadas</string>
   <string name="internal_book">&lt;Libro Interno&gt;</string>
   <string name="eco_book">&lt;Libro (de códigos) ECO&gt;</string>
+  <string name="no_book">&lt;No Book&gt;</string>
   <string name="select_opening_book_file">Seleccionar archivo de Libro de Aperturas</string>
   <string name="select_chess_engine">Seleccionar motor de ajedrez</string>
   <string name="select_pgn_file">Abrir archivo PGN</string>

@@ -34,7 +34,7 @@
   <string name="load_scid_game">Загрузить партию из Scid файла</string>
   <string name="save_game">Сохранить партию в PGN файле</string>
   <string name="get_fen">Получить позицию</string>
-  <string name="repeat_last_move">Repeat last move</string>
+  <string name="repeat_last_move">Повторить последний ход</string>
   <string name="truncate_gametree">Обрезать дерево партии</string>
   <string name="move_var_up">Переместить изменение вверх</string>
   <string name="move_var_down">Переместить изменение вниз</string>
@@ -50,7 +50,7 @@
   <string name="initial_position">Начальная позиция</string>
   <string name="castling_flags">Метки рокировки</string>
   <string name="en_passant_file">Взятие на проходе</string>
-  <string name="move_counters">Переместить счетчики</string>
+  <string name="move_counters">Переместить счётчики</string>
   <string name="paste_position">Вставить позицию</string>
   <string name="edit_board">Редактировать доску</string>
   <string name="select_side_to_move_first">Выбрать место для перемещения фигуры</string>
@@ -67,6 +67,7 @@
   <string name="edit_move_counters">Редактировать счетчик ходов</string>
   <string name="internal_book">&lt;Внутренняя книга&gt;</string>
   <string name="eco_book">&lt;ЭКО Книга&gt;</string>
+  <string name="no_book">&lt;Без книги&gt;</string>
   <string name="select_opening_book_file">Выбрать файл дебютной книги</string>
   <string name="select_chess_engine">Выбрать движок</string>
   <string name="select_pgn_file">Открыть PGN файл</string>
@@ -174,11 +175,11 @@
   <string name="failed_to_read_pgn_data">Не удалось прочесть pgn данные</string>
   <string name="variation">Изменение:</string>
   <string name="add_analysis">Добавить анализ</string>
-  <string name="num_variations">Number of Variations</string>
+  <string name="num_variations">Количество вариантов</string>
   <string name="hide_statistics">Скрыть статистику</string>
   <string name="show_statistics">Показать статистику</string>
-  <string name="show_whole_variations">Show whole variations</string>
-  <string name="truncate_variations">Варианты обрезания</string>
+  <string name="show_whole_variations">Показать все варианты</string>
+  <string name="truncate_variations">Обрезать варианты</string>
   <string name="heavy_cpu_usage">Повышенное использование процессора (CPU)</string>
   <string name="background_processing">Обработка в бэкграунде</string>
   <string name="lot_cpu_power">DroidFish потребляет много энергии от процессора (CPU)</string>
@@ -205,7 +206,7 @@
   <string name="cuckoochess_engine">CuckooChess</string>
   <string name="select_engine">Выбрать движок</string>
   <string name="engine_options">Параметры движка</string>
-  <string name="set_engine_options">Параметры SET</string>
+  <string name="set_engine_options">Настройка параметров</string>
   <string name="configure_network_engine">Настройка сетевого движка</string>
   <string name="create_network_engine">Создать сетевой движок</string>
   <string name="delete_network_engine">Удалить сетевой движок?</string>
@@ -272,8 +273,8 @@
   <string name="prefs_timeControl_summary">Максимальное время для размышления между отсечками</string>
   <string name="prefs_timeIncrement_title">Увеличение</string>
   <string name="prefs_timeIncrement_summary">Добавленное время размышления для каждого хода</string>
-  <string name="prefs_autoDelay_title">Автоматическое перемещение задержки</string>
-  <string name="prefs_autoDelay_summary">Задержка между движется в автоматическом режиме вперед/назад</string>
+  <string name="prefs_autoDelay_title">Задержка автоматического перемещения</string>
+  <string name="prefs_autoDelay_summary">Задержка между перемещением в автоматическом режиме вперед/назад</string>
   <string name="prefs_hints">Подсказки</string>
   <string name="prefs_showThinking_title">Показать размышления компьютера</string>
   <string name="prefs_showThinking_summary">Отображать алгоритм компьютера во время поиска</string>

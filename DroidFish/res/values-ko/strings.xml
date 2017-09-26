@@ -76,6 +76,7 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
   <string name="edit_move_counters">이동 카운터 편집</string>
   <string name="internal_book">&lt;내장 북&gt;</string>
   <string name="eco_book">&lt;ECO 북&gt;</string>
+  <string name="no_book">&lt;북 없음&gt;</string>
   <string name="select_opening_book_file">오프닝 북 파일 선택</string>
   <string name="select_chess_engine">체스 엔진 선택</string>
   <string name="select_pgn_file">PGN 파일 열기</string>
@@ -90,7 +91,7 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
   <string name="new_engine">&lt; 새로운 엔진 &gt;</string>
   <string name="no_pgn_files">SD 카드의 DroidFish/pgn 디렉토리에 파일이 없습니다</string>
   <string name="no_fen_files">SD 카드의 DroidFish/epd 디렉토리에 파일이 없습니다</string>
-  <string name="select_color_theme">테마 색상 선택</string>
+  <string name="select_color_theme">색상 테마 선택</string>
   <string name="colortheme_original">오리지널</string>
   <string name="colortheme_xboard">엑스보드</string>
   <string name="colortheme_blue">블루</string>
@@ -258,7 +259,7 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
   <string name="option_draw">무승부 요구/제안/수락</string>
   <string name="option_select_book">오프닝 북 선택</string>
   <string name="option_manage_engines">체스 엔진 관리</string>
-  <string name="option_color_theme">테마 색상 설정</string>
+  <string name="option_color_theme">색상 테마 설정</string>
   <string name="option_about">정보 / 도움말</string>
   <string name="prefs_playing_options">플레이 옵션</string>
   <string name="prefs_playerName_title">플레이어 이름</string>

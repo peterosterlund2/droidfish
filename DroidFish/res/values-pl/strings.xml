@@ -76,6 +76,7 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="edit_move_counters">Edytuj liczniki posunięć</string>
   <string name="internal_book">&lt;Książka wbudowana&gt;</string>
   <string name="eco_book">&lt;Książka ECO&gt;</string>
+  <string name="no_book">&lt;Bez książki&gt;</string>
   <string name="select_opening_book_file">Wybierz plik z książką debiutów</string>
   <string name="select_chess_engine">Wybierz silnik szachowy</string>
   <string name="select_pgn_file">Otwórz plik PGN</string>

@@ -35,7 +35,7 @@
   <string name="load_scid_game">Carica una partita da un file di Scid</string>
   <string name="save_game">Salva la partita in formato PGN</string>
   <string name="get_fen">Recupera la posizione</string>
-  <string name="repeat_last_move">Repeat last move</string>
+  <string name="repeat_last_move">Ripeti l\'ultima mossa</string>
   <string name="truncate_gametree">Interrompi la sequenza delle mosse</string>
   <string name="move_var_up">Sposta in alto la variante</string>
   <string name="move_var_down">Sposta la variante in basso</string>
@@ -68,6 +68,7 @@
   <string name="edit_move_counters">Modifica il contatore delle mosse</string>
   <string name="internal_book">&lt; libro interno &gt;</string>
   <string name="eco_book">&lt;Libro codici ECO&gt;</string>
+  <string name="no_book">&lt;Nessun libro&gt;</string>
   <string name="select_opening_book_file">Seleziona il file del libro delle aperture</string>
   <string name="select_chess_engine">Seleziona il motore scacchistico</string>
   <string name="select_pgn_file">Apri un file PGN</string>
@@ -143,7 +144,7 @@
   <string name="header_site">Luogo:</string>
   <string name="header_date">Data:</string>
   <string name="header_round">Turno:</string>
-  <string name="header_result">Result:</string>
+  <string name="header_result">Risultato:</string>
   <string name="comment_before">Prima:</string>
   <string name="comment_move">Mossa:</string>
   <string name="comment_after">Dopo:</string>
@@ -215,8 +216,8 @@
   <string name="network_engine">Motore di Rete</string>
   <string name="failed_to_start_engine">Impossibile avviare il motore</string>
   <string name="tts_failed_to_init">Impossibile inizializzare la sintesi vocale del testo</string>
-  <string name="tts_data_missing">Dati per il Text to speech mancanti</string>
-  <string name="tts_not_supported_for_lang">Text to speech non supportato per questa lingua</string>
+  <string name="tts_data_missing">Dati per la sintesi vocale mancanti</string>
+  <string name="tts_not_supported_for_lang">Sintesi vocale non supportata per questa lingua</string>
   <string name="engine_terminated">Motore terminato</string>
   <string name="uci_protocol_error">Errore di protocollo UCI</string>
   <string name="network_engine_config_error">Errore di configurazione del Motore di Rete</string>
@@ -704,8 +705,8 @@
   <string-array name="move_announce_type_texts">
     <item>Spento</item>
     <item>Riproduci un suono</item>
-    <item>Parlato in inglese</item>
-    <item>Parlato in tedesco</item>
-    <item>Spanish Speech</item>
+    <item>Annuncio vocale in inglese</item>
+    <item>Annuncio vocale in tedesco</item>
+    <item>Annuncio vocale in Spagnolo</item>
   </string-array>
 </resources>
