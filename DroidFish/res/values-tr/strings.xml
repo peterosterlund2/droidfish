@@ -57,8 +57,8 @@ DroidFish\'den çıkmanızı öneririz.\
   <string name="side_to_move">Hareket tarafı</string>
   <string name="clear_board">Tahtayı temizle</string>
   <string name="initial_position">Başlangıç Pozisyonu</string>
-  <string name="castling_flags">Castling Flags</string>
-  <string name="en_passant_file">En Passant File</string>
+  <string name="castling_flags">Rok Yapma Tarafları</string>
+  <string name="en_passant_file">Geçerken alma hattı</string>
   <string name="move_counters">Hareket sayacı</string>
   <string name="paste_position">Pozisyonu yapıştır</string>
   <string name="edit_board">Tahtayı düzenle</string>
@@ -72,7 +72,7 @@ DroidFish\'den çıkmanızı öneririz.\
   <string name="black_king_castle">Siyah kısa rok</string>
   <string name="black_queen_castle">Siyah uzun rok</string>
   <string name="none">Yok</string>
-  <string name="select_en_passant_file">Select En Passant File</string>
+  <string name="select_en_passant_file">Geçerken alma hattını seç</string>
   <string name="edit_move_counters">Hareket sayacını düzenle</string>
   <string name="internal_book">&lt;Dahili kitap&gt;</string>
   <string name="eco_book">&lt;ECO Kitabı&gt;</string>
@@ -216,23 +216,23 @@ DroidFish\'den çıkmanızı öneririz.\
   <string name="select_engine">Motoru seç</string>
   <string name="engine_options">Motor Seçenekleri</string>
   <string name="set_engine_options">Seçenekleri ayarla</string>
-  <string name="configure_network_engine">İnternet motorunu ayarla</string>
-  <string name="create_network_engine">Internet motoru oluştur</string>
-  <string name="delete_network_engine">Internet motorunu sil?</string>
+  <string name="configure_network_engine">Ağ motorunu ayarla</string>
+  <string name="create_network_engine">Ağ motoru oluştur</string>
+  <string name="delete_network_engine">Ağ motorunu sil?</string>
   <string name="host_name">Host ismi</string>
   <string name="network_port">Port</string>
-  <string name="network_engine">Internet motoru</string>
+  <string name="network_engine">Ağ motoru</string>
   <string name="failed_to_start_engine">Motor başlatma hatası</string>
   <string name="tts_failed_to_init">TTS yükleme hatası</string>
   <string name="tts_data_missing">TTS dosyası eksik</string>
   <string name="tts_not_supported_for_lang">Bu dil için seslendirme desteklenmiyor</string>
   <string name="engine_terminated">Motor sonlandırıldı</string>
   <string name="uci_protocol_error">UCI protokol hatası</string>
-  <string name="network_engine_config_error">İnternet motoru ayarlama hatası</string>
-  <string name="invalid_network_port">Geçersiz port</string>
+  <string name="network_engine_config_error">Ağ motoru ayarlama hatası</string>
+  <string name="invalid_network_port">Geçersiz ağ portu</string>
   <string name="start_new_game">Yeni oyun başlat</string>
   <string name="strength_cuckoo_hint">Zayıf olsa bile CuckooChess motorunu kullan.</string>
-  <string name="piece_names">P A F K V K</string>
+  <string name="piece_names">P A F K V Ş</string>
   <string name="highlight_last_move_title">Son hareketi vurgula</string>
   <string name="highlight_last_move_summary">Son oynanan kareyi çiz</string>
   <string name="material_diff_title">Taş Farkını Göster</string>
@@ -240,11 +240,11 @@ DroidFish\'den çıkmanızı öneririz.\
   <string name="err_too_few_spaces">Çok az boşluk</string>
   <string name="err_invalid_piece">Geçersiz taş</string>
   <string name="err_invalid_side">Geçersiz taraf</string>
-  <string name="err_invalid_castling_flags">Invalid castling flags</string>
-  <string name="err_invalid_en_passant_square">Invalid en passant square</string>
+  <string name="err_invalid_castling_flags">Geçersiz rok tarafı</string>
+  <string name="err_invalid_en_passant_square">Geçersiz geçerken alma karesi</string>
   <string name="err_white_num_kings">Beyazın Şah\'ı olmalı</string>
   <string name="err_black_num_kings">Siyahın Şah\'ı olmalı</string>
-  <string name="err_king_capture_possible">King capture possible</string>
+  <string name="err_king_capture_possible">Şahın yakalanması mümkün</string>
   <string name="err_too_many_rows">Çok fazla satır</string>
   <string name="err_too_many_columns">Çok fazla sütun var</string>
   <string name="err_pawn_on_first_last_rank">Pawn on first/last rank</string>
@@ -265,9 +265,9 @@ DroidFish\'den çıkmanızı öneririz.\
   <string name="prefs_playerName_title">Oyuncu ismi</string>
   <string name="prefs_playerName_summary">Yeni oyundaki varsayılan oyuncu adı</string>
   <string name="prefs_autoSwapSides_title">Tahtayı Döndür: Otomatik</string>
-  <string name="prefs_autoSwapSides_summary">Use side to move to flip board automatically</string>
-  <string name="prefs_playerNameFlip_title">Flip Board: Player</string>
-  <string name="prefs_playerNameFlip_summary">Use Player Name to flip board automatically</string>
+  <string name="prefs_autoSwapSides_summary">Hamle sırasına göre tahtayı otomatik döndür</string>
+  <string name="prefs_playerNameFlip_title">Tahtayı Dödür: Oyuncu</string>
+  <string name="prefs_playerNameFlip_summary">Tahtayı döndürmek için Oyuncu Adını kullan</string>
   <string name="prefs_engine_settings">Motor Ayarları</string>
   <string name="prefs_strength_title">Oynama zorluğu</string>
   <string name="prefs_strength_summary">Sadece dahili motorlar destekler. Analiz modu daima tam gücü kullanır.</string>
@@ -302,7 +302,7 @@ DroidFish\'den çıkmanızı öneririz.\
   <string name="prefs_autoScrollTitle_title">Başlık Kaydırması</string>
   <string name="prefs_autoScrollTitle_summary">Eğer oyuncu ismi çok uzunsa başlığı otomatik kaydır</string>
   <string name="prefs_quickMoveInput_title">Hızlı hamle girişi</string>
-  <string name="prefs_quickMoveInput_summary">From and To squares can be touched in any order. Move is played as soon as uniquely defined.</string>
+  <string name="prefs_quickMoveInput_summary">İl ve son kareler herhangi bir sırayla seçilebilir. Hamle tanımlanır tanımlanmaz oynanır.</string>
   <string name="prefs_moveAnnounceType_title">Hamle Bildirisi</string>
   <string name="prefs_moveAnnounceType_summary">Bilgisayar oynadığındaki bildirim sesi</string>
   <string name="prefs_vibrateEnabled_title">Titreşimi Etkinleştir</string>
@@ -315,9 +315,9 @@ DroidFish\'den çıkmanızı öneririz.\
   <string name="prefs_scrollSensitivity_title">Kaydırma Hızı</string>
   <string name="prefs_scrollSensitivity_summary">Oyun navigasyonu için kaydırma hızı</string>
   <string name="prefs_invertScrollDirection_title">Kaydırmayı Ters Çevir</string>
-  <string name="prefs_invertScrollDirection_summary">Enable this if you think scrolling moves in the wrong direction</string>
+  <string name="prefs_invertScrollDirection_summary">Hamlelerin yanlış tarafa kaydığını düşünüyorsanız bunu aktif edin</string>
   <string name="prefs_autoScrollMoveList_title">Hamle listesini otomatik kaydır</string>
-  <string name="prefs_autoScrollMoveList_summary">Automatically scroll the move list to the current board position</string>
+  <string name="prefs_autoScrollMoveList_summary">Hamle listesini pozisyona göre otomatik kaydır</string>
   <string name="prefs_discardVariations_title">Varyasyonları çıkart</string>
   <string name="prefs_discardVariations_summary">Hamle listesindeki ana hamle olmayanları çıkart</string>
   <string name="prefs_leftHanded_title">Sol el modu</string>
@@ -420,17 +420,17 @@ DroidFish\'den çıkmanızı öneririz.\
   <string name="prefs_tbHintsEdit_title">Tahta ipuçlarını düzenle</string>
   <string name="prefs_tbHintsEdit_summary">Tahtayı Düzenle modunda bir parçaya dokunurken, o parçanın olası tüm alternatif konumları için arşivi gösterin</string>
   <string name="prefs_tbRootProbe_title">Probe at Root</string>
-  <string name="prefs_tbRootProbe_summary">Filter out non-optimal moves before starting search</string>
+  <string name="prefs_tbRootProbe_summary">Arama yapmadan önce uygun olmayan hamleleri ele</string>
   <string name="prefs_tbEngineProbe_title">Motor Analizi</string>
   <string name="prefs_tbEngineProbe_summary">Desteklendiğinde arşiv analizini aktif et</string>
   <string name="prefs_gtbPath_title">GTB Dizini</string>
-  <string name="prefs_gtbPath_summary">Directory where Gaviota tablebases are installed. Leave blank to use default directory</string>
-  <string name="prefs_gtbPathNet_title">GTB Network Directory</string>
-  <string name="prefs_gtbPathNet_summary">Directory for network engines where Gaviota tablebases are installed.</string>
+  <string name="prefs_gtbPath_summary">Gaviota arşiv dizini. Varsayılanı kullanmak için boş bırakın</string>
+  <string name="prefs_gtbPathNet_title">GTB Ağ Dizini</string>
+  <string name="prefs_gtbPathNet_summary">Ağ motoru için Gaviota arşivinin bulunduğu dizin.</string>
   <string name="prefs_rtbPath_title">Syzygy Dizini</string>
   <string name="prefs_rtbPath_summary">Syzygy arşivinin olduğu dizin. Varsayılan dizini kullanmak için boş bırakın</string>
-  <string name="prefs_rtbPathNet_title">Syzygy Network Directory</string>
-  <string name="prefs_rtbPathNet_summary">Directory for network engines where Syzygy tablebases are installed.</string>
+  <string name="prefs_rtbPathNet_title">Syzygy Ağ Dizini</string>
+  <string name="prefs_rtbPathNet_summary">Ağ motoru için Syzygy arşivinin yüklü olduğu dizin.</string>
   <string name="prefs_guideShowOnStart_title">Açılış Rehberi</string>
   <string name="prefs_guideShowOnStart_summary">Programın bir sonraki başlatılışında başlangıç kılavuzunu göster.</string>
   <string name="tour_leftMenu_title">Sol Menü</string>
@@ -440,9 +440,9 @@ DroidFish\'den çıkmanızı öneririz.\
   <string name="tour_chessBoard_title">Satranç Tahtası</string>
   <string name="tour_chessBoard_desc">Araç menüsünü açmak için satranç tahtasına basılı tut.</string>
   <string name="tour_buttons_title">Butonlar</string>
-  <string name="tour_buttons_desc">İşlemini başlatmak için bir düğmeye dokunun. İkincil işlemler içeren bir menüyü açmak için bir düğmeye dokunup basılı tutun. Düğme eylemlerini yapılandırmak için Sol Menü &gt; Ayarlar &gt; Davranış &gt; Düğmeleri Yapılandır\'a gidin.</string>
+  <string name="tour_buttons_desc">İşlem yapmak için bir düğmeye dokunun. İkincil işlemler içeren bir menüyü açmak için bir düğmeye dokunup basılı tutun. Düğme eylemlerini yapılandırmak için Sol Menü &gt; Ayarlar &gt; Davranış &gt; Düğmeleri Yapılandır\'a gidin.</string>
   <string name="tour_moveList_title">Hamle Listesi</string>
-  <string name="tour_moveList_desc">Satranç tahtasını ilgili konuma ayarlamak için hareket listesindeki bir hamle\'ye dokunun. Oyunu Düzenle menüsünü açmak için hareket listesine dokunup basılı tutun.</string>
+  <string name="tour_moveList_desc">Satranç tahtasını ilgili konuma ayarlamak için hamle listesindeki bir hamle\'ye dokunun. Oyunu Düzenle menüsünü açmak için hamle listesine dokunup basılı tutun.</string>
   <string name="tour_analysis_title">Analiz Bilgisi</string>
   <string name="tour_analysis_desc">Motor düşünürken, Analiz menüsünü açmak için analiz bilgisine dokunun ve basılı tutun.</string>
   <string name="buttonDesc_custom1">@string/prefs_custom_button_1</string>
@@ -624,7 +624,7 @@ DroidFish\'den çıkmanızı öneririz.\
     <item>En fazla 5 ok</item>
     <item>En fazla 6 Ok</item>
     <item>En fazla 7 Ok</item>
-    <item>Max 8 Ok</item>
+    <item>En fazla 8 Ok</item>
   </string-array>
   <string-array name="thinking_arrows_values">
     <item>0</item>
