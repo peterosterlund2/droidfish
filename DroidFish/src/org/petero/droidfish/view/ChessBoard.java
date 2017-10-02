@@ -307,7 +307,7 @@ public abstract class ChessBoard extends View {
      */
     final public void setPosition(Position pos) {
         boolean doInvalidate = false;
-        if (anim.paused = true) {
+        if (anim.paused == true) {
             anim.paused = false;
             doInvalidate = true;
         }
