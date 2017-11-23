@@ -696,6 +696,7 @@ public class DroidChessController {
         private long currTBHits = 0;
         private int currHash = 0;
         private int currTime = 0;
+        private int currSelDepth = 0;
 
         private boolean whiteMove = true;
         private String bookInfo = "";
@@ -745,6 +746,8 @@ public class DroidChessController {
             StringBuilder statStrTmp = new StringBuilder();
             if (currDepth > 0) {
                 statStrTmp.append(String.format(Locale.US, "d:%d", currDepth));
+                if (currSelDepth > 0)
+                    statStrTmp.append(String.format(Locale.US, "/%d", currSelDepth));
                 if (currMoveNr > 0)
                     statStrTmp.append(String.format(Locale.US, " %d:%s", currMoveNr, currMoveStr));
                 if (currTime < 99995) {
@@ -866,12 +869,13 @@ public class DroidChessController {
         }
 
         @Override
-        public void notifyStats(int id, long nodes, int nps, long tbHits, int hash, int time) {
+        public void notifyStats(int id, long nodes, int nps, long tbHits, int hash, int time, int seldepth) {
             currNodes = nodes;
             currNps = nps;
             currTBHits = tbHits;
             currHash = hash;
             currTime = time;
+            currSelDepth = seldepth;
             setSearchInfo(id);
         }
 

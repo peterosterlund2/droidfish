@@ -33,13 +33,14 @@ public interface SearchListener {
         int nps;
         long tbHits;
         int hash;
+        int seldepth;
         boolean isMate;
         boolean upperBound;
         boolean lowerBound;
         ArrayList<Move> pv;
         String pvStr = "";
 
-        public PvInfo(int depth, int score, int time, long nodes, int nps, long tbHits, int hash,
+        public PvInfo(int depth, int score, int time, long nodes, int nps, long tbHits, int hash, int seldepth,
                       boolean isMate, boolean upperBound, boolean lowerBound, ArrayList<Move> pv) {
             this.depth = depth;
             this.score = score;
@@ -48,6 +49,7 @@ public interface SearchListener {
             this.nps = nps;
             this.tbHits = tbHits;
             this.hash = hash;
+            this.seldepth = seldepth;
             this.isMate = isMate;
             this.upperBound = upperBound;
             this.lowerBound = lowerBound;
@@ -68,7 +70,7 @@ public interface SearchListener {
     void notifyPV(int id, Position pos, ArrayList<PvInfo> pvInfo, Move ponderMove);
 
     /** Report search statistics. */
-    void notifyStats(int id, long nodes, int nps, long tbHits, int hash, int time);
+    void notifyStats(int id, long nodes, int nps, long tbHits, int hash, int time, int seldepth);
 
     /** Report opening book information. */
     void notifyBookInfo(int id, String bookInfo, ArrayList<Move> moveList,

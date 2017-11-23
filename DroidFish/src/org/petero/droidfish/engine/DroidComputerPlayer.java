@@ -895,6 +895,7 @@ public class DroidComputerPlayer {
     private long statNodes = 0;
     private long statTBHits = 0;
     private int statHash = 0;
+    private int statSelDepth = 0;
     private int statNps = 0;
     private ArrayList<String> statPV = new ArrayList<String>();
     private String statCurrMove = "";
@@ -913,6 +914,7 @@ public class DroidComputerPlayer {
         statTime = 0;
         statNodes = statTBHits = 0;
         statHash = 0;
+        statSelDepth = 0;
         statNps = 0;
         depthModified = true;
         currMoveModified = true;
@@ -945,6 +947,9 @@ public class DroidComputerPlayer {
                 if (is.equals("depth")) {
                     statCurrDepth = Integer.parseInt(tokens[i++]);
                     depthModified = true;
+                } else if (is.equals("seldepth")) {
+                    statSelDepth = Integer.parseInt(tokens[i++]);
+                    statsModified = true;    
                 } else if (is.equals("currmove")) {
                     statCurrMove = tokens[i++];
                     currMoveModified = true;
@@ -995,7 +1000,7 @@ public class DroidComputerPlayer {
             }
             if (havePvData) {
                 while (statPvInfo.size() < pvNum)
-                    statPvInfo.add(new PvInfo(0, 0, 0, 0, 0, 0, 0, false, false, false, new ArrayList<Move>()));
+                    statPvInfo.add(new PvInfo(0, 0, 0, 0, 0, 0, 0, 0, false, false, false, new ArrayList<Move>()));
                 while (statPvInfo.size() <= pvNum)
                     statPvInfo.add(null);
                 ArrayList<Move> moves = new ArrayList<Move>();
@@ -1003,7 +1008,7 @@ public class DroidComputerPlayer {
                 for (i = 0; i < nMoves; i++)
                     moves.add(TextIO.UCIstringToMove(statPV.get(i)));
                 statPvInfo.set(pvNum, new PvInfo(statPVDepth, statScore, statTime, statNodes, statNps,
-                                                 statTBHits, statHash,
+                                                 statTBHits, statHash, statSelDepth,
                                                  statIsMate, statUpperBound, statLowerBound, moves));
             }
         } catch (NumberFormatException nfe) {
@@ -1047,7 +1052,7 @@ public class DroidComputerPlayer {
             pvModified = false;
         }
         if (statsModified) {
-            listener.notifyStats(id, statNodes, statNps, statTBHits, statHash, statTime);
+            listener.notifyStats(id, statNodes, statNps, statTBHits, statHash, statTime, statSelDepth);
             statsModified = false;
         }
         lastGUIUpdate = System.currentTimeMillis();
