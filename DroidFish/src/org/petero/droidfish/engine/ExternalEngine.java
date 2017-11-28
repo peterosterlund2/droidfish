@@ -288,8 +288,17 @@ public class ExternalEngine extends UCIEngineBase {
         if (exitThread != null)
             exitThread.interrupt();
         super.shutDown();
-        if (engineProc != null)
+        if (engineProc != null) {
+            for (int i = 0; i < 25; i++) {
+                try {
+                    engineProc.exitValue();
+                    break;
+                } catch (IllegalThreadStateException e) {
+                    try { Thread.sleep(10); } catch (InterruptedException e2) { }
+                }
+            }
             engineProc.destroy();
+        }
         engineProc = null;
         if (stdInThread != null)
             stdInThread.interrupt();
