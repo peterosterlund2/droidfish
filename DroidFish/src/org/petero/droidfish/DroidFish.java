@@ -187,7 +187,7 @@ public class DroidFish extends Activity
     // FIXME!!! Use two engines in engine/engine games
 
     private ChessBoardPlay cb;
-    private static DroidChessController ctrl = null;
+    private DroidChessController ctrl = null;
     private boolean mShowThinking;
     private boolean mShowStats;
     private boolean fullPVLines;
@@ -219,7 +219,7 @@ public class DroidFish extends Activity
     private TextView whiteTitleText, blackTitleText, engineTitleText;
     private View firstTitleLine, secondTitleLine;
     private TextView whiteFigText, blackFigText, summaryTitleText;
-    private static Dialog moveListMenuDlg;
+    private Dialog moveListMenuDlg;
 
     private DrawerLayout drawerLayout;
     private ListView leftDrawer;
@@ -4063,7 +4063,7 @@ public class DroidFish extends Activity
 
         @Override
         public boolean onLinkClick(int offs) {
-            if (ctrl == null)
+            if (df.ctrl == null)
                 return false;
             Map.Entry<Integer, Node> e = offs2Node.floorEntry(offs);
             if (e == null)
@@ -4080,10 +4080,10 @@ public class DroidFish extends Activity
             // On android 4.1 this onClick method is called
             // even when you long click the move list. The test
             // below works around the problem.
-            Dialog mlmd = moveListMenuDlg;
+            Dialog mlmd = df.moveListMenuDlg;
             if ((mlmd == null) || !mlmd.isShowing()) {
                 df.setAutoMode(AutoMode.OFF);
-                ctrl.goNode(node);
+                df.ctrl.goNode(node);
             }
             return true;
         }
