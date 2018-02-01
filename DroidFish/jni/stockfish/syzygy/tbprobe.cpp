@@ -1379,11 +1379,13 @@ void Tablebases::init(const std::string& paths) {
             for (PieceType p3 = PAWN; p3 <= p2; ++p3) {
                 EntryTable.insert({KING, p1, p2, p3, KING});
 
-                for (PieceType p4 = PAWN; p4 <= p3; ++p4)
-                    EntryTable.insert({KING, p1, p2, p3, p4, KING});
+                if (sizeof(char*) >= 8) {
+                    for (PieceType p4 = PAWN; p4 <= p3; ++p4)
+                        EntryTable.insert({KING, p1, p2, p3, p4, KING});
 
-                for (PieceType p4 = PAWN; p4 < KING; ++p4)
-                    EntryTable.insert({KING, p1, p2, p3, KING, p4});
+                    for (PieceType p4 = PAWN; p4 < KING; ++p4)
+                        EntryTable.insert({KING, p1, p2, p3, KING, p4});
+                }
             }
 
             for (PieceType p3 = PAWN; p3 <= p1; ++p3)
