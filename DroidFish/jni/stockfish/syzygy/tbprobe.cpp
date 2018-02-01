@@ -1,7 +1,7 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (c) 2013 Ronald de Man
-  Copyright (C) 2016-2017 Marco Costalba, Lucas Braesch
+  Copyright (C) 2016-2018 Marco Costalba, Lucas Braesch
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -133,16 +133,16 @@ struct Atomic {
     std::atomic_bool ready;
 };
 
-// We define types for the different parts of the WLDEntry and DTZEntry with
+// We define types for the different parts of the WDLEntry and DTZEntry with
 // corresponding specializations for pieces or pawns.
 
-struct WLDEntryPiece {
+struct WDLEntryPiece {
     PairsData* precomp;
 };
 
 struct WDLEntryPawn {
     uint8_t pawnCount[2];     // [Lead color / other color]
-    WLDEntryPiece file[2][4]; // [wtm / btm][FILE_A..FILE_D]
+    WDLEntryPiece file[2][4]; // [wtm / btm][FILE_A..FILE_D]
 };
 
 struct DTZEntryPiece {
@@ -172,7 +172,7 @@ struct WDLEntry : public TBEntry {
     WDLEntry(const std::string& code);
    ~WDLEntry();
     union {
-        WLDEntryPiece pieceTable[2]; // [wtm / btm]
+        WDLEntryPiece pieceTable[2]; // [wtm / btm]
         WDLEntryPawn  pawnTable;
     };
 };
@@ -1379,9 +1379,8 @@ void Tablebases::init(const std::string& paths) {
             for (PieceType p3 = PAWN; p3 <= p2; ++p3) {
                 EntryTable.insert({KING, p1, p2, p3, KING});
 
-                if (sizeof(char*) >= 8)
-                    for (PieceType p4 = PAWN; p4 <= p3; ++p4)
-                        EntryTable.insert({KING, p1, p2, p3, p4, KING});
+                for (PieceType p4 = PAWN; p4 <= p3; ++p4)
+                    EntryTable.insert({KING, p1, p2, p3, p4, KING});
 
                 for (PieceType p4 = PAWN; p4 < KING; ++p4)
                     EntryTable.insert({KING, p1, p2, p3, KING, p4});

@@ -2,7 +2,7 @@
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
   Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad
-  Copyright (C) 2015-2017 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
+  Copyright (C) 2015-2018 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -524,7 +524,7 @@ ScaleFactor Endgame<KRPKB>::operator()(const Position& pos) const {
       Square bsq = pos.square<BISHOP>(weakSide);
       Square psq = pos.square<PAWN>(strongSide);
       Rank rk = relative_rank(strongSide, psq);
-      Square push = pawn_push(strongSide);
+      Direction push = pawn_push(strongSide);
 
       // If the pawn is on the 5th rank and the pawn (currently) is on
       // the same color square as the bishop then there is a chance of

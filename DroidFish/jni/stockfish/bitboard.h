@@ -2,7 +2,7 @@
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
   Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad
-  Copyright (C) 2015-2017 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
+  Copyright (C) 2015-2018 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -126,10 +126,9 @@ inline Bitboard& operator^=(Bitboard& b, Square s) {
   return b ^= SquareBB[s];
 }
 
-inline bool more_than_one(Bitboard b) {
+constexpr bool more_than_one(Bitboard b) {
   return b & (b - 1);
 }
-
 
 /// rank_bb() and file_bb() return a bitboard representing all the squares on
 /// the given file or rank.
@@ -153,8 +152,8 @@ inline Bitboard file_bb(Square s) {
 
 /// shift() moves a bitboard one step along direction D. Mainly for pawns
 
-template<Square D>
-inline Bitboard shift(Bitboard b) {
+template<Direction D>
+constexpr Bitboard shift(Bitboard b) {
   return  D == NORTH      ?  b             << 8 : D == SOUTH      ?  b             >> 8
         : D == NORTH_EAST ? (b & ~FileHBB) << 9 : D == SOUTH_EAST ? (b & ~FileHBB) >> 7
         : D == NORTH_WEST ? (b & ~FileABB) << 7 : D == SOUTH_WEST ? (b & ~FileABB) >> 9
