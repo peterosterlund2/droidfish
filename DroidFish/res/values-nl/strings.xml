@@ -42,7 +42,7 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="load_scid_game">Partij laden vanuit Scid bestand</string>
   <string name="save_game">Partij opslaan als PGN bestand</string>
   <string name="get_fen">Positie ophalen</string>
-  <string name="repeat_last_move">Repeat last move</string>
+  <string name="repeat_last_move">Herhaal laatste zet</string>
   <string name="truncate_gametree">Partijboom afkappen</string>
   <string name="move_var_up">Variant omhoog</string>
   <string name="move_var_down">Variant omlaag</string>
@@ -75,7 +75,7 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="edit_move_counters">Bewerk zetten-tellers</string>
   <string name="internal_book">&lt;Ingebouwd Boek&gt;</string>
   <string name="eco_book">&lt;ECO Boek&gt;</string>
-  <string name="no_book">&lt;No Book&gt;</string>
+  <string name="no_book">Geen boek;</string>
   <string name="select_opening_book_file">Selecteer openingsboek</string>
   <string name="select_chess_engine">Selecteer Engine</string>
   <string name="select_pgn_file">Open PGN bestand</string>
@@ -109,7 +109,7 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="edit_game">Partij bewerken</string>
   <string name="edit_headers">Kopteksten bewerken</string>
   <string name="edit_comments">Commentaar bewerken</string>
-  <string name="add_eco">Add opening name</string>
+  <string name="add_eco">Voeg openingsnaam toe</string>
   <string name="go_back">Terug</string>
   <string name="go_forward">Vooruit</string>
   <string name="goto_start_game">Naar begin v/d partij</string>
@@ -151,7 +151,7 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="header_site">Kant:</string>
   <string name="header_date">Datum:</string>
   <string name="header_round">Ronde:</string>
-  <string name="header_result">Result:</string>
+  <string name="header_result">Resultaat:</string>
   <string name="comment_before">Voor:</string>
   <string name="comment_move">Zet:</string>
   <string name="comment_after">Na:</string>
@@ -183,10 +183,10 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="failed_to_read_pgn_data">De PGN data kon niet gelezen worden</string>
   <string name="variation">Variant:</string>
   <string name="add_analysis">Analyse toevoegen</string>
-  <string name="num_variations">Number of Variations</string>
+  <string name="num_variations">Aantal variaties</string>
   <string name="hide_statistics">Statistieken verbergen</string>
   <string name="show_statistics">Statistieken tonen</string>
-  <string name="show_whole_variations">Show whole variations</string>
+  <string name="show_whole_variations">Toon hele variaties</string>
   <string name="truncate_variations">Truncate variations</string>
   <string name="heavy_cpu_usage">Zwaar CPU gebruik</string>
   <string name="background_processing">Achtergrond verwerking</string>
