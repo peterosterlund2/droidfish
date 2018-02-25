@@ -1228,6 +1228,8 @@ public class DroidFish extends Activity
         useWakeLock = settings.getBoolean("wakeLock", false);
         setWakeLock(useWakeLock);
 
+        String lang = settings.getString("language", "default");
+        setLanguage(lang);
         int fontSize = getIntSetting("fontSize", 12);
         int statusFontSize = fontSize;
         Configuration config = getResources().getConfiguration();
@@ -1315,6 +1317,23 @@ public class DroidFish extends Activity
 
     private void overrideViewAttribs() {
         Util.overrideViewAttribs(findViewById(R.id.main));
+    }
+
+    private final void setLanguage(String lang) {
+        Locale newLocale;
+        if (lang.equals("default")) {
+            newLocale = Resources.getSystem().getConfiguration().locale;
+        } else {
+            newLocale = new Locale(lang);
+        }
+        if (!newLocale.getLanguage().equals(Locale.getDefault().getLanguage())) {
+            Resources res = getResources();
+            Configuration config = res.getConfiguration();
+            config.locale = newLocale;
+            res.updateConfiguration(config, res.getDisplayMetrics());
+            Locale.setDefault(newLocale);
+            recreate();
+        }
     }
 
     /**

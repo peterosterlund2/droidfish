@@ -130,6 +130,14 @@
             android:defaultValue="false">
         </CheckBoxPreference>
         <ListPreference
+            android:key="language"
+            android:title="@string/prefs_language_title"
+            android:summary="@string/prefs_language_summary"
+            android:entryValues="@array/language_values"
+            android:entries="@array/language_texts"
+            android:defaultValue="@string/language_default">
+        </ListPreference>
+        <ListPreference
             android:key="fontSize"
             android:title="@string/prefs_fontSize_title" 
             android:summary="@string/prefs_fontSize_summary" 
