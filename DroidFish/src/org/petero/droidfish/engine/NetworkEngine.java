@@ -92,10 +92,13 @@ public class NetworkEngine extends UCIEngineBase {
                 } catch (UnknownHostException e) {
                     isError = true;
                     report.reportError(e.getMessage());
-                } catch (NumberFormatException nfe) {
+                } catch (IllegalArgumentException e) {
                     isError = true;
                     report.reportError(context.getString(R.string.invalid_network_port));
                 } catch (IOException e) {
+                    isError = true;
+                    report.reportError(e.getMessage());
+                } catch (SecurityException e) {
                     isError = true;
                     report.reportError(e.getMessage());
                 }
