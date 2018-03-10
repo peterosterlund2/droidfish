@@ -760,6 +760,9 @@ public class DroidFish extends Activity
         } catch (IOException e) {
             Toast.makeText(getApplicationContext(), R.string.failed_to_read_pgn_data,
                            Toast.LENGTH_SHORT).show();
+        } catch (SecurityException e) {
+            Toast.makeText(getApplicationContext(), e.getMessage(),
+                           Toast.LENGTH_LONG).show();
         }
         return new Pair<String,String>(pgnOrFen,filename);
     }
