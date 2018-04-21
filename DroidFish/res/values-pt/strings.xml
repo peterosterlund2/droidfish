@@ -7,6 +7,7 @@
   <string name="time_control_default">120000</string>
   <string name="time_increment_default">0</string>
   <string name="squareSelectType_default">1</string>
+  <string name="language_default">default</string>
   <string name="font_size_default">12</string>
   <string name="thinking_arrows_default">4</string>
   <string name="scroll_sensitivity_default">2</string>
@@ -324,6 +325,8 @@ não estiver usando o programa diretamente.\</string>
   <string name="prefs_leftHanded_summary">Controles à esquerda no modo paisagem</string>
   <string name="prefs_squareSelectType_title">Seleção de casa</string>
   <string name="prefs_squareSelectType_summary">Definir como selecionar casas no tabuleiro</string>
+  <string name="prefs_language_title">Language</string>
+  <string name="prefs_language_summary">User interface language</string>
   <string name="prefs_fontSize_title">Tamanho da fonte</string>
   <string name="prefs_fontSize_summary">Tamanho da fonte para lista de lances e informações sobre a partida</string>
   <string name="prefs_largeButtons_title">Botões grandes</string>
@@ -592,6 +595,38 @@ não estiver usando o programa diretamente.\</string>
   <string-array name="squareSelectType_values">
     <item>0</item>
     <item>1</item>
+  </string-array>
+  <string-array name="language_texts">
+    <item>System default</item>
+    <item>English</item>
+    <item>Belarusian</item>
+    <item>German</item>
+    <item>Spanish</item>
+    <item>French</item>
+    <item>Italian</item>
+    <item>Korean</item>
+    <item>Dutch</item>
+    <item>Polish</item>
+    <item>Portuguese</item>
+    <item>Russian</item>
+    <item>Turkish</item>
+    <item>Ukrainian</item>
+  </string-array>
+  <string-array name="language_values">
+    <item>default</item>
+    <item>en</item>
+    <item>be</item>
+    <item>de</item>
+    <item>es</item>
+    <item>fr</item>
+    <item>it</item>
+    <item>ko</item>
+    <item>nl</item>
+    <item>pl</item>
+    <item>pt</item>
+    <item>ru</item>
+    <item>tr</item>
+    <item>uk</item>
   </string-array>
   <string-array name="font_size_texts">
     <item>Pequena</item>

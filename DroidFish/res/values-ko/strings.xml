@@ -7,6 +7,7 @@
   <string name="time_control_default">120000</string>
   <string name="time_increment_default">0</string>
   <string name="squareSelectType_default">1</string>
+  <string name="language_default">default</string>
   <string name="font_size_default">12</string>
   <string name="thinking_arrows_default">4</string>
   <string name="scroll_sensitivity_default">2</string>
@@ -324,6 +325,8 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
   <string name="prefs_leftHanded_summary">가로 모드에서 왼쪽 사이드 컨트롤</string>
   <string name="prefs_squareSelectType_title">사각형 선택</string>
   <string name="prefs_squareSelectType_summary">선택한 사각형이 체스 보드에서 어떻게 동작할 지 제어</string>
+  <string name="prefs_language_title">Language</string>
+  <string name="prefs_language_summary">User interface language</string>
   <string name="prefs_fontSize_title">텍스트 크기</string>
   <string name="prefs_fontSize_summary">[이동 목록 &amp; 게임 정보] 글꼴 크기</string>
   <string name="prefs_largeButtons_title">큰 버튼</string>
@@ -592,6 +595,38 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
   <string-array name="squareSelectType_values">
     <item>0</item>
     <item>1</item>
+  </string-array>
+  <string-array name="language_texts">
+    <item>System default</item>
+    <item>English</item>
+    <item>Belarusian</item>
+    <item>German</item>
+    <item>Spanish</item>
+    <item>French</item>
+    <item>Italian</item>
+    <item>Korean</item>
+    <item>Dutch</item>
+    <item>Polish</item>
+    <item>Portuguese</item>
+    <item>Russian</item>
+    <item>Turkish</item>
+    <item>Ukrainian</item>
+  </string-array>
+  <string-array name="language_values">
+    <item>default</item>
+    <item>en</item>
+    <item>be</item>
+    <item>de</item>
+    <item>es</item>
+    <item>fr</item>
+    <item>it</item>
+    <item>ko</item>
+    <item>nl</item>
+    <item>pl</item>
+    <item>pt</item>
+    <item>ru</item>
+    <item>tr</item>
+    <item>uk</item>
   </string-array>
   <string-array name="font_size_texts">
     <item>작게</item>
