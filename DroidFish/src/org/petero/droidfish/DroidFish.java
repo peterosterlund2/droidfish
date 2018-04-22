@@ -1326,6 +1326,9 @@ public class DroidFish extends Activity
         Locale newLocale;
         if (lang.equals("default")) {
             newLocale = Resources.getSystem().getConfiguration().locale;
+        } else if (lang.contains("_")) {
+            String[] parts = lang.split("_");
+            newLocale = new Locale(parts[0], parts[1]);
         } else {
             newLocale = new Locale(lang);
         }

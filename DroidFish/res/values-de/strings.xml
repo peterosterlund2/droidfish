@@ -601,6 +601,7 @@ wenn Sie es nicht aktiv nutzen.\
     <item>System default</item>
     <item>English</item>
     <item>Belarusian</item>
+    <item>Chinese Simplified</item>
     <item>German</item>
     <item>Spanish</item>
     <item>French</item>
@@ -617,6 +618,7 @@ wenn Sie es nicht aktiv nutzen.\
     <item>default</item>
     <item>en</item>
     <item>be</item>
+    <item>zh_CN</item>
     <item>de</item>
     <item>es</item>
     <item>fr</item>

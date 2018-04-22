@@ -598,6 +598,7 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
     <item>System default</item>
     <item>English</item>
     <item>Belarusian</item>
+    <item>Chinese Simplified</item>
     <item>German</item>
     <item>Spanish</item>
     <item>French</item>
@@ -614,6 +615,7 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
     <item>default</item>
     <item>en</item>
     <item>be</item>
+    <item>zh_CN</item>
     <item>de</item>
     <item>es</item>
     <item>fr</item>

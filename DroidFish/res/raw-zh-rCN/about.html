@@ -1,0 +1,285 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+  </head>
+  <body>
+
+<h2>关于</h2>
+<p>
+  <i>DroidFish</i> 是功能丰富的图形化国际象棋用户界面，并结合了非常强大的 <i>Stockfish</i> 国际象棋引擎。
+</p>
+
+<h3>特征</h3>
+<ul>
+  <li>开局书</li>
+  <li>无限 撤消/恢复</li>
+  <li>复制/粘贴 到/从 剪贴板</li>
+  <li>分析模式</li>
+  <li>双人模式</li>
+  <li>电脑对电脑模式</li>
+  <li>设置局面</li>
+  <li>大量的 PGN 支持</li>
+  <li>调整棋力</li>
+  <li>第三方 UCI 引擎</li>
+  <li>Gaviota 残局库</li>
+  <li>Syzygy 残局库</li>
+</ul>
+
+<h3>提示</h3>
+<ul>
+  <li>
+    长按模式 / 左/右 按钮等额外命令。
+  </li>
+  <li>
+    重新对弈对局时，更改对局模式为 <i>编辑/重新对弈</i> 将能够 撤消/恢复 单一的半回合。
+  </li>
+</ul>
+
+<h3>开局书</h3>
+<p>
+  DroidFish 包含小型的内置开局书。如果想使用大型的开局书，可以配置 DroidFish 使用外部的 <i>polyglot</i> 或 <i>CTG</i> 开局书文件:
+</p>
+<ol>
+  <li>
+    复制一个或多个 Polyglot 开局书文件到 SD 卡的 <i>DroidFish/book</i> 目录。
+    Polyglot 开局书必须有文件扩展名 <i>.bin</i>。
+    <b>注意!</b> Android 文件系统区分大小写，所以扩展名必须是 <i>.bin</i>，而不能是 <i>.Bin</i> 或 <i>.BIN</i>。
+  </li>
+  <li>
+    复制一个或多个 CTG 开局书文件到 <i>DroidFish/book</i> 目录。
+    CTG 开局书文件包含三个文件，文件扩展名分别为 <i>.ctg</i>、<i>.ctb</i> 和 <i>.cto</i>。
+    必须复制全部三个文件。
+  </li>
+  <li>
+    从程序菜单中，选择 <i>选择开局书</i>。
+  </li>
+  <li>
+    选择要使用的开局书文件。
+  </li>
+</ol>
+
+<h3>PGN 文件</h3>
+<p>
+  DroidFish 可以从 PGN 文件加载对局。
+</p>
+<ol>
+  <li>
+    复制一个或多个 PGN 文件到 SD 卡的 <i>DroidFish/pgn</i> 目录。
+  </li>
+  <li>
+    长按棋盘，选择 <i>从 PGN 文件加载对局</i>。
+  </li>
+  <li>
+    选择文件，再选择该文件中要加载的对局。
+  </li>
+</ol>
+<p>
+  要编辑对局标题，例如棋手名字，长按着法列表，选择 <i>编辑标题</i>。要编辑着法的评注，长按着法列表，选择 <i>编辑评注</i>。
+</p>
+<p>
+  要保存对局，长按棋盘，选择 <i>保存对局到 PGN 文件</i>。然后选择要保存的文件，再选择新对局要保存在该文件的位置。
+</p>
+<p>
+  <b>注意!</b> 如果安装了 <a href="http://play.google.com/store/apps/details?id=org.openintents.filemanager">OI File Manager</a>，任何目录都可以用来 加载/保存 对局
+</p>
+<p>
+  要添加计算机分析到对局树，在计算机思考时，长按分析信息，再选择 <i>添加分析</i> 。
+  当前主要变例将在对局树中作为变例添加。
+</p>
+<p>
+  在分析模式下，该操作可能会在对局树中添加空回合。要注意的是，PGN 标准是不包含空回合的，并且可能在其他读取 PGN 的国际象棋程序中不能工作。
+</p>
+
+<h3>Scid 文件</h3>
+<p>
+  如果安装了 <a href="http://play.google.com/store/apps/details?id=org.scid.android">Scid on the go</a>，DroidFish 可以直接读取 Scid 数据库文件。
+  长按棋盘，选择 <i>从 Scid 文件加载对局</i>。
+</p>
+
+<h3>FEN/EPD 文件</h3>
+<p>
+  DroidFish 可以从 FEN/EPD 文件加载局面。
+</p>
+<ol>
+  <li>
+    复制一个或多个 FEN/EPD 文件到 SD 卡的 <i>DroidFish/epd</i> 目录。
+  </li>
+  <li>
+    长按棋盘，选择 <i>从文件加载局面</i>。
+  </li>
+  <li>
+    选择文件，再选择该文件中要加载的局面。
+  </li>
+</ol>
+
+<p>
+  也可以从外部程序加载局面，例如 <a href="http://play.google.com/store/apps/details?id=com.kgroth.chessocr">ChessOcr</a> (非免费)，这将可以使用相机拍摄国际象棋图解图片，然后在 DroidFish 中自动设置相应的局面。
+</p>
+<ol>
+  <li>
+    长按棋盘，再选择 <i>检索局面</i>。
+  </li>
+  <li>
+    参阅外部程序的操作指南。
+  </li>
+</ol>
+
+<h3>UCI 引擎</h3>
+<p>
+  DroidFish 可以使用第三方 UCI 引擎。
+</p>
+<ol>
+  <li>
+    复制一个或多个 UCI 引擎二进制文件到 SD 卡的 <i>DroidFish/uci</i> 目录。
+    <b>注意!</b> 该二进制文件必须为 Android 编译的版本。
+  </li>
+  <li>
+    从程序菜单中，选择 <i>管理国际象棋引擎</i>，再选择 <i>选择国际象棋引擎</i>，然后选择要使用的引擎。
+  </li>
+</ol>
+
+<h3>UCI 引擎在远程服务器</h3>
+<p>
+  DroidFish 可以使用运行于远程服务器的 UCI 引擎。
+</p>
+<ol>
+  <li>
+    在远程计算机中安装国际象棋网络服务器软件。
+    <ol>
+      <li>
+        对于 Windows，可以从 <a href="http://home.arcor.de/bernhard.wallner/netChess.html">Computer Chess Utility</a> 网页中安装服务器软件。
+      </li>
+      <li>
+        对于 Linux，可以使用 <tt>tcputils</tt> 包中的 <tt>mini-inetd</tt>。
+      </li>
+    </ol>
+  </li>
+  <li>
+    从程序菜单中，选择 <i>管理国际象棋引擎</i>，创建一个新的网络引擎，然后输入该远程引擎的名称、主机名和端口号。
+  </li>
+  <li>
+    从程序菜单中，选择 <i>管理国际象棋引擎</i>，再选择 <i>选择国际象棋引擎</i>，然后选择要使用的引擎。
+  </li>
+</ol>
+
+<h3>Gaviota 残局库</h3>
+<p>
+  使用 <a href="http://sites.google.com/site/gaviotachessengine/Home/endgame-tablebases-1">Gaviota 残局库</a>:
+</p>
+<ol>
+  <li>
+    复制 .gtb 和 .cp4 文件到 SD 卡的 <i>DroidFish/gtb</i> 目录。
+  </li>
+  <li>
+    使用 <i>残局库</i> 参数界面来控制如何使用残局库。
+  </li>
+</ol>
+
+<h3>Syzygy 残局库</h3>
+<p>
+  使用 <a href="https://chessprogramming.wikispaces.com/Syzygy+Bases">Syzygy 残局库</a>:
+</p>
+<ol>
+  <li>
+    复制 .rtbw 和可选的 .rtbz 文件到 SD 卡的 <i>DroidFish/rtb</i> 目录。
+  </li>
+  <li>
+    使用 <i>残局库</i> 参数界面来控制如何使用残局库。
+  </li>
+</ol>
+
+<h3>许可证</h3>
+<p>
+  <a href="http://www.gnu.org/licenses/gpl.html">GNU GPL v3</a>
+</p>
+
+<h3>开发者</h3>
+<ul>
+  <li>
+    <i>DroidFish</i> 由 Peter Österlund 开发
+  </li>
+  <li>
+    <i>Stockfish</i> 由 Tord Romstad, Marco Costalba, Gary Linscott 和 Joona Kiiski 开发
+  </li>
+  <li>
+    Aaro Korhonen 改进了用户界面
+  </li>
+  <li>
+    Gaviota 残局库探测代码 API，版权所有 © 2010 Miguel A. Ballicora
+    <ul>
+      <li>
+        LZMA 压缩: Igor Pavlov
+      </li>
+      <li>
+        ZLIB 压缩，版权所有 © 1995-2005 Jean-loup Gailly and Mark Adler
+      </li>
+      <li>
+        LZF 压缩，版权所有 © 2000-2007 Marc Alexander Lehmann
+      </li>
+    </ul>
+  </li>
+  <li>
+    SVG 阅读器来自 <a href="http://code.google.com/p/svg-android/">svg-android</a> 项目
+  </li>
+  <li>
+    颜色选择器，版权所有 © 2010 Daniel Nilsson 和 版权所有 © 2011 Sergey Margaritov
+  </li>
+  <li>
+    开放国际象棋引擎互换接口代码来自 Gerhard Kalab，<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 license</a>
+  </li>
+  <li>
+    Syzygy 残局库探测代码，版权所有 © 2011-2013 Ronald de Man
+  </li>
+  <li>
+    <a href="https://github.com/worker8/TourGuide">TourGuide</a> 库，版权所有 © 2015 Tan Jun Rong
+  </li>
+  <li>
+    <a href="https://github.com/Tesla-Redux/android-floating-action-button">浮动操作按钮</a> 库，版权所有 © 2014 str4d and Jerzy Chalupski
+  </li>
+</ul>
+
+<h3>翻译</h3>
+<p>
+  翻译托管在 <a href="http://crowdin.net/project/droidfish-android-chess-app">crowdin.net</a>。
+</p>
+<ul>
+  <li>
+    德语翻译者: Uwe Walschus
+  </li>
+  <li>
+    西班牙语翻译者: Amador Cuesta
+  </li>
+  <li>
+    俄语翻译者: SWEN и dfuk (allBlackBerry)
+  </li>
+  <li>
+    葡萄牙语翻译者: C. R. Zamana
+  </li>
+  <li>
+    法语翻译者: Eric Weibel (Thanvillé)
+  </li>
+  <li>
+    意大利语翻译者: Michele Carfora (suessola)
+  </li>
+  <li>
+    荷兰语翻译者: David Pront
+  </li>
+  <li>
+    波兰语翻译者: Rafał Smyka
+  </li>
+  <li>
+    乌克兰语翻译者: Mix Gerder 和 Toru Hasegawa
+  </li>
+  <li>
+    白俄罗斯语翻译者: Mix Gerder
+  </li>
+  <li>
+    韩语翻译者: Hyobeom Ahn
+  </li>
+  <li>
+    土耳其语翻译者: Emrullah Ertürk
+  </li>
+</ul>
+
+  </body>
+</html>
