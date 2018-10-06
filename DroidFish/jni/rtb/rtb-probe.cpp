@@ -112,7 +112,7 @@ static int probe_wdl_table(Position& pos, int *success)
     uint64_t idx;
     uint64_t key;
     int i;
-    ubyte res;
+    uint8_t res;
     int p[TBPIECES];
 
     // Obtain the position's material signature key.
@@ -130,7 +130,7 @@ static int probe_wdl_table(Position& pos, int *success)
     }
 
     ptr = ptr2[i].ptr;
-    ubyte ready = ptr->ready.load(std::memory_order_relaxed);
+    uint8_t ready = ptr->ready.load(std::memory_order_relaxed);
     std::atomic_thread_fence(std::memory_order_acquire);
     if (!ready) {
         std::lock_guard<std::mutex> L(TB_mutex);
@@ -169,7 +169,7 @@ static int probe_wdl_table(Position& pos, int *success)
     // Pieces of the same type are guaranteed to be consecutive.
     if (!ptr->has_pawns) {
         struct TBEntry_piece *entry = (struct TBEntry_piece *)ptr;
-        ubyte *pc = entry->pieces[bside];
+        uint8_t *pc = entry->pieces[bside];
         for (i = 0; i < entry->num;) {
             uint64_t bb = get_pieces(pos, (pc[i] ^ cmirror) >> 3, pc[i] & 0x07);
             do {
@@ -187,7 +187,7 @@ static int probe_wdl_table(Position& pos, int *success)
             p[i++] = pop_lsb(bb) ^ mirror;
         } while (bb);
         int f = pawn_file(entry, p);
-        ubyte *pc = entry->file[f].pieces[bside];
+        uint8_t *pc = entry->file[f].pieces[bside];
         for (; i < entry->num;) {
             bb = get_pieces(pos, (pc[i] ^ cmirror) >> 3, pc[i] & 0x07);
             do {
@@ -277,7 +277,7 @@ static int probe_dtz_table(Position& pos, int wdl, int *success)
             *success = -1;
             return 0;
         }
-        ubyte *pc = entry->pieces;
+        uint8_t *pc = entry->pieces;
         for (i = 0; i < entry->num;) {
             uint64_t bb = get_pieces(pos, (pc[i] ^ cmirror) >> 3, pc[i] & 0x07);
             do {
@@ -287,8 +287,12 @@ static int probe_dtz_table(Position& pos, int wdl, int *success)
         idx = encode_piece((struct TBEntry_piece *)entry, entry->norm, p, entry->factor);
         res = decompress_pairs(entry->precomp, idx);
 
-        if (entry->flags & 2)
-            res = entry->map[entry->map_idx[wdl_to_map[wdl + 2]] + res];
+        if (entry->flags & 2) {
+            if (entry->flags & 16)
+                res = ((uint16_t*)entry->map)[entry->map_idx[wdl_to_map[wdl + 2]] + res];
+            else
+                res = entry->map[entry->map_idx[wdl_to_map[wdl + 2]] + res];
+        }
 
         if (!(entry->flags & pa_flags[wdl + 2]) || (wdl & 1))
             res *= 2;
@@ -305,7 +309,7 @@ static int probe_dtz_table(Position& pos, int wdl, int *success)
             *success = -1;
             return 0;
         }
-        ubyte *pc = entry->file[f].pieces;
+        uint8_t *pc = entry->file[f].pieces;
         for (; i < entry->num;) {
             bb = get_pieces(pos, (pc[i] ^ cmirror) >> 3, pc[i] & 0x07);
             do {
@@ -471,7 +475,7 @@ static int probe_dtz_no_ep(Position& pos, int *success)
                 !MoveGen::isLegal(pos, move, inCheck))
                 continue;
             pos.makeMove(move, ui);
-            int v = -probe_ab(pos, -2, -wdl + 1, success);
+            int v = -Syzygy::probe_wdl(pos, success);
             pos.unMakeMove(move, ui);
             if (*success == 0) return 0;
             if (v == wdl)

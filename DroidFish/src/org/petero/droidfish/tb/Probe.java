@@ -216,7 +216,7 @@ public class Probe {
     }
 
     private final ProbeResult rtbProbe(Position pos) {
-        if (pos.nPieces() > 6)
+        if (pos.nPieces() > 7)
             return new ProbeResult(ProbeResult.Type.NONE, 0, 0);
 
         // Make sure position is valid. Required by native move generation code.
