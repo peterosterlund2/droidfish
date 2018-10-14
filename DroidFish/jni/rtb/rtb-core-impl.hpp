@@ -1207,7 +1207,7 @@ static int init_table_dtz(struct TBEntry *entry)
                 data += ((uintptr_t)data) & 0x01;
                 for (int i = 0; i < 4; i++) {
                     ptr->map_idx[i] = (uint16_t)((uint16_t*)data - (uint16_t*)ptr->map + 1);
-                    data += 2 + ((uint16_t*)data)[0];
+                    data += 2 + ((uint16_t*)data)[0] * 2;
                 }
             } else {
                 for (int i = 0; i < 4; i++) {
@@ -1248,7 +1248,7 @@ static int init_table_dtz(struct TBEntry *entry)
                     data += ((uintptr_t)data) & 0x01;
                     for (int i = 0; i < 4; i++) {
                         ptr->map_idx[f][i] = (uint16_t)((uint16_t*)data - (uint16_t*)ptr->map + 1);
-                        data += 2 + ((uint16_t*)data)[0];
+                        data += 2 + ((uint16_t*)data)[0] * 2;
                     }
                 } else {
                     for (int i = 0; i < 4; i++) {
