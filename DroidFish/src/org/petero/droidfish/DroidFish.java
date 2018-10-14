@@ -758,11 +758,9 @@ public class DroidFish extends Activity
                 }
             }
         } catch (IOException e) {
-            Toast.makeText(getApplicationContext(), R.string.failed_to_read_pgn_data,
-                           Toast.LENGTH_SHORT).show();
+            DroidFishApp.toast(R.string.failed_to_read_pgn_data, Toast.LENGTH_SHORT);
         } catch (SecurityException e) {
-            Toast.makeText(getApplicationContext(), e.getMessage(),
-                           Toast.LENGTH_LONG).show();
+            DroidFishApp.toast(e.getMessage(), Toast.LENGTH_LONG);
         }
         return new Pair<String,String>(pgnOrFen,filename);
     }
@@ -1666,7 +1664,7 @@ public class DroidFish extends Activity
                 if (ctrl.claimDrawIfPossible())
                     ctrl.stopPonder();
                 else
-                    Toast.makeText(getApplicationContext(), R.string.offer_draw, Toast.LENGTH_SHORT).show();
+                    DroidFishApp.toast(R.string.offer_draw, Toast.LENGTH_SHORT);
             }
             break;
         case ITEM_SELECT_BOOK:
@@ -1732,7 +1730,7 @@ public class DroidFish extends Activity
                     ctrl.setFENOrPGN(pgn);
                     setBoardFlip(true);
                 } catch (ChessParseError e) {
-                    Toast.makeText(getApplicationContext(), getParseErrString(e), Toast.LENGTH_SHORT).show();
+                    DroidFishApp.toast(getParseErrString(e), Toast.LENGTH_SHORT);
                 }
             }
             break;
@@ -2294,7 +2292,7 @@ public class DroidFish extends Activity
                             ctrl.setFENOrPGN(fenPgn.toString());
                             setBoardFlip(true);
                         } catch (ChessParseError e) {
-                            Toast.makeText(getApplicationContext(), getParseErrString(e), Toast.LENGTH_SHORT).show();
+                            DroidFishApp.toast(getParseErrString(e), Toast.LENGTH_SHORT);
                         }
                     }
                     break;
@@ -2385,7 +2383,7 @@ public class DroidFish extends Activity
                     ow.close();
                 }
             } catch (IOException e) {
-                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                DroidFishApp.toast(e.getMessage(), Toast.LENGTH_LONG);
                 return;
             }
             String authority = "org.petero.droidfish.fileprovider";
@@ -2418,7 +2416,7 @@ public class DroidFish extends Activity
                     os.close();
             }
         } catch (IOException e) {
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            DroidFishApp.toast(e.getMessage(), Toast.LENGTH_LONG);
             return;
         }
 
@@ -3487,7 +3485,7 @@ public class DroidFish extends Activity
                     errMsg = R.string.engine_name_in_use;
                 }
                 if (!nameOk) {
-                    Toast.makeText(getApplicationContext(), errMsg, Toast.LENGTH_LONG).show();
+                    DroidFishApp.toast(errMsg, Toast.LENGTH_LONG);
                     reShowDialog(NETWORK_ENGINE_DIALOG);
                     return;
                 }
@@ -3561,7 +3559,7 @@ public class DroidFish extends Activity
                     fw.close();
                     setEngineOptions(true);
                 } catch (IOException e) {
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    DroidFishApp.toast(e.getMessage(), Toast.LENGTH_LONG);
                 }
             }
         };
@@ -3686,7 +3684,7 @@ public class DroidFish extends Activity
         try {
             startActivityForResult(intent, RESULT_SELECT_SCID);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            DroidFishApp.toast(e.getMessage(), Toast.LENGTH_LONG);
         }
     }
 
@@ -3703,7 +3701,7 @@ public class DroidFish extends Activity
         try {
             startActivityForResult(i, RESULT_GET_FEN);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            DroidFishApp.toast(e.getMessage(), Toast.LENGTH_LONG);
         }
     }
 
@@ -3829,21 +3827,21 @@ public class DroidFish extends Activity
         String msg = String.format(Locale.US, "%s %s-%s",
                 getString(R.string.invalid_move),
                 TextIO.squareToString(m.from), TextIO.squareToString(m.to));
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        DroidFishApp.toast(msg, Toast.LENGTH_SHORT);
     }
 
     @Override
     public void reportEngineName(String engine) {
         String msg = String.format(Locale.US, "%s: %s",
                 getString(R.string.engine), engine);
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        DroidFishApp.toast(msg, Toast.LENGTH_SHORT);
     }
 
     @Override
     public void reportEngineError(String errMsg) {
         String msg = String.format(Locale.US, "%s: %s",
                 getString(R.string.engine_error), errMsg);
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+        DroidFishApp.toast(msg, Toast.LENGTH_LONG);
     }
 
     /** Initialize text to speech if enabled in settings. */
@@ -3855,8 +3853,7 @@ public class DroidFish extends Activity
     @Override
     public void movePlayed(Position pos, Move move, boolean computerMove) {
         if (move == null) {
-            Toast.makeText(getApplicationContext(), R.string.engine_error,
-                           Toast.LENGTH_SHORT).show();
+            DroidFishApp.toast(R.string.engine_error, Toast.LENGTH_SHORT);
             newGameMode(GameMode.EDIT_GAME);
             return;
         }

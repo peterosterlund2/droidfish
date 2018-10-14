@@ -24,6 +24,7 @@ import java.util.concurrent.CountDownLatch;
 
 import org.petero.droidfish.ChessBoardPlay;
 import org.petero.droidfish.ColorTheme;
+import org.petero.droidfish.DroidFishApp;
 import org.petero.droidfish.R;
 import org.petero.droidfish.Util;
 import org.petero.droidfish.activities.FENFile.FenInfo;
@@ -135,8 +136,7 @@ public class LoadFEN extends ListActivity {
             boolean next = action.equals("org.petero.droidfish.loadNextFen");
             final int loadItem = defaultItem + (next ? 1 : -1);
             if (loadItem < 0) {
-                Toast.makeText(getApplicationContext(), R.string.no_prev_fen,
-                               Toast.LENGTH_SHORT).show();
+                DroidFishApp.toast(R.string.no_prev_fen, Toast.LENGTH_SHORT);
                 setResult(RESULT_CANCELED);
                 finish();
             } else {
@@ -147,8 +147,7 @@ public class LoadFEN extends ListActivity {
                         runOnUiThread(new Runnable() {
                             public void run() {
                                 if (loadItem >= fensInFile.size()) {
-                                    Toast.makeText(getApplicationContext(), R.string.no_next_fen,
-                                                   Toast.LENGTH_SHORT).show();
+                                    DroidFishApp.toast(R.string.no_next_fen, Toast.LENGTH_SHORT);
                                     setResult(RESULT_CANCELED);
                                     finish();
                                 } else {
@@ -338,8 +337,7 @@ public class LoadFEN extends ListActivity {
             if (p.first == FenInfoResult.OUT_OF_MEMORY) {
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        Toast.makeText(getApplicationContext(), R.string.file_too_large,
-                                       Toast.LENGTH_SHORT).show();
+                        DroidFishApp.toast(R.string.file_too_large, Toast.LENGTH_SHORT);
                     }
                 });
             }

@@ -99,7 +99,7 @@ public class Speech {
                     toast = R.string.tts_failed_to_init;
                 }
                 if (toast != -1)
-                    Toast.makeText(context, toast, Toast.LENGTH_LONG).show();
+                    DroidFishApp.toast(toast, Toast.LENGTH_LONG);
             }
         });
     }

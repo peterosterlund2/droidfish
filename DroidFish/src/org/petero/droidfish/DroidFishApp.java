@@ -20,9 +20,12 @@ package org.petero.droidfish;
 
 import android.app.Application;
 import android.content.Context;
+import android.widget.Toast;
 
 public class DroidFishApp extends Application {
     private static Context appContext;
+    private static Toast toast;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -32,5 +35,29 @@ public class DroidFishApp extends Application {
     /** Get the application context. */
     public static Context getContext() {
         return appContext;
+    }
+
+    /** Show a toast after canceling current toast. */
+    public static void toast(int resId, int duration) {
+        if (toast != null) {
+            toast.cancel();
+            toast = null;
+        }
+        if (appContext != null) {
+            toast = Toast.makeText(appContext, resId, duration);
+            toast.show();
+        }
+    }
+
+    /** Show a toast after canceling current toast. */
+    public static void toast(CharSequence text, int duration) {
+        if (toast != null) {
+            toast.cancel();
+            toast = null;
+        }
+        if (appContext != null) {
+            toast = Toast.makeText(appContext, text, duration);
+            toast.show();
+        }
     }
 }

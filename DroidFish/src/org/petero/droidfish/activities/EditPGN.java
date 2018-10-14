@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import org.petero.droidfish.ColorTheme;
+import org.petero.droidfish.DroidFishApp;
 import org.petero.droidfish.ObjectCache;
 import org.petero.droidfish.R;
 import org.petero.droidfish.Util;
@@ -133,8 +134,7 @@ public class EditPGN extends ListActivity {
             boolean next = action.equals("org.petero.droidfish.loadFileNextGame");
             final int loadItem = defaultItem + (next ? 1 : -1);
             if (loadItem < 0) {
-                Toast.makeText(getApplicationContext(), R.string.no_prev_game,
-                               Toast.LENGTH_SHORT).show();
+                DroidFishApp.toast(R.string.no_prev_game, Toast.LENGTH_SHORT);
                 setResult(RESULT_CANCELED);
                 finish();
             } else {
@@ -145,8 +145,7 @@ public class EditPGN extends ListActivity {
                         runOnUiThread(new Runnable() {
                             public void run() {
                                 if (loadItem >= gamesInFile.size()) {
-                                    Toast.makeText(getApplicationContext(), R.string.no_next_game,
-                                                   Toast.LENGTH_SHORT).show();
+                                    DroidFishApp.toast(R.string.no_next_game, Toast.LENGTH_SHORT);
                                     setResult(RESULT_CANCELED);
                                     finish();
                                 } else {
@@ -166,7 +165,7 @@ public class EditPGN extends ListActivity {
             boolean silent = i.getBooleanExtra("org.petero.droidfish.silent", false);
             if (silent) { // Silently append to file
                 PGNFile pgnFile2 = new PGNFile(fileName);
-                pgnFile2.appendPGN(pgnToSave, null);
+                pgnFile2.appendPGN(pgnToSave);
             } else {
                 pgnFile = new PGNFile(fileName);
                 showDialog(PROGRESS_DIALOG);
@@ -181,7 +180,7 @@ public class EditPGN extends ListActivity {
                                     setResult(RESULT_CANCELED);
                                     finish();
                                 } else if (gamesInFile.size() == 0) {
-                                    pgnFile.appendPGN(pgnToSave, getApplicationContext());
+                                    pgnFile.appendPGN(pgnToSave);
                                     finish();
                                 } else {
                                     lpgn.showList();
@@ -391,7 +390,7 @@ public class EditPGN extends ListActivity {
                     default:
                         finish(); return;
                     }
-                    pgnFile.replacePGN(pgnToSave, giToReplace, getApplicationContext());
+                    pgnFile.replacePGN(pgnToSave, giToReplace);
                     finish();
                 }
             });
@@ -437,16 +436,14 @@ public class EditPGN extends ListActivity {
             case OUT_OF_MEMORY:
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        Toast.makeText(getApplicationContext(), R.string.file_too_large,
-                                       Toast.LENGTH_SHORT).show();
+                        DroidFishApp.toast(R.string.file_too_large, Toast.LENGTH_SHORT);
                     }
                 });
                 break;
             case NOT_PGN:
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        Toast.makeText(getApplicationContext(), R.string.not_a_pgn_file,
-                                       Toast.LENGTH_SHORT).show();
+                        DroidFishApp.toast(R.string.not_a_pgn_file, Toast.LENGTH_SHORT);
                     }
                 });
                 break;
@@ -478,7 +475,7 @@ public class EditPGN extends ListActivity {
     }
 
     private final void deleteGame(GameInfo gi) {
-        if (pgnFile.deleteGame(gi, getApplicationContext(), gamesInFile)) {
+        if (pgnFile.deleteGame(gi, gamesInFile)) {
             ListView lv = getListView();
             int pos = lv.pointToPosition(0,0);
             aa = new ArrayAdapter<GameInfo>(this, R.layout.select_game_list_item, gamesInFile);

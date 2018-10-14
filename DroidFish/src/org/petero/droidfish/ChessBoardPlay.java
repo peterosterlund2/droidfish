@@ -157,7 +157,7 @@ public class ChessBoardPlay extends ChessBoard {
                     int pieceType = (pgnOptions == null) ? PGNOptions.PT_LOCAL
                                                          : pgnOptions.view.pieceType;
                     msg += ": " + TextIO.pieceAndSquareToString(pieceType, p, sq);
-                    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                    DroidFishApp.toast(msg, Toast.LENGTH_SHORT);
                 }
             }
             setSelection(anyMatch ? sq : -1);

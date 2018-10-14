@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
+import org.petero.droidfish.DroidFishApp;
 import org.petero.droidfish.R;
 import org.petero.droidfish.gamelogic.Pair;
 
@@ -398,20 +399,19 @@ public class PGNFile {
     }
 
     /** Append PGN to the end of this PGN file. */
-    public final void appendPGN(String pgn, Context context) {
+    public final void appendPGN(String pgn) {
         try {
             mkDirs();
             FileWriter fw = new FileWriter(fileName, true);
             fw.write(pgn);
             fw.close();
-            Toast.makeText(context, R.string.game_saved, Toast.LENGTH_SHORT).show();
+            DroidFishApp.toast(R.string.game_saved, Toast.LENGTH_SHORT);
         } catch (IOException e) {
-            if (context != null)
-                Toast.makeText(context, R.string.failed_to_save_game, Toast.LENGTH_SHORT).show();
+            DroidFishApp.toast(R.string.failed_to_save_game, Toast.LENGTH_SHORT);
         }
     }
 
-    final boolean deleteGame(GameInfo gi, Context context, ArrayList<GameInfo> gamesInFile) {
+    final boolean deleteGame(GameInfo gi, ArrayList<GameInfo> gamesInFile) {
         try {
             File tmpFile = new File(fileName + ".tmp_delete");
             RandomAccessFile fileReader = new RandomAccessFile(fileName, "r");
@@ -439,13 +439,12 @@ public class PGNFile {
             }
             return true;
         } catch (IOException e) {
-            if (context != null)
-                Toast.makeText(context, R.string.failed_to_delete_game, Toast.LENGTH_SHORT).show();
+            DroidFishApp.toast(R.string.failed_to_delete_game, Toast.LENGTH_SHORT);
         }
         return false;
     }
 
-    final boolean replacePGN(String pgnToSave, GameInfo gi, Context context) {
+    final boolean replacePGN(String pgnToSave, GameInfo gi) {
         try {
             File tmpFile = new File(fileName + ".tmp_delete");
             RandomAccessFile fileReader = new RandomAccessFile(fileName, "r");
@@ -458,11 +457,10 @@ public class PGNFile {
             fileWriter.close();
             if (!tmpFile.renameTo(fileName))
                 throw new IOException();
-            Toast.makeText(context, R.string.game_saved, Toast.LENGTH_SHORT).show();
+            DroidFishApp.toast(R.string.game_saved, Toast.LENGTH_SHORT);
             return true;
         } catch (IOException e) {
-            if (context != null)
-                Toast.makeText(context, R.string.failed_to_save_game, Toast.LENGTH_SHORT).show();
+            DroidFishApp.toast(R.string.failed_to_save_game, Toast.LENGTH_SHORT);
         }
         return false;
     }

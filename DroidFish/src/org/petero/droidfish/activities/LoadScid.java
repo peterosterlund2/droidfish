@@ -24,6 +24,7 @@ import java.util.Vector;
 import java.util.concurrent.CountDownLatch;
 
 import org.petero.droidfish.ColorTheme;
+import org.petero.droidfish.DroidFishApp;
 import org.petero.droidfish.ObjectCache;
 import org.petero.droidfish.R;
 import org.petero.droidfish.Util;
@@ -167,8 +168,7 @@ public class LoadScid extends ListActivity {
             boolean next = action.equals("org.petero.droidfish.loadScidNextGame");
             final int loadItem = defaultItem + (next ? 1 : -1);
             if (loadItem < 0) {
-                Toast.makeText(getApplicationContext(), R.string.no_prev_game,
-                               Toast.LENGTH_SHORT).show();
+                DroidFishApp.toast(R.string.no_prev_game, Toast.LENGTH_SHORT);
                 setResult(RESULT_CANCELED);
                 finish();
             } else {
@@ -180,8 +180,7 @@ public class LoadScid extends ListActivity {
                         runOnUiThread(new Runnable() {
                             public void run() {
                                 if (loadItem >= gamesInFile.size()) {
-                                    Toast.makeText(getApplicationContext(), R.string.no_next_game,
-                                                   Toast.LENGTH_SHORT).show();
+                                    DroidFishApp.toast(R.string.no_next_game, Toast.LENGTH_SHORT);
                                     setResult(RESULT_CANCELED);
                                     finish();
                                 } else {

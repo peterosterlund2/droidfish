@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import org.petero.droidfish.DroidFish;
+import org.petero.droidfish.DroidFishApp;
 import org.petero.droidfish.R;
 import org.petero.droidfish.Util;
 import org.petero.droidfish.Util.MaterialDiff;
@@ -367,7 +368,7 @@ public class EditBoard extends Activity {
                     try {
                         startActivityForResult(i, RESULT_GET_FEN);
                     } catch (ActivityNotFoundException e) {
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        DroidFishApp.toast(e.getMessage(), Toast.LENGTH_LONG);
                     }
                 }
             }
@@ -607,7 +608,7 @@ public class EditBoard extends Activity {
                         cb.pos.halfMoveClock = halfClock;
                         cb.pos.fullMoveCounter = fullCount;
                     } catch (NumberFormatException nfe) {
-                        Toast.makeText(getApplicationContext(), R.string.invalid_number_format, Toast.LENGTH_SHORT).show();
+                        DroidFishApp.toast(R.string.invalid_number_format, Toast.LENGTH_SHORT);
                     }
                 }
             };
@@ -645,7 +646,7 @@ public class EditBoard extends Activity {
         } catch (ChessParseError e) {
             if (e.pos != null)
                 cb.setPosition(e.pos);
-            Toast.makeText(getApplicationContext(), getParseErrString(e), Toast.LENGTH_SHORT).show();
+            DroidFishApp.toast(getParseErrString(e), Toast.LENGTH_SHORT);
         }
         setSelection(-1);
         checkValidAndUpdateMaterialDiff();

@@ -20,6 +20,7 @@ package org.petero.droidfish.activities;
 
 import java.util.Locale;
 
+import org.petero.droidfish.DroidFishApp;
 import org.petero.droidfish.R;
 
 import android.app.AlertDialog;
@@ -200,8 +201,7 @@ public class SeekBarPreference extends Preference
             if ("stockfish".equals(engine)) {
                 showStrengthHint = false;
                 if (getKey().equals("strength"))
-                    Toast.makeText(getContext(), R.string.strength_cuckoo_hint,
-                                   Toast.LENGTH_LONG).show();
+                    DroidFishApp.toast(R.string.strength_cuckoo_hint, Toast.LENGTH_LONG);
             }
         }
     }
