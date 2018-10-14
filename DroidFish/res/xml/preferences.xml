@@ -532,6 +532,12 @@
             android:defaultValue="false">
         </CheckBoxPreference>
         <CheckBoxPreference
+            android:key="scrollGames"
+            android:title="@string/prefs_scrollGames_title"
+            android:summary="@string/prefs_scrollGames_summary"
+            android:defaultValue="false">
+        </CheckBoxPreference>
+        <CheckBoxPreference
             android:key="autoScrollMoveList"
             android:title="@string/prefs_autoScrollMoveList_title"
             android:summary="@string/prefs_autoScrollMoveList_summary"
