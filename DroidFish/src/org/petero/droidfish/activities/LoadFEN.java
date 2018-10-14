@@ -152,7 +152,7 @@ public class LoadFEN extends ListActivity {
                                     finish();
                                 } else {
                                     defaultItem = loadItem;
-                                    sendBackResult(fensInFile.get(loadItem));
+                                    sendBackResult(fensInFile.get(loadItem), true);
                                 }
                             }
                         });
@@ -210,7 +210,7 @@ public class LoadFEN extends ListActivity {
         okButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 if (selectedFi != null)
-                    sendBackResult(selectedFi);
+                    sendBackResult(selectedFi, false);
             }
         });
         cancelButton.setOnClickListener(new OnClickListener() {
@@ -269,7 +269,7 @@ public class LoadFEN extends ListActivity {
                     chessPos = e2.pos;
                 }
                 if (chessPos != null)
-                    sendBackResult(selectedFi);
+                    sendBackResult(selectedFi, false);
                 return true;
             }
         });
@@ -352,9 +352,11 @@ public class LoadFEN extends ListActivity {
         return true;
     }
 
-    private final void sendBackResult(FenInfo fi) {
+    private final void sendBackResult(FenInfo fi, boolean toast) {
         String fen = fi.fen;
         if (fen != null) {
+            if (toast)
+                DroidFishApp.toast(String.valueOf(fi.gameNo) + ": " + fen, Toast.LENGTH_SHORT);
             setResult(RESULT_OK, (new Intent()).setAction(fen));
             finish();
         } else {
