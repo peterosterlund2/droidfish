@@ -2,7 +2,7 @@
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
   Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad
-  Copyright (C) 2015-2018 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
+  Copyright (C) 2015-2019 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ namespace Pawns {
 
 struct Entry {
 
-  Score pawns_score() const { return score; }
+  Score pawn_score(Color c) const { return scores[c]; }
   Bitboard pawn_attacks(Color c) const { return pawnAttacks[c]; }
   Bitboard passed_pawns(Color c) const { return passedPawns[c]; }
   Bitboard pawn_attacks_span(Color c) const { return pawnAttacksSpan[c]; }
@@ -45,28 +45,24 @@ struct Entry {
     return semiopenFiles[c] & (1 << f);
   }
 
-  int semiopen_side(Color c, File f, bool leftSide) const {
-    return semiopenFiles[c] & (leftSide ? (1 << f) - 1 : ~((1 << (f + 1)) - 1));
-  }
-
   int pawns_on_same_color_squares(Color c, Square s) const {
     return pawnsOnSquares[c][bool(DarkSquares & s)];
   }
 
   template<Color Us>
-  Score king_safety(const Position& pos, Square ksq) {
-    return  kingSquares[Us] == ksq && castlingRights[Us] == pos.can_castle(Us)
-          ? kingSafety[Us] : (kingSafety[Us] = do_king_safety<Us>(pos, ksq));
+  Score king_safety(const Position& pos) {
+    return  kingSquares[Us] == pos.square<KING>(Us) && castlingRights[Us] == pos.can_castle(Us)
+          ? kingSafety[Us] : (kingSafety[Us] = do_king_safety<Us>(pos));
   }
 
   template<Color Us>
-  Score do_king_safety(const Position& pos, Square ksq);
+  Score do_king_safety(const Position& pos);
 
   template<Color Us>
-  Value shelter_storm(const Position& pos, Square ksq);
+  Value evaluate_shelter(const Position& pos, Square ksq);
 
   Key key;
-  Score score;
+  Score scores[COLOR_NB];
   Bitboard passedPawns[COLOR_NB];
   Bitboard pawnAttacks[COLOR_NB];
   Bitboard pawnAttacksSpan[COLOR_NB];
