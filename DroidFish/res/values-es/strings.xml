@@ -316,8 +316,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="prefs_scrollSensitivity_summary">Velocidad de desplazamiento de la información durante la partida </string>
     <string name="prefs_invertScrollDirection_title">Invertir dirección desplazamiento</string>
     <string name="prefs_invertScrollDirection_summary">Permitirlo si usted piensa que el desplazamiento de jugadas se hace en la dirección equivocada.</string>
-    <string name="prefs_scrollGames_title">Sweep horizontally loads game</string>
-    <string name="prefs_scrollGames_summary">If enabled, sweeping horizontally on the chess board moves to the next/previous game</string>
+    <string name="prefs_scrollGames_title">Barrido horizontal carga partida</string>
+    <string name="prefs_scrollGames_summary">Si está activado, deslizando horizontalmente la pantalla, va a la partida siguiente / anterior</string>
     <string name="prefs_autoScrollMoveList_title">Lista de jugadas con desplazamiento automático</string>
     <string name="prefs_autoScrollMoveList_summary">Desplazar automáticamente la lista de jugadas a la posición actual del tablero</string>
     <string name="prefs_discardVariations_title">Descartar variantes</string>
@@ -326,8 +326,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="prefs_leftHanded_summary">Controles en el lado izquierdo en modo horizontal</string>
     <string name="prefs_squareSelectType_title">Selección de casilla</string>
     <string name="prefs_squareSelectType_summary">Controla cómo seleccionar el remarcado de las casillas en el tablero</string>
-    <string name="prefs_language_title">Language</string>
-    <string name="prefs_language_summary">User interface language</string>
+    <string name="prefs_language_title">Idioma</string>
+    <string name="prefs_language_summary">Idioma de la interfaz</string>
     <string name="prefs_fontSize_title">Tamaño del Texto</string>
     <string name="prefs_fontSize_summary">Tamaño de las Fuentes para la lista de jugadas e información de la partida</string>
     <string name="prefs_largeButtons_title">Botones Grandes</string>
@@ -598,7 +598,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
         <item>1</item>
     </string-array>
     <string-array name="language_texts">
-        <item>System default</item>
+        <item>Del sistema por defecto</item>
         <item>English</item>
         <item>Belarusian</item>
         <item>Chinese Simplified</item>

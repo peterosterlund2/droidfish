@@ -308,8 +308,8 @@
     <string name="prefs_scrollSensitivity_summary">Швидкість прокручування для навігації у партії</string>
     <string name="prefs_invertScrollDirection_title">Інвертувати напрямок прокручування</string>
     <string name="prefs_invertScrollDirection_summary">Дозволити, якщо Ви вважаєте, що прокручування здійснюється у неправильному напрямку</string>
-    <string name="prefs_scrollGames_title">Sweep horizontally loads game</string>
-    <string name="prefs_scrollGames_summary">If enabled, sweeping horizontally on the chess board moves to the next/previous game</string>
+    <string name="prefs_scrollGames_title">Розворот горизонтально завантажує гру</string>
+    <string name="prefs_scrollGames_summary">Якщо цей параметр увімкнено, горизонтальний розворот на шаховій дошці переводить до наступної/попередньої гри</string>
     <string name="prefs_autoScrollMoveList_title">Автопрокручування списку ходів</string>
     <string name="prefs_autoScrollMoveList_summary">Автоматично прокручувати список ходів до теперішньої позиції на дошці </string>
     <string name="prefs_discardVariations_title">Скасувати зміни</string>

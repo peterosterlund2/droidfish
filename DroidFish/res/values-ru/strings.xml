@@ -300,7 +300,7 @@
     <string name="prefs_vibrateEnabled_title">Включить вибрирование</string>
     <string name="prefs_vibrateEnabled_summary">Вибрировать во время хода компьютера</string>
     <string name="prefs_fullScreenMode_title">Режим отображения на весь экран</string>
-    <string name="prefs_fullScreenMode_summary">Скрывать в статус-баре режим отображения на весь экран</string>
+    <string name="prefs_fullScreenMode_summary">Скрывать статус-бар в режиме отображения на весь экран</string>
     <string name="prefs_wakeLock_title">Отключить переход в режим ожидания для экрана</string>
     <string name="prefs_drawSquareLabels_title">Обозначения клеток</string>
     <string name="prefs_drawSquareLabels_summary">Отображать обозначения клеток: a–h и 1–8</string>
@@ -308,8 +308,8 @@
     <string name="prefs_scrollSensitivity_summary">скорость прокрутки для навигации в партии</string>
     <string name="prefs_invertScrollDirection_title">Инвертировать направление прокрутки</string>
     <string name="prefs_invertScrollDirection_summary">Позволить, если вы считаете, что прокрутка осуществляется в неправильном направлении</string>
-    <string name="prefs_scrollGames_title">Sweep horizontally loads game</string>
-    <string name="prefs_scrollGames_summary">If enabled, sweeping horizontally on the chess board moves to the next/previous game</string>
+    <string name="prefs_scrollGames_title">Разворот устройства по горизонтали загружает игру</string>
+    <string name="prefs_scrollGames_summary">Если включено, разворот устройства по горизонтали на шахматной доске переходит к следующей/предыдущей игре</string>
     <string name="prefs_autoScrollMoveList_title">Автоскроллинг списка ходов</string>
     <string name="prefs_autoScrollMoveList_summary">Автоматически листать список ходов до текущей позиции на доске</string>
     <string name="prefs_discardVariations_title">Отменить изменения</string>
