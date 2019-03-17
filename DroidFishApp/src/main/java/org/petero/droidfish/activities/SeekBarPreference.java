@@ -141,7 +141,7 @@ public class SeekBarPreference extends Preference
                     title = getContext().getString(R.string.edit_randomization);
                 }
                 builder.setTitle(title);
-                final EditText valueView = (EditText)content.findViewById(R.id.selpercentage_number);
+                final EditText valueView = content.findViewById(R.id.selpercentage_number);
                 valueView.setText(currValBox.getText().toString().replaceAll("%", "").replaceAll(",", "."));
                 final Runnable selectValue = new Runnable() {
                     public void run() {
@@ -195,7 +195,7 @@ public class SeekBarPreference extends Preference
         currValBox.setText(valToString());
         SharedPreferences.Editor editor =  getEditor();
         editor.putInt(getKey(), progress);
-        editor.commit();
+        editor.apply();
         if ((progress == 0) && showStrengthHint) {
             SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getContext());
             String engine = settings.getString("engine", "stockfish");

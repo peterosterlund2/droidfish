@@ -162,7 +162,7 @@ public class Book {
         throw new RuntimeException();
     }
 
-    final private int getWeight(int count) {
+    private int getWeight(int count) {
         double tmp = Math.sqrt(count);
         return (int)(tmp * Math.sqrt(tmp) * 100 + 1);
     }

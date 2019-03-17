@@ -217,7 +217,7 @@ public class DroidFish extends Activity
     private ImageButton modeButton, undoButton, redoButton;
     private ButtonActions custom1ButtonActions, custom2ButtonActions, custom3ButtonActions;
     private TextView whiteTitleText, blackTitleText, engineTitleText;
-    private View firstTitleLine, secondTitleLine;
+    private View secondTitleLine;
     private TextView whiteFigText, blackFigText, summaryTitleText;
     private Dialog moveListMenuDlg;
 
@@ -239,12 +239,11 @@ public class DroidFish extends Activity
     private boolean vibrateEnabled;
     private boolean animateMoves;
     private boolean autoScrollTitle;
-    private boolean showMaterialDiff;
     private boolean showVariationLine;
 
     private int autoMoveDelay; // Delay in auto forward/backward mode
-    private static enum AutoMode {
-        OFF, FORWARD, BACKWARD;
+    private enum AutoMode {
+        OFF, FORWARD, BACKWARD
     }
     private AutoMode autoMode = AutoMode.OFF;
 
@@ -253,7 +252,7 @@ public class DroidFish extends Activity
     private int ECO_HINTS_ALWAYS = 2;
 
     /** State of requested permissions. */
-    private static enum PermissionState {
+    private enum PermissionState {
         UNKNOWN,
         REQUESTED,
         GRANTED,
@@ -276,8 +275,6 @@ public class DroidFish extends Activity
     private long lastComputationMillis; // Time when engine last showed that it was computing.
 
     private PgnScreenText gameTextListener;
-
-    private boolean useWakeLock = false;
 
     private Typeface figNotation;
     private Typeface defaultThinkingListTypeFace;
@@ -436,16 +433,16 @@ public class DroidFish extends Activity
                 public void run() {
                     String numArrows = settings.getString("thinkingArrows", "4");
                     Editor editor = settings.edit();
-                    if (!numArrows.equals("0")) {
+                    if (!"0".equals(numArrows)) {
                         editor.putString("thinkingArrows", "0");
                         editor.putString("oldThinkingArrows", numArrows);
                     } else {
                         String oldNumArrows = settings.getString("oldThinkingArrows", "0");
-                        if (oldNumArrows.equals("0"))
+                        if ("0".equals(oldNumArrows))
                             oldNumArrows = "4";
                         editor.putString("thinkingArrows", oldNumArrows);
                     }
-                    editor.commit();
+                    editor.apply();
                     maxNumArrows = getIntSetting("thinkingArrows", 4);
                     updateThinkingInfo();
                 }
@@ -673,14 +670,14 @@ public class DroidFish extends Activity
                               guideShowOnStart = false;
                               Editor editor = settings.edit();
                               editor.putBoolean("guideShowOnStart", false);
-                              editor.commit();
+                              editor.apply();
                               tourGuide.next();
                               tourGuide = null;
                           }
                       }));
 
         Sequence sequence = new Sequence.SequenceBuilder()
-                .add(guides.toArray(new TourGuide[guides.size()]))
+                .add(guides.toArray(new TourGuide[0]))
                 .setDefaultOverlay(new Overlay()
                                    .setOnClickListener(new OnClickListener() {
                                        @Override
@@ -841,9 +838,8 @@ public class DroidFish extends Activity
         if (data == null)
             return null;
         StringBuilder ret = new StringBuilder(32768);
-        int nBytes = data.length;
-        for (int i = 0; i < nBytes; i++) {
-            int b = data[i]; if (b < 0) b += 256;
+        for (int b : data) {
+            if (b < 0) b += 256;
             char c1 = (char)('A' + (b / 16));
             char c2 = (char)('A' + (b & 15));
             ret.append(c1);
@@ -914,28 +910,28 @@ public class DroidFish extends Activity
         overrideViewAttribs();
 
         // title lines need to be regenerated every time due to layout changes (rotations)
-        firstTitleLine = findViewById(R.id.first_title_line);
+        View firstTitleLine = findViewById(R.id.first_title_line);
         secondTitleLine = findViewById(R.id.second_title_line);
-        whiteTitleText = (TextView)findViewById(R.id.white_clock);
+        whiteTitleText = findViewById(R.id.white_clock);
         whiteTitleText.setSelected(true);
-        blackTitleText = (TextView)findViewById(R.id.black_clock);
+        blackTitleText = findViewById(R.id.black_clock);
         blackTitleText.setSelected(true);
-        engineTitleText = (TextView)findViewById(R.id.title_text);
-        whiteFigText = (TextView)findViewById(R.id.white_pieces);
+        engineTitleText = findViewById(R.id.title_text);
+        whiteFigText = findViewById(R.id.white_pieces);
         whiteFigText.setTypeface(figNotation);
         whiteFigText.setSelected(true);
         whiteFigText.setTextColor(whiteTitleText.getTextColors());
-        blackFigText = (TextView)findViewById(R.id.black_pieces);
+        blackFigText = findViewById(R.id.black_pieces);
         blackFigText.setTypeface(figNotation);
         blackFigText.setSelected(true);
         blackFigText.setTextColor(blackTitleText.getTextColors());
-        summaryTitleText = (TextView)findViewById(R.id.title_text_summary);
+        summaryTitleText = findViewById(R.id.title_text_summary);
 
-        status = (TextView)findViewById(R.id.status);
-        moveListScroll = (ScrollView)findViewById(R.id.scrollView);
-        moveList = (MoveListView)findViewById(R.id.moveList);
-        thinkingScroll = (View)findViewById(R.id.scrollViewBot);
-        thinking = (TextView)findViewById(R.id.thinking);
+        status = findViewById(R.id.status);
+        moveListScroll = findViewById(R.id.scrollView);
+        moveList = findViewById(R.id.moveList);
+        thinkingScroll = findViewById(R.id.scrollViewBot);
+        thinking = findViewById(R.id.thinking);
         defaultThinkingListTypeFace = thinking.getTypeface();
         status.setFocusable(false);
         moveListScroll.setFocusable(false);
@@ -965,7 +961,7 @@ public class DroidFish extends Activity
         secondTitleLine.setOnClickListener(listener);
         secondTitleLine.setOnTouchListener(listener);
 
-        cb = (ChessBoardPlay)findViewById(R.id.chessboard);
+        cb = findViewById(R.id.chessboard);
         cb.setFocusable(true);
         cb.requestFocus();
         cb.setClickable(true);
@@ -1146,15 +1142,15 @@ public class DroidFish extends Activity
             }
         });
 
-        buttons = (View)findViewById(R.id.buttons);
-        custom1Button = (ImageButton)findViewById(R.id.custom1Button);
+        buttons = findViewById(R.id.buttons);
+        custom1Button = findViewById(R.id.custom1Button);
         custom1ButtonActions.setImageButton(custom1Button, this);
-        custom2Button = (ImageButton)findViewById(R.id.custom2Button);
+        custom2Button = findViewById(R.id.custom2Button);
         custom2ButtonActions.setImageButton(custom2Button, this);
-        custom3Button = (ImageButton)findViewById(R.id.custom3Button);
+        custom3Button = findViewById(R.id.custom3Button);
         custom3ButtonActions.setImageButton(custom3Button, this);
 
-        modeButton = (ImageButton)findViewById(R.id.modeButton);
+        modeButton = findViewById(R.id.modeButton);
         modeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1168,7 +1164,7 @@ public class DroidFish extends Activity
                 return true;
             }
         });
-        undoButton = (ImageButton)findViewById(R.id.undoButton);
+        undoButton = findViewById(R.id.undoButton);
         undoButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1183,7 +1179,7 @@ public class DroidFish extends Activity
                 return true;
             }
         });
-        redoButton = (ImageButton)findViewById(R.id.redoButton);
+        redoButton = findViewById(R.id.redoButton);
         redoButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1231,7 +1227,7 @@ public class DroidFish extends Activity
             String dataStr = byteArrToString(data);
             editor.putString("gameState", dataStr);
             editor.putInt("gameStateVersion", 3);
-            editor.commit();
+            editor.apply();
         }
         lastVisibleMillis = System.currentTimeMillis();
         updateNotification();
@@ -1251,8 +1247,7 @@ public class DroidFish extends Activity
 
     private int getIntSetting(String settingName, int defaultValue) {
         String tmp = settings.getString(settingName, String.format(Locale.US, "%d", defaultValue));
-        int value = Integer.parseInt(tmp);
-        return value;
+        return Integer.parseInt(tmp);
     }
 
     private void readPrefs() {
@@ -1301,7 +1296,7 @@ public class DroidFish extends Activity
         autoScrollMoveList = settings.getBoolean("autoScrollMoveList", true);
         discardVariations = settings.getBoolean("discardVariations", false);
         Util.setFullScreenMode(this, settings);
-        useWakeLock = settings.getBoolean("wakeLock", false);
+        boolean useWakeLock = settings.getBoolean("wakeLock", false);
         setWakeLock(useWakeLock);
 
         String lang = settings.getString("language", "default");
@@ -1346,14 +1341,12 @@ public class DroidFish extends Activity
         if (gtbPath.length() == 0)
             gtbPath = extDir.getAbsolutePath() + sep + gtbDefaultDir;
         engineOptions.gtbPath = gtbPath;
-        String gtbPathNet = settings.getString("gtbPathNet", "").trim();
-        engineOptions.gtbPathNet = gtbPathNet;
+        engineOptions.gtbPathNet = settings.getString("gtbPathNet", "").trim();
         String rtbPath = settings.getString("rtbPath", "").trim();
         if (rtbPath.length() == 0)
             rtbPath = extDir.getAbsolutePath() + sep + rtbDefaultDir;
         engineOptions.rtbPath = rtbPath;
-        String rtbPathNet = settings.getString("rtbPathNet", "").trim();
-        engineOptions.rtbPathNet = rtbPathNet;
+        engineOptions.rtbPathNet = settings.getString("rtbPathNet", "").trim();
 
         setEngineOptions(false);
         setEgtbHints(cb.getSelectedSquare());
@@ -1387,7 +1380,7 @@ public class DroidFish extends Activity
         // as well in rotation
         setFigurineNotation(pgnOptions.view.pieceType == PGNOptions.PT_FIGURINE, fontSize);
 
-        showMaterialDiff = settings.getBoolean("materialDiff", false);
+        boolean showMaterialDiff = settings.getBoolean("materialDiff", false);
         secondTitleLine.setVisibility(showMaterialDiff ? View.VISIBLE : View.GONE);
     }
 
@@ -1397,7 +1390,7 @@ public class DroidFish extends Activity
 
     private void setLanguage(String lang) {
         Locale newLocale;
-        if (lang.equals("default")) {
+        if ("default".equals(lang)) {
             newLocale = Resources.getSystem().getConfiguration().locale;
         } else if (lang.contains("_")) {
             String[] parts = lang.split("_");
@@ -1445,8 +1438,8 @@ public class DroidFish extends Activity
     private void updateButtons() {
         boolean largeButtons = settings.getBoolean("largeButtons", false);
         Resources r = getResources();
-        int bWidth  = (int)Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, r.getDisplayMetrics()));
-        int bHeight = (int)Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, r.getDisplayMetrics()));
+        int bWidth  = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, r.getDisplayMetrics()));
+        int bHeight = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, r.getDisplayMetrics()));
         if (largeButtons) {
             if (custom1ButtonActions.isEnabled() &&
                 custom2ButtonActions.isEnabled() &&
@@ -1492,7 +1485,7 @@ public class DroidFish extends Activity
     }
 
     @SuppressLint("Wakelock")
-    private synchronized final void setWakeLock(boolean enableLock) {
+    private synchronized void setWakeLock(boolean enableLock) {
         if (enableLock)
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         else
@@ -1524,7 +1517,7 @@ public class DroidFish extends Activity
             int idx = engine.lastIndexOf('/');
             eName = engine.substring(idx + 1);
         } else {
-            eName = getString(engine.equals("cuckoochess") ?
+            eName = getString("cuckoochess".equals(engine) ?
                               R.string.cuckoochess_engine :
                               R.string.stockfish_engine);
             boolean analysis = (ctrl != null) && ctrl.analysisMode();
@@ -1652,9 +1645,9 @@ public class DroidFish extends Activity
 
     /** Initialize the drawer part of the user interface. */
     private void initDrawers() {
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        leftDrawer = (ListView)findViewById(R.id.left_drawer);
-        rightDrawer = (ListView)findViewById(R.id.right_drawer);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        leftDrawer = findViewById(R.id.left_drawer);
+        rightDrawer = findViewById(R.id.right_drawer);
 
         final DrawerItem[] leftItems = new DrawerItem[] {
             new DrawerItem(ITEM_EDIT_BOARD, R.string.option_edit_board),
@@ -1816,7 +1809,7 @@ public class DroidFish extends Activity
                     Editor editor = settings.edit();
                     editor.putString("currentScidFile", pathName);
                     editor.putInt("currFT", FT_SCID);
-                    editor.commit();
+                    editor.apply();
                     Intent i = new Intent(DroidFish.this, LoadScid.class);
                     i.setAction("org.petero.droidfish.loadScid");
                     i.putExtra("org.petero.droidfish.pathname", pathName);
@@ -1880,7 +1873,7 @@ public class DroidFish extends Activity
         Editor editor = settings.edit();
         String gameModeStr = String.format(Locale.US, "%d", gameModeType);
         editor.putString("gameMode", gameModeStr);
-        editor.commit();
+        editor.apply();
         gameMode = new GameMode(gameModeType);
         maybeAutoModeOff(gameMode);
         ctrl.setGameMode(gameMode);
@@ -1927,7 +1920,7 @@ public class DroidFish extends Activity
     private void setBooleanPref(String name, boolean value) {
         Editor editor = settings.edit();
         editor.putBoolean(name, value);
-        editor.commit();
+        editor.apply();
     }
 
     /** Toggle a boolean preference setting. Return new value. */
@@ -2295,7 +2288,7 @@ public class DroidFish extends Activity
             Editor editor = settings.edit();
             String gameModeStr = String.format(Locale.US, "%d", gameModeType);
             editor.putString("gameMode", gameModeStr);
-            editor.commit();
+            editor.apply();
             gameMode = new GameMode(gameModeType);
         }
 //        savePGNToFile(".autosave.pgn", true);
@@ -2309,7 +2302,7 @@ public class DroidFish extends Activity
     }
 
     private Dialog promoteDialog() {
-        final CharSequence[] items = {
+        final String[] items = {
             getString(R.string.queen), getString(R.string.rook),
             getString(R.string.bishop), getString(R.string.knight)
         };
@@ -2320,8 +2313,7 @@ public class DroidFish extends Activity
                 ctrl.reportPromotePiece(item);
             }
         });
-        AlertDialog alert = builder.create();
-        return alert;
+        return builder.create();
     }
 
     private Dialog clipBoardDialog() {
@@ -2330,14 +2322,14 @@ public class DroidFish extends Activity
         final int PASTE          = 2;
 
         setAutoMode(AutoMode.OFF);
-        List<CharSequence> lst = new ArrayList<>();
+        List<String> lst = new ArrayList<>();
         final List<Integer> actions = new ArrayList<>();
         lst.add(getString(R.string.copy_game));     actions.add(COPY_GAME);
         lst.add(getString(R.string.copy_position)); actions.add(COPY_POSITION);
         lst.add(getString(R.string.paste));         actions.add(PASTE);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.tools_menu);
-        builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
+        builder.setItems(lst.toArray(new String[0]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 switch (actions.get(item)) {
                 case COPY_GAME: {
@@ -2375,8 +2367,7 @@ public class DroidFish extends Activity
                 }
             }
         });
-        AlertDialog alert = builder.create();
-        return alert;
+        return builder.create();
     }
 
     private Dialog boardMenuDialog() {
@@ -2389,7 +2380,7 @@ public class DroidFish extends Activity
         final int REPEAT_LAST_MOVE = 6;
 
         setAutoMode(AutoMode.OFF);
-        List<CharSequence> lst = new ArrayList<>();
+        List<String> lst = new ArrayList<>();
         final List<Integer> actions = new ArrayList<>();
         lst.add(getString(R.string.clipboard));     actions.add(CLIPBOARD);
         if (storageAvailable()) {
@@ -2406,7 +2397,7 @@ public class DroidFish extends Activity
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.tools_menu);
-        builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
+        builder.setItems(lst.toArray(new String[0]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 switch (actions.get(item)) {
                 case CLIPBOARD:
@@ -2514,7 +2505,7 @@ public class DroidFish extends Activity
         final int SAVE_GAME      = 4;
 
         setAutoMode(AutoMode.OFF);
-        List<CharSequence> lst = new ArrayList<>();
+        List<String> lst = new ArrayList<>();
         final List<Integer> actions = new ArrayList<>();
         if (currFileType() != FT_NONE) {
             lst.add(getString(R.string.load_last_file)); actions.add(LOAD_LAST_FILE);
@@ -2527,7 +2518,7 @@ public class DroidFish extends Activity
         lst.add(getString(R.string.save_game));     actions.add(SAVE_GAME);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.load_save_menu);
-        builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
+        builder.setItems(lst.toArray(new String[0]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 switch (actions.get(item)) {
                 case LOAD_LAST_FILE:
@@ -2551,12 +2542,11 @@ public class DroidFish extends Activity
                 }
             }
         });
-        AlertDialog alert = builder.create();
-        return alert;
+        return builder.create();
     }
 
     /** Open dialog to select a game/position from the last used file. */
-    final private void loadLastFile() {
+    private void loadLastFile() {
         String path = currPathName();
         if (path.length() == 0)
             return;
@@ -2593,8 +2583,7 @@ public class DroidFish extends Activity
         } catch (NameNotFoundException e) {
         }
         builder.setTitle(title);
-        AlertDialog alert = builder.create();
-        return alert;
+        return builder.create();
     }
 
     private Dialog selectBookDialog() {
@@ -2605,20 +2594,20 @@ public class DroidFish extends Activity
                 if (dotIdx < 0)
                     return false;
                 String ext = filename.substring(dotIdx+1);
-                return (ext.equals("ctg") || ext.equals("bin"));
+                return ("ctg".equals(ext) || "bin".equals(ext));
             }
         });
         final int numFiles = fileNames.length;
-        final CharSequence[] items = new CharSequence[numFiles + 3];
+        final String[] items = new String[numFiles + 3];
         for (int i = 0; i < numFiles; i++)
             items[i] = fileNames[i];
         items[numFiles] = getString(R.string.internal_book);
         items[numFiles + 1] = getString(R.string.eco_book);
         items[numFiles + 2] = getString(R.string.no_book);
         int defaultItem = numFiles;
-        if (bookOptions.filename.equals("eco:"))
+        if ("eco:".equals(bookOptions.filename))
             defaultItem = numFiles + 1;
-        else if (bookOptions.filename.equals("nobook:"))
+        else if ("nobook:".equals(bookOptions.filename))
             defaultItem = numFiles + 2;
         for (int i = 0; i < numFiles; i++) {
             if (bookOptions.filename.equals(items[i])) {
@@ -2641,14 +2630,13 @@ public class DroidFish extends Activity
                 else
                     bookFile = items[item].toString();
                 editor.putString("bookFile", bookFile);
-                editor.commit();
+                editor.apply();
                 bookOptions.filename = bookFile;
                 setBookOptions();
                 dialog.dismiss();
             }
         });
-        AlertDialog alert = builder.create();
-        return alert;
+        return builder.create();
     }
 
     private static boolean reservedEngineName(String name) {
@@ -2720,7 +2708,7 @@ public class DroidFish extends Activity
                 Editor editor = settings.edit();
                 String engine = ids.get(item);
                 editor.putString("engine", engine);
-                editor.commit();
+                editor.apply();
                 dialog.dismiss();
                 int strength = settings.getInt("strength", 1000);
                 setEngineOptions(false);
@@ -2734,11 +2722,10 @@ public class DroidFish extends Activity
                     reShowDialog(MANAGE_ENGINES_DIALOG);
             }
         });
-        AlertDialog alert = builder.create();
-        return alert;
+        return builder.create();
     }
 
-    private static interface Loader {
+    private interface Loader {
         void load(String pathName);
     }
 
@@ -2770,8 +2757,7 @@ public class DroidFish extends Activity
         if (numFiles == 0) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.app_name).setMessage(noFilesMsg);
-            AlertDialog alert = builder.create();
-            return alert;
+            return builder.create();
         }
         int defaultItem = 0;
         String currentFile = settings.getString(settingsName, "");
@@ -2793,8 +2779,7 @@ public class DroidFish extends Activity
                 loader.load(pathName);
             }
         });
-        AlertDialog alert = builder.create();
-        return alert;
+        return builder.create();
     }
 
     private Dialog selectPgnFileSaveDialog() {
@@ -2810,7 +2795,7 @@ public class DroidFish extends Activity
                 break;
             }
         }
-        final CharSequence[] items = new CharSequence[numFiles + 1];
+        final String[] items = new String[numFiles + 1];
         for (int i = 0; i < numFiles; i++)
             items[i] = fileNames[i];
         items[numFiles] = getString(R.string.new_file);
@@ -2824,7 +2809,7 @@ public class DroidFish extends Activity
                     showDialog(SELECT_PGN_SAVE_NEWFILE_DIALOG);
                 } else {
                     dialog.dismiss();
-                    pgnFile = fileNames[item].toString();
+                    pgnFile = fileNames[item];
                     String sep = File.separator;
                     String pathName = Environment.getExternalStorageDirectory() + sep + pgnDir + sep + pgnFile;
                     savePGNToFile(pathName, false);
@@ -2840,7 +2825,7 @@ public class DroidFish extends Activity
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(content);
         builder.setTitle(R.string.select_pgn_file_save);
-        final EditText fileNameView = (EditText)content.findViewById(R.id.create_pgn_filename);
+        final EditText fileNameView = content.findViewById(R.id.create_pgn_filename);
         fileNameView.setText("");
         final Runnable savePGN = new Runnable() {
             public void run() {
@@ -2893,7 +2878,7 @@ public class DroidFish extends Activity
     }
 
     private Dialog gameModeDialog() {
-        final CharSequence[] items = {
+        final String[] items = {
             getString(R.string.analysis_mode),
             getString(R.string.edit_replay_game),
             getString(R.string.play_white),
@@ -2923,8 +2908,7 @@ public class DroidFish extends Activity
                 }
             }
         });
-        AlertDialog alert = builder.create();
-        return alert;
+        return builder.create();
     }
 
     private Dialog moveListMenuDialog() {
@@ -2937,7 +2921,7 @@ public class DroidFish extends Activity
         final int ADD_NULL_MOVE  = 6;
 
         setAutoMode(AutoMode.OFF);
-        List<CharSequence> lst = new ArrayList<>();
+        List<String> lst = new ArrayList<>();
         final List<Integer> actions = new ArrayList<>();
         lst.add(getString(R.string.edit_headers));      actions.add(EDIT_HEADERS);
         if (ctrl.humansTurn()) {
@@ -2961,7 +2945,7 @@ public class DroidFish extends Activity
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.edit_game);
-        builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
+        builder.setItems(lst.toArray(new String[0]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 switch (actions.get(item)) {
                 case EDIT_HEADERS:
@@ -3006,12 +2990,12 @@ public class DroidFish extends Activity
 
         final TextView event, site, date, round, white, black;
 
-        event = (TextView)content.findViewById(R.id.ed_header_event);
-        site = (TextView)content.findViewById(R.id.ed_header_site);
-        date = (TextView)content.findViewById(R.id.ed_header_date);
-        round = (TextView)content.findViewById(R.id.ed_header_round);
-        white = (TextView)content.findViewById(R.id.ed_header_white);
-        black = (TextView)content.findViewById(R.id.ed_header_black);
+        event = content.findViewById(R.id.ed_header_event);
+        site = content.findViewById(R.id.ed_header_site);
+        date = content.findViewById(R.id.ed_header_date);
+        round = content.findViewById(R.id.ed_header_round);
+        white = content.findViewById(R.id.ed_header_white);
+        black = content.findViewById(R.id.ed_header_black);
 
         event.setText(headers.get("Event"));
         site .setText(headers.get("Site"));
@@ -3020,10 +3004,10 @@ public class DroidFish extends Activity
         white.setText(headers.get("White"));
         black.setText(headers.get("Black"));
 
-        final Spinner gameResult = (Spinner)content.findViewById(R.id.ed_game_result);
+        final Spinner gameResult = content.findViewById(R.id.ed_game_result);
         final String[] items = new String[]{"1-0", "1/2-1/2", "0-1", "*"};
-        ArrayAdapter<CharSequence> adapt =
-                new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, items);
+        ArrayAdapter<String> adapt =
+                new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
         adapt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         gameResult.setAdapter(adapt);
         gameResult.setSelection(Arrays.asList(items).indexOf(headers.get("Result")));
@@ -3059,10 +3043,10 @@ public class DroidFish extends Activity
         DroidChessController.CommentInfo commInfo = ctrl.getComments();
 
         final TextView preComment, moveView, nag, postComment;
-        preComment = (TextView)content.findViewById(R.id.ed_comments_pre);
-        moveView = (TextView)content.findViewById(R.id.ed_comments_move);
-        nag = (TextView)content.findViewById(R.id.ed_comments_nag);
-        postComment = (TextView)content.findViewById(R.id.ed_comments_post);
+        preComment = content.findViewById(R.id.ed_comments_pre);
+        moveView = content.findViewById(R.id.ed_comments_move);
+        nag = content.findViewById(R.id.ed_comments_nag);
+        postComment = content.findViewById(R.id.ed_comments_post);
 
         preComment.setText(commInfo.preComment);
         postComment.setText(commInfo.postComment);
@@ -3097,7 +3081,7 @@ public class DroidFish extends Activity
         final int TRUNCATE_VARS   = 3;
         final int HIDE_STATISTICS = 4;
         final int SHOW_STATISTICS = 5;
-        List<CharSequence> lst = new ArrayList<>();
+        List<String> lst = new ArrayList<>();
         final List<Integer> actions = new ArrayList<>();
         lst.add(getString(R.string.add_analysis)); actions.add(ADD_ANALYSIS);
         int numPV = this.numPV;
@@ -3124,7 +3108,7 @@ public class DroidFish extends Activity
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.analysis);
-        builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
+        builder.setItems(lst.toArray(new String[0]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 switch (actions.get(item)) {
                 case ADD_ANALYSIS: {
@@ -3158,7 +3142,7 @@ public class DroidFish extends Activity
                     fullPVLines = actions.get(item) == SHOW_WHOLE_VARS;
                     Editor editor = settings.edit();
                     editor.putBoolean("fullPVLines", fullPVLines);
-                    editor.commit();
+                    editor.apply();
                     updateThinkingInfo();
                     break;
                 }
@@ -3167,15 +3151,14 @@ public class DroidFish extends Activity
                     mShowStats = actions.get(item) == SHOW_STATISTICS;
                     Editor editor = settings.edit();
                     editor.putBoolean("showStats", mShowStats);
-                    editor.commit();
+                    editor.apply();
                     updateThinkingInfo();
                     break;
                 }
                 }
             }
         });
-        AlertDialog alert = builder.create();
-        return alert;
+        return builder.create();
     }
 
     /** Handle user interface to set MultiPV value. */
@@ -3184,7 +3167,7 @@ public class DroidFish extends Activity
             numPV = nPV;
             Editor editor = settings.edit();
             editor.putInt("numPV", numPV);
-            editor.commit();
+            editor.apply();
             ctrl.setMultiPVMode(numPV);
         }
 
@@ -3225,8 +3208,8 @@ public class DroidFish extends Activity
             View content = View.inflate(DroidFish.this, R.layout.num_variations, null);
             builder.setView(content);
 
-            final SeekBar seekBar = (SeekBar)content.findViewById(R.id.numvar_seekbar);
-            final EditText editTxt = (EditText)content.findViewById(R.id.numvar_edittext);
+            final SeekBar seekBar = content.findViewById(R.id.numvar_seekbar);
+            final EditText editTxt = content.findViewById(R.id.numvar_edittext);
 
             seekBar.setMax(numPVToProgress(maxPV, maxPV));
             seekBar.setProgress(numPVToProgress(numPV, maxPV));
@@ -3288,7 +3271,7 @@ public class DroidFish extends Activity
         final int AUTO_BACKWARD   = 4;
 
         setAutoMode(AutoMode.OFF);
-        List<CharSequence> lst = new ArrayList<>();
+        List<String> lst = new ArrayList<>();
         final List<Integer> actions = new ArrayList<>();
         lst.add(getString(R.string.goto_start_game));      actions.add(GOTO_START_GAME);
         lst.add(getString(R.string.goto_start_variation)); actions.add(GOTO_START_VAR);
@@ -3304,7 +3287,7 @@ public class DroidFish extends Activity
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.go_back);
-        builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
+        builder.setItems(lst.toArray(new String[0]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 switch (actions.get(item)) {
                 case GOTO_START_GAME: ctrl.gotoMove(0); break;
@@ -3319,8 +3302,7 @@ public class DroidFish extends Activity
                 }
             }
         });
-        AlertDialog alert = builder.create();
-        return alert;
+        return builder.create();
     }
 
     private Dialog goForwardMenuDialog() {
@@ -3330,7 +3312,7 @@ public class DroidFish extends Activity
         final int AUTO_FORWARD   = 3;
 
         setAutoMode(AutoMode.OFF);
-        List<CharSequence> lst = new ArrayList<>();
+        List<String> lst = new ArrayList<>();
         final List<Integer> actions = new ArrayList<>();
         lst.add(getString(R.string.goto_end_variation)); actions.add(GOTO_END_VAR);
         if (ctrl.currVariation() < ctrl.numVariations() - 1) {
@@ -3345,7 +3327,7 @@ public class DroidFish extends Activity
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.go_forward);
-        builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
+        builder.setItems(lst.toArray(new String[0]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 switch (actions.get(item)) {
                 case GOTO_END_VAR:  ctrl.gotoMove(Integer.MAX_VALUE); break;
@@ -3359,12 +3341,11 @@ public class DroidFish extends Activity
                 }
             }
         });
-        AlertDialog alert = builder.create();
-        return alert;
+        return builder.create();
     }
 
     private Dialog makeButtonDialog(ButtonActions buttonActions) {
-        List<CharSequence> names = new ArrayList<>();
+        List<String> names = new ArrayList<>();
         final List<UIAction> actions = new ArrayList<>();
 
         HashSet<String> used = new HashSet<>();
@@ -3377,7 +3358,7 @@ public class DroidFish extends Activity
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(buttonActions.getMenuTitle());
-        builder.setItems(names.toArray(new CharSequence[names.size()]), new DialogInterface.OnClickListener() {
+        builder.setItems(names.toArray(new String[0]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 UIAction a = actions.get(item);
                 a.run();
@@ -3390,7 +3371,7 @@ public class DroidFish extends Activity
         final int SELECT_ENGINE = 0;
         final int SET_ENGINE_OPTIONS = 1;
         final int CONFIG_NET_ENGINE = 2;
-        List<CharSequence> lst = new ArrayList<>();
+        List<String> lst = new ArrayList<>();
         final List<Integer> actions = new ArrayList<>();
         lst.add(getString(R.string.select_engine)); actions.add(SELECT_ENGINE);
         if (canSetEngineOptions()) {
@@ -3400,7 +3381,7 @@ public class DroidFish extends Activity
         lst.add(getString(R.string.configure_network_engine)); actions.add(CONFIG_NET_ENGINE);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.option_manage_engines);
-        builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
+        builder.setItems(lst.toArray(new String[0]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 switch (actions.get(item)) {
                 case SELECT_ENGINE:
@@ -3415,8 +3396,7 @@ public class DroidFish extends Activity
                 }
             }
         });
-        AlertDialog alert = builder.create();
-        return alert;
+        return builder.create();
     }
 
     /** Return true if engine UCI options can be set now. */
@@ -3452,16 +3432,15 @@ public class DroidFish extends Activity
                 return EngineUtil.isNetEngine(filename);
             }
         });
-        final int numFiles = fileNames.length;
-        final int numItems = numFiles + 1;
+        final int numItems = fileNames.length + 1;
         final String[] items = new String[numItems];
         final String[] ids = new String[numItems];
         int idx = 0;
         String sep = File.separator;
         String base = Environment.getExternalStorageDirectory() + sep + engineDir + sep;
-        for (int i = 0; i < numFiles; i++) {
-            ids[idx] = base + fileNames[i];
-            items[idx] = fileNames[i];
+        for (String fileName : fileNames) {
+            ids[idx] = base + fileName;
+            items[idx] = fileName;
             idx++;
         }
         ids[idx] = ""; items[idx] = getString(R.string.new_engine); idx++;
@@ -3493,8 +3472,7 @@ public class DroidFish extends Activity
                 reShowDialog(MANAGE_ENGINES_DIALOG);
             }
         });
-        AlertDialog alert = builder.create();
-        return alert;
+        return builder.create();
     }
 
     // Filename of network engine to configure
@@ -3506,7 +3484,7 @@ public class DroidFish extends Activity
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(content);
         builder.setTitle(R.string.create_network_engine);
-        final EditText engineNameView = (EditText)content.findViewById(R.id.create_network_engine);
+        final EditText engineNameView = content.findViewById(R.id.create_network_engine);
         engineNameView.setText("");
         final Runnable createEngine = new Runnable() {
             public void run() {
@@ -3570,8 +3548,8 @@ public class DroidFish extends Activity
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(content);
         builder.setTitle(R.string.configure_network_engine);
-        final EditText hostNameView = (EditText)content.findViewById(R.id.network_engine_host);
-        final EditText portView = (EditText)content.findViewById(R.id.network_engine_port);
+        final EditText hostNameView = content.findViewById(R.id.network_engine_host);
+        final EditText portView = content.findViewById(R.id.network_engine_port);
         String hostName = "";
         String port = "0";
         try {
@@ -3658,7 +3636,7 @@ public class DroidFish extends Activity
                     engine = "stockfish";
                     Editor editor = settings.edit();
                     editor.putString("engine", engine);
-                    editor.commit();
+                    editor.apply();
                     dialog.dismiss();
                     int strength = settings.getInt("strength", 1000);
                     setEngineOptions(false);
@@ -3680,8 +3658,7 @@ public class DroidFish extends Activity
                 reShowDialog(NETWORK_ENGINE_DIALOG);
             }
         });
-        AlertDialog alert = builder.create();
-        return alert;
+        return builder.create();
     }
 
     /** Open a load/save file dialog. Uses OI file manager if available. */
@@ -3727,7 +3704,7 @@ public class DroidFish extends Activity
         }
     }
 
-    public final static boolean hasFenProvider(PackageManager manager) {
+    public static boolean hasFenProvider(PackageManager manager) {
         Intent i = new Intent(Intent.ACTION_GET_CONTENT); 
         i.setType("application/x-chess-fen");
         List<ResolveInfo> resolvers = manager.queryIntentActivities(i, 0);
@@ -3773,7 +3750,7 @@ public class DroidFish extends Activity
         }
     }
 
-    private static interface FileNameFilter {
+    private interface FileNameFilter {
         boolean accept(String filename);
     }
 
@@ -3805,7 +3782,7 @@ public class DroidFish extends Activity
         Editor editor = settings.edit();
         editor.putString("currentPGNFile", pathName);
         editor.putInt("currFT", FT_PGN);
-        editor.commit();
+        editor.apply();
         Intent i = new Intent(DroidFish.this, EditPGNSave.class);
         i.setAction("org.petero.droidfish.saveFile");
         i.putExtra("org.petero.droidfish.pathname", pathName);
@@ -3819,7 +3796,7 @@ public class DroidFish extends Activity
         Editor editor = settings.edit();
         editor.putString("currentPGNFile", pathName);
         editor.putInt("currFT", FT_PGN);
-        editor.commit();
+        editor.apply();
         Intent i = new Intent(DroidFish.this, EditPGNLoad.class);
         i.setAction("org.petero.droidfish.loadFile");
         i.putExtra("org.petero.droidfish.pathname", pathName);
@@ -3833,7 +3810,7 @@ public class DroidFish extends Activity
         Editor editor = settings.edit();
         editor.putString("currentFENFile", pathName);
         editor.putInt("currFT", FT_FEN);
-        editor.commit();
+        editor.apply();
         Intent i = new Intent(DroidFish.this, LoadFEN.class);
         i.setAction("org.petero.droidfish.loadFen");
         i.putExtra("org.petero.droidfish.pathname", pathName);
@@ -3943,11 +3920,11 @@ public class DroidFish extends Activity
         if (show) {
             boolean silhouette = Build.VERSION.SDK_INT >= 21;
             int icon = silhouette ? R.drawable.silhouette : R.mipmap.icon;
-            CharSequence tickerText = getString(R.string.heavy_cpu_usage);
+            String tickerText = getString(R.string.heavy_cpu_usage);
             long when = System.currentTimeMillis();
             Context context = getApplicationContext();
-            CharSequence contentTitle = getString(R.string.background_processing);
-            CharSequence contentText = getString(R.string.lot_cpu_power);
+            String contentTitle = getString(R.string.background_processing);
+            String contentText = getString(R.string.lot_cpu_power);
             Intent notificationIntent = new Intent(this, CPUWarning.class);
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
             @SuppressWarnings("deprecation")

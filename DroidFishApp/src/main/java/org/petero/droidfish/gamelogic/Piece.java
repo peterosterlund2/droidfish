@@ -83,8 +83,8 @@ public class Piece {
     }
 
     /** Converts the piece into a character for the material diff. */
-    public final static char toUniCode(int p) {
-        // As we assume, the coding of the pieces is sequential, lets do some math.
+    public static char toUniCode(int p) {
+        // As we assume the coding of the pieces is sequential, lets do some math.
         return (char)(WHITE_KING + p - 1);
     }
 }

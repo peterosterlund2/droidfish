@@ -52,7 +52,7 @@ public final class TreeLogger {
     }
 
     /** Get a logger object set up for writing to a log file. */
-    public static final TreeLogger getWriter(String filename, Position pos) {
+    public static TreeLogger getWriter(String filename, Position pos) {
         try {
             TreeLogger log = new TreeLogger();
             log.os = new FileOutputStream(filename);
@@ -80,7 +80,7 @@ public final class TreeLogger {
     }
 
     /** Get a logger object set up for analyzing a log file. */
-    public static final TreeLogger getAnalyzer(String filename) {
+    public static TreeLogger getAnalyzer(String filename) {
         RandomAccessFile raf =  null;
         try {
             TreeLogger log = new TreeLogger();
@@ -191,7 +191,7 @@ public final class TreeLogger {
     // ----------------------------------------------------------------------------
     // Functions used for tree analyzing
     
-    private static final int indexToFileOffs(int index) {
+    private static int indexToFileOffs(int index) {
         return 128 + index * 16;
     }
     
@@ -211,7 +211,7 @@ public final class TreeLogger {
         }
         mapBuf.put(127, (byte)(1 << 7));
         mapBuf.force();
-        System.out.printf("Computing forward pointers... done\n");
+        System.out.print("Computing forward pointers... done\n");
     }
 
     /** Get FEN string for root node position. */
@@ -220,8 +220,7 @@ public final class TreeLogger {
         byte[] fenB = new byte[len];
         for (int i = 0; i < len; i++)
             fenB[i] = mapBuf.get(1+i);
-        String ret = new String(fenB);
-        return ret;
+        return new String(fenB);
     }
 
     static final class StartEntry {
@@ -271,9 +270,9 @@ public final class TreeLogger {
     // ----------------------------------------------------------------------------
     // Functions used for the interactive tree browser
 
-    public static final void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
         if (args.length != 1) {
-            System.out.printf("Usage: progname filename\n");
+            System.out.print("Usage: progname filename\n");
             System.exit(1);
         }
         TreeLogger an = getAnalyzer(args[0]);
@@ -445,7 +444,7 @@ public final class TreeLogger {
     }
 
     /** Get integer parameter from an input string. */
-    private static final int getArg(String s, int defVal) {
+    private static int getArg(String s, int defVal) {
         try {
             int idx = s.indexOf(' ');
             if (idx > 0) {
@@ -472,7 +471,7 @@ public final class TreeLogger {
     }
 
     /** Get a string parameter from an input string. */
-    private static final String getArgStr(String s, String defVal) {
+    private static String getArgStr(String s, String defVal) {
         int idx = s.indexOf(' ');
         if (idx > 0)
             return s.substring(idx+1);
@@ -480,16 +479,16 @@ public final class TreeLogger {
     }
 
     private void printHelp() {
-        System.out.printf("  p              - Print move sequence\n");
-        System.out.printf("  n              - Print node info corresponding to move sequence\n");
-        System.out.printf("  l [move]       - List child nodes, optionally only for one move\n");
-        System.out.printf("  d [n1 [n2...]] - Go to child \"n\"\n");
-        System.out.printf("  move           - Go to child \"move\", if unique\n");
-        System.out.printf("  u [levels]     - Move up\n");
-        System.out.printf("  h [key]        - Find nodes with current (or given) hash key\n");
-        System.out.printf("  num            - Go to node \"num\"\n");
-        System.out.printf("  q              - Quit\n");
-        System.out.printf("  ?              - Print this help\n");
+        System.out.print("  p              - Print move sequence\n");
+        System.out.print("  n              - Print node info corresponding to move sequence\n");
+        System.out.print("  l [move]       - List child nodes, optionally only for one move\n");
+        System.out.print("  d [n1 [n2...]] - Go to child \"n\"\n");
+        System.out.print("  move           - Go to child \"move\", if unique\n");
+        System.out.print("  u [levels]     - Move up\n");
+        System.out.print("  h [key]        - Find nodes with current (or given) hash key\n");
+        System.out.print("  num            - Go to node \"num\"\n");
+        System.out.print("  q              - Quit\n");
+        System.out.print("  ?              - Print this help\n");
     }
 
     /** Read start/end entries for a tree node. Return true if the end entry exists. */

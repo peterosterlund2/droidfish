@@ -94,11 +94,11 @@ public class CuckooChess extends Activity implements GUIInterface {
         });
         
         setContentView(R.layout.main);
-        status = (TextView)findViewById(R.id.status);
-        moveListScroll = (ScrollView)findViewById(R.id.scrollView);
-        moveList = (TextView)findViewById(R.id.moveList);
-        thinking = (TextView)findViewById(R.id.thinking);
-        cb = (ChessBoard)findViewById(R.id.chessboard);
+        status = findViewById(R.id.status);
+        moveListScroll = findViewById(R.id.scrollView);
+        moveList = findViewById(R.id.moveList);
+        thinking = findViewById(R.id.thinking);
+        cb = findViewById(R.id.chessboard);
         status.setFocusable(false);
         moveListScroll.setFocusable(false);
         moveList.setFocusable(false);
@@ -193,7 +193,7 @@ public class CuckooChess extends Activity implements GUIInterface {
         editor.putString("startFEN", posHistStr.get(0));
         editor.putString("moves", posHistStr.get(1));
         editor.putString("numUndo", posHistStr.get(2));
-        editor.commit();
+        editor.apply();
         super.onPause();
     }
 

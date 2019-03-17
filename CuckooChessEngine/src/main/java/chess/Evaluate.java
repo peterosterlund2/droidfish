@@ -50,97 +50,97 @@ public class Evaluate {
     }
 
     /** Piece/square table for king during middle game. */
-    static final int[] kt1b = { -22,-35,-40,-40,-40,-40,-35,-22,
-                                -22,-35,-40,-40,-40,-40,-35,-22,
-                                -25,-35,-40,-45,-45,-40,-35,-25,
-                                -15,-30,-35,-40,-40,-35,-30,-15,
-                                -10,-15,-20,-25,-25,-20,-15,-10,
-                                  4, -2, -5,-15,-15, -5, -2,  4,
-                                 16, 14,  7, -3, -3,  7, 14, 16,
-                                 24, 24,  9,  0,  0,  9, 24, 24 };
+    private static final int[] kt1b = { -22,-35,-40,-40,-40,-40,-35,-22,
+                                        -22,-35,-40,-40,-40,-40,-35,-22,
+                                        -25,-35,-40,-45,-45,-40,-35,-25,
+                                        -15,-30,-35,-40,-40,-35,-30,-15,
+                                        -10,-15,-20,-25,-25,-20,-15,-10,
+                                          4, -2, -5,-15,-15, -5, -2,  4,
+                                         16, 14,  7, -3, -3,  7, 14, 16,
+                                         24, 24,  9,  0,  0,  9, 24, 24 };
 
     /** Piece/square table for king during end game. */
-    static final int[] kt2b = {  0,  8, 16, 24, 24, 16,  8,  0,
-                                 8, 16, 24, 32, 32, 24, 16,  8,
-                                16, 24, 32, 40, 40, 32, 24, 16,
-                                24, 32, 40, 48, 48, 40, 32, 24,
-                                24, 32, 40, 48, 48, 40, 32, 24,
-                                16, 24, 32, 40, 40, 32, 24, 16,
-                                 8, 16, 24, 32, 32, 24, 16,  8,
-                                 0,  8, 16, 24, 24, 16,  8,  0 };
+    private static final int[] kt2b = {  0,  8, 16, 24, 24, 16,  8,  0,
+                                         8, 16, 24, 32, 32, 24, 16,  8,
+                                        16, 24, 32, 40, 40, 32, 24, 16,
+                                        24, 32, 40, 48, 48, 40, 32, 24,
+                                        24, 32, 40, 48, 48, 40, 32, 24,
+                                        16, 24, 32, 40, 40, 32, 24, 16,
+                                         8, 16, 24, 32, 32, 24, 16,  8,
+                                         0,  8, 16, 24, 24, 16,  8,  0 };
 
     /** Piece/square table for pawns during middle game. */
-    static final int[] pt1b = {  0,  0,  0,  0,  0,  0,  0,  0,
-                                 8, 16, 24, 32, 32, 24, 16,  8,
-                                 3, 12, 20, 28, 28, 20, 12,  3,
-                                -5,  4, 10, 20, 20, 10,  4, -5,
-                                -6,  4,  5, 16, 16,  5,  4, -6,
-                                -6,  4,  2,  5,  5,  2,  4, -6,
-                                -6,  4,  4,-15,-15,  4,  4, -6,
-                                 0,  0,  0,  0,  0,  0,  0,  0 };
+    private static final int[] pt1b = {  0,  0,  0,  0,  0,  0,  0,  0,
+                                         8, 16, 24, 32, 32, 24, 16,  8,
+                                         3, 12, 20, 28, 28, 20, 12,  3,
+                                        -5,  4, 10, 20, 20, 10,  4, -5,
+                                        -6,  4,  5, 16, 16,  5,  4, -6,
+                                        -6,  4,  2,  5,  5,  2,  4, -6,
+                                        -6,  4,  4,-15,-15,  4,  4, -6,
+                                         0,  0,  0,  0,  0,  0,  0,  0 };
 
     /** Piece/square table for pawns during end game. */
-    static final int[] pt2b = {   0,  0,  0,  0,  0,  0,  0,  0,
-                                 25, 40, 45, 45, 45, 45, 40, 25,
-                                 17, 32, 35, 35, 35, 35, 32, 17,
-                                  5, 24, 24, 24, 24, 24, 24,  5,
-                                 -9, 11, 11, 11, 11, 11, 11, -9,
-                                -17,  3,  3,  3,  3,  3,  3,-17,
-                                -20,  0,  0,  0,  0,  0,  0,-20,
-                                  0,  0,  0,  0,  0,  0,  0,  0 };
+    private static final int[] pt2b = {   0,  0,  0,  0,  0,  0,  0,  0,
+                                         25, 40, 45, 45, 45, 45, 40, 25,
+                                         17, 32, 35, 35, 35, 35, 32, 17,
+                                          5, 24, 24, 24, 24, 24, 24,  5,
+                                         -9, 11, 11, 11, 11, 11, 11, -9,
+                                        -17,  3,  3,  3,  3,  3,  3,-17,
+                                        -20,  0,  0,  0,  0,  0,  0,-20,
+                                          0,  0,  0,  0,  0,  0,  0,  0 };
 
     /** Piece/square table for knights during middle game. */
-    static final int[] nt1b = { -53,-42,-32,-21,-21,-32,-42,-53,
-                                -42,-32,-10,  0,  0,-10,-32,-42,
-                                -21,  5, 10, 16, 16, 10,  5,-21,
-                                -18,  0, 10, 21, 21, 10,  0,-18,
-                                -18,  0,  3, 21, 21,  3,  0,-18,
-                                -21,-10,  0,  0,  0,  0,-10,-21,
-                                -42,-32,-10,  0,  0,-10,-32,-42,
-                                -53,-42,-32,-21,-21,-32,-42,-53 };
+    private static final int[] nt1b = { -53,-42,-32,-21,-21,-32,-42,-53,
+                                        -42,-32,-10,  0,  0,-10,-32,-42,
+                                        -21,  5, 10, 16, 16, 10,  5,-21,
+                                        -18,  0, 10, 21, 21, 10,  0,-18,
+                                        -18,  0,  3, 21, 21,  3,  0,-18,
+                                        -21,-10,  0,  0,  0,  0,-10,-21,
+                                        -42,-32,-10,  0,  0,-10,-32,-42,
+                                        -53,-42,-32,-21,-21,-32,-42,-53 };
 
     /** Piece/square table for knights during end game. */
-    static final int[] nt2b = { -56,-44,-34,-22,-22,-34,-44,-56,
-                                -44,-34,-10,  0,  0,-10,-34,-44,
-                                -22,  5, 10, 17, 17, 10,  5,-22,
-                                -19,  0, 10, 22, 22, 10,  0,-19,
-                                -19,  0,  3, 22, 22,  3,  0,-19,
-                                -22,-10,  0,  0,  0,  0,-10,-22,
-                                -44,-34,-10,  0,  0,-10,-34,-44,
-                                -56,-44,-34,-22,-22,-34,-44,-56 };
+    private static final int[] nt2b = { -56,-44,-34,-22,-22,-34,-44,-56,
+                                        -44,-34,-10,  0,  0,-10,-34,-44,
+                                        -22,  5, 10, 17, 17, 10,  5,-22,
+                                        -19,  0, 10, 22, 22, 10,  0,-19,
+                                        -19,  0,  3, 22, 22,  3,  0,-19,
+                                        -22,-10,  0,  0,  0,  0,-10,-22,
+                                        -44,-34,-10,  0,  0,-10,-34,-44,
+                                        -56,-44,-34,-22,-22,-34,-44,-56 };
 
     /** Piece/square table for bishops during middle game. */
-    static final int[] bt1b = {  0,  0,  0,  0,  0,  0,  0,  0,
-                                 0,  4,  2,  2,  2,  2,  4,  0,
-                                 0,  2,  4,  4,  4,  4,  2,  0,
-                                 0,  2,  4,  4,  4,  4,  2,  0,
-                                 0,  2,  4,  4,  4,  4,  2,  0,
-                                 0,  3,  4,  4,  4,  4,  3,  0,
-                                 0,  4,  2,  2,  2,  2,  4,  0,
-                                -5, -5, -7, -5, -5, -7, -5, -5 };
+    private static final int[] bt1b = {  0,  0,  0,  0,  0,  0,  0,  0,
+                                         0,  4,  2,  2,  2,  2,  4,  0,
+                                         0,  2,  4,  4,  4,  4,  2,  0,
+                                         0,  2,  4,  4,  4,  4,  2,  0,
+                                         0,  2,  4,  4,  4,  4,  2,  0,
+                                         0,  3,  4,  4,  4,  4,  3,  0,
+                                         0,  4,  2,  2,  2,  2,  4,  0,
+                                        -5, -5, -7, -5, -5, -7, -5, -5 };
 
     /** Piece/square table for bishops during middle game. */
-    static final int[] bt2b = {  0,  0,  0,  0,  0,  0,  0,  0,
-                                 0,  2,  2,  2,  2,  2,  2,  0,
-                                 0,  2,  4,  4,  4,  4,  2,  0,
-                                 0,  2,  4,  4,  4,  4,  2,  0,
-                                 0,  2,  4,  4,  4,  4,  2,  0,
-                                 0,  2,  4,  4,  4,  4,  2,  0,
-                                 0,  2,  2,  2,  2,  2,  2,  0,
-                                 0,  0,  0,  0,  0,  0,  0,  0 };
+    private static final int[] bt2b = {  0,  0,  0,  0,  0,  0,  0,  0,
+                                         0,  2,  2,  2,  2,  2,  2,  0,
+                                         0,  2,  4,  4,  4,  4,  2,  0,
+                                         0,  2,  4,  4,  4,  4,  2,  0,
+                                         0,  2,  4,  4,  4,  4,  2,  0,
+                                         0,  2,  4,  4,  4,  4,  2,  0,
+                                         0,  2,  2,  2,  2,  2,  2,  0,
+                                         0,  0,  0,  0,  0,  0,  0,  0 };
 
     /** Piece/square table for queens during middle game. */
-    static final int[] qt1b = { -10, -5,  0,  0,  0,  0, -5,-10,
-                                 -5,  0,  5,  5,  5,  5,  0, -5,
-                                  0,  5,  5,  6,  6,  5,  5,  0,
-                                  0,  5,  6,  6,  6,  6,  5,  0,
-                                  0,  5,  6,  6,  6,  6,  5,  0,
-                                  0,  5,  5,  6,  6,  5,  5,  0,
-                                 -5,  0,  5,  5,  5,  5,  0, -5,
-                                -10, -5,  0,  0,  0,  0, -5,-10 };
+    private static final int[] qt1b = { -10, -5,  0,  0,  0,  0, -5,-10,
+                                         -5,  0,  5,  5,  5,  5,  0, -5,
+                                          0,  5,  5,  6,  6,  5,  5,  0,
+                                          0,  5,  6,  6,  6,  6,  5,  0,
+                                          0,  5,  6,  6,  6,  6,  5,  0,
+                                          0,  5,  5,  6,  6,  5,  5,  0,
+                                         -5,  0,  5,  5,  5,  5,  0, -5,
+                                        -10, -5,  0,  0,  0,  0, -5,-10 };
 
     /** Piece/square table for rooks during middle game. */
-    static final int[] rt1b = {  8, 11, 13, 13, 13, 13, 11,  8,
+    private static final int[] rt1b = {  8, 11, 13, 13, 13, 13, 11,  8,
                                 22, 27, 27, 27, 27, 27, 27, 22,
                                  0,  0,  0,  0,  0,  0,  0,  0,
                                  0,  0,  0,  0,  0,  0,  0,  0,
@@ -149,7 +149,7 @@ public class Evaluate {
                                 -3,  2,  5,  5,  5,  5,  2, -3,
                                  0,  3,  5,  5,  5,  5,  3,  0 };
 
-    static final int[] kt1w, qt1w, rt1w, bt1w, nt1w, pt1w, kt2w, bt2w, nt2w, pt2w;
+    private static final int[] kt1w, qt1w, rt1w, bt1w, nt1w, pt1w, kt2w, bt2w, nt2w, pt2w;
     static {
         kt1w = new int[64];
         qt1w = new int[64];
@@ -193,9 +193,9 @@ public class Evaluate {
                                         { 6, 7, 6, 5, 4, 3, 2, 1 },
                                         { 7, 6, 5, 4, 3, 2, 1, 0 } };
 
-    static final int[] rookMobScore = {-10,-7,-4,-1,2,5,7,9,11,12,13,14,14,14,14};
-    static final int[] bishMobScore = {-15,-10,-6,-2,2,6,10,13,16,18,20,22,23,24};
-    static final int[] queenMobScore = {-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,9,10,10,10,10,10,10,10,10,10,10,10,10};
+    private static final int[] rookMobScore = {-10,-7,-4,-1,2,5,7,9,11,12,13,14,14,14,14};
+    private static final int[] bishMobScore = {-15,-10,-6,-2,2,6,10,13,16,18,20,22,23,24};
+    private static final int[] queenMobScore = {-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,9,10,10,10,10,10,10,10,10,10,10,10,10};
 
     private static final class PawnHashData {
         long key;
@@ -205,7 +205,7 @@ public class Evaluate {
         long passedPawnsW;     // The most advanced passed pawns for each file
         long passedPawnsB;
     }
-    static final PawnHashData[] pawnHash;
+    private static final PawnHashData[] pawnHash;
     static {
         final int numEntries = 1<<16;
         pawnHash = new PawnHashData[numEntries];
@@ -217,8 +217,8 @@ public class Evaluate {
         }
     }
 
-    static byte[] kpkTable = null;
-    static byte[] krkpTable = null;
+    private static byte[] kpkTable = null;
+    private static byte[] krkpTable = null;
 
     // King safety variables
     private long wKingZone, bKingZone;       // Squares close to king that are worth attacking
@@ -1135,7 +1135,7 @@ public class Evaluate {
         return score;
     }
 
-    private static final int evalKQKP(int wKing, int wQueen, int bKing, int bPawn, boolean whiteMove) {
+    private static int evalKQKP(int wKing, int wQueen, int bKing, int bPawn, boolean whiteMove) {
         boolean canWin = false;
         if (((1L << bKing) & 0xFFFF) == 0) {
             canWin = true; // King doesn't support pawn
@@ -1172,7 +1172,7 @@ public class Evaluate {
         return score;
     }
 
-    private static final int kpkEval(int wKing, int bKing, int wPawn, boolean whiteMove) {
+    private static int kpkEval(int wKing, int bKing, int wPawn, boolean whiteMove) {
         if (Position.getX(wKing) >= 4) { // Mirror X
             wKing ^= 7;
             bKing ^= 7;
@@ -1191,7 +1191,7 @@ public class Evaluate {
         return qV - pV / 4 * (7-Position.getY(wPawn));
     }
 
-    private static final int krkpEval(int wKing, int bKing, int bPawn, boolean whiteMove) {
+    private static int krkpEval(int wKing, int bKing, int bPawn, boolean whiteMove) {
         if (Position.getX(bKing) >= 4) { // Mirror X
             wKing ^= 7;
             bKing ^= 7;
@@ -1216,7 +1216,7 @@ public class Evaluate {
      * Interpolate between (x1,y1) and (x2,y2).
      * If x < x1, return y1, if x > x2 return y2. Otherwise, use linear interpolation.
      */
-    static final int interpolate(int x, int x1, int y1, int x2, int y2) {
+    static int interpolate(int x, int x1, int y1, int x2, int y2) {
         if (x > x2) {
             return y2;
         } else if (x < x1) {

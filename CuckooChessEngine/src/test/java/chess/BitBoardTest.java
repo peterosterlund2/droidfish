@@ -99,7 +99,7 @@ public class BitBoardTest {
      * If there is a piece type that can move from "from" to "to", return the
      * corresponding direction, 8*dy+dx.
      */
-    private static final int computeDirection(int from, int to) {
+    private static int computeDirection(int from, int to) {
         int dx = Position.getX(to) - Position.getX(from);
         int dy = Position.getY(to) - Position.getY(from);
         if (dx == 0) {                   // Vertical rook direction
@@ -125,7 +125,7 @@ public class BitBoardTest {
         }
     }
 
-    private static final int computeDistance(int from, int to) {
+    private static int computeDistance(int from, int to) {
         int dx = Position.getX(to) - Position.getX(from);
         int dy = Position.getY(to) - Position.getY(from);
         return Math.max(Math.abs(dx), Math.abs(dy));

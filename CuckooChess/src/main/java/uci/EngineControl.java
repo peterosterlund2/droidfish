@@ -210,7 +210,7 @@ public class EngineControl {
         }
     }
 
-    private static final int clamp(int val, int min, int max) {
+    private static int clamp(int val, int min, int max) {
         if (val < min) {
             return min;
         } else if (val > max) {
@@ -220,8 +220,8 @@ public class EngineControl {
         }
     }
 
-    final private void startThread(final int minTimeLimit, final int maxTimeLimit,
-                                   int maxDepth, final int maxNodes) {
+    private void startThread(final int minTimeLimit, final int maxTimeLimit,
+                             int maxDepth, final int maxNodes) {
         synchronized (threadMutex) {} // Must not start new search until old search is finished
         sc = new Search(pos, posHashList, posHashListSize, tt, ht);
         sc.timeLimit(minTimeLimit, maxTimeLimit);
@@ -339,7 +339,7 @@ public class EngineControl {
         return ret;
     }
 
-    private static final String moveToString(Move m) {
+    private static String moveToString(Move m) {
         if (m == null)
             return "0000";
         String ret = TextIO.squareToString(m.from);

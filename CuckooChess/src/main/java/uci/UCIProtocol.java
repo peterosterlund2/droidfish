@@ -205,7 +205,7 @@ public class UCIProtocol {
         }
     }
 
-    final private void initEngine(PrintStream os) {
+    private void initEngine(PrintStream os) {
         if (engine == null) {
             engine = new EngineControl(os);
         }

@@ -144,27 +144,27 @@ public class EditBoard extends Activity {
 
         View firstTitleLine = findViewById(R.id.first_title_line);
         View secondTitleLine = findViewById(R.id.second_title_line);
-        cb = (ChessBoardEdit)findViewById(R.id.eb_chessboard);
+        cb = findViewById(R.id.eb_chessboard);
         cb.setFlipped(boardFlipped);
-        status = (TextView)findViewById(R.id.eb_status);
-        okButton = (Button)findViewById(R.id.eb_ok);
-        cancelButton = (Button)findViewById(R.id.eb_cancel);
+        status = findViewById(R.id.eb_status);
+        okButton = findViewById(R.id.eb_ok);
+        cancelButton = findViewById(R.id.eb_cancel);
 
-        TextView whiteTitleText = (TextView)findViewById(R.id.white_clock);
+        TextView whiteTitleText = findViewById(R.id.white_clock);
         whiteTitleText.setVisibility(View.GONE);
-        TextView blackTitleText = (TextView)findViewById(R.id.black_clock);
+        TextView blackTitleText = findViewById(R.id.black_clock);
         blackTitleText.setVisibility(View.GONE);
-        TextView engineTitleText = (TextView)findViewById(R.id.title_text);
+        TextView engineTitleText = findViewById(R.id.title_text);
         engineTitleText.setVisibility(View.GONE);
-        whiteFigText = (TextView) findViewById(R.id.white_pieces);
+        whiteFigText = findViewById(R.id.white_pieces);
         whiteFigText.setTypeface(figNotation);
         whiteFigText.setSelected(true);
         whiteFigText.setTextColor(whiteTitleText.getTextColors());
-        blackFigText = (TextView) findViewById(R.id.black_pieces);
+        blackFigText = findViewById(R.id.black_pieces);
         blackFigText.setTypeface(figNotation);
         blackFigText.setSelected(true);
         blackFigText.setTextColor(blackTitleText.getTextColors());
-        TextView summaryTitleText = (TextView) findViewById(R.id.title_text_summary);
+        TextView summaryTitleText = findViewById(R.id.title_text_summary);
         summaryTitleText.setText(R.string.edit_board);
 
         TextUtils.TruncateAt where = autoScrollTitle ? TextUtils.TruncateAt.MARQUEE
@@ -253,8 +253,8 @@ public class EditBoard extends Activity {
 
     /** Initialize the drawer part of the user interface. */
     private void initDrawers() {
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        leftDrawer = (ListView)findViewById(R.id.left_drawer);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        leftDrawer = findViewById(R.id.left_drawer);
 
         class DrawerItem {
             int id;
@@ -596,8 +596,8 @@ public class EditBoard extends Activity {
 
             builder.setView(content);
             builder.setTitle(R.string.edit_move_counters);
-            final EditText halfMoveClock = (EditText)content.findViewById(R.id.ed_cnt_halfmove);
-            final EditText fullMoveCounter = (EditText)content.findViewById(R.id.ed_cnt_fullmove);
+            final EditText halfMoveClock = content.findViewById(R.id.ed_cnt_halfmove);
+            final EditText fullMoveCounter = content.findViewById(R.id.ed_cnt_fullmove);
             halfMoveClock.setText(String.format(Locale.US, "%d", cb.pos.halfMoveClock));
             fullMoveCounter.setText(String.format(Locale.US, "%d", cb.pos.fullMoveCounter));
             final Runnable setCounters = new Runnable() {

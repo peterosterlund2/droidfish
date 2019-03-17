@@ -236,7 +236,7 @@ public abstract class UCIEngineBase implements UCIEngine {
             }
         } else if (type.equals("combo")) {
             if (defVal != null && var.size() > 0) {
-                String[] allowed = var.toArray(new String[var.size()]);
+                String[] allowed = var.toArray(new String[0]);
                 for (String s : allowed)
                     if (s.equals(defVal)) {
                         option = new UCIOptions.ComboOption(name, allowed, defVal);

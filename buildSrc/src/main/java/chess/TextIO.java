@@ -24,7 +24,7 @@ public class TextIO {
     static public final String startPosFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
     /** Parse a FEN string and return a chess Position object. */
-    public static final Position readFEN(String fen) throws ChessParseError {
+    public static Position readFEN(String fen) throws ChessParseError {
         Position pos = new Position();
         String[] words = fen.split(" ");
         if (words.length < 2) {
@@ -148,7 +148,7 @@ public class TextIO {
     }
 
     /** Remove pseudo-legal EP square if it is not legal, ie would leave king in check. */
-    public static final void fixupEPSquare(Position pos) {
+    public static void fixupEPSquare(Position pos) {
         int epSquare = pos.getEpSquare();
         if (epSquare >= 0) {
             MoveGen.MoveList moves = MoveGen.instance.pseudoLegalMoves(pos);
@@ -169,7 +169,7 @@ public class TextIO {
         }
     }
 
-    private static final void safeSetPiece(Position pos, int col, int row, int p) throws ChessParseError {
+    private static void safeSetPiece(Position pos, int col, int row, int p) throws ChessParseError {
         if (row < 0) throw new ChessParseError("Too many rows");
         if (col > 7) throw new ChessParseError("Too many columns");
         if ((p == Piece.WPAWN) || (p == Piece.BPAWN)) {
@@ -180,7 +180,7 @@ public class TextIO {
     }
     
     /** Return a FEN string corresponding to a chess Position object. */
-    public static final String toFEN(Position pos) {
+    public static String toFEN(Position pos) {
         StringBuilder ret = new StringBuilder();
         // Piece placement
         for (int r = 7; r >=0; r--) {
@@ -271,12 +271,12 @@ public class TextIO {
      * @param longForm If true, use long notation, eg Ng1-f3.
      *                 Otherwise, use short notation, eg Nf3
      */
-    public static final String moveToString(Position pos, Move move, boolean longForm) {
+    public static String moveToString(Position pos, Move move, boolean longForm) {
         MoveGen.MoveList moves = MoveGen.instance.pseudoLegalMoves(pos);
         MoveGen.removeIllegal(pos, moves);
         return moveToString(pos, move, longForm, moves);
     }
-    private static final String moveToString(Position pos, Move move, boolean longForm, MoveGen.MoveList moves) {
+    private static String moveToString(Position pos, Move move, boolean longForm, MoveGen.MoveList moves) {
         StringBuilder ret = new StringBuilder();
         int wKingOrigPos = Position.getSquare(4, 0);
         int bKingOrigPos = Position.getSquare(4, 7);
@@ -365,7 +365,7 @@ public class TextIO {
     }
 
     /** Convert a move object to UCI string format. */
-    public static final String moveToUCIString(Move m) {
+    public static String moveToUCIString(Move m) {
         String ret = squareToString(m.from);
         ret += squareToString(m.to);
         switch (m.promoteTo) {
@@ -395,7 +395,7 @@ public class TextIO {
      * Convert a string to a Move object.
      * @return A move object, or null if move has invalid syntax
      */
-    public static final Move uciStringToMove(String move) {
+    public static Move uciStringToMove(String move) {
         Move m = null;
         if ((move.length() < 4) || (move.length() > 5))
             return m;
@@ -440,7 +440,7 @@ public class TextIO {
         return m;
     }
 
-    private static final boolean isCapture(Position pos, Move move) {
+    private static boolean isCapture(Position pos, Move move) {
         if (pos.getPiece(move.to) == Piece.EMPTY) {
             int p = pos.getPiece(move.from);
             if ((p == (pos.whiteMove ? Piece.WPAWN : Piece.BPAWN)) && (move.to == pos.getEpSquare())) {
@@ -458,7 +458,7 @@ public class TextIO {
      * Any prefix of the string representation of a valid move counts as a legal move string,
      * as long as the string only matches one valid move.
      */
-    public static final Move stringToMove(Position pos, String strMove) {
+    public static Move stringToMove(Position pos, String strMove) {
         strMove = strMove.replaceAll("=", "");
         Move move = null;
         if (strMove.length() == 0)
@@ -533,7 +533,7 @@ public class TextIO {
      * Convert a string, such as "e4" to a square number.
      * @return The square number, or -1 if not a legal square.
      */
-    public static final int getSquare(String s) {
+    public static int getSquare(String s) {
         int x = s.charAt(0) - 'a';
         int y = s.charAt(1) - '1';
         if ((x < 0) || (x > 7) || (y < 0) || (y > 7))
@@ -544,7 +544,7 @@ public class TextIO {
     /**
      * Convert a square number to a string, such as "e4".
      */
-    public static final String squareToString(int square) {
+    public static String squareToString(int square) {
         StringBuilder ret = new StringBuilder();
         int x = Position.getX(square);
         int y = Position.getY(square);
@@ -556,7 +556,7 @@ public class TextIO {
     /**
      * Create an ascii representation of a position.
      */
-    public static final String asciiBoard(Position pos) {
+    public static String asciiBoard(Position pos) {
         StringBuilder ret = new StringBuilder(400);
         String nl = String.format(Locale.US, "%n");
         ret.append("    +----+----+----+----+----+----+----+----+"); ret.append(nl);
@@ -587,7 +587,7 @@ public class TextIO {
     /**
      * Convert move string to lower case and remove special check/mate symbols.
      */
-    private static final String normalizeMoveString(String str) {
+    private static String normalizeMoveString(String str) {
         if (str.length() > 0) {
             char lastChar = str.charAt(str.length() - 1);
             if ((lastChar == '#') || (lastChar == '+')) {

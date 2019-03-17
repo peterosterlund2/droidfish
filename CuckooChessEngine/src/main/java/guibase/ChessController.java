@@ -436,7 +436,7 @@ public class ChessController {
      * Move a piece from one square to another.
      * @return True if the move was legal, false otherwise.
      */
-    final private boolean doMove(Move move) {
+    private boolean doMove(Move move) {
         Position pos = game.pos;
         MoveGen.MoveList moves = new MoveGen().pseudoLegalMoves(pos);
         MoveGen.removeIllegal(pos, moves);
@@ -461,14 +461,14 @@ public class ChessController {
     }
 
 
-    final private void updateGUI() {
+    private void updateGUI() {
         setStatusString();
         setMoveList();
         setThinkingPV();
         gui.setPosition(game.pos);
     }
 
-    final private void setStatusString() {
+    private void setStatusString() {
         String str = game.pos.whiteMove ? "White's move" : "Black's move";
         if (computerThread != null) str += " (thinking)";
         if (game.getGameState() != GameState.ALIVE) {
@@ -490,7 +490,7 @@ public class ChessController {
         gui.setThinkingString(str);
     }
 
-    final private void setSelection() {
+    private void setSelection() {
         Move m = game.getLastMove();
         int sq = (m != null) ? m.to : -1;
         gui.setSelection(sq);

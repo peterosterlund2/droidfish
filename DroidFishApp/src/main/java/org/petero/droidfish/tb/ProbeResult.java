@@ -97,8 +97,8 @@ public final class ProbeResult implements Comparable<ProbeResult> {
 
     /** Return f((wdl1,score1)) - f((wdl2,score2)), where f(x) modifies
      * the score so that  larger values are better. */
-    final static int compareScore(int wdl1, int score1,
-                                  int wdl2, int score2) {
+    static int compareScore(int wdl1, int score1,
+                            int wdl2, int score2) {
         final int M = 1000;
         if (wdl1 > 0)
             score1 = M - score1;

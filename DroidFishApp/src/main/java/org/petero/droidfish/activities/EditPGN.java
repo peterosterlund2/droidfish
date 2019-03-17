@@ -213,7 +213,7 @@ public class EditPGN extends ListActivity {
         editor.putString("lastSearchString", lastSearchString);
         editor.putString("lastFileName", lastFileName);
         editor.putLong("lastModTime", lastModTime);
-        editor.commit();
+        editor.apply();
         super.onPause();
     }
 
@@ -290,7 +290,7 @@ public class EditPGN extends ListActivity {
             }
         });
 
-        filterText = (EditText)findViewById(R.id.select_game_filter);
+        filterText = findViewById(R.id.select_game_filter);
         filterText.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) { }
@@ -303,7 +303,7 @@ public class EditPGN extends ListActivity {
             }
         });
         filterText.setText(lastSearchString);
-        hintText = (TextView)findViewById(R.id.select_game_hint);
+        hintText = findViewById(R.id.select_game_hint);
         if (loadGame) {
             hintText.setVisibility(View.GONE);
         } else {

@@ -208,7 +208,7 @@ public class DroidEngineControl {
         }
     }
 
-    static final int clamp(int val, int min, int max) {
+    static int clamp(int val, int min, int max) {
         if (val < min) {
             return min;
         } else if (val > max) {
@@ -218,8 +218,8 @@ public class DroidEngineControl {
         }
     }
 
-    final private void startThread(final int minTimeLimit, final int maxTimeLimit,
-                                   int maxDepth, final int maxNodes) {
+    private void startThread(final int minTimeLimit, final int maxTimeLimit,
+                             int maxDepth, final int maxNodes) {
         synchronized (threadMutex) {} // Must not start new search until old search is finished
         sc = new Search(pos, posHashList, posHashListSize, tt, ht);
         sc.timeLimit(minTimeLimit, maxTimeLimit);
@@ -336,7 +336,7 @@ public class DroidEngineControl {
         return ret;
     }
 
-    static final String moveToString(Move m) {
+    static String moveToString(Move m) {
         if (m == null)
             return "0000";
         String ret = TextIO.squareToString(m.from);

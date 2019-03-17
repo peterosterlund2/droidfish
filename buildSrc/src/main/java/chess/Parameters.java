@@ -89,7 +89,7 @@ public class Parameters {
         for (Map.Entry<String, ParamBase> e : params.entrySet())
             if (e.getValue().visible)
                 parNames.add(e.getKey());
-        return parNames.toArray(new String[parNames.size()]);
+        return parNames.toArray(new String[0]);
     }
 
     public final ParamBase getParam(String name) {

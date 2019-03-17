@@ -170,7 +170,7 @@ public class BitBoard {
         0x000000007efa8146L, 0x0000007ed3e2ef60L, 0x00007f47243adcd6L, 0x007fb65afabfb3b5L
     };
 
-    private static final long createPattern(int i, long mask) {
+    private static long createPattern(int i, long mask) {
         long ret = 0L;
         for (int j = 0; ; j++) {
             long nextMask = mask & (mask - 1);
@@ -184,7 +184,7 @@ public class BitBoard {
         return ret;
     }
     
-    private static final long addRookRays(int x, int y, long occupied, boolean inner) {
+    private static long addRookRays(int x, int y, long occupied, boolean inner) {
         long mask = 0;
         mask = addRay(mask, x, y,  1,  0, occupied, inner);
         mask = addRay(mask, x, y, -1,  0, occupied, inner);
@@ -192,7 +192,7 @@ public class BitBoard {
         mask = addRay(mask, x, y,  0, -1, occupied, inner);
         return mask;
     }
-    private static final long addBishopRays(int x, int y, long occupied, boolean inner) {
+    private static long addBishopRays(int x, int y, long occupied, boolean inner) {
         long mask = 0;
         mask = addRay(mask, x, y,  1,  1, occupied, inner);
         mask = addRay(mask, x, y, -1, -1, occupied, inner);
@@ -201,8 +201,8 @@ public class BitBoard {
         return mask;
     }
 
-    private static final long addRay(long mask, int x, int y, int dx, int dy, 
-                                     long occupied, boolean inner) {
+    private static long addRay(long mask, int x, int y, int dx, int dy,
+                               long occupied, boolean inner) {
         int lo = inner ? 1 : 0;
         int hi = inner ? 6 : 7;
         while (true) {
@@ -270,11 +270,11 @@ public class BitBoard {
         }
     }
 
-    public static final long bishopAttacks(int sq, long occupied) {
+    public static long bishopAttacks(int sq, long occupied) {
         return bTables[sq][(int)(((occupied & bMasks[sq]) * bMagics[sq]) >>> (64 - bBits[sq]))];
     }
 
-    public static final long rookAttacks(int sq, long occupied) {
+    public static long rookAttacks(int sq, long occupied) {
         return rTables[sq][(int)(((occupied & rMasks[sq]) * rMagics[sq]) >>> (64 - rBits[sq]))];
     }
     
@@ -346,19 +346,19 @@ public class BitBoard {
         0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7
     };
 
-    public static final int getDistance(int from, int to) {
+    public static int getDistance(int from, int to) {
         int offs = to + (to|7) - from - (from|7) + 0x77;
         return distTable[offs];
     }
 
-    public static final long southFill(long mask) {
+    public static long southFill(long mask) {
         mask |= (mask >>> 8);
         mask |= (mask >>> 16);
         mask |= (mask >>> 32);
         return mask;
     }
     
-    public static final long northFill(long mask) {
+    public static long northFill(long mask) {
         mask |= (mask << 8);
         mask |= (mask << 16);
         mask |= (mask << 32);

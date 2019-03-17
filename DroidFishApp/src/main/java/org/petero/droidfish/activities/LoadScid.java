@@ -212,7 +212,7 @@ public class LoadScid extends ListActivity {
         editor.putInt("defaultScidItem", defaultItem);
         editor.putString("lastScidFileName", lastFileName);
         editor.putLong("lastScidModTime", lastModTime);
-        editor.commit();
+        editor.apply();
         super.onPause();
     }
 

@@ -150,7 +150,7 @@ public class ChessBoardPlay extends ChessBoard {
                 userSelectedSquare = false;
                 return matchingMove;
             }
-            if (!anyMatch && (sq >= 0)) {
+            if (!anyMatch) {
                 int p = pos.getPiece(sq);
                 if (myColor(p)) {
                     String msg = getContext().getString(R.string.piece_can_not_be_moved);

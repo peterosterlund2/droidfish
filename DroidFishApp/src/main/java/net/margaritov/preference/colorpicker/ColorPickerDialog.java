@@ -66,9 +66,9 @@ public class ColorPickerDialog
         setTitle(getContext().getText(R.string.prefs_colors_title) + " '"
                 + additionalInfo + "'");
 
-		mColorPicker = (ColorPickerView) findViewById(R.id.color_picker_view);
-		mOldColor = (ColorPickerPanelView) findViewById(R.id.old_color_panel);
-		mNewColor = (ColorPickerPanelView) findViewById(R.id.new_color_panel);
+		mColorPicker = findViewById(R.id.color_picker_view);
+		mOldColor = findViewById(R.id.old_color_panel);
+		mNewColor = findViewById(R.id.new_color_panel);
 
 		((LinearLayout) mOldColor.getParent()).setPadding(
 			Math.round(mColorPicker.getDrawingOffset()), 

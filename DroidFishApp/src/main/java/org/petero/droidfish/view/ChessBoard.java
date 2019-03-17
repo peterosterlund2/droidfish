@@ -303,7 +303,6 @@ public abstract class ChessBoard extends View {
 
     /**
      * Set the board to a given state.
-     * @param pos
      */
     final public void setPosition(Position pos) {
         boolean doInvalidate = false;
@@ -480,7 +479,7 @@ public abstract class ChessBoard extends View {
             float x4 = (float)(x3 - d * sinv);
             float y4 = (float)(y3 + d * cosv);
             float x5 = (float)(x4 + (-d/2 - y4) / tanv);
-            float y5 = (float)(-d / 2);
+            float y5 = -d / 2;
             float x6 = 0;
             float y6 = y5 / 2;
             Path path = new Path();

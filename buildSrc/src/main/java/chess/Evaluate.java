@@ -290,7 +290,7 @@ public class Evaluate {
     }
 
     /** Compute white_material - black_material. */
-    static final int material(Position pos) {
+    static int material(Position pos) {
         return pos.wMtrl - pos.bMtrl;
     }
     
@@ -1135,7 +1135,7 @@ public class Evaluate {
         return score;
     }
 
-    private static final int evalKQKP(int wKing, int wQueen, int bKing, int bPawn, boolean whiteMove) {
+    private static int evalKQKP(int wKing, int wQueen, int bKing, int bPawn, boolean whiteMove) {
         boolean canWin = false;
         if (((1L << bKing) & 0xFFFF) == 0) {
             canWin = true; // King doesn't support pawn
@@ -1172,7 +1172,7 @@ public class Evaluate {
         return score;
     }
 
-    private static final int kpkEval(int wKing, int bKing, int wPawn, boolean whiteMove) {
+    private static int kpkEval(int wKing, int bKing, int wPawn, boolean whiteMove) {
         if (Position.getX(wKing) >= 4) { // Mirror X
             wKing ^= 7;
             bKing ^= 7;
@@ -1191,7 +1191,7 @@ public class Evaluate {
         return qV - pV / 4 * (7-Position.getY(wPawn));
     }
 
-    private static final int krkpEval(int wKing, int bKing, int bPawn, boolean whiteMove) {
+    private static int krkpEval(int wKing, int bKing, int bPawn, boolean whiteMove) {
         if (Position.getX(bKing) >= 4) { // Mirror X
             wKing ^= 7;
             bKing ^= 7;
@@ -1216,7 +1216,7 @@ public class Evaluate {
      * Interpolate between (x1,y1) and (x2,y2).
      * If x < x1, return y1, if x > x2 return y2. Otherwise, use linear interpolation.
      */
-    static final int interpolate(int x, int x1, int y1, int x2, int y2) {
+    static int interpolate(int x, int x1, int y1, int x2, int y2) {
         if (x > x2) {
             return y2;
         } else if (x < x1) {

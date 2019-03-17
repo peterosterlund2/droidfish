@@ -26,9 +26,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class SearchTest {
-    static final long[] nullHist = new long[200];
-    static TranspositionTable tt = new TranspositionTable(19);
-    static History ht = new History();
+    private static final long[] nullHist = new long[200];
+    private static TranspositionTable tt = new TranspositionTable(19);
+    private static History ht = new History();
     
     public SearchTest() {
     }

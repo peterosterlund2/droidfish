@@ -42,13 +42,13 @@ public class Piece {
      * Return true if p is a white piece, false otherwise.
      * Note that if p is EMPTY, an unspecified value is returned.
      */
-    public static final boolean isWhite(int pType) {
+    public static boolean isWhite(int pType) {
         return pType < BKING;
     }
-    public static final int makeWhite(int pType) {
+    public static int makeWhite(int pType) {
         return pType < BKING ? pType : pType - (BKING - WKING);
     }
-    public static final int makeBlack(int pType) {
+    public static int makeBlack(int pType) {
         return ((pType > EMPTY) && (pType < BKING)) ? pType + (BKING - WKING) : pType;
     }
 }

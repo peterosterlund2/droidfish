@@ -717,7 +717,7 @@ public final class MoveGen {
     /**
      * Return true if the side to move is in check.
      */
-    public static final boolean inCheck(Position pos) {
+    public static boolean inCheck(Position pos) {
         int kingSq = pos.getKingSq(pos.whiteMove);
         return sqAttacked(pos, kingSq);
     }
@@ -725,7 +725,7 @@ public final class MoveGen {
     /**
      * Return the next piece in a given direction, starting from sq.
      */
-    private static final int nextPiece(Position pos, int sq, int delta) {
+    private static int nextPiece(Position pos, int sq, int delta) {
         while (true) {
             sq += delta;
             int p = pos.getPiece(sq);
@@ -735,7 +735,7 @@ public final class MoveGen {
     }
 
     /** Like nextPiece(), but handles board edges. */
-    private static final int nextPieceSafe(Position pos, int sq, int delta) {
+    private static int nextPieceSafe(Position pos, int sq, int delta) {
         int dx = 0, dy = 0;
         switch (delta) {
         case 1: dx=1; dy=0; break;
@@ -764,7 +764,7 @@ public final class MoveGen {
     /**
      * Return true if making a move delivers check to the opponent
      */
-    public static final boolean givesCheck(Position pos, Move m) {
+    public static boolean givesCheck(Position pos, Move m) {
         boolean wtm = pos.whiteMove;
         int oKingSq = pos.getKingSq(!wtm);
         int oKing = wtm ? Piece.BKING : Piece.WKING;
@@ -875,7 +875,7 @@ public final class MoveGen {
     /**
      * Return true if the side to move can take the opponents king.
      */
-    public static final boolean canTakeKing(Position pos) {
+    public static boolean canTakeKing(Position pos) {
         pos.setWhiteMove(!pos.whiteMove);
         boolean ret = inCheck(pos);
         pos.setWhiteMove(!pos.whiteMove);
@@ -885,7 +885,7 @@ public final class MoveGen {
     /**
      * Return true if a square is attacked by the opposite side.
      */
-    public static final boolean sqAttacked(Position pos, int sq) {
+    public static boolean sqAttacked(Position pos, int sq) {
         if (pos.whiteMove) {
             if ((BitBoard.knightAttacks[sq] & pos.pieceTypeBB[Piece.BKNIGHT]) != 0)
                 return true;
@@ -921,7 +921,7 @@ public final class MoveGen {
      * "moveList" is assumed to be a list of pseudo-legal moves.
      * This function removes the moves that don't defend from check threats.
      */
-    public static final void removeIllegal(Position pos, MoveList moveList) {
+    public static void removeIllegal(Position pos, MoveList moveList) {
         int length = 0;
         UndoInfo ui = new UndoInfo();
 

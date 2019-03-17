@@ -95,7 +95,7 @@ public class EditOptions extends Activity {
         View view = View.inflate(this, R.layout.editoptions, null);
 
         if (uciOpts != null) {
-            LinearLayout content = (LinearLayout)view.findViewById(R.id.eo_content);
+            LinearLayout content = view.findViewById(R.id.eo_content);
             for (String name : uciOpts.getOptionNames()) {
                 UCIOptions.OptionBase o = uciOpts.getOption(name);
                 if (!o.visible)
@@ -103,7 +103,7 @@ public class EditOptions extends Activity {
                 switch (o.type) {
                 case CHECK: {
                     View v = View.inflate(this, R.layout.uci_option_check, null);
-                    CheckBox checkBox = (CheckBox)v.findViewById(R.id.eo_value);
+                    CheckBox checkBox = v.findViewById(R.id.eo_value);
                     checkBox.setText(o.name);
                     final UCIOptions.CheckOption co = (UCIOptions.CheckOption)o;
                     checkBox.setChecked(co.value);
@@ -118,8 +118,8 @@ public class EditOptions extends Activity {
                 }
                 case SPIN: {
                     View v = View.inflate(this, R.layout.uci_option_spin, null);
-                    TextView label = (TextView)v.findViewById(R.id.eo_label);
-                    EditText value = (EditText)v.findViewById(R.id.eo_value);
+                    TextView label = v.findViewById(R.id.eo_label);
+                    EditText value = v.findViewById(R.id.eo_value);
                     final UCIOptions.SpinOption so = (UCIOptions.SpinOption)o;
                     String labelText = String.format(Locale.US, "%s (%d\u2013%d)", so.name, so.minValue, so.maxValue);
                     label.setText(labelText);
@@ -148,8 +148,8 @@ public class EditOptions extends Activity {
                 }
                 case COMBO: {
                     View v = View.inflate(this, R.layout.uci_option_combo, null);
-                    TextView label = (TextView)v.findViewById(R.id.eo_label);
-                    Spinner value = (Spinner)v.findViewById(R.id.eo_value);
+                    TextView label = v.findViewById(R.id.eo_label);
+                    Spinner value = v.findViewById(R.id.eo_value);
                     label.setText(o.name);
                     final UCIOptions.ComboOption co = (UCIOptions.ComboOption)o;
                     ArrayAdapter<CharSequence> adapter =
@@ -171,7 +171,7 @@ public class EditOptions extends Activity {
                 }
                 case BUTTON: {
                     View v = View.inflate(this, R.layout.uci_option_button, null);
-                    ToggleButton button = (ToggleButton)v.findViewById(R.id.eo_label);
+                    ToggleButton button = v.findViewById(R.id.eo_label);
                     final UCIOptions.ButtonOption bo = (UCIOptions.ButtonOption)o;
                     bo.trigger = false;
                     button.setText(o.name);
@@ -188,8 +188,8 @@ public class EditOptions extends Activity {
                 }
                 case STRING: {
                     View v = View.inflate(this, R.layout.uci_option_string, null);
-                    TextView label = (TextView)v.findViewById(R.id.eo_label);
-                    EditText value = (EditText)v.findViewById(R.id.eo_value);
+                    TextView label = v.findViewById(R.id.eo_label);
+                    EditText value = v.findViewById(R.id.eo_value);
                     label.setText(o.name + " ");
                     final UCIOptions.StringOption so = (UCIOptions.StringOption)o;
                     value.setText(so.value);
@@ -210,9 +210,9 @@ public class EditOptions extends Activity {
 
         setContentView(view);
         Util.overrideViewAttribs(findViewById(android.R.id.content));
-        Button okButton = (Button)findViewById(R.id.eo_ok);
-        Button cancelButton = (Button)findViewById(R.id.eo_cancel);
-        Button resetButton = (Button)findViewById(R.id.eo_reset);
+        Button okButton = findViewById(R.id.eo_ok);
+        Button cancelButton = findViewById(R.id.eo_cancel);
+        Button resetButton = findViewById(R.id.eo_reset);
 
         okButton.setOnClickListener(new OnClickListener() {
             @Override

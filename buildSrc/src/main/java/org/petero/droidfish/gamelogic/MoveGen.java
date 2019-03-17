@@ -156,7 +156,7 @@ public class MoveGen {
     /**
      * Return true if the side to move is in check.
      */
-    public static final boolean inCheck(Position pos) {
+    public static boolean inCheck(Position pos) {
         int kingSq = pos.getKingSq(pos.whiteMove);
         if (kingSq < 0)
             return false;
@@ -166,7 +166,7 @@ public class MoveGen {
     /**
      * Return true if a square is attacked by the opposite side.
      */
-    public static final boolean sqAttacked(Position pos, int sq) {
+    public static boolean sqAttacked(Position pos, int sq) {
         int x = Position.getX(sq);
         int y = Position.getY(sq);
         boolean isWhiteMove = pos.whiteMove;
@@ -223,7 +223,7 @@ public class MoveGen {
      * "moveList" is assumed to be a list of pseudo-legal moves.
      * This function removes the moves that don't defend from check threats.
      */
-    public static final ArrayList<Move> removeIllegal(Position pos, ArrayList<Move> moveList) {
+    public static ArrayList<Move> removeIllegal(Position pos, ArrayList<Move> moveList) {
         ArrayList<Move> ret = new ArrayList<>();
         UndoInfo ui = new UndoInfo();
         int mlSize = moveList.size();
@@ -296,7 +296,7 @@ public class MoveGen {
      * @return The first piece in the given direction, or EMPTY if there is no piece
      *         in that direction.
      */
-    private static final int checkDirection(Position pos, int sq, int maxSteps, int delta) {
+    private static int checkDirection(Position pos, int sq, int maxSteps, int delta) {
         while (maxSteps > 0) {
             sq += delta;
             int p = pos.getPiece(sq);
@@ -307,7 +307,7 @@ public class MoveGen {
         return Piece.EMPTY;
     }
 
-    private static final Move getMoveObj(int from, int to, int promoteTo) {
+    private static Move getMoveObj(int from, int to, int promoteTo) {
         return new Move(from, to, promoteTo);
     }
 }

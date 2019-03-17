@@ -28,7 +28,7 @@ public class KillerTable {
         int move0;
         int move1;
     }
-    KTEntry[] ktList;
+    private KTEntry[] ktList;
 
     /** Create an empty killer table. */
     public KillerTable() {

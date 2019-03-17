@@ -40,7 +40,7 @@ public class FileUtil {
         while ((line = inBuf.readLine()) != null)
             ret.add(line);
         inBuf.close();
-        return ret.toArray(new String[ret.size()]);
+        return ret.toArray(new String[0]);
     }
 
     /** Read all data from an input stream. Return null if IO error. */
@@ -81,7 +81,7 @@ public class FileUtil {
     }
 
     /** Return the length of a file, or -1 if length can not be determined. */
-    public static final long getFileLength(String filename) {
+    public static long getFileLength(String filename) {
         try {
             RandomAccessFile raf = new RandomAccessFile(filename, "r");
             try {

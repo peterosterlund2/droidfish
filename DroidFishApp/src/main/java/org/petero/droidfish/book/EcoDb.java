@@ -284,7 +284,7 @@ public class EcoDb {
                     start = i + 1;
                 }
             }
-            strPool = names.toArray(new String[names.size()]);
+            strPool = names.toArray(new String[0]);
         } catch (IOException ex) {
             throw new RuntimeException("Can't read ECO database");
         }

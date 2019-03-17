@@ -26,7 +26,7 @@ public class ColorTheme {
     private static ColorTheme inst = null;
 
     /** Get singleton instance. */
-    public static final ColorTheme instance() {
+    public static ColorTheme instance() {
         if (inst == null)
             inst = new ColorTheme();
         return inst;
@@ -130,7 +130,7 @@ public class ColorTheme {
         Editor editor = settings.edit();
         for (int i = 0; i < numColors; i++)
             editor.putString(prefPrefix + prefNames[i], themeColors[themeType][i]);
-        editor.commit();
+        editor.apply();
         readColors(settings);
     }
 

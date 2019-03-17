@@ -944,7 +944,7 @@ public class GameTree {
         return res;
     }
 
-    private static final boolean insufficientMaterial(Position pos) {
+    private static boolean insufficientMaterial(Position pos) {
         if (pos.nPieces(Piece.WQUEEN) > 0) return false;
         if (pos.nPieces(Piece.WROOK)  > 0) return false;
         if (pos.nPieces(Piece.WPAWN)  > 0) return false;
@@ -1109,7 +1109,7 @@ public class GameTree {
             throw new RuntimeException();
         }
 
-        static final void writeToStream(DataOutputStream dos, Node node) throws IOException {
+        static void writeToStream(DataOutputStream dos, Node node) throws IOException {
             while (true) {
                 dos.writeUTF(node.moveStr);
                 if (node.move != null) {
@@ -1136,7 +1136,7 @@ public class GameTree {
             }
         }
 
-        static final void readFromStream(DataInputStream dis, Node node) throws IOException {
+        static void readFromStream(DataInputStream dis, Node node) throws IOException {
             while (true) {
                 node.moveStr = dis.readUTF();
                 node.moveStrLocal = node.moveStr;
@@ -1170,8 +1170,8 @@ public class GameTree {
         }
 
         /** Export whole tree rooted at "node" in PGN format. */
-        public static final void addPgnData(PgnToken.PgnTokenReceiver out, Node node,
-                                            MoveNumber moveNum, PGNOptions options) {
+        public static void addPgnData(PgnToken.PgnTokenReceiver out, Node node,
+                                      MoveNumber moveNum, PGNOptions options) {
             boolean needMoveNr = node.addPgnDataOneNode(out, moveNum, true, options);
             while (true) {
                 int nChild = node.children.size();
@@ -1249,7 +1249,7 @@ public class GameTree {
             out.processToken(this, PgnToken.COMMENT, "[%" + extCmd + " " + extData + "]");
         }
 
-        private static final String getTimeStr(int remainingTime) {
+        private static String getTimeStr(int remainingTime) {
             int secs = (int)Math.floor((remainingTime + 999) / 1000.0);
             boolean neg = false;
             if (secs < 0) {
@@ -1279,7 +1279,7 @@ public class GameTree {
             return child;
         }
 
-        public static final void parsePgn(PgnScanner scanner, Node node, PGNOptions options) {
+        public static void parsePgn(PgnScanner scanner, Node node, PGNOptions options) {
             Node nodeToAdd = new Node();
             boolean moveAdded = false;
             while (true) {
@@ -1395,7 +1395,7 @@ public class GameTree {
             }
         }
 
-        private static final Pair<String, String> extractExtInfo(String comment, String cmd) {
+        private static Pair<String, String> extractExtInfo(String comment, String cmd) {
             comment = comment.replaceAll("\n|\r|\t", " ");
             String remaining = comment;
             String param = null;
@@ -1412,7 +1412,7 @@ public class GameTree {
         }
 
         /** Convert hh:mm:ss to milliseconds */
-        private static final int parseTimeString(String str) {
+        private static int parseTimeString(String str) {
             str = str.trim();
             int ret = 0;
             boolean neg = false;
@@ -1440,7 +1440,7 @@ public class GameTree {
             return ret;
         }
 
-        public final static String nagStr(int nag) {
+        public static String nagStr(int nag) {
             switch (nag) {
             case 1: return "!";
             case 2: return "?";
@@ -1460,7 +1460,7 @@ public class GameTree {
             }
         }
 
-        public final static int strToNag(String str) {
+        public static int strToNag(String str) {
             if      (str.equals("!"))  return 1;
             else if (str.equals("?"))  return 2;
             else if (str.equals("!!")) return 3;

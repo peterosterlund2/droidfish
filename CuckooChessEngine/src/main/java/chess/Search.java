@@ -28,15 +28,15 @@ public class Search {
     final static int plyScale = 8; // Fractional ply resolution
 
     Position pos;
-    MoveGen moveGen;
-    Evaluate eval;
-    KillerTable kt;
-    History ht;
-    long[] posHashList;         // List of hashes for previous positions up to the last "zeroing" move.
-    int posHashListSize;        // Number of used entries in posHashList
-    int posHashFirstNew;        // First entry in posHashList that has not been played OTB.
-    TranspositionTable tt;
-    TreeLogger log = null;
+    private MoveGen moveGen;
+    private Evaluate eval;
+    private KillerTable kt;
+    private History ht;
+    private long[] posHashList;         // List of hashes for previous positions up to the last "zeroing" move.
+    private int posHashListSize;        // Number of used entries in posHashList
+    private int posHashFirstNew;        // First entry in posHashList that has not been played OTB.
+    private TranspositionTable tt;
+    private TreeLogger log = null;
 
     private static final class SearchTreeInfo {
         UndoInfo undoInfo;
@@ -53,35 +53,35 @@ public class Search {
             bestMove = new Move(0, 0, 0);
         }
     }
-    SearchTreeInfo[] searchTreeInfo;
+    private SearchTreeInfo[] searchTreeInfo;
 
     // Time management
-    long tStart;            // Time when search started
-    long minTimeMillis;     // Minimum recommended thinking time
-    long maxTimeMillis;     // Maximum allowed thinking time
-    boolean searchNeedMoreTime; // True if negaScout should use up to maxTimeMillis time.
-    private long maxNodes;  // Maximum number of nodes to search (approximately)
-    int nodesToGo;          // Number of nodes until next time check
+    private long tStart;            // Time when search started
+    private long minTimeMillis;     // Minimum recommended thinking time
+    long maxTimeMillis;                 // Maximum allowed thinking time
+    private boolean searchNeedMoreTime; // True if negaScout should use up to maxTimeMillis time.
+    private long maxNodes;          // Maximum number of nodes to search (approximately)
+    private int nodesToGo;          // Number of nodes until next time check
     public int nodesBetweenTimeCheck = 5000; // How often to check remaining time
 
     // Reduced strength variables
     private int strength = 1000; // Strength (0-1000)
-    boolean weak = false;        // Set to strength < 1000
-    long randomSeed = 0;
+    private boolean weak = false;        // Set to strength < 1000
+    private long randomSeed = 0;
 
     // Search statistics stuff
-    long nodes;
-    long qNodes;
-    int[] nodesPlyVec;
-    int[] nodesDepthVec;
-    long totalNodes;
-    long tLastStats;        // Time when notifyStats was last called
-    boolean verbose;
+    private long nodes;
+    private long qNodes;
+    private int[] nodesPlyVec;
+    private int[] nodesDepthVec;
+    private long totalNodes;
+    private long tLastStats;        // Time when notifyStats was last called
+    private boolean verbose;
     
     public final static int MATE0 = 32000;
 
     public final static int UNKNOWN_SCORE = -32767; // Represents unknown static eval score
-    int q0Eval; // Static eval score at first level of quiescence search 
+    private int q0Eval; // Static eval score at first level of quiescence search
 
     public Search(Position pos, long[] posHashList, int posHashListSize, TranspositionTable tt,
                   History ht) {
@@ -126,7 +126,7 @@ public class Search {
         void notifyStats(long nodes, int nps, int time);
     }
 
-    Listener listener;
+    private Listener listener;
     public void setListener(Listener listener) {
         this.listener = listener;
     }
@@ -905,7 +905,7 @@ public class Search {
         return false;
     }
 
-    private static final boolean passedPawnPush(Position pos, Move m) {
+    private static boolean passedPawnPush(Position pos, Move m) {
         int p = pos.getPiece(m.from);
         if (pos.whiteMove) {
             if (p != Piece.WPAWN)
@@ -925,7 +925,7 @@ public class Search {
     /**
      * Quiescence search. Only non-losing captures are searched.
      */
-    final private int quiesce(int alpha, int beta, int ply, int depth, final boolean inCheck) {
+    private int quiesce(int alpha, int beta, int ply, int depth, final boolean inCheck) {
         int score;
         if (inCheck) {
             score = -(MATE0 - (ply+1));
@@ -1219,7 +1219,7 @@ public class Search {
     /**
      * Find move with highest score and move it to the front of the list.
      */
-    final static void selectBest(MoveGen.MoveList moves, int startIdx) {
+    static void selectBest(MoveGen.MoveList moves, int startIdx) {
         int bestIdx = startIdx;
         int bestScore = moves.m[bestIdx].score;
         for (int i = startIdx + 1; i < moves.size; i++) {
@@ -1237,7 +1237,7 @@ public class Search {
     }
 
     /** If hashMove exists in the move list, move the hash move to the front of the list. */
-    final static boolean selectHashMove(MoveGen.MoveList moves, Move hashMove) {
+    static boolean selectHashMove(MoveGen.MoveList moves, Move hashMove) {
         if (hashMove == null) {
             return false;
         }
@@ -1253,11 +1253,11 @@ public class Search {
         return false;
     }
 
-    public final static boolean canClaimDraw50(Position pos) {
+    public static boolean canClaimDraw50(Position pos) {
         return (pos.halfMoveClock >= 100);
     }
     
-    public final static boolean canClaimDrawRep(Position pos, long[] posHashList, int posHashListSize, int posHashFirstNew) {
+    public static boolean canClaimDrawRep(Position pos, long[] posHashList, int posHashListSize, int posHashFirstNew) {
         int reps = 0;
         for (int i = posHashListSize - 4; i >= 0; i -= 2) {
             if (pos.zobristHash() == posHashList[i]) {

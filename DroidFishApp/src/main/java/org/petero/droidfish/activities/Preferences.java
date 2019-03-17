@@ -52,7 +52,7 @@ public class Preferences extends PreferenceActivity {
             if (v == null)
                 return null;
 
-            final ListView lv = (ListView) v.findViewById(android.R.id.list);
+            final ListView lv = v.findViewById(android.R.id.list);
             if (lv != null) {
                 lv.setOnScrollListener(new OnScrollListener() {
                     @Override
@@ -94,6 +94,6 @@ public class Preferences extends PreferenceActivity {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         Editor editor = settings.edit();
         editor.putInt("prefsViewInitialItem", currentItem);
-        editor.commit();
+        editor.apply();
     }
 }

@@ -180,7 +180,7 @@ public class LoadFEN extends ListActivity {
         editor.putInt("defaultItem", defaultItem);
         editor.putString("lastFenFileName", lastFileName);
         editor.putLong("lastFenModTime", lastModTime);
-        editor.commit();
+        editor.apply();
         super.onPause();
     }
 
@@ -202,9 +202,9 @@ public class LoadFEN extends ListActivity {
         removeProgressDialog();
         setContentView(R.layout.load_fen);
 
-        cb = (ChessBoardPlay)findViewById(R.id.loadfen_chessboard);
-        okButton = (Button)findViewById(R.id.loadfen_ok);
-        cancelButton = (Button)findViewById(R.id.loadfen_cancel);
+        cb = findViewById(R.id.loadfen_chessboard);
+        okButton = findViewById(R.id.loadfen_ok);
+        cancelButton = findViewById(R.id.loadfen_cancel);
 
         okButton.setEnabled(false);
         okButton.setOnClickListener(new OnClickListener() {

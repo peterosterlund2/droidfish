@@ -29,7 +29,7 @@ public class UCIOptions implements Serializable, Cloneable {
     private ArrayList<String> names;
     private Map<String, OptionBase> options;
 
-    public static enum Type {
+    public enum Type {
         CHECK,
         SPIN,
         COMBO,
@@ -70,8 +70,8 @@ public class UCIOptions implements Serializable, Cloneable {
                     SpinOption so = (SpinOption)o;
                     return so.set(val);
                 } catch (NumberFormatException ex) {
+                    return false;
                 }
-                return false;
             case COMBO:
                 return ((ComboOption)o).set(value);
             case BUTTON:
@@ -251,7 +251,7 @@ public class UCIOptions implements Serializable, Cloneable {
     }
 
     public final String[] getOptionNames() {
-        return names.toArray(new String[names.size()]);
+        return names.toArray(new String[0]);
     }
 
     public final OptionBase getOption(String name) {

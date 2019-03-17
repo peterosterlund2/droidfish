@@ -250,7 +250,7 @@ class CtgBook implements IOpeningBook {
             this.f = f;
         }
 
-        final static ArrayList<Integer> getHashIndices(byte[] encodedPos, CtbFile ctb) throws IOException {
+        static ArrayList<Integer> getHashIndices(byte[] encodedPos, CtbFile ctb) throws IOException {
             ArrayList<Integer> ret = new ArrayList<>();
             int hash = getHashValue(encodedPos);
             for (int n = 0; n < 0x7fffffff; n = 2*n + 1) {
