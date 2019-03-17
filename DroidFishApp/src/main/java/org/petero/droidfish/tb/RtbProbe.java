@@ -29,7 +29,7 @@ public class RtbProbe {
     }
 
     private String currTbPath = "";
-    private ConcurrentLinkedQueue<String> tbPathQueue = new ConcurrentLinkedQueue<String>();
+    private ConcurrentLinkedQueue<String> tbPathQueue = new ConcurrentLinkedQueue<>();
 
     RtbProbe() {
     }
@@ -91,5 +91,5 @@ public class RtbProbe {
                                    int fullMoveCounter,
                                    int[] result);
 
-    private final native static boolean init(String tbPath);
+    private native static boolean init(String tbPath);
 }

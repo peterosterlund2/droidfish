@@ -50,7 +50,7 @@ public class UCIProtocol {
 
     public UCIProtocol() {
         pos = null;
-        moves = new ArrayList<Move>();
+        moves = new ArrayList<>();
         quit = false;
     }
 

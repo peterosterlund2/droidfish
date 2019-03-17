@@ -169,7 +169,7 @@ public class PGNFile {
     public final Pair<GameInfoResult,ArrayList<GameInfo>> getGameInfo(Activity activity,
                                                                       final ProgressDialog progress,
                                                                       int maxGames) {
-        ArrayList<GameInfo> gamesInFile = new ArrayList<GameInfo>();
+        ArrayList<GameInfo> gamesInFile = new ArrayList<>();
         gamesInFile.clear();
         long fileLen = 0;
         BufferedInput f = null;
@@ -350,7 +350,7 @@ public class PGNFile {
                                 }
                             }
                             if (Thread.currentThread().isInterrupted())
-                                return new Pair<GameInfoResult,ArrayList<GameInfo>>(GameInfoResult.CANCEL, null);
+                                return new Pair<>(GameInfoResult.CANCEL, null);
                         }
                         gi = new GameInfo();
                         gi.startPos = filePos;
@@ -368,18 +368,18 @@ public class PGNFile {
         } catch (OutOfMemoryError e) {
             gamesInFile.clear();
             gamesInFile = null;
-            return new Pair<GameInfoResult,ArrayList<GameInfo>>(GameInfoResult.OUT_OF_MEMORY, null);
+            return new Pair<>(GameInfoResult.OUT_OF_MEMORY, null);
         } finally {
             if (f != null)
               f.close();
         }
         if ((gamesInFile.size() == 0) && (fileLen > 0))
-            return new Pair<GameInfoResult,ArrayList<GameInfo>>(GameInfoResult.NOT_PGN, null);
+            return new Pair<>(GameInfoResult.NOT_PGN, null);
 
-        return new Pair<GameInfoResult,ArrayList<GameInfo>>(GameInfoResult.OK, gamesInFile);
+        return new Pair<>(GameInfoResult.OK, gamesInFile);
     }
 
-    private final void mkDirs() {
+    private void mkDirs() {
         File dirFile = fileName.getParentFile();
         dirFile.mkdirs();
     }
@@ -465,9 +465,9 @@ public class PGNFile {
         return false;
     }
 
-    private final static void copyData(RandomAccessFile fileReader,
-               RandomAccessFile fileWriter,
-               long nBytes) throws IOException {
+    private static void copyData(RandomAccessFile fileReader,
+                                 RandomAccessFile fileWriter,
+                                 long nBytes) throws IOException {
         byte[] buffer = new byte[8192];
         while (nBytes > 0) {
             int nRead = fileReader.read(buffer, 0, Math.min(buffer.length, (int)nBytes));

@@ -297,7 +297,7 @@ public class DroidFish extends Activity
         }
 
         {
-            actions = new HashMap<String, UIAction>();
+            actions = new HashMap<>();
             addAction(new UIAction() {
                 public String getId() { return "flipboard"; }
                 public int getName() { return R.string.flip_board; }
@@ -613,7 +613,7 @@ public class DroidFish extends Activity
             return;
 
         tourGuide = TourGuide.init(this);
-        ArrayList<TourGuide> guides = new ArrayList<TourGuide>();
+        ArrayList<TourGuide> guides = new ArrayList<>();
 
         TourGuide tg = TourGuide.init(this);
         tg.setToolTip(new ToolTip()
@@ -821,7 +821,7 @@ public class DroidFish extends Activity
         } catch (SecurityException e) {
             DroidFishApp.toast(e.getMessage(), Toast.LENGTH_LONG);
         }
-        return new Pair<String,String>(pgnOrFen,filename);
+        return new Pair<>(pgnOrFen,filename);
     }
 
     private byte[] strToByteArr(String str) {
@@ -1617,7 +1617,7 @@ public class DroidFish extends Activity
             return;
         }
 
-        ArrayList<SquareDecoration> sd = new ArrayList<SquareDecoration>();
+        ArrayList<SquareDecoration> sd = new ArrayList<>();
         for (Pair<Integer,ProbeResult> p : x)
             sd.add(new SquareDecoration(p.first, p.second));
         cb.setSquareDecorations(sd);
@@ -1665,9 +1665,9 @@ public class DroidFish extends Activity
             new DrawerItem(ITEM_SETTINGS, R.string.option_settings),
             new DrawerItem(ITEM_ABOUT, R.string.option_about)
         };
-        leftDrawer.setAdapter(new ArrayAdapter<DrawerItem>(this,
-                                                           R.layout.drawer_list_item,
-                                                           leftItems));
+        leftDrawer.setAdapter(new ArrayAdapter<>(this,
+                                                 R.layout.drawer_list_item,
+                                                 leftItems));
         leftDrawer.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -1683,9 +1683,9 @@ public class DroidFish extends Activity
             new DrawerItem(ITEM_FORCE_MOVE, R.string.option_force_computer_move),
             new DrawerItem(ITEM_DRAW, R.string.option_draw)
         };
-        rightDrawer.setAdapter(new ArrayAdapter<DrawerItem>(this,
-                                                            R.layout.drawer_list_item,
-                                                            rightItems));
+        rightDrawer.setAdapter(new ArrayAdapter<>(this,
+                                                  R.layout.drawer_list_item,
+                                                  rightItems));
         rightDrawer.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -1940,7 +1940,7 @@ public class DroidFish extends Activity
     private void setBoardFlip(boolean matchPlayerNames) {
         boolean flipped = boardFlipped;
         if (playerNameFlip && matchPlayerNames && (ctrl != null)) {
-            final TreeMap<String,String> headers = new TreeMap<String,String>();
+            final TreeMap<String,String> headers = new TreeMap<>();
             ctrl.getHeaders(headers);
             int whiteMatch = nameMatchScore(headers.get("White"), playerName);
             int blackMatch = nameMatchScore(headers.get("Black"), playerName);
@@ -2085,7 +2085,7 @@ public class DroidFish extends Activity
     private String ecoInfoStr = "";
     private int distToEcoTree = 0;
     private String variantStr = "";
-    private ArrayList<ArrayList<Move>> pvMoves = new ArrayList<ArrayList<Move>>();
+    private ArrayList<ArrayList<Move>> pvMoves = new ArrayList<>();
     private ArrayList<Move> bookMoves = null;
     private ArrayList<Move> variantMoves = null;
 
@@ -2178,7 +2178,7 @@ public class DroidFish extends Activity
             if (pvMovesTmp.size() == 1) {
                 hints = pvMovesTmp.get(0);
             } else if (pvMovesTmp.size() > 1) {
-                hints = new ArrayList<Move>();
+                hints = new ArrayList<>();
                 for (ArrayList<Move> pv : pvMovesTmp)
                     if (!pv.isEmpty())
                         hints.add(pv.get(0));
@@ -2330,8 +2330,8 @@ public class DroidFish extends Activity
         final int PASTE          = 2;
 
         setAutoMode(AutoMode.OFF);
-        List<CharSequence> lst = new ArrayList<CharSequence>();
-        final List<Integer> actions = new ArrayList<Integer>();
+        List<CharSequence> lst = new ArrayList<>();
+        final List<Integer> actions = new ArrayList<>();
         lst.add(getString(R.string.copy_game));     actions.add(COPY_GAME);
         lst.add(getString(R.string.copy_position)); actions.add(COPY_POSITION);
         lst.add(getString(R.string.paste));         actions.add(PASTE);
@@ -2389,8 +2389,8 @@ public class DroidFish extends Activity
         final int REPEAT_LAST_MOVE = 6;
 
         setAutoMode(AutoMode.OFF);
-        List<CharSequence> lst = new ArrayList<CharSequence>();
-        final List<Integer> actions = new ArrayList<Integer>();
+        List<CharSequence> lst = new ArrayList<>();
+        final List<Integer> actions = new ArrayList<>();
         lst.add(getString(R.string.clipboard));     actions.add(CLIPBOARD);
         if (storageAvailable()) {
             lst.add(getString(R.string.option_file));   actions.add(FILEMENU);
@@ -2434,8 +2434,7 @@ public class DroidFish extends Activity
                 }
             }
         });
-        AlertDialog alert = builder.create();
-        return alert;
+        return builder.create();
     }
 
     private void shareGameOrText(boolean game) {
@@ -2515,8 +2514,8 @@ public class DroidFish extends Activity
         final int SAVE_GAME      = 4;
 
         setAutoMode(AutoMode.OFF);
-        List<CharSequence> lst = new ArrayList<CharSequence>();
-        final List<Integer> actions = new ArrayList<Integer>();
+        List<CharSequence> lst = new ArrayList<>();
+        final List<Integer> actions = new ArrayList<>();
         if (currFileType() != FT_NONE) {
             lst.add(getString(R.string.load_last_file)); actions.add(LOAD_LAST_FILE);
         }
@@ -2659,8 +2658,8 @@ public class DroidFish extends Activity
     }
 
     private Dialog selectEngineDialog(final boolean abortOnCancel) {
-        final ArrayList<String> items = new ArrayList<String>();
-        final ArrayList<String> ids = new ArrayList<String>();
+        final ArrayList<String> items = new ArrayList<>();
+        final ArrayList<String> ids = new ArrayList<>();
         ids.add("stockfish"); items.add(getString(R.string.stockfish_engine));
         ids.add("cuckoochess"); items.add(getString(R.string.cuckoochess_engine));
 
@@ -2670,11 +2669,11 @@ public class DroidFish extends Activity
             {
                 ChessEngineResolver resolver = new ChessEngineResolver(this);
                 List<ChessEngine> engines = resolver.resolveEngines();
-                ArrayList<Pair<String,String>> oexEngines = new ArrayList<Pair<String,String>>();
+                ArrayList<Pair<String,String>> oexEngines = new ArrayList<>();
                 for (ChessEngine engine : engines) {
                     if ((engine.getName() != null) && (engine.getFileName() != null) &&
                             (engine.getPackageName() != null)) {
-                        oexEngines.add(new Pair<String,String>(EngineUtil.openExchangeFileName(engine),
+                        oexEngines.add(new Pair<>(EngineUtil.openExchangeFileName(engine),
                                 engine.getName()));
                     }
                 }
@@ -2938,8 +2937,8 @@ public class DroidFish extends Activity
         final int ADD_NULL_MOVE  = 6;
 
         setAutoMode(AutoMode.OFF);
-        List<CharSequence> lst = new ArrayList<CharSequence>();
-        final List<Integer> actions = new ArrayList<Integer>();
+        List<CharSequence> lst = new ArrayList<>();
+        final List<Integer> actions = new ArrayList<>();
         lst.add(getString(R.string.edit_headers));      actions.add(EDIT_HEADERS);
         if (ctrl.humansTurn()) {
             lst.add(getString(R.string.edit_comments)); actions.add(EDIT_COMMENTS);
@@ -2997,7 +2996,7 @@ public class DroidFish extends Activity
 
     /** Let the user edit the PGN headers. */
     private void editHeaders() {
-        final TreeMap<String,String> headers = new TreeMap<String,String>();
+        final TreeMap<String,String> headers = new TreeMap<>();
         ctrl.getHeaders(headers);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(DroidFish.this);
@@ -3098,8 +3097,8 @@ public class DroidFish extends Activity
         final int TRUNCATE_VARS   = 3;
         final int HIDE_STATISTICS = 4;
         final int SHOW_STATISTICS = 5;
-        List<CharSequence> lst = new ArrayList<CharSequence>();
-        final List<Integer> actions = new ArrayList<Integer>();
+        List<CharSequence> lst = new ArrayList<>();
+        final List<Integer> actions = new ArrayList<>();
         lst.add(getString(R.string.add_analysis)); actions.add(ADD_ANALYSIS);
         int numPV = this.numPV;
         final int maxPV = ctrl.maxPV();
@@ -3289,8 +3288,8 @@ public class DroidFish extends Activity
         final int AUTO_BACKWARD   = 4;
 
         setAutoMode(AutoMode.OFF);
-        List<CharSequence> lst = new ArrayList<CharSequence>();
-        final List<Integer> actions = new ArrayList<Integer>();
+        List<CharSequence> lst = new ArrayList<>();
+        final List<Integer> actions = new ArrayList<>();
         lst.add(getString(R.string.goto_start_game));      actions.add(GOTO_START_GAME);
         lst.add(getString(R.string.goto_start_variation)); actions.add(GOTO_START_VAR);
         if (ctrl.currVariation() > 0) {
@@ -3331,8 +3330,8 @@ public class DroidFish extends Activity
         final int AUTO_FORWARD   = 3;
 
         setAutoMode(AutoMode.OFF);
-        List<CharSequence> lst = new ArrayList<CharSequence>();
-        final List<Integer> actions = new ArrayList<Integer>();
+        List<CharSequence> lst = new ArrayList<>();
+        final List<Integer> actions = new ArrayList<>();
         lst.add(getString(R.string.goto_end_variation)); actions.add(GOTO_END_VAR);
         if (ctrl.currVariation() < ctrl.numVariations() - 1) {
             lst.add(getString(R.string.goto_next_variation)); actions.add(GOTO_NEXT_VAR);
@@ -3365,10 +3364,10 @@ public class DroidFish extends Activity
     }
 
     private Dialog makeButtonDialog(ButtonActions buttonActions) {
-        List<CharSequence> names = new ArrayList<CharSequence>();
-        final List<UIAction> actions = new ArrayList<UIAction>();
+        List<CharSequence> names = new ArrayList<>();
+        final List<UIAction> actions = new ArrayList<>();
 
-        HashSet<String> used = new HashSet<String>();
+        HashSet<String> used = new HashSet<>();
         for (UIAction a : buttonActions.getMenuActions()) {
             if ((a != null) && a.enabled() && !used.contains(a.getId())) {
                 names.add(getString(a.getName()));
@@ -3391,8 +3390,8 @@ public class DroidFish extends Activity
         final int SELECT_ENGINE = 0;
         final int SET_ENGINE_OPTIONS = 1;
         final int CONFIG_NET_ENGINE = 2;
-        List<CharSequence> lst = new ArrayList<CharSequence>();
-        final List<Integer> actions = new ArrayList<Integer>();
+        List<CharSequence> lst = new ArrayList<>();
+        final List<Integer> actions = new ArrayList<>();
         lst.add(getString(R.string.select_engine)); actions.add(SELECT_ENGINE);
         if (canSetEngineOptions()) {
             lst.add(getString(R.string.set_engine_options));
@@ -3998,7 +3997,7 @@ public class DroidFish extends Activity
             whiteTitleText.setText(getString(R.string.white_square_character) + " " + timeToString(wTime));
             blackTitleText.setText(getString(R.string.black_square_character) + " " + timeToString(bTime));
         } else {
-            TreeMap<String,String> headers = new TreeMap<String,String>();
+            TreeMap<String,String> headers = new TreeMap<>();
             ctrl.getHeaders(headers);
             whiteTitleText.setText(headers.get("White"));
             blackTitleText.setText(headers.get("Black"));
@@ -4052,7 +4051,7 @@ public class DroidFish extends Activity
     static class PgnScreenText implements PgnToken.PgnTokenReceiver,
                                           MoveListView.OnLinkClickListener {
         private SpannableStringBuilder sb = new SpannableStringBuilder();
-        private TreeMap<Integer,Node> offs2Node = new TreeMap<Integer,Node>();
+        private TreeMap<Integer,Node> offs2Node = new TreeMap<>();
         private int prevType = PgnToken.EOF;
         int nestLevel = 0;
         boolean col0 = true;
@@ -4074,7 +4073,7 @@ public class DroidFish extends Activity
 
         PgnScreenText(DroidFish df, PGNOptions options) {
             this.df = df;
-            nodeToCharPos = new HashMap<Node, NodeInfo>();
+            nodeToCharPos = new HashMap<>();
             this.options = options;
         }
 

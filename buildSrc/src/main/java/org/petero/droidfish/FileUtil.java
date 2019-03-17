@@ -32,7 +32,7 @@ import java.util.ArrayList;
 public class FileUtil {
     /** Read a text file. Return string array with one string per line. */
     public static String[] readFile(String filename) throws IOException {
-        ArrayList<String> ret = new ArrayList<String>();
+        ArrayList<String> ret = new ArrayList<>();
         InputStream inStream = new FileInputStream(filename);
         InputStreamReader inFile = new InputStreamReader(inStream, "UTF-8");
         BufferedReader inBuf = new BufferedReader(inFile);

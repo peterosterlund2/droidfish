@@ -189,7 +189,7 @@ public class MoveGenTest extends TestCase {
         if (onlyLegal) {
             moves = MoveGen.removeIllegal(pos, moves);
         }
-        ArrayList<String> strMoves = new ArrayList<String>();
+        ArrayList<String> strMoves = new ArrayList<>();
         for (Move m : moves) {
             String mStr = TextIO.moveToString(pos, m, true, false);
             strMoves.add(mStr);

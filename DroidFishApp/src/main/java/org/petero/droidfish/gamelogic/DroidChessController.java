@@ -636,7 +636,7 @@ public class DroidChessController {
     /** Add ECO classification headers. */
     public final synchronized void addECO() {
         EcoDb.Result r = game.tree.getGameECO();
-        Map<String,String> headers = new TreeMap<String,String>();
+        Map<String,String> headers = new TreeMap<>();
         headers.put("ECO",       r.eco.isEmpty() ? null : r.eco);
         headers.put("Opening",   r.opn.isEmpty() ? null : r.opn);
         headers.put("Variation", r.var.isEmpty() ? null : r.var);
@@ -674,7 +674,7 @@ public class DroidChessController {
     }
 
     /** Return true if localized piece names should be used. */
-    private final boolean localPt() {
+    private boolean localPt() {
         switch (pgnOptions.view.pieceType) {
         case PGNOptions.PT_ENGLISH:
             return false;
@@ -705,7 +705,7 @@ public class DroidChessController {
         private int distToEcoTree = 0; // Number of plies since game was in the "ECO tree".
 
         private Move ponderMove = null;
-        private ArrayList<PvInfo> pvInfoV = new ArrayList<PvInfo>();
+        private ArrayList<PvInfo> pvInfoV = new ArrayList<>();
         private int pvInfoSearchId = -1; // Search ID corresponding to pvInfoV
 
         public final void clearSearchInfo(int id) {
@@ -720,7 +720,7 @@ public class DroidChessController {
             setSearchInfo(id);
         }
 
-        private final void setSearchInfo(final int id) {
+        private void setSearchInfo(final int id) {
             StringBuilder buf = new StringBuilder();
             for (int i = 0; i < pvInfoV.size(); i++) {
                 PvInfo pvi = pvInfoV.get(i);
@@ -770,10 +770,10 @@ public class DroidChessController {
             }
             final String statStr = statStrTmp.toString();
             final String newPV = buf.toString();
-            final ArrayList<ArrayList<Move>> pvMoves = new ArrayList<ArrayList<Move>>();
+            final ArrayList<ArrayList<Move>> pvMoves = new ArrayList<>();
             for (int i = 0; i < pvInfoV.size(); i++) {
                 if (ponderMove != null) {
-                    ArrayList<Move> tmp = new ArrayList<Move>();
+                    ArrayList<Move> tmp = new ArrayList<>();
                     tmp.add(ponderMove);
                     for (Move m : pvInfoV.get(i).pv)
                         tmp.add(m);
@@ -934,7 +934,7 @@ public class DroidChessController {
     }
 
     /** Discard current search. Return true if GUI update needed. */
-    private final boolean abortSearch() {
+    private boolean abortSearch() {
         ponderMove = null;
         searchId++;
         if (computerPlayer == null)
@@ -946,7 +946,7 @@ public class DroidChessController {
         return false;
     }
 
-    private final void updateBookHints() {
+    private void updateBookHints() {
         if (game != null) {
             Pair<String, ArrayList<Move>> bi = computerPlayer.getBookHints(game.currPos(), localPt());
             EcoDb.Result ecoData = EcoDb.getInstance().getEco(game.tree);
@@ -955,7 +955,7 @@ public class DroidChessController {
         }
     }
 
-    private final void updateGameMode() {
+    private void updateGameMode() {
         if (game != null) {
             boolean gamePaused = !gameMode.clocksActive() || (humansTurn() && guiPaused);
             game.setGamePaused(gamePaused);
@@ -972,7 +972,7 @@ public class DroidChessController {
     }
 
     /** Start/stop computer thinking/analysis as appropriate. */
-    private final void updateComputeThreads() {
+    private void updateComputeThreads() {
         boolean alive = game.tree.getGameState() == GameState.ALIVE;
         boolean analysis = gameMode.analysisMode() && alive;
         boolean computersTurn = !humansTurn() && alive;
@@ -1021,7 +1021,7 @@ public class DroidChessController {
         }
     }
 
-    private final synchronized void makeComputerMove(int id, final String cmd, final Move ponder) {
+    private synchronized void makeComputerMove(int id, final String cmd, final Move ponder) {
         if (searchId != id)
             return;
         searchId++;
@@ -1043,7 +1043,7 @@ public class DroidChessController {
         gui.movePlayed(game.prevPos(), game.tree.currentNode.move, true);
     }
 
-    private final void setPlayerNames(Game game) {
+    private void setPlayerNames(Game game) {
         if (game != null) {
             String engine = "Computer";
             if (computerPlayer != null) {
@@ -1058,7 +1058,7 @@ public class DroidChessController {
         }
     }
 
-    private final synchronized void updatePlayerNames(String engineName) {
+    private synchronized void updatePlayerNames(String engineName) {
         if (game != null) {
             if (strength < 1000)
                 engineName += String.format(Locale.US, " (%.1f%%)", strength * 0.1);
@@ -1069,7 +1069,7 @@ public class DroidChessController {
         }
     }
 
-    private final boolean undoMoveNoUpdate() {
+    private boolean undoMoveNoUpdate() {
         if (game.getLastMove() == null)
             return false;
         searchId++;
@@ -1093,7 +1093,7 @@ public class DroidChessController {
         return true;
     }
 
-    private final void redoMoveNoUpdate() {
+    private void redoMoveNoUpdate() {
         if (game.canRedoMove()) {
             searchId++;
             game.redoMove();
@@ -1109,7 +1109,7 @@ public class DroidChessController {
      * Move a piece from one square to another.
      * @return True if the move was legal, false otherwise.
      */
-    private final boolean doMove(Move move) {
+    private boolean doMove(Move move) {
         Position pos = game.currPos();
         ArrayList<Move> moves = new MoveGen().legalMoves(pos);
         int promoteTo = move.promoteTo;
@@ -1132,7 +1132,7 @@ public class DroidChessController {
         return false;
     }
 
-    private final void updateGUI() {
+    private void updateGUI() {
         GUIInterface.GameStatus s = new GUIInterface.GameStatus();
         s.state = game.getGameState();
         if (s.state == GameState.ALIVE) {
@@ -1180,12 +1180,12 @@ public class DroidChessController {
         gui.updateMaterialDifferenceTitle(Util.getMaterialDiff(game.currPos()));
     }
 
-    private final synchronized void setThinkingInfo(ThinkingInfo ti) {
+    private synchronized void setThinkingInfo(ThinkingInfo ti) {
         if ((ti.id == searchId) && (ti == latestThinkingInfo))
             gui.setThinkingInfo(ti);
     }
 
-    private final void updateMoveList() {
+    private void updateMoveList() {
         if (game == null)
             return;
         if (!gameTextListener.isUpToDate()) {
@@ -1205,7 +1205,7 @@ public class DroidChessController {
     }
 
     /** Mark last played move in the GUI. */
-    private final void setSelection() {
+    private void setSelection() {
         Move m = game.getLastMove();
         int sq = ((m != null) && (m.from != m.to)) ? m.to : -1;
         gui.setSelection(sq);
@@ -1215,7 +1215,7 @@ public class DroidChessController {
         gui.setAnimMove(sourcePos, move, forward);
     }
 
-    private final boolean findValidDrawClaim(String ms) {
+    private boolean findValidDrawClaim(String ms) {
         if (!ms.isEmpty())
             ms = " " + ms;
         if (game.getGameState() != GameState.ALIVE) return true;

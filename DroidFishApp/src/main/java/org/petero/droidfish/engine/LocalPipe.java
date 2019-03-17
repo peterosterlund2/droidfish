@@ -23,7 +23,7 @@ import java.util.Locale;
 
 /** Implements line-based text communication between threads. */
 public class LocalPipe {
-    private LinkedList<String> lines = new LinkedList<String>();
+    private LinkedList<String> lines = new LinkedList<>();
     private boolean closed = false;
 
     /** Write a line to the pipe. */

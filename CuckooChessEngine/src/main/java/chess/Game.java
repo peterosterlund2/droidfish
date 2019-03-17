@@ -182,9 +182,9 @@ public class Game {
      */
     protected boolean handleCommand(String moveStr) {
         if (moveStr.equals("new")) {
-            moveList = new ArrayList<Move>();
-            uiInfoList = new ArrayList<UndoInfo>();
-            drawOfferList = new ArrayList<Boolean>();
+            moveList = new ArrayList<>();
+            uiInfoList = new ArrayList<>();
+            drawOfferList = new ArrayList<>();
             currentMove = 0;
             pendingDrawOffer = false;
             drawState = GameState.ALIVE;
@@ -305,7 +305,7 @@ public class Game {
     }
 
     public List<String> getPosHistory() {
-        List<String> ret = new ArrayList<String>();
+        List<String> ret = new ArrayList<>();
         
         Position pos = new Position(this.pos);
         for (int i = currentMove; i > 0; i--) {
@@ -423,7 +423,7 @@ public class Game {
 
     /** Return a list of previous positions in this game, back to the last "zeroing" move. */
     public ArrayList<Position> getHistory() {
-        ArrayList<Position> posList = new ArrayList<Position>();
+        ArrayList<Position> posList = new ArrayList<>();
         Position pos = new Position(this.pos);
         for (int i = currentMove; i > 0; i--) {
             if (pos.halfMoveClock == 0)
@@ -446,7 +446,7 @@ public class Game {
             boolean valid;
             if (rep) {
                 valid = false;
-                List<Position> oldPositions = new ArrayList<Position>();
+                List<Position> oldPositions = new ArrayList<>();
                 if (m != null) {
                     UndoInfo ui = new UndoInfo();
                     Position tmpPos = new Position(pos);

@@ -29,7 +29,7 @@ class GtbProbe {
     }
 
     private String currTbPath = "";
-    private ConcurrentLinkedQueue<String> tbPathQueue = new ConcurrentLinkedQueue<String>();
+    private ConcurrentLinkedQueue<String> tbPathQueue = new ConcurrentLinkedQueue<>();
 
     GtbProbe() {
     }
@@ -106,5 +106,5 @@ class GtbProbe {
                                           byte[] blackPieces,
                                           int[] result);
 
-    private final native static boolean init(String tbPath);
+    private native static boolean init(String tbPath);
 }

@@ -39,7 +39,7 @@ public class MoveGen {
      * Pseudo-legal means that the moves don't necessarily defend from check threats.
      */
     public final ArrayList<Move> pseudoLegalMoves(Position pos) {
-        ArrayList<Move> moveList = new ArrayList<Move>(60);
+        ArrayList<Move> moveList = new ArrayList<>(60);
         final boolean wtm = pos.whiteMove;
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
@@ -224,7 +224,7 @@ public class MoveGen {
      * This function removes the moves that don't defend from check threats.
      */
     public static final ArrayList<Move> removeIllegal(Position pos, ArrayList<Move> moveList) {
-        ArrayList<Move> ret = new ArrayList<Move>();
+        ArrayList<Move> ret = new ArrayList<>();
         UndoInfo ui = new UndoInfo();
         int mlSize = moveList.size();
         for (int mi = 0; mi < mlSize; mi++) {
@@ -244,7 +244,7 @@ public class MoveGen {
      * @param maxSteps Max steps until reaching a border. Set to 1 for non-sliding pieces.
      * @ return True if the enemy king could be captured, false otherwise.
      */
-    private final boolean addDirection(ArrayList<Move> moveList, Position pos, int sq0, int maxSteps, int delta) {
+    private boolean addDirection(ArrayList<Move> moveList, Position pos, int sq0, int maxSteps, int delta) {
         int sq = sq0;
         boolean wtm = pos.whiteMove;
         final int oKing = (wtm ? Piece.BKING : Piece.WKING);
@@ -273,7 +273,7 @@ public class MoveGen {
     /**
      * Generate all possible pawn moves from (x0,y0) to (x1,y1), taking pawn promotions into account.
      */
-    private final void addPawnMoves(ArrayList<Move> moveList, int sq0, int sq1) {
+    private void addPawnMoves(ArrayList<Move> moveList, int sq0, int sq1) {
         if (sq1 >= 56) { // White promotion
             moveList.add(getMoveObj(sq0, sq1, Piece.WQUEEN));
             moveList.add(getMoveObj(sq0, sq1, Piece.WKNIGHT));

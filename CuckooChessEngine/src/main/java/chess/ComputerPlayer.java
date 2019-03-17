@@ -210,7 +210,7 @@ public class ComputerPlayer implements Player {
 //        tt.printStats();
 
         // Return best move and PV
-        return new TwoReturnValues<Move, String>(bestM, PV);
+        return new TwoReturnValues<>(bestM, PV);
     }
 
     private Move findSemiRandomMove(Search sc, MoveGen.MoveList moves) {
@@ -237,7 +237,7 @@ public class ComputerPlayer implements Player {
         return null;
     }
 
-    private final static int moveProbWeight(int moveScore, int bestScore) {
+    private static int moveProbWeight(int moveScore, int bestScore) {
         double d = (bestScore - moveScore) / 100.0;
         double w = 100*Math.exp(-d*d/2);
         return (int)Math.ceil(w);

@@ -66,7 +66,7 @@ class PolyglotBook implements IOpeningBook {
         }
 
         // Castle flags
-        if (pos.h1Castle()) key ^= hashRandoms[768 + 0];
+        if (pos.h1Castle()) key ^= hashRandoms[768];
         if (pos.a1Castle()) key ^= hashRandoms[768 + 1];
         if (pos.h8Castle()) key ^= hashRandoms[768 + 2];
         if (pos.a8Castle()) key ^= hashRandoms[768 + 3];
@@ -300,7 +300,7 @@ class PolyglotBook implements IOpeningBook {
             data = new byte[16];
         }
 
-        private final long getBytes(int start, int len) {
+        private long getBytes(int start, int len) {
             long ret = 0;
             int stop = start + len;
             for (int i = start; i < stop; i++) {
@@ -326,7 +326,7 @@ class PolyglotBook implements IOpeningBook {
 
             int from = Position.getSquare(fromFile, fromRow);
             int to = Position.getSquare(toFile, toRow);
-            int promoteTo = Piece.EMPTY;
+            int promoteTo;
             switch (prom) {
             case 1: promoteTo = wtm ? Piece.WKNIGHT : Piece.BKNIGHT; break;
             case 2: promoteTo = wtm ? Piece.WBISHOP : Piece.BBISHOP; break;
@@ -345,17 +345,16 @@ class PolyglotBook implements IOpeningBook {
             if ((from == 60) && (pos.getPiece(from) == Piece.BKING)) {
                 if (to == 56+7)
                     to = 56+6;
-                else if (to == 56+0)
+                else if (to == 56)
                     to = 56+2;
             }
 
-            Move m = new Move(from, to, promoteTo);
-            return m;
+            return new Move(from, to, promoteTo);
         }
         final int getWeight() { return (int)getBytes(10, 2); }
     }
 
-    private final void readEntry(RandomAccessFile f, long entNo, PGBookEntry ent) throws IOException {
+    private void readEntry(RandomAccessFile f, long entNo, PGBookEntry ent) throws IOException {
         f.seek(entNo * 16);
         if (f.read(ent.data) != 16) {
             for (int i = 0; i < 16; i++) ent.data[i] = 0;
@@ -363,7 +362,7 @@ class PolyglotBook implements IOpeningBook {
     }
 
     /** Return true if key1 < key2, when compared as unsigned longs. */
-    private final boolean keyLess(long key1, long key2) {
+    private boolean keyLess(long key1, long key2) {
         if ((key1 < 0) == (key2 < 0)) { // Same sign, normal compare
             return key1 < key2;
         } else { // The negative number is largest
@@ -395,7 +394,7 @@ class PolyglotBook implements IOpeningBook {
             }
 
             // Read all entries with matching hash key
-            ArrayList<BookEntry> ret = new ArrayList<BookEntry>();
+            ArrayList<BookEntry> ret = new ArrayList<>();
             long entNo = hi;
             while (entNo < numEntries) {
                 readEntry(f, entNo, ent);

@@ -74,8 +74,8 @@ public class EcoDb {
 
     /** Get ECO classification for a given tree node. Also returns distance in plies to "ECO tree". */
     public Result getEco(GameTree gt) {
-        ArrayList<Integer> treePath = new ArrayList<Integer>(); // Path to restore gt to original node
-        ArrayList<Pair<GameTree.Node,Boolean>> toCache = new ArrayList<Pair<GameTree.Node,Boolean>>();
+        ArrayList<Integer> treePath = new ArrayList<>(); // Path to restore gt to original node
+        ArrayList<Pair<GameTree.Node,Boolean>> toCache = new ArrayList<>();
 
         int nodeIdx = -1;
         int distToEcoTree = 0;
@@ -93,7 +93,7 @@ public class EcoDb {
             }
             Short idx = posHashToNodeIdx.get(gt.currentPos.zobristHash());
             boolean inEcoTree = idx != null;
-            toCache.add(new Pair<GameTree.Node,Boolean>(node, inEcoTree));
+            toCache.add(new Pair<>(node, inEcoTree));
 
             if (idx != null) {
                 Node ecoNode = readNode(idx);
@@ -181,7 +181,7 @@ public class EcoDb {
 
     /** Get all moves in the ECO tree from a given position. */
     public ArrayList<Move> getMoves(Position pos) {
-        ArrayList<Move> moves = new ArrayList<Move>();
+        ArrayList<Move> moves = new ArrayList<>();
         long hash = pos.zobristHash();
         Short idx = posHashToNodeIdx.get(hash);
         if (idx != null) {
@@ -248,9 +248,9 @@ public class EcoDb {
 
     /** Constructor. */
     private EcoDb() {
-        posHashToNodeIdx = new HashMap<Long, Short>();
-        posHashToNodeIdx2 = new HashMap<Long, ArrayList<Short>>();
-        gtNodeToIdx = new WeakLRUCache<GameTree.Node, CacheEntry>(50);
+        posHashToNodeIdx = new HashMap<>();
+        posHashToNodeIdx2 = new HashMap<>();
+        gtNodeToIdx = new WeakLRUCache<>(50);
         try {
             ByteArrayOutputStream bufStream = new ByteArrayOutputStream();
             InputStream inStream = DroidFishApp.getContext().getAssets().open("eco.dat");
@@ -275,7 +275,7 @@ public class EcoDb {
             nodesBuffer = new byte[nNodes * 12];
             System.arraycopy(buf, 0, nodesBuffer, 0, nNodes * 12);
 
-            ArrayList<String> names = new ArrayList<String>();
+            ArrayList<String> names = new ArrayList<>();
             int idx = (nNodes + 1) * 12;
             int start = idx;
             for (int i = idx; i < buf.length; i++) {
@@ -308,7 +308,7 @@ public class EcoDb {
         } else if (node.ecoIdx != -1) {
             ArrayList<Short> lst = null;
             if (posHashToNodeIdx2.get(hash) == null) {
-                lst = new ArrayList<Short>();
+                lst = new ArrayList<>();
                 posHashToNodeIdx2.put(hash, lst);
             } else {
                 lst = posHashToNodeIdx2.get(hash);

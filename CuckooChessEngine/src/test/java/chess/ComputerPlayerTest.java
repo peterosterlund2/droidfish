@@ -43,7 +43,7 @@ public class ComputerPlayerTest {
     @Test
     public void testGetCommand() throws ChessParseError {
         System.out.println("getCommand");
-        ArrayList<Position> nullHist = new ArrayList<Position>();
+        ArrayList<Position> nullHist = new ArrayList<>();
 
         Position pos = TextIO.readFEN("7k/5Q2/p5K1/8/8/8/8/8 b - - 99 80");
         ComputerPlayer cp = new ComputerPlayer();

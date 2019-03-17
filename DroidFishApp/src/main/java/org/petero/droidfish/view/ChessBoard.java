@@ -123,7 +123,7 @@ public abstract class ChessBoard extends View {
         decorationPaint = new Paint();
         decorationPaint.setAntiAlias(true);
 
-        moveMarkPaint = new ArrayList<Paint>();
+        moveMarkPaint = new ArrayList<>();
         for (int i = 0; i < ColorTheme.MAX_ARROWS; i++) {
             Paint p = new Paint();
             p.setStyle(Paint.Style.FILL);
@@ -174,7 +174,7 @@ public abstract class ChessBoard extends View {
             now = System.currentTimeMillis();
             return animActive();
         }
-        private final boolean animActive() {
+        private boolean animActive() {
             if (paused || (startTime < 0) || (now >= stopTime) || (posHash != pos.zobristHash()))
                 return false;
             return true;
@@ -452,7 +452,7 @@ public abstract class ChessBoard extends View {
 //      System.out.printf("draw: %d\n", t1-t0);
     }
 
-    private final void drawMoveHints(Canvas canvas) {
+    private void drawMoveHints(Canvas canvas) {
         if ((moveHints == null) || blindMode)
             return;
         float h = (float)(sqSize / 2.0);
@@ -550,8 +550,8 @@ public abstract class ChessBoard extends View {
 
     private Rect labelBounds = null;
 
-    private final void drawLabel(Canvas canvas, int xCrd, int yCrd, boolean right,
-                                 boolean bottom, char c) {
+    private void drawLabel(Canvas canvas, int xCrd, int yCrd, boolean right,
+                           boolean bottom, char c) {
         String s = Character.toString(c);
         if (labelBounds == null) {
             labelBounds = new Rect();
@@ -680,7 +680,7 @@ public abstract class ChessBoard extends View {
         }
     }
 
-    private final void drawDecorations(Canvas canvas) {
+    private void drawDecorations(Canvas canvas) {
         if (decorations == null)
             return;
         long decorated = 0;

@@ -223,18 +223,18 @@ public class UCIOptions implements Serializable, Cloneable {
     }
 
     UCIOptions() {
-        names = new ArrayList<String>();
-        options = new TreeMap<String, OptionBase>();
+        names = new ArrayList<>();
+        options = new TreeMap<>();
     }
 
     @Override
     public UCIOptions clone() throws CloneNotSupportedException {
         UCIOptions copy = new UCIOptions();
 
-        copy.names = new ArrayList<String>();
+        copy.names = new ArrayList<>();
         copy.names.addAll(names);
 
-        copy.options = new TreeMap<String, OptionBase>();
+        copy.options = new TreeMap<>();
         for (Map.Entry<String, OptionBase> e : options.entrySet())
             copy.options.put(e.getKey(), e.getValue().clone());
 

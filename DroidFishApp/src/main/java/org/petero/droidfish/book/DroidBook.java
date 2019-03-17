@@ -119,7 +119,7 @@ public final class DroidBook {
     public final synchronized Pair<String,ArrayList<Move>> getAllBookMoves(Position pos,
                                                                            boolean localized) {
         StringBuilder ret = new StringBuilder();
-        ArrayList<Move> bookMoveList = new ArrayList<Move>();
+        ArrayList<Move> bookMoveList = new ArrayList<>();
         ArrayList<BookEntry> bookMoves = getBook().getBookEntries(pos);
 
         // Check legality
@@ -165,10 +165,10 @@ public final class DroidBook {
                 ret.append(percent);
             }
         }
-        return new Pair<String, ArrayList<Move>>(ret.toString(), bookMoveList);
+        return new Pair<>(ret.toString(), bookMoveList);
     }
 
-    private final double scaleWeight(double w) {
+    private double scaleWeight(double w) {
         if (w <= 0)
             return 0;
         if (options == null)
@@ -176,7 +176,7 @@ public final class DroidBook {
         return Math.pow(w, Math.exp(-options.random));
     }
 
-    private final IOpeningBook getBook() {
+    private IOpeningBook getBook() {
         if (externalBook.enabled()) {
             return externalBook;
         } else if (ecoBook.enabled()) {

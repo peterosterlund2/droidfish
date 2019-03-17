@@ -141,7 +141,7 @@ public class TextIOTest extends TestCase {
         return wasError;
     }
 
-    private final static String moveToString(Position pos, Move move, boolean longForm) {
+    private static String moveToString(Position pos, Move move, boolean longForm) {
         return TextIO.moveToString(pos, move, longForm, false);
     }
 

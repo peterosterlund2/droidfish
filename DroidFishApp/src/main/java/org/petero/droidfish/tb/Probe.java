@@ -73,10 +73,8 @@ public class Probe {
     /**
      * Probe GTB tablebases.
      * @param pos    The position to probe.
-     * @param result Two element array. Set to [tbinfo, plies].
-     * @return True if success.
      */
-    private final GtbProbeResult gtbProbe(Position pos) {
+    private GtbProbeResult gtbProbe(Position pos) {
         GtbProbeResult ret = gtbProbeRaw(pos);
         if (ret.result == GtbProbeResult.DRAW && pos.getEpSquare() != -1) {
             ArrayList<Move> moveList = MoveGen.instance.legalMoves(pos);
@@ -109,7 +107,7 @@ public class Probe {
         return ret;
     }
 
-    private final GtbProbeResult gtbProbeRaw(Position pos) {
+    private GtbProbeResult gtbProbeRaw(Position pos) {
         int castleMask = 0;
         if (pos.a1Castle()) castleMask |= GtbProbe.A1_CASTLE;
         if (pos.h1Castle()) castleMask |= GtbProbe.H1_CASTLE;
@@ -215,7 +213,7 @@ public class Probe {
         return ret;
     }
 
-    private final ProbeResult rtbProbe(Position pos) {
+    private ProbeResult rtbProbe(Position pos) {
         if (pos.nPieces() > 7)
             return new ProbeResult(ProbeResult.Type.NONE, 0, 0);
 
@@ -273,8 +271,8 @@ public class Probe {
     /** Return a list of all moves in moveList that are not known to be non-optimal.
      * Returns null if no legal move could be excluded. */
     public final ArrayList<Move> removeNonOptimal(Position pos, ArrayList<Move> moveList) {
-        ArrayList<Move> optimalMoves = new ArrayList<Move>();
-        ArrayList<Move> unknownMoves = new ArrayList<Move>();
+        ArrayList<Move> optimalMoves = new ArrayList<>();
+        ArrayList<Move> unknownMoves = new ArrayList<>();
         final int MATE0 = 100000;
         int bestScore = -1000000;
         UndoInfo ui = new UndoInfo();
@@ -323,7 +321,7 @@ public class Probe {
         int p = pos.getPiece(fromSq);
         if ((p == Piece.EMPTY) || (pos.whiteMove != Piece.isWhite(p)))
             return null;
-        ArrayList<Pair<Integer,ProbeResult>> ret = new ArrayList<Pair<Integer,ProbeResult>>();
+        ArrayList<Pair<Integer,ProbeResult>> ret = new ArrayList<>();
 
         ArrayList<Move> moveList = new MoveGen().legalMoves(pos);
         UndoInfo ui = new UndoInfo();
@@ -342,7 +340,7 @@ public class Probe {
             } else if (res.type != ProbeResult.Type.WDL) {
                 res.score++;
             }
-            ret.add(new Pair<Integer,ProbeResult>(m.to, res));
+            ret.add(new Pair<>(m.to, res));
         }
         return ret;
     }
@@ -355,7 +353,7 @@ public class Probe {
         if (p == Piece.EMPTY)
             return null;
         boolean isPawn = (Piece.makeWhite(p) == Piece.WPAWN);
-        ArrayList<Pair<Integer,ProbeResult>> ret = new ArrayList<Pair<Integer,ProbeResult>>();
+        ArrayList<Pair<Integer,ProbeResult>> ret = new ArrayList<>();
         for (int sq = 0; sq < 64; sq++) {
             if ((sq != fromSq) && (pos.getPiece(sq) != Piece.EMPTY))
                 continue;
@@ -370,7 +368,7 @@ public class Probe {
                 continue;
             if (!pos.whiteMove)
                 res.wdl = -res.wdl;
-            ret.add(new Pair<Integer,ProbeResult>(sq, res));
+            ret.add(new Pair<>(sq, res));
         }
         return ret;
     }

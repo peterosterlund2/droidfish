@@ -514,7 +514,7 @@ public class EvaluateTest {
     }
 
     /** Compute change in eval score for white after making "moveStr" in position "pos". */
-    private final int moveScore(Position pos, String moveStr) {
+    private int moveScore(Position pos, String moveStr) {
         int score1 = evalWhite(pos);
         Position tmpPos = new Position(pos);
         UndoInfo ui = new UndoInfo();

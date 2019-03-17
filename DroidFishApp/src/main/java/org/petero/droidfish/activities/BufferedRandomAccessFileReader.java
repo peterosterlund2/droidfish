@@ -87,7 +87,7 @@ final class BufferedRandomAccessFileReader {
             return new String(lineBuf, 0, lineLen);
     }
 
-    private final int getByte() throws IOException {
+    private int getByte() throws IOException {
         if (bufPos >= bufLen) {
             bufStartFilePos = f.getFilePointer();
             bufLen = f.read(buffer);

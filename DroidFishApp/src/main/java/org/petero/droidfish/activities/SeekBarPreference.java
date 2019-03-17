@@ -178,7 +178,7 @@ public class SeekBarPreference extends Preference
         return layout;
     }
 
-    private final String valToString() {
+    private String valToString() {
         return String.format(Locale.US, "%.1f%%", currVal*0.1);
     }
 

@@ -41,7 +41,7 @@ public class ChessBoardEdit extends ChessBoard {
         landScape = (config.orientation == Configuration.ORIENTATION_LANDSCAPE);
     }
 
-    private final static int getGap(int sqSize) {
+    private static int getGap(int sqSize) {
         return sqSize / 4;
     }
 
@@ -72,7 +72,7 @@ public class ChessBoardEdit extends ChessBoard {
         y0 = landScape ? 0 : (height - getHeight(sqSize)) / 2;
     }
 
-    private final int extraPieces(int x, int y) {
+    private int extraPieces(int x, int y) {
         if (landScape) {
             if (x == 8) {
                 switch (y) {

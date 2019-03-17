@@ -65,7 +65,7 @@ public class NetworkEngine extends UCIEngineBase {
     }
 
     /** Create socket connection to remote server. */
-    private final synchronized void connect() {
+    private synchronized void connect() {
         if (socket == null) {
             String host = null;
             String port = null;

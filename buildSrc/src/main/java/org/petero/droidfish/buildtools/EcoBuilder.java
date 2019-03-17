@@ -47,7 +47,7 @@ public class EcoBuilder {
         int ecoIdx;  // Index in string array, or -1
         int opnIdx;  // Index in string array, or -1
         int varIdx;  // Index in string array, or -1
-        ArrayList<Node> children = new ArrayList<Node>();
+        ArrayList<Node> children = new ArrayList<>();
         Node parent;
     }
     private ArrayList<Node> nodes;
@@ -57,9 +57,9 @@ public class EcoBuilder {
 
     /** Constructor. */
     private EcoBuilder() {
-        nodes = new ArrayList<Node>();
-        strs = new ArrayList<String>();
-        strToIndex = new HashMap<String, Integer>();
+        nodes = new ArrayList<>();
+        strs = new ArrayList<>();
+        strToIndex = new HashMap<>();
         Node rootNode = new Node();
         rootNode.index = 0;
         rootNode.move = new Move(0, 0, 0);
@@ -99,7 +99,7 @@ public class EcoBuilder {
         game.readPGN(pgn, options);
 
         // Determine name of opening
-        HashMap<String,String> headers = new HashMap<String,String>();
+        HashMap<String,String> headers = new HashMap<>();
         GameTree tree = game.tree;
         tree.getHeaders(headers);
         int ecoIdx = addData(headers, "ECO");

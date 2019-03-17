@@ -59,7 +59,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
 public class EditPGN extends ListActivity {
-    static ArrayList<GameInfo> gamesInFile = new ArrayList<GameInfo>();
+    static ArrayList<GameInfo> gamesInFile = new ArrayList<>();
     static boolean cacheValid = false;
     PGNFile pgnFile;
     ProgressDialog progress;
@@ -246,7 +246,7 @@ public class EditPGN extends ListActivity {
         return false;
     }
 
-    private final void showList() {
+    private void showList() {
         progress = null;
         removeDialog(PROGRESS_DIALOG);
         setContentView(R.layout.select_game);
@@ -422,7 +422,7 @@ public class EditPGN extends ListActivity {
         }
     }
 
-    private final boolean readFile() {
+    private boolean readFile() {
         String fileName = pgnFile.getName();
         if (!fileName.equals(lastFileName))
             defaultItem = 0;
@@ -431,7 +431,7 @@ public class EditPGN extends ListActivity {
             return true;
         Pair<GameInfoResult, ArrayList<GameInfo>> p = pgnFile.getGameInfo(this, progress);
         if (p.first != GameInfoResult.OK) {
-            gamesInFile = new ArrayList<GameInfo>();
+            gamesInFile = new ArrayList<>();
             switch (p.first) {
             case OUT_OF_MEMORY:
                 runOnUiThread(new Runnable() {
@@ -462,7 +462,7 @@ public class EditPGN extends ListActivity {
         return true;
     }
 
-    private final void sendBackResult(GameInfo gi) {
+    private void sendBackResult(GameInfo gi) {
         String pgn = pgnFile.readOneGame(gi);
         if (pgn != null) {
             String pgnToken = (new ObjectCache()).storeString(pgn);
@@ -474,19 +474,18 @@ public class EditPGN extends ListActivity {
         }
     }
 
-    private final void deleteGame(GameInfo gi) {
+    private void deleteGame(GameInfo gi) {
         if (pgnFile.deleteGame(gi, gamesInFile)) {
             ListView lv = getListView();
             int pos = lv.pointToPosition(0,0);
-            aa = new ArrayAdapter<GameInfo>(this, R.layout.select_game_list_item, gamesInFile);
+            aa = new ArrayAdapter<>(this, R.layout.select_game_list_item, gamesInFile);
             setListAdapter(aa);
             String s = filterText.getText().toString();
             aa.getFilter().filter(s);
             lv.setSelection(pos);
             // Update lastModTime, since current change has already been handled
             String fileName = pgnFile.getName();
-            long modTime = new File(fileName).lastModified();
-            lastModTime = modTime;
+            lastModTime = new File(fileName).lastModified();
         }
     }
 }

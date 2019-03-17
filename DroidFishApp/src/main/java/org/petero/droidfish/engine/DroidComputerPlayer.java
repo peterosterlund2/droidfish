@@ -43,7 +43,7 @@ public class DroidComputerPlayer {
     private final DroidBook book;
     private EngineOptions engineOptions = new EngineOptions();
     /** Pending UCI options to send when engine becomes idle. */
-    private Map<String,String> pendingOptions = new TreeMap<String,String>();
+    private Map<String,String> pendingOptions = new TreeMap<>();
 
     /** Set when "ucinewgame" needs to be sent. */
     private boolean newGame = false;
@@ -365,7 +365,7 @@ public class DroidComputerPlayer {
     }
 
     /** Decide what moves to search. Filters out non-optimal moves if tablebases are used. */
-    private final ArrayList<Move> movesToSearch(SearchRequest sr) {
+    private ArrayList<Move> movesToSearch(SearchRequest sr) {
         ArrayList<Move> moves = null;
         ArrayList<Move> legalMoves = new MoveGen().legalMoves(sr.currPos);
         if (engineOptions.rootProbe)
@@ -450,7 +450,7 @@ public class DroidComputerPlayer {
         handleQueue();
     }
 
-    private final void handleQueue() {
+    private void handleQueue() {
         if (engineState.state == MainState.DEAD) {
             engineState.engine = "";
             engineState.setState(MainState.IDLE);
@@ -519,7 +519,7 @@ public class DroidComputerPlayer {
     }
 
     /** Determine what to do next when in idle state. */
-    private final void handleIdleState() {
+    private void handleIdleState() {
         SearchRequest sr = searchRequest;
         if (sr == null)
             return;
@@ -640,7 +640,7 @@ public class DroidComputerPlayer {
         }
     }
 
-    private final void startEngine() {
+    private void startEngine() {
         myAssert(uciEngine == null);
         myAssert(engineMonitor == null);
         myAssert(engineState.state == MainState.DEAD);
@@ -678,7 +678,7 @@ public class DroidComputerPlayer {
     private final static long guiUpdateInterval = 100;
     private long lastGUIUpdate = 0;
 
-    private final void monitorLoop(UCIEngine uci) {
+    private void monitorLoop(UCIEngine uci) {
         while (true) {
             int timeout = getReadTimeout();
             if (Thread.currentThread().isInterrupted())
@@ -706,7 +706,7 @@ public class DroidComputerPlayer {
     }
 
     /** Process one line of data from the engine. */
-    private final synchronized void processEngineOutput(UCIEngine uci, String s) {
+    private synchronized void processEngineOutput(UCIEngine uci, String s) {
         if (Thread.currentThread().isInterrupted())
             return;
 
@@ -775,7 +775,7 @@ public class DroidComputerPlayer {
     }
 
     /** Handle reading of UCI options. Return true when finished. */
-    private final boolean readUCIOption(UCIEngine uci, String s) {
+    private boolean readUCIOption(UCIEngine uci, String s) {
         String[] tokens = tokenize(s);
         if (tokens[0].equals("uciok"))
             return true;
@@ -799,7 +799,7 @@ public class DroidComputerPlayer {
         return false;
     }
 
-    private final void reportMove(String bestMove, Move nextPonderMove) {
+    private void reportMove(String bestMove, Move nextPonderMove) {
         SearchRequest sr = searchRequest;
         boolean canPonder = true;
 
@@ -836,7 +836,7 @@ public class DroidComputerPlayer {
     }
 
     /** Convert a string to tokens by splitting at whitespace characters. */
-    private final String[] tokenize(String cmdLine) {
+    private String[] tokenize(String cmdLine) {
         cmdLine = cmdLine.trim();
         return cmdLine.split("\\s+");
     }
@@ -845,7 +845,7 @@ public class DroidComputerPlayer {
      * @param move The move that may have to be made before claiming draw.
      * @return The draw string that claims the draw, or empty string if draw claim not valid.
      */
-    private final static String canClaimDraw(Position pos, long[] posHashList, int posHashListSize, Move move) {
+    private static String canClaimDraw(Position pos, long[] posHashList, int posHashListSize, Move move) {
         String drawStr = "";
         if (canClaimDraw50(pos)) {
             drawStr = "draw 50";
@@ -866,11 +866,11 @@ public class DroidComputerPlayer {
         return drawStr;
     }
 
-    private final static boolean canClaimDraw50(Position pos) {
+    private static boolean canClaimDraw50(Position pos) {
         return (pos.halfMoveClock >= 100);
     }
 
-    private final static boolean canClaimDrawRep(Position pos, long[] posHashList, int posHashListSize, int posHashFirstNew) {
+    private static boolean canClaimDrawRep(Position pos, long[] posHashList, int posHashListSize, int posHashFirstNew) {
         int reps = 0;
         for (int i = posHashListSize - 4; i >= 0; i -= 2) {
             if (pos.zobristHash() == posHashList[i]) {
@@ -897,18 +897,18 @@ public class DroidComputerPlayer {
     private int statHash = 0;
     private int statSelDepth = 0;
     private int statNps = 0;
-    private ArrayList<String> statPV = new ArrayList<String>();
+    private ArrayList<String> statPV = new ArrayList<>();
     private String statCurrMove = "";
     private int statCurrMoveNr = 0;
 
-    private ArrayList<PvInfo> statPvInfo = new ArrayList<PvInfo>();
+    private ArrayList<PvInfo> statPvInfo = new ArrayList<>();
 
     private boolean depthModified = false;
     private boolean currMoveModified = false;
     private boolean pvModified = false;
     private boolean statsModified = false;
 
-    private final void clearInfo() {
+    private void clearInfo() {
         statCurrDepth = statPVDepth = statScore = 0;
         statIsMate = statUpperBound = statLowerBound = false;
         statTime = 0;
@@ -925,7 +925,7 @@ public class DroidComputerPlayer {
         statCurrMoveNr = 0;
     }
 
-    private final synchronized int getReadTimeout() {
+    private synchronized int getReadTimeout() {
         boolean needGuiUpdate = depthModified || currMoveModified || pvModified || statsModified;
         int timeout = 2000000000;
         if (needGuiUpdate) {
@@ -936,7 +936,7 @@ public class DroidComputerPlayer {
         return timeout;
     }
 
-    private final void parseInfoCmd(String[] tokens) {
+    private void parseInfoCmd(String[] tokens) {
         try {
             boolean havePvData = false;
             int nTokens = tokens.length;
@@ -1003,7 +1003,7 @@ public class DroidComputerPlayer {
                     statPvInfo.add(new PvInfo(0, 0, 0, 0, 0, 0, 0, 0, false, false, false, new ArrayList<Move>()));
                 while (statPvInfo.size() <= pvNum)
                     statPvInfo.add(null);
-                ArrayList<Move> moves = new ArrayList<Move>();
+                ArrayList<Move> moves = new ArrayList<>();
                 int nMoves = statPV.size();
                 for (i = 0; i < nMoves; i++)
                     moves.add(TextIO.UCIstringToMove(statPV.get(i)));
@@ -1019,7 +1019,7 @@ public class DroidComputerPlayer {
     }
 
     /** Notify GUI about search statistics. */
-    private final synchronized void notifyGUI() {
+    private synchronized void notifyGUI() {
         if (Thread.currentThread().isInterrupted())
             return;
 
@@ -1058,7 +1058,7 @@ public class DroidComputerPlayer {
         lastGUIUpdate = System.currentTimeMillis();
     }
 
-    private final static void myAssert(boolean b) {
+    private static void myAssert(boolean b) {
         if (!b)
             throw new RuntimeException();
     }

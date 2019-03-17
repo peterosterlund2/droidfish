@@ -565,7 +565,7 @@ public class TextIO {
         if (moves == null)
             moves = MoveGen.instance.legalMoves(pos);
 
-        ArrayList<Move> matches = new ArrayList<Move>(2);
+        ArrayList<Move> matches = new ArrayList<>(2);
         for (int i = 0; i < moves.size(); i++) {
             Move m = moves.get(i);
             int p = pos.getPiece(m.from);
@@ -754,7 +754,7 @@ public class TextIO {
         return ret.toString();
     }
 
-    private final static String pieceToChar(int p) {
+    private static String pieceToChar(int p) {
         switch (p) {
             case Piece.WQUEEN:  case Piece.BQUEEN:  return "Q";
             case Piece.WROOK:   case Piece.BROOK:   return "R";
@@ -776,7 +776,7 @@ public class TextIO {
         return "";
     }
 
-    private final static int charToPiece(boolean white, char c) {
+    private static int charToPiece(boolean white, char c) {
         switch (c) {
         case 'Q': case 'q': return white ? Piece.WQUEEN  : Piece.BQUEEN;
         case 'R': case 'r': return white ? Piece.WROOK   : Piece.BROOK;

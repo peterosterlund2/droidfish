@@ -210,7 +210,7 @@ public class Position {
     }
 
     /** Move a non-pawn piece to an empty square. */
-    private final void movePieceNotPawn(int from, int to) {
+    private void movePieceNotPawn(int from, int to) {
         final int piece = squares[from];
         hashKey ^= psHashKeys[piece][from];
         hashKey ^= psHashKeys[piece][to];
@@ -562,7 +562,7 @@ public class Position {
         }
     }
 
-    private final void removeCastleRights(int square) {
+    private void removeCastleRights(int square) {
         if (square == Position.getSquare(0, 0)) {
             setCastleMask(castleMask & ~(1 << Position.A1_CASTLE));
         } else if (square == Position.getSquare(7, 0)) {
@@ -620,7 +620,7 @@ public class Position {
         return hash;
     }
 
-    private final static long getRandomHashVal(int rndNo) {
+    private static long getRandomHashVal(int rndNo) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
             byte[] input = new byte[4];

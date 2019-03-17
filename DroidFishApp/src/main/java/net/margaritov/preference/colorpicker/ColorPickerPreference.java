@@ -316,8 +316,7 @@ public class ColorPickerPreference
         }
         
         @SuppressWarnings("unused")
-        public static final Creator<SavedState> CREATOR =
-                new Creator<SavedState>() {
+        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
             public SavedState createFromParcel(Parcel in) {
                 return new SavedState(in);
             }

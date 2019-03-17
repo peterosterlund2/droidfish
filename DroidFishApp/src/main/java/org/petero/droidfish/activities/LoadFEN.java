@@ -60,7 +60,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
 public class LoadFEN extends ListActivity {
-    private static ArrayList<FenInfo> fensInFile = new ArrayList<FenInfo>();
+    private static ArrayList<FenInfo> fensInFile = new ArrayList<>();
     private static boolean cacheValid = false;
     private FENFile fenFile;
     private ProgressDialog progress;
@@ -197,7 +197,7 @@ public class LoadFEN extends ListActivity {
         super.onDestroy();
     }
 
-    private final void showList() {
+    private void showList() {
         progress = null;
         removeProgressDialog();
         setContentView(R.layout.load_fen);
@@ -323,7 +323,7 @@ public class LoadFEN extends ListActivity {
             ((DialogFragment)f).dismiss();
     }
 
-    private final boolean readFile() {
+    private boolean readFile() {
         String fileName = fenFile.getName();
         if (!fileName.equals(lastFileName))
             defaultItem = 0;
@@ -333,7 +333,7 @@ public class LoadFEN extends ListActivity {
         fenFile = new FENFile(fileName);
         Pair<FenInfoResult, ArrayList<FenInfo>> p = fenFile.getFenInfo(this, progress);
         if (p.first != FenInfoResult.OK) {
-            fensInFile = new ArrayList<FenInfo>();
+            fensInFile = new ArrayList<>();
             if (p.first == FenInfoResult.OUT_OF_MEMORY) {
                 runOnUiThread(new Runnable() {
                     public void run() {
@@ -352,7 +352,7 @@ public class LoadFEN extends ListActivity {
         return true;
     }
 
-    private final void sendBackResult(FenInfo fi, boolean toast) {
+    private void sendBackResult(FenInfo fi, boolean toast) {
         String fen = fi.fen;
         if (fen != null) {
             if (toast)

@@ -161,7 +161,7 @@ public class ChessBoard extends View {
         }
     }
 
-    private final void drawPiece(Canvas canvas, int xCrd, int yCrd, int p) {
+    private void drawPiece(Canvas canvas, int xCrd, int yCrd, int p) {
         String ps;
         switch (p) {
             case Piece.EMPTY:
@@ -218,10 +218,10 @@ public class ChessBoard extends View {
         }
     }
 
-    private final int getXCrd(int x) {
+    private int getXCrd(int x) {
         return x0 + sqSize * (flipped ? 7 - x : x);
     }
-    private final int getYCrd(int y) {
+    private int getYCrd(int y) {
         return y0 + sqSize * (flipped ? y : (7 - y));
     }
 

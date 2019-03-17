@@ -51,17 +51,17 @@ public class Book {
         this.verbose = verbose;
     }
 
-    private final void initBook() {
+    private void initBook() {
         if (numBookMoves >= 0)
             return;
         long t0 = System.currentTimeMillis();
-        bookMap = new HashMap<Long, List<BookEntry>>();
+        bookMap = new HashMap<>();
         rndGen = new SecureRandom();
         rndGen.setSeed(System.currentTimeMillis());
         numBookMoves = 0;
         try {
             InputStream inStream = getClass().getResourceAsStream("/book.bin");
-            List<Byte> buf = new ArrayList<Byte>(8192);
+            List<Byte> buf = new ArrayList<>(8192);
             byte[] tmpBuf = new byte[1024];
             while (true) {
                 int len = inStream.read(tmpBuf);
@@ -104,10 +104,10 @@ public class Book {
     }
 
     /** Add a move to a position in the opening book. */
-    private final void addToBook(Position pos, Move moveToAdd) {
+    private void addToBook(Position pos, Move moveToAdd) {
         List<BookEntry> ent = bookMap.get(pos.zobristHash());
         if (ent == null) {
-            ent = new ArrayList<BookEntry>();
+            ent = new ArrayList<>();
             bookMap.put(pos.zobristHash(), ent);
         }
         for (int i = 0; i < ent.size(); i++) {
@@ -202,7 +202,7 @@ public class Book {
     }
 
     public static List<Byte> createBinBook(String inFileName) {
-        List<Byte> binBook = new ArrayList<Byte>(0);
+        List<Byte> binBook = new ArrayList<>(0);
         try {
             InputStream inStream = new FileInputStream(inFileName);
             InputStreamReader inFile = new InputStreamReader(inStream);

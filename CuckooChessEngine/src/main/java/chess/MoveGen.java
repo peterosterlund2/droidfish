@@ -366,7 +366,7 @@ public final class MoveGen {
         {
             ArrayList<Move> allMoves = pseudoLegalMoves(pos);
             allMoves = MoveGen.removeIllegal(pos, allMoves);
-            HashSet<String> evMoves = new HashSet<String>();
+            HashSet<String> evMoves = new HashSet<>();
             for (Move m : moveList)
                 evMoves.add(TextIO.moveToUCIString(m));
             for (Move m : allMoves)
@@ -967,8 +967,8 @@ public final class MoveGen {
         moveList.size = length;
     }
 
-    private final static boolean addPawnMovesByMask(MoveList moveList, Position pos, long mask,
-                                                    int delta, boolean allPromotions) {
+    private static boolean addPawnMovesByMask(MoveList moveList, Position pos, long mask,
+                                              int delta, boolean allPromotions) {
         if (mask == 0)
             return false;
         long oKingMask = pos.pieceTypeBB[pos.whiteMove ? Piece.BKING : Piece.WKING];
@@ -1008,8 +1008,8 @@ public final class MoveGen {
         return false;
     }
 
-    private final static void addPawnDoubleMovesByMask(MoveList moveList, Position pos,
-                                                       long mask, int delta) {
+    private static void addPawnDoubleMovesByMask(MoveList moveList, Position pos,
+                                                 long mask, int delta) {
         while (mask != 0) {
             int sq = BitBoard.numberOfTrailingZeros(mask);
             setMove(moveList, sq + delta, sq, Piece.EMPTY);
@@ -1017,7 +1017,7 @@ public final class MoveGen {
         }
     }
     
-    private final static boolean addMovesByMask(MoveList moveList, Position pos, int sq0, long mask) {
+    private static boolean addMovesByMask(MoveList moveList, Position pos, int sq0, long mask) {
         long oKingMask = pos.pieceTypeBB[pos.whiteMove ? Piece.BKING : Piece.WKING];
         if ((mask & oKingMask) != 0) {
             int sq = BitBoard.numberOfTrailingZeros(mask & oKingMask);
@@ -1033,7 +1033,7 @@ public final class MoveGen {
         return false;
     }
 
-    private final static void setMove(MoveList moveList, int from, int to, int promoteTo) {
+    private static void setMove(MoveList moveList, int from, int to, int promoteTo) {
         Move m = moveList.m[moveList.size++];
         m.from = from;
         m.to = to;
@@ -1047,7 +1047,7 @@ public final class MoveGen {
     
     private static final int MAX_MOVES = 256;
 
-    private final MoveList getMoveListObj() {
+    private MoveList getMoveListObj() {
         MoveList ml;
         if (moveListsInCache > 0) {
             ml = (MoveList)moveListCache[--moveListsInCache];

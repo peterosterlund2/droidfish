@@ -40,7 +40,7 @@ public class FrameLayoutWithHole extends FrameLayout {
     }
     public void addAnimatorSet(AnimatorSet animatorSet){
         if (mAnimatorSetArrayList==null){
-            mAnimatorSetArrayList = new ArrayList<AnimatorSet>();
+            mAnimatorSetArrayList = new ArrayList<>();
         }
         mAnimatorSetArrayList.add(animatorSet);
     }

@@ -37,7 +37,7 @@ public class ButtonActions {
     private int menuTitle;
 
     private UIAction mainAction = null;
-    private ArrayList<UIAction> menuActions = new ArrayList<UIAction>();
+    private ArrayList<UIAction> menuActions = new ArrayList<>();
 
     private static final int maxMenuActions = 6;
 

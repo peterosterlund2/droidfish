@@ -275,7 +275,7 @@ public class EngineControl {
         engineThread.start();
     }
 
-    private final void stopThread() {
+    private void stopThread() {
         Thread myThread;
         Search mySearch;
         synchronized (threadMutex) {
@@ -295,13 +295,13 @@ public class EngineControl {
     }
 
 
-    private final void setupTT() {
+    private void setupTT() {
         int nEntries = hashSizeMB > 0 ? hashSizeMB * (1 << 20) / 24 : 1024;
         int logSize = (int) Math.floor(Math.log(nEntries) / Math.log(2));
         tt = new TranspositionTable(logSize);
     }
 
-    private final void setupPosition(Position pos, List<Move> moves) {
+    private void setupPosition(Position pos, List<Move> moves) {
         UndoInfo ui = new UndoInfo();
         posHashList = new long[200 + moves.size()];
         posHashListSize = 0;
@@ -315,7 +315,7 @@ public class EngineControl {
     /**
      * Try to find a move to ponder from the transposition table.
      */
-    private final Move getPonderMove(Position pos, Move m) {
+    private Move getPonderMove(Position pos, Move m) {
         if (m == null) return null;
         Move ret = null;
         UndoInfo ui = new UndoInfo();

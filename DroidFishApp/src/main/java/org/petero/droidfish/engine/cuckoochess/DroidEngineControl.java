@@ -296,7 +296,7 @@ public class DroidEngineControl {
     }
 
 
-    private final void setupTT() {
+    private void setupTT() {
         int nEntries = hashSizeMB > 0 ? hashSizeMB * (1 << 20) / 24 : 1024;
         int logSize = (int) Math.floor(Math.log(nEntries) / Math.log(2));
         tt = new TranspositionTable(logSize);

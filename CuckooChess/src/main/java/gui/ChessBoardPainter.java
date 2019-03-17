@@ -127,7 +127,7 @@ public class ChessBoardPainter extends JLabel {
         }
     }
 
-    private final void drawPiece(Graphics2D g, int xCrd, int yCrd, int p) {
+    private void drawPiece(Graphics2D g, int xCrd, int yCrd, int p) {
         g.setColor(Piece.isWhite(p) ? Color.WHITE : Color.BLACK);
         String ps;
         switch (p) {
@@ -195,10 +195,10 @@ public class ChessBoardPainter extends JLabel {
         }
     }
 
-    private final int getXCrd(int x) {
+    private int getXCrd(int x) {
         return x0 + sqSize * (flipped ? 7 - x : x);
     }
-    private final int getYCrd(int y) {
+    private int getYCrd(int y) {
         return y0 + sqSize * (flipped ? y : (7 - y));
     }
 

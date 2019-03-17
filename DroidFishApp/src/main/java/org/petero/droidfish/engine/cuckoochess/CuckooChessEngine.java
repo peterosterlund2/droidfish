@@ -51,7 +51,7 @@ public class CuckooChessEngine extends UCIEngineBase {
 
     public CuckooChessEngine(Report report) {
         pos = null;
-        moves = new ArrayList<Move>();
+        moves = new ArrayList<>();
         quit = false;
         guiToEngine = new LocalPipe();
         engineToGui = new LocalPipe();
@@ -100,7 +100,7 @@ public class CuckooChessEngine extends UCIEngineBase {
         setOption("strength", strength);
     }
 
-    private final void mainLoop(LocalPipe is, LocalPipe os) {
+    private void mainLoop(LocalPipe is, LocalPipe os) {
         String line;
         while ((line = is.readLine()) != null) {
             handleCommand(line, os);
@@ -137,7 +137,7 @@ public class CuckooChessEngine extends UCIEngineBase {
         guiToEngine.addLine(data);
     }
 
-    private final void handleCommand(String cmdLine, LocalPipe os) {
+    private void handleCommand(String cmdLine, LocalPipe os) {
         String[] tokens = tokenize(cmdLine);
         try {
             String cmd = tokens[0];
@@ -269,14 +269,14 @@ public class CuckooChessEngine extends UCIEngineBase {
         }
     }
 
-    private final void initEngine(LocalPipe os) {
+    private void initEngine(LocalPipe os) {
         if (engine == null) {
             engine = new DroidEngineControl(os);
         }
     }
 
     /** Convert a string to tokens by splitting at whitespace characters. */
-    private final String[] tokenize(String cmdLine) {
+    private String[] tokenize(String cmdLine) {
         cmdLine = cmdLine.trim();
         return cmdLine.split("\\s+");
     }

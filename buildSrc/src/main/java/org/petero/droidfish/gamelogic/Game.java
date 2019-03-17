@@ -134,14 +134,14 @@ public class Game {
      *         Second item is move played, or null if no move was played. */
     public final Pair<Boolean, Move> processString(String str) {
         if (getGameState() != GameState.ALIVE)
-            return new Pair<Boolean,Move>(false, null);
+            return new Pair<>(false, null);
         if (str.startsWith("draw ")) {
             String drawCmd = str.substring(str.indexOf(" ") + 1);
             Move m = handleDrawCmd(drawCmd, true);
-            return new Pair<Boolean,Move>(true, m);
+            return new Pair<>(true, m);
         } else if (str.equals("resign")) {
             addToGameTree(new Move(0, 0, 0), "resign");
-            return new Pair<Boolean,Move>(true, null);
+            return new Pair<>(true, null);
         }
 
         Move m = TextIO.UCIstringToMove(str);
@@ -154,10 +154,10 @@ public class Game {
                 m = null;
         }
         if (m == null)
-            return new Pair<Boolean,Move>(false, null);
+            return new Pair<>(false, null);
 
         addToGameTree(m, pendingDrawOffer ? "draw offer" : "");
-        return new Pair<Boolean,Move>(true, m);
+        return new Pair<>(true, m);
     }
 
     /** Try claim a draw using a command string. Does not play the move involved
@@ -169,7 +169,7 @@ public class Game {
         }
     }
 
-    private final void addToGameTree(Move m, String playerAction) {
+    private void addToGameTree(Move m, String playerAction) {
         if (m.equals(new Move(0, 0, 0))) { // Don't create more than one game-ending move at a node
             List<Move> varMoves = tree.variations();
             for (int i = varMoves.size() - 1; i >= 0; i--)
@@ -240,7 +240,7 @@ public class Game {
         return gameEnd;
     }
 
-    private final void updateTimeControl(boolean discardElapsed) {
+    private void updateTimeControl(boolean discardElapsed) {
         Position currPos = currPos();
         int move = currPos.fullMoveCounter;
         boolean wtm = currPos.whiteMove;
@@ -454,7 +454,7 @@ public class Game {
         Pair<List<Node>, Integer> ml = tree.getMoveList();
         List<Node> moveList = ml.first;
         Position pos = new Position(tree.startPos);
-        ArrayList<Move> mList = new ArrayList<Move>();
+        ArrayList<Move> mList = new ArrayList<>();
         Position currPos = new Position(pos);
         UndoInfo ui = new UndoInfo();
         int nMoves = ml.second;
@@ -467,10 +467,10 @@ public class Game {
                 mList.clear();
             }
         }
-        return new Pair<Position, ArrayList<Move>>(pos, mList);
+        return new Pair<>(pos, mList);
     }
 
-    private final Move handleDrawCmd(String drawCmd, boolean playDrawMove) {
+    private Move handleDrawCmd(String drawCmd, boolean playDrawMove) {
         Move ret = null;
         Position pos = tree.currentPos;
         if (drawCmd.startsWith("rep") || drawCmd.startsWith("50")) {

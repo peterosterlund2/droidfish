@@ -40,7 +40,7 @@ import org.petero.droidfish.gamelogic.TimeControlData.TimeControlField;
 public class GameTreeTest extends TestCase {
 
     /** Add a move to the game tree, with no comments or annotations. */
-    private final int addStdMove(GameTree gt, String moveStr) {
+    private int addStdMove(GameTree gt, String moveStr) {
         return gt.addMove(moveStr, "", 0, "", "");
     }
 
@@ -129,7 +129,7 @@ public class GameTreeTest extends TestCase {
         assertEquals(2, varList.size());
     }
 
-    private final String getMoveListAsString(GameTree gt) {
+    private String getMoveListAsString(GameTree gt) {
         StringBuilder ret = new StringBuilder();
         Pair<List<Node>, Integer> ml = gt.getMoveList();
         List<Node> lst = ml.first;
@@ -318,9 +318,9 @@ public class GameTreeTest extends TestCase {
         assertEquals(initialTime, gt.getRemainingTime(false, initialTime));
     }
 
-    private final List<PgnToken> getAllTokens(String s) {
+    private List<PgnToken> getAllTokens(String s) {
         PgnScanner sc = new PgnScanner(s);
-        List<PgnToken> ret = new ArrayList<PgnToken>();
+        List<PgnToken> ret = new ArrayList<>();
         while (true) {
             PgnToken tok = sc.nextToken();
             if (tok.type == PgnToken.EOF)
@@ -729,7 +729,7 @@ public class GameTreeTest extends TestCase {
         assertTrue(tcData2.isSymmetric());
         assertTrue(tcData.equals(tcData2));
 
-        Map<String,String> headers = new TreeMap<String,String>();
+        Map<String,String> headers = new TreeMap<>();
         gt.getHeaders(headers);
         assertEquals("35/180", headers.get("TimeControl"));
         assertEquals(null, headers.get("WhiteTimeControl"));
@@ -741,7 +741,7 @@ public class GameTreeTest extends TestCase {
         tcData2 = gt.getTimeControlData();
         assertTrue(tcData2.isSymmetric());
         assertEquals(tcData, tcData2);
-        headers = new TreeMap<String,String>();
+        headers = new TreeMap<>();
         gt.getHeaders(headers);
         assertEquals("35/180", headers.get("TimeControl"));
         assertEquals(null, headers.get("WhiteTimeControl"));
@@ -757,7 +757,7 @@ public class GameTreeTest extends TestCase {
         tcData.tcB.add(new TimeControlField(60*1000,20,3004));
         tcData.tcB.add(new TimeControlField(30*1000,0,0));
         gt.setTimeControlData(tcData);
-        headers = new TreeMap<String,String>();
+        headers = new TreeMap<>();
         gt.getHeaders(headers);
         assertEquals(null, headers.get("TimeControl"));
         assertEquals("40/900:20/300.345:10/0+1:0+5", headers.get("WhiteTimeControl"));
@@ -773,7 +773,7 @@ public class GameTreeTest extends TestCase {
         tcData2 = gt.getTimeControlData();
         assertTrue(!tcData2.isSymmetric());
         assertEquals(tcData, tcData2);
-        headers = new TreeMap<String,String>();
+        headers = new TreeMap<>();
         gt.getHeaders(headers);
         assertEquals(null, headers.get("TimeControl"));
         assertEquals("40/900:20/300.345:10/0+1:0+5", headers.get("WhiteTimeControl"));
@@ -782,7 +782,7 @@ public class GameTreeTest extends TestCase {
         tcData = new TimeControlData();
         tcData.setTimeControl(2*60*1000, 0, 12000);
         gt.setTimeControlData(tcData);
-        headers = new TreeMap<String,String>();
+        headers = new TreeMap<>();
         gt.getHeaders(headers);
         assertEquals("120+12", headers.get("TimeControl"));
         assertEquals(null, headers.get("WhiteTimeControl"));
@@ -815,10 +815,10 @@ public class GameTreeTest extends TestCase {
             boolean res = gt.readPGN("[White \"a\"][Black \"b\"] f4 *", options);
             assertEquals(true, res);
 
-            TreeMap<String,String> headers = new TreeMap<String,String>();
+            TreeMap<String,String> headers = new TreeMap<>();
             headers.put("Event", "test");
             gt.setHeaders(headers);
-            TreeMap<String,String> newHeaders = new TreeMap<String,String>();
+            TreeMap<String,String> newHeaders = new TreeMap<>();
             gt.getHeaders(newHeaders);
             assertEquals("test", newHeaders.get("Event"));
 
@@ -836,7 +836,7 @@ public class GameTreeTest extends TestCase {
         {
             GameTree gt = new GameTree(null);
             gt.readPGN("f3 e5 g4 Qh4", options);
-            TreeMap<String,String> headers = new TreeMap<String,String>();
+            TreeMap<String,String> headers = new TreeMap<>();
             gt.getHeaders(headers);
             assertEquals("0-1", headers.get("Result"));
 

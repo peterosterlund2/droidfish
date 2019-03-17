@@ -37,6 +37,6 @@ public class SearchParams {
     boolean infinite;
 
     public SearchParams() {
-        searchMoves = new ArrayList<Move>();
+        searchMoves = new ArrayList<>();
     }
 }

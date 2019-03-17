@@ -40,17 +40,17 @@ public final class TimeControlData {
 
     /** Constructor. Set a default time control. */
     public TimeControlData() {
-        tcW = new ArrayList<TimeControlField>();
+        tcW = new ArrayList<>();
         tcW.add(new TimeControlField(5*60*1000, 60, 0));
-        tcB = new ArrayList<TimeControlField>();
+        tcB = new ArrayList<>();
         tcB.add(new TimeControlField(5*60*1000, 60, 0));
     }
 
     /** Set a single time control for both white and black. */
     public final void setTimeControl(int time, int moves, int inc) {
-        tcW = new ArrayList<TimeControlField>();
+        tcW = new ArrayList<>();
         tcW.add(new TimeControlField(time, moves, inc));
-        tcB = new ArrayList<TimeControlField>();
+        tcB = new ArrayList<>();
         tcB.add(new TimeControlField(time, moves, inc));
     }
 
@@ -90,7 +90,7 @@ public final class TimeControlData {
     /** De-serialize from input stream. */
     public void readFromStream(DataInputStream dis, int version) throws IOException {
         for (int c = 0; c < 2; c++) {
-            ArrayList<TimeControlField> tc = new ArrayList<TimeControlField>();
+            ArrayList<TimeControlField> tc = new ArrayList<>();
             if (c == 0)
                 tcW = tc;
             else

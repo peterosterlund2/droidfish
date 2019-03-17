@@ -64,7 +64,7 @@ final class InternalBook implements IOpeningBook {
         ArrayList<BookEntry> ents = bookMap.get(pos.zobristHash());
         if (ents == null)
             return null;
-        ArrayList<BookEntry> ret = new ArrayList<BookEntry>();
+        ArrayList<BookEntry> ret = new ArrayList<>();
         for (BookEntry be : ents) {
             BookEntry be2 = new BookEntry(be.move);
             be2.weight = (float)(Math.sqrt(be.weight) * 100 + 1);
@@ -82,13 +82,13 @@ final class InternalBook implements IOpeningBook {
         if (numBookMoves >= 0)
             return;
 //        long t0 = System.currentTimeMillis();
-        bookMap = new HashMap<Long, ArrayList<BookEntry>>();
+        bookMap = new HashMap<>();
         numBookMoves = 0;
         try {
             InputStream inStream = getClass().getResourceAsStream("/book.bin");
             if (inStream == null)
                 throw new IOException();
-            List<Byte> buf = new ArrayList<Byte>(8192);
+            List<Byte> buf = new ArrayList<>(8192);
             byte[] tmpBuf = new byte[1024];
             while (true) {
                 int len = inStream.read(tmpBuf);
@@ -131,10 +131,10 @@ final class InternalBook implements IOpeningBook {
 
 
     /** Add a move to a position in the opening book. */
-    private final void addToBook(Position pos, Move moveToAdd) {
+    private void addToBook(Position pos, Move moveToAdd) {
         ArrayList<BookEntry> ent = bookMap.get(pos.zobristHash());
         if (ent == null) {
-            ent = new ArrayList<BookEntry>();
+            ent = new ArrayList<>();
             bookMap.put(pos.zobristHash(), ent);
         }
         for (int i = 0; i < ent.size(); i++) {

@@ -171,14 +171,14 @@ public class TimeControl {
             currMove++;
         while (true) {
             if (tc.get(tcIdx).movesPerSession <= 0)
-                return new Pair<Integer,Integer>(tcIdx, 0);
+                return new Pair<>(tcIdx, 0);
             nextTC += tc.get(tcIdx).movesPerSession;
             if (nextTC > currMove)
                 break;
             if (tcIdx < lastTcIdx)
                 tcIdx++;
         }
-        return new Pair<Integer,Integer>(tcIdx, nextTC - currMove);
+        return new Pair<>(tcIdx, nextTC - currMove);
     }
 
     /** De-serialize from input stream. */

@@ -65,7 +65,7 @@ public class FENFile {
     /** Read all FEN strings (one per line) in a file. */
     public final Pair<FenInfoResult,ArrayList<FenInfo>> getFenInfo(Activity activity,
                                                                    final ProgressDialog progress) {
-        ArrayList<FenInfo> fensInFile = new ArrayList<FenInfo>();
+        ArrayList<FenInfo> fensInFile = new ArrayList<>();
         try {
             int percent = -1;
             fensInFile.clear();
@@ -94,15 +94,15 @@ public class FENFile {
                     }
                 }
                 if (Thread.currentThread().isInterrupted())
-                    return new Pair<FenInfoResult,ArrayList<FenInfo>>(FenInfoResult.CANCEL, null);
+                    return new Pair<>(FenInfoResult.CANCEL, null);
             }
             f.close();
         } catch (IOException e) {
         } catch (OutOfMemoryError e) {
             fensInFile.clear();
             fensInFile = null;
-            return new Pair<FenInfoResult,ArrayList<FenInfo>>(FenInfoResult.OUT_OF_MEMORY, null);
+            return new Pair<>(FenInfoResult.OUT_OF_MEMORY, null);
         }
-        return new Pair<FenInfoResult,ArrayList<FenInfo>>(FenInfoResult.OK, fensInFile);
+        return new Pair<>(FenInfoResult.OK, fensInFile);
     }
 }

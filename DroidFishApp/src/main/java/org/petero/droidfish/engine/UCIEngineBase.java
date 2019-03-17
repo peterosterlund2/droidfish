@@ -181,7 +181,7 @@ public abstract class UCIEngineBase implements UCIEngine {
         String defVal = null;
         String minVal = null;
         String maxVal = null;
-        ArrayList<String> var = new ArrayList<String>();
+        ArrayList<String> var = new ArrayList<>();
         try {
             for (; i < tokens.length; i++) {
                 if (tokens[i].equals("default")) {

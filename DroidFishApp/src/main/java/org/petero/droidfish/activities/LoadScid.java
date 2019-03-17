@@ -68,7 +68,7 @@ public class LoadScid extends ListActivity {
         }
     }
 
-    private static Vector<GameInfo> gamesInFile = new Vector<GameInfo>();
+    private static Vector<GameInfo> gamesInFile = new Vector<>();
     private static boolean cacheValid = false;
     private String fileName;
     private ProgressDialog progress;
@@ -229,7 +229,7 @@ public class LoadScid extends ListActivity {
         super.onDestroy();
     }
 
-    private final void showList() {
+    private void showList() {
         progress = null;
         removeProgressDialog();
         final ArrayAdapter<GameInfo> aa =
@@ -294,7 +294,7 @@ public class LoadScid extends ListActivity {
             ((DialogFragment)f).dismiss();
     }
 
-    private final boolean readFile(Cursor cursor) {
+    private boolean readFile(Cursor cursor) {
         if (!fileName.equals(lastFileName))
             defaultItem = 0;
         long modTime = new File(fileName).lastModified();
@@ -346,7 +346,7 @@ public class LoadScid extends ListActivity {
         gamesInFile.add(gi);
     }
 
-    private final void sendBackResult(final GameInfo gi) {
+    private void sendBackResult(final GameInfo gi) {
         if (resultSentBack)
             return;
         resultSentBack = true;

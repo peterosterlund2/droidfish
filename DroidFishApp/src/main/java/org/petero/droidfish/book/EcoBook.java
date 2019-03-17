@@ -45,7 +45,7 @@ public class EcoBook implements IOpeningBook {
     @Override
     public ArrayList<BookEntry> getBookEntries(Position pos) {
         ArrayList<Move> moves = EcoDb.getInstance().getMoves(pos);
-        ArrayList<BookEntry> entries = new ArrayList<BookEntry>();
+        ArrayList<BookEntry> entries = new ArrayList<>();
         for (int i = 0; i < moves.size(); i++) {
             BookEntry be = new BookEntry(moves.get(i));
             be.weight = 10000 - i;

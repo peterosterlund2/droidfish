@@ -134,7 +134,7 @@ public class CuckooChess extends Activity implements GUIInterface {
                 tmp = settings.getString("numUndo", null);
                 if (tmp != null) numUndo = tmp;
             }
-            List<String> posHistStr = new ArrayList<String>();
+            List<String> posHistStr = new ArrayList<>();
             posHistStr.add(fen);
             posHistStr.add(moves);
             posHistStr.add(numUndo);

@@ -126,11 +126,11 @@ public class TimeControlTest extends TestCase {
     public void testMultiTimeControl() {
         TimeControl tc = new TimeControl();
         TimeControlData tcData = new TimeControlData();
-        tcData.tcW = new ArrayList<TimeControlField>();
+        tcData.tcW = new ArrayList<>();
         tcData.tcW.add(tcf(120*60*1000, 40, 0));
         tcData.tcW.add(tcf(60*60*1000, 20, 0));
         tcData.tcW.add(tcf(30*60*1000, 0, 15*1000));
-        tcData.tcB = new ArrayList<TimeControlField>();
+        tcData.tcB = new ArrayList<>();
         tcData.tcB.add(tcf(5*60*1000, 60, 1000));
         tc.setTimeControl(tcData);
 
@@ -236,11 +236,11 @@ public class TimeControlTest extends TestCase {
     public void testSerialize() throws IOException {
         TimeControl tc = new TimeControl();
         TimeControlData tcData = new TimeControlData();
-        tcData.tcW = new ArrayList<TimeControlField>();
+        tcData.tcW = new ArrayList<>();
         tcData.tcW.add(tcf(120*60*1000, 40, 0));
         tcData.tcW.add(tcf(60*60*1000, 20, 0));
         tcData.tcW.add(tcf(30*60*1000, 0, 15*1000));
-        tcData.tcB = new ArrayList<TimeControlField>();
+        tcData.tcB = new ArrayList<>();
         tcData.tcB.add(tcf(5*60*1000, 60, 1000));
         tc.setTimeControl(tcData);
 

@@ -597,7 +597,7 @@ public class TextIO {
         return str;
     }
     
-    private final static String pieceToChar(int p) {
+    private static String pieceToChar(int p) {
         switch (p) {
             case Piece.WQUEEN:  case Piece.BQUEEN:  return "Q";
             case Piece.WROOK:   case Piece.BROOK:   return "R";

@@ -51,7 +51,7 @@ public class ChessEngineResolver {
     }
 
     public List<ChessEngine> resolveEngines() {
-        List<ChessEngine> result = new ArrayList<ChessEngine>();
+        List<ChessEngine> result = new ArrayList<>();
         final Intent intent = new Intent(ENGINE_PROVIDER_MARKER);
         List<ResolveInfo> list = context.getPackageManager()
                 .queryIntentActivities(intent, PackageManager.GET_META_DATA);

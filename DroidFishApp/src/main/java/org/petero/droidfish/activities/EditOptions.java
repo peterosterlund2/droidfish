@@ -86,7 +86,7 @@ public class EditOptions extends Activity {
         return super.onKeyDown(keyCode, event);
     }
 
-    private final void initUI() {
+    private void initUI() {
         String title = getString(R.string.edit_options_title);
         if (engineName != null)
             title = title + ": " + engineName;
@@ -272,9 +272,9 @@ public class EditOptions extends Activity {
         });
     }
 
-    private final void sendBackResult() {
+    private void sendBackResult() {
         if (uciOpts != null) {
-            TreeMap<String, String> uciMap = new TreeMap<String,String>();
+            TreeMap<String, String> uciMap = new TreeMap<>();
             for (String name : uciOpts.getOptionNames()) {
                 UCIOptions.OptionBase o = uciOpts.getOption(name);
                 if (o != null) {

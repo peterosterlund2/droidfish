@@ -434,7 +434,7 @@ public class MoveGenTest {
         MoveGen.MoveList moves = moveGen.pseudoLegalMoves(pos);
         if (onlyLegal)
             MoveGen.removeIllegal(pos, moves);
-        ArrayList<String> strMoves = new ArrayList<String>();
+        ArrayList<String> strMoves = new ArrayList<>();
         for (int mi = 0; mi < moves.size; mi++) {
             Move m = moves.m[mi];
             String mStr = TextIO.moveToUCIString(m);
@@ -512,7 +512,7 @@ public class MoveGenTest {
         }
         if (onlyLegal)
             MoveGen.removeIllegal(pos, moves);
-        ArrayList<String> strMoves = new ArrayList<String>();
+        ArrayList<String> strMoves = new ArrayList<>();
         for (int mi = 0; mi < moves.size; mi++) {
             Move m = moves.m[mi];
             String mStr = TextIO.moveToUCIString(m);
@@ -527,7 +527,7 @@ public class MoveGenTest {
         MoveGen.MoveList moves = new MoveGen().checkEvasions(pos);
         if (onlyLegal)
             MoveGen.removeIllegal(pos, moves);
-        ArrayList<String> strMoves = new ArrayList<String>();
+        ArrayList<String> strMoves = new ArrayList<>();
         for (int mi = 0; mi < moves.size; mi++) {
             Move m = moves.m[mi];
             String mStr = TextIO.moveToUCIString(m);
