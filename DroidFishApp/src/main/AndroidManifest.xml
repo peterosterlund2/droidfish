@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="org.petero.droidfish"
+      android:installLocation="auto">
+    <supports-screens android:largeScreens="true"
+                      android:anyDensity="true" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application android:name="org.petero.droidfish.DroidFishApp"
+                 android:icon="@mipmap/icon"
+                 android:theme="@android:style/Theme.Holo"
+                 android:label="@string/app_name"
+                 android:allowBackup="true"
+                 android:resizeableActivity="true">
+        <activity android:name=".DroidFish"
+                  android:label="@string/app_name"
+                  android:theme="@android:style/Theme.Holo.NoActionBar"
+                  android:configChanges="orientation|screenSize|keyboardHidden|screenLayout|smallestScreenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/x-chess-pgn" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\.pgn"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\.pgn"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\.pgn"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\.pgn"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\.pgn"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.pgn"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.pgn"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.pgn"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.pgn"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\.fen"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\.fen"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\.fen"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\.fen"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\.fen"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\.fen"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.fen"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\.epd"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\.epd"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\.epd"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\.epd"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\.epd"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.epd"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.epd"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.epd"/>
+                <data android:mimeType="text/plain" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.epd"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\.epd"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\.epd"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\.epd"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\.epd"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\.epd"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.epd"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.epd"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.epd"/>
+                <data android:mimeType="application/octet-stream" android:scheme="file" android:host="*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.epd"/>
+                </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/x-chess-pgn" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/x-chess-fen" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/x-chess-fen" />
+            </intent-filter>
+            </activity>
+        <activity android:name=".activities.Preferences"
+                  android:label="@string/preferences">
+        </activity>
+        <activity android:name=".activities.EditBoard"
+                  android:label="@string/edit_board"
+                  android:configChanges="orientation|screenSize|keyboardHidden|screenLayout|smallestScreenSize">
+        </activity>
+        <activity android:name=".activities.EditPGNLoad"
+                  android:label="@string/load_game_title"
+                  android:configChanges="orientation|screenSize|keyboardHidden|screenLayout|smallestScreenSize">
+        </activity>
+        <activity android:name=".activities.EditPGNSave"
+                  android:label="@string/save_game_title"
+                  android:configChanges="orientation|screenSize|keyboardHidden|screenLayout|smallestScreenSize">
+        </activity>
+        <activity android:name=".activities.LoadScid"
+                  android:label="@string/load_scid_game_title"
+                  android:configChanges="orientation|screenSize|keyboardHidden|screenLayout|smallestScreenSize">
+        </activity>
+        <activity android:name=".activities.LoadFEN"
+                  android:label="@string/load_fen_title"
+                  android:configChanges="orientation|screenSize|keyboardHidden|screenLayout|smallestScreenSize">
+        </activity>
+        <activity android:name=".activities.CPUWarning"
+                  android:label="@string/cpu_warning_title">
+        </activity>
+        <activity android:name=".activities.EditOptions"
+                  android:configChanges="orientation|screenSize|keyboardHidden|screenLayout|smallestScreenSize">
+        </activity>
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="org.petero.droidfish.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths"/>
+        </provider>
+        <meta-data android:name="android.max_aspect" android:value="4.0"/>
+        <meta-data android:name="com.samsung.android.keepalive.density" android:value="true"/>
+    </application>
+</manifest>
