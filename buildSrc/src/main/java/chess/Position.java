@@ -35,9 +35,6 @@ public class Position {
     public long[] pieceTypeBB;
     public long whiteBB, blackBB;
     
-    // Piece square table scores
-    public short[] psScore1, psScore2;
-
     public boolean whiteMove;
 
     /** Bit definitions for the castleMask bit mask. */
@@ -59,10 +56,6 @@ public class Position {
     private long hashKey;           // Cached Zobrist hash key
     private long pHashKey;
     public int wKingSq, bKingSq;   // Cached king positions
-    public int wMtrl;      // Total value of all white pieces and pawns
-    public int bMtrl;      // Total value of all black pieces and pawns
-    public int wMtrlPawns; // Total value of all white pawns
-    public int bMtrlPawns; // Total value of all black pawns
 
     /** Initialize board to empty position. */
     public Position() {
@@ -70,12 +63,8 @@ public class Position {
         for (int i = 0; i < 64; i++)
             squares[i] = Piece.EMPTY;
         pieceTypeBB = new long[Piece.nPieceTypes];
-        psScore1 = new short[Piece.nPieceTypes];
-        psScore2 = new short[Piece.nPieceTypes];
         for (int i = 0; i < Piece.nPieceTypes; i++) {
             pieceTypeBB[i] = 0L;
-            psScore1[i] = 0;
-            psScore2[i] = 0;
         }
         whiteBB = blackBB = 0L;
         whiteMove = true;
@@ -85,8 +74,6 @@ public class Position {
         fullMoveCounter = 1;
         hashKey = computeZobristHash();
         wKingSq = bKingSq = -1;
-        wMtrl = bMtrl = -Evaluate.kV;
-        wMtrlPawns = bMtrlPawns = 0;
     }
 
     public Position(Position other) {
@@ -94,12 +81,8 @@ public class Position {
         for (int i = 0; i < 64; i++)
             squares[i] = other.squares[i];
         pieceTypeBB = new long[Piece.nPieceTypes];
-        psScore1 = new short[Piece.nPieceTypes];
-        psScore2 = new short[Piece.nPieceTypes];
         for (int i = 0; i < Piece.nPieceTypes; i++) {
             pieceTypeBB[i] = other.pieceTypeBB[i];
-            psScore1[i] = other.psScore1[i];
-            psScore2[i] = other.psScore2[i];
         }
         whiteBB = other.whiteBB;
         blackBB = other.blackBB;
@@ -112,10 +95,6 @@ public class Position {
         pHashKey = other.pHashKey;
         wKingSq = other.wKingSq;
         bKingSq = other.bKingSq;
-        wMtrl = other.wMtrl;
-        bMtrl = other.bMtrl;
-        wMtrlPawns = other.wMtrlPawns;
-        bMtrlPawns = other.bMtrlPawns;
     }
     
     @Override
@@ -235,9 +214,6 @@ public class Position {
             if (piece == Piece.BKING)
                 bKingSq = to;
         }
-
-        psScore1[piece] += Evaluate.psTab1[piece][to] - Evaluate.psTab1[piece][from];
-        psScore2[piece] += Evaluate.psTab2[piece][to] - Evaluate.psTab2[piece][from];
     }
 
     /** Set a square to a piece value. */
@@ -255,52 +231,36 @@ public class Position {
         pieceTypeBB[piece] |= sqMask;
 
         if (removedPiece != Piece.EMPTY) {
-            int pVal = Evaluate.pieceValue[removedPiece];
             if (Piece.isWhite(removedPiece)) {
-                wMtrl -= pVal;
                 whiteBB &= ~sqMask;
                 if (removedPiece == Piece.WPAWN) {
-                    wMtrlPawns -= pVal;
                     pHashKey ^= psHashKeys[Piece.WPAWN][square];
                 }
             } else {
-                bMtrl -= pVal;
                 blackBB &= ~sqMask;
                 if (removedPiece == Piece.BPAWN) {
-                    bMtrlPawns -= pVal;
                     pHashKey ^= psHashKeys[Piece.BPAWN][square];
                 }
             }
         }
 
         if (piece != Piece.EMPTY) {
-            int pVal = Evaluate.pieceValue[piece];
             if (Piece.isWhite(piece)) {
-                wMtrl += pVal;
                 whiteBB |= sqMask;
                 if (piece == Piece.WPAWN) {
-                    wMtrlPawns += pVal;
                     pHashKey ^= psHashKeys[Piece.WPAWN][square];
                 }
                 if (piece == Piece.WKING)
                     wKingSq = square;
             } else {
-                bMtrl += pVal;
                 blackBB |= sqMask;
                 if (piece == Piece.BPAWN) {
-                    bMtrlPawns += pVal;
                     pHashKey ^= psHashKeys[Piece.BPAWN][square];
                 }
                 if (piece == Piece.BKING)
                     bKingSq = square;
             }
         }
-
-        // Update piece/square table scores
-        psScore1[removedPiece] -= Evaluate.psTab1[removedPiece][square];
-        psScore2[removedPiece] -= Evaluate.psTab2[removedPiece][square];
-        psScore1[piece]        += Evaluate.psTab1[piece][square];
-        psScore2[piece]        += Evaluate.psTab2[piece][square];
     }
 
     /**
@@ -372,6 +332,15 @@ public class Position {
 
     public final int getKingSq(boolean white) {
         return white ? wKingSq : bKingSq;
+    }
+
+    /** Count number of pieces of a certain type. */
+    public final int nPieces(int pType) {
+        int ret = 0;
+        for (int sq = 0; sq < 64; sq++)
+            if (squares[sq] == pType)
+                ret++;
+        return ret;
     }
 
     /** Apply a move to the current position. */
@@ -635,11 +604,5 @@ public class Position {
         } catch (NoSuchAlgorithmException ex) {
             throw new UnsupportedOperationException("SHA-1 not available");
         }
-    }
-
-    /** Useful for debugging. */
-    public final String toString() {
-        return TextIO.asciiBoard(this) + (whiteMove ? "white\n" : "black\n") +
-                Long.toHexString(zobristHash()) + "\n";
     }
 }

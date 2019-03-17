@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package org.petero.droidfish;
+package chess;
 
 /** Settings controlling PGN import/export */
 public class PGNOptions {

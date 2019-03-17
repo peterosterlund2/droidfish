@@ -100,8 +100,8 @@ public class Move {
         return (from * 64 + to) * 16 + promoteTo;
     }
 
-    /** Useful for debugging. */
-    public final String toString() {
-        return TextIO.moveToUCIString(this);
+    /** Get move as a 16-bit value. */
+    public int getCompressedMove() {
+        return (from * 64 + to) * 16 + promoteTo;
     }
 }

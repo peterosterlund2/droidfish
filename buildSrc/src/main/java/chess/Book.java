@@ -130,14 +130,13 @@ public class Book {
             return null;
         }
         
-        MoveGen.MoveList legalMoves = new MoveGen().pseudoLegalMoves(pos);
-        MoveGen.removeIllegal(pos, legalMoves);
+        ArrayList<Move> legalMoves = MoveGen.instance.legalMoves(pos);
         int sum = 0;
         for (int i = 0; i < bookMoves.size(); i++) {
             BookEntry be = bookMoves.get(i);
             boolean contains = false;
-            for (int mi = 0; mi < legalMoves.size; mi++)
-                if (legalMoves.m[mi].equals(be.move)) {
+            for (Move m : legalMoves)
+                if (m.equals(be.move)) {
                     contains = true;
                     break;
                 }

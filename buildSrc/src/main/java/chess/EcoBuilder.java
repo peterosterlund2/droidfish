@@ -16,19 +16,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package org.petero.droidfish.buildtools;
+package chess;
 
 
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import org.petero.droidfish.FileUtil;
-import org.petero.droidfish.PGNOptions;
-import org.petero.droidfish.gamelogic.Game;
-import org.petero.droidfish.gamelogic.GameTree;
-import org.petero.droidfish.gamelogic.Move;
-import org.petero.droidfish.gamelogic.TimeControlData;
 
 /** Build the ECO data file from eco.pgn. */
 public class EcoBuilder {

@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package org.petero.droidfish.gamelogic;
+package chess;
 
 /** A helper class that makes it possible to return two values from a function. */
 public final class Pair<T1, T2> {

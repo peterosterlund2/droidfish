@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package org.petero.droidfish.gamelogic;
+package chess;
 
 /** A token in a PGN data stream. Used by the PGN parser. */
 public class PgnToken {

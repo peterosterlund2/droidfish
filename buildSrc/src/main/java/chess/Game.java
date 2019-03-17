@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package org.petero.droidfish.gamelogic;
+package chess;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -24,8 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.petero.droidfish.PGNOptions;
-import org.petero.droidfish.gamelogic.GameTree.Node;
+import chess.GameTree.Node;
 
 public class Game {
     boolean pendingDrawOffer;
@@ -263,10 +262,6 @@ public class Game {
         } else {
             timeController.startTimer(now);
         }
-    }
-
-    public final String getDrawInfo(boolean localized) {
-        return tree.getGameStateInfo(localized);
     }
 
     /**
@@ -520,7 +515,7 @@ public class Game {
             if (valid) {
                 String playerAction = rep ? "draw rep" : "draw 50";
                 if (m != null)
-                    playerAction += " " + TextIO.moveToString(pos, m, false, false);
+                    playerAction += " " + TextIO.moveToString(pos, m, false);
                 addToGameTree(new Move(0, 0, 0), playerAction);
             } else {
                 pendingDrawOffer = true;

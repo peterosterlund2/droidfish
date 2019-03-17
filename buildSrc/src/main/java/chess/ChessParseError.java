@@ -1,5 +1,5 @@
 /*
-    CuckooChess - A java chess program.
+    DroidFish - An Android chess program.
     Copyright (C) 2011  Peter Österlund, peterosterlund2@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -21,9 +21,28 @@ package chess;
 /** Exception class to represent parse errors in FEN or algebraic notation. */
 public class ChessParseError extends Exception {
     private static final long serialVersionUID = -6051856171275301175L;
-    public ChessParseError() {
-    }
+
+    public Position pos;
+    public int resourceId = -1;
+
     public ChessParseError(String msg) {
         super(msg);
+        pos = null;
+    }
+    public ChessParseError(String msg, Position pos) {
+        super(msg);
+        this.pos = pos;
+    }
+
+    public ChessParseError(int resourceId) {
+        super("");
+        pos = null;
+        this.resourceId = resourceId;
+    }
+
+    public ChessParseError(int resourceId, Position pos) {
+        super("");
+        this.pos = pos;
+        this.resourceId = resourceId;
     }
 }

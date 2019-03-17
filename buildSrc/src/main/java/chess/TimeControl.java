@@ -16,14 +16,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package org.petero.droidfish.gamelogic;
+package chess;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.petero.droidfish.gamelogic.TimeControlData.TimeControlField;
+import chess.TimeControlData.TimeControlField;
 
 /** Keep track of time control information for both players. */
 public class TimeControl {
