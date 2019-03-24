@@ -61,9 +61,9 @@ dependencies {
 
 // Build the ECO database
 task buildEco {
-    def a = "buildSrc/src/main/java/org/petero/droidfish/buildtools/eco.pgn"
+    def a = "buildSrc/src/main/java/chess/eco.pgn"
     def b = "DroidFishApp/src/main/assets/eco.dat"
-    org.petero.droidfish.buildtools.EcoBuilder.main2(a, b)
+    chess.EcoBuilder.main2(a, b)
 }
 preBuild.dependsOn buildEco
 
