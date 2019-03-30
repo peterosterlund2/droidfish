@@ -37,7 +37,8 @@ import org.petero.droidfish.gamelogic.TimeControlData.TimeControlField;
 
 public class GameTree {
     // Data from the seven tag roster (STR) part of the PGN standard
-    String event, site, date, round, white, black;
+    private String event, site, date, round;
+    public String white, black;
     // Result is the last tag pair in the STR, but it is computed on demand from the game tree.
 
     public Position startPos;
@@ -63,7 +64,7 @@ public class GameTree {
         this.gameStateListener = gameStateListener;
         try {
             setStartPos(TextIO.readFEN(TextIO.startPosFEN));
-        } catch (ChessParseError e) {
+        } catch (ChessParseError ignore) {
         }
     }
 
@@ -114,11 +115,9 @@ public class GameTree {
             ret.append(header);
             ret.append('\n');
 
-            String[] words = sb.toString().split(" ");
             int currLineLength = 0;
-            final int arrLen = words.length;
-            for (int i = 0; i < arrLen; i++) {
-                String word = words[i].trim();
+            for (String s : sb.toString().split(" ")) {
+                String word = s.trim();
                 int wordLen = word.length();
                 if (wordLen > 0) {
                     if (currLineLength == 0) {
@@ -1390,7 +1389,7 @@ public class GameTree {
                                 break;
                             nodeToAdd.playerAction = cmdPars;
                         }
-                    } catch (IndexOutOfBoundsException e) {
+                    } catch (IndexOutOfBoundsException ignore) {
                     }
                     if (options.imp.comments) {
                         if (moveAdded)
@@ -1605,10 +1604,9 @@ public class GameTree {
 
     private ArrayList<TimeControlField> stringToTCFields(String tcStr) {
         String[] fields = tcStr.split(":");
-        int nf = fields.length;
-        ArrayList<TimeControlField> ret = new ArrayList<>(nf);
-        for (int i = 0; i < nf; i++) {
-            String f = fields[i].trim();
+        ArrayList<TimeControlField> ret = new ArrayList<>(fields.length);
+        for (String s : fields) {
+            String f = s.trim();
             if (f.equals("?") || f.equals("-") || f.contains("*")) {
                 // Not supported
             } else {
@@ -1625,8 +1623,7 @@ public class GameTree {
                     if (idx >= 0) {
                         if (idx > 0)
                             time = (int)(Double.parseDouble(f.substring(0, idx).trim())*1e3);
-                        if (idx >= 0)
-                            f = f.substring(idx+1);
+                        f = f.substring(idx+1);
                         inc = (int)(Double.parseDouble(f.trim())*1e3);
                     } else {
                         time = (int)(Double.parseDouble(f.trim())*1e3);

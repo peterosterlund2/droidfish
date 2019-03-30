@@ -40,7 +40,7 @@ public abstract class UCIEngineBase implements UCIEngine {
     public static UCIEngine getEngine(String engine,
                                       EngineOptions engineOptions, Report report) {
         if ("cuckoochess".equals(engine))
-            return new CuckooChessEngine(report);
+            return new CuckooChessEngine();
         else if ("stockfish".equals(engine))
             return new InternalStockFish(report);
         else if (EngineUtil.isOpenExchangeEngine(engine))
@@ -80,10 +80,10 @@ public abstract class UCIEngineBase implements UCIEngine {
         try {
             is = new FileInputStream(optionsFile);
             iniOptions.load(is);
-        } catch (IOException ex) {
+        } catch (IOException ignore) {
         } finally {
             if (is != null)
-                try { is.close(); } catch (IOException ex) {}
+                try { is.close(); } catch (IOException ignore) {}
         }
         for (Map.Entry<Object,Object> ent : iniOptions.entrySet()) {
             if (ent.getKey() instanceof String && ent.getValue() instanceof String) {
@@ -99,8 +99,8 @@ public abstract class UCIEngineBase implements UCIEngine {
     public final boolean setUCIOptions(Map<String,String> uciOptions) {
         boolean modified = false;
         for (Map.Entry<String,String> ent : uciOptions.entrySet()) {
-            String key = ((String)ent.getKey()).toLowerCase(Locale.US);
-            String value = (String)ent.getValue();
+            String key = ent.getKey().toLowerCase(Locale.US);
+            String value = ent.getValue();
             if (configurableOption(key))
                 modified |= setOption(key, value);
         }
@@ -120,10 +120,10 @@ public abstract class UCIEngineBase implements UCIEngine {
         try {
             os = new FileOutputStream(optionsFile);
             iniOptions.store(os, null);
-        } catch (IOException ex) {
+        } catch (IOException ignore) {
         } finally {
             if (os != null)
-                try { os.close(); } catch (IOException ex) {}
+                try { os.close(); } catch (IOException ignore) {}
         }
     }
 

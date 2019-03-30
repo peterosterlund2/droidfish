@@ -29,16 +29,13 @@ public class PieceTest {
     }
 
     @BeforeClass
-    public static void setUpClass() throws Exception {
+    public static void setUpClass() {
     }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {
+    public static void tearDownClass() {
     }
 
-    /**
-     * Test of isWhite method, of class Piece.
-     */
     @Test
     public void testIsWhite() {
         System.out.println("isWhite");

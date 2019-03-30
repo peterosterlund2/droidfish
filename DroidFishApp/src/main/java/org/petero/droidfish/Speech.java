@@ -105,7 +105,7 @@ public class Speech {
     }
 
     @SuppressWarnings("deprecation")
-    public void say(String text) {
+    private void say(String text) {
         if (initialized) {
             if (lang != Language.NONE && text != null) {
                 if (!tts.isSpeaking())

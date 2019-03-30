@@ -1592,7 +1592,7 @@ public class DroidFish extends Activity
                 if (lines.length >= 3)
                     id = lines[1] + ":" + lines[2];
             }
-        } catch (IOException e) {
+        } catch (IOException ignore) {
         }
         engineOptions.networkID = id;
     }
@@ -1783,7 +1783,7 @@ public class DroidFish extends Activity
                     String fen = data.getAction();
                     ctrl.setFENOrPGN(fen);
                     setBoardFlip(false);
-                } catch (ChessParseError e) {
+                } catch (ChessParseError ignore) {
                 }
             }
             break;
@@ -1830,7 +1830,7 @@ public class DroidFish extends Activity
                 if (pathName != null) {
                     if ((pathName.length() > 0) && !pathName.contains("."))
                         pathName += ".pgn";
-                    savePGNToFile(pathName, false);
+                    savePGNToFile(pathName);
                 }
             }
             break;
@@ -2350,8 +2350,8 @@ public class DroidFish extends Activity
                 }
                 case PASTE: {
                     ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-                    if (clipboard.hasPrimaryClip()) {
-                        ClipData clip = clipboard.getPrimaryClip();
+                    ClipData clip = clipboard.getPrimaryClip();
+                    if (clip != null) {
                         StringBuilder fenPgn = new StringBuilder();
                         for (int i = 0; i < clip.getItemCount(); i++)
                             fenPgn.append(clip.getItemAt(i).coerceToText(getApplicationContext()));
@@ -2458,7 +2458,7 @@ public class DroidFish extends Activity
         try {
             startActivity(Intent.createChooser(i, getString(game ? R.string.share_game :
                                                                    R.string.share_text)));
-        } catch (ActivityNotFoundException ex) {
+        } catch (ActivityNotFoundException ignore) {
         }
     }
 
@@ -2493,7 +2493,7 @@ public class DroidFish extends Activity
         i.setType("image/png");
         try {
             startActivity(Intent.createChooser(i, getString(R.string.share_image)));
-        } catch (ActivityNotFoundException ex) {
+        } catch (ActivityNotFoundException ignore) {
         }
     }
 
@@ -2575,12 +2575,12 @@ public class DroidFish extends Activity
         String data = FileUtil.readFromStream(is);
         if (data == null)
             data = "";
-        try { is.close(); } catch (IOException e1) {}
+        try { is.close(); } catch (IOException ignore) {}
         wv.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
         try {
             PackageInfo pi = getPackageManager().getPackageInfo("org.petero.droidfish", 0);
             title += " " + pi.versionName;
-        } catch (NameNotFoundException e) {
+        } catch (NameNotFoundException ignore) {
         }
         builder.setTitle(title);
         return builder.create();
@@ -2812,7 +2812,7 @@ public class DroidFish extends Activity
                     pgnFile = fileNames[item];
                     String sep = File.separator;
                     String pathName = Environment.getExternalStorageDirectory() + sep + pgnDir + sep + pgnFile;
-                    savePGNToFile(pathName, false);
+                    savePGNToFile(pathName);
                 }
             }
         });
@@ -2834,7 +2834,7 @@ public class DroidFish extends Activity
                     pgnFile += ".pgn";
                 String sep = File.separator;
                 String pathName = Environment.getExternalStorageDirectory() + sep + pgnDir + sep + pgnFile;
-                savePGNToFile(pathName, false);
+                savePGNToFile(pathName);
             }
         };
         builder.setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
@@ -3239,7 +3239,7 @@ public class DroidFish extends Activity
                             seekBar.setProgress(p);
                         updateText(editTxt, progressToNumPV(p, maxPV));
                         
-                    } catch (NumberFormatException ex) {
+                    } catch (NumberFormatException ignore) {
                     }
                 }
                 @Override
@@ -3560,7 +3560,7 @@ public class DroidFish extends Activity
                 if (lines.length > 2)
                     port = lines[2];
             }
-        } catch (IOException e1) {
+        } catch (IOException ignore) {
         }
         hostNameView.setText(hostName);
         portView.setText(port);
@@ -3776,7 +3776,7 @@ public class DroidFish extends Activity
     }
 
     /** Save current game to a PGN file. */
-    private void savePGNToFile(String pathName, boolean silent) {
+    private void savePGNToFile(String pathName) {
         String pgn = ctrl.getPGN();
         String pgnToken = cache.storeString(pgn);
         Editor editor = settings.edit();
@@ -3787,7 +3787,7 @@ public class DroidFish extends Activity
         i.setAction("org.petero.droidfish.saveFile");
         i.putExtra("org.petero.droidfish.pathname", pathName);
         i.putExtra("org.petero.droidfish.pgn", pgnToken);
-        i.putExtra("org.petero.droidfish.silent", silent);
+        i.putExtra("org.petero.droidfish.silent", false);
         startActivity(i);
     }
 
@@ -3881,7 +3881,7 @@ public class DroidFish extends Activity
                     moveSound = MediaPlayer.create(this, R.raw.movesound);
                     if (moveSound != null)
                         moveSound.start();
-                } catch (NotFoundException ex) {
+                } catch (NotFoundException ignore) {
                 }
             }
         } else if (moveAnnounceType.startsWith("speech_")) {
@@ -3915,8 +3915,8 @@ public class DroidFish extends Activity
             return;
         notificationActive = show;
         final int cpuUsage = 1;
-        String ns = Context.NOTIFICATION_SERVICE;
-        NotificationManager mNotificationManager = (NotificationManager)getSystemService(ns);
+        NotificationManager mNotificationManager =
+                (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         if (show) {
             boolean silhouette = Build.VERSION.SDK_INT >= 21;
             int icon = silhouette ? R.drawable.silhouette : R.mipmap.icon;

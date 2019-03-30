@@ -120,8 +120,8 @@ public class ColorTheme {
             colorTable[i] = 0;
             try {
                 colorTable[i] = Color.parseColor(colorString);
-            } catch (IllegalArgumentException e) {
-            } catch (StringIndexOutOfBoundsException e) {
+            } catch (IllegalArgumentException ignore) {
+            } catch (StringIndexOutOfBoundsException ignore) {
             }
         }
     }

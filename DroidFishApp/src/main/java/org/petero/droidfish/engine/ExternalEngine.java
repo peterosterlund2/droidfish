@@ -43,7 +43,7 @@ public class ExternalEngine extends UCIEngineBase {
     private Thread exitThread;
     private Thread stdInThread;
     private Thread stdErrThread;
-    private LocalPipe inLines;
+    private final LocalPipe inLines;
     private boolean startedOk;
     private boolean isRunning;
 
@@ -107,7 +107,7 @@ public class ExternalEngine extends UCIEngineBase {
                         else {
                             report.reportError(context.getString(R.string.engine_terminated));
                         }
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException ignore) {
                     }
                 }
             });
@@ -127,7 +127,7 @@ public class ExternalEngine extends UCIEngineBase {
                     try {
                         boolean first = true;
                         while ((line = br.readLine()) != null) {
-                            if ((ep == null) || Thread.currentThread().isInterrupted())
+                            if (Thread.currentThread().isInterrupted())
                                 return;
                             synchronized (inLines) {
                                 inLines.addLine(line);
@@ -138,7 +138,7 @@ public class ExternalEngine extends UCIEngineBase {
                                 }
                             }
                         }
-                    } catch (IOException e) {
+                    } catch (IOException ignore) {
                     }
                     inLines.close();
                 }
@@ -177,7 +177,7 @@ public class ExternalEngine extends UCIEngineBase {
             f.setAccessible(true);
             int pid = f.getInt(engineProc);
             EngineUtil.reNice(pid, 10);
-        } catch (Throwable t) {
+        } catch (Throwable ignore) {
         }
     }
 
@@ -193,7 +193,7 @@ public class ExternalEngine extends UCIEngineBase {
                     f.delete();
             }
             new File(context.getFilesDir(), "engine.exe").delete();
-        } catch (IOException e) {
+        } catch (IOException ignore) {
         }
     }
 
@@ -276,7 +276,7 @@ public class ExternalEngine extends UCIEngineBase {
                 ep.getOutputStream().write(data.getBytes());
                 ep.getOutputStream().flush();
             }
-        } catch (IOException e) {
+        } catch (IOException ignore) {
         }
     }
 
@@ -294,7 +294,7 @@ public class ExternalEngine extends UCIEngineBase {
                     engineProc.exitValue();
                     break;
                 } catch (IllegalThreadStateException e) {
-                    try { Thread.sleep(10); } catch (InterruptedException e2) { }
+                    try { Thread.sleep(10); } catch (InterruptedException ignore) { }
                 }
             }
             engineProc.destroy();
@@ -325,8 +325,8 @@ public class ExternalEngine extends UCIEngineBase {
             if (cnt < inFC.size())
                 throw new IOException("File copy failed");
         } finally {
-            if (fis != null) { try { fis.close(); } catch (IOException ex) {} }
-            if (fos != null) { try { fos.close(); } catch (IOException ex) {} }
+            if (fis != null) { try { fis.close(); } catch (IOException ignore) {} }
+            if (fos != null) { try { fos.close(); } catch (IOException ignore) {} }
             to.setLastModified(from.lastModified());
         }
         return to.getAbsolutePath();

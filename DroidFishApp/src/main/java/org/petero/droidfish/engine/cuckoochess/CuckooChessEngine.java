@@ -49,7 +49,7 @@ public class CuckooChessEngine extends UCIEngineBase {
     private LocalPipe engineToGui;
     private Thread engineThread;
 
-    public CuckooChessEngine(Report report) {
+    public CuckooChessEngine() {
         pos = null;
         moves = new ArrayList<>();
         quit = false;
@@ -263,9 +263,9 @@ public class CuckooChessEngine extends UCIEngineBase {
                 }
                 quit = true;
             }
-        } catch (ChessParseError ex) {
-        } catch (ArrayIndexOutOfBoundsException e) {
-        } catch (NumberFormatException nfe) {
+        } catch (ChessParseError ignore) {
+        } catch (ArrayIndexOutOfBoundsException ignore) {
+        } catch (NumberFormatException ignore) {
         }
     }
 

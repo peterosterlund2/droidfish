@@ -25,9 +25,6 @@ public class MoveTest extends TestCase {
     public MoveTest() {
     }
 
-    /**
-     * Test of move constructor, of class Move.
-     */
     public void testMoveConstructor() {
         int f = Position.getSquare(4, 1);
         int t = Position.getSquare(4, 3);
@@ -38,9 +35,6 @@ public class MoveTest extends TestCase {
         assertEquals(move.promoteTo, p);
     }
 
-    /**
-     * Test of equals, of class Move.
-     */
     public void testEquals() {
         Move m1 = new Move(Position.getSquare(0, 6), Position.getSquare(1, 7), Piece.WROOK);
         Move m2 = new Move(Position.getSquare(0, 6), Position.getSquare(0, 7), Piece.WROOK);

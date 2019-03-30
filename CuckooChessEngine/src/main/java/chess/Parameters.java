@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Parameters {
-    public static enum Type {
+    public enum Type {
         CHECK,
         SPIN,
         COMBO,
@@ -115,8 +115,7 @@ public class Parameters {
         return ((CheckParam)params.get(name.toLowerCase())).value;
     }
     final int getIntPar(String name) {
-        int ret = ((SpinParam)params.get(name.toLowerCase())).value;
-        return ret;
+        return ((SpinParam)params.get(name.toLowerCase())).value;
     }
     final String getStringPar(String name) {
         return ((StringParam)params.get(name.toLowerCase())).value;
@@ -141,7 +140,7 @@ public class Parameters {
                 int val = Integer.parseInt(value);
                 if ((val >= sp.minValue) && (val <= sp.maxValue))
                     sp.value = val;
-            } catch (NumberFormatException ex) {
+            } catch (NumberFormatException ignore) {
             }
             break;
         }

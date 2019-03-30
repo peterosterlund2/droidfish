@@ -19,6 +19,7 @@
 package org.petero.droidfish.book;
 
 import android.annotation.SuppressLint;
+import android.text.style.TabStopSpan;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -254,8 +255,6 @@ public class EcoDb {
         try {
             ByteArrayOutputStream bufStream = new ByteArrayOutputStream();
             InputStream inStream = DroidFishApp.getContext().getAssets().open("eco.dat");
-            if (inStream == null)
-                throw new IOException("Can't read ECO database");
             byte[] buf = new byte[1024];
             while (true) {
                 int len = inStream.read(buf);
@@ -365,8 +364,8 @@ public class EcoDb {
         private int maxSize;
 
         public WeakLRUCache(int maxSize) {
-            mapNew = new WeakHashMap<K, V>();
-            mapOld = new WeakHashMap<K, V>();
+            mapNew = new WeakHashMap<>();
+            mapOld = new WeakHashMap<>();
             this.maxSize = maxSize;
         }
 
@@ -375,8 +374,7 @@ public class EcoDb {
             if (mapNew.containsKey(key)) {
                 mapNew.put(key, val);
             } else {
-                if (mapOld.containsKey(key))
-                    mapOld.remove(key);
+                mapOld.remove(key);
                 insertNew(key, val);
             }
         }

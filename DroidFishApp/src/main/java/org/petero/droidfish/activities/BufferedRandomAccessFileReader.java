@@ -22,11 +22,11 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 final class BufferedRandomAccessFileReader {
-    RandomAccessFile f;
-    byte[] buffer = new byte[8192];
-    long bufStartFilePos = 0;
-    int bufLen = 0;
-    int bufPos = 0;
+    private RandomAccessFile f;
+    private byte[] buffer = new byte[8192];
+    private long bufStartFilePos = 0;
+    private int bufLen = 0;
+    private int bufPos = 0;
 
     BufferedRandomAccessFileReader(String fileName) throws FileNotFoundException {
         f = new RandomAccessFile(fileName, "r");
@@ -34,7 +34,7 @@ final class BufferedRandomAccessFileReader {
     final long length() throws IOException {
         return f.length();
     }
-    final long getFilePointer() throws IOException {
+    final long getFilePointer() {
         return bufStartFilePos + bufPos;
     }
     final void close() throws IOException {

@@ -42,7 +42,7 @@ class GtbProbe {
                 public void run() {
                     // Sleep 0.5s to increase probability that engine
                     // is initialized before TB.
-                    try { Thread.sleep(500); } catch (InterruptedException e) { }
+                    try { Thread.sleep(500); } catch (InterruptedException ignore) { }
                     initIfNeeded();
                 }
             });

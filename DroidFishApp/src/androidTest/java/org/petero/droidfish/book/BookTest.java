@@ -35,9 +35,6 @@ public class BookTest extends TestCase {
     public BookTest() {
     }
 
-    /**
-     * Test of getBookMove method, of class Book.
-     */
     public void testGetBookMove() throws ChessParseError {
         Position pos = TextIO.readFEN(TextIO.startPosFEN);
         DroidBook book = DroidBook.getInstance();
@@ -50,9 +47,6 @@ public class BookTest extends TestCase {
         assertEquals(null, move);
     }
 
-    /**
-     * Test of getAllBookMoves method, of class Book.
-     */
     public void testGetAllBookMoves() throws ChessParseError {
         Position pos = TextIO.readFEN(TextIO.startPosFEN);
         DroidBook book = DroidBook.getInstance();

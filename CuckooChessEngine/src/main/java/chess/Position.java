@@ -307,7 +307,7 @@ public class Position {
      * Set a square to a piece value.
      * Special version that only updates enough of the state for the SEE function to be happy.
      */
-    public final void setSEEPiece(int square, int piece) {
+    private void setSEEPiece(int square, int piece) {
         int removedPiece = squares[square];
 
         // Update board

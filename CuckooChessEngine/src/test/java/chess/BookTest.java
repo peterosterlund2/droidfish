@@ -29,16 +29,13 @@ public class BookTest {
     }
 
     @BeforeClass
-    public static void setUpClass() throws Exception {
+    public static void setUpClass() {
     }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {
+    public static void tearDownClass() {
     }
 
-    /**
-     * Test of getBookMove method, of class Book.
-     */
     @Test
     public void testGetBookMove() throws ChessParseError {
         System.out.println("getBookMove");
@@ -48,9 +45,6 @@ public class BookTest {
         checkValid(pos, move);
     }
 
-    /**
-     * Test of getAllBookMoves method, of class Book.
-     */
     @Test
     public void testGetAllBookMoves() throws ChessParseError {
         System.out.println("getAllBookMoves");
@@ -67,7 +61,7 @@ public class BookTest {
 
     /** Check that move is a legal move in position pos. */
     private void checkValid(Position pos, Move move) {
-        assertTrue(move != null);
+        assertNotNull(move);
         MoveGen.MoveList moveList = new MoveGen().pseudoLegalMoves(pos);
         MoveGen.removeIllegal(pos, moveList);
         boolean contains = false;

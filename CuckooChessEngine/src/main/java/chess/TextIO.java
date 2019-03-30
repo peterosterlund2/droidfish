@@ -396,13 +396,12 @@ public class TextIO {
      * @return A move object, or null if move has invalid syntax
      */
     public static Move uciStringToMove(String move) {
-        Move m = null;
         if ((move.length() < 4) || (move.length() > 5))
-            return m;
+            return null;
         int fromSq = TextIO.getSquare(move.substring(0, 2));
         int toSq   = TextIO.getSquare(move.substring(2, 4));
         if ((fromSq < 0) || (toSq < 0)) {
-            return m;
+            return null;
         }
         char prom = ' ';
         boolean white = true;
@@ -413,7 +412,7 @@ public class TextIO {
             } else if (Position.getY(toSq) == 0) {
                 white = false;
             } else {
-                return m;
+                return null;
             }
         }
         int promoteTo;
@@ -434,20 +433,15 @@ public class TextIO {
                 promoteTo = white ? Piece.WKNIGHT : Piece.BKNIGHT;
                 break;
             default:
-                return m;
+                return null;
         }
-        m = new Move(fromSq, toSq, promoteTo);
-        return m;
+        return new Move(fromSq, toSq, promoteTo);
     }
 
     private static boolean isCapture(Position pos, Move move) {
         if (pos.getPiece(move.to) == Piece.EMPTY) {
             int p = pos.getPiece(move.from);
-            if ((p == (pos.whiteMove ? Piece.WPAWN : Piece.BPAWN)) && (move.to == pos.getEpSquare())) {
-                return true;
-            } else {
-                return false;
-            }
+            return (p == (pos.whiteMove ? Piece.WPAWN : Piece.BPAWN)) && (move.to == pos.getEpSquare());
         } else {
             return true;
         }
@@ -460,9 +454,8 @@ public class TextIO {
      */
     public static Move stringToMove(Position pos, String strMove) {
         strMove = strMove.replaceAll("=", "");
-        Move move = null;
         if (strMove.length() == 0)
-            return move;
+            return null;
         MoveGen.MoveList moves = MoveGen.instance.pseudoLegalMoves(pos);
         MoveGen.removeIllegal(pos, moves);
         {
@@ -501,7 +494,8 @@ public class TextIO {
                 }
             }
         }
-        
+
+        Move move = null;
         for (int i = 0; i < 2; i++) {
             // Search for unique substring match
             for (int mi = 0; mi < moves.size; mi++) {
@@ -526,7 +520,7 @@ public class TextIO {
             if (move != null)
                 return move;
         }
-        return move;
+        return null;
     }
 
     /**

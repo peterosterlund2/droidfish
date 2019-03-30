@@ -29,16 +29,13 @@ public class KillerTableTest {
     }
 
     @BeforeClass
-    public static void setUpClass() throws Exception {
+    public static void setUpClass() {
     }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {
+    public static void tearDownClass() {
     }
 
-    /**
-     * Test of addKiller method, of class KillerTable.
-     */
     @Test
     public void testAddKiller() {
         System.out.println("addKiller");
@@ -50,9 +47,6 @@ public class KillerTableTest {
         kt.addKiller(3, m);
     }
 
-    /**
-     * Test of getKillerScore method, of class KillerTable.
-     */
     @Test
     public void testGetKillerScore() {
         System.out.println("getKillerScore");

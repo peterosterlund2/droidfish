@@ -255,7 +255,7 @@ public class Game {
             try {
                 if (TextIO.readFEN(TextIO.startPosFEN).equals(currPos))
                     stopTimer = true;
-            } catch (ChessParseError e) {
+            } catch (ChessParseError ignore) {
             }
         }
         if (stopTimer) {
@@ -382,7 +382,7 @@ public class Game {
         updateTimeControl(true);
     }
 
-    public static enum GameState {
+    public enum GameState {
         ALIVE,
         WHITE_MATE,         // White mates
         BLACK_MATE,         // Black mates

@@ -33,11 +33,11 @@ public class PositionTest {
     }
 
     @BeforeClass
-    public static void setUpClass() throws Exception {
+    public static void setUpClass() {
     }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {
+    public static void tearDownClass() {
     }
 
     @Before
@@ -48,9 +48,6 @@ public class PositionTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of getPiece method, of class Position.
-     */
     @Test
     public void testGetPiece() throws ChessParseError {
         System.out.println("getPiece");
@@ -71,9 +68,6 @@ public class PositionTest {
         }
     }
 
-    /**
-     * Test of getIndex method, of class Position.
-     */
     @Test
     public void testGetIndex() {
         System.out.println("getIndex");
@@ -88,9 +82,6 @@ public class PositionTest {
         }
     }
 
-    /**
-     * Test of setPiece method, of class Position.
-     */
     @Test
     public void testSetPiece() {
         System.out.println("setPiece");
@@ -100,9 +91,6 @@ public class PositionTest {
         assertEquals(Piece.WKING, instance.getPiece(Position.getSquare(3, 4)));
     }
 
-    /**
-     * Test of makeMove method, of class Position.
-     */
     @Test
     public void testMakeMove() throws ChessParseError {
         System.out.println("makeMove");
@@ -212,9 +200,6 @@ public class PositionTest {
         assertEquals(castleMask, pos.getCastleMask());
     }
 
-    /**
-     * Test of makeMove method, of class Position.
-     */
     @Test
     public void testPromotion() throws ChessParseError {
         System.out.println("promotion");
@@ -251,10 +236,7 @@ public class PositionTest {
         pos.unMakeMove(move, ui);
         assertEquals(origPos, pos);
     }
-    
-    /**
-     * Test move counters, of class Position.
-     */
+
     @Test
     public void testMoveCounters() throws ChessParseError {
         System.out.println("moveCounters");
@@ -316,9 +298,6 @@ public class PositionTest {
         assertEquals(69, pos.fullMoveCounter);
     }
     
-    /**
-     * Test of drawRuleEquals, of class Position.
-     */
     @Test
     public void testDrawRuleEquals() throws ChessParseError {
         System.out.println("drawRuleEquals");
@@ -361,9 +340,6 @@ public class PositionTest {
         assertEquals(false, pos.drawRuleEquals(origPos));   // Not equal, en passant rights lost
     }
 
-    /**
-     * Test of hashCode method, of class Position.
-     */
     @Test
     public void testHashCode() throws ChessParseError {
         System.out.println("hashCode");
@@ -417,9 +393,6 @@ public class PositionTest {
         }
     }
 
-    /**
-     * Test of getKingSq method, of class Position.
-     */
     @Test
     public void testGetKingSq() throws ChessParseError {
         System.out.println("getKingSq");

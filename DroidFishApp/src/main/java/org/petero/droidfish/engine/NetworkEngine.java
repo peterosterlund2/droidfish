@@ -44,8 +44,8 @@ public class NetworkEngine extends UCIEngineBase {
     private Thread startupThread;
     private Thread stdInThread;
     private Thread stdOutThread;
-    private LocalPipe guiToEngine;
-    private LocalPipe engineToGui;
+    private final LocalPipe guiToEngine;
+    private final LocalPipe engineToGui;
     private boolean startedOk;
     private boolean isRunning;
     private boolean isError;
@@ -78,7 +78,7 @@ public class NetworkEngine extends UCIEngineBase {
                         port = lines[2];
                         ok = true;
                     }
-                } catch (IOException e1) {
+                } catch (IOException ignore) {
                 }
             }
             if (!ok) {
@@ -151,7 +151,7 @@ public class NetworkEngine extends UCIEngineBase {
                             }
                         }
                     }
-                } catch (IOException e) {
+                } catch (IOException ignore) {
                 } finally {
                     if (isRunning) {
                         isError = true;
@@ -191,8 +191,8 @@ public class NetworkEngine extends UCIEngineBase {
                         report.reportError(context.getString(R.string.engine_terminated));
                     }
                     isRunning = false;
-                    try { socket.getOutputStream().write("quit\n".getBytes()); } catch (IOException e) {}
-                    try { socket.close(); } catch (IOException ex) {}
+                    try { socket.getOutputStream().write("quit\n".getBytes()); } catch (IOException ignore) {}
+                    try { socket.close(); } catch (IOException ignore) {}
                 }
             }
         });

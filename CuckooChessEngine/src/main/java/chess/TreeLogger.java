@@ -37,7 +37,7 @@ import chess.TranspositionTable.TTEntry;
 public final class TreeLogger {
     private byte[] entryBuffer = new byte[16];
     private ByteBuffer bb = ByteBuffer.wrap(entryBuffer);
-    
+
     // Used in write mode
     private FileOutputStream os = null;
     private BufferedOutputStream bos = null;
@@ -96,7 +96,7 @@ public final class TreeLogger {
         } catch (IOException e) {
             throw new RuntimeException();
         } finally {
-            if (raf != null) try { raf.close(); } catch (IOException e) {}
+            if (raf != null) try { raf.close(); } catch (IOException ignore) {}
         }
     }
 
@@ -104,7 +104,7 @@ public final class TreeLogger {
         try {
             if (bos != null) bos.close();
             if (fc != null) fc.close();
-        } catch (IOException e) {
+        } catch (IOException ignore) {
         }
     }
 
@@ -143,7 +143,7 @@ public final class TreeLogger {
 
     /** 
      * Log information when entering a search node.
-     * @param parentId     Index of parent node.
+     * @param parentIndex  Index of parent node.
      * @param m            Move made to go from parent node to this node
      * @param alpha        Search parameter
      * @param beta         Search parameter
@@ -199,7 +199,7 @@ public final class TreeLogger {
     private void computeForwardPointers() {
         if ((mapBuf.get(127) & (1<<7)) != 0)
             return;
-        System.out.printf("Computing forward pointers...\n");
+        System.out.print("Computing forward pointers...\n");
         StartEntry se = new StartEntry();
         EndEntry ee = new EndEntry();
         for (int i = 0; i < numEntries; i++) {
@@ -296,7 +296,7 @@ public final class TreeLogger {
                 ArrayList<Move> moves = getMoveSequence(currIndex);
                 for (Move m : moves)
                     System.out.printf(" %s", TextIO.moveToUCIString(m));
-                System.out.printf("\n");
+                System.out.print("\n");
                 printNodeInfo(rootPos, currIndex);
                 Position pos = getPosition(rootPos, currIndex);
                 System.out.print(TextIO.asciiBoard(pos));
@@ -309,7 +309,7 @@ public final class TreeLogger {
                 }
             }
             doPrint = true;
-            System.out.printf("Command:");
+            System.out.print("Command:");
             String cmdStr = in.readLine();
             if (cmdStr == null)
                 return;
@@ -332,10 +332,10 @@ public final class TreeLogger {
                         found.add(c);
                 }
                 if (found.size() == 0) {
-                    System.out.printf("No such move\n");
+                    System.out.print("No such move\n");
                     doPrint = false;
                 } else if (found.size() > 1) {
-                    System.out.printf("Ambiguous move\n");
+                    System.out.print("Ambiguous move\n");
                     for (Integer c : found)
                         printNodeInfo(rootPos, c);
                     doPrint = false;
@@ -370,7 +370,7 @@ public final class TreeLogger {
                 ArrayList<Move> moves = getMoveSequence(currIndex);
                 for (Move m : moves)
                     System.out.printf(" %s", TextIO.moveToUCIString(m));
-                System.out.printf("\n");
+                System.out.print("\n");
                 doPrint = false;
             } else if (cmdStr.startsWith("h")) {
                 long hashKey = getPosition(rootPos, currIndex).historyHash();
@@ -384,7 +384,7 @@ public final class TreeLogger {
                     int i = Integer.parseInt(cmdStr);
                     if ((i >= -1) && (i < numEntries))
                         currIndex = i;
-                } catch (NumberFormatException e) {
+                } catch (NumberFormatException ignore) {
                 }
             }
             prevStr = cmdStr;
@@ -437,7 +437,7 @@ public final class TreeLogger {
                 s = s.substring(2);
             try {
                 key = Long.parseLong(s, 16);
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException ignore) {
             }
         }
         return key;
@@ -450,13 +450,13 @@ public final class TreeLogger {
             if (idx > 0) {
                 return Integer.parseInt(s.substring(idx+1));
             }
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException ignore) {
         }
         return defVal;
     }
 
     /** Get a list of integer parameters from an input string. */
-    final ArrayList<Integer> getArgs(String s, int defVal) {
+    private ArrayList<Integer> getArgs(String s, int defVal) {
         ArrayList<Integer> ret = new ArrayList<>();
         String[] split = s.split(" ");
         try {
@@ -612,7 +612,7 @@ public final class TreeLogger {
                 System.out.printf(" s:%s%6d e:%6d sub:%d", type, ee.score, ee.evalScore,
                                                             subTreeNodes);
             }
-            System.out.printf("\n");
+            System.out.print("\n");
         }
     }
 }

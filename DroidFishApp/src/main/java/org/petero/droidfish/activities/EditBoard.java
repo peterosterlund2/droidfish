@@ -81,8 +81,6 @@ import android.widget.Toast;
 public class EditBoard extends Activity {
     private ChessBoardEdit cb;
     private TextView status;
-    private Button okButton;
-    private Button cancelButton;
 
     private boolean egtbHints;
     private boolean autoScrollTitle;
@@ -111,7 +109,7 @@ public class EditBoard extends Activity {
         Util.setFullScreenMode(this, settings);
 
         Intent i = getIntent();
-        Position pos = null;
+        Position pos;
         try {
             pos = TextIO.readFEN(i.getAction());
         } catch (ChessParseError e) {
@@ -147,8 +145,8 @@ public class EditBoard extends Activity {
         cb = findViewById(R.id.eb_chessboard);
         cb.setFlipped(boardFlipped);
         status = findViewById(R.id.eb_status);
-        okButton = findViewById(R.id.eb_ok);
-        cancelButton = findViewById(R.id.eb_cancel);
+        Button okButton = findViewById(R.id.eb_ok);
+        Button cancelButton = findViewById(R.id.eb_cancel);
 
         TextView whiteTitleText = findViewById(R.id.white_clock);
         whiteTitleText.setVisibility(View.GONE);
@@ -258,9 +256,9 @@ public class EditBoard extends Activity {
 
         class DrawerItem {
             int id;
-            int itemId; // Item string resource id
+            private int itemId; // Item string resource id
 
-            DrawerItem(int id, int itemId) {
+            private DrawerItem(int id, int itemId) {
                 this.id = id;
                 this.itemId = itemId;
             }
@@ -322,7 +320,7 @@ public class EditBoard extends Activity {
                         cb.setPosition(pos);
                         setSelection(-1);
                         checkValidAndUpdateMaterialDiff();
-                    } catch (ChessParseError e) {
+                    } catch (ChessParseError ignore) {
                     }
                     break;
                 }
@@ -353,8 +351,8 @@ public class EditBoard extends Activity {
                 }
                 case PASTE_POSITION: {
                     ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-                    if (clipboard.hasPrimaryClip()) {
-                        ClipData clip = clipboard.getPrimaryClip();
+                    ClipData clip = clipboard.getPrimaryClip();
+                    if (clip != null) {
                         if (clip.getItemCount() > 0) {
                             String fen = clip.getItemAt(0).coerceToText(getApplicationContext()).toString();
                             setFEN(fen);
@@ -413,7 +411,7 @@ public class EditBoard extends Activity {
             }
         }
         Position pos = new Position(cb.pos);
-        int piece = Piece.EMPTY;
+        int piece;
         if (m.from >= 0) {
             piece = pos.getPiece(m.from);
         } else {
@@ -534,8 +532,7 @@ public class EditBoard extends Activity {
                     }
                 }
             });
-            AlertDialog alert = builder.create();
-            return alert;
+            return builder.create();
         }
         case CASTLE_DIALOG: {
             final CharSequence[] items = {
@@ -572,8 +569,7 @@ public class EditBoard extends Activity {
                     checkValidAndUpdateMaterialDiff();
                 }
             });
-            AlertDialog alert = builder.create();
-            return alert;
+            return builder.create();
         }
         case EP_DIALOG: {
             final CharSequence[] items = {
@@ -587,8 +583,7 @@ public class EditBoard extends Activity {
                     dialog.cancel();
                 }
             });
-            AlertDialog alert = builder.create();
-            return alert;
+            return builder.create();
         }
         case MOVCNT_DIALOG: {
             View content = View.inflate(this, R.layout.edit_move_counters, null);

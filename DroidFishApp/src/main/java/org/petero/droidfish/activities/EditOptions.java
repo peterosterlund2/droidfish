@@ -139,7 +139,7 @@ public class EditOptions extends Activity {
                                     so.set(so.maxValue);
                                 else
                                     so.set(newVal);
-                            } catch (NumberFormatException ex) {
+                            } catch (NumberFormatException ignore) {
                             }
                         }
                     });

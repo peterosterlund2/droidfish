@@ -106,7 +106,7 @@ public class CuckooChess extends Activity implements GUIInterface {
         ctrl = new ChessController(this);
         ctrl.setThreadStackSize(32768);
         readPrefs();
-        
+
         Typeface chessFont = Typeface.createFromAsset(getAssets(), "casefont.ttf");
         cb.setFont(chessFont);
         cb.setFocusable(true);
@@ -297,8 +297,7 @@ public class CuckooChess extends Activity implements GUIInterface {
                     ctrl.reportPromotePiece(item);
                 }
             });
-            AlertDialog alert = builder.create();
-            return alert;
+            return builder.create();
         }
         case CLIPBOARD_DIALOG: {
             final CharSequence[] items = {"Copy Game", "Copy Position", "Paste"};
@@ -334,8 +333,7 @@ public class CuckooChess extends Activity implements GUIInterface {
                     }
                 }
             });
-            AlertDialog alert = builder.create();
-            return alert;
+            return builder.create();
         }
         }
         return null;

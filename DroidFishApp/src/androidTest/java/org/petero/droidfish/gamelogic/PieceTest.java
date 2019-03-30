@@ -26,9 +26,6 @@ public class PieceTest extends TestCase {
     public PieceTest() {
     }
 
-    /**
-     * Test of isWhite method, of class Piece.
-     */
     public void testIsWhite() {
         assertEquals(false, Piece.isWhite(Piece.BBISHOP));
         assertEquals(true , Piece.isWhite(Piece.WBISHOP));

@@ -154,7 +154,7 @@ public class PGNFile {
         public void close() {
             try {
                 is.close();
-            } catch (IOException ex) {
+            } catch (IOException ignore) {
             }
         }
     }
@@ -364,7 +364,7 @@ public class PGNFile {
                 gi.info = hi.toString();
                 gamesInFile.add(gi);
             }
-        } catch (IOException e) {
+        } catch (IOException ignore) {
         } catch (OutOfMemoryError e) {
             gamesInFile.clear();
             gamesInFile = null;
@@ -393,7 +393,7 @@ public class PGNFile {
             f.readFully(pgnData);
             f.close();
             return new String(pgnData);
-        } catch (IOException e) {
+        } catch (IOException ignore) {
         }
         return null;
     }
@@ -444,7 +444,7 @@ public class PGNFile {
         return false;
     }
 
-    final boolean replacePGN(String pgnToSave, GameInfo gi) {
+    final void replacePGN(String pgnToSave, GameInfo gi) {
         try {
             File tmpFile = new File(fileName + ".tmp_delete");
             RandomAccessFile fileReader = new RandomAccessFile(fileName, "r");
@@ -458,11 +458,9 @@ public class PGNFile {
             if (!tmpFile.renameTo(fileName))
                 throw new IOException();
             DroidFishApp.toast(R.string.game_saved, Toast.LENGTH_SHORT);
-            return true;
         } catch (IOException e) {
             DroidFishApp.toast(R.string.failed_to_save_game, Toast.LENGTH_SHORT);
         }
-        return false;
     }
 
     private static void copyData(RandomAccessFile fileReader,

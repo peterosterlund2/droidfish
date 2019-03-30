@@ -652,7 +652,7 @@ public abstract class ChessBoard extends View {
     }
 
     public final void setMoveHints(List<Move> moveHints) {
-        boolean equal = false;
+        boolean equal;
         if ((this.moveHints == null) || (moveHints == null)) {
             equal = this.moveHints == moveHints;
         } else {
@@ -665,7 +665,7 @@ public abstract class ChessBoard extends View {
     }
 
     public final void setSquareDecorations(ArrayList<SquareDecoration> decorations) {
-        boolean equal = false;
+        boolean equal;
         if ((this.decorations == null) || (decorations == null)) {
             equal = this.decorations == decorations;
         } else {

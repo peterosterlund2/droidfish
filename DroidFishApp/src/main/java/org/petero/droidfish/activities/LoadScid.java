@@ -135,7 +135,7 @@ public class LoadScid extends ListActivity {
         fileName = i.getStringExtra("org.petero.droidfish.pathname");
         resultSentBack = false;
         canceled = false;
-        if (action.equals("org.petero.droidfish.loadScid")) {
+        if ("org.petero.droidfish.loadScid".equals(action)) {
             progressLatch = new CountDownLatch(1);
             showProgressDialog();
             final LoadScid lpgn = this;
@@ -163,8 +163,8 @@ public class LoadScid extends ListActivity {
                     });
                 }
             });
-        } else if (action.equals("org.petero.droidfish.loadScidNextGame") ||
-                   action.equals("org.petero.droidfish.loadScidPrevGame")) {
+        } else if ("org.petero.droidfish.loadScidNextGame".equals(action) ||
+                   "org.petero.droidfish.loadScidPrevGame".equals(action)) {
             boolean next = action.equals("org.petero.droidfish.loadScidNextGame");
             final int loadItem = defaultItem + (next ? 1 : -1);
             if (loadItem < 0) {
@@ -222,7 +222,7 @@ public class LoadScid extends ListActivity {
             workThread.interrupt();
             try {
                 workThread.join();
-            } catch (InterruptedException e) {
+            } catch (InterruptedException ignore) {
             }
             workThread = null;
         }
@@ -319,7 +319,7 @@ public class LoadScid extends ListActivity {
                     }
                     addGameInfo(cursor);
                     gameNo++;
-                    final int newPercent = (int)(gameNo * 100 / noGames);
+                    final int newPercent = gameNo * 100 / noGames;
                     if (newPercent > percent) {
                         percent = newPercent;
                         if (progress != null) {

@@ -97,7 +97,7 @@ public class FENFile {
                     return new Pair<>(FenInfoResult.CANCEL, null);
             }
             f.close();
-        } catch (IOException e) {
+        } catch (IOException ignore) {
         } catch (OutOfMemoryError e) {
             fensInFile.clear();
             fensInFile = null;

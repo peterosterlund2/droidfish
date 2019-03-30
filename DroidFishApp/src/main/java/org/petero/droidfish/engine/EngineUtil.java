@@ -54,7 +54,7 @@ public class EngineUtil {
             if ((inFile.read(buf) == 4) && "NETE".equals(new String(buf)))
                 netEngine = true;
             inFile.close();
-        } catch (IOException e) {
+        } catch (IOException ignore) {
         }
         return netEngine;
     }

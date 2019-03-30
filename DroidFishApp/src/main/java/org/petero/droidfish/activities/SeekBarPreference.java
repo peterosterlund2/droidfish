@@ -151,7 +151,7 @@ public class SeekBarPreference extends Preference
                             if (value < 0) value = 0;
                             if (value > maxValue) value = maxValue;
                             onProgressChanged(bar, value, false);
-                        } catch (NumberFormatException nfe) {
+                        } catch (NumberFormatException ignore) {
                         }
                     }
                 };

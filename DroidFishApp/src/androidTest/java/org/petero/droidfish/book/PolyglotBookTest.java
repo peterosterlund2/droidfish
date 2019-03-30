@@ -31,9 +31,6 @@ public class PolyglotBookTest extends TestCase {
     public PolyglotBookTest() {
     }
 
-    /**
-     * Test of getBookMove method, of class Book.
-     */
     public void testGetHashKey() throws ChessParseError {
         // starting position
         Position pos = TextIO.readFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");

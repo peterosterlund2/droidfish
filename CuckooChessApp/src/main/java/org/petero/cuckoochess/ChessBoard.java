@@ -87,7 +87,6 @@ public class ChessBoard extends View {
 
     /**
      * Set the board to a given state.
-     * @param pos
      */
     final public void setPosition(Position pos) {
         this.pos = pos;
@@ -96,7 +95,6 @@ public class ChessBoard extends View {
 
     /**
      * Set/clear the board flipped status.
-     * @param flipped
      */
     final public void setFlipped(boolean flipped) {
         this.flipped = flipped;

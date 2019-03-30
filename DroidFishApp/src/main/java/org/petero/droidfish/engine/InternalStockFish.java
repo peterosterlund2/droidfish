@@ -71,7 +71,7 @@ public class InternalStockFish extends ExternalEngine {
         } catch (IOException e) {
             return 0;
         } finally {
-            if (is != null) try { is.close(); } catch (IOException ex) {}
+            if (is != null) try { is.close(); } catch (IOException ignore) {}
         }
     }
 
@@ -83,7 +83,7 @@ public class InternalStockFish extends ExternalEngine {
             dos.writeLong(checkSum);
         } catch (IOException e) {
         } finally {
-            if (dos != null) try { dos.close(); } catch (IOException ex) {}
+            if (dos != null) try { dos.close(); } catch (IOException ignore) {}
         }
     }
 
@@ -110,7 +110,7 @@ public class InternalStockFish extends ExternalEngine {
         } catch (NoSuchAlgorithmException e) {
             return -1;
         } finally {
-            if (is != null) try { is.close(); } catch (IOException ex) {}
+            if (is != null) try { is.close(); } catch (IOException ignore) {}
         }
     }
 
@@ -142,8 +142,8 @@ public class InternalStockFish extends ExternalEngine {
                 os.write(buf, 0, len);
             }
         } finally {
-            if (is != null) try { is.close(); } catch (IOException ex) {}
-            if (os != null) try { os.close(); } catch (IOException ex) {}
+            if (is != null) try { is.close(); } catch (IOException ignore) {}
+            if (os != null) try { os.close(); } catch (IOException ignore) {}
         }
 
         writeCheckSum(new File(internalSFPath()), newCSum);

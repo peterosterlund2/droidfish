@@ -30,16 +30,13 @@ public class ComputerPlayerTest {
     }
 
     @BeforeClass
-    public static void setUpClass() throws Exception {
+    public static void setUpClass() {
     }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {
+    public static void tearDownClass() {
     }
 
-    /**
-     * Test of getCommand method, of class ComputerPlayer.
-     */
     @Test
     public void testGetCommand() throws ChessParseError {
         System.out.println("getCommand");
@@ -71,11 +68,8 @@ public class ComputerPlayerTest {
         assertEquals("Kxg8", result);
     }
 
-    /**
-     * Test of draw by repetition, of class ComputerPlayer.
-     */
     @Test
-    public void testDrawRep() throws ChessParseError {
+    public void testDrawRep() {
         System.out.println("drawRep");
         Game game = new Game(new HumanPlayer(), new HumanPlayer());
         ComputerPlayer cp = new ComputerPlayer();

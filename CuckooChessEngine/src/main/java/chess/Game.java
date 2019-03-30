@@ -26,12 +26,12 @@ import java.util.Locale;
 public class Game {
     protected List<Move> moveList = null;
     protected List<UndoInfo> uiInfoList = null;
-    List<Boolean> drawOfferList = null;
+    private List<Boolean> drawOfferList = null;
     protected int currentMove;
     boolean pendingDrawOffer;
     GameState drawState;
-    String drawStateMoveStr; // Move required to claim DRAW_REP or DRAW_50
-    GameState resignState;
+    private String drawStateMoveStr; // Move required to claim DRAW_REP or DRAW_50
+    private GameState resignState;
     public Position pos = null;
     protected Player whitePlayer;
     protected Player blackPlayer;
@@ -373,10 +373,7 @@ public class Game {
             UndoInfo ui = new UndoInfo();
             pos.makeMove(move, ui);
         }
-        if ((whiteMove.length() > 0) || (blackMove.length() > 0)) {
-            if (whiteMove.length() == 0) {
-                whiteMove = "...";
-            }
+        if (whiteMove.length() > 0) {
             if (compressed) {
                 ret.append(String.format(Locale.US, "%d. %s %s ",
                         pos.fullMoveCounter, whiteMove, blackMove));

@@ -40,16 +40,16 @@ public class ComputerPlayer implements Player {
         engineName = name;
     }
 
-    int minTimeMillis;
+    private int minTimeMillis;
     int maxTimeMillis;
     int maxDepth;
-    int maxNodes;
+    private int maxNodes;
     public boolean verbose;
-    TranspositionTable tt;
-    Book book;
-    boolean bookEnabled;
-    boolean randomMode;
-    Search currentSearch;
+    private TranspositionTable tt;
+    private Book book;
+    private boolean bookEnabled;
+    private boolean randomMode;
+    private Search currentSearch;
 
     public ComputerPlayer() {
         minTimeMillis = 10000;
@@ -67,7 +67,7 @@ public class ComputerPlayer implements Player {
         tt = new TranspositionTable(logSize);
     }
     
-    Search.Listener listener;
+    private Search.Listener listener;
     public void setListener(Search.Listener listener) {
         this.listener = listener;
     }
@@ -107,7 +107,7 @@ public class ComputerPlayer implements Player {
         currentSearch = sc;
         sc.setListener(listener);
         Move bestM;
-        if ((moves.size == 1) && (canClaimDraw(pos, posHashList, posHashListSize, moves.m[0]) == "")) {
+        if ((moves.size == 1) && canClaimDraw(pos, posHashList, posHashListSize, moves.m[0]).isEmpty()) {
             bestM = moves.m[0];
             bestM.score = 0;
         } else if (randomMode) {
@@ -123,7 +123,7 @@ public class ComputerPlayer implements Player {
         // Claim draw if appropriate
         if (bestM.score <= 0) {
             String drawClaim = canClaimDraw(pos, posHashList, posHashListSize, bestM);
-            if (drawClaim != "")
+            if (!drawClaim.isEmpty())
                 strMove = drawClaim;
         }
         return strMove;

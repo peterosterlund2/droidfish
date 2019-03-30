@@ -31,16 +31,13 @@ public class MoveGenTest {
     }
 
     @BeforeClass
-    public static void setUpClass() throws Exception {
+    public static void setUpClass() {
     }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {
+    public static void tearDownClass() {
     }
 
-    /**
-     * Test of pseudoLegalMoves method, of class MoveGen.
-     */
     @Test
     public void testPseudoLegalMoves() throws ChessParseError {
         System.out.println("pseudoLegalMoves");
@@ -86,9 +83,6 @@ public class MoveGenTest {
         assertTrue(strMoves.contains("e1c1"));
     }
 
-    /**
-     * Test of pseudoLegalMoves method, of class MoveGen. Pawn moves.
-     */
     @Test
     public void testPawnMoves() throws ChessParseError {
         System.out.println("pawnMoves");
@@ -128,9 +122,6 @@ public class MoveGenTest {
         assertTrue(strMoves.contains("a2a1b"));
     }
 
-    /**
-     * Test of inCheck method, of class MoveGen.
-     */
     @Test
     public void testInCheck() {
         System.out.println("inCheck");
@@ -163,9 +154,6 @@ public class MoveGenTest {
         assertEquals(false, MoveGen.inCheck(pos));
     }
 
-    /**
-     * Test of givesCheck method, of class MoveGen.
-     */
     @Test
     public void testGivesCheck() throws ChessParseError {
         System.out.println("givesCheck");
@@ -321,9 +309,6 @@ public class MoveGenTest {
         assertTrue(MoveGen.givesCheck(pos, TextIO.stringToMove(pos, "exf3")));
     }
 
-    /**
-     * Test of removeIllegal method, of class MoveGen.
-     */
     @Test
     public void testRemoveIllegal() throws ChessParseError {
         System.out.println("removeIllegal");
@@ -347,9 +332,6 @@ public class MoveGenTest {
         assertEquals(1, strMoves.size());
     }
     
-    /**
-     * Test that if king capture is possible, only a king capture move is returned in the move list.
-     */
     @Test
     public void testKingCapture() throws ChessParseError {
         System.out.println("kingCapture");

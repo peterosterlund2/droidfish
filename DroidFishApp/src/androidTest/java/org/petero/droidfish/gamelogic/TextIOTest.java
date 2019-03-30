@@ -26,9 +26,6 @@ public class TextIOTest extends TestCase {
     public TextIOTest() {
     }
 
-    /**
-     * Test of readFEN method, of class TextIO.
-     */
     public void testReadFEN() throws ChessParseError {
         String fen = "rnbqk2r/1p3ppp/p7/1NpPp3/QPP1P1n1/P4N2/4KbPP/R1B2B1R b kq - 0 1";
         Position pos = TextIO.readFEN(fen);
@@ -119,9 +116,6 @@ public class TextIOTest extends TestCase {
         assertTrue(pos.equals(TextIO.readFEN("rnbqkbnr/pp1ppppp/8/8/2pPP3/3P4/PP3PPP/RNBQKBNR b KQkq - 0 1")));
     }
 
-    /**
-     * Test that readFEN removes bogus castle flags.
-     */
     public void testReadFENCastleFlags() throws ChessParseError {
         String fenBogus = "rnbqk2r/1p3ppp/p7/1NpPp3/QPP1P1n1/P4N2/4KbPP/R1B2B1R w KQkq - 0 1";
         Position pos = TextIO.readFEN(fenBogus);
@@ -145,9 +139,6 @@ public class TextIOTest extends TestCase {
         return TextIO.moveToString(pos, move, longForm, false);
     }
 
-    /**
-     * Test of moveToString method, of class TextIO.
-     */
     public void testMoveToString() throws ChessParseError {
         Position pos = TextIO.readFEN(TextIO.startPosFEN);
         assertEquals(TextIO.startPosFEN, TextIO.toFEN(pos));
@@ -190,9 +181,6 @@ public class TextIOTest extends TestCase {
         assertEquals("--", result);
     }
 
-    /**
-     * Test of moveToString method, of class TextIO, mate/stalemate tests.
-     */
     public void testMoveToStringMate() throws ChessParseError {
         Position pos = TextIO.readFEN("3k4/1PR5/3N4/8/4K3/8/8/8 w - - 0 1");
         boolean longForm = true;
@@ -214,9 +202,6 @@ public class TextIOTest extends TestCase {
         assertEquals("b7-b8B", result);     // stalemate
     }
 
-    /**
-     * Test of moveToString method, of class TextIO, short form.
-     */
     public void testMoveToStringShortForm() throws ChessParseError {
         String fen = "r4rk1/2pn3p/2q1q1n1/8/2q2p2/6R1/p4PPP/1R4K1 b - - 0 1";
         Position pos = TextIO.readFEN(fen);
@@ -264,9 +249,6 @@ public class TextIOTest extends TestCase {
         assertEquals("Rfd8", result);     // File disambiguation needed
     }
 
-    /**
-     * Test of stringToMove method, of class TextIO.
-     */
     public void testStringToMove() throws ChessParseError {
         Position pos = TextIO.readFEN("r4rk1/2pn3p/2q1q1n1/8/2q2p2/6R1/p4PPP/1R4K1 b - - 0 1");
 
@@ -369,9 +351,6 @@ public class TextIOTest extends TestCase {
         assertEquals(mNf3, TextIO.stringToMove(pos, "Nf"));
     }
 
-    /**
-     * Test of getSquare method, of class TextIO.
-     */
     public void testGetSquare() throws ChessParseError {
         assertEquals(Position.getSquare(0, 0), TextIO.getSquare("a1"));
         assertEquals(Position.getSquare(1, 7), TextIO.getSquare("b8"));
@@ -381,18 +360,12 @@ public class TextIOTest extends TestCase {
         assertEquals(Position.getSquare(7, 7), TextIO.getSquare("h8"));
     }
 
-    /**
-     * Test of squareToString method, of class TextIO.
-     */
     public void testSquareToString() {
         assertEquals("a1", TextIO.squareToString(Position.getSquare(0, 0)));
         assertEquals("h6", TextIO.squareToString(Position.getSquare(7, 5)));
         assertEquals("e4", TextIO.squareToString(Position.getSquare(4, 3)));
     }
 
-    /**
-     * Test of asciiBoard method, of class TextIO.
-     */
     public void testAsciiBoard() throws ChessParseError {
         Position pos = TextIO.readFEN("r4rk1/2pn3p/2q1q1n1/8/2q2p2/6R1/p4PPP/1R4K1 b - - 0 1");
         String aBrd = TextIO.asciiBoard(pos);

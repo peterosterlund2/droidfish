@@ -31,8 +31,8 @@ import chess.Position;
 /** The main class for the chess GUI. */
 public class AppletGUI extends javax.swing.JApplet implements GUIInterface {
     private static final long serialVersionUID = 7357610346389734323L;
-    ChessBoardPainter cbp;
-    ChessController ctrl;
+    private ChessBoardPainter cbp;
+    private ChessController ctrl;
     private final static int ttLogSize = 19; // Use 2^19 hash entries.
     private String moveListStr = "";
     private String thinkingStr = "";

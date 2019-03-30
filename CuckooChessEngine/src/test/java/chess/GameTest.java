@@ -29,16 +29,13 @@ public class GameTest {
     }
 
     @BeforeClass
-    public static void setUpClass() throws Exception {
+    public static void setUpClass() {
     }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {
+    public static void tearDownClass() {
     }
 
-    /**
-     * Test of haveDrawOffer method, of class Game.
-     */
     @Test
     public void testHaveDrawOffer() {
         System.out.println("haveDrawOffer");
@@ -129,9 +126,6 @@ public class GameTest {
         assertEquals(false, game.haveDrawOffer());
     }
     
-    /**
-     * Test of draw by 50 move rule, of class Game.
-     */
     @Test
     public void testDraw50() {
         System.out.println("draw50");
@@ -188,9 +182,6 @@ public class GameTest {
         assertEquals(Game.GameState.ALIVE, game.drawState);
     }
 
-    /**
-     * Test of draw by repetition, of class Game.
-     */
     @Test
     public void testDrawRep() {
         System.out.println("drawRep");
@@ -262,9 +253,6 @@ public class GameTest {
         assertEquals(Game.GameState.DRAW_REP, game.getGameState());
     }
 
-    /**
-     * Test of resign command, of class Game.
-     */
     @Test
     public void testResign() {
         System.out.println("resign");
@@ -289,9 +277,6 @@ public class GameTest {
         assertEquals(Game.GameState.BLACK_MATE, game.getGameState());   // Can't resign after game over
     }
     
-    /**
-     * Test of processString method, of class Game.
-     */
     @Test
     public void testProcessString() throws ChessParseError {
         System.out.println("processString");
@@ -344,9 +329,6 @@ public class GameTest {
         assertEquals(false, res);
     }
 
-    /**
-     * Test of getGameState method, of class Game.
-     */
     @Test
     public void testGetGameState() {
         System.out.println("getGameState");
@@ -362,9 +344,6 @@ public class GameTest {
         assertEquals(Game.GameState.BLACK_STALEMATE, game.getGameState());
     }
 
-    /**
-     * Test of insufficientMaterial method, of class Game.
-     */
     @Test
     public void testInsufficientMaterial() {
         System.out.println("insufficientMaterial");
@@ -407,9 +386,6 @@ public class GameTest {
         assertEquals(Game.GameState.ALIVE, game.getGameState());
     }
 
-    /**
-     * Test of perfT method, of class Game.
-     */
     @Test
     public void testPerfT() {
         System.out.println("perfT");

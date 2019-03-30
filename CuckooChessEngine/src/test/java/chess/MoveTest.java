@@ -31,11 +31,11 @@ public class MoveTest {
     }
 
     @BeforeClass
-    public static void setUpClass() throws Exception {
+    public static void setUpClass() {
     }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {
+    public static void tearDownClass() {
     }
 
     @Before
@@ -46,9 +46,6 @@ public class MoveTest {
     public void tearDown() {
     }
     
-    /**
-     * Test of move constructor, of class Move.
-     */
     @Test
     public void testMoveConstructor() {
         System.out.println("MoveTest");
@@ -61,9 +58,6 @@ public class MoveTest {
         assertEquals(move.promoteTo, p);
     }
     
-    /**
-     * Test of equals, of class Move.
-     */
     @Test
     public void testEquals() {
         System.out.println("equals");

@@ -773,12 +773,12 @@ public final class MoveGen {
         switch (d1) {
         case 8: case -8: case 1: case -1: // Rook direction
             if ((p == Piece.WQUEEN) || (p == Piece.WROOK))
-                if ((d1 != 0) && (MoveGen.nextPiece(pos, m.to, d1) == oKing))
+                if (MoveGen.nextPiece(pos, m.to, d1) == oKing)
                     return true;
             break;
         case 9: case 7: case -9: case -7: // Bishop direction
             if ((p == Piece.WQUEEN) || (p == Piece.WBISHOP)) {
-                if ((d1 != 0) && (MoveGen.nextPiece(pos, m.to, d1) == oKing))
+                if (MoveGen.nextPiece(pos, m.to, d1) == oKing)
                     return true;
             } else if (p == Piece.WPAWN) {
                 if (((d1 > 0) == wtm) && (pos.getPiece(m.to + d1) == oKing))

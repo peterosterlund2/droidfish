@@ -33,14 +33,14 @@ import java.util.ArrayList;
 /** Handle the UCI protocol mode. */
 public class UCIProtocol {
     // Data set by the "position" command.
-    Position pos;
-    ArrayList<Move> moves;
+    private Position pos;
+    private ArrayList<Move> moves;
 
     // Engine data
-    EngineControl engine;
+    private EngineControl engine;
 
     // Set to true to break out of main loop
-    boolean quit;
+    private boolean quit;
 
 
     public static void main(boolean autoStart) {
@@ -54,7 +54,7 @@ public class UCIProtocol {
         quit = false;
     }
 
-    final public void mainLoop(InputStream is, PrintStream os, boolean autoStart) {
+    private void mainLoop(InputStream is, PrintStream os, boolean autoStart) {
         try {
             if (autoStart) {
                 handleCommand("uci", os);
@@ -73,7 +73,7 @@ public class UCIProtocol {
         }
     }
 
-    final void handleCommand(String cmdLine, PrintStream os) {
+    private void handleCommand(String cmdLine, PrintStream os) {
         String[] tokens = tokenize(cmdLine);
         try {
             String cmd = tokens[0];
@@ -199,9 +199,9 @@ public class UCIProtocol {
                 }
                 quit = true;
             }
-        } catch (ChessParseError ex) {
-        } catch (ArrayIndexOutOfBoundsException e) {
-        } catch (NumberFormatException nfe) {
+        } catch (ChessParseError ignore) {
+        } catch (ArrayIndexOutOfBoundsException ignore) {
+        } catch (NumberFormatException ignore) {
         }
     }
 

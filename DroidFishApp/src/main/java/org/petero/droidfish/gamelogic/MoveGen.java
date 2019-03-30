@@ -166,7 +166,7 @@ public class MoveGen {
     /**
      * Return true if a square is attacked by the opposite side.
      */
-    public static boolean sqAttacked(Position pos, int sq) {
+    private static boolean sqAttacked(Position pos, int sq) {
         int x = Position.getX(sq);
         int y = Position.getY(sq);
         boolean isWhiteMove = pos.whiteMove;

@@ -28,9 +28,6 @@ public class MoveGenTest extends TestCase {
     public MoveGenTest() {
     }
 
-    /**
-     * Test of pseudoLegalMoves method, of class MoveGen.
-     */
     public void testPseudoLegalMoves() throws ChessParseError {
         String fen = "8/3k4/8/2n2pP1/1P6/1NB5/2QP4/R3K2R w KQ f6 0 2";
         Position pos = TextIO.readFEN(fen);
@@ -74,9 +71,6 @@ public class MoveGenTest extends TestCase {
         assertTrue(strMoves.contains("O-O-O"));
     }
 
-    /**
-     * Test of pseudoLegalMoves method, of class MoveGen. Pawn moves.
-     */
     public void testPawnMoves() throws ChessParseError {
         String fen = "1r2k3/P1pppp2/8/1pP3p1/1nPp2P1/n4p1P/1P2PP2/4KBNR w K b6 0 1";
         Position pos = TextIO.readFEN(fen);
@@ -114,9 +108,6 @@ public class MoveGenTest extends TestCase {
         assertTrue(strMoves.contains("a2-a1B"));
     }
 
-    /**
-     * Test of inCheck method, of class MoveGen.
-     */
     public void testInCheck() {
         Position pos = new Position();
         pos.setPiece(Position.getSquare(4,2), Piece.WKING);
@@ -147,9 +138,6 @@ public class MoveGenTest extends TestCase {
         assertEquals(false, MoveGen.inCheck(pos));
     }
 
-    /**
-     * Test of removeIllegal method, of class MoveGen.
-     */
     public void testRemoveIllegal() throws ChessParseError {
         Position pos = TextIO.readFEN("8/3k4/8/2n1rpP1/1P6/1NB5/2QP4/R3K2R w KQ f6 0 1");
         List<String> strMoves = getMoveList(pos, true);

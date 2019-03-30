@@ -42,7 +42,7 @@ public class RtbProbe {
                 public void run() {
                     // Sleep 0.4s to increase probability that engine
                     // is initialized before TB.
-                    try { Thread.sleep(400); } catch (InterruptedException e) { }
+                    try { Thread.sleep(400); } catch (InterruptedException ignore) { }
                     initIfNeeded();
                 }
             });
@@ -82,7 +82,6 @@ public class RtbProbe {
      *                                                 x>0: Win in x plies
      *                                                 x<0: Loss in -x plies
      *                                              NOINFO: No info available
-     * @return                 True if success.
      */
     public final native void probe(byte[] squares,
                                    boolean wtm,

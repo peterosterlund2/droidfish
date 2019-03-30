@@ -33,7 +33,7 @@ public interface GUIInterface {
     /** Mark square sq as selected. Set to -1 to clear selection. */
     void setSelection(int sq);
 
-    final static class GameStatus {
+    final class GameStatus {
         public Game.GameState state = Game.GameState.ALIVE;
         public int moveNr = 0;
         /** Move required to claim draw, or empty string. */
@@ -50,7 +50,7 @@ public interface GUIInterface {
     /** Update the list of moves. */
     void moveListUpdated();
 
-    final public static class ThinkingInfo {
+    final class ThinkingInfo {
         public int id;
         public String pvStr;
         public String statStr;

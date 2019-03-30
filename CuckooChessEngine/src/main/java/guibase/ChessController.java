@@ -41,16 +41,16 @@ import java.util.Scanner;
 
 /** The glue between the chess engine and the GUI. */
 public class ChessController {
-    Player humanPlayer;
-    ComputerPlayer computerPlayer;
+    private Player humanPlayer;
+    private ComputerPlayer computerPlayer;
     Game game;
-    GUIInterface gui;
-    boolean humanIsWhite;
-    Thread computerThread;
-    int threadStack;       // Thread stack size, or zero to use OS default
+    private GUIInterface gui;
+    private boolean humanIsWhite;
+    private Thread computerThread;
+    private int threadStack;       // Thread stack size, or zero to use OS default
 
     // Search statistics
-    String thinkingPV;
+    private String thinkingPV;
 
     class SearchListener implements Search.Listener {
         int currDepth = 0;
@@ -133,7 +133,7 @@ public class ChessController {
             setSearchInfo();
         }
     }
-    SearchListener listener;
+    private SearchListener listener;
     
     public ChessController(GUIInterface gui) {
         this.gui = gui;
@@ -172,10 +172,8 @@ public class ChessController {
             Position pos = TextIO.readFEN(fen);
             game.processString("new");
             game.pos = pos;
-            String[] strArr = posHistStr.get(1).split(" ");
-            final int arrLen = strArr.length;
-            for (int i = 0; i < arrLen; i++) {
-                game.processString(strArr[i]);
+            for (String s : posHistStr.get(1).split(" ")) {
+                game.processString(s);
             }
             int numUndo = Integer.parseInt(posHistStr.get(2));
             for (int i = 0; i < numUndo; i++) {
@@ -223,11 +221,9 @@ public class ChessController {
             pgn.append("[SetUp \"1\"]\n");
         }
         pgn.append("\n");
-        String[] strArr = moves.split(" ");
         int currLineLength = 0;
-        final int arrLen = strArr.length;
-        for (int i = 0; i < arrLen; i++) {
-            String move = strArr[i].trim();
+        for (String s : moves.split(" ")) {
+            String move = s.trim();
             int moveLen = move.length();
             if (moveLen > 0) {
                 if (currLineLength + 1 + moveLen >= 80) {
@@ -408,7 +404,7 @@ public class ChessController {
         }
     }
 
-    Move promoteMove;
+    private Move promoteMove;
     public final void reportPromotePiece(int choice) {
         final boolean white = game.pos.whiteMove;
         int promoteTo;
@@ -482,7 +478,7 @@ public class ChessController {
         gui.setMoveListString(str);
     }
     
-    public final void setThinkingPV() {
+    private void setThinkingPV() {
         String str = "";
         if (gui.showThinking()) {
             str = thinkingPV;

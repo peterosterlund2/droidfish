@@ -20,7 +20,7 @@ package org.petero.droidfish.tb;
 
 /** Tablebase probe result. */
 public final class ProbeResult implements Comparable<ProbeResult> {
-    public static enum Type {
+    public enum Type {
         DTM,    // score is distance (full moves) to mate, or 0
         DTZ,    // score is distance (full moves) to zeroing move, or 0
         WDL,    // score is +-1 or 0

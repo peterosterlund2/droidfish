@@ -58,7 +58,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-public class EditPGN extends ListActivity {
+public abstract class EditPGN extends ListActivity {
     static ArrayList<GameInfo> gamesInFile = new ArrayList<>();
     static boolean cacheValid = false;
     PGNFile pgnFile;
@@ -105,7 +105,7 @@ public class EditPGN extends ListActivity {
         String action = i.getAction();
         String fileName = i.getStringExtra("org.petero.droidfish.pathname");
         canceled = false;
-        if (action.equals("org.petero.droidfish.loadFile")) {
+        if ("org.petero.droidfish.loadFile".equals(action)) {
             pgnFile = new PGNFile(fileName);
             loadGame = true;
             showDialog(PROGRESS_DIALOG);
@@ -127,8 +127,8 @@ public class EditPGN extends ListActivity {
                 }
             });
             workThread.start();
-        } else if (action.equals("org.petero.droidfish.loadFileNextGame") ||
-                   action.equals("org.petero.droidfish.loadFilePrevGame")) {
+        } else if ("org.petero.droidfish.loadFileNextGame".equals(action) ||
+                   "org.petero.droidfish.loadFilePrevGame".equals(action)) {
             pgnFile = new PGNFile(fileName);
             loadGame = true;
             boolean next = action.equals("org.petero.droidfish.loadFileNextGame");
@@ -158,7 +158,7 @@ public class EditPGN extends ListActivity {
                 });
                 workThread.start();
             }
-        } else if (action.equals("org.petero.droidfish.saveFile")) {
+        } else if ("org.petero.droidfish.saveFile".equals(action)) {
             loadGame = false;
             String token = i.getStringExtra("org.petero.droidfish.pgn");
             pgnToSave = (new ObjectCache()).retrieveString(token);
@@ -223,7 +223,7 @@ public class EditPGN extends ListActivity {
             workThread.interrupt();
             try {
                 workThread.join();
-            } catch (InterruptedException e) {
+            } catch (InterruptedException ignore) {
             }
             workThread = null;
         }
@@ -365,8 +365,7 @@ public class EditPGN extends ListActivity {
                     dialog.cancel();
                 }
             });
-            AlertDialog alert = builder.create();
-            return alert;
+            return builder.create();
         }
         case SAVE_GAME_DIALOG: {
             final GameInfo gi = selectedGi;
@@ -394,8 +393,7 @@ public class EditPGN extends ListActivity {
                     finish();
                 }
             });
-            AlertDialog alert = builder.create();
-            return alert;
+            return builder.create();
         }
         case DELETE_PGN_FILE_DIALOG: {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -414,8 +412,7 @@ public class EditPGN extends ListActivity {
                     dialog.cancel();
                 }
             });
-            AlertDialog alert = builder.create();
-            return alert;
+            return builder.create();
         }
         default:
             return null;

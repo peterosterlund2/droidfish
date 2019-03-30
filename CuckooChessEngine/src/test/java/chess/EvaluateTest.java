@@ -36,9 +36,6 @@ public class EvaluateTest {
     public static void tearDownClass() throws Exception {
     }
 
-    /**
-     * Test of evalPos method, of class Evaluate.
-     */
     @Test
     public void testEvalPos() throws ChessParseError {
         System.out.println("evalPos");
@@ -102,9 +99,6 @@ public class EvaluateTest {
         assertTrue(sc2 > sc1);
     }
 
-    /**
-     * Test of pieceSquareEval method, of class Evaluate.
-     */
     @Test
     public void testPieceSquareEval() throws ChessParseError {
         System.out.println("pieceSquareEval");
@@ -143,9 +137,6 @@ public class EvaluateTest {
         assertTrue(score > 100); // Two rooks on 7:th rank is very good
     }
 
-    /**
-     * Test of tradeBonus method, of class Evaluate.
-     */
     @Test
     public void testTradeBonus() throws ChessParseError {
         System.out.println("tradeBonus");
@@ -172,9 +163,6 @@ public class EvaluateTest {
         assertTrue(score2 > score1); // White ahead, trading pieces is good
     }
 
-    /**
-     * Test of material method, of class Evaluate.
-     */
     @Test
     public void testMaterial() throws ChessParseError {
         System.out.println("material");
@@ -204,9 +192,6 @@ public class EvaluateTest {
         assertEquals(-pV+qV, Evaluate.material(pos));
     }
 
-    /**
-     * Test of kingSafety method, of class Evaluate.
-     */
     @Test
     public void testKingSafety() throws ChessParseError {
         System.out.println("kingSafety");
@@ -233,9 +218,6 @@ public class EvaluateTest {
         assertTrue(s2 < s1);
     }
 
-    /**
-     * Test of endGameEval method, of class Evaluate.
-     */
     @Test
     public void testEndGameEval() throws ChessParseError {
         System.out.println("endGameEval");
@@ -312,9 +294,6 @@ public class EvaluateTest {
         assertTrue(score > 0);
     }
 
-    /**
-     * Test of endGameEval method, of class Evaluate.
-     */
     @Test
     public void testPassedPawns() throws ChessParseError {
         System.out.println("passedPawns");
@@ -341,9 +320,6 @@ public class EvaluateTest {
 //        assertTrue(score2 > score); // Advancing passed pawn is good
     }
 
-    /**
-     * Test of endGameEval method, of class Evaluate.
-     */
     @Test
     public void testBishAndRookPawns() throws ChessParseError {
         System.out.println("bishAndRookPawns");
@@ -394,9 +370,6 @@ public class EvaluateTest {
         assertTrue(evalWhite(pos) > 0); // Black has trapped bishop
     }
     
-    /**
-     * Test of endGameEval method, of class Evaluate.
-     */
     @Test
     public void testKQKP() throws ChessParseError {
         System.out.println("KQKP");

@@ -218,13 +218,13 @@ public class DroidChessController {
             dis = new DataInputStream(bais);
             game.readFromStream(dis, version);
             game.tree.translateMoves();
-        } catch (IOException e) {
-        } catch (ChessParseError e) {
+        } catch (IOException ignore) {
+        } catch (ChessParseError ignore) {
         } finally {
             if (dis != null)
-                try { dis.close(); } catch (IOException ex) {}
+                try { dis.close(); } catch (IOException ignore) {}
             if (bais != null)
-                try { bais.close(); } catch (IOException ex) {}
+                try { bais.close(); } catch (IOException ignore) {}
         }
     }
 
@@ -242,9 +242,9 @@ public class DroidChessController {
             return null;
         } finally {
             if (dos != null)
-                try { dos.close(); } catch (IOException ex) {}
+                try { dos.close(); } catch (IOException ignore) {}
             if (baos != null)
-                try { baos.close(); } catch (IOException ex) {}
+                try { baos.close(); } catch (IOException ignore) {}
         }
     }
 
@@ -775,8 +775,7 @@ public class DroidChessController {
                 if (ponderMove != null) {
                     ArrayList<Move> tmp = new ArrayList<>();
                     tmp.add(ponderMove);
-                    for (Move m : pvInfoV.get(i).pv)
-                        tmp.add(m);
+                    tmp.addAll(pvInfoV.get(i).pv);
                     pvMoves.add(tmp);
                 } else {
                     pvMoves.add(pvInfoV.get(i).pv);

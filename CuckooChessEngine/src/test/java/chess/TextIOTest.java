@@ -31,11 +31,11 @@ public class TextIOTest {
     }
 
     @BeforeClass
-    public static void setUpClass() throws Exception {
+    public static void setUpClass() {
     }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {
+    public static void tearDownClass() {
     }
 
     @Before
@@ -46,9 +46,6 @@ public class TextIOTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of readFEN method, of class TextIO.
-     */
     @Test
     public void testReadFEN() throws ChessParseError {
         System.out.println("readFEN");
@@ -123,9 +120,6 @@ public class TextIOTest {
         return wasError;
     }
     
-    /**
-     * Test of moveToString method, of class TextIO.
-     */
     @Test
     public void testMoveToString() throws ChessParseError {
         System.out.println("moveToString");
@@ -162,9 +156,6 @@ public class TextIOTest {
         assertEquals("c7-c8Q+", result);
     }
 
-    /**
-     * Test of moveToString method, of class TextIO, mate/stalemate tests.
-     */
     @Test
     public void testMoveToStringMate() throws ChessParseError {
         System.out.println("moveToStringMate");
@@ -188,9 +179,6 @@ public class TextIOTest {
         assertEquals("b7-b8B", result);     // stalemate
     }
 
-    /**
-     * Test of moveToString method, of class TextIO, short form.
-     */
     @Test
     public void testMoveToStringShortForm() throws ChessParseError {
         System.out.println("moveToStringShortForm");
@@ -240,9 +228,6 @@ public class TextIOTest {
         assertEquals("Rfd8", result);     // File disambiguation needed
     }
 
-    /**
-     * Test of stringToMove method, of class TextIO.
-     */
     @Test
     public void testStringToMove() throws ChessParseError {
         System.out.println("stringToMove");
@@ -324,9 +309,6 @@ public class TextIOTest {
         assertEquals(m2, m);
     }
 
-    /**
-     * Test of getSquare method, of class TextIO.
-     */
     @Test
     public void testGetSquare() throws ChessParseError {
         System.out.println("getSquare");
@@ -338,9 +320,6 @@ public class TextIOTest {
         assertEquals(Position.getSquare(7, 7), TextIO.getSquare("h8"));
     }
 
-    /**
-     * Test of squareToString method, of class TextIO.
-     */
     @Test
     public void testSquareToString() {
         System.out.println("squareToString");
@@ -349,9 +328,6 @@ public class TextIOTest {
         assertEquals("e4", TextIO.squareToString(Position.getSquare(4, 3)));
     }
 
-    /**
-     * Test of asciiBoard method, of class TextIO.
-     */
     @Test
     public void testAsciiBoard() throws ChessParseError {
         System.out.println("asciiBoard");
@@ -363,9 +339,6 @@ public class TextIOTest {
         assertEquals(3, aBrd.length() - aBrd.replaceAll(" P", " ").length()); // 3 white pawns
     }
     
-    /**
-     * Test of uciStringToMove method, of class TextIO.
-     */
     @Test
     public void testUciStringToMove() throws ChessParseError {
         System.out.println("stringToMove");

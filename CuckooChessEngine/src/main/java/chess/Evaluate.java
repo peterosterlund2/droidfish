@@ -340,7 +340,7 @@ public class Evaluate {
 
         // Knights
         {
-            final int t1 = qV + 2 * rV + 1 * bV + 1 * nV + 6 * pV;
+            final int t1 = qV + 2 * rV + bV + nV + 6 * pV;
             final int t2 = nV + 8 * pV;
             int n1 = pos.psScore1[Piece.WKNIGHT];
             int n2 = pos.psScore2[Piece.WKNIGHT];

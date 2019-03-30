@@ -61,7 +61,6 @@ public class ChessBoardPainter extends JLabel {
 
     /**
      * Set the board to a given state.
-     * @param pos
      */
     final public void setPosition(Position pos) {
         this.pos = pos;
@@ -70,7 +69,6 @@ public class ChessBoardPainter extends JLabel {
 
     /**
      * Set/clear the board flipped status.
-     * @param flipped
      */
     final public void setFlipped(boolean flipped) {
         this.flipped = flipped;
@@ -227,23 +225,23 @@ public class ChessBoardPainter extends JLabel {
     }
 
     final Move mousePressed(int sq) {
-        Move m = null;
         cancelSelection = false;
         int p = pos.getPiece(sq);
         if ((selectedSquare >= 0) && (sq == selectedSquare)) {
             int fromPiece = pos.getPiece(selectedSquare);
             if ((fromPiece == Piece.EMPTY) || (Piece.isWhite(fromPiece) != pos.whiteMove)) {
-                return m; // Can't move the piece the oppenent just moved.
+                return null; // Can't move the piece the opponent just moved.
             }
         }
         if ((selectedSquare < 0) &&
                 ((p == Piece.EMPTY) || (Piece.isWhite(p) != pos.whiteMove))) {
-            return m;  // You must click on one of your own pieces.
+            return null;  // You must click on one of your own pieces.
         }
         activeSquare = sq;
         dragging = false;
         dragX = dragY = -1;
 
+        Move m = null;
         if (selectedSquare >= 0) {
             if (sq == selectedSquare) {
                 cancelSelection = true;

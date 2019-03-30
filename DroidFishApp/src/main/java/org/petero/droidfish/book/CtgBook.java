@@ -120,9 +120,9 @@ class CtgBook implements IOpeningBook {
         } catch (IOException e) {
             return null;
         } finally {
-            if (ctgF != null) try { ctgF.close(); } catch (IOException e) { }
-            if (ctbF != null) try { ctbF.close(); } catch (IOException e) { }
-            if (ctoF != null) try { ctoF.close(); } catch (IOException e) { }
+            if (ctgF != null) try { ctgF.close(); } catch (IOException ignore) { }
+            if (ctbF != null) try { ctbF.close(); } catch (IOException ignore) { }
+            if (ctoF != null) try { ctoF.close(); } catch (IOException ignore) { }
         }
     }
 
@@ -163,7 +163,7 @@ class CtgBook implements IOpeningBook {
             int byteIdx = length / 8;
             int bitIdx = 7 - (length & 7);
             while (buf.size() <= byteIdx)
-                buf.add(Byte.valueOf((byte)0));
+                buf.add((byte)0);
             if (value)
                 buf.set(byteIdx, (byte)(buf.get(byteIdx) | (1 << bitIdx)));
             length++;
@@ -266,8 +266,7 @@ class CtgBook implements IOpeningBook {
 
         final int getPage(int hashIndex) throws IOException {
             byte[] buf = readBytes(f, 16 + 4 * hashIndex, 4);
-            int page = extractInt(buf, 0, 4);
-            return page;
+            return extractInt(buf, 0, 4);
         }
 
         private final static int tbl[] = {
@@ -292,8 +291,7 @@ class CtgBook implements IOpeningBook {
         private static int getHashValue(byte[] encodedPos) {
             int hash = 0;
             int tmp = 0;
-            for (int i = 0; i < encodedPos.length; i++) {
-                int ch = encodedPos[i];
+            for (int ch : encodedPos) {
                 tmp += ((0x0f - (ch & 0x0f)) << 2) + 1;
                 hash += tbl[tmp & 0x3f];
                 tmp += ((0xf0 - (ch & 0xf0)) >> 2) + 1;
@@ -437,8 +435,7 @@ class CtgBook implements IOpeningBook {
 
         final int getRecommendation() {
             int statStart = posLen + moveBytes;
-            int recom = extractInt(buf, statStart + 30, 1);
-            return recom;
+            return extractInt(buf, statStart + 30, 1);
         }
 
         private static final class MoveInfo {
@@ -651,8 +648,7 @@ class CtgBook implements IOpeningBook {
             int promoteTo = Piece.EMPTY;
             if ((pos.getPiece(from) == Piece.WPAWN) && (toY == 7))
                 promoteTo = Piece.WQUEEN;
-            Move m = new Move(from, to, promoteTo);
-            return m;
+            return new Move(from, to, promoteTo);
         }
     }
 

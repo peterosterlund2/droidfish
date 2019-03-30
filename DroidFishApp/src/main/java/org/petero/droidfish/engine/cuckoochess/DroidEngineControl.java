@@ -42,31 +42,31 @@ import org.petero.droidfish.engine.LocalPipe;
 public class DroidEngineControl {
     LocalPipe os;
 
-    Thread engineThread;
+    private Thread engineThread;
     private final Object threadMutex;
-    Search sc;
-    TranspositionTable tt;
-    History ht;
-    MoveGen moveGen;
+    private Search sc;
+    private TranspositionTable tt;
+    private History ht;
+    private MoveGen moveGen;
 
-    Position pos;
-    long[] posHashList;
-    int posHashListSize;
-    boolean ponder;     // True if currently doing pondering
-    boolean onePossibleMove;
-    boolean infinite;
+    private Position pos;
+    private long[] posHashList;
+    private int posHashListSize;
+    private boolean ponder;     // True if currently doing pondering
+    private boolean onePossibleMove;
+    private boolean infinite;
 
-    int minTimeLimit;
-    int maxTimeLimit;
-    int maxDepth;
-    int maxNodes;
-    List<Move> searchMoves;
+    private int minTimeLimit;
+    private int maxTimeLimit;
+    private int maxDepth;
+    private int maxNodes;
+    private List<Move> searchMoves;
 
     // Options
-    int hashSizeMB = 2;
-    boolean ownBook = false;
-    boolean analyseMode = false;
-    boolean ponderMode = true;
+    private int hashSizeMB = 2;
+    private boolean ownBook = false;
+    private boolean analyseMode = false;
+    private boolean ponderMode = true;
 
     // Reduced strength variables
     private int strength = 1000;
@@ -208,7 +208,7 @@ public class DroidEngineControl {
         }
     }
 
-    static int clamp(int val, int min, int max) {
+    private static int clamp(int val, int min, int max) {
         if (val < min) {
             return min;
         } else if (val > max) {
@@ -302,7 +302,7 @@ public class DroidEngineControl {
         tt = new TranspositionTable(logSize);
     }
 
-    final void setupPosition(Position pos, List<Move> moves) {
+    private void setupPosition(Position pos, List<Move> moves) {
         UndoInfo ui = new UndoInfo();
         posHashList = new long[200 + moves.size()];
         posHashListSize = 0;
@@ -316,7 +316,7 @@ public class DroidEngineControl {
     /**
      * Try to find a move to ponder from the transposition table.
      */
-    final Move getPonderMove(Position pos, Move m) {
+    private Move getPonderMove(Position pos, Move m) {
         if (m == null)
             return null;
         Move ret = null;
@@ -336,7 +336,7 @@ public class DroidEngineControl {
         return ret;
     }
 
-    static String moveToString(Move m) {
+    private static String moveToString(Move m) {
         if (m == null)
             return "0000";
         String ret = TextIO.squareToString(m.from);
@@ -388,7 +388,7 @@ public class DroidEngineControl {
             } else if (optionName.equals("strength")) {
                 strength = Integer.parseInt(optionValue);
             }
-        } catch (NumberFormatException nfe) {
+        } catch (NumberFormatException ignore) {
         }
     }
 }

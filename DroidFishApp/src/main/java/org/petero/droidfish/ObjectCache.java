@@ -117,7 +117,7 @@ public class ObjectCache {
                         try {
                             tokens[i] = Long.valueOf(files[i].getName());
                             token = Math.max(token, tokens[i]);
-                        } catch (NumberFormatException nfe) {
+                        } catch (NumberFormatException ignore) {
                         }
                     }
                     Arrays.sort(tokens);
@@ -140,7 +140,7 @@ public class ObjectCache {
                         }
                     }
                 }
-            } catch (IOException e) {
+            } catch (IOException ignore) {
             }
         }
         return -1;
@@ -167,7 +167,7 @@ public class ObjectCache {
                 } finally {
                     raf.close();
                 }
-            } catch (IOException ex) {
+            } catch (IOException ignore) {
             }
         }
         return null;

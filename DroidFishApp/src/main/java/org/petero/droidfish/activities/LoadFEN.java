@@ -78,7 +78,6 @@ public class LoadFEN extends ListActivity {
 
     private ChessBoardPlay cb;
     private Button okButton;
-    private Button cancelButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +100,7 @@ public class LoadFEN extends ListActivity {
         Intent i = getIntent();
         String action = i.getAction();
         String fileName = i.getStringExtra("org.petero.droidfish.pathname");
-        if (action.equals("org.petero.droidfish.loadFen")) {
+        if ("org.petero.droidfish.loadFen".equals(action)) {
             fenFile = new FENFile(fileName);
             progressLatch = new CountDownLatch(1);
             showProgressDialog();
@@ -130,8 +129,8 @@ public class LoadFEN extends ListActivity {
                 }
             });
             workThread.start();
-        } else if (action.equals("org.petero.droidfish.loadNextFen") ||
-                   action.equals("org.petero.droidfish.loadPrevFen")) {
+        } else if ("org.petero.droidfish.loadNextFen".equals(action) ||
+                   "org.petero.droidfish.loadPrevFen".equals(action)) {
             fenFile = new FENFile(fileName);
             boolean next = action.equals("org.petero.droidfish.loadNextFen");
             final int loadItem = defaultItem + (next ? 1 : -1);
@@ -204,7 +203,7 @@ public class LoadFEN extends ListActivity {
 
         cb = findViewById(R.id.loadfen_chessboard);
         okButton = findViewById(R.id.loadfen_ok);
-        cancelButton = findViewById(R.id.loadfen_cancel);
+        Button cancelButton = findViewById(R.id.loadfen_cancel);
 
         okButton.setEnabled(false);
         okButton.setOnClickListener(new OnClickListener() {

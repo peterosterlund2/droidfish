@@ -30,9 +30,6 @@ public class GameTest extends TestCase {
     public GameTest() {
     }
 
-    /**
-     * Test of haveDrawOffer method, of class Game.
-     */
     public void testHaveDrawOffer() {
         Game game = new Game(null, new TimeControlData());
         assertEquals(false, game.haveDrawOffer());
@@ -134,9 +131,6 @@ public class GameTest extends TestCase {
         assertEquals(false, game.haveDrawOffer());
     }
 
-    /**
-     * Test of draw by 50 move rule, of class Game.
-     */
     public void testDraw50() throws ChessParseError {
         Game game = new Game(null, new TimeControlData());
         assertEquals(false, game.haveDrawOffer());
@@ -196,9 +190,6 @@ public class GameTest extends TestCase {
         assertEquals(Game.GameState.WHITE_MATE, game.getGameState()); // Can't claim draw when game over
     }
 
-    /**
-     * Test of draw by repetition, of class Game.
-     */
     public void testDrawRep() throws ChessParseError {
         Game game = new Game(null, new TimeControlData());
         assertEquals(false, game.haveDrawOffer());
@@ -268,9 +259,6 @@ public class GameTest extends TestCase {
         assertEquals(Game.GameState.DRAW_REP, game.getGameState());
     }
 
-    /**
-     * Test of draw offer/accept/request command.
-     */
     public void testDrawBug() throws ChessParseError {
         Game game = new Game(null, new TimeControlData());
         assertEquals(false, game.haveDrawOffer());
@@ -286,9 +274,6 @@ public class GameTest extends TestCase {
         assertEquals(Piece.EMPTY, game.tree.currentPos.getPiece(TextIO.getSquare("e5")));
     }
 
-    /**
-     * Test of resign command, of class Game.
-     */
     public void testResign() throws ChessParseError {
         Game game = new Game(null, new TimeControlData());
         assertEquals(Game.GameState.ALIVE, game.getGameState());
@@ -316,9 +301,6 @@ public class GameTest extends TestCase {
         assertEquals(Game.GameState.RESIGN_BLACK, game.getGameState());
     }
 
-    /**
-     * Test of processString method, of class Game.
-     */
     public void testProcessString() throws ChessParseError {
         Game game = new Game(null, new TimeControlData());
         assertEquals(TextIO.startPosFEN, TextIO.toFEN(game.currPos()));
@@ -373,9 +355,6 @@ public class GameTest extends TestCase {
         assertEquals(null, p.second);
     }
 
-    /**
-     * Test of getGameState method, of class Game.
-     */
     public void testGetGameState() throws ChessParseError {
         Game game = new Game(null, new TimeControlData());
         assertEquals(Game.GameState.ALIVE, game.getGameState());
@@ -389,9 +368,6 @@ public class GameTest extends TestCase {
         assertEquals(Game.GameState.BLACK_STALEMATE, game.getGameState());
     }
 
-    /**
-     * Test of insufficientMaterial method, of class Game.
-     */
     public void testInsufficientMaterial() throws ChessParseError {
         Game game = new Game(null, new TimeControlData());
         assertEquals(Game.GameState.ALIVE, game.getGameState());

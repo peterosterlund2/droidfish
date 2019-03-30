@@ -30,16 +30,13 @@ public class TranspositionTableTest {
     }
 
     @BeforeClass
-    public static void setUpClass() throws Exception {
+    public static void setUpClass() {
     }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {
+    public static void tearDownClass() {
     }
 
-    /**
-     * Test of TTEntry nested class, of class TranspositionTable.
-     */
     @Test
     public void testTTEntry() throws ChessParseError {
         System.out.println("TTEntry");
@@ -115,9 +112,6 @@ public class TranspositionTableTest {
         assertEquals(score - 2, ent3.getScore(ply - 2));
     }
     
-    /**
-     * Test of insert method, of class TranspositionTable.
-     */
     @Test
     public void testInsert() throws ChessParseError {
         System.out.println("insert");

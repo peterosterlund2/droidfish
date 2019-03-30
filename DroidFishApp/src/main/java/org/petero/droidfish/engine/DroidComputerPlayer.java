@@ -53,7 +53,7 @@ public class DroidComputerPlayer {
     private String engineName = "Computer";
 
     /** Engine state. */
-    private static enum MainState {
+    private enum MainState {
         READ_OPTIONS,  // "uci" command sent, waiting for "option" and "uciok" response.
         WAIT_READY,    // "isready" sent, waiting for "readyok".
         IDLE,          // engine not searching.
@@ -138,7 +138,6 @@ public class DroidComputerPlayer {
          * Create a search request object.
          * @param id Search ID.
          * @param now Current system time.
-         * @param pos An earlier position from the game.
          * @param mList List of moves to go from the earlier position to the current position.
          *              This list makes it possible for the computer to correctly handle draw
          *              by repetition/50 moves.
@@ -406,7 +405,7 @@ public class DroidComputerPlayer {
             // If we have a book move, play it.
             Move bookMove = book.getBookMove(sr.currPos);
             if (bookMove != null) {
-                if (canClaimDraw(sr.currPos, posHashList, posHashListSize, bookMove) == "") {
+                if (canClaimDraw(sr.currPos, posHashList, posHashListSize, bookMove).isEmpty()) {
                     listener.notifySearchResult(sr.searchId,
                                                 TextIO.moveToString(sr.currPos, bookMove, false, false),
                                                 null);
@@ -422,7 +421,7 @@ public class DroidComputerPlayer {
             }
             if (moves.size() == 1) {
                 Move bestMove = moves.get(0);
-                if (canClaimDraw(sr.currPos, posHashList, posHashListSize, bestMove) == "") {
+                if (canClaimDraw(sr.currPos, posHashList, posHashListSize, bestMove).isEmpty()) {
                     listener.notifySearchResult(sr.searchId, TextIO.moveToUCIString(bestMove), null);
                     return;
                 }
@@ -497,7 +496,7 @@ public class DroidComputerPlayer {
     }
 
     /** Type of search the engine is currently requested to perform. */
-    public static enum SearchType {
+    public enum SearchType {
         NONE,
         SEARCH,
         PONDER,
@@ -807,7 +806,7 @@ public class DroidComputerPlayer {
         if (statScore <= 0) {
             String drawClaim = canClaimDraw(sr.currPos, sr.posHashList, sr.posHashListSize,
                                             TextIO.UCIstringToMove(bestMove));
-            if (drawClaim != "") {
+            if (!drawClaim.isEmpty()) {
                 bestMove = drawClaim;
                 canPonder = false;
             }
@@ -820,7 +819,7 @@ public class DroidComputerPlayer {
 
         if (canPonder) {
             Move bestM = TextIO.stringToMove(sr.currPos, bestMove);
-            if ((bestM == null) || !TextIO.isValid(sr.currPos, bestM))
+            if (!TextIO.isValid(sr.currPos, bestM))
                 canPonder = false;
             if (canPonder) {
                 Position tmpPos = new Position(sr.currPos);

@@ -310,8 +310,7 @@ public class Probe {
                 }
             }
         }
-        for (Move m : unknownMoves)
-            optimalMoves.add(m);
+        optimalMoves.addAll(unknownMoves);
         return (optimalMoves.size() < moveList.size()) ? optimalMoves : null;
     }
 

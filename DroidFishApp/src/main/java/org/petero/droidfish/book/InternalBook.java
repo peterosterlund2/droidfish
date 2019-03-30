@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.petero.droidfish.DroidFishApp;
 import org.petero.droidfish.book.DroidBook.BookEntry;
 import org.petero.droidfish.gamelogic.ChessParseError;
 import org.petero.droidfish.gamelogic.Move;
@@ -34,7 +33,6 @@ import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gamelogic.UndoInfo;
 
 import android.annotation.SuppressLint;
-import android.widget.Toast;
 
 @SuppressLint("UseSparseArrays")
 final class InternalBook implements IOpeningBook {
@@ -78,7 +76,7 @@ final class InternalBook implements IOpeningBook {
         enabled = options.filename.equals("internal:");
     }
 
-    private synchronized final void initInternalBook() {
+    private synchronized void initInternalBook() {
         if (numBookMoves >= 0)
             return;
 //        long t0 = System.currentTimeMillis();

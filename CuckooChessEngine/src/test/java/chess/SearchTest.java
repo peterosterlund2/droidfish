@@ -34,16 +34,13 @@ public class SearchTest {
     }
 
     @BeforeClass
-    public static void setUpClass() throws Exception {
+    public static void setUpClass() {
     }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {
+    public static void tearDownClass() {
     }
 
-    /**
-     * Test of negaScout method, of class Search.
-     */
     @Test
     public void testNegaScout() throws ChessParseError, StopSearch {
         System.out.println("negaScout");
@@ -89,9 +86,6 @@ public class SearchTest {
         assertTrue(!TextIO.moveToString(pos, bestM, false).equals("Qxb3"));
     }
 
-    /**
-     * Test of draw by 50 move rule, of class Search.
-     */
     @Test
     public void testDraw50() throws ChessParseError, StopSearch {
         System.out.println("draw50");
@@ -151,9 +145,6 @@ public class SearchTest {
         assertEquals(mateInThree, score);   // Need an extra pawn move to avoid 50-move rule
     }
 
-    /**
-     * Test of draw by repetition rule, of class Search.
-     */
     @Test
     public void testDrawRep() throws ChessParseError, StopSearch {
         System.out.println("drawRep");
@@ -190,9 +181,6 @@ public class SearchTest {
         assertEquals(0, score); // Draw, black can not escape from perpetual checks
     }
 
-    /**
-     * Test of hash table, of class Search.
-     */
     @Test
     public void testHashing() throws ChessParseError {
         System.out.println("hashing");
@@ -202,9 +190,6 @@ public class SearchTest {
         assertEquals(TextIO.stringToMove(pos, "Kb1"), new Move(bestM));
     }
 
-    /**
-     * Late move pruning must not be used in mate search.
-     */
     @Test
     public void testLMP() throws ChessParseError {
         Position pos = TextIO.readFEN("2r2rk1/6p1/p3pq1p/1p1b1p2/3P1n2/PP3N2/3N1PPP/1Q2RR1K b");  // WAC 174
@@ -270,9 +255,6 @@ public class SearchTest {
         return see;
     }
 
-    /**
-     * Test of SEE method, of class Search.
-     */
     @Test
     public void testSEE() throws ChessParseError {
         System.out.println("SEE");
@@ -423,9 +405,6 @@ public class SearchTest {
         assertEquals(h1, h2);
     }
 
-    /**
-     * Test of scoreMoveList method, of class Search.
-     */
     @Test
     public void testScoreMoveList() throws ChessParseError {
         System.out.println("SEEorder");

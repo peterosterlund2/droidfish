@@ -107,9 +107,9 @@ public class TranspositionTable {
             depthSlot |= (s << 15);
         }
     }
-    TTEntry[] table;
-    TTEntry emptySlot;
-    byte generation;
+    private TTEntry[] table;
+    private TTEntry emptySlot;
+    private byte generation;
 
     /** Constructor. Creates an empty transposition table with numEntries slots. */
     public TranspositionTable(int log2Size) {

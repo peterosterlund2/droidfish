@@ -43,37 +43,37 @@ import java.util.Random;
 
 /** Control the search thread. */
 public class EngineControl {
-    PrintStream os;
+    private PrintStream os;
 
-    Thread engineThread;
+    private Thread engineThread;
     private final Object threadMutex;
-    Search sc;
-    TranspositionTable tt;
-    History ht;
-    MoveGen moveGen;
+    private Search sc;
+    private TranspositionTable tt;
+    private History ht;
+    private MoveGen moveGen;
 
-    Position pos;
-    long[] posHashList;
-    int posHashListSize;
-    boolean ponder;     // True if currently doing pondering
-    boolean onePossibleMove;
-    boolean infinite;
+    private Position pos;
+    private long[] posHashList;
+    private int posHashListSize;
+    private boolean ponder;     // True if currently doing pondering
+    private boolean onePossibleMove;
+    private boolean infinite;
 
-    int minTimeLimit;
-    int maxTimeLimit;
-    int maxDepth;
-    int maxNodes;
-    List<Move> searchMoves;
+    private int minTimeLimit;
+    private int maxTimeLimit;
+    private int maxDepth;
+    private int maxNodes;
+    private List<Move> searchMoves;
 
     // Options
-    int hashSizeMB = 16;
-    boolean ownBook = false;
-    boolean analyseMode = false;
-    boolean ponderMode = true;
+    private int hashSizeMB = 16;
+    private boolean ownBook = false;
+    private boolean analyseMode = false;
+    private boolean ponderMode = true;
 
     // Reduced strength variables
-    int strength = 1000;
-    long randomSeed = 0;
+    private int strength = 1000;
+    private long randomSeed = 0;
 
     /**
      * This class is responsible for sending "info" strings during search.
@@ -202,7 +202,7 @@ public class EngineControl {
             final int margin = Math.min(1000, time * 9 / 10);
             int timeLimit = (time + inc * (moves - 1) - margin) / moves;
             minTimeLimit = (int)(timeLimit * 0.85);
-            maxTimeLimit = (int)(minTimeLimit * (Math.max(2.5, Math.min(4.0, moves / 2))));
+            maxTimeLimit = (int)(minTimeLimit * (Math.max(2.5, Math.min(4.0, moves * 0.5))));
 
             // Leave at least 1s on the clock, but can't use negative time
             minTimeLimit = clamp(minTimeLimit, 1, time - margin);
@@ -368,13 +368,13 @@ public class EngineControl {
     }
 
     static void printOptions(PrintStream os) {
-        os.printf("option name Hash type spin default 16 min 1 max 2048%n");
-        os.printf("option name OwnBook type check default false%n");
-        os.printf("option name Ponder type check default true%n");
-        os.printf("option name UCI_AnalyseMode type check default false%n");
+        os.print("option name Hash type spin default 16 min 1 max 2048%n");
+        os.print("option name OwnBook type check default false%n");
+        os.print("option name Ponder type check default true%n");
+        os.print("option name UCI_AnalyseMode type check default false%n");
         os.printf("option name UCI_EngineAbout type string default %s by Peter Osterlund, see http://web.comhem.se/petero2home/javachess/index.html%n",
                 ComputerPlayer.engineName);
-        os.printf("option name Strength type spin default 1000 min 0 max 1000\n");
+        os.print("option name Strength type spin default 1000 min 0 max 1000\n");
         
         for (String pName : Parameters.instance().getParamNames()) {
             ParamBase p = Parameters.instance().getParam(pName);
@@ -396,7 +396,7 @@ public class EngineControl {
                 os.printf("option name %s type combo default %s ", cp.name, cp.defaultValue);
                 for (String s : cp.allowedValues)
                     os.printf(" var %s", s);
-                os.printf("\n");
+                os.print("\n");
                 break;
             }
             case BUTTON:
@@ -428,7 +428,7 @@ public class EngineControl {
             } else {
                 Parameters.instance().set(optionName, optionValue);
             }
-        } catch (NumberFormatException nfe) {
+        } catch (NumberFormatException ignore) {
         }
     }
 }

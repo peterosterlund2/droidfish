@@ -28,9 +28,6 @@ public class PositionTest extends TestCase {
     public PositionTest() {
     }
 
-    /**
-     * Test of getPiece method, of class Position.
-     */
     public void testGetPiece() throws ChessParseError {
         Position pos = new Position();
         int result = pos.getPiece(0);
@@ -49,9 +46,6 @@ public class PositionTest extends TestCase {
         }
     }
 
-    /**
-     * Test of getIndex method, of class Position.
-     */
     public void testGetIndex() {
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
@@ -64,9 +58,6 @@ public class PositionTest extends TestCase {
         }
     }
 
-    /**
-     * Test of setPiece method, of class Position.
-     */
     public void testSetPiece() {
         Position instance = new Position();
         assertEquals(Piece.EMPTY, instance.getPiece(Position.getSquare(0, 0)));
@@ -74,9 +65,6 @@ public class PositionTest extends TestCase {
         assertEquals(Piece.WKING, instance.getPiece(Position.getSquare(3, 4)));
     }
 
-    /**
-     * Test of makeMove method, of class Position.
-     */
     public void testMakeMove() throws ChessParseError {
         Position pos = TextIO.readFEN(TextIO.startPosFEN);
         Position origPos = new Position(pos);
@@ -172,9 +160,6 @@ public class PositionTest extends TestCase {
         assertTrue(pos.equals(origPos2));
     }
 
-    /**
-     * Test of makeMove method, of class Position.
-     */
     public void testPromotion() throws ChessParseError {
         String fen = "r1bqk2r/1Pppbppp/p1n2n2/2P1p3/B3P3/5N2/Pp1P1PPP/R1BQK2R w KQkq - 0 1";
         Position pos = TextIO.readFEN(fen);
@@ -210,9 +195,6 @@ public class PositionTest extends TestCase {
         assertEquals(origPos, pos);
     }
 
-    /**
-     * Test move counters, of class Position.
-     */
     public void testMoveCounters() throws ChessParseError {
         String fen = "r1bqk2r/2ppbppp/p1n2n2/1pP1p3/B3P3/5N2/PP1P1PPP/RNBQK2R w KQkq b6 0 7";
         Position pos = TextIO.readFEN(fen);
@@ -272,9 +254,6 @@ public class PositionTest extends TestCase {
         assertEquals(69, pos.fullMoveCounter);
     }
 
-    /**
-     * Test of drawRuleEquals, of class Position.
-     */
     public void testDrawRuleEquals() throws ChessParseError {
         Position pos = TextIO.readFEN(TextIO.startPosFEN);
         Position origPos = new Position(pos);
@@ -315,9 +294,6 @@ public class PositionTest extends TestCase {
         assertEquals(false, pos.drawRuleEquals(origPos));   // Not equal, en passant rights lost
     }
 
-    /**
-     * Test of hashCode method, of class Position.
-     */
     public void testHashCode() throws ChessParseError {
         Position pos = TextIO.readFEN(TextIO.startPosFEN);
         long h1 = pos.zobristHash();
@@ -369,9 +345,6 @@ public class PositionTest extends TestCase {
         }
     }
 
-    /**
-     * Test of getKingSq method, of class Position.
-     */
     public void testGetKingSq() throws ChessParseError {
         Position pos = TextIO.readFEN(TextIO.startPosFEN);
         assertEquals(TextIO.getSquare("e1"), pos.getKingSq(true));

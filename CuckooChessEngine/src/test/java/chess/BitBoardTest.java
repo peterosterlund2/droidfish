@@ -29,16 +29,15 @@ public class BitBoardTest {
     }
 
     @BeforeClass
-    public static void setUpClass() throws Exception {
+    public static void setUpClass() {
     }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {
+    public static void tearDownClass() {
     }
 
-    /** Test of kingAttacks, of class BitBoard. */
     @Test
-    public void testKingAttacks() throws ChessParseError {
+    public void testKingAttacks() {
         System.out.println("kingAttacks");
         assertEquals(5, Long.bitCount(BitBoard.kingAttacks[TextIO.getSquare("g1")]));
         assertEquals(3, Long.bitCount(BitBoard.kingAttacks[TextIO.getSquare("h1")]));
@@ -49,9 +48,8 @@ public class BitBoardTest {
         assertEquals(8, Long.bitCount(BitBoard.kingAttacks[TextIO.getSquare("b2")]));
     }
 
-    /** Test of knightAttacks, of class BitBoard. */
     @Test
-    public void testKnightAttacks() throws ChessParseError {
+    public void testKnightAttacks() {
         System.out.println("knightAttacks");
         assertEquals(3, Long.bitCount(BitBoard.knightAttacks[TextIO.getSquare("g1")]));
         assertEquals(2, Long.bitCount(BitBoard.knightAttacks[TextIO.getSquare("a1")]));
@@ -65,9 +63,8 @@ public class BitBoardTest {
                      BitBoard.knightAttacks[TextIO.getSquare("g1")]);
     }
     
-    /** Test of squaresBetween[][], of class BitBoard. */
     @Test
-    public void testSquaresBetween() throws ChessParseError {
+    public void testSquaresBetween() {
         System.out.println("squaresBetween");
         // Tests that the set of nonzero elements is correct
         for (int sq1 = 0; sq1 < 64; sq1++) {

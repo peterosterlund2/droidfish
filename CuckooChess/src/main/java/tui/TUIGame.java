@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
+import java.util.Locale;
 
 import uci.UCIProtocol;
 import chess.ChessParseError;
@@ -89,14 +90,14 @@ public class TUIGame extends Game {
         try {
             int idx = cmd.indexOf(" ");
             String filename = cmd.substring(0, idx);
-            String timeStr = cmd.substring(idx + 1, cmd.length());
+            String timeStr = cmd.substring(idx + 1);
             int timeLimit = Integer.parseInt(timeStr);
             //            System.out.printf("file:%s time:%s (%d)\n", filename, timeStr, timeLimit);
             fr = new LineNumberReader(new FileReader(filename));
             String line;
             Player pl = whitePlayer.isHumanPlayer() ? blackPlayer : whitePlayer;
             if (pl.isHumanPlayer()) {
-                System.out.printf("No computer player available");
+                System.out.print("No computer player available");
                 return false;
             }
             ComputerPlayer cp = (ComputerPlayer)pl;
@@ -178,9 +179,9 @@ public class TUIGame extends Game {
                 if (haveDrawOffer()) {
                     moveStr += " (offer draw)";
                 }
-                String msg = String.format("Last move: %d%s %s",
+                String msg = String.format(Locale.US, "Last move: %d%s %s",
                         prevPos.fullMoveCounter, prevPos.whiteMove ? "." : "...",
-                                moveStr);
+                        moveStr);
                 System.out.println(msg);
             }
 //            System.out.printf("Hash: %016x\n", pos.zobristHash());
