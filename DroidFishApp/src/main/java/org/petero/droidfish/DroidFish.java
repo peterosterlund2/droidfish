@@ -374,7 +374,7 @@ public class DroidFish extends Activity
                         gameModeType = GameMode.ANALYSIS;
                     }
                     newGameMode(gameModeType);
-                    setBoardFlip(true);
+                    setBoardFlip(false);
                 }
             });
             addAction(new UIAction() {
