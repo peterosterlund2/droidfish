@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.petero.droidfish.ColorTheme;
+import org.petero.droidfish.PieceSet;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
@@ -30,12 +31,12 @@ import org.petero.droidfish.gamelogic.UndoInfo;
 import org.petero.droidfish.tb.ProbeResult;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -51,7 +52,6 @@ public abstract class ChessBoard extends View {
     public boolean cursorVisible;
     protected int x0, y0;
     public int sqSize;
-    int pieceXDelta, pieceYDelta; // top/left pixel draw position relative to square
     public boolean flipped;
     public boolean drawSquareLabels;
     public boolean toggleSelection;
@@ -79,8 +79,7 @@ public abstract class ChessBoard extends View {
     protected Paint brightPaint;
     private Paint selectedSquarePaint;
     private Paint cursorSquarePaint;
-    private Paint whitePiecePaint;
-    private Paint blackPiecePaint;
+    private Paint piecePaint;
     private Paint labelPaint;
     private Paint decorationPaint;
     private ArrayList<Paint> moveMarkPaint;
@@ -93,7 +92,6 @@ public abstract class ChessBoard extends View {
         cursorX = cursorY = 0;
         cursorVisible = false;
         x0 = y0 = sqSize = 0;
-        pieceXDelta = pieceYDelta = -1;
         flipped = false;
         drawSquareLabels = false;
         toggleSelection = false;
@@ -111,11 +109,8 @@ public abstract class ChessBoard extends View {
         cursorSquarePaint.setStyle(Paint.Style.STROKE);
         cursorSquarePaint.setAntiAlias(true);
 
-        whitePiecePaint = new Paint();
-        whitePiecePaint.setAntiAlias(true);
-
-        blackPiecePaint = new Paint();
-        blackPiecePaint.setAntiAlias(true);
+        piecePaint = new Paint();
+        piecePaint.setAntiAlias(true);
 
         labelPaint = new Paint();
         labelPaint.setAntiAlias(true);
@@ -134,10 +129,6 @@ public abstract class ChessBoard extends View {
         if (isInEditMode())
             return;
 
-        Typeface chessFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/ChessCases.ttf");
-        whitePiecePaint.setTypeface(chessFont);
-        blackPiecePaint.setTypeface(chessFont);
-
         setColors();
     }
 
@@ -148,8 +139,6 @@ public abstract class ChessBoard extends View {
         brightPaint.setColor(ct.getColor(ColorTheme.BRIGHT_SQUARE));
         selectedSquarePaint.setColor(ct.getColor(ColorTheme.SELECTED_SQUARE));
         cursorSquarePaint.setColor(ct.getColor(ColorTheme.CURSOR_SQUARE));
-        whitePiecePaint.setColor(ct.getColor(ColorTheme.BRIGHT_PIECE));
-        blackPiecePaint.setColor(ct.getColor(ColorTheme.DARK_PIECE));
         labelPaint.setColor(ct.getColor(ColorTheme.SQUARE_LABEL));
         decorationPaint.setColor(ct.getColor(ColorTheme.DECORATION));
         for (int i = 0; i < ColorTheme.MAX_ARROWS; i++)
@@ -369,7 +358,6 @@ public abstract class ChessBoard extends View {
         int sqSizeW = getSqSizeW(width);
         int sqSizeH = getSqSizeH(height);
         int sqSize = Math.min(sqSizeW, sqSizeH);
-        pieceXDelta = pieceYDelta = -1;
         labelBounds = null;
         if (height > width) {
             int p = getMaxHeightPercentage();
@@ -394,8 +382,6 @@ public abstract class ChessBoard extends View {
         final int width = getWidth();
         final int height = getHeight();
         sqSize = Math.min(getSqSizeW(width), getSqSizeH(height));
-        blackPiecePaint.setTextSize(sqSize);
-        whitePiecePaint.setTextSize(sqSize);
         labelPaint.setTextSize(sqSize/4.0f);
         decorationPaint.setTextSize(sqSize/3.0f);
         computeOrigin(width, height);
@@ -507,41 +493,15 @@ public abstract class ChessBoard extends View {
     protected final void drawPiece(Canvas canvas, int xCrd, int yCrd, int p) {
         if (blindMode)
             return;
-        String psb, psw;
-        boolean rotate = false;
-        switch (p) {
-            default:
-            case Piece.EMPTY:   psb = null; psw = null; break;
-            case Piece.WKING:   psb = "H"; psw = "k"; break;
-            case Piece.WQUEEN:  psb = "I"; psw = "l"; break;
-            case Piece.WROOK:   psb = "J"; psw = "m"; break;
-            case Piece.WBISHOP: psb = "K"; psw = "n"; break;
-            case Piece.WKNIGHT: psb = "L"; psw = "o"; break;
-            case Piece.WPAWN:   psb = "M"; psw = "p"; break;
-            case Piece.BKING:   psb = "N"; psw = "q"; rotate = true; break;
-            case Piece.BQUEEN:  psb = "O"; psw = "r"; rotate = true; break;
-            case Piece.BROOK:   psb = "P"; psw = "s"; rotate = true; break;
-            case Piece.BBISHOP: psb = "Q"; psw = "t"; rotate = true; break;
-            case Piece.BKNIGHT: psb = "R"; psw = "u"; rotate = true; break;
-            case Piece.BPAWN:   psb = "S"; psw = "v"; rotate = true; break;
-        }
-        if (psb != null) {
-            if (pieceXDelta < 0) {
-                Rect bounds = new Rect();
-                blackPiecePaint.getTextBounds("H", 0, 1, bounds);
-                pieceXDelta = (sqSize - (bounds.left + bounds.right)) / 2;
-                pieceYDelta = (sqSize - (bounds.top + bounds.bottom)) / 2;
-            }
-            rotate ^= flipped;
-            rotate = false; // Disabled for now
+
+        Bitmap bm = PieceSet.instance().getPieceBitmap(p, sqSize);
+        if (bm != null) {
+            boolean rotate = flipped & false; // Disabled for now
             if (rotate) {
                 canvas.save();
                 canvas.rotate(180, xCrd + sqSize * 0.5f, yCrd + sqSize * 0.5f);
             }
-            xCrd += pieceXDelta;
-            yCrd += pieceYDelta;
-            canvas.drawText(psw, xCrd, yCrd, whitePiecePaint);
-            canvas.drawText(psb, xCrd, yCrd, blackPiecePaint);
+            canvas.drawBitmap(bm, xCrd, yCrd, piecePaint);
             if (rotate)
                 canvas.restore();
         }

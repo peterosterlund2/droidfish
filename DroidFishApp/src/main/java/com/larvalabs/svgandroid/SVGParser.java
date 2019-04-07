@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /*
 
@@ -62,7 +63,7 @@ public class SVGParser {
      * @throws SVGParseException if there is an error while parsing.
      */
     public static SVG getSVGFromInputStream(InputStream svgData) throws SVGParseException {
-        return SVGParser.parse(svgData, 0, 0, false);
+        return SVGParser.parse(svgData, null, false);
     }
 
     /**
@@ -73,7 +74,7 @@ public class SVGParser {
      * @throws SVGParseException if there is an error while parsing.
      */
     public static SVG getSVGFromString(String svgData) throws SVGParseException {
-        return SVGParser.parse(new ByteArrayInputStream(svgData.getBytes()), 0, 0, false);
+        return SVGParser.parse(new ByteArrayInputStream(svgData.getBytes()), null, false);
     }
 
     /**
@@ -85,7 +86,7 @@ public class SVGParser {
      * @throws SVGParseException if there is an error while parsing.
      */
     public static SVG getSVGFromResource(Resources resources, int resId) throws SVGParseException {
-        return SVGParser.parse(resources.openRawResource(resId), 0, 0, false);
+        return SVGParser.parse(resources.openRawResource(resId), null, false);
     }
 
     /**
@@ -108,26 +109,26 @@ public class SVGParser {
      * Parse SVG data from an input stream, replacing a single color with another color.
      *
      * @param svgData      the input stream, with SVG XML data in UTF-8 character encoding.
-     * @param searchColor  the color in the SVG to replace.
-     * @param replaceColor the color with which to replace the search color.
+     * @param colorReplace Map from colors in the SVG to colors to use instead. May be null.
      * @return the parsed SVG.
      * @throws SVGParseException if there is an error while parsing.
      */
-    public static SVG getSVGFromInputStream(InputStream svgData, int searchColor, int replaceColor) throws SVGParseException {
-        return SVGParser.parse(svgData, searchColor, replaceColor, false);
+    public static SVG getSVGFromInputStream(InputStream svgData,
+                                            Map<Integer,Integer> colorReplace) throws SVGParseException {
+        return SVGParser.parse(svgData, colorReplace, false);
     }
 
     /**
      * Parse SVG data from a string.
      *
      * @param svgData      the string containing SVG XML data.
-     * @param searchColor  the color in the SVG to replace.
-     * @param replaceColor the color with which to replace the search color.
+     * @param colorReplace Map from colors in the SVG to colors to use instead. May be null.
      * @return the parsed SVG.
      * @throws SVGParseException if there is an error while parsing.
      */
-    public static SVG getSVGFromString(String svgData, int searchColor, int replaceColor) throws SVGParseException {
-        return SVGParser.parse(new ByteArrayInputStream(svgData.getBytes()), searchColor, replaceColor, false);
+    public static SVG getSVGFromString(String svgData,
+                                       HashMap<Integer,Integer> colorReplace) throws SVGParseException {
+        return SVGParser.parse(new ByteArrayInputStream(svgData.getBytes()), colorReplace, false);
     }
 
     /**
@@ -135,13 +136,13 @@ public class SVGParser {
      *
      * @param resources    the Android context
      * @param resId        the ID of the raw resource SVG.
-     * @param searchColor  the color in the SVG to replace.
-     * @param replaceColor the color with which to replace the search color.
+     * @param colorReplace Map from colors in the SVG to colors to use instead. May be null.
      * @return the parsed SVG.
      * @throws SVGParseException if there is an error while parsing.
      */
-    public static SVG getSVGFromResource(Resources resources, int resId, int searchColor, int replaceColor) throws SVGParseException {
-        return SVGParser.parse(resources.openRawResource(resId), searchColor, replaceColor, false);
+    public static SVG getSVGFromResource(Resources resources, int resId,
+                                         HashMap<Integer,Integer> colorReplace) throws SVGParseException {
+        return SVGParser.parse(resources.openRawResource(resId), colorReplace, false);
     }
 
     /**
@@ -149,15 +150,15 @@ public class SVGParser {
      *
      * @param assetMngr    the Android asset manager.
      * @param svgPath      the path to the SVG file in the application's assets.
-     * @param searchColor  the color in the SVG to replace.
-     * @param replaceColor the color with which to replace the search color.
+     * @param colorReplace Map from colors in the SVG to colors to use instead. May be null.
      * @return the parsed SVG.
      * @throws SVGParseException if there is an error while parsing.
      * @throws IOException       if there was a problem reading the file.
      */
-    public static SVG getSVGFromAsset(AssetManager assetMngr, String svgPath, int searchColor, int replaceColor) throws SVGParseException, IOException {
+    public static SVG getSVGFromAsset(AssetManager assetMngr, String svgPath,
+                                      Map<Integer,Integer> colorReplace) throws SVGParseException, IOException {
         InputStream inputStream = assetMngr.open(svgPath);
-        SVG svg = getSVGFromInputStream(inputStream, searchColor, replaceColor);
+        SVG svg = getSVGFromInputStream(inputStream, colorReplace);
         inputStream.close();
         return svg;
     }
@@ -172,7 +173,7 @@ public class SVGParser {
         return doPath(pathString);
     }
 
-    private static SVG parse(InputStream in, Integer searchColor, Integer replaceColor, boolean whiteMode) throws SVGParseException {
+    private static SVG parse(InputStream in, Map<Integer,Integer> colorReplace, boolean whiteMode) throws SVGParseException {
 //        Util.debug("Parsing SVG...");
         try {
 //            long start = System.currentTimeMillis();
@@ -181,7 +182,7 @@ public class SVGParser {
             XMLReader xr = sp.getXMLReader();
             final Picture picture = new Picture();
             SVGHandler handler = new SVGHandler(picture);
-            handler.setColorSwap(searchColor, replaceColor);
+            handler.setColorSwap(colorReplace);
             handler.setWhiteMode(whiteMode);
             xr.setContentHandler(handler);
             xr.parse(new InputSource(in));
@@ -405,17 +406,29 @@ public class SVGParser {
                 case '6':
                 case '7':
                 case '8':
-                case '9':
-                    if (prevCmd == 'm' || prevCmd == 'M') {
-                        cmd = (char) (((int) prevCmd) - 1);
-                        break;
-                    } else if (prevCmd == 'c' || prevCmd == 'C') {
-                        cmd = prevCmd;
-                        break;
-                    } else if (prevCmd == 'l' || prevCmd == 'L') {
-                        cmd = prevCmd;
-                        break;
+                case '9': {
+                    boolean handled = true;
+                    switch (prevCmd) {
+                        case 'm':
+                            cmd = 'l';
+                            break;
+                        case 'M':
+                            cmd = 'L';
+                            break;
+                        case 'l': case 'L':
+                        case 'c': case 'C':
+                        case 's': case 'S':
+                        case 'q': case 'Q':
+                        case 't': case 'T':
+                            cmd = prevCmd;
+                            break;
+                        default:
+                            handled = false;
+                            break;
                     }
+                    if (handled)
+                        break;
+                }
                 default: {
                     ph.advance();
                     prevCmd = cmd;
@@ -535,6 +548,44 @@ public class SVGParser {
                     p.cubicTo(x1, y1, x2, y2, x, y);
                     lastX1 = x2;
                     lastY1 = y2;
+                    lastX = x;
+                    lastY = y;
+                    break;
+                }
+                case 'Q':
+                case 'q': {
+                    wasCurve = true;
+                    float x1 = ph.nextFloat();
+                    float y1 = ph.nextFloat();
+                    float x = ph.nextFloat();
+                    float y = ph.nextFloat();
+                    if (cmd == 'q') {
+                        x1 += lastX;
+                        x += lastX;
+                        y1 += lastY;
+                        y += lastY;
+                    }
+                    p.quadTo(x1, y1, x, y);
+                    lastX1 = x1;
+                    lastY1 = y1;
+                    lastX = x;
+                    lastY = y;
+                    break;
+                }
+                case 'T':
+                case 't': {
+                    wasCurve = true;
+                    float x = ph.nextFloat();
+                    float y = ph.nextFloat();
+                    if (cmd == 't') {
+                        x += lastX;
+                        y += lastY;
+                    }
+                    float x1 = 2 * lastX - lastX1;
+                    float y1 = 2 * lastY - lastY1;
+                    p.quadTo(x1, y1, x, y);
+                    lastX1 = x1;
+                    lastY1 = y1;
                     lastX = x;
                     lastY = y;
                     break;
@@ -778,8 +829,7 @@ public class SVGParser {
         RectF bounds = null;
         RectF limits = new RectF(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY);
 
-        Integer searchColor = null;
-        Integer replaceColor = null;
+        Map<Integer,Integer> colorReplace = null;
 
         boolean whiteMode = false;
 
@@ -793,9 +843,8 @@ public class SVGParser {
             paint.setAntiAlias(true);
         }
 
-        public void setColorSwap(Integer searchColor, Integer replaceColor) {
-            this.searchColor = searchColor;
-            this.replaceColor = replaceColor;
+        public void setColorSwap(Map<Integer,Integer> colorReplace) {
+            this.colorReplace = colorReplace;
         }
 
         public void setWhiteMode(boolean whiteMode) {
@@ -934,19 +983,27 @@ public class SVGParser {
 
         private void doColor(Properties atts, Integer color, boolean fillMode) {
             int c = (0xFFFFFF & color) | 0xFF000000;
-            if (searchColor != null && searchColor.intValue() == c) {
-                c = replaceColor;
+            int opac = -1;
+            if (colorReplace != null) {
+                Integer replaceColor = colorReplace.get(c);
+                if (replaceColor != null) {
+                    c = replaceColor;
+                    opac = replaceColor >>> 24;
+                }
+            }
+            if (opac == -1) {
+                Float opacity = atts.getFloat("opacity", false);
+                if (opacity == null) {
+                    opacity = atts.getFloat(fillMode ? "fill-opacity" : "stroke-opacity", false);
+                }
+                if (opacity == null) {
+                    opac = 255;
+                } else {
+                    opac = (int) (255 * opacity);
+                }
             }
             paint.setColor(c);
-            Float opacity = atts.getFloat("opacity", false);
-            if (opacity == null) {
-                opacity = atts.getFloat(fillMode ? "fill-opacity" : "stroke-opacity", false);
-            }
-            if (opacity == null) {
-                paint.setAlpha(255);
-            } else {
-                paint.setAlpha((int) (255 * opacity));
-            }
+            paint.setAlpha(opac);
         }
 
         private boolean hidden = false;

@@ -1370,6 +1370,7 @@ public class DroidFish extends Activity
         pgnOptions.exp.clockInfo    = settings.getBoolean("exportTime",         false);
 
         ColorTheme.instance().readColors(settings);
+        PieceSet.instance().readPrefs(settings);
         cb.setColors();
         overrideViewAttribs();
 
@@ -2867,6 +2868,7 @@ public class DroidFish extends Activity
         builder.setSingleChoiceItems(themeNames, -1, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 ColorTheme.instance().setTheme(settings, item);
+                PieceSet.instance().readPrefs(settings);
                 cb.setColors();
                 gameTextListener.clear();
                 ctrl.prefsChanged(false);

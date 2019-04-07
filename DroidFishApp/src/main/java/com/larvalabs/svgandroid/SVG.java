@@ -111,7 +111,9 @@ public class SVG {
     }
 
     /**
-     * Gets the bounding rectangle for the SVG that was computed upon parsing. It may not be entirely accurate for certain curves or transformations, but is often better than nothing.
+     * Gets the bounding rectangle for the SVG that was computed upon parsing.
+     * It may not be entirely accurate for certain curves or transformations,
+     * but is often better than nothing.
      * @return rectangle representing the computed bounds.
      */
     public RectF getLimits() {
