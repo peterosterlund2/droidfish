@@ -169,7 +169,6 @@ public class DroidFish extends Activity
                                   ActivityCompat.OnRequestPermissionsResultCallback {
     // FIXME!!! PGN view option: game continuation (for training)
     // FIXME!!! Implement bookmark mechanism for positions in pgn files
-    // FIXME!!! Add support for "Chess Leipzig" font
 
     // FIXME!!! Add support for "no time control" and "hour-glass time control" as defined by the PGN standard
 

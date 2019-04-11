@@ -153,7 +153,15 @@
             android:entries="@array/viewPieceType_texts" 
             android:defaultValue="@string/viewPieceType_default">
         </ListPreference>
-        <CheckBoxPreference 
+        <ListPreference
+            android:key="viewPieceSet"
+            android:title="@string/prefs_viewPieceSet_title"
+            android:summary="@string/prefs_viewPieceSet_summary"
+            android:entryValues="@array/viewPieceSet_values"
+            android:entries="@array/viewPieceSet_texts"
+            android:defaultValue="@string/viewPieceSet_default">
+        </ListPreference>
+        <CheckBoxPreference
             android:key="blindMode" 
             android:title="@string/prefs_blindMode_title" 
             android:summary="@string/prefs_blindMode_summary" 

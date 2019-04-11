@@ -20,7 +20,10 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -31,6 +34,9 @@ public class PieceSet {
     private HashMap<String,Integer> nameToPieceType;
     private SVG[] svgTable = new SVG[Piece.nPieceTypes];
     private Bitmap[] bitmapTable = new Bitmap[Piece.nPieceTypes];
+    private Set<String> availPieceSets;
+    private String defaultPieceSet = "chesscases";
+    private String cachedPieceSet = defaultPieceSet;
     private int cachedSquareSize = -1;
     private int cachedWhiteColor = 0xffffffff;
     private int cachedBlackColor = 0xff000000;
@@ -57,14 +63,26 @@ public class PieceSet {
         nameToPieceType.put("bn.svg", Piece.BKNIGHT);
         nameToPieceType.put("bp.svg", Piece.BPAWN);
 
+        String[] sa = {
+                defaultPieceSet,
+                "alfonso", "alpha", "cburnett", "chessicons", "chessmonk",
+                "freestaunton", "kilfiger", "leipzig", "magnetic", "maya",
+                "merida", "merida_new", "metaltops", "pirat", "regular",
+                "wikimedia",
+        };
+        availPieceSets = new HashSet<>(Arrays.asList(sa));
+
         parseSvgData();
     }
 
     /** Re-parse SVG data if piece properties have changed. */
     final void readPrefs(SharedPreferences settings) {
-        boolean modified = false; // FIXME!! check for new piece set
-        if (modified)
+        String pieceSet = settings.getString("viewPieceSet", cachedPieceSet);
+        boolean modified = !pieceSet.equals(cachedPieceSet);
+        if (modified) {
+            cachedPieceSet = pieceSet;
             parseSvgData();
+        }
 
         ColorTheme ct = ColorTheme.instance();
         int whiteColor = ct.getColor(ColorTheme.BRIGHT_PIECE);
@@ -118,7 +136,10 @@ public class PieceSet {
     }
 
     private ZipInputStream getZipStream() throws IOException {
-        InputStream is = DroidFishApp.getContext().getAssets().open("pieces/chesscases.zip");
+        String set = availPieceSets.contains(cachedPieceSet) ? cachedPieceSet
+                                                             : defaultPieceSet;
+        String name = "pieces/" + set + ".zip";
+        InputStream is = DroidFishApp.getContext().getAssets().open(name);
         return new ZipInputStream(is);
     }
 
