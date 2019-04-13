@@ -18,13 +18,13 @@
 
 package org.petero.droidfish;
 
-import com.larvalabs.svgandroid.SVG;
-
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.PictureDrawable;
+
+import com.caverock.androidsvg.SVG;
 
 /**
  * Like PictureDrawable but scales the picture according to current drawing bounds.
@@ -38,19 +38,18 @@ public class SVGPictureDrawable extends PictureDrawable {
     private Bitmap cachedBitmap;
 
     public SVGPictureDrawable(SVG svg) {
-        super(svg.getPicture());
-        RectF bounds = svg.getBounds();
-        RectF limits = svg.getLimits();
-        if (bounds != null) {
-            iWidth = (int)bounds.width();
-            iHeight = (int)bounds.height();
-        } else if (limits != null) {
-            iWidth = (int)limits.width();
-            iHeight = (int)limits.height();
-        } else {
-            iWidth = -1;
-            iHeight = -1;
+        super(svg.renderToPicture());
+        int w = (int)svg.getDocumentWidth();
+        int h = (int)svg.getDocumentHeight();
+        if (w == -1 || h == -1) {
+            RectF box = svg.getDocumentViewBox();
+            if (box != null) {
+                w = (int)box.width();
+                h = (int)box.height();
+            }
         }
+        iWidth = w;
+        iHeight = h;
     }
 
     @Override

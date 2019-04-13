@@ -75,10 +75,10 @@ import tourguide.tourguide.Sequence;
 import tourguide.tourguide.ToolTip;
 import tourguide.tourguide.TourGuide;
 
+import com.caverock.androidsvg.SVG;
+import com.caverock.androidsvg.SVGParseException;
 import com.kalab.chess.enginesupport.ChessEngine;
 import com.kalab.chess.enginesupport.ChessEngineResolver;
-import com.larvalabs.svgandroid.SVG;
-import com.larvalabs.svgandroid.SVGParser;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -1458,7 +1458,11 @@ public class DroidFish extends Activity
                 bHeight = bHeight * 3 / 2;
             }
         }
-        SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.touch);
+        SVG svg = null;
+        try {
+            svg = SVG.getFromResource(getResources(), R.raw.touch);
+        } catch (SVGParseException ignore) {
+        }
         setButtonData(custom1Button, bWidth, bHeight, custom1ButtonActions.getIcon(), svg);
         setButtonData(custom2Button, bWidth, bHeight, custom2ButtonActions.getIcon(), svg);
         setButtonData(custom3Button, bWidth, bHeight, custom3ButtonActions.getIcon(), svg);
@@ -1470,7 +1474,11 @@ public class DroidFish extends Activity
     @SuppressWarnings("deprecation")
     private void setButtonData(ImageButton button, int bWidth, int bHeight,
                                      int svgResId, SVG touched) {
-        SVG svg = SVGParser.getSVGFromResource(getResources(), svgResId);
+        SVG svg = null;
+        try {
+            svg = SVG.getFromResource(getResources(), svgResId);
+        } catch (SVGParseException ignore) {
+        }
         button.setBackgroundDrawable(new SVGPictureDrawable(svg));
 
         StateListDrawable sld = new StateListDrawable();

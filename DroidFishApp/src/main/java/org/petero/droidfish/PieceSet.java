@@ -3,10 +3,16 @@ package org.petero.droidfish;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 
-import com.larvalabs.svgandroid.SVG;
-import com.larvalabs.svgandroid.SVGParser;
+import com.caverock.androidsvg.SVG;
+import com.caverock.androidsvg.SVGParseException;
 
 import org.petero.droidfish.gamelogic.Piece;
 
@@ -51,17 +57,20 @@ public class PieceSet {
         nameToPieceType.put("bn.svg", Piece.BKNIGHT);
         nameToPieceType.put("bp.svg", Piece.BPAWN);
 
-        parseSvgData(cachedWhiteColor, cachedBlackColor);
+        parseSvgData();
     }
 
     /** Re-parse SVG data if piece properties have changed. */
     final void readPrefs(SharedPreferences settings) {
+        boolean modified = false; // FIXME!! check for new piece set
+        if (modified)
+            parseSvgData();
+
         ColorTheme ct = ColorTheme.instance();
         int whiteColor = ct.getColor(ColorTheme.BRIGHT_PIECE);
         int blackColor = ct.getColor(ColorTheme.DARK_PIECE);
-        if (whiteColor != cachedWhiteColor || blackColor != cachedBlackColor) {
+        if (modified || whiteColor != cachedWhiteColor || blackColor != cachedBlackColor) {
             recycleBitmaps();
-            parseSvgData(whiteColor, blackColor);
             cachedWhiteColor = whiteColor;
             cachedBlackColor = blackColor;
             cachedSquareSize = -1;
@@ -78,10 +87,7 @@ public class PieceSet {
         return bitmapTable[pType];
     }
 
-    private void parseSvgData(int whiteColor, int blackColor) {
-        HashMap<Integer,Integer> colorReplace = new HashMap<>();
-        colorReplace.put(0xffffffff, whiteColor);
-        colorReplace.put(0xff000000, blackColor);
+    private void parseSvgData() {
         try {
             ZipInputStream zis = getZipStream();
             ZipEntry entry;
@@ -97,7 +103,10 @@ public class PieceSet {
                             bos.write(buf, 0, len);
                         buf = bos.toByteArray();
                         ByteArrayInputStream bis = new ByteArrayInputStream(buf);
-                        svgTable[pType] = SVGParser.getSVGFromInputStream(bis, colorReplace);
+                        try {
+                            svgTable[pType] = SVG.getFromInputStream(bis);
+                        } catch (SVGParseException ignore) {
+                        }
                     }
                 }
                 zis.closeEntry();
@@ -123,14 +132,65 @@ public class PieceSet {
     }
 
     private void createBitmaps(int sqSize) {
+        Paint colorPaint = new Paint();
+        {
+            float[] f = new float[3];
+            float[] o = new float[3];
+            for (int i = 0; i < 3; i++) {
+                int shift = 16 - i * 8;
+                int w = (cachedWhiteColor >>> shift) & 0xff;
+                int b = (cachedBlackColor >>> shift) & 0xff;
+                o[i] = b;
+                f[i] = (w - b) / (float)255;
+            }
+            float[] cm = new float[] {
+                    f[0], 0   , 0   , 0   , o[0],
+                    0   , f[1], 0   , 0   , o[1],
+                    0   , 0   , f[2], 0   , o[2],
+                    0   , 0   , 0   , 1   , 0
+            };
+            colorPaint.setColorFilter(new ColorMatrixColorFilter(cm));
+        }
+
+        Paint alphaPaint = null;
+        int wAlpha = cachedWhiteColor >>> 24;
+        int bAlpha = cachedBlackColor >>> 24;
+        if (wAlpha != 0xff || bAlpha != 0xff) {
+            float o = bAlpha;
+            float k = (wAlpha - bAlpha) / (float)255;
+            float kr = 0.299f, kg = 0.587f, kb = 0.114f;
+            float[] cm = new float[] {
+                    0   , 0   , 0   , 0   , 255,
+                    0   , 0   , 0   , 0   , 255,
+                    0   , 0   , 0   , 0   , 255,
+                    kr*k, kg*k, kb*k, 0   , o
+            };
+            alphaPaint = new Paint();
+            alphaPaint.setColorFilter(new ColorMatrixColorFilter(cm));
+            alphaPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.MULTIPLY));
+        }
+
+        Bitmap svgBM = Bitmap.createBitmap(sqSize, sqSize, Bitmap.Config.ARGB_8888);
+        Matrix scaleMat = new Matrix();
+
         for (int i = 0; i < Piece.nPieceTypes; i++) {
             SVG svg = svgTable[i];
             if (svg != null) {
+                svgBM.eraseColor(Color.TRANSPARENT);
+                Canvas canvas = new Canvas(svgBM);
+                canvas.drawPicture(svg.renderToPicture(), new Rect(0, 0, sqSize, sqSize));
+
                 Bitmap bm = Bitmap.createBitmap(sqSize, sqSize, Bitmap.Config.ARGB_8888);
-                Canvas bmCanvas = new Canvas(bm);
-                bmCanvas.drawPicture(svg.getPicture(), new Rect(0, 0, sqSize, sqSize));
+                canvas = new Canvas(bm);
+                canvas.drawBitmap(svgBM, scaleMat, colorPaint);
+
+                if (alphaPaint != null)
+                    canvas.drawBitmap(svgBM, scaleMat, alphaPaint);
+
                 bitmapTable[i] = bm;
             }
         }
+
+        svgBM.recycle();
     }
 }
