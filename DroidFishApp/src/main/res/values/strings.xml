@@ -133,6 +133,7 @@ you are not actively using the program.\
     <string name="blind_mode">Blindfold mode</string>
     <string name="toggle_show_thinking">Toggle Show Thinking</string>
     <string name="toggle_book_hints">Toggle Book Hints</string>
+    <string name="toggle_tb_hints">Toggle Tablebase Hints</string>
     <string name="toggle_pgn_variations">Toggle Variations</string>
     <string name="toggle_pgn_comments">Toggle Comments</string>
     <string name="toggle_pgn_headers">Toggle Headers</string>
@@ -757,6 +758,7 @@ you are not actively using the program.\
         <item>@string/toggle_analysis</item>
         <item>@string/toggle_show_thinking</item>
         <item>@string/toggle_book_hints</item>
+        <item>@string/toggle_tb_hints</item>
         <item>@string/toggle_pgn_variations</item>
         <item>@string/toggle_pgn_comments</item>
         <item>@string/toggle_pgn_headers</item>
@@ -773,6 +775,7 @@ you are not actively using the program.\
         <item>toggleAnalysis</item>
         <item>showThinking</item>
         <item>bookHints</item>
+        <item>tbHints</item>
         <item>viewVariations</item>
         <item>viewComments</item>
         <item>viewHeaders</item>

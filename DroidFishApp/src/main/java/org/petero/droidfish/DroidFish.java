@@ -326,6 +326,16 @@ public class DroidFish extends Activity
                 }
             });
             addAction(new UIAction() {
+                public String getId() { return "tbHints"; }
+                public int getName() { return R.string.toggle_tb_hints; }
+                public int getIcon() { return R.raw.tb; }
+                public boolean enabled() { return true; }
+                public void run() {
+                    engineOptions.hints = toggleBooleanPref("tbHints");
+                    setEgtbHints(cb.getSelectedSquare());
+                }
+            });
+            addAction(new UIAction() {
                 public String getId() { return "viewVariations"; }
                 public int getName() { return R.string.toggle_pgn_variations; }
                 public int getIcon() { return R.raw.variation; }

@@ -389,14 +389,14 @@
                     android:title="@string/prefs_button_action_4_title" 
                     android:entryValues="@array/button_action_values" 
                     android:entries="@array/button_action_texts" 
-                    android:defaultValue="">
+                    android:defaultValue="bookHints">
                 </ListPreference>
                 <ListPreference
                     android:key="button_action_custom1_5" 
                     android:title="@string/prefs_button_action_5_title" 
                     android:entryValues="@array/button_action_values" 
                     android:entries="@array/button_action_texts" 
-                    android:defaultValue="">
+                    android:defaultValue="tbHints">
                 </ListPreference>
                 <ListPreference
                     android:key="button_action_custom1_6" 
