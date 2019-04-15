@@ -13,6 +13,7 @@
     <string name="scroll_sensitivity_default">2</string>
     <string name="book_line_length_default">1000000</string>
     <string name="viewPieceType_default">1</string>
+    <string name="viewPieceSet_default">chesscases</string>
     <string name="autoDelay_default">5000</string>
     <string name="move_announce_type_default">off</string>
     <string name="cpu_warning">\
@@ -133,6 +134,7 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="blind_mode">Blindspiel-Modus</string>
     <string name="toggle_show_thinking">Berechnungen anzeigen an/aus</string>
     <string name="toggle_book_hints">Eröffnungsbuch-Hinweise an/aus</string>
+    <string name="toggle_tb_hints">Toggle Tablebase Hints</string>
     <string name="toggle_pgn_variations">Varianten an/aus</string>
     <string name="toggle_pgn_comments">Kommentare an/aus</string>
     <string name="toggle_pgn_headers">Partie-Informationen an/aus</string>
@@ -318,8 +320,8 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="prefs_scrollSensitivity_summary">Wischgeschwindigkeit für Partie-Navigation einstellen</string>
     <string name="prefs_invertScrollDirection_title">Wischrichtung</string>
     <string name="prefs_invertScrollDirection_summary">Wischrichtung für Partie-Navigation umkehren</string>
-    <string name="prefs_scrollGames_title">Sweep horizontally loads game</string>
-    <string name="prefs_scrollGames_summary">If enabled, sweeping horizontally on the chess board moves to the next/previous game</string>
+    <string name="prefs_scrollGames_title">Partie laden durch horizontales Wischen</string>
+    <string name="prefs_scrollGames_summary">Wenn aktiviert, wird durch horizontales Wischen auf Spielfeld die vorherige oder nächste Partie geladen</string>
     <string name="prefs_autoScrollMoveList_title">Automatischer Bildlauf der Zugliste</string>
     <string name="prefs_autoScrollMoveList_summary">Zugliste automatisch bis zur aktuellen Spielfeldposition verschieben</string>
     <string name="prefs_discardVariations_title">Varianten verwerfen</string>
@@ -400,6 +402,8 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="prefs_showVariationLine_summary">Aktuelle Varianten im Statusbereich anzeigen</string>
     <string name="prefs_viewPieceType_title">Figurenbezeichnungen</string>
     <string name="prefs_viewPieceType_summary">Einstellung der Figurenbezeichnungen</string>
+    <string name="prefs_viewPieceSet_title">Piece Set</string>
+    <string name="prefs_viewPieceSet_summary">Select chess piece set</string>
     <string name="prefs_blindMode_title">Blindspiel-Modus</string>
     <string name="prefs_blindMode_summary">Leeres Spielfeld anstelle von Figuren anzeigen</string>
     <string name="prefs_pgn_import">PGN-Import</string>
@@ -466,6 +470,44 @@ wenn Sie es nicht aktiv nutzen.\
         <item>0</item>
         <item>1</item>
         <item>2</item>
+    </string-array>
+    <string-array name="viewPieceSet_texts">
+        <item>Chess Cases</item>
+        <item>Alfonso</item>
+        <item>Alpha</item>
+        <item>Cburnett</item>
+        <item>Chess Icons</item>
+        <item>Chess Monk</item>
+        <item>Free Staunton</item>
+        <item>Kilfiger</item>
+        <item>Leipzig</item>
+        <item>Magnetic</item>
+        <item>Maya</item>
+        <item>Merida</item>
+        <item>Merida New</item>
+        <item>Metal Tops</item>
+        <item>Pirat</item>
+        <item>Regular</item>
+        <item>Wikimedia</item>
+    </string-array>
+    <string-array name="viewPieceSet_values">
+        <item>chesscases</item>
+        <item>alfonso</item>
+        <item>alpha</item>
+        <item>cburnett</item>
+        <item>chessicons</item>
+        <item>chessmonk</item>
+        <item>freestaunton</item>
+        <item>kilfiger</item>
+        <item>leipzig</item>
+        <item>magnetic</item>
+        <item>maya</item>
+        <item>merida</item>
+        <item>merida_new</item>
+        <item>metaltops</item>
+        <item>pirat</item>
+        <item>regular</item>
+        <item>wikimedia</item>
     </string-array>
     <string-array name="engine_hash_texts">
         <item>16 MB</item>
@@ -717,6 +759,7 @@ wenn Sie es nicht aktiv nutzen.\
         <item>@string/toggle_analysis</item>
         <item>@string/toggle_show_thinking</item>
         <item>@string/toggle_book_hints</item>
+        <item>@string/toggle_tb_hints</item>
         <item>@string/toggle_pgn_variations</item>
         <item>@string/toggle_pgn_comments</item>
         <item>@string/toggle_pgn_headers</item>
@@ -733,6 +776,7 @@ wenn Sie es nicht aktiv nutzen.\
         <item>toggleAnalysis</item>
         <item>showThinking</item>
         <item>bookHints</item>
+        <item>tbHints</item>
         <item>viewVariations</item>
         <item>viewComments</item>
         <item>viewHeaders</item>

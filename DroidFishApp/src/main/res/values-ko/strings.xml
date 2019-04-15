@@ -13,11 +13,12 @@
     <string name="scroll_sensitivity_default">2</string>
     <string name="book_line_length_default">1000000</string>
     <string name="viewPieceType_default">1</string>
+    <string name="viewPieceSet_default">chesscases</string>
     <string name="autoDelay_default">5000</string>
     <string name="move_announce_type_default">off</string>
     <string name="cpu_warning">\
 <b>CPU 사용</b>\n\
-DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설정 되어 있을 때, CPU 전원을 많이 사용할 수 있습니다. 
+DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설정되어 있을 때, CPU 전원을 많이 사용할 수 있습니다. 
 
 <i>게임모드</i>가 <i>분석</i> 또는 <i>컴퓨터 vs 컴퓨터</i>로 설정되어 있는 경우.\
 <i>생각하는 시간</i>값이 크게 설정되어 있는 경우.\
@@ -132,6 +133,7 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
     <string name="blind_mode">눈가리개 모드</string>
     <string name="toggle_show_thinking">생각 나타내기 토글</string>
     <string name="toggle_book_hints">북 힌트 토글</string>
+    <string name="toggle_tb_hints">Toggle Tablebase Hints</string>
     <string name="toggle_pgn_variations">변수 토글</string>
     <string name="toggle_pgn_comments">코멘트 토글</string>
     <string name="toggle_pgn_headers">헤더 토글</string>
@@ -167,7 +169,7 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
     <string name="stalemate">게임 오버, 스테일메이트에 의한 무승부!</string>
     <string name="draw_rep">게임 오버, 반복에 의한 무승부!</string>
     <string name="draw_50">게임 오버, 50 이동 규칙에 의한 무승부!</string>
-    <string name="draw_no_mate">게임 오버, 체크메이트 불가능에 의한 무승부!</string>
+    <string name="draw_no_mate">게임 오버, 메이트 불가능에 의한 무승부!</string>
     <string name="draw_agree">게임 오버, 합의에 의한 무승부!</string>
     <string name="resign_white">게임 오버, 화이트 기권!</string>
     <string name="resign_black">게임 오버, 블랙 기권!</string>
@@ -226,7 +228,7 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
     <string name="failed_to_start_engine">엔진 시작 실패</string>
     <string name="tts_failed_to_init">텍스트 음성 변환 초기화에 실패함</string>
     <string name="tts_data_missing">텍스트 음성 변환 데이터 누락</string>
-    <string name="tts_not_supported_for_lang">이 언어에 대해 택스트 음성 변환을 지원하지 않습니다</string>
+    <string name="tts_not_supported_for_lang">이 언어에는 TTS가 지원되지 않습니다</string>
     <string name="engine_terminated">엔진 종료됨</string>
     <string name="uci_protocol_error">UCI 프로토콜 오류</string>
     <string name="network_engine_config_error">네트워크 엔진 구성 오류</string>
@@ -317,8 +319,8 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
     <string name="prefs_scrollSensitivity_summary">게임 탐색에 대한 스크롤 속도</string>
     <string name="prefs_invertScrollDirection_title">스크롤 방향 반전</string>
     <string name="prefs_invertScrollDirection_summary">이동 스크롤이 잘못된 방항으로 이뤄진다 생각될 때 활성화 하세요</string>
-    <string name="prefs_scrollGames_title">Sweep horizontally loads game</string>
-    <string name="prefs_scrollGames_summary">If enabled, sweeping horizontally on the chess board moves to the next/previous game</string>
+    <string name="prefs_scrollGames_title">가로방향으로 밀어서 게임 불러오기</string>
+    <string name="prefs_scrollGames_summary">활성화하면, 체스판 위에서 가로로 밀면 다음/이전 게임으로 이동합니다.</string>
     <string name="prefs_autoScrollMoveList_title">이동 목록 자동 스크롤</string>
     <string name="prefs_autoScrollMoveList_summary">현재 보드 포지션에 자동으로 이동 목록 스크롤</string>
     <string name="prefs_discardVariations_title">변수 취소</string>
@@ -327,7 +329,7 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
     <string name="prefs_leftHanded_summary">가로 모드에서 왼쪽 사이드 컨트롤</string>
     <string name="prefs_squareSelectType_title">사각형 선택</string>
     <string name="prefs_squareSelectType_summary">선택한 사각형이 체스 보드에서 어떻게 동작할 지 제어</string>
-    <string name="prefs_language_title">언어</string>
+    <string name="prefs_language_title">언어 (Language)</string>
     <string name="prefs_language_summary">사용자 인터페이스 언어</string>
     <string name="prefs_fontSize_title">텍스트 크기</string>
     <string name="prefs_fontSize_summary">[이동 목록 &amp; 게임 정보] 글꼴 크기</string>
@@ -399,6 +401,8 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
     <string name="prefs_showVariationLine_summary">상태 영역에 현재 변수를 표시</string>
     <string name="prefs_viewPieceType_title">피스 이름</string>
     <string name="prefs_viewPieceType_summary">체스 피스 이름이 표시 되는 방법을 제어합니다</string>
+    <string name="prefs_viewPieceSet_title">Piece Set</string>
+    <string name="prefs_viewPieceSet_summary">Select chess piece set</string>
     <string name="prefs_blindMode_title">눈가리개 모드</string>
     <string name="prefs_blindMode_summary">피스 대신 빈 보드 표시</string>
     <string name="prefs_pgn_import">PGN 가져오기</string>
@@ -465,6 +469,44 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
         <item>0</item>
         <item>1</item>
         <item>2</item>
+    </string-array>
+    <string-array name="viewPieceSet_texts">
+        <item>Chess Cases</item>
+        <item>Alfonso</item>
+        <item>Alpha</item>
+        <item>Cburnett</item>
+        <item>Chess Icons</item>
+        <item>Chess Monk</item>
+        <item>Free Staunton</item>
+        <item>Kilfiger</item>
+        <item>Leipzig</item>
+        <item>Magnetic</item>
+        <item>Maya</item>
+        <item>Merida</item>
+        <item>Merida New</item>
+        <item>Metal Tops</item>
+        <item>Pirat</item>
+        <item>Regular</item>
+        <item>Wikimedia</item>
+    </string-array>
+    <string-array name="viewPieceSet_values">
+        <item>chesscases</item>
+        <item>alfonso</item>
+        <item>alpha</item>
+        <item>cburnett</item>
+        <item>chessicons</item>
+        <item>chessmonk</item>
+        <item>freestaunton</item>
+        <item>kilfiger</item>
+        <item>leipzig</item>
+        <item>magnetic</item>
+        <item>maya</item>
+        <item>merida</item>
+        <item>merida_new</item>
+        <item>metaltops</item>
+        <item>pirat</item>
+        <item>regular</item>
+        <item>wikimedia</item>
     </string-array>
     <string-array name="engine_hash_texts">
         <item>16 MB</item>
@@ -591,7 +633,7 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
         <item>60000</item>
     </string-array>
     <string-array name="squareSelectType_texts">
-        <item>스티키</item>
+        <item>고정</item>
         <item>토글</item>
     </string-array>
     <string-array name="squareSelectType_values">
@@ -599,7 +641,7 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
         <item>1</item>
     </string-array>
     <string-array name="language_texts">
-        <item>시스템 기본</item>
+        <item>시스템 기본 (System Default)</item>
         <item>English</item>
         <item>Belarusian</item>
         <item>Chinese Simplified</item>
@@ -716,6 +758,7 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
         <item>@string/toggle_analysis</item>
         <item>@string/toggle_show_thinking</item>
         <item>@string/toggle_book_hints</item>
+        <item>@string/toggle_tb_hints</item>
         <item>@string/toggle_pgn_variations</item>
         <item>@string/toggle_pgn_comments</item>
         <item>@string/toggle_pgn_headers</item>
@@ -732,6 +775,7 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
         <item>toggleAnalysis</item>
         <item>showThinking</item>
         <item>bookHints</item>
+        <item>tbHints</item>
         <item>viewVariations</item>
         <item>viewComments</item>
         <item>viewHeaders</item>

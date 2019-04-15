@@ -13,6 +13,7 @@
     <string name="scroll_sensitivity_default">2</string>
     <string name="book_line_length_default">1000000</string>
     <string name="viewPieceType_default">1</string>
+    <string name="viewPieceSet_default">chesscases</string>
     <string name="autoDelay_default">5000</string>
     <string name="move_announce_type_default">off</string>
     <string name="cpu_warning">\
@@ -131,6 +132,7 @@ DroidFish 将会使用大量的 CPU 功耗。\n\
     <string name="blind_mode">蒙眼模式</string>
     <string name="toggle_show_thinking">切换显示思考</string>
     <string name="toggle_book_hints">切换开局书提示</string>
+    <string name="toggle_tb_hints">Toggle Tablebase Hints</string>
     <string name="toggle_pgn_variations">切换变例</string>
     <string name="toggle_pgn_comments">切换评注</string>
     <string name="toggle_pgn_headers">切换标题</string>
@@ -326,7 +328,7 @@ DroidFish 将会使用大量的 CPU 功耗。\n\
     <string name="prefs_leftHanded_summary">横屏模式时左侧控制</string>
     <string name="prefs_squareSelectType_title">棋格选择</string>
     <string name="prefs_squareSelectType_summary">控制如何在国际象棋棋盘上选择棋格的行为</string>
-    <string name="prefs_language_title">语言</string>
+    <string name="prefs_language_title">语言 (Language)</string>
     <string name="prefs_language_summary">用户界面语言</string>
     <string name="prefs_fontSize_title">文本大小</string>
     <string name="prefs_fontSize_summary">着法列表和对局信息的字体大小</string>
@@ -398,6 +400,8 @@ DroidFish 将会使用大量的 CPU 功耗。\n\
     <string name="prefs_showVariationLine_summary">显示当前变例在状态区域</string>
     <string name="prefs_viewPieceType_title">棋子名称</string>
     <string name="prefs_viewPieceType_summary">控制如何显示国际象棋的棋子名称</string>
+    <string name="prefs_viewPieceSet_title">Piece Set</string>
+    <string name="prefs_viewPieceSet_summary">Select chess piece set</string>
     <string name="prefs_blindMode_title">蒙眼模式</string>
     <string name="prefs_blindMode_summary">显示空白棋盘而不显示棋子</string>
     <string name="prefs_pgn_import">PGN 导入</string>
@@ -464,6 +468,44 @@ DroidFish 将会使用大量的 CPU 功耗。\n\
         <item>0</item>
         <item>1</item>
         <item>2</item>
+    </string-array>
+    <string-array name="viewPieceSet_texts">
+        <item>Chess Cases</item>
+        <item>Alfonso</item>
+        <item>Alpha</item>
+        <item>Cburnett</item>
+        <item>Chess Icons</item>
+        <item>Chess Monk</item>
+        <item>Free Staunton</item>
+        <item>Kilfiger</item>
+        <item>Leipzig</item>
+        <item>Magnetic</item>
+        <item>Maya</item>
+        <item>Merida</item>
+        <item>Merida New</item>
+        <item>Metal Tops</item>
+        <item>Pirat</item>
+        <item>Regular</item>
+        <item>Wikimedia</item>
+    </string-array>
+    <string-array name="viewPieceSet_values">
+        <item>chesscases</item>
+        <item>alfonso</item>
+        <item>alpha</item>
+        <item>cburnett</item>
+        <item>chessicons</item>
+        <item>chessmonk</item>
+        <item>freestaunton</item>
+        <item>kilfiger</item>
+        <item>leipzig</item>
+        <item>magnetic</item>
+        <item>maya</item>
+        <item>merida</item>
+        <item>merida_new</item>
+        <item>metaltops</item>
+        <item>pirat</item>
+        <item>regular</item>
+        <item>wikimedia</item>
     </string-array>
     <string-array name="engine_hash_texts">
         <item>16 MB</item>
@@ -715,6 +757,7 @@ DroidFish 将会使用大量的 CPU 功耗。\n\
         <item>@string/toggle_analysis</item>
         <item>@string/toggle_show_thinking</item>
         <item>@string/toggle_book_hints</item>
+        <item>@string/toggle_tb_hints</item>
         <item>@string/toggle_pgn_variations</item>
         <item>@string/toggle_pgn_comments</item>
         <item>@string/toggle_pgn_headers</item>
@@ -731,6 +774,7 @@ DroidFish 将会使用大量的 CPU 功耗。\n\
         <item>toggleAnalysis</item>
         <item>showThinking</item>
         <item>bookHints</item>
+        <item>tbHints</item>
         <item>viewVariations</item>
         <item>viewComments</item>
         <item>viewHeaders</item>

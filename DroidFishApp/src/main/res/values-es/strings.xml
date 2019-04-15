@@ -13,6 +13,7 @@
     <string name="scroll_sensitivity_default">2</string>
     <string name="book_line_length_default">1000000</string>
     <string name="viewPieceType_default">1</string>
+    <string name="viewPieceSet_default">chesscases</string>
     <string name="autoDelay_default">5000</string>
     <string name="move_announce_type_default">off</string>
     <string name="cpu_warning">\
@@ -131,6 +132,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="blind_mode">Modo a la ciega</string>
     <string name="toggle_show_thinking">Activar indicaciones de cálculo</string>
     <string name="toggle_book_hints">Activar los consejos del libro de aperturas</string>
+    <string name="toggle_tb_hints">Toggle Tablebase Hints</string>
     <string name="toggle_pgn_variations">Activar variantes</string>
     <string name="toggle_pgn_comments">Activar comentarios</string>
     <string name="toggle_pgn_headers">Activar cabeceras</string>
@@ -326,7 +328,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="prefs_leftHanded_summary">Controles en el lado izquierdo en modo horizontal</string>
     <string name="prefs_squareSelectType_title">Selección de casilla</string>
     <string name="prefs_squareSelectType_summary">Controla cómo seleccionar el remarcado de las casillas en el tablero</string>
-    <string name="prefs_language_title">Idioma</string>
+    <string name="prefs_language_title">Idioma (Language)</string>
     <string name="prefs_language_summary">Idioma de la interfaz</string>
     <string name="prefs_fontSize_title">Tamaño del Texto</string>
     <string name="prefs_fontSize_summary">Tamaño de las Fuentes para la lista de jugadas e información de la partida</string>
@@ -398,6 +400,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="prefs_showVariationLine_summary">Muestra las variantes actuales en el área de estatus</string>
     <string name="prefs_viewPieceType_title">Nombres de las piezas</string>
     <string name="prefs_viewPieceType_summary">Controla la visualización de los nombres de las piezas en pantalla</string>
+    <string name="prefs_viewPieceSet_title">Piece Set</string>
+    <string name="prefs_viewPieceSet_summary">Select chess piece set</string>
     <string name="prefs_blindMode_title">Modo a la ciega</string>
     <string name="prefs_blindMode_summary">Muestra el tablero vacío</string>
     <string name="prefs_pgn_import">Importar de PGN</string>
@@ -464,6 +468,44 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
         <item>0</item>
         <item>1</item>
         <item>2</item>
+    </string-array>
+    <string-array name="viewPieceSet_texts">
+        <item>Chess Cases</item>
+        <item>Alfonso</item>
+        <item>Alpha</item>
+        <item>Cburnett</item>
+        <item>Chess Icons</item>
+        <item>Chess Monk</item>
+        <item>Free Staunton</item>
+        <item>Kilfiger</item>
+        <item>Leipzig</item>
+        <item>Magnetic</item>
+        <item>Maya</item>
+        <item>Merida</item>
+        <item>Merida New</item>
+        <item>Metal Tops</item>
+        <item>Pirat</item>
+        <item>Regular</item>
+        <item>Wikimedia</item>
+    </string-array>
+    <string-array name="viewPieceSet_values">
+        <item>chesscases</item>
+        <item>alfonso</item>
+        <item>alpha</item>
+        <item>cburnett</item>
+        <item>chessicons</item>
+        <item>chessmonk</item>
+        <item>freestaunton</item>
+        <item>kilfiger</item>
+        <item>leipzig</item>
+        <item>magnetic</item>
+        <item>maya</item>
+        <item>merida</item>
+        <item>merida_new</item>
+        <item>metaltops</item>
+        <item>pirat</item>
+        <item>regular</item>
+        <item>wikimedia</item>
     </string-array>
     <string-array name="engine_hash_texts">
         <item>16 MB</item>
@@ -715,6 +757,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
         <item>@string/toggle_analysis</item>
         <item>@string/toggle_show_thinking</item>
         <item>@string/toggle_book_hints</item>
+        <item>@string/toggle_tb_hints</item>
         <item>@string/toggle_pgn_variations</item>
         <item>@string/toggle_pgn_comments</item>
         <item>@string/toggle_pgn_headers</item>
@@ -731,6 +774,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
         <item>toggleAnalysis</item>
         <item>showThinking</item>
         <item>bookHints</item>
+        <item>tbHints</item>
         <item>viewVariations</item>
         <item>viewComments</item>
         <item>viewHeaders</item>

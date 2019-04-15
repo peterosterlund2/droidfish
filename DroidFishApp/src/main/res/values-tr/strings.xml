@@ -13,6 +13,7 @@
     <string name="scroll_sensitivity_default">2</string>
     <string name="book_line_length_default">1000000</string>
     <string name="viewPieceType_default">1</string>
+    <string name="viewPieceSet_default">chesscases</string>
     <string name="autoDelay_default">5000</string>
     <string name="move_announce_type_default">off</string>
     <string name="cpu_warning">\
@@ -132,6 +133,7 @@ DroidFish\'den çıkmanızı öneririz.\
     <string name="blind_mode">Gözler bağlı modu</string>
     <string name="toggle_show_thinking">Düşünmeyi göster/gizle</string>
     <string name="toggle_book_hints">Kitap ipuçlarını göster/gizle</string>
+    <string name="toggle_tb_hints">Toggle Tablebase Hints</string>
     <string name="toggle_pgn_variations">Varyasyonları göster/gizle</string>
     <string name="toggle_pgn_comments">Yorumları göster/gizle</string>
     <string name="toggle_pgn_headers">Başlıkları göster/gizle</string>
@@ -327,7 +329,7 @@ DroidFish\'den çıkmanızı öneririz.\
     <string name="prefs_leftHanded_summary">Telefonu yan tutarken kontroller sol taraftadır</string>
     <string name="prefs_squareSelectType_title">Kare seçimi</string>
     <string name="prefs_squareSelectType_summary">Tahtadaki karelerin nasıl seçileceğini kontrol et</string>
-    <string name="prefs_language_title">Dil</string>
+    <string name="prefs_language_title">Dil (Language)</string>
     <string name="prefs_language_summary">Arayüz dili</string>
     <string name="prefs_fontSize_title">Metin Boyutu</string>
     <string name="prefs_fontSize_summary">Hamle listesi ve oyun bilgisi font boyutu</string>
@@ -399,6 +401,8 @@ DroidFish\'den çıkmanızı öneririz.\
     <string name="prefs_showVariationLine_summary">Durum çubuğunda geçerli varyasyonu göster</string>
     <string name="prefs_viewPieceType_title">Taş İsimleri</string>
     <string name="prefs_viewPieceType_summary">Satranç taş isimlerinin görüntülenmesini kontrol et</string>
+    <string name="prefs_viewPieceSet_title">Piece Set</string>
+    <string name="prefs_viewPieceSet_summary">Select chess piece set</string>
     <string name="prefs_blindMode_title">Kör modu</string>
     <string name="prefs_blindMode_summary">Taş yerine boş tahta göster</string>
     <string name="prefs_pgn_import">PGN içeri al</string>
@@ -465,6 +469,44 @@ DroidFish\'den çıkmanızı öneririz.\
         <item>0</item>
         <item>1</item>
         <item>2</item>
+    </string-array>
+    <string-array name="viewPieceSet_texts">
+        <item>Chess Cases</item>
+        <item>Alfonso</item>
+        <item>Alpha</item>
+        <item>Cburnett</item>
+        <item>Chess Icons</item>
+        <item>Chess Monk</item>
+        <item>Free Staunton</item>
+        <item>Kilfiger</item>
+        <item>Leipzig</item>
+        <item>Magnetic</item>
+        <item>Maya</item>
+        <item>Merida</item>
+        <item>Merida New</item>
+        <item>Metal Tops</item>
+        <item>Pirat</item>
+        <item>Regular</item>
+        <item>Wikimedia</item>
+    </string-array>
+    <string-array name="viewPieceSet_values">
+        <item>chesscases</item>
+        <item>alfonso</item>
+        <item>alpha</item>
+        <item>cburnett</item>
+        <item>chessicons</item>
+        <item>chessmonk</item>
+        <item>freestaunton</item>
+        <item>kilfiger</item>
+        <item>leipzig</item>
+        <item>magnetic</item>
+        <item>maya</item>
+        <item>merida</item>
+        <item>merida_new</item>
+        <item>metaltops</item>
+        <item>pirat</item>
+        <item>regular</item>
+        <item>wikimedia</item>
     </string-array>
     <string-array name="engine_hash_texts">
         <item>16 MB</item>
@@ -716,6 +758,7 @@ DroidFish\'den çıkmanızı öneririz.\
         <item>@string/toggle_analysis</item>
         <item>@string/toggle_show_thinking</item>
         <item>@string/toggle_book_hints</item>
+        <item>@string/toggle_tb_hints</item>
         <item>@string/toggle_pgn_variations</item>
         <item>@string/toggle_pgn_comments</item>
         <item>@string/toggle_pgn_headers</item>
@@ -732,6 +775,7 @@ DroidFish\'den çıkmanızı öneririz.\
         <item>toggleAnalysis</item>
         <item>showThinking</item>
         <item>bookHints</item>
+        <item>tbHints</item>
         <item>viewVariations</item>
         <item>viewComments</item>
         <item>viewHeaders</item>

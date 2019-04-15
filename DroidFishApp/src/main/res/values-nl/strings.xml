@@ -13,6 +13,7 @@
     <string name="scroll_sensitivity_default">2</string>
     <string name="book_line_length_default">1000000</string>
     <string name="viewPieceType_default">1</string>
+    <string name="viewPieceSet_default">chesscases</string>
     <string name="autoDelay_default">5000</string>
     <string name="move_announce_type_default">off</string>
     <string name="cpu_warning">\
@@ -131,6 +132,7 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
     <string name="blind_mode">Blindschaak mode</string>
     <string name="toggle_show_thinking">Berekeningen aan/uit</string>
     <string name="toggle_book_hints">Boek aanwijzingen aan/uit</string>
+    <string name="toggle_tb_hints">Toggle Tablebase Hints</string>
     <string name="toggle_pgn_variations">Varianten aan/uit</string>
     <string name="toggle_pgn_comments">Commentaar aan/uit</string>
     <string name="toggle_pgn_headers">Kopteksten aan/uit</string>
@@ -398,6 +400,8 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
     <string name="prefs_showVariationLine_summary">Toon actuele varianten in het statusscherm</string>
     <string name="prefs_viewPieceType_title">Stuknamen</string>
     <string name="prefs_viewPieceType_summary">Instellingen voor stuknamen</string>
+    <string name="prefs_viewPieceSet_title">Piece Set</string>
+    <string name="prefs_viewPieceSet_summary">Select chess piece set</string>
     <string name="prefs_blindMode_title">Blindschaak modus</string>
     <string name="prefs_blindMode_summary">Toon leeg bord</string>
     <string name="prefs_pgn_import">PGN import</string>
@@ -464,6 +468,44 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
         <item>0</item>
         <item>1</item>
         <item>2</item>
+    </string-array>
+    <string-array name="viewPieceSet_texts">
+        <item>Chess Cases</item>
+        <item>Alfonso</item>
+        <item>Alpha</item>
+        <item>Cburnett</item>
+        <item>Chess Icons</item>
+        <item>Chess Monk</item>
+        <item>Free Staunton</item>
+        <item>Kilfiger</item>
+        <item>Leipzig</item>
+        <item>Magnetic</item>
+        <item>Maya</item>
+        <item>Merida</item>
+        <item>Merida New</item>
+        <item>Metal Tops</item>
+        <item>Pirat</item>
+        <item>Regular</item>
+        <item>Wikimedia</item>
+    </string-array>
+    <string-array name="viewPieceSet_values">
+        <item>chesscases</item>
+        <item>alfonso</item>
+        <item>alpha</item>
+        <item>cburnett</item>
+        <item>chessicons</item>
+        <item>chessmonk</item>
+        <item>freestaunton</item>
+        <item>kilfiger</item>
+        <item>leipzig</item>
+        <item>magnetic</item>
+        <item>maya</item>
+        <item>merida</item>
+        <item>merida_new</item>
+        <item>metaltops</item>
+        <item>pirat</item>
+        <item>regular</item>
+        <item>wikimedia</item>
     </string-array>
     <string-array name="engine_hash_texts">
         <item>16 MB</item>
@@ -715,6 +757,7 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
         <item>@string/toggle_analysis</item>
         <item>@string/toggle_show_thinking</item>
         <item>@string/toggle_book_hints</item>
+        <item>@string/toggle_tb_hints</item>
         <item>@string/toggle_pgn_variations</item>
         <item>@string/toggle_pgn_comments</item>
         <item>@string/toggle_pgn_headers</item>
@@ -731,6 +774,7 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
         <item>toggleAnalysis</item>
         <item>showThinking</item>
         <item>bookHints</item>
+        <item>tbHints</item>
         <item>viewVariations</item>
         <item>viewComments</item>
         <item>viewHeaders</item>
