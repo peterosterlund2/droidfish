@@ -330,7 +330,7 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="prefs_leftHanded_summary">Steuerelemente auf der linken Seite im Querformat</string>
     <string name="prefs_squareSelectType_title">Feldauswahl</string>
     <string name="prefs_squareSelectType_summary">Festlegung der Auswahl von Feldern</string>
-    <string name="prefs_language_title">Sprache</string>
+    <string name="prefs_language_title">Sprache (Language)</string>
     <string name="prefs_language_summary">Sprache der Benutzeroberfläche</string>
     <string name="prefs_fontSize_title">Schriftgröße</string>
     <string name="prefs_fontSize_summary">Schriftgröße für Zugliste und Partie-Informationen einstellen</string>

@@ -77,7 +77,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="edit_move_counters">Editar Contadores de Jugadas</string>
     <string name="internal_book">&lt;Libro Interno&gt;</string>
     <string name="eco_book">&lt;Libro (de códigos) ECO&gt;</string>
-    <string name="no_book">&lt;No Book&gt;</string>
+    <string name="no_book">&lt;Sin libro (de aperturas)&gt;</string>
     <string name="select_opening_book_file">Seleccionar archivo de Libro de Aperturas</string>
     <string name="select_chess_engine">Seleccionar motor de ajedrez</string>
     <string name="select_pgn_file">Abrir archivo PGN</string>
@@ -132,7 +132,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="blind_mode">Modo a la ciega</string>
     <string name="toggle_show_thinking">Activar indicaciones de cálculo</string>
     <string name="toggle_book_hints">Activar los consejos del libro de aperturas</string>
-    <string name="toggle_tb_hints">Toggle Tablebase Hints</string>
+    <string name="toggle_tb_hints">Habilitar / Inhabilitar recomendaciones de las Tablas de Finales</string>
     <string name="toggle_pgn_variations">Activar variantes</string>
     <string name="toggle_pgn_comments">Activar comentarios</string>
     <string name="toggle_pgn_headers">Activar cabeceras</string>
@@ -400,8 +400,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="prefs_showVariationLine_summary">Muestra las variantes actuales en el área de estatus</string>
     <string name="prefs_viewPieceType_title">Nombres de las piezas</string>
     <string name="prefs_viewPieceType_summary">Controla la visualización de los nombres de las piezas en pantalla</string>
-    <string name="prefs_viewPieceSet_title">Piece Set</string>
-    <string name="prefs_viewPieceSet_summary">Select chess piece set</string>
+    <string name="prefs_viewPieceSet_title">Tipo de piezas</string>
+    <string name="prefs_viewPieceSet_summary">Seleccionar el tipo de piezas</string>
     <string name="prefs_blindMode_title">Modo a la ciega</string>
     <string name="prefs_blindMode_summary">Muestra el tablero vacío</string>
     <string name="prefs_pgn_import">Importar de PGN</string>
