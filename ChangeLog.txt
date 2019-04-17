@@ -1,0 +1,590 @@
+2019-04-17: Version 1.74
+- Fix incorrect rendering of chess pieces on some devices.
+- Add more chess piece sets, mostly from PyChess.
+- Add button action to toggle tablebase hints.
+- Fix a rare crash in the Stockfish engine.
+
+2018-12-12: Version 1.73
+- Update to Stockfish 10.
+- Allow changing the user interface language.
+- New Simplified Chinese translation.
+- Support 7-men syzygy tablebases.
+- Add option to load next/previous game by sweeping on the chess board.
+
+2018-02-06: Version 1.72
+- Update to Stockfish 9.
+- Show selective search depth in the status area when the engine is thinking.
+
+2017-09-30: Version 1.71
+- Updated Stockfish engine to git version from 2017-09-06.
+- Changed default transposition table size from 16MB to 64MB.
+- Made it easier to disable the opening book.
+- Fixed crash when trying to speak a null move.
+- New Korean translation, from Hyobeom Ahn.
+- New Turkish translation, from Emrullah Ertürk.
+
+2017-07-06: Version 1.70
+- New Ukrainian and Belarusian translations, from Mix Gerder and Toru Hasegawa.
+
+2017-06-11: Version 1.69
+- Fixed crash in android 7 when handling large PGN games.
+
+2017-06-03: Version 1.68
+- Don't do network communication on the main thread.
+- Fixed crash when receiving an incorrect PGN intent.
+- Fixed stack overflow in request permission handling.
+- Fixed possible crash when reading scid database.
+- Fixed thread safety problem in MoveGen class.
+- Fixed possible crash when canceling a progress dialog.
+- Fixed possible crash when starting the edit board activity.
+- Added support for multi windows in android 7.
+
+2017-01-31: Version 1.67
+- Fixed crash in text to speech code.
+- Improved opening names.
+- German translation updates.
+
+2017-01-03: Version 1.66
+- Workaround for bug in Samsung text to speech implementation.
+- Spanish text to speech support.
+
+2016-12-30: Version 1.65
+- Truncate long PV lines by default.
+- Remember previous scroll location in preferences.
+- English and German text to speech support for move announcements.
+- Fixed bug that could cause a mating move to be added more than once to the
+  game tree.
+- Made it possible to set the game result when editing headers.
+- Fixed out of memory error when receiving large PGN files.
+
+2016-12-23: Version 1.64
+- Added configurable button action to toggle arrow visibility.
+- Changed maximum number of arrows to 8.
+- Show opening names (ECO classification).
+- Made it possible to use the ECO database as an opening book.
+- Made it possible to add ECO classification to game headers.
+- Made it possible to disable automatic move list scrolling.
+- Made UCI_LimitStrength and UCI_Elo options visible.
+- Made sharing games with ChessBase app work.
+- Made it possible to share an image of the chess board.
+- Fixed PGN file parsing problem.
+- In edit board mode, use the same board orientation as in game play.
+- Made it easier to change number of variations (MultiPV).
+- Fixed intent handling in low memory situations, which could cause
+  the app to lock up.
+- Better handling of large amount of data from the chess engine, to
+  make large MultiPV values work reliably.
+
+2016-11-01: Version 1.63
+- Updated Stockfish engine to version 8.
+- Show engine hashfull information.
+- Updated translations.
+
+2016-08-29: Version 1.62
+- Fixed wrong drawer menu background color in the edit board activity.
+- Handle 50-move draw rule when "probe at root" is enabled in settings.
+- Fixed problem in Stockfish engine that could cause TBs not to be
+  used if some 6-men TBs are available, the root position contains 6
+  men, but the root position is not in the TBs.
+- Fixed possible crash in TourGuide cleanup.
+- Fixed engine communication problem for Android N.
+- Updated Stockfish engine to git version from 2016-08-28.
+
+2016-01-13: Version 1.61
+- Permission handling for android 6.
+- Let the human player claim a draw that involves specifying but not
+  playing a move that would lead to a 50move/3rep draw.
+- Display usage hints the first time the program is started.
+
+2016-01-03: Version 1.60
+
+- Explicitly set the drawer menu foreground text color. The default
+  color is hard to read on some devices.
+- Update Stockfish to version 7.
+- Made it possible to edit UCI options while the engine is thinking.
+- Moved buttons slightly away from the screen edges to avoid
+  interference between opening a drawer and long pressing a button.
+- Don't reset MultiPV setting when restarting the app.
+- Added "secret" way to allocate an unsafely large hash table.
+- Speeded up updating of the move list.
+- Improved handling of movelist scrolling when navigation bar is
+  enabled/disabled and when the analysis view gets smaller/larger.
+- Use different background color for move list and thinking output.
+- If a game ends with one player resigning after making his move,
+  allow adding a variation to the game tree with the same move but
+  without resigning.
+- Translation updates.
+
+2015-12-27: Version 1.59
+- Include higher resolution versions of the app icon.
+- More efficient way to detect if scid on the go is installed.
+- Fixed Stockfish startup problem for android 4.0 and earlier.
+
+2015-12-26: Version 1.58
+- Handle "number of search threads" as a normal UCI option, to make it
+  possible to set arbitrary values and to remember different values
+  for different engines.
+- Added a configurable button action to set engine options.
+- Handle non-breaking space in pgn import.
+- Fixed very rare syzygy probing bug.
+- Improved handling of invalid en passant square in FEN parser.
+- More efficient update of "thinking info" when the engine provides
+  data faster than the GUI can handle.
+- Updated Stockfish to version 231015.
+- Run the engine process with lower scheduling priority.
+- Reordered buttons according to Android guidelines.
+- Include engine name in the UCI options activity title.
+- Require at least Android 3.0.
+- Removed obsolete "go to move" menu item.
+- Updated the application icon.
+- Use proguard to shrink apk size, but don't obfuscate to make
+  debugging easier.
+- Use a drawer layout instead of the options menu, to fix problems on
+  some new devices without a menu button.
+
+2015-02-15: Version 1.57
+- Updated Stockfish to version 6.
+- Auto forward mode when replaying games.
+- Translation updates.
+
+2015-01-10: Version 1.56
+- Support for Android 5 and 64-bit CPUs.
+- Preserve case of UCI option names in the setoption command. Some
+  engines think UCI options are case sensitive.
+
+2014-10-12: Version 1.55
+- Added support for syzygy tablebases.
+- Show tablebase hits in the analysis info.
+- Allow using different tablebase paths for local and network engines.
+- Improved touch sensitivity.
+- Made it possible to open the options menu by clicking on the title
+  bar or by long pressing the M button.
+- Changed location of external opening book files to
+  /sdcard/DroidFish/book.
+- Made it possible to modify engine UCI parameters.
+- Fixed crash when rotating the display while reading a FEN file.
+- Support for "open exchange" engines, such as texel and komodo 8.
+- Made the move variation up/down functions work also when the current
+  position is not a branch point in the game tree.
+- Fixed arrow display problem after switching from multi-PV to
+  single-PV mode.
+- Don't allow adding a null move to the game tree when the side to move
+  is in check.
+- Made it possible to specify a full file path to the book file in
+  preferences.
+- Fixed potential integer overflow problem in CTG book code.
+- Implemented DTZ/WDL tablebase hints in the GUI when only syzygy
+  tablebases are available.
+- Updated Stockfish to the latest development version and included
+  syzygy tablebase probing code.
+- Updated translations.
+
+2014-05-31: Version 1.54
+- Updated Stockfish engine to version 5.
+- Added options for larger hash tables. Useful for network engines.
+- Recognize UCI option "Cores" to set number of search threads.
+- Changed default preferences to favor analysis mode.
+- Don't read the whole engine file just to determine if it is a
+  network engine or not.
+- Removed support for android 1.5.
+
+2013-11-30: Version 1.53 DD
+- Updated Stockfish engine to version DD.
+- Handle intents with file names ending with .pgn, .epd and .fen.
+- Fixed time management bug triggered by ponder mode.
+- Allow using 16 threads. Useful for network engines.
+
+2013-08-20: Version 1.52
+- Updated Stockfish engine to version 4.
+
+2013-07-31: Version 1.51
+- Avoid crash if playing a move sound fails.
+- Give a small positive weight for CTG book moves even if the book
+  entry says wins=draws=0 for the move.
+- Improved detection of number of CPU cores to work on HTC One.
+- Ignore UTF8 byte order mark when reading PGN files.
+- Handle Intent.EXTRA_STREAM of type "file".
+- Fixed bug in Stockfish that could make the engine hang.
+
+2013-05-08: Version 1.50
+- Updated Stockfish engine to version 3.
+
+2013-04-07: Version 1.49
+- New Polish translation, from Rafał Smyka.
+- Made it possible to open .fen and .epd files in DroidFish from a
+  file manager.
+
+2013-03-14: Version 1.48
+- Added function to receive chess positions from other programs.
+- New button action to load game/position from the last used file.
+- New button action to change chess engine.
+
+2013-01-27: Version 1.47
+- Updated translations.
+- Updates for NDK r8d.
+- Added game numbers to the load/save game list.
+- Better MIME type support.
+- Improved move sound.
+- Fixed problem with long press in move list on Android 4.1.
+- Added option to not highlight the last played move.
+- Implemented blindfold mode.
+- New Italian translation, from Michele Carfora.
+- New Dutch translation, from David Pront.
+- Fixed strength setting bug when using Stockfish engine.
+
+2012-12-25: Version 1.46
+- Updated translations.
+
+2012-10-05: Version 1.45
+- Updated translations.
+- Configurable hash table size.
+- Support for network chess engines.
+- Option to use localized names for chess pieces.
+- Option to use figurine notation for chess pieces.
+- Improved "One Touch Move" behavior.
+- Don't show engine strength in title bar in analysis mode.
+- New color picker to configure individual colors.
+- Preference setting to choose between "sticky" and "toggle" mode for
+  selecting squares.
+- Don't start the white clock in the initial position.
+- Updated Stockfish engine to version 2.3.1.
+- Option to display captured pieces.
+- Menu button now works in edit board mode.
+- Support for edit board full-screen mode.
+- Better edit board landscape layout.
+- Avoid crash if "Scid on the go" misbehaves.
+- Made it possible to change background color and text foreground
+  color.
+- Reorganized preferences.
+- Made display of variations in the status area optional.
+- Added option to not keep variations in the move list.
+- When loading a game, switch game mode to edit/replay.
+
+2012-07-20: Version 1.44
+- Portuguese translation by C. R. Zamana.
+- Fixed crash if engine reported invalid moves in the PV or an invalid
+  ponder move.
+- When stopping analysis mode by pressing the toggle analysis button,
+  restore the game mode from the last time the toggle analysis button
+  was pressed.
+- Display player names in the title bar when the clocks are not
+  running.
+- Implemented function to share a PGN game.
+- Handle PGN file intents with more than one game.
+- Disable use of boldface in android 4.1 to work around crash bug, see
+  http://code.google.com/p/android/issues/detail?id=34872.
+
+2012-06-16: Version 1.43
+- Fixed crash when "Force GPU rendering" is enabled in android
+  preferences.
+
+2012-06-13: Version 1.42
+- Made chess board slightly larger.
+- Updated translations, new Russian translation.
+- Updated for new SDK/NDK versions.
+- Optionally vibrate when the computer makes a move.
+- Do GTB initialization in the background to improve responsiveness
+  when many tablebases are installed.
+- Configurable buttons.
+- Variation arrows no longer override analysis arrows and book
+  arrows.
+- Fixed bug related to "Flip Board: Player" setting.
+- Support for MIPS CPUs.
+- Updated Stockfish to a development version to fix problems on
+  quad-core ARM CPUs.
+- Support for SVG graphics, based on svg-android project.
+- Use SVG graphics for button images.
+- Avoid force close if engine sends invalid moves in the PV.
+- Display book move hints in bold face to distinguish them from book
+  move percentages.
+- Improved tapping logic in games and edit board mode.
+
+2012-04-14: Version 1.41
+- Ignore leading and trailing whitespace in the TB path.
+- Handle PGN intents with scheme "file".
+- Avoid infinite recursion in SeekBarPreference.
+- Added color themes from "Scid on the go".
+- Display PGN comments in a color different from PGN moves.
+- Added preference setting for left-handed landscape mode.
+- Added support for default player name.
+- Added flip board button.
+- Changed default number of engine threads to 1. Improves GUI
+  responsiveness on some devices. 
+- Allow selecting side to play when starting a new game
+- If setting strength to 0% when Stockfish engine is used, show a hint
+  that using the CuckooChess engine gives even lower strength.
+- Made it possible to load/save PGN files in any directory, using the
+  "OI file manager". 
+- Made "save to pgn file" easier to understand.
+
+2012-01-28: Version 1.40
+- Rewrote the CuckooChess communication so that internet permission is
+  no longer needed.
+- Avoid null pointer exception if engine reports that it is currently
+  searching an invalid move.
+- Added support for Gaviota endgame tablebases.
+- Fixed problem with CPU notification not going away if program was
+  previously killed by Android to free up memory.
+- Made the internal Stockfish engine work also on arm v6
+  architectures.
+- Use html to format the about dialog text.
+- Avoid null pointer exception in pgn load/save.
+- In "sticky" edit board mode, if the target square already contains
+  the selected piece, clear the square instead of doing nothing.
+
+2012-01-15: Version 1.39
+- Fixed crash when reading broken PGN files.
+- Made it possible to hide engine statistics.
+- Don't let the "thinking" view take up screen space when it is empty.
+- In edit board mode, made setup piece selection "sticky" to make
+  board editing faster.
+- Better error messages when trying to read invalid FEN/PGN data.
+- Rewrote the engine communication so that the GUI never waits for the
+  engine. Improves responsiveness and avoids "NetworkOnMainThread"
+  errors.
+- Changed default thinking time to 60 moves in 2 minutes.
+- Implemented support for external UCI engines.
+- Added Spanish translation, from Amador Cuesta.
+- Fix SeekBarPreference for languages that uses decimal comma instead
+  of decimal dot.
+- Automatically create default directory structure on the SD card when
+  starting the program.
+- Fixed bug when exporting time information to PGN data.
+- Updated built-in Stockfish engine to version 2.2.2.
+- Made strength setting in CuckooChess engine between 0% and 10% even
+  weaker. 0% now plays random legal moves, and 10% corresponds to the
+  old 0% setting.
+
+2011-12-18: Version 1.38
+- User interface improvements by Aaro Korhonen.
+- When making a move, scroll the move list to make the current move
+  visible.
+- German translation.
+- Fixed crash in some android versions when long pressing the analysis
+  text area when the engine was not analyzing.
+- Made it possible to click on moves in the move list to navigate to
+  the corresponding position in the game. Idea from Scid on the go.
+- Don't allow setting up positions with too many pieces.
+
+2011-11-20: Version 1.37
+- Bug fix for handling of corrupt CTG books.
+- New preference setting for controlling number of CPU cores used.
+- Use Scid file selection dialog when opening scid files.
+- Updated to NDK r7, with added support for x86 devices.
+- Fixed PGN header editing bug.
+- Updated Stockfish engine to version 2.1.1. (minor)
+
+2011-07-26: Version 1.36
+- Support for "pondering" mode.
+- Setting for larger game navigation buttons.
+- Setting for larger text size.
+
+2011-07-22: Version 1.35
+- Finer control over book randomization.
+- Implemented Multi-PV analysis mode.
+- Fixed possible race condition when shutting down engine.
+- Behave better when memory runs out while reading very large PGN
+  files.
+- Made it possible to cancel reading of a PGN file.
+- Made it possible to insert null moves in analysis mode.
+
+2011-07-17: Version 1.34
+- Added support for CTG opening books.
+- Updated to NDK r6.
+
+2011-06-26: Version 1.33
+- Fixed force close in previous version.
+
+2011-06-26: Version 1.32
+- Implemented function to prevent screen blanking.
+- More robust detection of multi-cpu systems.
+- Handle MIME type x-chess-pgn.
+- Made it possible to set strength by clicking the strength number
+  field and enter a number using the keyboard.
+
+2011-05-08: Version 1.31
+- Bigger margins around the strength seekbar to make it easier to set
+  0%/100% strength.
+
+2011-05-08: Version 1.30
+- Updated Stockfish to version 2.1.
+- Adjustable playing strength also for Stockfish engine.
+
+2011-04-23: Version 1.29
+- Adjustable playing strength using the CuckooChess engine.
+
+2011-03-27: Version 1.28
+- Ported to NDK r5b.
+
+2011-01-07: Version 1.27
+- Support for large screens.
+
+2011-01-02: Version 1.26
+- Updated Stockfish to version 2.0.
+- Made Stockfish use all available CPU cores.
+
+2010-11-28: Version 1.25
+- Added support for opening Scid databases when the "Scid on the go"
+  app is installed. Thanks to Gerhard Kalab for this feature.
+- The on-screen M/back/forward buttons didn't work in Android 1.5.
+- Added a file menu (load/save game) to the options menu.
+- Fixed crash if a color was set to the empty string in preferences.
+
+2010-11-20: Version 1.24
+- Added option to draw square labels (a-h, 1-8).
+- Added buttons to undo/redo moves and a button to change game mode.
+- Fixed draw offer bug.
+- New commands to move variations up/down in the game tree.
+- Show gui/engine version information in the about/help dialog.
+- Added commands to go to start/end of variation, next/previous
+  variation, and start of game. Connected to long press on left/right
+  buttons.
+- Added commands to load next/previous game from a PGN file.
+
+2010-11-07: Version 1.23
+- Fixed crash when trying to undo first move while playing black.
+
+2010-11-06: Version 1.22
+- Implemented animated piece movement.
+- Fixed resign bug.
+- Changed default color theme to blue.
+- Reduced engine CPU priority to improve GUI responsiveness.
+- Added "positive scores are good for white" analysis option.
+
+2010-10-24: Version 1.21
+- Enabled fast scroll in the pgn selection listview.
+- Remember current position in a PGN file after program restart.
+- Implemented PGN header editing.
+- Added "truncate game tree" function.
+- Implemented PGN comment editing.
+- Made it possible to select where in a file to save a PGN game.
+- New function to delete a PGN file.
+- New function to store computer analysis in the game tree.
+
+2010-10-17: Version 1.20
+- Fixed occational null pointer exception when exiting program.
+- Don't modify clocks in analysis mode.
+- Fixed bogus arrows when starting program in a mate position.
+- Updated Stockfish to version 1.9.1.
+- Use less memory when reading PGN files.
+- After loading PGN game, ask user what to do with the game. 
+  Replay, analyze, play white or play black.
+- New function to save games to PGN files.
+- New function to delete games from a PGN file.
+
+2010-09-27: Version 1.19
+- Implemented fullscreen mode.
+
+2010-09-26: Version 1.18
+- Redisplay the options menu after selecting undo/redo.
+- Implemented PGN game search function.
+
+2010-08-15: Version 1.17
+- Added more color themes.
+- Added option to invert scroll direction.
+
+2010-08-15: Version 1.16
+- Removed space after [ in PGN export.
+- Handle more move formats in PGN import.
+- Better handling of broken PGN headers.
+- Display current move number in the status line.
+- Use = character in promotion moves in PGN export.
+- PGN file parsing speedup.
+- Move numbers were sometimes missing in the displayed move list.
+- Implemented support for "One Touch Moves".
+- Implemented support for color themes.
+- Clocks were sometimes wrong after restarting the program.
+
+2010-08-08: Version 1.15
+- Implemented PGN view options.
+- Implemented loading of PGN games from SD card.
+
+2010-08-04: Version 1.14
+- Better layout for devices with height/width ratio not matching the
+  HTC Desire (800/480).
+- Made user interface for draw claim/offer/accept a bit more clear.
+- Added option to use arrows to display moves on the chess board.
+- Grouped preferences settings.
+- Implemented feature to undo/redo moves by doing scroll gestures on
+  the chess board.
+- Support for handling variations in PGN files.
+- Added options to control which PGN features to import/export.
+- Added resign command.
+- Implemented feature to go to next/previous variation using vertical
+  scrolling on the chess board.
+- Implemented "remove variation" command in the "long press" menu.
+
+2010-07-25: Version 1.13
+- The program icon was not shown on Android 1.5.
+- Changed "Auto Swap Sides" behavior to make two player games work
+  better.
+
+2010-07-24: Version 1.12
+- Warn user when CPU is used in the background.
+- Added chess clocks.
+- Support for time controls.
+- Added "force computer move" command.
+
+2010-07-22: Version 1.11
+- Nicer interface when selecting book files.
+- Added option to display opening book hints for the human player.
+
+2010-07-21: Version 1.10
+- Fixed memory leak.
+- Added icons to the options menu.
+- Support for polyglot opening books.
+- Removed book mirror code.
+- Handle opening book cycles.
+
+2010-07-20: Version 1.09
+- Optimization to make program more responsive in long games.
+- Show "redo" moves in move list and in PGN export.
+- Implemented "goto move".
+
+2010-07-19: Version 1.08
+- Fixed crash after "edit board".
+- Optimized engine <-> GUI communication.
+- Fixed race condition when starting analysis.
+- Improved "edit board". Now possible to set all FEN properties.
+- Handle mirrored positions in the opening book code.
+- Correctly handle draw by repetition after "pseudo-legal but not
+  legal" en passant square.
+- Allow human to claim draw.
+- Made engine accept draw offer if far enough behind.
+
+2010-07-18: Version 1.07
+- Handle screen orientation changes.
+- Added option to play sound when computer makes a move.
+- Implemented "edit board".
+- Added "Auto Swap Sides" function.
+
+2010-07-15: Version 1.06
+- Made it possible to undo/redo moves while computer is thinking.
+- Fixed race condition when starting computer thinking.
+
+2010-07-15: Version 1.05
+- Added "about" menu.
+- Improved responsiveness in analysis mode.
+
+2010-07-14: Version 1.04
+- Better looking graphics.
+
+2010-07-13: Version 1.03
+- Implemented analysis mode, two player mode and computer vs computer
+  mode.
+- Added a 3min thinking time level, to make it possible to play at
+  tournament time controls.
+
+2010-07-12: Version 1.02
+- Support for all Android versions.
+- Support for install on SD card in Android 2.2.
+
+2010-07-11: Version 1.01
+- Added opening book
+- Added JUnit tests
+- Bug fix: Correctly handle FEN strings ending with a \n character
+- Refuse to run on anything but Android 2.1, because other versions
+  make the program crash.
+
+2010-07-09: Version 1.00
+- Initial version
