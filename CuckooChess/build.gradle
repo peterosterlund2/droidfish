@@ -1,10 +1,12 @@
 apply plugin: 'java-library'
 
-jar {
-  manifest {
-    attributes "Main-Class": "tui.Main"
-  }
-  from zipTree('../CuckooChessEngine/build/libs/CuckooChessEngine.jar')
+if (project.file('../CuckooChessEngine/build/libs/CuckooChessEngine.jar').exists()) {
+   jar {
+       manifest {
+       attributes "Main-Class": "tui.Main"
+       }
+       from zipTree('../CuckooChessEngine/build/libs/CuckooChessEngine.jar')
+   }
 }
 
 dependencies {
