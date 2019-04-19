@@ -97,7 +97,6 @@
 - Display usage hints the first time the program is started.
 
 2016-01-03: Version 1.60
-
 - Explicitly set the drawer menu foreground text color. The default
   color is hard to read on some devices.
 - Update Stockfish to version 7.
