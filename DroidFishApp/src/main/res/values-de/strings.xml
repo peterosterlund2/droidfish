@@ -134,7 +134,7 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="blind_mode">Blindspiel-Modus</string>
     <string name="toggle_show_thinking">Berechnungen anzeigen an/aus</string>
     <string name="toggle_book_hints">Eröffnungsbuch-Hinweise an/aus</string>
-    <string name="toggle_tb_hints">Toggle Tablebase Hints</string>
+    <string name="toggle_tb_hints">Endspieldatenbank-Hinweise an/aus</string>
     <string name="toggle_pgn_variations">Varianten an/aus</string>
     <string name="toggle_pgn_comments">Kommentare an/aus</string>
     <string name="toggle_pgn_headers">Partie-Informationen an/aus</string>
@@ -402,8 +402,8 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="prefs_showVariationLine_summary">Aktuelle Varianten im Statusbereich anzeigen</string>
     <string name="prefs_viewPieceType_title">Figurenbezeichnungen</string>
     <string name="prefs_viewPieceType_summary">Einstellung der Figurenbezeichnungen</string>
-    <string name="prefs_viewPieceSet_title">Piece Set</string>
-    <string name="prefs_viewPieceSet_summary">Select chess piece set</string>
+    <string name="prefs_viewPieceSet_title">Figurensatz</string>
+    <string name="prefs_viewPieceSet_summary">Figurensatz auswählen</string>
     <string name="prefs_blindMode_title">Blindspiel-Modus</string>
     <string name="prefs_blindMode_summary">Leeres Spielfeld anstelle von Figuren anzeigen</string>
     <string name="prefs_pgn_import">PGN-Import</string>
@@ -424,7 +424,7 @@ wenn Sie es nicht aktiv nutzen.\
     <string name="prefs_exportPlayerAction_summary">Spieler-Aktionen wie Remis-Angebote und Partie-Aufgabe exportieren</string>
     <string name="prefs_exportTime_title">Zeit</string>
     <string name="prefs_exportTime_summary">Zeit-Informationen für jeden Zug exportieren</string>
-    <string name="prefs_egtbSettings_title">Endspiel-Datenbanken</string>
+    <string name="prefs_egtbSettings_title">Endspieldatenbanken</string>
     <string name="prefs_tbHints_title">Hinweise anzeigen</string>
     <string name="prefs_tbHints_summary">Bei Berührung einer Figur Datenbankeintrag für alle mit dieser Figur möglichen Züge anzeigen</string>
     <string name="prefs_tbHintsEdit_title">Hinweise bei Stellungseingabe</string>

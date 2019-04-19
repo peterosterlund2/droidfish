@@ -124,7 +124,7 @@
     <string name="blind_mode">Рэжым гульні ўсляпую</string>
     <string name="toggle_show_thinking">Перамыкач віду аналізу</string>
     <string name="toggle_book_hints">Перамыкач кніжных падказак</string>
-    <string name="toggle_tb_hints">Toggle Tablebase Hints</string>
+    <string name="toggle_tb_hints">Парады па пераключэнні табліцы эндшпіляў</string>
     <string name="toggle_pgn_variations">Перамыкач варыяцый</string>
     <string name="toggle_pgn_comments">Перамыкач каментароў</string>
     <string name="toggle_pgn_headers">Перамыкач загалоўкаў</string>
@@ -392,8 +392,8 @@
     <string name="prefs_showVariationLine_summary">Паказаць бягучыя змены ў вобласці стану</string>
     <string name="prefs_viewPieceType_title">Назвы фігур</string>
     <string name="prefs_viewPieceType_summary">Шахматная натацыя</string>
-    <string name="prefs_viewPieceSet_title">Piece Set</string>
-    <string name="prefs_viewPieceSet_summary">Select chess piece set</string>
+    <string name="prefs_viewPieceSet_title">Выбраць фігуры</string>
+    <string name="prefs_viewPieceSet_summary">Выберыце набор шахматных фігур</string>
     <string name="prefs_blindMode_title">Рэжым гульні ўсляпую</string>
     <string name="prefs_blindMode_summary">Паказаць чыстую дошку заміж фігур</string>
     <string name="prefs_pgn_import">Імпартаванне PGN</string>

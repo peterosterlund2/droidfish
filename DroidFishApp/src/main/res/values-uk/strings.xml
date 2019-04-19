@@ -124,7 +124,7 @@
     <string name="blind_mode">Режим гри наосліп</string>
     <string name="toggle_show_thinking">Перемикач виду мислення</string>
     <string name="toggle_book_hints">Перемикач книжкових підказок</string>
-    <string name="toggle_tb_hints">Toggle Tablebase Hints</string>
+    <string name="toggle_tb_hints">Поради з переключення таблиці ендшпілів</string>
     <string name="toggle_pgn_variations">Перемикач варіацій</string>
     <string name="toggle_pgn_comments">Перемикач коментарів</string>
     <string name="toggle_pgn_headers">Перемикач заголовків</string>
@@ -392,8 +392,8 @@
     <string name="prefs_showVariationLine_summary">Показати поточні зміни в області стану</string>
     <string name="prefs_viewPieceType_title">Назви фігур</string>
     <string name="prefs_viewPieceType_summary">Шахова нотація</string>
-    <string name="prefs_viewPieceSet_title">Piece Set</string>
-    <string name="prefs_viewPieceSet_summary">Select chess piece set</string>
+    <string name="prefs_viewPieceSet_title">Набір фігур</string>
+    <string name="prefs_viewPieceSet_summary">Виберіть набір шахових фігур</string>
     <string name="prefs_blindMode_title">Режим гри наосліп</string>
     <string name="prefs_blindMode_summary">Показати чисту дошку замість фігур</string>
     <string name="prefs_pgn_import">Імпортування PGN</string>

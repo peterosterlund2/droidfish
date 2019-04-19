@@ -124,7 +124,7 @@
     <string name="blind_mode">Режим игры в слепую</string>
     <string name="toggle_show_thinking">Переключатель вида мышления</string>
     <string name="toggle_book_hints">Переключатель книжных подсказок</string>
-    <string name="toggle_tb_hints">Toggle Tablebase Hints</string>
+    <string name="toggle_tb_hints">Советы по переключению таблицы эндшпилей</string>
     <string name="toggle_pgn_variations">Переключатель вариаций</string>
     <string name="toggle_pgn_comments">Переключатель комментариев</string>
     <string name="toggle_pgn_headers">Переключатель заголовков</string>
@@ -392,8 +392,8 @@
     <string name="prefs_showVariationLine_summary">Показать текущие изменения в области состояния</string>
     <string name="prefs_viewPieceType_title">Названия фигур</string>
     <string name="prefs_viewPieceType_summary">Шахматная нотация</string>
-    <string name="prefs_viewPieceSet_title">Piece Set</string>
-    <string name="prefs_viewPieceSet_summary">Select chess piece set</string>
+    <string name="prefs_viewPieceSet_title">Выбрать фигуры</string>
+    <string name="prefs_viewPieceSet_summary">Выберите набор шахматных фигур</string>
     <string name="prefs_blindMode_title">Режим игры в слепую</string>
     <string name="prefs_blindMode_summary">Показать чистую доску вместо фигур</string>
     <string name="prefs_pgn_import">Импортирование PGN</string>
