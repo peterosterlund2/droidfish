@@ -368,12 +368,13 @@ public class EngineControl {
     }
 
     static void printOptions(PrintStream os) {
-        os.print("option name Hash type spin default 16 min 1 max 2048%n");
-        os.print("option name OwnBook type check default false%n");
-        os.print("option name Ponder type check default true%n");
-        os.print("option name UCI_AnalyseMode type check default false%n");
-        os.printf("option name UCI_EngineAbout type string default %s by Peter Osterlund, see http://web.comhem.se/petero2home/javachess/index.html%n",
-                ComputerPlayer.engineName);
+        os.println("option name Hash type spin default 16 min 1 max 2048");
+        os.println("option name OwnBook type check default false");
+        os.println("option name Ponder type check default true");
+        os.println("option name UCI_AnalyseMode type check default false");
+
+        os.printf("option name UCI_EngineAbout type string default %s by Peter Osterlund, see %s%n",
+                ComputerPlayer.engineName, "http://hem.bredband.net/petero2b/javachess/index.html");
         os.print("option name Strength type spin default 1000 min 0 max 1000\n");
         
         for (String pName : Parameters.instance().getParamNames()) {
