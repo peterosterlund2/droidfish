@@ -3887,11 +3887,6 @@ public class DroidFish extends Activity
 
     @Override
     public void movePlayed(Position pos, Move move, boolean computerMove) {
-        if (move == null) {
-            DroidFishApp.toast(R.string.engine_error, Toast.LENGTH_SHORT);
-            newGameMode(GameMode.EDIT_GAME);
-            return;
-        }
         if ("sound".equals(moveAnnounceType)) {
             if (computerMove) {
                 if (moveSound != null)
