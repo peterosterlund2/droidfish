@@ -827,6 +827,11 @@ public class DroidComputerPlayer {
                 tmpPos.makeMove(bestM, ui);
                 if (!TextIO.isValid(tmpPos, nextPonderMove))
                     canPonder = false;
+                if (canPonder) {
+                    tmpPos.makeMove(nextPonderMove, ui);
+                    if (MoveGen.instance.legalMoves(tmpPos).isEmpty())
+                        canPonder = false;
+                }
             }
         }
         if (!canPonder)
