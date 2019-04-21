@@ -65,42 +65,39 @@ public class Speech {
             initialized = true;
         if (initialized)
             return;
-        tts = new TextToSpeech(context, new OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                initialized = true;
-                int toast = -1;
-                if (status == TextToSpeech.SUCCESS) {
-                    int code = TextToSpeech.LANG_NOT_SUPPORTED;
-                    try {
-                        code = tts.setLanguage(loc);
-                    } catch (Throwable t) {
-                        // Some Samsung devices are broken and throw an
-                        // exception if the language is not supported
-                    }
-                    switch (code) {
-                    case TextToSpeech.LANG_AVAILABLE:
-                    case TextToSpeech.LANG_COUNTRY_AVAILABLE:
-                    case TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE:
-                        lang = Language.fromString(langStr);
-                        tts.addEarcon("[move]", "org.petero.droidfish", R.raw.movesound);
-                        say(toSpeak);
-                        break;
-                    case TextToSpeech.LANG_MISSING_DATA:
-                        toast = R.string.tts_data_missing;
-                        break;
-                    case TextToSpeech.LANG_NOT_SUPPORTED:
-                        toast = R.string.tts_not_supported_for_lang;
-                        break;
-                    default:
-                        break;
-                    }
-                } else {
-                    toast = R.string.tts_failed_to_init;
+        tts = new TextToSpeech(context, status -> {
+            initialized = true;
+            int toast = -1;
+            if (status == TextToSpeech.SUCCESS) {
+                int code = TextToSpeech.LANG_NOT_SUPPORTED;
+                try {
+                    code = tts.setLanguage(loc);
+                } catch (Throwable t) {
+                    // Some Samsung devices are broken and throw an
+                    // exception if the language is not supported
                 }
-                if (toast != -1)
-                    DroidFishApp.toast(toast, Toast.LENGTH_LONG);
+                switch (code) {
+                case TextToSpeech.LANG_AVAILABLE:
+                case TextToSpeech.LANG_COUNTRY_AVAILABLE:
+                case TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE:
+                    lang = Language.fromString(langStr);
+                    tts.addEarcon("[move]", "org.petero.droidfish", R.raw.movesound);
+                    say(toSpeak);
+                    break;
+                case TextToSpeech.LANG_MISSING_DATA:
+                    toast = R.string.tts_data_missing;
+                    break;
+                case TextToSpeech.LANG_NOT_SUPPORTED:
+                    toast = R.string.tts_not_supported_for_lang;
+                    break;
+                default:
+                    break;
+                }
+            } else {
+                toast = R.string.tts_failed_to_init;
             }
+            if (toast != -1)
+                DroidFishApp.toast(toast, Toast.LENGTH_LONG);
         });
     }
 

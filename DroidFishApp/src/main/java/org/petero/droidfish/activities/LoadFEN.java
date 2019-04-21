@@ -105,28 +105,24 @@ public class LoadFEN extends ListActivity {
             progressLatch = new CountDownLatch(1);
             showProgressDialog();
             final LoadFEN lfen = this;
-            workThread = new Thread(new Runnable() {
-                public void run() {
-                    try {
-                        progressLatch.await();
-                    } catch (InterruptedException e) {
+            workThread = new Thread(() -> {
+                try {
+                    progressLatch.await();
+                } catch (InterruptedException e) {
+                    setResult(RESULT_CANCELED);
+                    finish();
+                    return;
+                }
+                if (!readFile())
+                    return;
+                runOnUiThread(() -> {
+                    if (canceled) {
                         setResult(RESULT_CANCELED);
                         finish();
-                        return;
+                    } else {
+                        lfen.showList();
                     }
-                    if (!readFile())
-                        return;
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-                            if (canceled) {
-                                setResult(RESULT_CANCELED);
-                                finish();
-                            } else {
-                                lfen.showList();
-                            }
-                        }
-                    });
-                }
+                });
             });
             workThread.start();
         } else if ("org.petero.droidfish.loadNextFen".equals(action) ||
@@ -139,23 +135,19 @@ public class LoadFEN extends ListActivity {
                 setResult(RESULT_CANCELED);
                 finish();
             } else {
-                workThread = new Thread(new Runnable() {
-                    public void run() {
-                        if (!readFile())
-                            return;
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                if (loadItem >= fensInFile.size()) {
-                                    DroidFishApp.toast(R.string.no_next_fen, Toast.LENGTH_SHORT);
-                                    setResult(RESULT_CANCELED);
-                                    finish();
-                                } else {
-                                    defaultItem = loadItem;
-                                    sendBackResult(fensInFile.get(loadItem), true);
-                                }
-                            }
-                        });
-                    }
+                workThread = new Thread(() -> {
+                    if (!readFile())
+                        return;
+                    runOnUiThread(() -> {
+                        if (loadItem >= fensInFile.size()) {
+                            DroidFishApp.toast(R.string.no_next_fen, Toast.LENGTH_SHORT);
+                            setResult(RESULT_CANCELED);
+                            finish();
+                        } else {
+                            defaultItem = loadItem;
+                            sendBackResult(fensInFile.get(loadItem), true);
+                        }
+                    });
                 });
                 workThread.start();
             }
@@ -206,17 +198,13 @@ public class LoadFEN extends ListActivity {
         Button cancelButton = findViewById(R.id.loadfen_cancel);
 
         okButton.setEnabled(false);
-        okButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                if (selectedFi != null)
-                    sendBackResult(selectedFi, false);
-            }
+        okButton.setOnClickListener(v -> {
+            if (selectedFi != null)
+                sendBackResult(selectedFi, false);
         });
-        cancelButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                setResult(RESULT_CANCELED);
-                finish();
-            }
+        cancelButton.setOnClickListener(v -> {
+            setResult(RESULT_CANCELED);
+            finish();
         });
 
         Util.overrideViewAttribs(findViewById(android.R.id.content));
@@ -235,42 +223,36 @@ public class LoadFEN extends ListActivity {
         final ListView lv = getListView();
         lv.setSelectionFromTop(defaultItem, 0);
         lv.setFastScrollEnabled(true);
-        lv.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-                selectedFi = aa.getItem(pos);
-                if (selectedFi == null)
-                    return;
-                defaultItem = pos;
-                Position chessPos;
-                try {
-                    chessPos = TextIO.readFEN(selectedFi.fen);
-                } catch (ChessParseError e2) {
-                    chessPos = e2.pos;
-                }
-                if (chessPos != null) {
-                    cb.setPosition(chessPos);
-                    okButton.setEnabled(true);
-                }
+        lv.setOnItemClickListener((parent, view, pos, id) -> {
+            selectedFi = aa.getItem(pos);
+            if (selectedFi == null)
+                return;
+            defaultItem = pos;
+            Position chessPos;
+            try {
+                chessPos = TextIO.readFEN(selectedFi.fen);
+            } catch (ChessParseError e2) {
+                chessPos = e2.pos;
+            }
+            if (chessPos != null) {
+                cb.setPosition(chessPos);
+                okButton.setEnabled(true);
             }
         });
-        lv.setOnItemLongClickListener(new OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int pos, long id) {
-                selectedFi = aa.getItem(pos);
-                if (selectedFi == null)
-                    return false;
-                defaultItem = pos;
-                Position chessPos;
-                try {
-                    chessPos = TextIO.readFEN(selectedFi.fen);
-                } catch (ChessParseError e2) {
-                    chessPos = e2.pos;
-                }
-                if (chessPos != null)
-                    sendBackResult(selectedFi, false);
-                return true;
+        lv.setOnItemLongClickListener((parent, view, pos, id) -> {
+            selectedFi = aa.getItem(pos);
+            if (selectedFi == null)
+                return false;
+            defaultItem = pos;
+            Position chessPos;
+            try {
+                chessPos = TextIO.readFEN(selectedFi.fen);
+            } catch (ChessParseError e2) {
+                chessPos = e2.pos;
             }
+            if (chessPos != null)
+                sendBackResult(selectedFi, false);
+            return true;
         });
         lv.requestFocus();
     }
@@ -334,11 +316,7 @@ public class LoadFEN extends ListActivity {
         if (p.first != FenInfoResult.OK) {
             fensInFile = new ArrayList<>();
             if (p.first == FenInfoResult.OUT_OF_MEMORY) {
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        DroidFishApp.toast(R.string.file_too_large, Toast.LENGTH_SHORT);
-                    }
-                });
+                runOnUiThread(() -> DroidFishApp.toast(R.string.file_too_large, Toast.LENGTH_SHORT));
             }
             setResult(RESULT_CANCELED);
             finish();

@@ -183,12 +183,7 @@ public abstract class ChessBoard extends View {
             long delay = 20 - (now2 - now);
 //          System.out.printf("delay:%d\n", delay);
             if (delay < 1) delay = 1;
-            handlerTimer.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    invalidate();
-                }
-            }, delay);
+            handlerTimer.postDelayed(() -> invalidate(), delay);
         }
         private void drawAnimPiece(Canvas canvas, int piece, int from, int to, double animState) {
             if (piece == Piece.EMPTY)

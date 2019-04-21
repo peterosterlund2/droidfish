@@ -127,52 +127,41 @@ public class SeekBarPreference extends Preference
             layout.addView(summary);
         layout.setId(android.R.id.widget_frame);
 
-        currValBox.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                View content = View.inflate(SeekBarPreference.this.getContext(), R.layout.select_percentage, null);
-                final AlertDialog.Builder builder = new AlertDialog.Builder(SeekBarPreference.this.getContext());
-                builder.setView(content);
-                String title = "";
-                String key = getKey();
-                if (key.equals("strength")) {
-                    title = getContext().getString(R.string.edit_strength);
-                } else if (key.equals("bookRandom")) {
-                    title = getContext().getString(R.string.edit_randomization);
-                }
-                builder.setTitle(title);
-                final EditText valueView = content.findViewById(R.id.selpercentage_number);
-                valueView.setText(currValBox.getText().toString().replaceAll("%", "").replaceAll(",", "."));
-                final Runnable selectValue = new Runnable() {
-                    public void run() {
-                        try {
-                            String txt = valueView.getText().toString();
-                            int value = (int)(Double.parseDouble(txt) * 10 + 0.5);
-                            if (value < 0) value = 0;
-                            if (value > maxValue) value = maxValue;
-                            onProgressChanged(bar, value, false);
-                        } catch (NumberFormatException ignore) {
-                        }
-                    }
-                };
-                valueView.setOnKeyListener(new OnKeyListener() {
-                    public boolean onKey(View v, int keyCode, KeyEvent event) {
-                        if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                            selectValue.run();
-                            return true;
-                        }
-                        return false;
-                    }
-                });
-                builder.setPositiveButton("Ok", new Dialog.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        selectValue.run();
-                    }
-                });
-                builder.setNegativeButton("Cancel", null);
-
-                builder.create().show();
+        currValBox.setOnClickListener(v -> {
+            View content = View.inflate(SeekBarPreference.this.getContext(), R.layout.select_percentage, null);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(SeekBarPreference.this.getContext());
+            builder.setView(content);
+            String title = "";
+            String key = getKey();
+            if (key.equals("strength")) {
+                title = getContext().getString(R.string.edit_strength);
+            } else if (key.equals("bookRandom")) {
+                title = getContext().getString(R.string.edit_randomization);
             }
+            builder.setTitle(title);
+            final EditText valueView = content.findViewById(R.id.selpercentage_number);
+            valueView.setText(currValBox.getText().toString().replaceAll("%", "").replaceAll(",", "."));
+            final Runnable selectValue = () -> {
+                try {
+                    String txt = valueView.getText().toString();
+                    int value = (int) (Double.parseDouble(txt) * 10 + 0.5);
+                    if (value < 0) value = 0;
+                    if (value > maxValue) value = maxValue;
+                    onProgressChanged(bar, value, false);
+                } catch (NumberFormatException ignore) {
+                }
+            };
+            valueView.setOnKeyListener((v1, keyCode, event) -> {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    selectValue.run();
+                    return true;
+                }
+                return false;
+            });
+            builder.setPositiveButton("Ok", (dialog, which) -> selectValue.run());
+            builder.setNegativeButton("Cancel", null);
+
+            builder.create().show();
         });
 
         return layout;

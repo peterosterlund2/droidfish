@@ -107,12 +107,7 @@ public class EditOptions extends Activity {
                     checkBox.setText(o.name);
                     final UCIOptions.CheckOption co = (UCIOptions.CheckOption)o;
                     checkBox.setChecked(co.value);
-                    checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            co.set(isChecked);
-                        }
-                    });
+                    checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> co.set(isChecked));
                     content.addView(v);
                     break;
                 }
@@ -177,12 +172,7 @@ public class EditOptions extends Activity {
                     button.setText(o.name);
                     button.setTextOn(o.name);
                     button.setTextOff(o.name);
-                    button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            bo.trigger = isChecked;
-                        }
-                    });
+                    button.setOnCheckedChangeListener((buttonView, isChecked) -> bo.trigger = isChecked);
                     content.addView(v);
                     break;
                 }
@@ -214,60 +204,49 @@ public class EditOptions extends Activity {
         Button cancelButton = findViewById(R.id.eo_cancel);
         Button resetButton = findViewById(R.id.eo_reset);
 
-        okButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendBackResult();
-            }
+        okButton.setOnClickListener(v -> sendBackResult());
+        cancelButton.setOnClickListener(v -> {
+            setResult(RESULT_CANCELED);
+            finish();
         });
-        cancelButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setResult(RESULT_CANCELED);
-                finish();
-            }
-        });
-        resetButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (uciOpts != null) {
-                    boolean modified = false;
-                    for (String name : uciOpts.getOptionNames()) {
-                        UCIOptions.OptionBase o = uciOpts.getOption(name);
-                        if (!o.visible)
-                            continue;
-                        switch (o.type) {
-                        case CHECK: {
-                            UCIOptions.CheckOption co = (UCIOptions.CheckOption)o;
-                            if (co.set(co.defaultValue))
-                                modified = true;
-                            break;
-                        }
-                        case SPIN: {
-                            UCIOptions.SpinOption so = (UCIOptions.SpinOption)o;
-                            if (so.set(so.defaultValue))
-                                modified = true;
-                            break;
-                        }
-                        case COMBO: {
-                            UCIOptions.ComboOption co = (UCIOptions.ComboOption)o;
-                            if (co.set(co.defaultValue))
-                                modified = true;
-                            break;
-                        }
-                        case STRING: {
-                            UCIOptions.StringOption so = (UCIOptions.StringOption)o;
-                            if (so.set(so.defaultValue))
-                                modified = true;
-                            break;
-                        }
-                        case BUTTON:
-                            break;
-                        }
+        resetButton.setOnClickListener(v -> {
+            if (uciOpts != null) {
+                boolean modified = false;
+                for (String name : uciOpts.getOptionNames()) {
+                    UCIOptions.OptionBase o = uciOpts.getOption(name);
+                    if (!o.visible)
+                        continue;
+                    switch (o.type) {
+                    case CHECK: {
+                        UCIOptions.CheckOption co = (UCIOptions.CheckOption)o;
+                        if (co.set(co.defaultValue))
+                            modified = true;
+                        break;
                     }
-                    if (modified)
-                        initUI();
+                    case SPIN: {
+                        UCIOptions.SpinOption so = (UCIOptions.SpinOption)o;
+                        if (so.set(so.defaultValue))
+                            modified = true;
+                        break;
+                    }
+                    case COMBO: {
+                        UCIOptions.ComboOption co = (UCIOptions.ComboOption)o;
+                        if (co.set(co.defaultValue))
+                            modified = true;
+                        break;
+                    }
+                    case STRING: {
+                        UCIOptions.StringOption so = (UCIOptions.StringOption)o;
+                        if (so.set(so.defaultValue))
+                            modified = true;
+                        break;
+                    }
+                    case BUTTON:
+                        break;
+                    }
                 }
+                if (modified)
+                    initUI();
             }
         });
     }

@@ -80,87 +80,75 @@ public class ExternalEngine extends UCIEngineBase {
             }
             reNice();
 
-            startupThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(10000);
-                    } catch (InterruptedException e) {
-                        return;
-                    }
-                    if (startedOk && isRunning && !isUCI)
-                        report.reportError(context.getString(R.string.uci_protocol_error));
+            startupThread = new Thread(() -> {
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    return;
                 }
+                if (startedOk && isRunning && !isUCI)
+                    report.reportError(context.getString(R.string.uci_protocol_error));
             });
             startupThread.start();
 
-            exitThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Process ep = engineProc;
-                        if (ep != null)
-                            ep.waitFor();
-                        isRunning = false;
-                        if (!startedOk)
-                            report.reportError(context.getString(R.string.failed_to_start_engine));
-                        else {
-                            report.reportError(context.getString(R.string.engine_terminated));
-                        }
-                    } catch (InterruptedException ignore) {
+            exitThread = new Thread(() -> {
+                try {
+                    Process ep = engineProc;
+                    if (ep != null)
+                        ep.waitFor();
+                    isRunning = false;
+                    if (!startedOk)
+                        report.reportError(context.getString(R.string.failed_to_start_engine));
+                    else {
+                        report.reportError(context.getString(R.string.engine_terminated));
                     }
+                } catch (InterruptedException ignore) {
                 }
             });
             exitThread.start();
 
             // Start a thread to read stdin
-            stdInThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Process ep = engineProc;
-                    if (ep == null)
-                        return;
-                    InputStream is = ep.getInputStream();
-                    InputStreamReader isr = new InputStreamReader(is);
-                    BufferedReader br = new BufferedReader(isr, 8192);
-                    String line;
-                    try {
-                        boolean first = true;
-                        while ((line = br.readLine()) != null) {
-                            if (Thread.currentThread().isInterrupted())
-                                return;
-                            synchronized (inLines) {
-                                inLines.addLine(line);
-                                if (first) {
-                                    startedOk = true;
-                                    isRunning = true;
-                                    first = false;
-                                }
+            stdInThread = new Thread(() -> {
+                Process ep = engineProc;
+                if (ep == null)
+                    return;
+                InputStream is = ep.getInputStream();
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader br = new BufferedReader(isr, 8192);
+                String line;
+                try {
+                    boolean first = true;
+                    while ((line = br.readLine()) != null) {
+                        if (Thread.currentThread().isInterrupted())
+                            return;
+                        synchronized (inLines) {
+                            inLines.addLine(line);
+                            if (first) {
+                                startedOk = true;
+                                isRunning = true;
+                                first = false;
                             }
                         }
-                    } catch (IOException ignore) {
                     }
-                    inLines.close();
+                } catch (IOException ignore) {
                 }
+                inLines.close();
             });
             stdInThread.start();
 
             // Start a thread to ignore stderr
-            stdErrThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    byte[] buffer = new byte[128];
-                    while (true) {
-                        Process ep = engineProc;
-                        if ((ep == null) || Thread.currentThread().isInterrupted())
-                            return;
-                        try {
-                            int len = ep.getErrorStream().read(buffer, 0, 1);
-                            if (len < 0)
-                                break;
-                        } catch (IOException e) {
-                            return;
-                        }
+            stdErrThread = new Thread(() -> {
+                byte[] buffer = new byte[128];
+                while (true) {
+                    Process ep = engineProc;
+                    if ((ep == null) || Thread.currentThread().isInterrupted())
+                        return;
+                    try {
+                        int len = ep.getErrorStream().read(buffer, 0, 1);
+                        if (len < 0)
+                            break;
+                    } catch (IOException e) {
+                        return;
                     }
                 }
             });

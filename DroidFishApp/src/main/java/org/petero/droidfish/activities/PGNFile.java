@@ -342,11 +342,7 @@ public class PGNFile {
                             if (newPercent > percent) {
                                 percent =  newPercent;
                                 if (progress != null) {
-                                    activity.runOnUiThread(new Runnable() {
-                                        public void run() {
-                                            progress.setProgress(newPercent);
-                                        }
-                                    });
+                                    activity.runOnUiThread(() -> progress.setProgress(newPercent));
                                 }
                             }
                             if (Thread.currentThread().isInterrupted())

@@ -37,14 +37,11 @@ class GtbProbe {
     public final void setPath(String tbPath, boolean forceReload) {
         if (forceReload || !tbPathQueue.isEmpty() || !currTbPath.equals(tbPath)) {
             tbPathQueue.add(tbPath);
-            Thread t = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    // Sleep 0.5s to increase probability that engine
-                    // is initialized before TB.
-                    try { Thread.sleep(500); } catch (InterruptedException ignore) { }
-                    initIfNeeded();
-                }
+            Thread t = new Thread(() -> {
+                // Sleep 0.5s to increase probability that engine
+                // is initialized before TB.
+                try { Thread.sleep(500); } catch (InterruptedException ignore) { }
+                initIfNeeded();
             });
             t.setPriority(Thread.MIN_PRIORITY);
             t.start();

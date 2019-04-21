@@ -112,88 +112,79 @@ public class NetworkEngine extends UCIEngineBase {
     @Override
     protected void startProcess() {
         // Start thread to check for startup error
-        startupThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    return;
-                }
-                if (startedOk && isRunning && !isUCI) {
-                    isError = true;
-                    report.reportError(context.getString(R.string.uci_protocol_error));
-                }
+        startupThread = new Thread(() -> {
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                return;
+            }
+            if (startedOk && isRunning && !isUCI) {
+                isError = true;
+                report.reportError(context.getString(R.string.uci_protocol_error));
             }
         });
         startupThread.start();
 
         // Start a thread to read data from engine
-        stdInThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                connect();
-                try {
-                    InputStream is = socket.getInputStream();
-                    InputStreamReader isr = new InputStreamReader(is);
-                    BufferedReader br = new BufferedReader(isr, 8192);
-                    String line;
-                    boolean first = true;
-                    while ((line = br.readLine()) != null) {
-                        if (Thread.currentThread().isInterrupted())
-                            return;
-                        synchronized (engineToGui) {
-                            engineToGui.addLine(line);
-                            if (first) {
-                                startedOk = true;
-                                isRunning = true;
-                                first = false;
-                            }
+        stdInThread = new Thread(() -> {
+            connect();
+            try {
+                InputStream is = socket.getInputStream();
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader br = new BufferedReader(isr, 8192);
+                String line;
+                boolean first = true;
+                while ((line = br.readLine()) != null) {
+                    if (Thread.currentThread().isInterrupted())
+                        return;
+                    synchronized (engineToGui) {
+                        engineToGui.addLine(line);
+                        if (first) {
+                            startedOk = true;
+                            isRunning = true;
+                            first = false;
                         }
                     }
-                } catch (IOException ignore) {
-                } finally {
-                    if (isRunning) {
-                        isError = true;
-                        isRunning = false;
-                        if (!startedOk)
-                            report.reportError(context.getString(R.string.failed_to_start_engine));
-                        else
-                            report.reportError(context.getString(R.string.engine_terminated));
-                    }
                 }
-                engineToGui.close();
+            } catch (IOException ignore) {
+            } finally {
+                if (isRunning) {
+                    isError = true;
+                    isRunning = false;
+                    if (!startedOk)
+                        report.reportError(context.getString(R.string.failed_to_start_engine));
+                    else
+                        report.reportError(context.getString(R.string.engine_terminated));
+                }
             }
+            engineToGui.close();
         });
         stdInThread.start();
 
         // Start a thread to write data to engine
-        stdOutThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    connect();
-                    String line;
-                    while ((line = guiToEngine.readLine()) != null) {
-                        if (Thread.currentThread().isInterrupted())
-                            return;
-                        line += "\n";
-                        socket.getOutputStream().write(line.getBytes());
-                    }
-                } catch (IOException e) {
-                    if (isRunning) {
-                        isError = true;
-                        report.reportError(e.getMessage());
-                    }
-                } finally {
-                    if (isRunning && !isError) {
-                        isError = true;
-                        report.reportError(context.getString(R.string.engine_terminated));
-                    }
-                    isRunning = false;
-                    try { socket.getOutputStream().write("quit\n".getBytes()); } catch (IOException ignore) {}
-                    try { socket.close(); } catch (IOException ignore) {}
+        stdOutThread = new Thread(() -> {
+            try {
+                connect();
+                String line;
+                while ((line = guiToEngine.readLine()) != null) {
+                    if (Thread.currentThread().isInterrupted())
+                        return;
+                    line += "\n";
+                    socket.getOutputStream().write(line.getBytes());
                 }
+            } catch (IOException e) {
+                if (isRunning) {
+                    isError = true;
+                    report.reportError(e.getMessage());
+                }
+            } finally {
+                if (isRunning && !isError) {
+                    isError = true;
+                    report.reportError(context.getString(R.string.engine_terminated));
+                }
+                isRunning = false;
+                try { socket.getOutputStream().write("quit\n".getBytes()); } catch (IOException ignore) {}
+                try { socket.close(); } catch (IOException ignore) {}
             }
         });
         stdOutThread.start();

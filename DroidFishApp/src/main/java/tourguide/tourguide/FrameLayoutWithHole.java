@@ -50,12 +50,9 @@ public class FrameLayoutWithHole extends FrameLayout {
             if (mMotionType!=null && mMotionType == TourGuide.MotionType.ClickOnly) {
                 Log.d("tourguide","enforceMotionType 3");
                 Log.d("tourguide","only Clicking");
-                mViewHole.setOnTouchListener(new OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        mViewHole.getParent().requestDisallowInterceptTouchEvent(true);
-                        return false;
-                    }
+                mViewHole.setOnTouchListener((view, motionEvent) -> {
+                    mViewHole.getParent().requestDisallowInterceptTouchEvent(true);
+                    return false;
                 });
             } else if (mMotionType!=null && mMotionType == TourGuide.MotionType.SwipeOnly) {
                 Log.d("tourguide","enforceMotionType 4");

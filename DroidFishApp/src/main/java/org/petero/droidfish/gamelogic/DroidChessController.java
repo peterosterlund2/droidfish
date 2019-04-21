@@ -791,11 +791,7 @@ public class DroidChessController {
             ti.pvMoves = pvMoves;
             ti.bookMoves = bookMoves;
             latestThinkingInfo = ti;
-            gui.runOnUIThread(new Runnable() {
-                public void run() {
-                    setThinkingInfo(ti);
-                }
-            });
+            gui.runOnUIThread(() -> setThinkingInfo(ti));
         }
 
         private void appendWithPrefix(StringBuilder sb, long value) {
@@ -901,34 +897,20 @@ public class DroidChessController {
 
         @Override
         public void notifySearchResult(final int id, final String cmd, final Move ponder) {
-            new Thread(new Runnable() {
-                public void run() {
-                    gui.runOnUIThread(new Runnable() {
-                        public void run() {
-                            makeComputerMove(id, cmd, ponder);
-                        }
-                    });
-                }
-            }).start();
+            new Thread(() -> gui.runOnUIThread(() -> makeComputerMove(id, cmd, ponder))).start();
         }
 
         @Override
         public void notifyEngineName(final String engineName) {
-            gui.runOnUIThread(new Runnable() {
-                public void run() {
-                    updatePlayerNames(engineName);
-                    gui.reportEngineName(engineName);
-                }
+            gui.runOnUIThread(() -> {
+                updatePlayerNames(engineName);
+                gui.reportEngineName(engineName);
             });
         }
 
         @Override
         public void reportEngineError(final String errMsg) {
-            gui.runOnUIThread(new Runnable() {
-                public void run() {
-                    gui.reportEngineError(errMsg);
-                }
-            });
+            gui.runOnUIThread(() -> gui.reportEngineError(errMsg));
         }
     }
 

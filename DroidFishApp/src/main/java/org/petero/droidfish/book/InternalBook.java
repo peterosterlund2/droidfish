@@ -41,12 +41,7 @@ final class InternalBook implements IOpeningBook {
     private boolean enabled = false;
 
     InternalBook() {
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                initInternalBook();
-            }
-        });
+        Thread t = new Thread(() -> initInternalBook());
         t.setPriority(Thread.MIN_PRIORITY);
         t.start();
     }

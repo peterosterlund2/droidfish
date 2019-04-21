@@ -64,12 +64,9 @@ public class Preferences extends PreferenceActivity {
                         currentItem = firstVisibleItem;
                     }
                 });
-                lv.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (initialItem >= 0)
-                            lv.setSelection(initialItem);
-                    }
+                lv.post(() -> {
+                    if (initialItem >= 0)
+                        lv.setSelection(initialItem);
                 });
             }
 

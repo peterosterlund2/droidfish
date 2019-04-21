@@ -648,22 +648,15 @@ public class DroidComputerPlayer {
         engineName = "Computer";
         uciEngine = UCIEngineBase.getEngine(searchRequest.engine,
                                             engineOptions,
-                                            new UCIEngine.Report() {
-            @Override
-            public void reportError(String errMsg) {
-                if (errMsg == null)
-                    errMsg = "";
-                listener.reportEngineError(errMsg);
-            }
-        });
+                errMsg -> {
+                    if (errMsg == null)
+                        errMsg = "";
+                    listener.reportEngineError(errMsg);
+                });
         uciEngine.initialize();
 
         final UCIEngine uci = uciEngine;
-        engineMonitor = new Thread(new Runnable() {
-            public void run() {
-                monitorLoop(uci);
-            }
-        });
+        engineMonitor = new Thread(() -> monitorLoop(uci));
         engineMonitor.start();
 
         uciEngine.clearOptions();

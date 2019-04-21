@@ -135,15 +135,14 @@ public final class DroidBook {
         }
 
         if (bookMoves != null) {
-            Collections.sort(bookMoves, new Comparator<BookEntry>() {
-                public int compare(BookEntry arg0, BookEntry arg1) {
-                    double wd = arg1.weight - arg0.weight;
-                    if (wd != 0)
-                        return (wd > 0) ? 1 : -1;
-                    String str0 = TextIO.moveToUCIString(arg0.move);
-                    String str1 = TextIO.moveToUCIString(arg1.move);
-                    return str0.compareTo(str1);
-                }});
+            Collections.sort(bookMoves, (arg0, arg1) -> {
+                double wd = arg1.weight - arg0.weight;
+                if (wd != 0)
+                    return (wd > 0) ? 1 : -1;
+                String str0 = TextIO.moveToUCIString(arg0.move);
+                String str1 = TextIO.moveToUCIString(arg1.move);
+                return str0.compareTo(str1);
+            });
             double totalWeight = 0;
             for (BookEntry be : bookMoves)
                 totalWeight += scaleWeight(be.weight);

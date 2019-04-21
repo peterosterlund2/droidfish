@@ -61,23 +61,15 @@ public class ButtonActions {
     /** Connect GUI button. */
     public void setImageButton(ImageButton button, final Activity activity) {
         this.button = button;
-        button.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mainAction != null) {
-                    if (mainAction.enabled())
-                        mainAction.run();
-                } else {
-                    showMenu(activity);
-                }
+        button.setOnClickListener(v -> {
+            if (mainAction != null) {
+                if (mainAction.enabled())
+                    mainAction.run();
+            } else {
+                showMenu(activity);
             }
         });
-        button.setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                return showMenu(activity);
-            }
-        });
+        button.setOnLongClickListener(v -> showMenu(activity));
     }
 
     private boolean showMenu(Activity activity) {

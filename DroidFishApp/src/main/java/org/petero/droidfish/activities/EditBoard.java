@@ -173,25 +173,14 @@ public class EditBoard extends Activity {
 
         initDrawers();
 
-        OnClickListener listener = new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawerLayout.openDrawer(Gravity.LEFT);
-            }
-        };
+        OnClickListener listener = v -> drawerLayout.openDrawer(Gravity.LEFT);
         firstTitleLine.setOnClickListener(listener);
         secondTitleLine.setOnClickListener(listener);
 
-        okButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                sendBackResult();
-            }
-        });
-        cancelButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                setResult(RESULT_CANCELED);
-                finish();
-            }
+        okButton.setOnClickListener(v -> sendBackResult());
+        cancelButton.setOnClickListener(v -> {
+            setResult(RESULT_CANCELED);
+            finish();
         });
 
         status.setFocusable(false);
@@ -294,80 +283,76 @@ public class EditBoard extends Activity {
         leftDrawer.setAdapter(new ArrayAdapter<>(this,
                                                  R.layout.drawer_list_item,
                                                  leftItems.toArray(new DrawerItem[0])));
-        leftDrawer.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                drawerLayout.closeDrawer(Gravity.LEFT);
-                leftDrawer.clearChoices();
-                DrawerItem di = leftItems.get(position);
-                switch (di.id) {
-                case SIDE_TO_MOVE:
-                    showDialog(SIDE_DIALOG);
-                    setSelection(-1);
-                    checkValidAndUpdateMaterialDiff();
-                    break;
-                case CLEAR_BOARD: {
-                    Position pos = new Position();
+        leftDrawer.setOnItemClickListener((parent, view, position, id) -> {
+            drawerLayout.closeDrawer(Gravity.LEFT);
+            leftDrawer.clearChoices();
+            DrawerItem di = leftItems.get(position);
+            switch (di.id) {
+            case SIDE_TO_MOVE:
+                showDialog(SIDE_DIALOG);
+                setSelection(-1);
+                checkValidAndUpdateMaterialDiff();
+                break;
+            case CLEAR_BOARD: {
+                Position pos = new Position();
+                cb.setPosition(pos);
+                setSelection(-1);
+                checkValidAndUpdateMaterialDiff();
+                break;
+            }
+            case INITIAL_POS: {
+                try {
+                    Position pos = TextIO.readFEN(TextIO.startPosFEN);
                     cb.setPosition(pos);
                     setSelection(-1);
                     checkValidAndUpdateMaterialDiff();
-                    break;
+                } catch (ChessParseError ignore) {
                 }
-                case INITIAL_POS: {
-                    try {
-                        Position pos = TextIO.readFEN(TextIO.startPosFEN);
-                        cb.setPosition(pos);
-                        setSelection(-1);
-                        checkValidAndUpdateMaterialDiff();
-                    } catch (ChessParseError ignore) {
+                break;
+            }
+            case CASTLING_FLAGS:
+                reShowDialog(CASTLE_DIALOG);
+                setSelection(-1);
+                checkValidAndUpdateMaterialDiff();
+                break;
+            case EN_PASSANT_FILE:
+                reShowDialog(EP_DIALOG);
+                setSelection(-1);
+                checkValidAndUpdateMaterialDiff();
+                break;
+            case MOVE_COUNTERS:
+                reShowDialog(MOVCNT_DIALOG);
+                setSelection(-1);
+                checkValidAndUpdateMaterialDiff();
+                break;
+            case COPY_POSITION: {
+                setPosFields();
+                String fen = TextIO.toFEN(cb.pos) + "\n";
+                ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+                clipboard.setPrimaryClip(new ClipData(fen,
+                        new String[]{ "application/x-chess-fen", ClipDescription.MIMETYPE_TEXT_PLAIN },
+                        new ClipData.Item(fen)));
+                setSelection(-1);
+                break;
+            }
+            case PASTE_POSITION: {
+                ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+                ClipData clip = clipboard.getPrimaryClip();
+                if (clip != null) {
+                    if (clip.getItemCount() > 0) {
+                        String fen = clip.getItemAt(0).coerceToText(getApplicationContext()).toString();
+                        setFEN(fen);
                     }
-                    break;
                 }
-                case CASTLING_FLAGS:
-                    reShowDialog(CASTLE_DIALOG);
-                    setSelection(-1);
-                    checkValidAndUpdateMaterialDiff();
-                    break;
-                case EN_PASSANT_FILE:
-                    reShowDialog(EP_DIALOG);
-                    setSelection(-1);
-                    checkValidAndUpdateMaterialDiff();
-                    break;
-                case MOVE_COUNTERS:
-                    reShowDialog(MOVCNT_DIALOG);
-                    setSelection(-1);
-                    checkValidAndUpdateMaterialDiff();
-                    break;
-                case COPY_POSITION: {
-                    setPosFields();
-                    String fen = TextIO.toFEN(cb.pos) + "\n";
-                    ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-                    clipboard.setPrimaryClip(new ClipData(fen,
-                            new String[]{ "application/x-chess-fen", ClipDescription.MIMETYPE_TEXT_PLAIN },
-                            new ClipData.Item(fen)));
-                    setSelection(-1);
-                    break;
-                }
-                case PASTE_POSITION: {
-                    ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-                    ClipData clip = clipboard.getPrimaryClip();
-                    if (clip != null) {
-                        if (clip.getItemCount() > 0) {
-                            String fen = clip.getItemAt(0).coerceToText(getApplicationContext()).toString();
-                            setFEN(fen);
-                        }
-                    }
-                    break;
-                }
-                case GET_FEN:
-                    Intent i = new Intent(Intent.ACTION_GET_CONTENT); 
-                    i.setType("application/x-chess-fen");
-                    try {
-                        startActivityForResult(i, RESULT_GET_FEN);
-                    } catch (ActivityNotFoundException e) {
-                        DroidFishApp.toast(e.getMessage(), Toast.LENGTH_LONG);
-                    }
+                break;
+            }
+            case GET_FEN:
+                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+                i.setType("application/x-chess-fen");
+                try {
+                    startActivityForResult(i, RESULT_GET_FEN);
+                } catch (ActivityNotFoundException e) {
+                    DroidFishApp.toast(e.getMessage(), Toast.LENGTH_LONG);
                 }
             }
         });
@@ -519,17 +504,15 @@ public class EditBoard extends Activity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.select_side_to_move_first);
             final int selectedItem = (cb.pos.whiteMove) ? 0 : 1;
-            builder.setSingleChoiceItems(new String[]{getString(R.string.white), getString(R.string.black)}, selectedItem, new Dialog.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    if (id == 0) { // white to move
-                        cb.pos.setWhiteMove(true);
-                        checkValidAndUpdateMaterialDiff();
-                        dialog.cancel();
-                    } else {
-                        cb.pos.setWhiteMove(false);
-                        checkValidAndUpdateMaterialDiff();
-                        dialog.cancel();
-                    }
+            builder.setSingleChoiceItems(new String[]{getString(R.string.white), getString(R.string.black)}, selectedItem, (dialog, id1) -> {
+                if (id1 == 0) { // white to move
+                    cb.pos.setWhiteMove(true);
+                    checkValidAndUpdateMaterialDiff();
+                    dialog.cancel();
+                } else {
+                    cb.pos.setWhiteMove(false);
+                    checkValidAndUpdateMaterialDiff();
+                    dialog.cancel();
                 }
             });
             return builder.create();
@@ -545,29 +528,26 @@ public class EditBoard extends Activity {
             };
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.castling_flags);
-            builder.setMultiChoiceItems(items, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                    Position pos = new Position(cb.pos);
-                    boolean a1Castle = pos.a1Castle();
-                    boolean h1Castle = pos.h1Castle();
-                    boolean a8Castle = pos.a8Castle();
-                    boolean h8Castle = pos.h8Castle();
-                    switch (which) {
-                    case 0: h1Castle = isChecked; break;
-                    case 1: a1Castle = isChecked; break;
-                    case 2: h8Castle = isChecked; break;
-                    case 3: a8Castle = isChecked; break;
-                    }
-                    int castleMask = 0;
-                    if (a1Castle) castleMask |= 1 << Position.A1_CASTLE;
-                    if (h1Castle) castleMask |= 1 << Position.H1_CASTLE;
-                    if (a8Castle) castleMask |= 1 << Position.A8_CASTLE;
-                    if (h8Castle) castleMask |= 1 << Position.H8_CASTLE;
-                    pos.setCastleMask(castleMask);
-                    cb.setPosition(pos);
-                    checkValidAndUpdateMaterialDiff();
+            builder.setMultiChoiceItems(items, checkedItems, (dialog, which, isChecked) -> {
+                Position pos = new Position(cb.pos);
+                boolean a1Castle = pos.a1Castle();
+                boolean h1Castle = pos.h1Castle();
+                boolean a8Castle = pos.a8Castle();
+                boolean h8Castle = pos.h8Castle();
+                switch (which) {
+                case 0: h1Castle = isChecked; break;
+                case 1: a1Castle = isChecked; break;
+                case 2: h8Castle = isChecked; break;
+                case 3: a8Castle = isChecked; break;
                 }
+                int castleMask = 0;
+                if (a1Castle) castleMask |= 1 << Position.A1_CASTLE;
+                if (h1Castle) castleMask |= 1 << Position.H1_CASTLE;
+                if (a8Castle) castleMask |= 1 << Position.A8_CASTLE;
+                if (h8Castle) castleMask |= 1 << Position.H8_CASTLE;
+                pos.setCastleMask(castleMask);
+                cb.setPosition(pos);
+                checkValidAndUpdateMaterialDiff();
             });
             return builder.create();
         }
@@ -577,11 +557,9 @@ public class EditBoard extends Activity {
             };
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.select_en_passant_file);
-            builder.setSingleChoiceItems(items, getEPFile(), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
-                    setEPFile(item);
-                    dialog.cancel();
-                }
+            builder.setSingleChoiceItems(items, getEPFile(), (dialog, item) -> {
+                setEPFile(item);
+                dialog.cancel();
             });
             return builder.create();
         }
@@ -595,36 +573,28 @@ public class EditBoard extends Activity {
             final EditText fullMoveCounter = content.findViewById(R.id.ed_cnt_fullmove);
             halfMoveClock.setText(String.format(Locale.US, "%d", cb.pos.halfMoveClock));
             fullMoveCounter.setText(String.format(Locale.US, "%d", cb.pos.fullMoveCounter));
-            final Runnable setCounters = new Runnable() {
-                public void run() {
-                    try {
-                        int halfClock = Integer.parseInt(halfMoveClock.getText().toString());
-                        int fullCount = Integer.parseInt(fullMoveCounter.getText().toString());
-                        cb.pos.halfMoveClock = halfClock;
-                        cb.pos.fullMoveCounter = fullCount;
-                    } catch (NumberFormatException nfe) {
-                        DroidFishApp.toast(R.string.invalid_number_format, Toast.LENGTH_SHORT);
-                    }
+            final Runnable setCounters = () -> {
+                try {
+                    int halfClock = Integer.parseInt(halfMoveClock.getText().toString());
+                    int fullCount = Integer.parseInt(fullMoveCounter.getText().toString());
+                    cb.pos.halfMoveClock = halfClock;
+                    cb.pos.fullMoveCounter = fullCount;
+                } catch (NumberFormatException nfe) {
+                    DroidFishApp.toast(R.string.invalid_number_format, Toast.LENGTH_SHORT);
                 }
             };
-            builder.setPositiveButton("Ok", new Dialog.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    setCounters.run();
-                }
-            });
+            builder.setPositiveButton("Ok", (dialog, which) -> setCounters.run());
             builder.setNegativeButton("Cancel", null);
 
             final Dialog dialog = builder.create();
 
-            fullMoveCounter.setOnKeyListener(new OnKeyListener() {
-                public boolean onKey(View v, int keyCode, KeyEvent event) {
-                    if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                        setCounters.run();
-                        dialog.cancel();
-                        return true;
-                    }
-                    return false;
+            fullMoveCounter.setOnKeyListener((v, keyCode, event) -> {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    setCounters.run();
+                    dialog.cancel();
+                    return true;
                 }
+                return false;
             });
             return dialog;
         }

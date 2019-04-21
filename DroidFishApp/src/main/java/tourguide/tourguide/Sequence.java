@@ -38,12 +38,7 @@ public class Sequence {
 
         if(mContinueMethod == ContinueMethod.Overlay) {
             for (final TourGuide tourGuide : mTourGuideArray) {
-                tourGuide.mOverlay.mOnClickListener = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mParentTourGuide.next();
-                    }
-                };
+                tourGuide.mOverlay.mOnClickListener = v -> mParentTourGuide.next();
             }
         }
     }

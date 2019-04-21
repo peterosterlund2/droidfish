@@ -101,11 +101,7 @@ public class LoadScid extends ListActivity {
             }
             @Override
             public void onLoadFinished(Loader<Cursor> loader, final Cursor cursor) {
-                workThread = new Thread(new Runnable() {
-                    public void run() {
-                        r.run(cursor);
-                    }
-                });
+                workThread = new Thread(() -> r.run(cursor));
                 workThread.start();
             }
             @Override
@@ -139,29 +135,24 @@ public class LoadScid extends ListActivity {
             progressLatch = new CountDownLatch(1);
             showProgressDialog();
             final LoadScid lpgn = this;
-            startReadFile(new OnCursorReady() {
-                @Override
-                public void run(Cursor cursor) {
-                    try {
-                        progressLatch.await();
-                    } catch (InterruptedException e) {
+            startReadFile(cursor -> {
+                try {
+                    progressLatch.await();
+                } catch (InterruptedException e) {
+                    setResult(RESULT_CANCELED);
+                    finish();
+                    return;
+                }
+                if (!readFile(cursor))
+                    return;
+                runOnUiThread(() -> {
+                    if (canceled) {
                         setResult(RESULT_CANCELED);
                         finish();
-                        return;
+                    } else {
+                        lpgn.showList();
                     }
-                    if (!readFile(cursor))
-                        return;
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-                            if (canceled) {
-                                setResult(RESULT_CANCELED);
-                                finish();
-                            } else {
-                                lpgn.showList();
-                            }
-                        }
-                    });
-                }
+                });
             });
         } else if ("org.petero.droidfish.loadScidNextGame".equals(action) ||
                    "org.petero.droidfish.loadScidPrevGame".equals(action)) {
@@ -172,24 +163,19 @@ public class LoadScid extends ListActivity {
                 setResult(RESULT_CANCELED);
                 finish();
             } else {
-                startReadFile(new OnCursorReady() {
-                    @Override
-                    public void run(Cursor cursor) {
-                        if (!readFile(cursor))
-                            return;
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                if (loadItem >= gamesInFile.size()) {
-                                    DroidFishApp.toast(R.string.no_next_game, Toast.LENGTH_SHORT);
-                                    setResult(RESULT_CANCELED);
-                                    finish();
-                                } else {
-                                    defaultItem = loadItem;
-                                    sendBackResult(gamesInFile.get(loadItem));
-                                }
-                            }
-                        });
-                    }
+                startReadFile(cursor -> {
+                    if (!readFile(cursor))
+                        return;
+                    runOnUiThread(() -> {
+                        if (loadItem >= gamesInFile.size()) {
+                            DroidFishApp.toast(R.string.no_next_game, Toast.LENGTH_SHORT);
+                            setResult(RESULT_CANCELED);
+                            finish();
+                        } else {
+                            defaultItem = loadItem;
+                            sendBackResult(gamesInFile.get(loadItem));
+                        }
+                    });
                 });
             }
         } else { // Unsupported action
@@ -249,12 +235,9 @@ public class LoadScid extends ListActivity {
         Util.overrideViewAttribs(lv);
         lv.setSelectionFromTop(defaultItem, 0);
         lv.setFastScrollEnabled(true);
-        lv.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-                defaultItem = pos;
-                sendBackResult(aa.getItem(pos));
-            }
+        lv.setOnItemClickListener((parent, view, pos, id) -> {
+            defaultItem = pos;
+            sendBackResult(aa.getItem(pos));
         });
     }
 
@@ -323,11 +306,7 @@ public class LoadScid extends ListActivity {
                     if (newPercent > percent) {
                         percent = newPercent;
                         if (progress != null) {
-                            runOnUiThread(new Runnable() {
-                                public void run() {
-                                    progress.setProgress(newPercent);
-                                }
-                            });
+                            runOnUiThread(() -> progress.setProgress(newPercent));
                         }
                     }
                 }

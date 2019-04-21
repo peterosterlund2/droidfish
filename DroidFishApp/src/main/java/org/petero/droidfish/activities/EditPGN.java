@@ -110,21 +110,17 @@ public abstract class EditPGN extends ListActivity {
             loadGame = true;
             showDialog(PROGRESS_DIALOG);
             final EditPGN lpgn = this;
-            workThread = new Thread(new Runnable() {
-                public void run() {
-                    if (!readFile())
-                        return;
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-                            if (canceled) {
-                                setResult(RESULT_CANCELED);
-                                finish();
-                            } else {
-                                lpgn.showList();
-                            }
-                        }
-                    });
-                }
+            workThread = new Thread(() -> {
+                if (!readFile())
+                    return;
+                runOnUiThread(() -> {
+                    if (canceled) {
+                        setResult(RESULT_CANCELED);
+                        finish();
+                    } else {
+                        lpgn.showList();
+                    }
+                });
             });
             workThread.start();
         } else if ("org.petero.droidfish.loadFileNextGame".equals(action) ||
@@ -138,23 +134,19 @@ public abstract class EditPGN extends ListActivity {
                 setResult(RESULT_CANCELED);
                 finish();
             } else {
-                workThread = new Thread(new Runnable() {
-                    public void run() {
-                        if (!readFile())
-                            return;
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                if (loadItem >= gamesInFile.size()) {
-                                    DroidFishApp.toast(R.string.no_next_game, Toast.LENGTH_SHORT);
-                                    setResult(RESULT_CANCELED);
-                                    finish();
-                                } else {
-                                    defaultItem = loadItem;
-                                    sendBackResult(gamesInFile.get(loadItem));
-                                }
-                            }
-                        });
-                    }
+                workThread = new Thread(() -> {
+                    if (!readFile())
+                        return;
+                    runOnUiThread(() -> {
+                        if (loadItem >= gamesInFile.size()) {
+                            DroidFishApp.toast(R.string.no_next_game, Toast.LENGTH_SHORT);
+                            setResult(RESULT_CANCELED);
+                            finish();
+                        } else {
+                            defaultItem = loadItem;
+                            sendBackResult(gamesInFile.get(loadItem));
+                        }
+                    });
                 });
                 workThread.start();
             }
@@ -170,24 +162,20 @@ public abstract class EditPGN extends ListActivity {
                 pgnFile = new PGNFile(fileName);
                 showDialog(PROGRESS_DIALOG);
                 final EditPGN lpgn = this;
-                workThread = new Thread(new Runnable() {
-                    public void run() {
-                        if (!readFile())
-                            return;
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                if (canceled) {
-                                    setResult(RESULT_CANCELED);
-                                    finish();
-                                } else if (gamesInFile.size() == 0) {
-                                    pgnFile.appendPGN(pgnToSave);
-                                    finish();
-                                } else {
-                                    lpgn.showList();
-                                }
-                            }
-                        });
-                    }
+                workThread = new Thread(() -> {
+                    if (!readFile())
+                        return;
+                    runOnUiThread(() -> {
+                        if (canceled) {
+                            setResult(RESULT_CANCELED);
+                            finish();
+                        } else if (gamesInFile.size() == 0) {
+                            pgnFile.appendPGN(pgnToSave);
+                            finish();
+                        } else {
+                            lpgn.showList();
+                        }
+                    });
                 });
                 workThread.start();
             }
@@ -266,28 +254,22 @@ public abstract class EditPGN extends ListActivity {
         ListView lv = getListView();
         lv.setSelectionFromTop(defaultItem, 0);
         lv.setFastScrollEnabled(true);
-        lv.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-                selectedGi = aa.getItem(pos);
-                if (selectedGi == null)
-                    return;
-                if (loadGame) {
-                    defaultItem = pos;
-                    sendBackResult(selectedGi);
-                } else {
-                    reShowDialog(SAVE_GAME_DIALOG);
-                }
+        lv.setOnItemClickListener((parent, view, pos, id) -> {
+            selectedGi = aa.getItem(pos);
+            if (selectedGi == null)
+                return;
+            if (loadGame) {
+                defaultItem = pos;
+                sendBackResult(selectedGi);
+            } else {
+                reShowDialog(SAVE_GAME_DIALOG);
             }
         });
-        lv.setOnItemLongClickListener(new OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int pos, long id) {
-                selectedGi = aa.getItem(pos);
-                if (selectedGi != null && !selectedGi.isNull())
-                    reShowDialog(DELETE_GAME_DIALOG);
-                return true;
-            }
+        lv.setOnItemLongClickListener((parent, view, pos, id) -> {
+            selectedGi = aa.getItem(pos);
+            if (selectedGi != null && !selectedGi.isNull())
+                reShowDialog(DELETE_GAME_DIALOG);
+            return true;
         });
 
         filterText = findViewById(R.id.select_game_filter);
@@ -335,14 +317,11 @@ public abstract class EditPGN extends ListActivity {
             progress = new ProgressDialog(this);
             progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progress.setTitle(R.string.reading_pgn_file);
-            progress.setOnCancelListener(new OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    canceled = true;
-                    Thread thr = workThread;
-                    if (thr != null)
-                        thr.interrupt();
-                }
+            progress.setOnCancelListener(dialog -> {
+                canceled = true;
+                Thread thr = workThread;
+                if (thr != null)
+                    thr.interrupt();
             });
             return progress;
         case DELETE_GAME_DIALOG: {
@@ -354,17 +333,11 @@ public abstract class EditPGN extends ListActivity {
             builder.setTitle(R.string.delete_game);
             String msg = gi.toString();
             builder.setMessage(msg);
-            builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    deleteGame(gi);
-                    dialog.cancel();
-                }
+            builder.setPositiveButton(R.string.yes, (dialog, id14) -> {
+                deleteGame(gi);
+                dialog.cancel();
             });
-            builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                }
-            });
+            builder.setNegativeButton(R.string.no, (dialog, id13) -> dialog.cancel());
             return builder.create();
         }
         case SAVE_GAME_DIALOG: {
@@ -379,19 +352,17 @@ public abstract class EditPGN extends ListActivity {
                 getString(R.string.after_selected),
                 getString(R.string.replace_selected),
             };
-            builder.setItems(items, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
-                    GameInfo giToReplace;
-                    switch (item) {
-                    case 0: giToReplace = new GameInfo().setNull(gi.startPos); break;
-                    case 1: giToReplace = new GameInfo().setNull(gi.endPos); break;
-                    case 2: giToReplace = gi; break;
-                    default:
-                        finish(); return;
-                    }
-                    pgnFile.replacePGN(pgnToSave, giToReplace);
-                    finish();
+            builder.setItems(items, (dialog, item) -> {
+                GameInfo giToReplace;
+                switch (item) {
+                case 0: giToReplace = new GameInfo().setNull(gi.startPos); break;
+                case 1: giToReplace = new GameInfo().setNull(gi.endPos); break;
+                case 2: giToReplace = gi; break;
+                default:
+                    finish(); return;
                 }
+                pgnFile.replacePGN(pgnToSave, giToReplace);
+                finish();
             });
             return builder.create();
         }
@@ -401,17 +372,11 @@ public abstract class EditPGN extends ListActivity {
             String name = new File(pgnFile.getName()).getName();
             String msg = String.format(Locale.US, getString(R.string.delete_named_file), name);
             builder.setMessage(msg);
-            builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    pgnFile.delete();
-                    finish();
-                }
+            builder.setPositiveButton(R.string.yes, (dialog, id12) -> {
+                pgnFile.delete();
+                finish();
             });
-            builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                }
-            });
+            builder.setNegativeButton(R.string.no, (dialog, id1) -> dialog.cancel());
             return builder.create();
         }
         default:
@@ -431,18 +396,10 @@ public abstract class EditPGN extends ListActivity {
             gamesInFile = new ArrayList<>();
             switch (p.first) {
             case OUT_OF_MEMORY:
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        DroidFishApp.toast(R.string.file_too_large, Toast.LENGTH_SHORT);
-                    }
-                });
+                runOnUiThread(() -> DroidFishApp.toast(R.string.file_too_large, Toast.LENGTH_SHORT));
                 break;
             case NOT_PGN:
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        DroidFishApp.toast(R.string.not_a_pgn_file, Toast.LENGTH_SHORT);
-                    }
-                });
+                runOnUiThread(() -> DroidFishApp.toast(R.string.not_a_pgn_file, Toast.LENGTH_SHORT));
                 break;
             case CANCEL:
             case OK:
