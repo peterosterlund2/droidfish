@@ -68,64 +68,27 @@ public class SeekBarPreference extends Preference
     @Override
     protected View onCreateView(ViewGroup parent) {
         super.onCreateView(parent);
-        TextView name = new TextView(getContext());
+
+        LinearLayout layout = (LinearLayout)View.inflate(getContext(), R.layout.seekbar_preference, null);
+        TextView name = layout.findViewById(R.id.seekbar_title);
         name.setText(getTitle());
-        name.setTextAppearance(getContext(), android.R.style.TextAppearance_Large);
-        name.setGravity(Gravity.LEFT);
-        LinearLayout.LayoutParams lp =
-            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                                          LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.gravity = Gravity.LEFT;
-        lp.weight  = 1.0f;
-        name.setLayoutParams(lp);
 
-        currValBox = new TextView(getContext());
-        currValBox.setTextSize(12);
-        currValBox.setTypeface(Typeface.MONOSPACE, Typeface.ITALIC);
-        currValBox.setPadding(2, 5, 0, 0);
+        currValBox = layout.findViewById(R.id.seekbar_value);
         currValBox.setText(valToString());
-        lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                                           LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.gravity = Gravity.CENTER;
-        currValBox.setLayoutParams(lp);
 
-        LinearLayout row1 = new LinearLayout(getContext());
-        row1.setOrientation(LinearLayout.HORIZONTAL);
-        row1.addView(name);
-        row1.addView(currValBox);
-
-        final SeekBar bar = new SeekBar(getContext());
+        final SeekBar bar = layout.findViewById(R.id.seekbar_bar);
         bar.setMax(maxValue);
         bar.setProgress(currVal);
         bar.setOnSeekBarChangeListener(this);
-        lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                           LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.gravity = Gravity.RIGHT;
-        bar.setLayoutParams(lp);
 
+        TextView summary = layout.findViewById(R.id.seekbar_summary);
         CharSequence summaryCharSeq = getSummary();
         boolean haveSummary = (summaryCharSeq != null) && (summaryCharSeq.length() > 0);
-        TextView summary = null;
         if (haveSummary) {
-            summary = new TextView(getContext());
             summary.setText(getSummary());
-//            summary.setTextAppearance(getContext(), android.R.style.TextAppearance_Large);
-            summary.setGravity(Gravity.LEFT);
-            lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                                               LinearLayout.LayoutParams.WRAP_CONTENT);
-            lp.gravity = Gravity.LEFT;
-            lp.weight  = 1.0f;
-            summary.setLayoutParams(lp);
+        } else {
+            summary.setVisibility(View.GONE);
         }
-
-        LinearLayout layout = new LinearLayout(getContext());
-        layout.setPadding(25, 5, 25, 5);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.addView(row1);
-        layout.addView(bar);
-        if (summary != null)
-            layout.addView(summary);
-        layout.setId(android.R.id.widget_frame);
 
         currValBox.setOnClickListener(v -> {
             View content = View.inflate(SeekBarPreference.this.getContext(), R.layout.select_percentage, null);
