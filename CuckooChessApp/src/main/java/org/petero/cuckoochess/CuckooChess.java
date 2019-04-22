@@ -18,11 +18,6 @@
 
 package org.petero.cuckoochess;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import guibase.ChessController;
-import guibase.GUIInterface;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -42,27 +37,33 @@ import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.databinding.DataBindingUtil;
+
+import org.petero.cuckoochess.databinding.MainBinding;
+import org.petero.cuckoochess.databinding.MainContentBinding;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import chess.ChessParseError;
 import chess.Move;
 import chess.Position;
 import chess.TextIO;
+import guibase.ChessController;
+import guibase.GUIInterface;
 
 public class CuckooChess extends Activity implements GUIInterface {
-    ChessBoard cb;
     ChessController ctrl;
     boolean mShowThinking;
     int mTimeLimit;
     boolean playerWhite;
     static final int ttLogSize = 16; // Use 2^ttLogSize hash entries.
-    
-    TextView status;
-    ScrollView moveListScroll;
-    TextView moveList;
-    TextView thinking;
-    
+
     SharedPreferences settings;
+
+    MainContentBinding binding;
 
     private void readPrefs() {
         mShowThinking = settings.getBoolean("showThinking", false);
@@ -70,16 +71,18 @@ public class CuckooChess extends Activity implements GUIInterface {
         mTimeLimit = Integer.parseInt(timeLimitStr);
         playerWhite = settings.getBoolean("playerWhite", true);
         boolean boardFlipped = settings.getBoolean("boardFlipped", false);
-        cb.setFlipped(boardFlipped);
+        binding.chessboard.setFlipped(boardFlipped);
         ctrl.setTimeLimit();
         String fontSizeStr = settings.getString("fontSize", "12");
         int fontSize = Integer.parseInt(fontSizeStr);
-        status.setTextSize(fontSize);
-        moveList.setTextSize(fontSize);
-        thinking.setTextSize(fontSize);
+        binding.status.setTextSize(fontSize);
+        binding.moveList.setTextSize(fontSize);
+        binding.thinking.setTextSize(fontSize);
     }
-    
-    /** Called when the activity is first created. */
+
+    /**
+     * Called when the activity is first created.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,26 +95,21 @@ public class CuckooChess extends Activity implements GUIInterface {
                 ctrl.setHumanWhite(playerWhite);
             }
         });
-        
-        setContentView(R.layout.main);
-        status = findViewById(R.id.status);
-        moveListScroll = findViewById(R.id.scrollView);
-        moveList = findViewById(R.id.moveList);
-        thinking = findViewById(R.id.thinking);
-        cb = findViewById(R.id.chessboard);
-        status.setFocusable(false);
-        moveListScroll.setFocusable(false);
-        moveList.setFocusable(false);
-        thinking.setFocusable(false);
+
+        binding = ((MainBinding) DataBindingUtil.setContentView(this, R.layout.main)).content;
+        binding.status.setFocusable(false);
+        binding.moveListScroll.setFocusable(false);
+        binding.moveList.setFocusable(false);
+        binding.thinking.setFocusable(false);
         ctrl = new ChessController(this);
         ctrl.setThreadStackSize(32768);
         readPrefs();
 
         Typeface chessFont = Typeface.createFromAsset(getAssets(), "casefont.ttf");
-        cb.setFont(chessFont);
-        cb.setFocusable(true);
-        cb.requestFocus();
-        cb.setClickable(true);
+        binding.chessboard.setFont(chessFont);
+        binding.chessboard.setFocusable(true);
+        binding.chessboard.requestFocus();
+        binding.chessboard.setClickable(true);
 
         ctrl.newGame(playerWhite, ttLogSize, false);
         {
@@ -141,13 +139,13 @@ public class CuckooChess extends Activity implements GUIInterface {
             ctrl.setPosHistory(posHistStr);
         }
         ctrl.startGame();
-        
-        cb.setOnTouchListener(new OnTouchListener() {
+
+        binding.chessboard.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (ctrl.humansTurn() && (event.getAction() == MotionEvent.ACTION_UP)) {
-                    int sq = cb.eventToSquare(event);
-                    Move m = cb.mousePressed(sq);
+                    int sq = binding.chessboard.eventToSquare(event);
+                    Move m = binding.chessboard.mousePressed(sq);
                     if (m != null) {
                         ctrl.humanMove(m);
                     }
@@ -156,18 +154,18 @@ public class CuckooChess extends Activity implements GUIInterface {
                 return false;
             }
         });
-        
-        cb.setOnTrackballListener(new ChessBoard.OnTrackballListener() {
+
+        binding.chessboard.setOnTrackballListener(new ChessBoard.OnTrackballListener() {
             public void onTrackballEvent(MotionEvent event) {
                 if (ctrl.humansTurn()) {
-                    Move m = cb.handleTrackballEvent(event);
+                    Move m = binding.chessboard.handleTrackballEvent(event);
                     if (m != null) {
                         ctrl.humanMove(m);
                     }
                 }
             }
         });
-        cb.setOnLongClickListener(new OnLongClickListener() {
+        binding.chessboard.setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 if (!ctrl.computerThinking())
@@ -185,7 +183,7 @@ public class CuckooChess extends Activity implements GUIInterface {
         outState.putString("moves", posHistStr.get(1));
         outState.putString("numUndo", posHistStr.get(2));
     }
-    
+
     @Override
     protected void onPause() {
         List<String> posHistStr = ctrl.getPosHistory();
@@ -208,26 +206,25 @@ public class CuckooChess extends Activity implements GUIInterface {
         getMenuInflater().inflate(R.menu.options_menu, menu);
         return true;
     }
-    
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.item_new_game:
-            ctrl.newGame(playerWhite, ttLogSize, false);
-            ctrl.startGame();
-            return true;
-        case R.id.item_undo:
-            ctrl.takeBackMove();
-            return true;
-        case R.id.item_redo:
-            ctrl.redoMove();
-            return true;
-        case R.id.item_settings:
-        {
-            Intent i = new Intent(CuckooChess.this, Preferences.class);
-            startActivityForResult(i, 0);
-            return true;
-        }
+            case R.id.item_new_game:
+                ctrl.newGame(playerWhite, ttLogSize, false);
+                ctrl.startGame();
+                return true;
+            case R.id.item_undo:
+                ctrl.takeBackMove();
+                return true;
+            case R.id.item_redo:
+                ctrl.redoMove();
+                return true;
+            case R.id.item_settings: {
+                Intent i = new Intent(CuckooChess.this, Preferences.class);
+                startActivityForResult(i, 0);
+                return true;
+            }
         }
         return false;
     }
@@ -242,29 +239,29 @@ public class CuckooChess extends Activity implements GUIInterface {
 
     @Override
     public void setPosition(Position pos) {
-        cb.setPosition(pos);
+        binding.chessboard.setPosition(pos);
         ctrl.setHumanWhite(playerWhite);
     }
 
     @Override
     public void setSelection(int sq) {
-        cb.setSelection(sq);
+        binding.chessboard.setSelection(sq);
     }
 
     @Override
     public void setStatusString(String str) {
-        status.setText(str);
+        binding.status.setText(str);
     }
 
     @Override
     public void setMoveListString(String str) {
-        moveList.setText(str);
-        moveListScroll.fullScroll(ScrollView.FOCUS_DOWN);
+        binding.moveList.setText(str);
+        binding.moveListScroll.fullScroll(ScrollView.FOCUS_DOWN);
     }
-    
+
     @Override
     public void setThinkingString(String str) {
-        thinking.setText(str);
+        binding.thinking.setText(str);
     }
 
     @Override
@@ -282,59 +279,59 @@ public class CuckooChess extends Activity implements GUIInterface {
         return mShowThinking;
     }
 
-    static final int PROMOTE_DIALOG = 0; 
-    static final int CLIPBOARD_DIALOG = 1; 
-    
+    static final int PROMOTE_DIALOG = 0;
+    static final int CLIPBOARD_DIALOG = 1;
+
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
-        case PROMOTE_DIALOG: {
-            final CharSequence[] items = {"Queen", "Rook", "Bishop", "Knight"};
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Promote pawn to?");
-            builder.setItems(items, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
-                    ctrl.reportPromotePiece(item);
-                }
-            });
-            return builder.create();
-        }
-        case CLIPBOARD_DIALOG: {
-            final CharSequence[] items = {"Copy Game", "Copy Position", "Paste"};
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Clipboard");
-            builder.setItems(items, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
-                    switch (item) {
-                    case 0: {
-                        String pgn = ctrl.getPGN();
-                        ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-                        clipboard.setText(pgn);
-                        break;
+            case PROMOTE_DIALOG: {
+                final CharSequence[] items = {"Queen", "Rook", "Bishop", "Knight"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Promote pawn to?");
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
+                        ctrl.reportPromotePiece(item);
                     }
-                    case 1: {
-                        String fen = ctrl.getFEN() + "\n";
-                        ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-                        clipboard.setText(fen);
-                        break;
-                    }
-                    case 2: {
-                        ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-                        if (clipboard.hasText()) {
-                            String fenPgn = clipboard.getText().toString();
-                            try {
-                                ctrl.setFENOrPGN(fenPgn);
-                            } catch (ChessParseError e) {
-                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+                return builder.create();
+            }
+            case CLIPBOARD_DIALOG: {
+                final CharSequence[] items = {"Copy Game", "Copy Position", "Paste"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Clipboard");
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
+                        switch (item) {
+                            case 0: {
+                                String pgn = ctrl.getPGN();
+                                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                                clipboard.setText(pgn);
+                                break;
+                            }
+                            case 1: {
+                                String fen = ctrl.getFEN() + "\n";
+                                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                                clipboard.setText(fen);
+                                break;
+                            }
+                            case 2: {
+                                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                                if (clipboard.hasText()) {
+                                    String fenPgn = clipboard.getText().toString();
+                                    try {
+                                        ctrl.setFENOrPGN(fenPgn);
+                                    } catch (ChessParseError e) {
+                                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                                break;
                             }
                         }
-                        break;
                     }
-                    }
-                }
-            });
-            return builder.create();
-        }
+                });
+                return builder.create();
+            }
         }
         return null;
     }
