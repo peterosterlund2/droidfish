@@ -36,12 +36,12 @@
             android:summary="@string/prefs_strength_summary"
             android:defaultValue="1000">
         </org.petero.droidfish.activities.SeekBarPreference>
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="ponderMode"
             android:title="@string/prefs_ponderMode_title"
             android:summary="@string/prefs_ponderMode_summary"
             android:defaultValue="false">
-        </CheckBoxPreference>
+        </SwitchPreference>
         <ListPreference
             android:key="hashMB"
             android:title="@string/prefs_hash_title"
@@ -53,24 +53,24 @@
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/prefs_hints">
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="showThinking" 
             android:title="@string/prefs_showThinking_title" 
             android:summary="@string/prefs_showThinking_summary" 
             android:defaultValue="true">
-        </CheckBoxPreference>
-        <CheckBoxPreference
+        </SwitchPreference>
+        <SwitchPreference
             android:key="whiteBasedScores"
             android:title="@string/prefs_whiteBasedScores_title"
             android:summary="@string/prefs_whiteBasedScores_summary" 
             android:defaultValue="true">
-        </CheckBoxPreference>
-        <CheckBoxPreference 
+        </SwitchPreference>
+        <SwitchPreference
             android:key="bookHints"
             android:title="@string/prefs_bookHints_title"
             android:summary="@string/prefs_bookHints_summary"
             android:defaultValue="true">
-        </CheckBoxPreference>
+        </SwitchPreference>
         <ListPreference
             android:key="ecoHints"
             android:title="@string/prefs_ecoHints_title"
@@ -87,18 +87,18 @@
             android:entries="@array/thinking_arrows_texts"
             android:defaultValue="@string/thinking_arrows_default">
         </ListPreference>
-        <CheckBoxPreference 
+        <SwitchPreference
             android:key="highlightLastMove"
             android:title="@string/highlight_last_move_title"
             android:summary="@string/highlight_last_move_summary"
             android:defaultValue="true">
-        </CheckBoxPreference>
-        <CheckBoxPreference
+        </SwitchPreference>
+        <SwitchPreference
             android:key="materialDiff"
             android:title="@string/material_diff_title"
             android:summary="@string/material_diff_summary"
             android:defaultValue="false">
-        </CheckBoxPreference>
+        </SwitchPreference>
     </PreferenceCategory>
     <PreferenceCategory 
         android:title="@string/prefs_playing_options">
@@ -108,27 +108,27 @@
             android:summary="@string/prefs_playerName_summary" 
             android:defaultValue="Player">
         </EditTextPreference>
-        <CheckBoxPreference 
+        <SwitchPreference
             android:key="autoSwapSides" 
             android:title="@string/prefs_autoSwapSides_title" 
             android:summary="@string/prefs_autoSwapSides_summary" 
             android:defaultValue="false">
-        </CheckBoxPreference>
-        <CheckBoxPreference 
+        </SwitchPreference>
+        <SwitchPreference
             android:key="playerNameFlip" 
             android:title="@string/prefs_playerNameFlip_title" 
             android:summary="@string/prefs_playerNameFlip_summary" 
             android:defaultValue="true">
-        </CheckBoxPreference>
+        </SwitchPreference>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/prefs_user_interface_appearance">
-        <CheckBoxPreference 
+        <SwitchPreference
             android:key="fullScreenMode" 
             android:title="@string/prefs_fullScreenMode_title" 
             android:summary="@string/prefs_fullScreenMode_summary" 
             android:defaultValue="false">
-        </CheckBoxPreference>
+        </SwitchPreference>
         <ListPreference
             android:key="language"
             android:title="@string/prefs_language_title"
@@ -161,18 +161,18 @@
             android:entries="@array/viewPieceSet_texts"
             android:defaultValue="@string/viewPieceSet_default">
         </ListPreference>
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="blindMode" 
             android:title="@string/prefs_blindMode_title" 
             android:summary="@string/prefs_blindMode_summary" 
             android:defaultValue="false">
-        </CheckBoxPreference>
-        <CheckBoxPreference
+        </SwitchPreference>
+        <SwitchPreference
             android:key="vibrateEnabled"
             android:title="@string/prefs_vibrateEnabled_title" 
             android:summary="@string/prefs_vibrateEnabled_summary" 
             android:defaultValue="false">
-        </CheckBoxPreference>
+        </SwitchPreference>
         <ListPreference
             android:key="moveAnnounceType"
             android:title="@string/prefs_moveAnnounceType_title"
@@ -181,35 +181,35 @@
             android:entries="@array/move_announce_type_texts"
             android:defaultValue="@string/move_announce_type_default">
         </ListPreference>
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="wakeLock" 
             android:title="@string/prefs_wakeLock_title" 
             android:defaultValue="false">
-        </CheckBoxPreference>
-        <CheckBoxPreference
+        </SwitchPreference>
+        <SwitchPreference
             android:key="drawSquareLabels"
             android:title="@string/prefs_drawSquareLabels_title" 
             android:summary="@string/prefs_drawSquareLabels_summary" 
             android:defaultValue="false">
-        </CheckBoxPreference>
-        <CheckBoxPreference
+        </SwitchPreference>
+        <SwitchPreference
             android:key="leftHanded" 
             android:title="@string/prefs_leftHanded_title" 
             android:summary="@string/prefs_leftHanded_summary" 
             android:defaultValue="false">
-        </CheckBoxPreference>
-        <CheckBoxPreference 
+        </SwitchPreference>
+        <SwitchPreference
             android:key="animateMoves" 
             android:title="@string/prefs_animateMoves_title" 
             android:summary="@string/prefs_animateMoves_summary" 
             android:defaultValue="true">
-        </CheckBoxPreference>
-        <CheckBoxPreference 
+        </SwitchPreference>
+        <SwitchPreference
             android:key="autoScrollTitle" 
             android:title="@string/prefs_autoScrollTitle_title" 
             android:summary="@string/prefs_autoScrollTitle_summary" 
             android:defaultValue="true">
-        </CheckBoxPreference>
+        </SwitchPreference>
         <PreferenceScreen
             android:key="colors" 
             android:title="@string/prefs_colors_title" 
@@ -348,12 +348,12 @@
             android:key="buttonSettings" 
             android:title="@string/prefs_buttonSettings_title" 
             android:summary="@string/prefs_buttonSettings_summary">
-            <CheckBoxPreference
+            <SwitchPreference
                 android:key="largeButtons" 
                 android:title="@string/prefs_largeButtons_title" 
                 android:summary="@string/prefs_largeButtons_summary" 
                 android:defaultValue="false">
-            </CheckBoxPreference>
+            </SwitchPreference>
             <PreferenceCategory
                 android:title="@string/prefs_custom_button_1">
                 <ListPreference
@@ -511,12 +511,12 @@
                 </ListPreference>
             </PreferenceCategory>
         </PreferenceScreen>
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="oneTouchMoves"
             android:title="@string/prefs_quickMoveInput_title"
             android:summary="@string/prefs_quickMoveInput_summary"
             android:defaultValue="false">
-        </CheckBoxPreference>
+        </SwitchPreference>
         <ListPreference
             android:key="squareSelectType" 
             android:title="@string/prefs_squareSelectType_title" 
@@ -533,24 +533,24 @@
             android:entries="@array/scroll_sensitivity_texts"
             android:defaultValue="@string/scroll_sensitivity_default">
         </ListPreference>
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="invertScrollDirection"
             android:title="@string/prefs_invertScrollDirection_title"
             android:summary="@string/prefs_invertScrollDirection_summary"
             android:defaultValue="false">
-        </CheckBoxPreference>
-        <CheckBoxPreference
+        </SwitchPreference>
+        <SwitchPreference
             android:key="scrollGames"
             android:title="@string/prefs_scrollGames_title"
             android:summary="@string/prefs_scrollGames_summary"
             android:defaultValue="false">
-        </CheckBoxPreference>
-        <CheckBoxPreference
+        </SwitchPreference>
+        <SwitchPreference
             android:key="autoScrollMoveList"
             android:title="@string/prefs_autoScrollMoveList_title"
             android:summary="@string/prefs_autoScrollMoveList_summary"
             android:defaultValue="true">
-        </CheckBoxPreference>
+        </SwitchPreference>
         <ListPreference
             android:key="autoDelay"
             android:title="@string/prefs_autoDelay_title"
@@ -559,21 +559,21 @@
             android:entries="@array/autoDelay_texts"
             android:defaultValue="@string/autoDelay_default">
         </ListPreference>
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="discardVariations"
             android:title="@string/prefs_discardVariations_title"
             android:summary="@string/prefs_discardVariations_summary"
             android:defaultValue="false">
-        </CheckBoxPreference>
+        </SwitchPreference>
         </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/prefs_other">
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="guideShowOnStart"
             android:title="@string/prefs_guideShowOnStart_title"
             android:summary="@string/prefs_guideShowOnStart_summary"
             android:defaultValue="true">
-        </CheckBoxPreference>
+        </SwitchPreference>
         <PreferenceScreen
             android:key="bookSettings"
             android:title="@string/prefs_bookSettings_title"
@@ -586,18 +586,18 @@
                 android:entries="@array/book_line_length_texts"
                 android:defaultValue="@string/book_line_length_default">
             </ListPreference>
-            <CheckBoxPreference
+            <SwitchPreference
                 android:key="bookPreferMainLines"
                 android:title="@string/prefs_bookPreferMainLines_title"
                 android:summary="@string/prefs_bookPreferMainLines_summary"
                 android:defaultValue="false">
-            </CheckBoxPreference>
-            <CheckBoxPreference
+            </SwitchPreference>
+            <SwitchPreference
                 android:key="bookTournamentMode"
                 android:title="@string/prefs_bookTournamentMode_title"
                 android:summary="@string/prefs_bookTournamentMode_summary"
                 android:defaultValue="false">
-            </CheckBoxPreference>
+            </SwitchPreference>
             <org.petero.droidfish.activities.SeekBarPreference
                 android:key="bookRandom"
                 android:defaultValue="500"
@@ -616,119 +616,119 @@
             android:summary="@string/prefs_pgnSettings_summary">
             <PreferenceCategory
                 android:title="@string/prefs_pgn_viewer">
-                <CheckBoxPreference
+                <SwitchPreference
                     android:key="viewVariations"
                     android:title="@string/prefs_viewVariations_title"
                     android:summary="@string/prefs_viewVariations_summary"
                     android:defaultValue="true">
-                </CheckBoxPreference>
-                <CheckBoxPreference
+                </SwitchPreference>
+                <SwitchPreference
                     android:key="viewComments"
                     android:title="@string/prefs_viewComments_title"
                     android:summary="@string/prefs_viewComments_summary"
                     android:defaultValue="true">
-                </CheckBoxPreference>
-                <CheckBoxPreference
+                </SwitchPreference>
+                <SwitchPreference
                     android:key="viewNAG"
                     android:title="@string/prefs_viewNAG_title"
                     android:summary="@string/prefs_viewNAG_summary"
                     android:defaultValue="true">
-                </CheckBoxPreference>
-                <CheckBoxPreference
+                </SwitchPreference>
+                <SwitchPreference
                     android:key="viewHeaders"
                     android:title="@string/prefs_viewHeaders_title"
                     android:summary="@string/prefs_viewHeaders_summary"
                     android:defaultValue="false">
-                </CheckBoxPreference>
-                <CheckBoxPreference
+                </SwitchPreference>
+                <SwitchPreference
                     android:key="showVariationLine"
                     android:title="@string/prefs_showVariationLine_title"
                     android:summary="@string/prefs_showVariationLine_summary"
                     android:defaultValue="false">
-                </CheckBoxPreference>
+                </SwitchPreference>
                 </PreferenceCategory>
             <PreferenceCategory
                 android:title="@string/prefs_pgn_import">
-                <CheckBoxPreference
+                <SwitchPreference
                     android:key="importVariations"
                     android:title="@string/prefs_importVariations_title"
                     android:summary="@string/prefs_importVariations_summary"
                     android:defaultValue="true">
-                </CheckBoxPreference>
-                <CheckBoxPreference
+                </SwitchPreference>
+                <SwitchPreference
                     android:key="importComments"
                     android:title="@string/prefs_importComments_title"
                     android:summary="@string/prefs_importComments_summary"
                     android:defaultValue="true">
-                </CheckBoxPreference>
-                <CheckBoxPreference
+                </SwitchPreference>
+                <SwitchPreference
                     android:key="importNAG"
                     android:title="@string/prefs_importNAG_title"
                     android:summary="@string/prefs_importNAG_summary"
                     android:defaultValue="true">
-                </CheckBoxPreference>
+                </SwitchPreference>
             </PreferenceCategory>
             <PreferenceCategory
                 android:title="@string/prefs_pgn_export">
-                <CheckBoxPreference
+                <SwitchPreference
                     android:key="exportVariations"
                     android:title="@string/prefs_exportVariations_title"
                     android:summary="@string/prefs_exportVariations_summary"
                     android:defaultValue="true">
-                </CheckBoxPreference>
-                <CheckBoxPreference
+                </SwitchPreference>
+                <SwitchPreference
                     android:key="exportComments"
                     android:title="@string/prefs_exportComments_title"
                     android:summary="@string/prefs_exportComments_summary"
                     android:defaultValue="true">
-                </CheckBoxPreference>
-                <CheckBoxPreference
+                </SwitchPreference>
+                <SwitchPreference
                     android:key="exportNAG"
                     android:title="@string/prefs_exportNAG_title"
                     android:summary="@string/prefs_exportNAG_summary"
                     android:defaultValue="true">
-                </CheckBoxPreference>
-                <CheckBoxPreference
+                </SwitchPreference>
+                <SwitchPreference
                     android:key="exportPlayerAction"
                     android:title="@string/prefs_exportPlayerAction_title"
                     android:summary="@string/prefs_exportPlayerAction_summary"
                     android:defaultValue="false">
-                </CheckBoxPreference>
-                <CheckBoxPreference
+                </SwitchPreference>
+                <SwitchPreference
                     android:key="exportTime"
                     android:title="@string/prefs_exportTime_title"
                     android:summary="@string/prefs_exportTime_summary"
                     android:defaultValue="false">
-                </CheckBoxPreference>
+                </SwitchPreference>
             </PreferenceCategory>
         </PreferenceScreen>
         <PreferenceScreen
             android:key="egtbSettings"
             android:title="@string/prefs_egtbSettings_title">
-            <CheckBoxPreference
+            <SwitchPreference
                 android:key="tbHints"
                 android:title="@string/prefs_tbHints_title"
                 android:summary="@string/prefs_tbHints_summary"
                 android:defaultValue="true">
-            </CheckBoxPreference>
-            <CheckBoxPreference
+            </SwitchPreference>
+            <SwitchPreference
                 android:key="tbHintsEdit"
                 android:title="@string/prefs_tbHintsEdit_title"
                 android:summary="@string/prefs_tbHintsEdit_summary"
                 android:defaultValue="true">
-            </CheckBoxPreference>
-            <CheckBoxPreference
+            </SwitchPreference>
+            <SwitchPreference
                 android:key="tbRootProbe"
                 android:title="@string/prefs_tbRootProbe_title"
                 android:summary="@string/prefs_tbRootProbe_summary"
                 android:defaultValue="true">
-            </CheckBoxPreference>
-            <CheckBoxPreference
+            </SwitchPreference>
+            <SwitchPreference
                 android:key="tbEngineProbe"
                 android:title="@string/prefs_tbEngineProbe_title"
                 android:summary="@string/prefs_tbEngineProbe_summary"
                 android:defaultValue="true">
-            </CheckBoxPreference>
+            </SwitchPreference>
             <EditTextPreference
                 android:key="gtbPath"
                 android:title="@string/prefs_gtbPath_title"
