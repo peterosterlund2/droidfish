@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="10dp">
-    <TextView
-        android:layout_height="wrap_content"
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:text="@string/value_percent"
-        android:paddingRight="10dp">
-    </TextView>
-    <EditText
-        android:id="@+id/selpercentage_number"
-        android:layout_width="100dip"
         android:layout_height="wrap_content"
-        android:inputType="numberDecimal">
-    </EditText>
-</LinearLayout>
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:text="@string/value_percent" />
+
+        <EditText
+            android:id="@+id/selpercentage_number"
+            android:layout_width="100dip"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+
+    </LinearLayout>
+
+</layout>
