@@ -25,7 +25,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:background="@android:drawable/title_bar"
+            android:background="#202020"
             android:orientation="horizontal"
             android:tag="title" >
             <TextView
@@ -113,7 +113,7 @@
                 android:id="@+id/second_title_line"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:drawable/title_bar"
+                android:background="#202020"
                 android:gravity="bottom"
                 android:orientation="vertical"
                 android:tag="title" >

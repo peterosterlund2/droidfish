@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
     android:layout_marginTop="-10dp"
-    android:background="@android:drawable/title_bar"
+    android:padding="4dp"
     android:orientation="vertical"
     android:tag="title" >
     <LinearLayout
