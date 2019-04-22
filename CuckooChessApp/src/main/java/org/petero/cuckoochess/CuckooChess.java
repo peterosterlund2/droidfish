@@ -88,12 +88,9 @@ public class CuckooChess extends Activity implements GUIInterface {
         super.onCreate(savedInstanceState);
 
         settings = PreferenceManager.getDefaultSharedPreferences(this);
-        settings.registerOnSharedPreferenceChangeListener(new OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                readPrefs();
-                ctrl.setHumanWhite(playerWhite);
-            }
+        settings.registerOnSharedPreferenceChangeListener((sharedPreferences, key) -> {
+            readPrefs();
+            ctrl.setHumanWhite(playerWhite);
         });
 
         binding = ((MainBinding) DataBindingUtil.setContentView(this, R.layout.main)).content;
@@ -140,19 +137,16 @@ public class CuckooChess extends Activity implements GUIInterface {
         }
         ctrl.startGame();
 
-        binding.chessboard.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (ctrl.humansTurn() && (event.getAction() == MotionEvent.ACTION_UP)) {
-                    int sq = binding.chessboard.eventToSquare(event);
-                    Move m = binding.chessboard.mousePressed(sq);
-                    if (m != null) {
-                        ctrl.humanMove(m);
-                    }
-                    return false;
+        binding.chessboard.setOnTouchListener((v, event) -> {
+            if (ctrl.humansTurn() && (event.getAction() == MotionEvent.ACTION_UP)) {
+                int sq = binding.chessboard.eventToSquare(event);
+                Move m = binding.chessboard.mousePressed(sq);
+                if (m != null) {
+                    ctrl.humanMove(m);
                 }
                 return false;
             }
+            return false;
         });
 
         binding.chessboard.setOnTrackballListener(new ChessBoard.OnTrackballListener() {
@@ -165,13 +159,10 @@ public class CuckooChess extends Activity implements GUIInterface {
                 }
             }
         });
-        binding.chessboard.setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (!ctrl.computerThinking())
-                    showDialog(CLIPBOARD_DIALOG);
-                return true;
-            }
+        binding.chessboard.setOnLongClickListener(v -> {
+            if (!ctrl.computerThinking())
+                showDialog(CLIPBOARD_DIALOG);
+            return true;
         });
     }
 
@@ -289,44 +280,38 @@ public class CuckooChess extends Activity implements GUIInterface {
                 final CharSequence[] items = {"Queen", "Rook", "Bishop", "Knight"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Promote pawn to?");
-                builder.setItems(items, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-                        ctrl.reportPromotePiece(item);
-                    }
-                });
+                builder.setItems(items, (dialog, item) -> ctrl.reportPromotePiece(item));
                 return builder.create();
             }
             case CLIPBOARD_DIALOG: {
                 final CharSequence[] items = {"Copy Game", "Copy Position", "Paste"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Clipboard");
-                builder.setItems(items, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-                        switch (item) {
-                            case 0: {
-                                String pgn = ctrl.getPGN();
-                                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                                clipboard.setText(pgn);
-                                break;
-                            }
-                            case 1: {
-                                String fen = ctrl.getFEN() + "\n";
-                                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                                clipboard.setText(fen);
-                                break;
-                            }
-                            case 2: {
-                                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                                if (clipboard.hasText()) {
-                                    String fenPgn = clipboard.getText().toString();
-                                    try {
-                                        ctrl.setFENOrPGN(fenPgn);
-                                    } catch (ChessParseError e) {
-                                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
+                builder.setItems(items, (dialog, item) -> {
+                    switch (item) {
+                        case 0: {
+                            String pgn = ctrl.getPGN();
+                            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                            clipboard.setText(pgn);
+                            break;
+                        }
+                        case 1: {
+                            String fen = ctrl.getFEN() + "\n";
+                            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                            clipboard.setText(fen);
+                            break;
+                        }
+                        case 2: {
+                            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                            if (clipboard.hasText()) {
+                                String fenPgn = clipboard.getText().toString();
+                                try {
+                                    ctrl.setFENOrPGN(fenPgn);
+                                } catch (ChessParseError e) {
+                                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
-                                break;
                             }
+                            break;
                         }
                     }
                 });
@@ -338,11 +323,7 @@ public class CuckooChess extends Activity implements GUIInterface {
 
     @Override
     public void requestPromotePiece() {
-        runOnUIThread(new Runnable() {
-            public void run() {
-                showDialog(PROMOTE_DIALOG);
-            }
-        });
+        runOnUIThread(() -> showDialog(PROMOTE_DIALOG));
     }
 
     @Override
