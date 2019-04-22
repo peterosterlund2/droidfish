@@ -27,11 +27,11 @@ JNICALL Java_org_petero_droidfish_tb_RtbProbe_init(
         JNIEnv* env, jclass cls, jstring jTbPath)
 {
     initOk = false;
-    const char* tbPath = (*env).GetStringUTFChars(jTbPath, NULL);
+    const char* tbPath = env->GetStringUTFChars(jTbPath, NULL);
     if (!tbPath)
         return false;
     std::string rtbPath(tbPath);
-    (*env).ReleaseStringUTFChars(jTbPath, tbPath);
+    env->ReleaseStringUTFChars(jTbPath, tbPath);
 
     TBProbe::initialize(rtbPath);
     initOk = true;
@@ -45,26 +45,26 @@ JNICALL Java_org_petero_droidfish_tb_RtbProbe_probe(
         jint halfMoveClock, jint fullMoveCounter,
         jintArray result)
 {
-    if ((*env).GetArrayLength(result) < 2)
+    if (env->GetArrayLength(result) < 2)
         return;
 
     jint res[2];
     res[0] = 1000;
     res[1] = 1000;
-    (*env).SetIntArrayRegion(result, 0, 2, res);
+    env->SetIntArrayRegion(result, 0, 2, res);
 
     if (!initOk)
         return;
 
-    const int len = (*env).GetArrayLength(jSquares);
+    const int len = env->GetArrayLength(jSquares);
     if (len != 64)
         return;
 
     Position pos;
-    jbyte* jbPtr = (*env).GetByteArrayElements(jSquares, NULL);
+    jbyte* jbPtr = env->GetByteArrayElements(jSquares, NULL);
     for (int i = 0; i < 64; i++)
         pos.setPiece(i, jbPtr[i]);
-    (*env).ReleaseByteArrayElements(jSquares, jbPtr, 0);
+    env->ReleaseByteArrayElements(jSquares, jbPtr, 0);
 
     pos.setWhiteMove(wtm);
     pos.setEpSquare(epSq);
@@ -78,5 +78,5 @@ JNICALL Java_org_petero_droidfish_tb_RtbProbe_probe(
     if (TBProbe::rtbProbeDTZ(pos, score))
         res[1] = score;
 
-    (*env).SetIntArrayRegion(result, 0, 2, res);
+    env->SetIntArrayRegion(result, 0, 2, res);
 }
