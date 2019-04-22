@@ -31,7 +31,7 @@ JNICALL Java_org_petero_droidfish_tb_GtbProbe_init(
         JNIEnv* env, jclass cls, jstring jTbPath)
 {
     initOk = false;
-    const char* tbPath = (*env).GetStringUTFChars(jTbPath, NULL);
+    const char* tbPath = env->GetStringUTFChars(jTbPath, NULL);
     if (!tbPath)
         return false;
 
@@ -39,12 +39,12 @@ JNICALL Java_org_petero_droidfish_tb_GtbProbe_init(
         tbpaths_done(paths);
     paths = tbpaths_init();
     if (paths == NULL) {
-        (*env).ReleaseStringUTFChars(jTbPath, tbPath);
+        env->ReleaseStringUTFChars(jTbPath, tbPath);
         return false;
     }
     paths = tbpaths_add(paths, tbPath);
     if (paths == NULL) {
-        (*env).ReleaseStringUTFChars(jTbPath, tbPath);
+        env->ReleaseStringUTFChars(jTbPath, tbPath);
         return false;
     }
 
@@ -61,7 +61,7 @@ JNICALL Java_org_petero_droidfish_tb_GtbProbe_init(
     }
     isInitialized = true;
 
-    (*env).ReleaseStringUTFChars(jTbPath, tbPath);
+    env->ReleaseStringUTFChars(jTbPath, tbPath);
     initOk = true;
     return true;
 }
@@ -79,7 +79,7 @@ JNICALL Java_org_petero_droidfish_tb_GtbProbe_probeHard(
 {
     if (!initOk)
         return false;
-    if ((*env).GetArrayLength(result) < 2)
+    if (env->GetArrayLength(result) < 2)
         return false;
 
     const int MAXLEN = 17;
@@ -88,29 +88,29 @@ JNICALL Java_org_petero_droidfish_tb_GtbProbe_probeHard(
     unsigned char bp[MAXLEN];
     unsigned int  bs[MAXLEN];
 
-    int len = (*env).GetArrayLength(whiteSquares);
-    jint* jiPtr = (*env).GetIntArrayElements(whiteSquares, NULL);
+    int len = env->GetArrayLength(whiteSquares);
+    jint* jiPtr = env->GetIntArrayElements(whiteSquares, NULL);
     for (int i = 0; i < min(len, MAXLEN); i++)
         ws[i] = jiPtr[i];
-    (*env).ReleaseIntArrayElements(whiteSquares, jiPtr, 0);
+    env->ReleaseIntArrayElements(whiteSquares, jiPtr, 0);
 
-    len = (*env).GetArrayLength(blackSquares);
-    jiPtr = (*env).GetIntArrayElements(blackSquares, NULL);
+    len = env->GetArrayLength(blackSquares);
+    jiPtr = env->GetIntArrayElements(blackSquares, NULL);
     for (int i = 0; i < min(len, MAXLEN); i++)
         bs[i] = jiPtr[i];
-    (*env).ReleaseIntArrayElements(blackSquares, jiPtr, 0);
+    env->ReleaseIntArrayElements(blackSquares, jiPtr, 0);
 
-    len = (*env).GetArrayLength(whitePieces);
-    jbyte* jcPtr = (*env).GetByteArrayElements(whitePieces, NULL);
+    len = env->GetArrayLength(whitePieces);
+    jbyte* jcPtr = env->GetByteArrayElements(whitePieces, NULL);
     for (int i = 0; i < min(len, MAXLEN); i++)
         wp[i] = jcPtr[i];
-    (*env).ReleaseByteArrayElements(whitePieces, jcPtr, 0);
+    env->ReleaseByteArrayElements(whitePieces, jcPtr, 0);
 
-    len = (*env).GetArrayLength(blackPieces);
-    jcPtr = (*env).GetByteArrayElements(blackPieces, NULL);
+    len = env->GetArrayLength(blackPieces);
+    jcPtr = env->GetByteArrayElements(blackPieces, NULL);
     for (int i = 0; i < min(len, MAXLEN); i++)
         bp[i] = jcPtr[i];
-    (*env).ReleaseByteArrayElements(blackPieces, jcPtr, 0);
+    env->ReleaseByteArrayElements(blackPieces, jcPtr, 0);
 
     unsigned int tbInfo;
     unsigned int plies;
@@ -125,6 +125,6 @@ JNICALL Java_org_petero_droidfish_tb_GtbProbe_probeHard(
     res[0] = tbInfo;
     res[1] = plies;
 
-    (*env).SetIntArrayRegion(result, 0, 2, res);
+    env->SetIntArrayRegion(result, 0, 2, res);
     return ret != 0;
 }
