@@ -18,49 +18,47 @@
 
 package org.petero.droidfish.activities;
 
-import java.util.Locale;
-
-import org.petero.droidfish.DroidFishApp;
-import org.petero.droidfish.R;
-
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
-import android.graphics.Typeface;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
 
-/** Lets user enter a percentage value using a seek bar. */
-public class SeekBarPreference extends Preference
-                               implements OnSeekBarChangeListener {
+import org.petero.droidfish.DroidFishApp;
+import org.petero.droidfish.R;
+import org.petero.droidfish.databinding.SeekbarPreferenceBinding;
+import org.petero.droidfish.databinding.SelectPercentageBinding;
+
+import java.util.Locale;
+
+/**
+ * Lets user enter a percentage value using a seek bar.
+ */
+public class SeekBarPreference extends Preference implements OnSeekBarChangeListener {
     private final static int maxValue = 1000;
     private final static int DEFAULT_VALUE = 1000;
     private int currVal = DEFAULT_VALUE;
-    private TextView currValBox;
     private boolean showStrengthHint = true;
+
+    private SeekbarPreferenceBinding binding;
 
     public SeekBarPreference(Context context) {
         super(context);
     }
+
     public SeekBarPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
     public SeekBarPreference(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
@@ -69,31 +67,30 @@ public class SeekBarPreference extends Preference
     protected View onCreateView(ViewGroup parent) {
         super.onCreateView(parent);
 
-        LinearLayout layout = (LinearLayout)View.inflate(getContext(), R.layout.seekbar_preference, null);
-        TextView name = layout.findViewById(R.id.seekbar_title);
-        name.setText(getTitle());
+        binding = SeekbarPreferenceBinding.inflate(
+                LayoutInflater.from(getContext()), null, false);
+        binding.seekbarTitle.setText(getTitle());
 
-        currValBox = layout.findViewById(R.id.seekbar_value);
-        currValBox.setText(valToString());
+        binding.seekbarValue.setText(valToString());
 
-        final SeekBar bar = layout.findViewById(R.id.seekbar_bar);
-        bar.setMax(maxValue);
-        bar.setProgress(currVal);
-        bar.setOnSeekBarChangeListener(this);
+        binding.seekbarBar.setMax(maxValue);
+        binding.seekbarBar.setProgress(currVal);
+        binding.seekbarBar.setOnSeekBarChangeListener(this);
 
-        TextView summary = layout.findViewById(R.id.seekbar_summary);
         CharSequence summaryCharSeq = getSummary();
         boolean haveSummary = (summaryCharSeq != null) && (summaryCharSeq.length() > 0);
         if (haveSummary) {
-            summary.setText(getSummary());
+            binding.seekbarSummary.setText(getSummary());
         } else {
-            summary.setVisibility(View.GONE);
+            binding.seekbarSummary.setVisibility(View.GONE);
         }
 
-        currValBox.setOnClickListener(v -> {
-            View content = View.inflate(SeekBarPreference.this.getContext(), R.layout.select_percentage, null);
+        binding.seekbarValue.setOnClickListener(v -> {
+            SelectPercentageBinding selectPercentageBinding = SelectPercentageBinding.inflate(
+                    LayoutInflater.from(SeekBarPreference.this.getContext()),
+                    null, false);
             final AlertDialog.Builder builder = new AlertDialog.Builder(SeekBarPreference.this.getContext());
-            builder.setView(content);
+            builder.setView(selectPercentageBinding.getRoot());
             String title = "";
             String key = getKey();
             if (key.equals("strength")) {
@@ -102,19 +99,18 @@ public class SeekBarPreference extends Preference
                 title = getContext().getString(R.string.edit_randomization);
             }
             builder.setTitle(title);
-            final EditText valueView = content.findViewById(R.id.selpercentage_number);
-            valueView.setText(currValBox.getText().toString().replaceAll("%", "").replaceAll(",", "."));
+            selectPercentageBinding.selpercentageNumber.setText(binding.seekbarValue.getText().toString().replaceAll("%", "").replaceAll(",", "."));
             final Runnable selectValue = () -> {
                 try {
-                    String txt = valueView.getText().toString();
+                    String txt = selectPercentageBinding.selpercentageNumber.getText().toString();
                     int value = (int) (Double.parseDouble(txt) * 10 + 0.5);
                     if (value < 0) value = 0;
                     if (value > maxValue) value = maxValue;
-                    onProgressChanged(bar, value, false);
+                    onProgressChanged(binding.seekbarBar, value, false);
                 } catch (NumberFormatException ignore) {
                 }
             };
-            valueView.setOnKeyListener((v1, keyCode, event) -> {
+            selectPercentageBinding.selpercentageNumber.setOnKeyListener((v1, keyCode, event) -> {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     selectValue.run();
                     return true;
@@ -127,15 +123,15 @@ public class SeekBarPreference extends Preference
             builder.create().show();
         });
 
-        return layout;
+        return binding.getRoot();
     }
 
     private String valToString() {
-        return String.format(Locale.US, "%.1f%%", currVal*0.1);
+        return String.format(Locale.US, "%.1f%%", currVal * 0.1);
     }
 
     @Override
-    public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (!callChangeListener(progress)) {
             if (currVal != seekBar.getProgress())
                 seekBar.setProgress(currVal);
@@ -144,8 +140,8 @@ public class SeekBarPreference extends Preference
         if (progress != seekBar.getProgress())
             seekBar.setProgress(progress);
         currVal = progress;
-        currValBox.setText(valToString());
-        SharedPreferences.Editor editor =  getEditor();
+        binding.seekbarValue.setText(valToString());
+        SharedPreferences.Editor editor = getEditor();
         editor.putInt(getKey(), progress);
         editor.apply();
         if ((progress == 0) && showStrengthHint) {
@@ -158,9 +154,11 @@ public class SeekBarPreference extends Preference
             }
         }
     }
+
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
     }
+
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         notifyChanged();
@@ -176,7 +174,7 @@ public class SeekBarPreference extends Preference
 
     @Override
     protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
-        int val = restorePersistedValue ? getPersistedInt(DEFAULT_VALUE) : (Integer)defaultValue;
+        int val = restorePersistedValue ? getPersistedInt(DEFAULT_VALUE) : (Integer) defaultValue;
         if (!restorePersistedValue)
             persistInt(val);
         currVal = val;
