@@ -18,53 +18,35 @@
 
 package org.petero.droidfish;
 
-import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
+import java.util.Scanner;
 
 public class FileUtil {
-    /** Read a text file. Return string array with one string per line. */
-    public static String[] readFile(String filename) throws IOException {
-        ArrayList<String> ret = new ArrayList<>();
-        InputStream inStream = new FileInputStream(filename);
-        InputStreamReader inFile = new InputStreamReader(inStream, "UTF-8");
-        BufferedReader inBuf = new BufferedReader(inFile);
-        String line;
-        while ((line = inBuf.readLine()) != null)
-            ret.add(line);
-        inBuf.close();
-        return ret.toArray(new String[0]);
+    /**
+     * Read a text file. Return string array with one string per line.
+     */
+    public static String[] readFile(String filename) throws FileNotFoundException {
+        return readFromStream(new FileInputStream(filename)).split("\n");
     }
 
-    /** Read all data from an input stream. Return null if IO error. */
+    /**
+     * Read all data from an input stream. Return null if IO error.
+     */
     public static String readFromStream(InputStream is) {
-        InputStreamReader isr;
-        try {
-            isr = new InputStreamReader(is, "UTF-8");
-            BufferedReader br = new BufferedReader(isr);
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-                sb.append('\n');
-            }
-            br.close();
-            return sb.toString();
-        } catch (UnsupportedEncodingException e) {
-            return null;
-        } catch (IOException e) {
-            return null;
-        }
+        // http://stackoverflow.com/a/5445161
+        Scanner scanner = new Scanner(is).useDelimiter("\\A");
+        return scanner.hasNext() ? scanner.next() : "";
     }
 
-    /** Read data from input stream and write to file. */
+    /**
+     * Read data from input stream and write to file.
+     */
     public static void writeFile(InputStream is, String outFile) throws IOException {
         OutputStream os = new FileOutputStream(outFile);
         try {
@@ -80,7 +62,9 @@ public class FileUtil {
         }
     }
 
-    /** Return the length of a file, or -1 if length can not be determined. */
+    /**
+     * Return the length of a file, or -1 if length can not be determined.
+     */
     public static long getFileLength(String filename) {
         try {
             RandomAccessFile raf = new RandomAccessFile(filename, "r");
