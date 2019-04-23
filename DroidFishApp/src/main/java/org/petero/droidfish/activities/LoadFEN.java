@@ -18,22 +18,6 @@
 
 package org.petero.droidfish.activities;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.concurrent.CountDownLatch;
-
-import org.petero.droidfish.ChessBoardPlay;
-import org.petero.droidfish.ColorTheme;
-import org.petero.droidfish.DroidFishApp;
-import org.petero.droidfish.R;
-import org.petero.droidfish.Util;
-import org.petero.droidfish.activities.FENFile.FenInfo;
-import org.petero.droidfish.activities.FENFile.FenInfoResult;
-import org.petero.droidfish.gamelogic.ChessParseError;
-import org.petero.droidfish.gamelogic.Pair;
-import org.petero.droidfish.gamelogic.Position;
-import org.petero.droidfish.gamelogic.TextIO;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -48,16 +32,30 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
+
+import androidx.databinding.DataBindingUtil;
+
+import org.petero.droidfish.ColorTheme;
+import org.petero.droidfish.DroidFishApp;
+import org.petero.droidfish.R;
+import org.petero.droidfish.Util;
+import org.petero.droidfish.activities.FENFile.FenInfo;
+import org.petero.droidfish.activities.FENFile.FenInfoResult;
+import org.petero.droidfish.databinding.LoadFenBinding;
+import org.petero.droidfish.gamelogic.ChessParseError;
+import org.petero.droidfish.gamelogic.Pair;
+import org.petero.droidfish.gamelogic.Position;
+import org.petero.droidfish.gamelogic.TextIO;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 
 public class LoadFEN extends ListActivity {
     private static ArrayList<FenInfo> fensInFile = new ArrayList<>();
@@ -76,8 +74,7 @@ public class LoadFEN extends ListActivity {
     private CountDownLatch progressLatch = null;
     private boolean canceled = false;
 
-    private ChessBoardPlay cb;
-    private Button okButton;
+    LoadFenBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +123,7 @@ public class LoadFEN extends ListActivity {
             });
             workThread.start();
         } else if ("org.petero.droidfish.loadNextFen".equals(action) ||
-                   "org.petero.droidfish.loadPrevFen".equals(action)) {
+                "org.petero.droidfish.loadPrevFen".equals(action)) {
             fenFile = new FENFile(fileName);
             boolean next = action.equals("org.petero.droidfish.loadNextFen");
             final int loadItem = defaultItem + (next ? 1 : -1);
@@ -192,17 +189,13 @@ public class LoadFEN extends ListActivity {
         progress = null;
         removeProgressDialog();
         setContentView(R.layout.load_fen);
-
-        cb = findViewById(R.id.loadfen_chessboard);
-        okButton = findViewById(R.id.loadfen_ok);
-        Button cancelButton = findViewById(R.id.loadfen_cancel);
-
-        okButton.setEnabled(false);
-        okButton.setOnClickListener(v -> {
+        binding = DataBindingUtil.setContentView(this, R.layout.load_fen);
+        binding.loadfenOk.setEnabled(false);
+        binding.loadfenOk.setOnClickListener(v -> {
             if (selectedFi != null)
                 sendBackResult(selectedFi, false);
         });
-        cancelButton.setOnClickListener(v -> {
+        binding.loadfenCancel.setOnClickListener(v -> {
             setResult(RESULT_CANCELED);
             finish();
         });
@@ -235,8 +228,8 @@ public class LoadFEN extends ListActivity {
                 chessPos = e2.pos;
             }
             if (chessPos != null) {
-                cb.setPosition(chessPos);
-                okButton.setEnabled(true);
+                binding.loadfenChessboard.setPosition(chessPos);
+                binding.loadfenOk.setEnabled(true);
             }
         });
         lv.setOnItemLongClickListener((parent, view, pos, id) -> {
@@ -260,18 +253,18 @@ public class LoadFEN extends ListActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (cb != null) {
-            Position pos = cb.pos;
+        if (binding.loadfenChessboard != null) {
+            Position pos = binding.loadfenChessboard.pos;
             showList();
-            cb.setPosition(pos);
-            okButton.setEnabled(selectedFi != null);
+            binding.loadfenChessboard.setPosition(pos);
+            binding.loadfenOk.setEnabled(selectedFi != null);
         }
     }
 
     public static class ProgressFragment extends DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            LoadFEN a = (LoadFEN)getActivity();
+            LoadFEN a = (LoadFEN) getActivity();
             ProgressDialog progress = new ProgressDialog(a);
             progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progress.setTitle(R.string.reading_fen_file);
@@ -279,12 +272,13 @@ public class LoadFEN extends ListActivity {
             a.progressLatch.countDown();
             return progress;
         }
+
         @Override
         public void onCancel(DialogInterface dialog) {
             super.onCancel(dialog);
             Activity a = getActivity();
             if (a instanceof LoadFEN) {
-                LoadFEN lf = (LoadFEN)a;
+                LoadFEN lf = (LoadFEN) a;
                 lf.canceled = true;
                 Thread thr = lf.workThread;
                 if (thr != null)
@@ -301,7 +295,7 @@ public class LoadFEN extends ListActivity {
     private void removeProgressDialog() {
         Fragment f = getFragmentManager().findFragmentByTag("progress");
         if (f instanceof DialogFragment)
-            ((DialogFragment)f).dismiss();
+            ((DialogFragment) f).dismiss();
     }
 
     private boolean readFile() {
