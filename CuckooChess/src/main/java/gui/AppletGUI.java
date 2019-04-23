@@ -23,6 +23,7 @@ import guibase.GUIInterface;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import chess.ComputerPlayer;
 import chess.Move;
@@ -55,10 +56,25 @@ public class AppletGUI extends javax.swing.JApplet implements GUIInterface {
         }
     }
 
+    private static void setNimbusAsTheme() {
+        // https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/nimbus.html
+        try {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            // If Nimbus is not available, you can set the GUI to another look and feel.
+        }
+    }
+
     /**
      * Entry point for the GUI version of the chess program.
      */
     public static void main(String[] args) {
+        setNimbusAsTheme();
         javax.swing.JApplet theApplet = new AppletGUI();
         theApplet.init();
         javax.swing.JFrame window = new javax.swing.JFrame(ComputerPlayer.engineName);
