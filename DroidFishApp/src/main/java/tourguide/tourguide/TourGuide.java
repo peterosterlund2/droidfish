@@ -140,7 +140,7 @@ public class TourGuide {
         if (mFrameLayout != null)
             mFrameLayout.cleanUp();
         if (tooltipBinding != null) {
-            ((ViewGroup) mActivity.getWindow().getDecorView()).removeView(tooltipBinding.getRoot());
+            ((ViewGroup) mActivity.getWindow().getDecorView()).removeView(getToolTip());
         }
     }
 
@@ -307,11 +307,11 @@ public class TourGuide {
             }
 
 
-            tooltipBinding.getRoot().startAnimation(mToolTip.mEnterAnimation);
+            getToolTip().startAnimation(mToolTip.mEnterAnimation);
 
             /* add setShadow if it's turned on */
             if (mToolTip.mShadow) {
-                tooltipBinding.getRoot().setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.drop_shadow));
+                getToolTip().setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.drop_shadow));
             }
 
             /* position and size calculation */
@@ -321,9 +321,9 @@ public class TourGuide {
             final int targetViewY = pos[1];
 
             // get measured size of tooltip
-            tooltipBinding.getRoot().measure(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-            int toolTipMeasuredWidth = tooltipBinding.getRoot().getMeasuredWidth();
-            int toolTipMeasuredHeight = tooltipBinding.getRoot().getMeasuredHeight();
+            getToolTip().measure(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+            int toolTipMeasuredWidth = getToolTip().getMeasuredWidth();
+            int toolTipMeasuredHeight = getToolTip().getMeasuredHeight();
 
             Point resultPoint = new Point(); // this holds the final position of tooltip
             float density = mActivity.getResources().getDisplayMetrics().density;
@@ -340,27 +340,27 @@ public class TourGuide {
 
             // add view to parent
 //            ((ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content)).addView(tooltipBinding, layoutParams);
-            parent.addView(tooltipBinding.getRoot(), layoutParams);
+            parent.addView(getToolTip(), layoutParams);
 
             // 1. width < screen check
             if (toolTipMeasuredWidth > parent.getWidth()) {
-                tooltipBinding.getRoot().getLayoutParams().width = parent.getWidth();
+                getToolTip().getLayoutParams().width = parent.getWidth();
                 toolTipMeasuredWidth = parent.getWidth();
             }
             // 2. x left boundary check
             if (resultPoint.x < 0) {
-                tooltipBinding.getRoot().getLayoutParams().width = toolTipMeasuredWidth + resultPoint.x; //since point.x is negative, use plus
+                getToolTip().getLayoutParams().width = toolTipMeasuredWidth + resultPoint.x; //since point.x is negative, use plus
                 resultPoint.x = 0;
             }
             // 3. x right boundary check
             int tempRightX = resultPoint.x + toolTipMeasuredWidth;
             if (tempRightX > parent.getWidth()) {
-                tooltipBinding.getRoot().getLayoutParams().width = parent.getWidth() - resultPoint.x; //since point.x is negative, use plus
+                getToolTip().getLayoutParams().width = parent.getWidth() - resultPoint.x; //since point.x is negative, use plus
             }
 
             // pass toolTip onClickListener into toolTipViewGroup
             if (mToolTip.mOnClickListener != null) {
-                tooltipBinding.getRoot().setOnClickListener(mToolTip.mOnClickListener);
+                getToolTip().setOnClickListener(mToolTip.mOnClickListener);
             }
 
             // TODO: no boundary check for height yet, this is a unlikely case though
@@ -368,16 +368,16 @@ public class TourGuide {
 
             // this needs an viewTreeObserver, that's because TextView measurement of it's vertical height is not accurate (didn't take into account of multiple lines yet) before it's rendered
             // re-calculate height again once it's rendered
-            final ViewTreeObserver viewTreeObserver = tooltipBinding.getRoot().getViewTreeObserver();
+            final ViewTreeObserver viewTreeObserver = getToolTip().getViewTreeObserver();
             viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    tooltipBinding.getRoot().getViewTreeObserver().removeGlobalOnLayoutListener(this);// make sure this only run once
+                    getToolTip().getViewTreeObserver().removeGlobalOnLayoutListener(this);// make sure this only run once
 
                     int fixedY;
-                    int toolTipHeightAfterLayouted = tooltipBinding.getRoot().getHeight();
+                    int toolTipHeightAfterLayouted = getToolTip().getHeight();
                     fixedY = getYForTooTip(mToolTip.mGravity, toolTipHeightAfterLayouted, targetViewY, adjustment);
-                    layoutParams.setMargins((int) tooltipBinding.getRoot().getX(), fixedY, 0, 0);
+                    layoutParams.setMargins((int) getToolTip().getX(), fixedY, 0, 0);
                 }
             });
 
