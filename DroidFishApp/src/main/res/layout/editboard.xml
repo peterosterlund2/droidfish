@@ -3,53 +3,55 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    <include
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/title">
-    </include>
-    <view
-        class="org.petero.droidfish.activities.ChessBoardEdit"
-        android:id="@+id/eb_chessboard"
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/main"
+        android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-    </view>
-    <TextView
-        android:text=""
-        android:id="@+id/eb_status"
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content" 
-        android:includeFontPadding="true"
-        android:fontFamily="monospace"
-        android:typeface="monospace"
-        android:textSize="12sp">
-    </TextView>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:id="@+id/LinearLayout02"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <Button
-            android:text="@string/cancel"
-            android:id="@+id/eb_cancel"
+
+        <include
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
-        </Button>
-        <Button
-            android:text="@android:string/ok"
-            android:id="@+id/eb_ok"
+            layout="@layout/title" />
+
+        <view
+            class="org.petero.droidfish.activities.ChessBoardEdit"
+            android:id="@+id/eb_chessboard"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <TextView
+            android:text=""
+            android:id="@+id/eb_status"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
-        </Button>
+            android:includeFontPadding="true"
+            android:fontFamily="monospace"
+            android:typeface="monospace"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/LinearLayout02"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:text="@string/cancel"
+                android:id="@+id/eb_cancel"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:text="@android:string/ok"
+                android:id="@+id/eb_ok"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
-<include layout="@layout/left_drawer"/>
+
+    <include layout="@layout/left_drawer" />
 </androidx.drawerlayout.widget.DrawerLayout>

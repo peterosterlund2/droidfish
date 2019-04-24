@@ -31,7 +31,6 @@
                     android:id="@+id/loadfen_chessboard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -53,11 +52,7 @@
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
                     android:text="@android:string/ok" />
-
             </LinearLayout>
-
         </LinearLayout>
-
     </LinearLayout>
-
 </layout>

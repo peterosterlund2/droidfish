@@ -3,163 +3,179 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
-    android:orientation="horizontal"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    <view
-        android:id="@+id/eb_chessboard"
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/main"
+        android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        class="org.petero.droidfish.activities.ChessBoardEdit"/>
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center_vertical"
-        android:orientation="vertical"
-        android:paddingLeft="2dp" >
-        <LinearLayout
-            android:id="@+id/first_title_line"
+        android:layout_height="fill_parent">
+
+        <view
+            android:id="@+id/eb_chessboard"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
+            class="org.petero.droidfish.activities.ChessBoardEdit" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:layout_gravity="center_vertical"
-            android:background="#202020"
-            android:orientation="horizontal"
-            android:tag="title" >
-            <TextView
-                android:id="@+id/white_clock"
-                style="?android:attr/windowTitleStyle"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_weight="1"
-                android:ellipsize="marquee"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:gravity="left"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:scrollHorizontally="false"
-                android:singleLine="true"
-                android:tag="title" />
-            <TextView
-                android:id="@+id/title_text_summary"
-                style="?android:attr/windowTitleStyle"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:tag="title"
-                android:text="@string/app_name" />
-            <TextView
-                android:id="@+id/black_clock"
-                style="?android:attr/windowTitleStyle"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="2dp"
-                android:layout_weight="1"
-                android:ellipsize="marquee"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:gravity="right"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:scrollHorizontally="true"
-                android:singleLine="true"
-                android:tag="title" />
-        </LinearLayout>
-        <TextView
-            android:text=""
-            android:id="@+id/eb_status"
-            android:layout_width="fill_parent" 
-            android:layout_height="wrap_content" 
-            android:includeFontPadding="true"
-            android:fontFamily="monospace"
-            android:typeface="monospace"
-            android:textSize="12sp"/>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:id="@+id/LinearLayout03"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/eb_cancel"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/cancel" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:id="@+id/LinearLayout02"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-            <Button
-                android:text="@android:string/ok"
-                android:id="@+id/eb_ok"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-            </Button>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/footer"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:gravity="bottom"
-            android:orientation="horizontal" >
+            android:orientation="vertical"
+            android:paddingLeft="2dp">
+
             <LinearLayout
-                android:id="@+id/second_title_line"
+                android:id="@+id/first_title_line"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:background="#202020"
-                android:gravity="bottom"
-                android:orientation="vertical"
-                android:tag="title" >
+                android:orientation="horizontal"
+                android:tag="title">
+
                 <TextView
-                    android:id="@+id/white_pieces"
-                    style="?android:attr/windowTitleStyle"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
-                    android:ellipsize="marquee"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:gravity="left|center_vertical"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:singleLine="true"
-                    android:tag="title"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold" />
-                <TextView
-                    android:id="@+id/title_text"
+                    android:id="@+id/white_clock"
                     style="?android:attr/windowTitleStyle"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center|center_vertical"
-                    android:tag="title"
-                    android:visibility="visible" />
-                <TextView
-                    android:id="@+id/black_pieces"
-                    style="?android:attr/windowTitleStyle"
-                    android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
                     android:layout_weight="1"
                     android:ellipsize="marquee"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-                    android:gravity="left|center_vertical"
+                    android:gravity="left"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="false"
+                    android:singleLine="true"
+                    android:tag="title" />
+
+                <TextView
+                    android:id="@+id/title_text_summary"
+                    style="?android:attr/windowTitleStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:tag="title"
+                    android:text="@string/app_name" />
+
+                <TextView
+                    android:id="@+id/black_clock"
+                    style="?android:attr/windowTitleStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:layout_weight="1"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:gravity="right"
                     android:marqueeRepeatLimit="marquee_forever"
                     android:scrollHorizontally="true"
                     android:singleLine="true"
-                    android:tag="title"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold" />
+                    android:tag="title" />
+            </LinearLayout>
+
+            <TextView
+                android:text=""
+                android:id="@+id/eb_status"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="true"
+                android:fontFamily="monospace"
+                android:typeface="monospace"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:id="@+id/LinearLayout03"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/eb_cancel"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/cancel" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:id="@+id/LinearLayout02"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:text="@android:string/ok"
+                    android:id="@+id/eb_ok"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/footer"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/second_title_line"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#202020"
+                    android:gravity="bottom"
+                    android:orientation="vertical"
+                    android:tag="title">
+
+                    <TextView
+                        android:id="@+id/white_pieces"
+                        style="?android:attr/windowTitleStyle"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1"
+                        android:ellipsize="marquee"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:gravity="left|center_vertical"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:singleLine="true"
+                        android:tag="title"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/title_text"
+                        style="?android:attr/windowTitleStyle"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center|center_vertical"
+                        android:tag="title"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/black_pieces"
+                        style="?android:attr/windowTitleStyle"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:ellipsize="marquee"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:gravity="left|center_vertical"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:scrollHorizontally="true"
+                        android:singleLine="true"
+                        android:tag="title"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
-<include layout="@layout/left_drawer"/>
+
+    <include layout="@layout/left_drawer" />
 </androidx.drawerlayout.widget.DrawerLayout>

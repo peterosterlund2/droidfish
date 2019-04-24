@@ -1,109 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+
     <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:stretchColumns="1"
         android:padding="10dp">
-      <TableRow>
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/header_event">
-          </TextView>
-          <EditText
-              android:id="@+id/ed_header_event" 
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:layout_weight="1"
-              android:inputType="text">
-          </EditText>
-      </TableRow>
-      <TableRow>
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/header_site">
-          </TextView>
-          <EditText
-              android:id="@+id/ed_header_site" 
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_weight="1"
-              android:inputType="text">
-          </EditText>
-      </TableRow>
-      <TableRow>
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/header_date">
-          </TextView>
-          <EditText
-              android:id="@+id/ed_header_date"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_weight="1"
-              android:inputType="text">
-          </EditText>
-      </TableRow>
-      <TableRow>
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/header_round"
-              android:paddingRight="10dp">
-          </TextView>
-          <EditText
-              android:id="@+id/ed_header_round" 
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_weight="1"
-              android:inputType="text">
-          </EditText>
-      </TableRow>
-      <TableRow>
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/white">
-          </TextView>
-          <EditText
-              android:id="@+id/ed_header_white"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_weight="1"
-              android:inputType="text">
-          </EditText>
-      </TableRow>
-      <TableRow>
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/black">
-          </TextView>
-          <EditText
-              android:id="@+id/ed_header_black" 
-              android:layout_height="wrap_content"
-              android:layout_width="wrap_content"
-              android:layout_weight="1"
-              android:inputType="text">
-          </EditText>
-      </TableRow>
-      <TableRow>
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/header_result">
-          </TextView>
-          <Spinner
-              android:id="@+id/ed_game_result"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content">
-          </Spinner>
-      </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/header_event" />
+
+            <EditText
+                android:id="@+id/ed_header_event"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="text" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/header_site" />
+
+            <EditText
+                android:id="@+id/ed_header_site"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="text" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/header_date" />
+
+            <EditText
+                android:id="@+id/ed_header_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="text" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/header_round"
+                android:paddingRight="10dp" />
+
+            <EditText
+                android:id="@+id/ed_header_round"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="text" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/white" />
+
+            <EditText
+                android:id="@+id/ed_header_white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="text" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/black" />
+
+            <EditText
+                android:id="@+id/ed_header_black"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:inputType="text" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/header_result" />
+
+            <Spinner
+                android:id="@+id/ed_game_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
     </TableLayout>
 </ScrollView>

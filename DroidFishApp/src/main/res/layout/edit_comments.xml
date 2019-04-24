@@ -1,76 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+
     <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:stretchColumns="1"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:stretchColumns="1">
+
         <TableRow>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:paddingRight="10dp"
-                android:text="@string/comment_before">
-            </TextView>
+                android:text="@string/comment_before" />
+
             <EditText
-                android:id="@+id/ed_comments_pre" 
+                android:id="@+id/ed_comments_pre"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:minLines="2"
-                android:inputType="textMultiLine">
-            </EditText>
+                android:inputType="textMultiLine"
+                android:minLines="2" />
         </TableRow>
+
         <TableRow>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/comment_move">
-            </TextView>
+                android:text="@string/comment_move" />
+
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
                 <EditText
                     android:id="@+id/ed_comments_move"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:lines="1"
-                    android:minEms="3"
+                    android:enabled="false"
                     android:inputType="text"
-                    android:enabled="false">
-                </EditText>
+                    android:lines="1"
+                    android:minEms="3" />
+
                 <EditText
-                    android:id="@+id/ed_comments_nag" 
+                    android:id="@+id/ed_comments_nag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:inputType="text"
                     android:lines="1"
-                    android:minEms="3"
-                    android:inputType="text">
-                </EditText>
+                    android:minEms="3" />
             </LinearLayout>
         </TableRow>
+
         <TableRow>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/comment_after">
-            </TextView>
+                android:text="@string/comment_after" />
+
             <EditText
-                android:id="@+id/ed_comments_post" 
+                android:id="@+id/ed_comments_post"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:minLines="5"
-                android:inputType="textMultiLine">
-            </EditText>
+                android:inputType="textMultiLine"
+                android:minLines="5" />
         </TableRow>
     </TableLayout>
 </ScrollView>

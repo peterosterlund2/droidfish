@@ -3,42 +3,44 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="10dp">
+
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:paddingRight="10dp"
-            android:text="@string/host_name">
-        </TextView>
+            android:text="@string/host_name" />
+
         <EditText
-            android:id="@+id/network_engine_host" 
+            android:id="@+id/network_engine_host"
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:inputType="text">
-        </EditText>
+            android:inputType="text" />
     </LinearLayout>
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="10dp">
+
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:paddingRight="10dp"
-            android:text="@string/network_port">
-        </TextView>
+            android:text="@string/network_port" />
+
         <EditText
-            android:id="@+id/network_engine_port" 
+            android:id="@+id/network_engine_port"
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:inputType="number">
-        </EditText>
+            android:inputType="number" />
     </LinearLayout>
 </LinearLayout>

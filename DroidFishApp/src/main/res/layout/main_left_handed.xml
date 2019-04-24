@@ -3,116 +3,128 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
-    android:orientation="horizontal"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_marginRight="2dp"
-        android:layout_weight="1"
-        android:layout_width="0dip"
-        android:layout_height="fill_parent"
-        android:paddingRight="1dp">
-        <include
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            layout="@layout/title">
-        </include>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/main"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
         <LinearLayout
-            android:id="@+id/buttons"
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="6dp">
-            <ImageButton
-                android:id="@+id/custom3Button"
-                android:contentDescription="@string/buttonDesc_custom3"
-                android:layout_width="36dp"
-                android:layout_height="32dp">
-            </ImageButton>
-            <ImageButton
-                android:id="@+id/custom2Button"
-                android:contentDescription="@string/buttonDesc_custom2"
-                android:layout_width="36dp"
-                android:layout_height="32dp">
-            </ImageButton>
-            <ImageButton
-                android:id="@+id/custom1Button"
-                android:contentDescription="@string/buttonDesc_custom1"
-                android:layout_width="36dp"
-                android:layout_height="32dp">
-            </ImageButton>
-            <ImageButton
-                android:id="@+id/modeButton"
-                android:contentDescription="@string/buttonDesc_mode"
-                android:layout_width="36dp"
-                android:layout_height="32dp">
-            </ImageButton>
-            <ImageButton
-                android:id="@+id/undoButton"
-                android:contentDescription="@string/buttonDesc_back"
-                android:layout_width="36dp"
-                android:layout_height="32dp">
-            </ImageButton>
-            <ImageButton
-                android:id="@+id/redoButton"
-                android:contentDescription="@string/buttonDesc_forward"
-                android:layout_width="36dp"
-                android:layout_height="32dp">
-            </ImageButton>
-        </LinearLayout>
-        <TextView
-            android:id="@+id/status"
-            android:layout_width="fill_parent" 
-            android:layout_height="wrap_content" 
-            android:includeFontPadding="true"
-            android:fontFamily="monospace"
-            android:typeface="monospace"
-            android:textSize="12sp"/>
-        <view
-            class="org.petero.droidfish.view.MyRelativeLayout"
             android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-            <ScrollView
-                android:id="@+id/scrollView"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:paddingRight="1dp">
+
+            <include
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                layout="@layout/title" />
+
+            <LinearLayout
+                android:id="@+id/buttons"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp">
+
+                <ImageButton
+                    android:id="@+id/custom3Button"
+                    android:contentDescription="@string/buttonDesc_custom3"
+                    android:layout_width="36dp"
+                    android:layout_height="32dp" />
+
+                <ImageButton
+                    android:id="@+id/custom2Button"
+                    android:contentDescription="@string/buttonDesc_custom2"
+                    android:layout_width="36dp"
+                    android:layout_height="32dp" />
+
+                <ImageButton
+                    android:id="@+id/custom1Button"
+                    android:contentDescription="@string/buttonDesc_custom1"
+                    android:layout_width="36dp"
+                    android:layout_height="32dp" />
+
+                <ImageButton
+                    android:id="@+id/modeButton"
+                    android:contentDescription="@string/buttonDesc_mode"
+                    android:layout_width="36dp"
+                    android:layout_height="32dp" />
+
+                <ImageButton
+                    android:id="@+id/undoButton"
+                    android:contentDescription="@string/buttonDesc_back"
+                    android:layout_width="36dp"
+                    android:layout_height="32dp" />
+
+                <ImageButton
+                    android:id="@+id/redoButton"
+                    android:contentDescription="@string/buttonDesc_forward"
+                    android:layout_width="36dp"
+                    android:layout_height="32dp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="true"
+                android:fontFamily="monospace"
+                android:typeface="monospace"
+                android:textSize="12sp" />
+
+            <view
+                class="org.petero.droidfish.view.MyRelativeLayout"
+                android:orientation="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
+
+                <ScrollView
+                    android:id="@+id/scrollView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+                    <view
+                        class="org.petero.droidfish.view.MoveListView"
+                        android:id="@+id/moveList"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="true"
+                        android:padding="0dp" />
+                </ScrollView>
+
                 <view
-                    class="org.petero.droidfish.view.MoveListView"
-                    android:id="@+id/moveList"
-                    android:layout_width="fill_parent" 
-                    android:layout_height="wrap_content" 
-                    android:includeFontPadding="true"
-                    android:padding="0dp"/>
-            </ScrollView>
-            <view
-                class="org.petero.droidfish.view.MyScrollView"
-                android:id="@+id/scrollViewBot"
-                android:layout_alignParentBottom="true"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/thinking"
-                    android:tag="thinking"
-                    android:layout_width="fill_parent" 
-                    android:layout_height="wrap_content" 
-                    android:includeFontPadding="true"
-                    android:fontFamily="monospace"
-                    android:typeface="monospace"
-                    android:textSize="12sp"/>
+                    class="org.petero.droidfish.view.MyScrollView"
+                    android:id="@+id/scrollViewBot"
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/thinking"
+                        android:tag="thinking"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="true"
+                        android:fontFamily="monospace"
+                        android:typeface="monospace"
+                        android:textSize="12sp" />
+                </view>
             </view>
-        </view>
+        </LinearLayout>
+
+        <view
+            class="org.petero.droidfish.ChessBoardPlay"
+            android:id="@+id/chessboard"
+            android:layout_weight="0"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
     </LinearLayout>
-    <view
-        class="org.petero.droidfish.ChessBoardPlay"
-        android:id="@+id/chessboard"
-        android:layout_weight="0"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"/>
-</LinearLayout>
-<include layout="@layout/left_drawer"/>
-<include layout="@layout/right_drawer"/>
+
+    <include layout="@layout/left_drawer" />
+
+    <include layout="@layout/right_drawer" />
 </androidx.drawerlayout.widget.DrawerLayout>
