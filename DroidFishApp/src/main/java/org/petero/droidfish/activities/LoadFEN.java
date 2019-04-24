@@ -123,7 +123,7 @@ public class LoadFEN extends ListActivity {
             });
             workThread.start();
         } else if ("org.petero.droidfish.loadNextFen".equals(action) ||
-                "org.petero.droidfish.loadPrevFen".equals(action)) {
+                   "org.petero.droidfish.loadPrevFen".equals(action)) {
             fenFile = new FENFile(fileName);
             boolean next = action.equals("org.petero.droidfish.loadNextFen");
             final int loadItem = defaultItem + (next ? 1 : -1);

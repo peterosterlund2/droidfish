@@ -121,7 +121,7 @@ public abstract class EditPGN extends ListActivity {
             });
             workThread.start();
         } else if ("org.petero.droidfish.loadFileNextGame".equals(action) ||
-                "org.petero.droidfish.loadFilePrevGame".equals(action)) {
+                   "org.petero.droidfish.loadFilePrevGame".equals(action)) {
             pgnFile = new PGNFile(fileName);
             loadGame = true;
             boolean next = action.equals("org.petero.droidfish.loadFileNextGame");
@@ -224,9 +224,9 @@ public abstract class EditPGN extends ListActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.item_delete_file:
-                reShowDialog(DELETE_PGN_FILE_DIALOG);
-                break;
+        case R.id.item_delete_file:
+            reShowDialog(DELETE_PGN_FILE_DIALOG);
+            break;
         }
         return false;
     }
@@ -271,12 +271,10 @@ public abstract class EditPGN extends ListActivity {
 
         binding.selectGameFilter.addTextChangedListener(new TextWatcher() {
             @Override
-            public void afterTextChanged(Editable s) {
-            }
+            public void afterTextChanged(Editable s) { }
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -314,81 +312,81 @@ public abstract class EditPGN extends ListActivity {
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
-            case PROGRESS_DIALOG:
-                progress = new ProgressDialog(this);
-                progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                progress.setTitle(R.string.reading_pgn_file);
-                progress.setOnCancelListener(dialog -> {
-                    canceled = true;
-                    Thread thr = workThread;
-                    if (thr != null)
-                        thr.interrupt();
-                });
-                return progress;
-            case DELETE_GAME_DIALOG: {
-                final GameInfo gi = selectedGi;
-                selectedGi = null;
-                if (gi == null)
-                    return null;
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle(R.string.delete_game);
-                String msg = gi.toString();
-                builder.setMessage(msg);
-                builder.setPositiveButton(R.string.yes, (dialog, id14) -> {
-                    deleteGame(gi);
-                    dialog.cancel();
-                });
-                builder.setNegativeButton(R.string.no, (dialog, id13) -> dialog.cancel());
-                return builder.create();
-            }
-            case SAVE_GAME_DIALOG: {
-                final GameInfo gi = selectedGi;
-                selectedGi = null;
-                if (gi == null)
-                    return null;
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle(R.string.save_game_question);
-                final CharSequence[] items = {
-                        getString(R.string.before_selected),
-                        getString(R.string.after_selected),
-                        getString(R.string.replace_selected),
-                };
-                builder.setItems(items, (dialog, item) -> {
-                    GameInfo giToReplace;
-                    switch (item) {
-                        case 0:
-                            giToReplace = new GameInfo().setNull(gi.startPos);
-                            break;
-                        case 1:
-                            giToReplace = new GameInfo().setNull(gi.endPos);
-                            break;
-                        case 2:
-                            giToReplace = gi;
-                            break;
-                        default:
-                            finish();
-                            return;
-                    }
-                    pgnFile.replacePGN(pgnToSave, giToReplace);
-                    finish();
-                });
-                return builder.create();
-            }
-            case DELETE_PGN_FILE_DIALOG: {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle(R.string.delete_file_question);
-                String name = new File(pgnFile.getName()).getName();
-                String msg = String.format(Locale.US, getString(R.string.delete_named_file), name);
-                builder.setMessage(msg);
-                builder.setPositiveButton(R.string.yes, (dialog, id12) -> {
-                    pgnFile.delete();
-                    finish();
-                });
-                builder.setNegativeButton(R.string.no, (dialog, id1) -> dialog.cancel());
-                return builder.create();
-            }
-            default:
+        case PROGRESS_DIALOG:
+            progress = new ProgressDialog(this);
+            progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progress.setTitle(R.string.reading_pgn_file);
+            progress.setOnCancelListener(dialog -> {
+                canceled = true;
+                Thread thr = workThread;
+                if (thr != null)
+                    thr.interrupt();
+            });
+            return progress;
+        case DELETE_GAME_DIALOG: {
+            final GameInfo gi = selectedGi;
+            selectedGi = null;
+            if (gi == null)
                 return null;
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.delete_game);
+            String msg = gi.toString();
+            builder.setMessage(msg);
+            builder.setPositiveButton(R.string.yes, (dialog, id14) -> {
+                deleteGame(gi);
+                dialog.cancel();
+            });
+            builder.setNegativeButton(R.string.no, (dialog, id13) -> dialog.cancel());
+            return builder.create();
+        }
+        case SAVE_GAME_DIALOG: {
+            final GameInfo gi = selectedGi;
+            selectedGi = null;
+            if (gi == null)
+                return null;
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.save_game_question);
+            final CharSequence[] items = {
+                getString(R.string.before_selected),
+                getString(R.string.after_selected),
+                getString(R.string.replace_selected),
+            };
+            builder.setItems(items, (dialog, item) -> {
+                GameInfo giToReplace;
+                switch (item) {
+                case 0:
+                    giToReplace = new GameInfo().setNull(gi.startPos);
+                    break;
+                case 1:
+                    giToReplace = new GameInfo().setNull(gi.endPos);
+                    break;
+                case 2:
+                    giToReplace = gi;
+                    break;
+                default:
+                    finish();
+                    return;
+                }
+                pgnFile.replacePGN(pgnToSave, giToReplace);
+                finish();
+            });
+            return builder.create();
+        }
+        case DELETE_PGN_FILE_DIALOG: {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.delete_file_question);
+            String name = new File(pgnFile.getName()).getName();
+            String msg = String.format(Locale.US, getString(R.string.delete_named_file), name);
+            builder.setMessage(msg);
+            builder.setPositiveButton(R.string.yes, (dialog, id12) -> {
+                pgnFile.delete();
+                finish();
+            });
+            builder.setNegativeButton(R.string.no, (dialog, id1) -> dialog.cancel());
+            return builder.create();
+        }
+        default:
+            return null;
         }
     }
 
@@ -403,15 +401,15 @@ public abstract class EditPGN extends ListActivity {
         if (p.first != GameInfoResult.OK) {
             gamesInFile = new ArrayList<>();
             switch (p.first) {
-                case OUT_OF_MEMORY:
-                    runOnUiThread(() -> DroidFishApp.toast(R.string.file_too_large, Toast.LENGTH_SHORT));
-                    break;
-                case NOT_PGN:
-                    runOnUiThread(() -> DroidFishApp.toast(R.string.not_a_pgn_file, Toast.LENGTH_SHORT));
-                    break;
-                case CANCEL:
-                case OK:
-                    break;
+            case OUT_OF_MEMORY:
+                runOnUiThread(() -> DroidFishApp.toast(R.string.file_too_large, Toast.LENGTH_SHORT));
+                break;
+            case NOT_PGN:
+                runOnUiThread(() -> DroidFishApp.toast(R.string.not_a_pgn_file, Toast.LENGTH_SHORT));
+                break;
+            case CANCEL:
+            case OK:
+                break;
             }
             setResult(RESULT_CANCELED);
             finish();

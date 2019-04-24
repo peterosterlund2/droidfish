@@ -40,9 +40,7 @@ import org.petero.droidfish.databinding.SelectPercentageBinding;
 
 import java.util.Locale;
 
-/**
- * Lets user enter a percentage value using a seek bar.
- */
+/** Lets user enter a percentage value using a seek bar. */
 public class SeekBarPreference extends Preference implements OnSeekBarChangeListener {
     private final static int maxValue = 1000;
     private final static int DEFAULT_VALUE = 1000;
@@ -99,7 +97,8 @@ public class SeekBarPreference extends Preference implements OnSeekBarChangeList
                 title = getContext().getString(R.string.edit_randomization);
             }
             builder.setTitle(title);
-            selectPercentageBinding.selpercentageNumber.setText(binding.seekbarValue.getText().toString().replaceAll("%", "").replaceAll(",", "."));
+            String s = binding.seekbarValue.getText().toString().replaceAll("%", "").replaceAll(",", ".");
+            selectPercentageBinding.selpercentageNumber.setText(s);
             final Runnable selectValue = () -> {
                 try {
                     String txt = selectPercentageBinding.selpercentageNumber.getText().toString();
