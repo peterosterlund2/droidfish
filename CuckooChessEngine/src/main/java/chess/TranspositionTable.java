@@ -150,7 +150,7 @@ public class TranspositionTable {
                     altEnt.move = ent.move;
                     altEnt.score = ent.score;
                     altEnt.depthSlot = ent.depthSlot;
-                    altEnt.generation = (byte)ent.generation;
+                    altEnt.generation = ent.generation;
                     altEnt.type = ent.type;
                     altEnt.setHashSlot(1 - ent.getHashSlot());
                     altEnt.evalScore = ent.evalScore;
@@ -173,7 +173,7 @@ public class TranspositionTable {
             ent.key = key;
             ent.setScore(sm.score, ply);
             ent.setDepth(depth);
-            ent.generation = (byte)generation;
+            ent.generation = generation;
             ent.type = (byte)type;
             ent.setHashSlot(hashSlot);
             ent.evalScore = (short)evalScore;
@@ -185,13 +185,13 @@ public class TranspositionTable {
         int idx0 = h0(key);
         TTEntry ent = table[idx0];
         if (ent.key == key) {
-            ent.generation = (byte)generation;
+            ent.generation = generation;
             return ent;
         }
         int idx1 = h1(key);
         ent = table[idx1];
         if (ent.key == key) {
-            ent.generation = (byte)generation;
+            ent.generation = generation;
             return ent;
         }
         return emptySlot;

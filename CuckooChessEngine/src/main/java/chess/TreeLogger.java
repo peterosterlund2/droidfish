@@ -152,7 +152,7 @@ public final class TreeLogger {
      * @return node index
      */
     final long logNodeStart(long parentIndex, Move m, int alpha, int beta, int ply, int depth) {
-        bb.putInt  ( 0, (int)-1);
+        bb.putInt  ( 0, -1);
         bb.putInt  ( 4, (int)parentIndex);
         bb.putShort( 8, (short)(m.from + (m.to << 6) + (m.promoteTo << 12)));
         bb.putShort(10, (short)alpha);
