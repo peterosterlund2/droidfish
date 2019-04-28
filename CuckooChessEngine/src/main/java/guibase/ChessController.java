@@ -85,11 +85,9 @@ public class ChessController {
             buf.append(String.format(Locale.US, "d:%d %d:%s t:%.2f n:%d nps:%d", currDepth,
                     currMoveNr, currMove, currTime / 1000.0, currNodes, currNps));
             final String newPV = buf.toString();
-            gui.runOnUIThread(new Runnable() {
-                public void run() {
-                    thinkingPV = newPV;
-                    setThinkingPV();
-                }
+            gui.runOnUIThread(() -> {
+                thinkingPV = newPV;
+                setThinkingPV();
             });
         }
 
@@ -496,21 +494,17 @@ public class ChessController {
     private void startComputerThinking() {
         if (game.pos.whiteMove != humanIsWhite) {
             if (computerThread == null) {
-                Runnable run = new Runnable() {
-                    public void run() {
-                        computerPlayer.timeLimit(gui.timeLimit(), gui.timeLimit(), gui.randomMode());
-                        final String cmd = computerPlayer.getCommand(new Position(game.pos),
-                                game.haveDrawOffer(), game.getHistory());
-                        gui.runOnUIThread(new Runnable() {
-                            public void run() {
-                                game.processString(cmd);
-                                thinkingPV = "";
-                                updateGUI();
-                                setSelection();
-                                stopComputerThinking();
-                            }
-                        });
-                    }
+                Runnable run = () -> {
+                    computerPlayer.timeLimit(gui.timeLimit(), gui.timeLimit(), gui.randomMode());
+                    final String cmd = computerPlayer.getCommand(new Position(game.pos),
+                            game.haveDrawOffer(), game.getHistory());
+                    gui.runOnUIThread(() -> {
+                        game.processString(cmd);
+                        thinkingPV = "";
+                        updateGUI();
+                        setSelection();
+                        stopComputerThinking();
+                    });
                 };
                 if (threadStack > 0) {
                     ThreadGroup tg = new ThreadGroup("searcher");
