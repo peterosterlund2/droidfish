@@ -241,35 +241,33 @@ public class EngineControl {
         }
         tt.nextGeneration();
         final int srchmaxDepth = maxDepth;
-        engineThread = new Thread(new Runnable() {
-            public void run() {
-                Move m = null;
-                if (ownBook && !analyseMode) {
-                    Book book = new Book(false);
-                    m = book.getBookMove(pos);
+        engineThread = new Thread(() -> {
+            Move m = null;
+            if (ownBook && !analyseMode) {
+                Book book = new Book(false);
+                m = book.getBookMove(pos);
+            }
+            if (m == null) {
+                m = sc.iterativeDeepening(srchMoves, srchmaxDepth, maxNodes, false);
+            }
+            while (ponder || infinite) {
+                // We should not respond until told to do so. Just wait until
+                // we are allowed to respond.
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException ex) {
+                    break;
                 }
-                if (m == null) {
-                    m = sc.iterativeDeepening(srchMoves, srchmaxDepth, maxNodes, false);
+            }
+            Move ponderMove = getPonderMove(pos, m);
+            synchronized (threadMutex) {
+                if (ponderMove != null) {
+                    os.printf("bestmove %s ponder %s%n", moveToString(m), moveToString(ponderMove));
+                } else {
+                    os.printf("bestmove %s%n", moveToString(m));
                 }
-                while (ponder || infinite) {
-                    // We should not respond until told to do so. Just wait until
-                    // we are allowed to respond.
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException ex) {
-                        break;
-                    }
-                }
-                Move ponderMove = getPonderMove(pos, m);
-                synchronized (threadMutex) {
-                    if (ponderMove != null) {
-                        os.printf("bestmove %s ponder %s%n", moveToString(m), moveToString(ponderMove));
-                    } else {
-                        os.printf("bestmove %s%n", moveToString(m));
-                    }
-                    engineThread = null;
-                    sc = null;
-                }
+                engineThread = null;
+                sc = null;
             }
         });
         engineThread.start();

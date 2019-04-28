@@ -43,13 +43,11 @@ public class AppletGUI extends javax.swing.JApplet implements GUIInterface {
     public void init() {
         ctrl = new ChessController(this);
         try {
-            java.awt.EventQueue.invokeAndWait(new Runnable() {
-                public void run() {
-                    initComponents();
-                    cbp = (ChessBoardPainter)ChessBoard;
-                    ctrl.newGame(PlayerWhite.isSelected(), ttLogSize, true);
-                    ctrl.startGame();
-                }
+            java.awt.EventQueue.invokeAndWait(() -> {
+                initComponents();
+                cbp = (ChessBoardPainter)ChessBoard;
+                ctrl.newGame(PlayerWhite.isSelected(), ttLogSize, true);
+                ctrl.startGame();
             });
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -140,11 +138,7 @@ public class AppletGUI extends javax.swing.JApplet implements GUIInterface {
 
         NewGame.setText("New Game");
         NewGame.setFocusable(false);
-        NewGame.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NewGameActionPerformed(evt);
-            }
-        });
+        NewGame.addActionListener(evt -> NewGameActionPerformed(evt));
 
         SettingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Settings"));
         SettingsPanel.setFocusable(false);
@@ -167,27 +161,15 @@ public class AppletGUI extends javax.swing.JApplet implements GUIInterface {
         TimeSlider.setPaintTicks(true);
         TimeSlider.setValue(5);
         TimeSlider.setFocusable(false);
-        TimeSlider.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                TimeSliderStateChanged(evt);
-            }
-        });
+        TimeSlider.addChangeListener(evt -> TimeSliderStateChanged(evt));
 
         ShowThinking.setText("Show Thinking");
         ShowThinking.setFocusable(false);
-        ShowThinking.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                ShowThinkingStateChanged(evt);
-            }
-        });
+        ShowThinking.addChangeListener(evt -> ShowThinkingStateChanged(evt));
 
         FlipBoard.setText("Flip Board");
         FlipBoard.setFocusable(false);
-        FlipBoard.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                FlipBoardStateChanged(evt);
-            }
-        });
+        FlipBoard.addChangeListener(evt -> FlipBoardStateChanged(evt));
 
         javax.swing.GroupLayout SettingsPanelLayout = new javax.swing.GroupLayout(SettingsPanel);
         SettingsPanel.setLayout(SettingsPanelLayout);
@@ -233,21 +215,13 @@ public class AppletGUI extends javax.swing.JApplet implements GUIInterface {
         Forward.setDefaultCapable(false);
         Forward.setFocusPainted(false);
         Forward.setFocusable(false);
-        Forward.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ForwardActionPerformed(evt);
-            }
-        });
+        Forward.addActionListener(evt -> ForwardActionPerformed(evt));
 
         Backward.setText("<-");
         Backward.setDefaultCapable(false);
         Backward.setFocusPainted(false);
         Backward.setFocusable(false);
-        Backward.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BackwardActionPerformed(evt);
-            }
-        });
+        Backward.addActionListener(evt -> BackwardActionPerformed(evt));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -425,14 +399,12 @@ public class AppletGUI extends javax.swing.JApplet implements GUIInterface {
     }
 
     public void requestPromotePiece() {
-        runOnUIThread(new Runnable() {
-            public void run() {
-                Object[] options = { "Queen", "Rook", "Bishop", "Knight" };
-                int choice = JOptionPane.showOptionDialog(
-                        cbp, "Promote pawn to?", "Pawn Promotion",
-                        0, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-                ctrl.reportPromotePiece(choice);
-            }
+        runOnUIThread(() -> {
+            Object[] options = { "Queen", "Rook", "Bishop", "Knight" };
+            int choice = JOptionPane.showOptionDialog(
+                    cbp, "Promote pawn to?", "Pawn Promotion",
+                    0, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            ctrl.reportPromotePiece(choice);
         });
     }
 
