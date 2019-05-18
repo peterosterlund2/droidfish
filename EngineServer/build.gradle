@@ -1,0 +1,15 @@
+apply plugin: 'java-library'
+
+jar {
+    manifest {
+        attributes "Main-Class": "org.petero.engineserver.EngineServer"
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+}
+
+sourceCompatibility = "8"
+targetCompatibility = "8"

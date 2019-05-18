@@ -1,1 +1,1 @@
-include ':DroidFishApp', ':CuckooChessEngine', ':CuckooChessApp', ':CuckooChess'
+include ':DroidFishApp', ':CuckooChessEngine', ':CuckooChessApp', ':CuckooChess', ':EngineServer'
