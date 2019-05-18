@@ -149,8 +149,8 @@ public class PortListener {
             @Override
             public void run() {
                 try {
+                    byte[] buffer = new byte[4096];
                     while (true) {
-                        byte[] buffer = new byte[4096];
                         int len = is.read(buffer);
                         if (len < 0)
                             break;
@@ -174,13 +174,11 @@ public class PortListener {
         shutDownFlag = true;
         thread.interrupt();
         ServerSocket ss = serverSocket;
-        if (ss != null) {
+        if (ss != null)
             close(ss);
-        }
         Socket s = clientSocket;
-        if (s != null) {
+        if (s != null)
             close(s);
-        }
         try {
             thread.join();
         } catch (InterruptedException ex) {
