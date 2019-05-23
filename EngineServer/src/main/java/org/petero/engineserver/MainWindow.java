@@ -142,7 +142,7 @@ public class MainWindow {
             });
             port[r].addFocusListener(new FocusAdapter() {
                 @Override
-                public void focusLost(FocusEvent focusEvent) {
+                public void focusLost(FocusEvent event) {
                     portChanged(engineNo);
                 }
             });
@@ -164,7 +164,7 @@ public class MainWindow {
             });
             filename[r].addFocusListener(new FocusAdapter() {
                 @Override
-                public void focusLost(FocusEvent focusEvent) {
+                public void focusLost(FocusEvent event) {
                     filenameChanged(engineNo);
                 }
             });
@@ -186,7 +186,7 @@ public class MainWindow {
             });
             arguments[r].addFocusListener(new FocusAdapter() {
                 @Override
-                public void focusLost(FocusEvent focusEvent) {
+                public void focusLost(FocusEvent event) {
                     argumentsChanged(engineNo);
                 }
             });
@@ -226,7 +226,7 @@ public class MainWindow {
     private void portChanged(int engineNo) {
         EngineConfig config = configs[engineNo];
         try {
-            int p = Integer.valueOf(port[engineNo].getText());
+            int p = Integer.valueOf(port[engineNo].getText().trim());
             if (p >= 1024 && p < 65536 && p != config.port) {
                 config.port = p;
                 server.configChanged(engineNo);
