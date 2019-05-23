@@ -117,7 +117,7 @@ public class PortListener {
                 inQuote = !inQuote;
                 if (!inQuote) {
                     cmdList.add(sb.toString());
-                    sb = new StringBuilder();
+                    sb.setLength(0);
                 }
                 break;
             case '\\':
@@ -131,7 +131,7 @@ public class PortListener {
                 if (!inQuote) {
                     if (!sb.toString().isEmpty()) {
                         cmdList.add(sb.toString());
-                        sb = new StringBuilder();
+                        sb.setLength(0);
                     }
                     break;
                 }
