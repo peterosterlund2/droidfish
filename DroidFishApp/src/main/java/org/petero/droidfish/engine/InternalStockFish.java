@@ -63,34 +63,25 @@ public class InternalStockFish extends ExternalEngine {
     }
 
     private long readCheckSum(File f) {
-        InputStream is = null;
-        try {
-            is = new FileInputStream(f);
-            DataInputStream dis = new DataInputStream(is);
+        try (InputStream is = new FileInputStream(f);
+             DataInputStream dis = new DataInputStream(is)) {
             return dis.readLong();
         } catch (IOException e) {
             return 0;
-        } finally {
-            if (is != null) try { is.close(); } catch (IOException ignore) {}
         }
     }
 
     private void writeCheckSum(File f, long checkSum) {
-        DataOutputStream dos = null;
-        try {
-            OutputStream os = new FileOutputStream(f);
-            dos = new DataOutputStream(os);
+        try (OutputStream os = new FileOutputStream(f);
+             DataOutputStream dos = new DataOutputStream(os)) {
             dos.writeLong(checkSum);
-        } catch (IOException e) {
-        } finally {
-            if (dos != null) try { dos.close(); } catch (IOException ignore) {}
+        } catch (IOException ignore) {
         }
     }
 
     private long computeAssetsCheckSum(String sfExe) {
-        InputStream is = null;
-        try {
-            is = context.getAssets().open(sfExe);
+
+        try (InputStream is = context.getAssets().open(sfExe)) {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
             byte[] buf = new byte[8192];
             while (true) {
@@ -109,8 +100,6 @@ public class InternalStockFish extends ExternalEngine {
             return -1;
         } catch (NoSuchAlgorithmException e) {
             return -1;
-        } finally {
-            if (is != null) try { is.close(); } catch (IOException ignore) {}
         }
     }
 
@@ -130,10 +119,8 @@ public class InternalStockFish extends ExternalEngine {
             to.delete();
         to.createNewFile();
 
-        InputStream is = context.getAssets().open(sfExe);
-        OutputStream os = new FileOutputStream(to);
-
-        try {
+        try (InputStream is = context.getAssets().open(sfExe);
+             OutputStream os = new FileOutputStream(to)) {
             byte[] buf = new byte[8192];
             while (true) {
                 int len = is.read(buf);
@@ -141,9 +128,6 @@ public class InternalStockFish extends ExternalEngine {
                     break;
                 os.write(buf, 0, len);
             }
-        } finally {
-            if (is != null) try { is.close(); } catch (IOException ignore) {}
-            if (os != null) try { os.close(); } catch (IOException ignore) {}
         }
 
         writeCheckSum(new File(internalSFPath()), newCSum);

@@ -106,8 +106,7 @@ public class PieceSet {
     }
 
     private void parseSvgData() {
-        try {
-            ZipInputStream zis = getZipStream();
+        try (ZipInputStream zis = getZipStream()) {
             ZipEntry entry;
             while ((entry = zis.getNextEntry()) != null) {
                 if (!entry.isDirectory()) {
@@ -129,7 +128,6 @@ public class PieceSet {
                 }
                 zis.closeEntry();
             }
-            zis.close();
         } catch (IOException ex) {
             throw new RuntimeException("Cannot read chess pieces data", ex);
         }

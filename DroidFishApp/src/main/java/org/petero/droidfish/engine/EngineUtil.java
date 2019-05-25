@@ -47,13 +47,11 @@ public class EngineUtil {
     /** Return true if file "engine" is a network engine. */
     public static boolean isNetEngine(String engine) {
         boolean netEngine = false;
-        try {
-            InputStream inStream = new FileInputStream(engine);
-            InputStreamReader inFile = new InputStreamReader(inStream);
+        try (InputStream inStream = new FileInputStream(engine);
+             InputStreamReader inFile = new InputStreamReader(inStream)) {
             char[] buf = new char[4];
             if ((inFile.read(buf) == 4) && "NETE".equals(new String(buf)))
                 netEngine = true;
-            inFile.close();
         } catch (IOException ignore) {
         }
         return netEngine;

@@ -68,7 +68,7 @@ public class Game {
     }
 
     /** Controls behavior when a new move is added to the game.*/
-    public static enum AddMoveBehavior {
+    public enum AddMoveBehavior {
         /** Add the new move first in the list of variations. */
         ADD_FIRST,
         /** Add the new move last in the list of variations. */

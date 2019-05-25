@@ -76,14 +76,9 @@ public abstract class UCIEngineBase implements UCIEngine {
     public final void applyIniFile() {
         File optionsFile = getOptionsFile();
         Properties iniOptions = new Properties();
-        FileInputStream is = null;
-        try {
-            is = new FileInputStream(optionsFile);
+        try (FileInputStream is = new FileInputStream(optionsFile)) {
             iniOptions.load(is);
         } catch (IOException ignore) {
-        } finally {
-            if (is != null)
-                try { is.close(); } catch (IOException ignore) {}
         }
         for (Map.Entry<Object,Object> ent : iniOptions.entrySet()) {
             if (ent.getKey() instanceof String && ent.getValue() instanceof String) {
@@ -116,14 +111,9 @@ public abstract class UCIEngineBase implements UCIEngine {
                 iniOptions.put(o.name, o.getStringValue());
         }
         File optionsFile = getOptionsFile();
-        FileOutputStream os = null;
-        try {
-            os = new FileOutputStream(optionsFile);
+        try (FileOutputStream os = new FileOutputStream(optionsFile)) {
             iniOptions.store(os, null);
         } catch (IOException ignore) {
-        } finally {
-            if (os != null)
-                try { os.close(); } catch (IOException ignore) {}
         }
     }
 

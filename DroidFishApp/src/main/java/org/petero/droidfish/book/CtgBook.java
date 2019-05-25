@@ -63,13 +63,9 @@ class CtgBook implements IOpeningBook {
 
     @Override
     public ArrayList<BookEntry> getBookEntries(Position pos) {
-        RandomAccessFile ctgF = null;
-        RandomAccessFile ctbF = null;
-        RandomAccessFile ctoF = null;
-        try {
-            ctgF = new RandomAccessFile(ctgFile, "r");
-            ctbF = new RandomAccessFile(ctbFile, "r");
-            ctoF = new RandomAccessFile(ctoFile, "r");
+        try (RandomAccessFile ctgF = new RandomAccessFile(ctgFile, "r");
+             RandomAccessFile ctbF = new RandomAccessFile(ctbFile, "r");
+             RandomAccessFile ctoF = new RandomAccessFile(ctoFile, "r")) {
 
             CtbFile ctb = new CtbFile(ctbF);
             CtoFile cto = new CtoFile(ctoF);
@@ -119,10 +115,6 @@ class CtgBook implements IOpeningBook {
             return ret;
         } catch (IOException e) {
             return null;
-        } finally {
-            if (ctgF != null) try { ctgF.close(); } catch (IOException ignore) { }
-            if (ctbF != null) try { ctbF.close(); } catch (IOException ignore) { }
-            if (ctoF != null) try { ctoF.close(); } catch (IOException ignore) { }
         }
     }
 

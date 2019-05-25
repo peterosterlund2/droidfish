@@ -59,8 +59,7 @@ public class Book {
         rndGen = new SecureRandom();
         rndGen.setSeed(System.currentTimeMillis());
         numBookMoves = 0;
-        try {
-            InputStream inStream = getClass().getResourceAsStream("/book.bin");
+        try (InputStream inStream = getClass().getResourceAsStream("/book.bin")) {
             List<Byte> buf = new ArrayList<>(8192);
             byte[] tmpBuf = new byte[1024];
             while (true) {
@@ -69,7 +68,6 @@ public class Book {
                 for (int i = 0; i < len; i++)
                     buf.add(tmpBuf[i]);
             }
-            inStream.close();
             Position startPos = TextIO.readFEN(TextIO.startPosFEN);
             Position pos = new Position(startPos);
             UndoInfo ui = new UndoInfo();
@@ -191,22 +189,21 @@ public class Book {
     }
     public static void main2(String inFile, String outFile) throws IOException {
         List<Byte> binBook = createBinBook(inFile);
-        FileOutputStream out = new FileOutputStream(outFile);
-        int bookLen = binBook.size();
-        byte[] binBookA = new byte[bookLen];
-        for (int i = 0; i < bookLen; i++)
-            binBookA[i] = binBook.get(i);
-        out.write(binBookA);
-        out.close();
+        try (FileOutputStream out = new FileOutputStream(outFile)) {
+            int bookLen = binBook.size();
+            byte[] binBookA = new byte[bookLen];
+            for (int i = 0; i < bookLen; i++)
+                binBookA[i] = binBook.get(i);
+            out.write(binBookA);
+        }
     }
 
     public static List<Byte> createBinBook(String inFileName) {
         List<Byte> binBook = new ArrayList<>(0);
-        try {
-            InputStream inStream = new FileInputStream(inFileName);
+        try (InputStream inStream = new FileInputStream(inFileName);
             InputStreamReader inFile = new InputStreamReader(inStream);
             BufferedReader inBuf = new BufferedReader(inFile);
-            LineNumberReader lnr = new LineNumberReader(inBuf);
+            LineNumberReader lnr = new LineNumberReader(inBuf)) {
             String line;
             while ((line = lnr.readLine()) != null) {
                 if (line.startsWith("#") || (line.length() == 0)) {
@@ -218,7 +215,6 @@ public class Book {
                 }
 //              System.out.printf("no:%d line:%s%n", lnr.getLineNumber(), line);
             }
-            lnr.close();
         } catch (ChessParseError ex) {
             throw new RuntimeException();
         } catch (IOException ex) {

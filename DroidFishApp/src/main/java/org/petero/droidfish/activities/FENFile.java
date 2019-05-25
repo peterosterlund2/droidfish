@@ -66,10 +66,9 @@ public class FENFile {
     public final Pair<FenInfoResult,ArrayList<FenInfo>> getFenInfo(Activity activity,
                                                                    final ProgressDialog progress) {
         ArrayList<FenInfo> fensInFile = new ArrayList<>();
-        try {
+        try (BufferedRandomAccessFileReader f =
+                 new BufferedRandomAccessFileReader(fileName.getAbsolutePath())) {
             int percent = -1;
-            fensInFile.clear();
-            BufferedRandomAccessFileReader f = new BufferedRandomAccessFileReader(fileName.getAbsolutePath());
             long fileLen = f.length();
             long filePos = 0;
             int fenNo = 1;
@@ -92,7 +91,6 @@ public class FENFile {
                 if (Thread.currentThread().isInterrupted())
                     return new Pair<>(FenInfoResult.CANCEL, null);
             }
-            f.close();
         } catch (IOException ignore) {
         } catch (OutOfMemoryError e) {
             fensInFile.clear();

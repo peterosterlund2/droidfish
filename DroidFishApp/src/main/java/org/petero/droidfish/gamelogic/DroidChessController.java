@@ -211,40 +211,24 @@ public class DroidChessController {
 
     /** De-serialize from byte array. */
     public final synchronized void fromByteArray(byte[] data, int version) {
-        ByteArrayInputStream bais = null;
-        DataInputStream dis = null;
-        try {
-            bais = new ByteArrayInputStream(data);
-            dis = new DataInputStream(bais);
+        try (ByteArrayInputStream bais = new ByteArrayInputStream(data);
+             DataInputStream dis = new DataInputStream(bais)) {
             game.readFromStream(dis, version);
             game.tree.translateMoves();
         } catch (IOException ignore) {
         } catch (ChessParseError ignore) {
-        } finally {
-            if (dis != null)
-                try { dis.close(); } catch (IOException ignore) {}
-            if (bais != null)
-                try { bais.close(); } catch (IOException ignore) {}
         }
     }
 
     /** Serialize to byte array. */
     public final synchronized byte[] toByteArray() {
-        ByteArrayOutputStream baos = null;
-        DataOutputStream dos = null;
-        try {
-            baos = new ByteArrayOutputStream(32768);
-            dos = new DataOutputStream(baos);
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream(32768);
+             DataOutputStream dos = new DataOutputStream(baos)) {
             game.writeToStream(dos);
             dos.flush();
             return baos.toByteArray();
         } catch (IOException e) {
             return null;
-        } finally {
-            if (dos != null)
-                try { dos.close(); } catch (IOException ignore) {}
-            if (baos != null)
-                try { baos.close(); } catch (IOException ignore) {}
         }
     }
 

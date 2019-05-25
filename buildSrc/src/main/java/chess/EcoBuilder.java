@@ -151,51 +151,50 @@ public class EcoBuilder {
 
     /** Write the binary ECO code data file. */
     private void writeDataFile(String ecoDatFile) throws Throwable {
-        FileOutputStream out = new FileOutputStream(ecoDatFile);
+        try (FileOutputStream out = new FileOutputStream(ecoDatFile)) {
 
-        // Write nodes
-        byte[] buf = new byte[12];
-        for (int i = 0; i < nodes.size(); i++) {
-            Node n = nodes.get(i);
-            int cm = n.move == null ? 0 : n.move.getCompressedMove();
-            buf[0] = (byte)(cm >> 8);             // Move, high byte
-            buf[1] = (byte)(cm & 255);            // Move, low byte
-            buf[2] = (byte)(n.ecoIdx >> 8);      // Index, high byte
-            buf[3] = (byte)(n.ecoIdx & 255);     // Index, low byte
-            buf[4] = (byte)(n.opnIdx >> 8);      // Index, high byte
-            buf[5] = (byte)(n.opnIdx & 255);     // Index, low byte
-            buf[6] = (byte)(n.varIdx >> 8);      // Index, high byte
-            buf[7] = (byte)(n.varIdx & 255);     // Index, low byte
-            int firstChild = -1;
-            if (n.children.size() > 0)
-                firstChild = n.children.get(0).index;
-            buf[8] = (byte)(firstChild >> 8);
-            buf[9] = (byte)(firstChild & 255);
-            int nextSibling = -1;
-            if (n.parent != null) {
-                ArrayList<Node> siblings = n.parent.children;
-                for (int j = 0; j < siblings.size()-1; j++) {
-                    if (siblings.get(j).move.equals(n.move)) {
-                        nextSibling = siblings.get(j+1).index;
-                        break;
+            // Write nodes
+            byte[] buf = new byte[12];
+            for (int i = 0; i < nodes.size(); i++) {
+                Node n = nodes.get(i);
+                int cm = n.move == null ? 0 : n.move.getCompressedMove();
+                buf[0] = (byte)(cm >> 8);            // Move, high byte
+                buf[1] = (byte)(cm & 255);           // Move, low byte
+                buf[2] = (byte)(n.ecoIdx >> 8);      // Index, high byte
+                buf[3] = (byte)(n.ecoIdx & 255);     // Index, low byte
+                buf[4] = (byte)(n.opnIdx >> 8);      // Index, high byte
+                buf[5] = (byte)(n.opnIdx & 255);     // Index, low byte
+                buf[6] = (byte)(n.varIdx >> 8);      // Index, high byte
+                buf[7] = (byte)(n.varIdx & 255);     // Index, low byte
+                int firstChild = -1;
+                if (n.children.size() > 0)
+                    firstChild = n.children.get(0).index;
+                buf[8] = (byte)(firstChild >> 8);
+                buf[9] = (byte)(firstChild & 255);
+                int nextSibling = -1;
+                if (n.parent != null) {
+                    ArrayList<Node> siblings = n.parent.children;
+                    for (int j = 0; j < siblings.size()-1; j++) {
+                        if (siblings.get(j).move.equals(n.move)) {
+                            nextSibling = siblings.get(j+1).index;
+                            break;
+                        }
                     }
                 }
+                buf[10] = (byte)(nextSibling >> 8);
+                buf[11] = (byte)(nextSibling & 255);
+                out.write(buf);
             }
-            buf[10] = (byte)(nextSibling >> 8);
-            buf[11] = (byte)(nextSibling & 255);
+            for (int i = 0; i < buf.length; i++)
+                buf[i] = -1;
             out.write(buf);
-        }
-        for (int i = 0; i < buf.length; i++)
-            buf[i] = -1;
-        out.write(buf);
 
-        // Write strings
-        buf = new byte[]{0};
-        for (String name : strs) {
-            out.write(name.getBytes("UTF-8"));
-            out.write(buf);
+            // Write strings
+            buf = new byte[]{0};
+            for (String name : strs) {
+                out.write(name.getBytes("UTF-8"));
+                out.write(buf);
+            }
         }
-
-        out.close();
     }
 }

@@ -790,14 +790,11 @@ public class DroidFish extends Activity
                 if ((filename == null) &&
                     ("content".equals(scheme) || "file".equals(scheme))) {
                     ContentResolver resolver = getContentResolver();
-                    InputStream in = resolver.openInputStream(data);
                     String sep = File.separator;
                     String fn = Environment.getExternalStorageDirectory() + sep +
                                 pgnDir + sep + ".sharedfile.pgn";
-                    try {
+                    try (InputStream in = resolver.openInputStream(data)) {
                         FileUtil.writeFile(in, fn);
-                    } finally {
-                        in.close();
                     }
                     PGNFile pgnFile = new PGNFile(fn);
                     long fileLen = FileUtil.getFileLength(fn);
@@ -805,11 +802,8 @@ public class DroidFish extends Activity
                     if ((fileLen > 1024 * 1024) || (gi.first == GameInfoResult.OK && gi.second.size() > 1)) {
                         filename = fn;
                     } else {
-                        in = new FileInputStream(fn);
-                        try {
+                        try (FileInputStream in = new FileInputStream(fn)) {
                             pgnOrFen = FileUtil.readFromStream(in);
-                        } finally {
-                            in.close();
                         }
                     }
                 }
@@ -2394,14 +2388,9 @@ public class DroidFish extends Activity
             File dir = new File(getFilesDir(), "shared");
             dir.mkdirs();
             File file = new File(dir, game ? "game.pgn" : "game.txt");
-            try {
-                FileOutputStream fos = new FileOutputStream(file);
-                OutputStreamWriter ow = new OutputStreamWriter(fos, "UTF-8");
-                try {
-                    ow.write(pgn);
-                } finally {
-                    ow.close();
-                }
+            try (FileOutputStream fos = new FileOutputStream(file);
+                 OutputStreamWriter ow = new OutputStreamWriter(fos, "UTF-8")) {
+                ow.write(pgn);
             } catch (IOException e) {
                 DroidFishApp.toast(e.getMessage(), Toast.LENGTH_LONG);
                 return;
@@ -2427,13 +2416,8 @@ public class DroidFish extends Activity
         imgDir.mkdirs();
         File file = new File(imgDir, "screenshot.png");
         try {
-            OutputStream os = null;
-            try {
-                os = new FileOutputStream(file);
+            try (OutputStream os = new FileOutputStream(file)) {
                 b.compress(Bitmap.CompressFormat.PNG, 100, os);
-            } finally {
-                if (os != null)
-                    os.close();
             }
         } catch (IOException e) {
             DroidFishApp.toast(e.getMessage(), Toast.LENGTH_LONG);
@@ -2521,15 +2505,16 @@ public class DroidFish extends Activity
 
     private Dialog aboutDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String title = getString(R.string.app_name);
         WebView wv = new WebView(this);
         builder.setView(wv);
-        InputStream is = getResources().openRawResource(R.raw.about);
-        String data = FileUtil.readFromStream(is);
-        if (data == null)
-            data = "";
-        try { is.close(); } catch (IOException ignore) {}
-        wv.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
+        try (InputStream is = getResources().openRawResource(R.raw.about)) {
+            String data = FileUtil.readFromStream(is);
+            if (data == null)
+                data = "";
+            wv.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
+        } catch (IOException ignore) {
+        }
+        String title = getString(R.string.app_name);
         try {
             PackageInfo pi = getPackageManager().getPackageInfo("org.petero.droidfish", 0);
             title += " " + pi.versionName;
@@ -2577,7 +2562,7 @@ public class DroidFish extends Activity
             else if (item == numFiles + 2)
                 bookFile = "nobook:";
             else
-                bookFile = items[item].toString();
+                bookFile = items[item];
             editor.putString("bookFile", bookFile);
             editor.apply();
             bookOptions.filename = bookFile;
@@ -2664,12 +2649,12 @@ public class DroidFish extends Activity
 
     private Dialog selectPgnFileDialog() {
         return selectFileDialog(pgnDir, R.string.select_pgn_file, R.string.no_pgn_files,
-                                "currentPGNFile", pathName -> loadPGNFromFile(pathName));
+                                "currentPGNFile", this::loadPGNFromFile);
     }
 
     private Dialog selectFenFileDialog() {
         return selectFileDialog(fenDir, R.string.select_fen_file, R.string.no_fen_files,
-                                "currentFENFile", pathName -> loadFENFromFile(pathName));
+                                "currentFENFile", this::loadFENFromFile);
     }
 
     private Dialog selectFileDialog(final String defaultDir, int selectFileMsg, int noFilesMsg,
@@ -2696,7 +2681,7 @@ public class DroidFish extends Activity
         builder.setSingleChoiceItems(fileNames, defaultItem, (dialog, item) -> {
             dialog.dismiss();
             String sep = File.separator;
-            String fn = fileNames[item].toString();
+            String fn = fileNames[item];
             String pathName = Environment.getExternalStorageDirectory() + sep + defaultDir + sep + fn;
             loader.load(pathName);
         });
@@ -3429,12 +3414,10 @@ public class DroidFish extends Activity
         final Runnable writeConfig = () -> {
             String hostName1 = hostNameView.getText().toString();
             String port1 = portView.getText().toString();
-            try {
-                FileWriter fw = new FileWriter(new File(networkEngineToConfig), false);
+            try (FileWriter fw = new FileWriter(new File(networkEngineToConfig), false)) {
                 fw.write("NETE\n");
                 fw.write(hostName1); fw.write("\n");
                 fw.write(port1); fw.write("\n");
-                fw.close();
                 setEngineOptions(true);
             } catch (IOException e) {
                 DroidFishApp.toast(e.getMessage(), Toast.LENGTH_LONG);

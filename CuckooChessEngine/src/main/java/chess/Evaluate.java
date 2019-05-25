@@ -236,8 +236,7 @@ public class Evaluate {
 
     private byte[] readTable(String resource, int length) {
         byte[] table = new byte[2*32*64*48/8];
-        InputStream inStream = getClass().getResourceAsStream(resource);
-        try {
+        try (InputStream inStream = getClass().getResourceAsStream(resource)) {
             int off = 0;
             while (off < table.length) {
                 int len = inStream.read(table, off, table.length - off);
@@ -245,10 +244,9 @@ public class Evaluate {
                     throw new RuntimeException();
                 off += len;
             }
-            inStream.close();
             return table;
         } catch (IOException e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
 

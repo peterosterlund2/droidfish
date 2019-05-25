@@ -372,8 +372,7 @@ class PolyglotBook implements IOpeningBook {
 
     @Override
     public final ArrayList<BookEntry> getBookEntries(Position pos) {
-        try {
-            RandomAccessFile f = new RandomAccessFile(bookFile, "r");
+        try (RandomAccessFile f = new RandomAccessFile(bookFile, "r")) {
             long numEntries = f.length() / 16;
             long key = getHashKey(pos);
             PGBookEntry ent = new PGBookEntry();
@@ -406,10 +405,7 @@ class PolyglotBook implements IOpeningBook {
                 ret.add(be);
                 entNo++;
             }
-            f.close();
             return ret;
-        } catch (FileNotFoundException e) {
-            return null;
         } catch (IOException e) {
             return null;
         }

@@ -54,8 +54,7 @@ public class Book {
         rndGen = new SecureRandom();
         rndGen.setSeed(System.currentTimeMillis());
         numBookMoves = 0;
-        try {
-            InputStream inStream = getClass().getResourceAsStream("/book.bin");
+        try (InputStream inStream = getClass().getResourceAsStream("/book.bin")) {
             List<Byte> buf = new ArrayList<>(8192);
             byte[] tmpBuf = new byte[1024];
             while (true) {
@@ -64,7 +63,6 @@ public class Book {
                 for (int i = 0; i < len; i++)
                     buf.add(tmpBuf[i]);
             }
-            inStream.close();
             Position startPos = TextIO.readFEN(TextIO.startPosFEN);
             Position pos = new Position(startPos);
             UndoInfo ui = new UndoInfo();

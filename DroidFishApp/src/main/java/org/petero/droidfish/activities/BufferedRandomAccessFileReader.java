@@ -17,11 +17,12 @@
 */
 package org.petero.droidfish.activities;
 
+import java.io.Closeable;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-final class BufferedRandomAccessFileReader {
+final class BufferedRandomAccessFileReader implements Closeable {
     private RandomAccessFile f;
     private byte[] buffer = new byte[8192];
     private long bufStartFilePos = 0;
@@ -37,7 +38,8 @@ final class BufferedRandomAccessFileReader {
     final long getFilePointer() {
         return bufStartFilePos + bufPos;
     }
-    final void close() throws IOException {
+    @Override
+    public void close() throws IOException {
         f.close();
     }
 

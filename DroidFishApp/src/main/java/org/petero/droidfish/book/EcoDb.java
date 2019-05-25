@@ -252,16 +252,14 @@ public class EcoDb {
         posHashToNodeIdx = new HashMap<>();
         posHashToNodeIdx2 = new HashMap<>();
         gtNodeToIdx = new WeakLRUCache<>(50);
-        try {
-            ByteArrayOutputStream bufStream = new ByteArrayOutputStream();
-            InputStream inStream = DroidFishApp.getContext().getAssets().open("eco.dat");
+        try (ByteArrayOutputStream bufStream = new ByteArrayOutputStream();
+             InputStream inStream = DroidFishApp.getContext().getAssets().open("eco.dat")) {
             byte[] buf = new byte[1024];
             while (true) {
                 int len = inStream.read(buf);
                 if (len <= 0) break;
                 bufStream.write(buf, 0, len);
             }
-            inStream.close();
             bufStream.flush();
             buf = bufStream.toByteArray();
             int nNodes = 0;

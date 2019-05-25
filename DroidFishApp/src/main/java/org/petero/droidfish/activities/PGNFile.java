@@ -18,6 +18,7 @@
 
 package org.petero.droidfish.activities;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -133,7 +134,7 @@ public class PGNFile {
         }
     }
     
-    private static class BufferedInput {
+    private static class BufferedInput implements Closeable {
         private byte buf[] = new byte[8192];
         private int bufLen = 0;
         private int pos = 0;
@@ -151,6 +152,7 @@ public class PGNFile {
             }
             return buf[pos++] & 0xff;
         }
+        @Override
         public void close() {
             try {
                 is.close();
@@ -382,12 +384,10 @@ public class PGNFile {
 
     /** Read one game defined by gi. Return null on failure. */
     final String readOneGame(GameInfo gi) {
-        try {
-            RandomAccessFile f = new RandomAccessFile(fileName, "r");
+        try (RandomAccessFile f = new RandomAccessFile(fileName, "r")) {
             byte[] pgnData = new byte[(int) (gi.endPos - gi.startPos)];
             f.seek(gi.startPos);
             f.readFully(pgnData);
-            f.close();
             return new String(pgnData);
         } catch (IOException ignore) {
         }
@@ -396,11 +396,9 @@ public class PGNFile {
 
     /** Append PGN to the end of this PGN file. */
     public final void appendPGN(String pgn) {
-        try {
-            mkDirs();
-            FileWriter fw = new FileWriter(fileName, true);
+        mkDirs();
+        try (FileWriter fw = new FileWriter(fileName, true)) {
             fw.write(pgn);
-            fw.close();
             DroidFishApp.toast(R.string.game_saved, Toast.LENGTH_SHORT);
         } catch (IOException e) {
             DroidFishApp.toast(R.string.failed_to_save_game, Toast.LENGTH_SHORT);
@@ -410,13 +408,12 @@ public class PGNFile {
     final boolean deleteGame(GameInfo gi, ArrayList<GameInfo> gamesInFile) {
         try {
             File tmpFile = new File(fileName + ".tmp_delete");
-            RandomAccessFile fileReader = new RandomAccessFile(fileName, "r");
-            RandomAccessFile fileWriter = new RandomAccessFile(tmpFile, "rw");
-            copyData(fileReader, fileWriter, gi.startPos);
-            fileReader.seek(gi.endPos);
-            copyData(fileReader, fileWriter, fileReader.length() - gi.endPos);
-            fileReader.close();
-            fileWriter.close();
+            try (RandomAccessFile fileReader = new RandomAccessFile(fileName, "r");
+                 RandomAccessFile fileWriter = new RandomAccessFile(tmpFile, "rw")) {
+                copyData(fileReader, fileWriter, gi.startPos);
+                fileReader.seek(gi.endPos);
+                copyData(fileReader, fileWriter, fileReader.length() - gi.endPos);
+            }
             if (!tmpFile.renameTo(fileName))
                 throw new IOException();
 
@@ -443,14 +440,13 @@ public class PGNFile {
     final void replacePGN(String pgnToSave, GameInfo gi) {
         try {
             File tmpFile = new File(fileName + ".tmp_delete");
-            RandomAccessFile fileReader = new RandomAccessFile(fileName, "r");
-            RandomAccessFile fileWriter = new RandomAccessFile(tmpFile, "rw");
-            copyData(fileReader, fileWriter, gi.startPos);
-            fileWriter.write(pgnToSave.getBytes());
-            fileReader.seek(gi.endPos);
-            copyData(fileReader, fileWriter, fileReader.length() - gi.endPos);
-            fileReader.close();
-            fileWriter.close();
+            try (RandomAccessFile fileReader = new RandomAccessFile(fileName, "r");
+                 RandomAccessFile fileWriter = new RandomAccessFile(tmpFile, "rw")) {
+                copyData(fileReader, fileWriter, gi.startPos);
+                fileWriter.write(pgnToSave.getBytes());
+                fileReader.seek(gi.endPos);
+                copyData(fileReader, fileWriter, fileReader.length() - gi.endPos);
+            }
             if (!tmpFile.renameTo(fileName))
                 throw new IOException();
             DroidFishApp.toast(R.string.game_saved, Toast.LENGTH_SHORT);

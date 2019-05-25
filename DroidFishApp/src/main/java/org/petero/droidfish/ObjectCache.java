@@ -130,12 +130,9 @@ public class ObjectCache {
                         token++;
                         File f = new File(dir, String.valueOf(token));
                         if (f.createNewFile()) {
-                            FileOutputStream fos = new FileOutputStream(f);
-                            try {
+                            try (FileOutputStream fos = new FileOutputStream(f)) {
                                 fos.write(b);
                                 return token;
-                            } finally {
-                                fos.close();
                             }
                         }
                     }
@@ -152,8 +149,7 @@ public class ObjectCache {
         if (dir.exists()) {
             File f = new File(dir, String.valueOf(token));
             try {
-                RandomAccessFile raf = new RandomAccessFile(f, "r");
-                try {
+                try (RandomAccessFile raf = new RandomAccessFile(f, "r")) {
                     int len = (int)raf.length();
                     byte[] buf = new byte[len];
                     int offs = 0;
@@ -164,8 +160,6 @@ public class ObjectCache {
                         offs += l;
                     }
                     return buf;
-                } finally {
-                    raf.close();
                 }
             } catch (IOException ignore) {
             }

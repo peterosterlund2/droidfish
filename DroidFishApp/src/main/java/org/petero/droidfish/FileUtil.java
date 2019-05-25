@@ -33,29 +33,26 @@ public class FileUtil {
     /** Read a text file. Return string array with one string per line. */
     public static String[] readFile(String filename) throws IOException {
         ArrayList<String> ret = new ArrayList<>();
-        InputStream inStream = new FileInputStream(filename);
-        InputStreamReader inFile = new InputStreamReader(inStream, "UTF-8");
-        BufferedReader inBuf = new BufferedReader(inFile);
-        String line;
-        while ((line = inBuf.readLine()) != null)
-            ret.add(line);
-        inBuf.close();
-        return ret.toArray(new String[0]);
+        try (InputStream inStream = new FileInputStream(filename);
+             InputStreamReader inFile = new InputStreamReader(inStream, "UTF-8");
+             BufferedReader inBuf = new BufferedReader(inFile)) {
+            String line;
+            while ((line = inBuf.readLine()) != null)
+                ret.add(line);
+            return ret.toArray(new String[0]);
+        }
     }
 
     /** Read all data from an input stream. Return null if IO error. */
     public static String readFromStream(InputStream is) {
-        InputStreamReader isr;
-        try {
-            isr = new InputStreamReader(is, "UTF-8");
-            BufferedReader br = new BufferedReader(isr);
+        try (InputStreamReader isr = new InputStreamReader(is, "UTF-8");
+             BufferedReader br = new BufferedReader(isr)) {
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
                 sb.append(line);
                 sb.append('\n');
             }
-            br.close();
             return sb.toString();
         } catch (UnsupportedEncodingException e) {
             return null;
@@ -66,8 +63,7 @@ public class FileUtil {
 
     /** Read data from input stream and write to file. */
     public static void writeFile(InputStream is, String outFile) throws IOException {
-        OutputStream os = new FileOutputStream(outFile);
-        try {
+        try (OutputStream os = new FileOutputStream(outFile)) {
             byte[] buffer = new byte[16384];
             while (true) {
                 int len = is.read(buffer);
@@ -75,20 +71,13 @@ public class FileUtil {
                     break;
                 os.write(buffer, 0, len);
             }
-        } finally {
-            os.close();
         }
     }
 
     /** Return the length of a file, or -1 if length can not be determined. */
     public static long getFileLength(String filename) {
-        try {
-            RandomAccessFile raf = new RandomAccessFile(filename, "r");
-            try {
-                return raf.length();
-            } finally {
-                raf.close();
-            }
+        try (RandomAccessFile raf = new RandomAccessFile(filename, "r")) {
+            return raf.length();
         } catch (IOException ex) {
             return -1;
         }
