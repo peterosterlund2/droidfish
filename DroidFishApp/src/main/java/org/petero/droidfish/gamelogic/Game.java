@@ -447,7 +447,7 @@ public class Game {
 
 
     /**
-     * Return the last zeroing position and a list of moves
+     * Return the position after the last null move and a list of moves
      * to go from that position to the current position.
      */
     public final Pair<Position, ArrayList<Move>> getUCIHistory() {
@@ -462,7 +462,7 @@ public class Game {
             Node n = moveList.get(i);
             mList.add(n.move);
             currPos.makeMove(n.move, ui);
-            if (currPos.halfMoveClock == 0) {
+            if (currPos.halfMoveClock == 0 && n.move.equals(new Move(0, 0, 0))) {
                 pos = new Position(currPos);
                 mList.clear();
             }

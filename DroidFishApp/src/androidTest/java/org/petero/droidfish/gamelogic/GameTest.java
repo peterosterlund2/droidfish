@@ -409,8 +409,7 @@ public class GameTest extends TestCase {
         assertEquals(Game.GameState.ALIVE, game.getGameState());
     }
 
-    /** Test that UCI history is not longer than necessary.
-     * We can't expect engines to handle null moves, for example. */
+    /** Test that UCI history does not include null moves. */
     public void testUCIHistory() throws ChessParseError {
         Game game = new Game(null, new TimeControlData());
 
@@ -427,21 +426,26 @@ public class GameTest extends TestCase {
 
         game.processString("e5");
         hist = game.getUCIHistory();
-        expectedPos = new Position(game.currPos());
-        assertEquals(0, hist.second.size());
+        assertEquals(2, hist.second.size());
+        assertEquals(TextIO.UCIstringToMove("g1f3"), hist.second.get(0));
+        assertEquals(TextIO.UCIstringToMove("e7e5"), hist.second.get(1));
         assertEquals(expectedPos, hist.first);
 
         game.processString("Nc3");
         hist = game.getUCIHistory();
-        assertEquals(1, hist.second.size());
-        assertEquals(TextIO.UCIstringToMove("b1c3"), hist.second.get(0));
+        assertEquals(3, hist.second.size());
+        assertEquals(TextIO.UCIstringToMove("g1f3"), hist.second.get(0));
+        assertEquals(TextIO.UCIstringToMove("e7e5"), hist.second.get(1));
+        assertEquals(TextIO.UCIstringToMove("b1c3"), hist.second.get(2));
         assertEquals(expectedPos, hist.first);
 
         game.processString("Nc6");
         hist = game.getUCIHistory();
-        assertEquals(2, hist.second.size());
-        assertEquals(TextIO.UCIstringToMove("b1c3"), hist.second.get(0));
-        assertEquals(TextIO.UCIstringToMove("b8c6"), hist.second.get(1));
+        assertEquals(4, hist.second.size());
+        assertEquals(TextIO.UCIstringToMove("g1f3"), hist.second.get(0));
+        assertEquals(TextIO.UCIstringToMove("e7e5"), hist.second.get(1));
+        assertEquals(TextIO.UCIstringToMove("b1c3"), hist.second.get(2));
+        assertEquals(TextIO.UCIstringToMove("b8c6"), hist.second.get(3));
         assertEquals(expectedPos, hist.first);
 
         int varNo = game.tree.addMove("--", "", 0, "", "");
