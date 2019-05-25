@@ -1636,6 +1636,7 @@ public class DroidFish extends Activity
         rightDrawer = findViewById(R.id.right_drawer);
 
         final DrawerItem[] leftItems = new DrawerItem[] {
+            new DrawerItem(ITEM_NEW_GAME, R.string.option_new_game),
             new DrawerItem(ITEM_EDIT_BOARD, R.string.option_edit_board),
             new DrawerItem(ITEM_FILE_MENU, R.string.option_file),
             new DrawerItem(ITEM_SELECT_BOOK, R.string.option_select_book),
@@ -1653,7 +1654,6 @@ public class DroidFish extends Activity
         });
 
         final DrawerItem[] rightItems = new DrawerItem[] {
-            new DrawerItem(ITEM_NEW_GAME, R.string.option_new_game),
             new DrawerItem(ITEM_RESIGN, R.string.option_resign_game),
             new DrawerItem(ITEM_FORCE_MOVE, R.string.option_force_computer_move),
             new DrawerItem(ITEM_DRAW, R.string.option_draw)
