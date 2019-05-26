@@ -66,6 +66,10 @@ public class PortListener {
             serverSocket.setReuseAddress(true);
             serverSocket.bind(new InetSocketAddress(config.port));
 
+            synchronized (PortListener.class) {
+                System.out.printf("Listening on port %d\n", config.port);
+            }
+
             this.serverSocket = serverSocket;
             while (!shutDownFlag) {
                 try (Socket clientSocket = serverSocket.accept()) {

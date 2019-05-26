@@ -87,7 +87,7 @@ public class EngineServer implements ErrorHandler {
         }
     }
 
-    private void run() {
+    private void runGui() {
         window = new MainWindow(this, configs);
     }
 
@@ -109,18 +109,33 @@ public class EngineServer implements ErrorHandler {
         System.exit(0);
     }
 
+    private static void usage() {
+        System.out.printf("Usage: engineServer [-numengines value] [-nogui]\n");
+        System.exit(2);
+    }
+
     public static void main(String[] args) {
         int numEngines = 8;
-        if (args.length > 0) {
-            try {
-                numEngines = Integer.valueOf(args[0]);
-                numEngines = Math.max(1, numEngines);
-                numEngines = Math.min(20, numEngines);
-            } catch (NumberFormatException ignore) {
+        boolean gui = true;
+        for (int i = 0; i < args.length; i++) {
+            if ("-numengines".equals(args[i]) && i+1 < args.length) {
+                try {
+                    numEngines = Integer.valueOf(args[i+1]);
+                    numEngines = Math.max(1, numEngines);
+                    numEngines = Math.min(20, numEngines);
+                    i++;
+                } catch (NumberFormatException e) {
+                    usage();
+                }
+            } else if ("-nogui".equals(args[i])) {
+                gui = false;
+            } else {
+                usage();
             }
         }
         EngineServer server = new EngineServer(numEngines);
-        server.run();
+        if (gui)
+            server.runGui();
     }
 
     @Override
