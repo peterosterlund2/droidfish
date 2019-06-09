@@ -20,7 +20,6 @@
 package org.petero.droidfish;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -31,7 +30,6 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -69,6 +67,8 @@ import org.petero.droidfish.view.ChessBoard;
 import org.petero.droidfish.view.MoveListView;
 import org.petero.droidfish.view.ChessBoard.SquareDecoration;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import tourguide.tourguide.Overlay;
 import tourguide.tourguide.Pointer;
 import tourguide.tourguide.Sequence;
@@ -86,6 +86,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
@@ -95,7 +96,6 @@ import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -144,13 +144,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
-import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.webkit.WebView;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -3715,38 +3711,48 @@ public class DroidFish extends Activity
     }
 
     private boolean notificationActive = false;
+    private NotificationChannel notificationChannel = null;
 
     /** Set/clear the "heavy CPU usage" notification. */
     private void setNotification(boolean show) {
         if (notificationActive == show)
             return;
         notificationActive = show;
+
         final int cpuUsage = 1;
-        NotificationManager mNotificationManager =
-                (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        Context context = getApplicationContext();
+        NotificationManagerCompat notificationManagerCompat =
+                NotificationManagerCompat.from(context);
+
         if (show) {
-            boolean silhouette = Build.VERSION.SDK_INT >= 21;
-            int icon = silhouette ? R.drawable.silhouette : R.mipmap.ic_launcher;
+            final int sdkVer = Build.VERSION.SDK_INT;
+            String channelId = "general";
+            if (notificationChannel == null && sdkVer >= 26) {
+                notificationChannel = new NotificationChannel(channelId, "General",
+                                                              NotificationManager.IMPORTANCE_HIGH);
+                NotificationManager notificationManager =
+                        (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
+
+            int icon = (sdkVer >= 21) ? R.drawable.silhouette : R.mipmap.ic_launcher;
             String tickerText = getString(R.string.heavy_cpu_usage);
-            long when = System.currentTimeMillis();
-            Context context = getApplicationContext();
             String contentTitle = getString(R.string.background_processing);
             String contentText = getString(R.string.lot_cpu_power);
             Intent notificationIntent = new Intent(this, CPUWarning.class);
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-            @SuppressWarnings("deprecation")
-            Notification notification = new Notification.Builder(context)
+
+            Notification notification = new NotificationCompat.Builder(context, channelId)
                     .setSmallIcon(icon)
                     .setTicker(tickerText)
-                    .setWhen(when)
                     .setOngoing(true)
                     .setContentTitle(contentTitle)
                     .setContentText(contentText)
                     .setContentIntent(contentIntent)
-                    .getNotification();
-            mNotificationManager.notify(cpuUsage, notification);
+                    .build();
+            notificationManagerCompat.notify(cpuUsage, notification);
         } else {
-            mNotificationManager.cancel(cpuUsage);
+            notificationManagerCompat.cancel(cpuUsage);
         }
     }
 
