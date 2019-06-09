@@ -17,15 +17,11 @@
     <string name="autoDelay_default">5000</string>
     <string name="move_announce_type_default">off</string>
     <string name="cpu_warning">\
-<b>Prozessor-Nutzung</b>\n\
-Wenn Sie DroidFish im Hintergrund in der Spielmodus-Einstellung <i>Analyse</i> \
-oder <i>Computer gegen Computer</i> laufen lassen, oder wenn als Rechenzeit \
-ein großer Wert eingestellt ist, oder wenn die Einstellung <i>Vorausberechnung</i> aktiviert ist, \
-kann das Programm viel Prozessor-Leistung in Anspruch nehmen.\n\
-\n\
-Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese \
-Parameter entsprechend anders einstellen, oder dass Sie das Programm beenden, \
-wenn Sie es nicht aktiv nutzen.\
+<b>Prozessor-Nutzung</b>\
+\
+Wenn Sie DroidFish im Hintergrund in der Spielmodus-Einstellung <i>Analyse</i> oder <i>Computer gegen Computer</i> laufen lassen, oder wenn als Rechenzeit ein großer Wert eingestellt ist, oder wenn die Einstellung <i>Vorausberechnung</i> aktiviert ist, kann das Programm viel Prozessor-Leistung in Anspruch nehmen.\
+\
+Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese Parameter entsprechend anders einstellen, oder dass Sie das Programm beenden, wenn Sie es nicht aktiv nutzen.
     </string>
     <string name="offer_draw">Remis anbieten</string>
     <string name="queen">Dame</string>

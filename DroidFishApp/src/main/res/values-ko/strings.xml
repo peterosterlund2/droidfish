@@ -17,15 +17,16 @@
     <string name="autoDelay_default">5000</string>
     <string name="move_announce_type_default">off</string>
     <string name="cpu_warning">\
-<b>CPU 사용</b>\n\
-DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설정되어 있을 때, CPU 전원을 많이 사용할 수 있습니다. 
-
+<b>CPU 사용</b>\
+\
+DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설정되어 있을 때, CPU 전원을 많이 사용할 수 있습니다.\
+\
 <i>게임모드</i>가 <i>분석</i> 또는 <i>컴퓨터 vs 컴퓨터</i>로 설정되어 있는 경우.\
 <i>생각하는 시간</i>값이 크게 설정되어 있는 경우.\
-<i>숙고하기</i>가 활성화 되어 있는 경우\n\
-\n\
-
-배터리를 아끼려면, 설정을 바꾸거나, 프로그램을 사용하지 않을 때, <i>DroidFish</i>를 뒤로가기 버튼을 사용해서 종료하는 것을 권장합니다.\</string>
+<i>숙고하기</i>가 활성화 되어 있는 경우.\
+\
+배터리를 아끼려면, 설정을 바꾸거나, 프로그램을 사용하지 않을 때, <i>DroidFish</i>를 뒤로가기 버튼을 사용해서 종료하는 것을 권장합니다.
+    </string>
     <string name="offer_draw">무승부 제안</string>
     <string name="queen">퀸</string>
     <string name="rook">룩</string>

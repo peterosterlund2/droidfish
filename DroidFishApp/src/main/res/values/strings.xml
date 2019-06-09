@@ -16,15 +16,11 @@
     <string name="autoDelay_default">5000</string>
     <string name="move_announce_type_default">off</string>
     <string name="cpu_warning">\
-<b>CPU Usage</b>\n\
-If you leave DroidFish running in the background and <i>GameMode</i> is set to \
-<i>Analysis</i> or <i>Computer vs Computer</i>, or if <i>Thinking Time</i> \
-is set to a large value, or if <i>Pondering</i> is enabled, DroidFish can use \
-a lot of CPU power.\n\
-\n\
-If you are running on battery power, it is recommended that you change settings to \
-conserve battery power, or that you exit <i>DroidFish</i> using the back button when \
-you are not actively using the program.\
+<b>CPU Usage</b>\
+\
+If you leave DroidFish running in the background and <i>GameMode</i> is set to <i>Analysis</i> or <i>Computer vs Computer</i>, or if <i>Thinking Time</i> is set to a large value, or if <i>Pondering</i> is enabled, DroidFish can use a lot of CPU power.\
+\
+If you are running on battery power, it is recommended that you change settings to conserve battery power, or that you exit <i>DroidFish</i> using the back button when you are not actively using the program.
     </string>
     <string name="offer_draw">Offer Draw</string>
     <string name="queen">Queen</string>

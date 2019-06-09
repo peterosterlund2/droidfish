@@ -17,13 +17,11 @@
     <string name="autoDelay_default">5000</string>
     <string name="move_announce_type_default">off</string>
     <string name="cpu_warning">\
-<b>Utilización de la CPU </b>\n\
-Si deja a DroidFish analizando en segundo plano, y el<i> Modo Partida</i> está ajustado en \
-<i>Análisis</i> o <i>Computadora vs Computadora </i>, o si <i> Tiempo de Cálculo</i> \
-está ajustado a mucho tiempo, o si <i>Pensar siempre</i> está activado, DroidFish puede utilizar \
-mucha potencia del procesador (CPU) .\n\
-\n\
-Si está usted utilizando la batería, se recomienda que cambie los ajustes para \ ahorrar batería, o que salga de <i>DroidFish</i> utilizando el botón de retroceso cuando \no esté haciendo uso del programa.\
+<b>Utilización de la CPU</b>\
+\
+Si deja a DroidFish analizando en segundo plano, y el <i>Modo Partida</i> está ajustado en <i>Análisis</i> o <i>Computadora vs Computadora</i>, o si <i>Tiempo de Cálculo</i> está ajustado a mucho tiempo, o si <i>Pensar siempre</i> está activado, DroidFish puede utilizar mucha potencia del procesador (CPU).\
+\
+Si está usted utilizando la batería, se recomienda que cambie los ajustes para ahorrar batería, o que salga de <i>DroidFish</i> utilizando el botón de retroceso cuando o esté haciendo uso del programa.
     </string>
     <string name="offer_draw">Ofrecer Tablas</string>
     <string name="queen">Dama</string>

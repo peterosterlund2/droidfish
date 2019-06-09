@@ -17,15 +17,12 @@
     <string name="autoDelay_default">5000</string>
     <string name="move_announce_type_default">off</string>
     <string name="cpu_warning">\
-<b>Uso de CPU</b>\n\
-Se você deixar o DroidFish rodando em background e <i>Modo de jogo</i> estiver configurado para \
-<i>Análise</i> ou <i>Computador vs Computador</i>, ou se <i>Tempo pensando</i> \
-estiver configurado para um valor grande, ou se <i>Ponderando</i> estiver habilitado, DroidFish pode usar \
-muita CPU.\n\
-\n\
-Se você está usando somente a bateria, recomenda-se que você mude as configurações para \
-economizar bateria, ou que você saia do <i>DroidFish</i> usando o botão voltar quando \
-não estiver usando o programa diretamente.\</string>
+<b>Uso de CPU</b>\
+\
+Se você deixar o DroidFish rodando em background e <i>Modo de jogo</i> estiver configurado para <i>Análise</i> ou <i>Computador vs Computador</i>, ou se <i>Tempo pensando</i> estiver configurado para um valor grande, ou se <i>Ponderando</i> estiver habilitado, DroidFish pode usar muita CPU.\
+\
+Se você está usando somente a bateria, recomenda-se que você mude as configurações para economizar bateria, ou que você saia do <i>DroidFish</i> usando o botão voltar quando não estiver usando o programa diretamente.
+    </string>
     <string name="offer_draw">Oferecer empate</string>
     <string name="queen">Dama</string>
     <string name="rook">Torre</string>

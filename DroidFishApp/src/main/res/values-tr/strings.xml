@@ -17,14 +17,11 @@
     <string name="autoDelay_default">5000</string>
     <string name="move_announce_type_default">off</string>
     <string name="cpu_warning">\
-<b>CPU kullanımı</b>\n\
-Eğer DroidFish\'i arkaplanda çalıştırır ve <i>Oyun Modu</i>\'nu <i>Analiz</i> veya \
-<i>Bilgisayara karşı bilgisayar</i> ayarlarsanız ya da; <i>Düşünme Süresi</i> çok uzun \
-olursa ya da; <i>düşünme</i> açık bırakılırsa DroidFish çok fazla CPU kullanabilir.\n\
-\n\
-Pil gücüyle çalışıyorsanız, pil gücünden tasarruf etmek için ayarları değiştirmenizi \
-veya programı etkin bir şekilde kullanmadığınızda geri düğmesini kullanarak \
-DroidFish\'den çıkmanızı öneririz.\
+<b>CPU kullanımı</b>\
+\
+Eğer DroidFish\'i arkaplanda çalıştırır ve <i>Oyun Modu</i>\'nu <i>Analiz</i> veya <i>Bilgisayara karşı bilgisayar</i> ayarlarsanız ya da; <i>Düşünme Süresi</i> çok uzun olursa ya da; <i>düşünme</i> açık bırakılırsa DroidFish çok fazla CPU kullanabilir.\
+\
+Pil gücüyle çalışıyorsanız, pil gücünden tasarruf etmek için ayarları değiştirmenizi veya programı etkin bir şekilde kullanmadığınızda geri düğmesini kullanarak DroidFish\'den çıkmanızı öneririz.
     </string>
     <string name="offer_draw">Beraberlik Öner</string>
     <string name="queen">Vezir</string>

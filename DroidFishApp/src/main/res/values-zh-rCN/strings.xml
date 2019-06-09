@@ -17,13 +17,11 @@
     <string name="autoDelay_default">5000</string>
     <string name="move_announce_type_default">off</string>
     <string name="cpu_warning">\
-<b>CPU 使用率</b>\n\
-保持 DroidFish 在后台运行和<i>对局模式</i>设置为<i>分析</i>或\
-<i>电脑对电脑</i>，或者<i>分析时间</i>设置为较大的值，或者<i>思考</i>已启用，\
-DroidFish 将会使用大量的 CPU 功耗。\n\
-\n\
-使用电池运行时，建议更改设置以节省电池电量，或者在不使用该程序时，使用返回按钮\
-退出<i>DroidFish</i>。\
+<b>CPU 使用率</b>\
+\
+保持 DroidFish 在后台运行和<i>对局模式</i>设置为<i>分析</i>或 <i>电脑对电脑</i>，或者<i>分析时间</i>设置为较大的值，或者<i>思考</i>已启用， DroidFish 将会使用大量的 CPU 功耗。\
+\
+使用电池运行时，建议更改设置以节省电池电量，或者在不使用该程序时，使用返回按钮退出<i>DroidFish</i>。
     </string>
     <string name="offer_draw">提议和棋</string>
     <string name="queen">后</string>

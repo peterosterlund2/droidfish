@@ -17,14 +17,12 @@
     <string name="autoDelay_default">5000</string>
     <string name="move_announce_type_default">off</string>
     <string name="cpu_warning">\
-<b>CPU Gebruik</b>\n\
-Als DroidFish op de achtergrond aan staat en de <i>Spelmodus</i> staat op \
-<i>Analyse</i> of op <i>Computer vs Computer</i>, of als de <i>denktijd</i> \
-op een hoge waarde staat, of als <i>Peinzen</i> aan staat, kan het programma \ zeer veel CPU capaciteit gebruiken.\n\
-\n\
-Als uw telefoon op batterij werkt is het aan te raden om deze instellingen \
-te wijzigen teneinde batterijgebruik te besparen, of om <i>DroidFish</i> \
-daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\</string>
+<b>CPU Gebruik</b>\
+\
+Als DroidFish op de achtergrond aan staat en de <i>Spelmodus</i> staat op <i>Analyse</i> of op <i>Computer vs Computer</i>, of als de <i>denktijd</i> op een hoge waarde staat, of als <i>Peinzen</i> aan staat, kan het programma zeer veel CPU capaciteit gebruiken.\
+\
+Als uw telefoon op batterij werkt is het aan te raden om deze instellingen te wijzigen teneinde batterijgebruik te besparen, of om <i>DroidFish</i> daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).
+    </string>
     <string name="offer_draw">Remise aanbieden</string>
     <string name="queen">Dame</string>
     <string name="rook">Toren</string>

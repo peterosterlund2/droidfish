@@ -17,15 +17,12 @@
     <string name="autoDelay_default">5000</string>
     <string name="move_announce_type_default">off</string>
     <string name="cpu_warning">\
-<b>Obciążenie procesora</b>\n\
-Jeśli pozostawisz DroidFish\'a działającego w tle a <i>Tryb gry</i> jest ustawiony na \
-<i>Analizę</i> lub <i>Komputer z komputerem</i>, lub jeśli <i>Czas namysłu</i> \
-jest ustawiony na dużą wartość, lub jeśli <i>Namysł</i> jest włączony, DroidFish może \
-używać dużo mocy obliczeniowej procesora.\n\
-\n\
-Jeśli pracujesz na baterii, zalecana jest zmiana ustawień, w celu oszczędzania \
-baterii lub zakończenie <i>DroidFish\'a</i> klawiszem wstecz, kiedy \
-nie korzystasz aktywnie z programu.\</string>
+<b>Obciążenie procesora</b>\
+\
+Jeśli pozostawisz DroidFish\'a działającego w tle a <i>Tryb gry</i> jest ustawiony na <i>Analizę</i> lub <i>Komputer z komputerem</i>, lub jeśli <i>Czas namysłu</i> jest ustawiony na dużą wartość, lub jeśli <i>Namysł</i> jest włączony, DroidFish może używać dużo mocy obliczeniowej procesora.\
+\
+Jeśli pracujesz na baterii, zalecana jest zmiana ustawień, w celu oszczędzania baterii lub zakończenie <i>DroidFish\'a</i> klawiszem wstecz, kiedy nie korzystasz aktywnie z programu.
+    </string>
     <string name="offer_draw">Zaproponuj remis</string>
     <string name="queen">Hetman</string>
     <string name="rook">Wieża</string>
