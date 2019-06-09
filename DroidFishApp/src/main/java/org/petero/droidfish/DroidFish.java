@@ -3726,7 +3726,7 @@ public class DroidFish extends Activity
                 (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         if (show) {
             boolean silhouette = Build.VERSION.SDK_INT >= 21;
-            int icon = silhouette ? R.drawable.silhouette : R.mipmap.icon;
+            int icon = silhouette ? R.drawable.silhouette : R.mipmap.ic_launcher;
             String tickerText = getString(R.string.heavy_cpu_usage);
             long when = System.currentTimeMillis();
             Context context = getApplicationContext();
