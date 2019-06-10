@@ -28,8 +28,8 @@ import com.kalab.chess.enginesupport.ChessEngineResolver;
 /** Engine imported from a different android app, resolved using the open exchange format. */
 public class OpenExchangeEngine extends ExternalEngine {
 
-    public OpenExchangeEngine(String engine, Report report) {
-        super(engine, report);
+    public OpenExchangeEngine(String engine, String workDir, Report report) {
+        super(engine, workDir, report);
     }
 
     @Override

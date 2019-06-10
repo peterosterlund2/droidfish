@@ -35,8 +35,8 @@ import android.os.Environment;
 /** Stockfish engine running as process, started from assets resource. */
 public class InternalStockFish extends ExternalEngine {
 
-    public InternalStockFish(Report report) {
-        super("", report);
+    public InternalStockFish(Report report, String workDir) {
+        super("", workDir, report);
     }
 
     @Override

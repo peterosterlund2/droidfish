@@ -37,6 +37,7 @@ public class ExternalEngine extends UCIEngineBase {
     protected final Context context;
 
     private File engineFileName;
+    private File engineWorkDir;
     private final Report report;
     private Process engineProc;
     private Thread startupThread;
@@ -47,10 +48,11 @@ public class ExternalEngine extends UCIEngineBase {
     private boolean startedOk;
     private boolean isRunning;
 
-    public ExternalEngine(String engine, Report report) {
+    public ExternalEngine(String engine, String workDir, Report report) {
         context = DroidFishApp.getContext();
         this.report = report;
         engineFileName = new File(engine);
+        engineWorkDir = new File(workDir);
         engineProc = null;
         startupThread = null;
         exitThread = null;
@@ -75,6 +77,7 @@ public class ExternalEngine extends UCIEngineBase {
             chmod(exePath);
             cleanUpExeDir(exeDir, exePath);
             ProcessBuilder pb = new ProcessBuilder(exePath);
+            pb.directory(engineWorkDir);
             synchronized (EngineUtil.nativeLock) {
                 engineProc = pb.start();
             }

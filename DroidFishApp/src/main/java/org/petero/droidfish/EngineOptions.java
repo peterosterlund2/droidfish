@@ -31,6 +31,7 @@ public final class EngineOptions {
     String rtbPath;             // Syzygy directory path
     String rtbPathNet;          // Syzygy directory path for network engines
     public String networkID;    // host+port network settings
+    public String workDir;      // Working directory for engine process
 
     public EngineOptions() {
         hashMB = 16;
@@ -44,6 +45,7 @@ public final class EngineOptions {
         rtbPath = "";
         rtbPathNet = "";
         networkID = "";
+        workDir = "";
     }
 
     public EngineOptions(EngineOptions other) {
@@ -58,6 +60,7 @@ public final class EngineOptions {
         rtbPath = other.rtbPath;
         rtbPathNet = other.rtbPathNet;
         networkID = other.networkID;
+        workDir = other.workDir;
     }
 
     /** Get the GTB path for an engine. */
@@ -90,7 +93,8 @@ public final class EngineOptions {
                 gtbPathNet.equals(other.gtbPathNet) &&
                 rtbPath.equals(other.rtbPath) &&
                 rtbPathNet.equals(other.rtbPathNet) &&
-                networkID.equals(other.networkID));
+                networkID.equals(other.networkID) &&
+                workDir.equals(other.workDir));
     }
 
     @Override
