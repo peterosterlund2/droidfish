@@ -77,7 +77,8 @@ public class ExternalEngine extends UCIEngineBase {
             chmod(exePath);
             cleanUpExeDir(exeDir, exePath);
             ProcessBuilder pb = new ProcessBuilder(exePath);
-            pb.directory(engineWorkDir);
+            if (engineWorkDir.canRead() && engineWorkDir.isDirectory())
+                pb.directory(engineWorkDir);
             synchronized (EngineUtil.nativeLock) {
                 engineProc = pb.start();
             }
