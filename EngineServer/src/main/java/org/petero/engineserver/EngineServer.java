@@ -33,7 +33,7 @@ public class EngineServer implements ErrorHandler {
     private PortListener[] portListeners;
     private MainWindow window;
 
-    public EngineServer(int numEngines) {
+    private EngineServer(int numEngines) {
         configs = new EngineConfig[numEngines];
         portListeners = new PortListener[numEngines];
         for (int i = 0; i < numEngines; i++) {
@@ -110,7 +110,7 @@ public class EngineServer implements ErrorHandler {
     }
 
     private static void usage() {
-        System.out.printf("Usage: engineServer [-numengines value] [-nogui]\n");
+        System.out.println("Usage: engineServer [-numengines value] [-nogui]");
         System.exit(2);
     }
 

@@ -22,8 +22,6 @@ import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.WindowAdapter;
@@ -32,7 +30,6 @@ import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -48,7 +45,6 @@ public class MainWindow {
     private JTextField[] port;
     private JTextField[] filename;
     private JTextField[] arguments;
-    private JButton[] browse;
 
     private EngineServer server;
     private EngineConfig[] configs;
@@ -56,12 +52,7 @@ public class MainWindow {
     public MainWindow(EngineServer server, EngineConfig[] configs) {
         this.server = server;
         this.configs = configs;
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                initUI();
-            }
-        });
+        SwingUtilities.invokeLater(this::initUI);
     }
 
     private void initUI() {
@@ -72,7 +63,6 @@ public class MainWindow {
         port = new JTextField[numEngines];
         filename = new JTextField[numEngines];
         arguments = new JTextField[numEngines];
-        browse = new JButton[numEngines];
 
         Container pane = frame.getContentPane();
         frame.setTitle("Chess Engine Server");
@@ -118,12 +108,7 @@ public class MainWindow {
             constr.gridy = row;
             pane.add(enabled[r], constr);
             enabled[r].setSelected(config.enabled);
-            enabled[r].addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent event) {
-                    enabledChanged(engineNo);
-                }
-            });
+            enabled[r].addActionListener(event -> enabledChanged(engineNo));
 
             port[r] = new JTextField();
             constr = new GridBagConstraints();
@@ -134,12 +119,7 @@ public class MainWindow {
             pane.add(port[r], constr);
             port[r].setColumns(5);
             port[r].setText(Integer.toString(config.port));
-            port[r].addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent event) {
-                    portChanged(engineNo);
-                }
-            });
+            port[r].addActionListener(event -> portChanged(engineNo));
             port[r].addFocusListener(new FocusAdapter() {
                 @Override
                 public void focusLost(FocusEvent event) {
@@ -156,12 +136,7 @@ public class MainWindow {
             pane.add(filename[r], constr);
             filename[r].setColumns(40);
             filename[r].setText(config.filename);
-            filename[r].addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent event) {
-                    filenameChanged(engineNo);
-                }
-            });
+            filename[r].addActionListener(event -> filenameChanged(engineNo));
             filename[r].addFocusListener(new FocusAdapter() {
                 @Override
                 public void focusLost(FocusEvent event) {
@@ -178,12 +153,7 @@ public class MainWindow {
             pane.add(arguments[r], constr);
             arguments[r].setColumns(40);
             arguments[r].setText(config.arguments);
-            arguments[r].addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent event) {
-                    argumentsChanged(engineNo);
-                }
-            });
+            arguments[r].addActionListener(event -> argumentsChanged(engineNo));
             arguments[r].addFocusListener(new FocusAdapter() {
                 @Override
                 public void focusLost(FocusEvent event) {
@@ -191,20 +161,15 @@ public class MainWindow {
                 }
             });
 
-            browse[r] = new JButton("Browse");
+            JButton browse = new JButton("Browse");
             constr = new GridBagConstraints();
             constr.anchor = GridBagConstraints.NORTH;
             constr.insets = inset;
             constr.gridx = 3;
             constr.gridy = row;
             constr.gridheight = 2;
-            pane.add(browse[r], constr);
-            browse[r].addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent event) {
-                    browseFile(engineNo);
-                }
-            });
+            pane.add(browse, constr);
+            browse.addActionListener(event -> browseFile(engineNo));
 
             row += 2;
         }
@@ -268,16 +233,12 @@ public class MainWindow {
         StringBuilder sb = new StringBuilder();
         int lineLen = 100;
         while (message.length() > lineLen) {
-            sb.append(message.substring(0, lineLen));
+            sb.append(message, 0, lineLen);
             sb.append('\n');
             message = message.substring(lineLen);
         }
         sb.append(message);
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                JOptionPane.showMessageDialog(frame, sb.toString(), title, JOptionPane.ERROR_MESSAGE);
-            }
-        });
+        SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame, sb.toString(), title,
+                                                                       JOptionPane.ERROR_MESSAGE));
    }
 }

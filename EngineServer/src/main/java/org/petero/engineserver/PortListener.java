@@ -90,11 +90,11 @@ public class PortListener {
                     Thread t1 = forwardIO(proc.getInputStream(), clientSocket.getOutputStream());
                     Thread t2 = forwardIO(clientSocket.getInputStream(), proc.getOutputStream());
                     try {
-                        int exitCode = proc.waitFor();
-                        if (exitCode != 0) {
+                        /* int exitCode = */ proc.waitFor();
+//                        if (exitCode != 0) {
 //                            errorHandler.reportError("Engine error",
 //                                                     "Engine terminated with status " + exitCode);
-                        }
+//                        }
                     } catch (InterruptedException ex) {
                         proc.getOutputStream().close();
                         proc.destroyForcibly();
