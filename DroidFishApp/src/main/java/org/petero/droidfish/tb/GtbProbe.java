@@ -1,5 +1,5 @@
 /*
-    GtbProbe - Java interface to Gaviota endgame tablebases.
+    DroidFish - An Android chess program.
     Copyright (C) 2011-2012  Peter Österlund, peterosterlund2@gmail.com
 
     This program is free software: you can redistribute it and/or modify
