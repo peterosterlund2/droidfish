@@ -1360,6 +1360,8 @@ public class DroidFish extends Activity
     }
 
     private void setLanguage(String lang) {
+        if (Build.VERSION.SDK_INT >= 28)
+            return; // Unknown how to make this work for API level 28
         Locale newLocale;
         if ("default".equals(lang)) {
             newLocale = Resources.getSystem().getConfiguration().locale;
