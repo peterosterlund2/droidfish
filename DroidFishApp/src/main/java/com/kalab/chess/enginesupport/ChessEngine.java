@@ -67,6 +67,7 @@ public class ChessEngine {
     }
 
     private void copyFile(InputStream istream, String targetFilePath) throws IOException {
+        new File(targetFilePath).delete();
         FileOutputStream fout = new FileOutputStream(targetFilePath);
         byte[] b = new byte[1024];
         int numBytes = 0;

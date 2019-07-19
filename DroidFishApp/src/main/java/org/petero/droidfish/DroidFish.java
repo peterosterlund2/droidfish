@@ -562,7 +562,7 @@ public class DroidFish extends Activity
         egtbForceReload = true;
         if (speech == null)
             speech = new Speech();
-        readPrefs();
+        readPrefs(false);
         TimeControlData tcData = new TimeControlData();
         tcData.setTimeControl(timeControl, movesPerSession, timeIncrement);
         ctrl.newGame(gameMode, tcData);
@@ -609,6 +609,11 @@ public class DroidFish extends Activity
         }
 
         startTourGuide();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(DroidFishApp.setLanguage(newBase, false));
     }
 
     private void startTourGuide(){
@@ -852,7 +857,7 @@ public class DroidFish extends Activity
         ChessBoardPlay oldCB = cb;
         String statusStr = status.getText().toString();
         initUI();
-        readPrefs();
+        readPrefs(true);
         cb.cursorX = oldCB.cursorX;
         cb.cursorY = oldCB.cursorY;
         cb.cursorVisible = oldCB.cursorVisible;
@@ -892,7 +897,7 @@ public class DroidFish extends Activity
         if (leftHanded != leftHandedView())
             reInitUI();
         else
-            readPrefs();
+            readPrefs(true);
         maybeAutoModeOff(gameMode);
         ctrl.setGameMode(gameMode);
     }
@@ -1219,7 +1224,7 @@ public class DroidFish extends Activity
         return Integer.parseInt(tmp);
     }
 
-    private void readPrefs() {
+    private void readPrefs(boolean restartIfLangChange) {
         int modeNr = getIntSetting("gameMode", 1);
         gameMode = new GameMode(modeNr);
         String oldPlayerName = playerName;
@@ -1268,8 +1273,7 @@ public class DroidFish extends Activity
         boolean useWakeLock = settings.getBoolean("wakeLock", false);
         setWakeLock(useWakeLock);
 
-        String lang = settings.getString("language", "default");
-        setLanguage(lang);
+        DroidFishApp.setLanguage(this, restartIfLangChange);
         int fontSize = getIntSetting("fontSize", 12);
         int statusFontSize = fontSize;
         Configuration config = getResources().getConfiguration();
@@ -1357,28 +1361,6 @@ public class DroidFish extends Activity
 
     private void overrideViewAttribs() {
         Util.overrideViewAttribs(findViewById(R.id.main));
-    }
-
-    private void setLanguage(String lang) {
-        if (Build.VERSION.SDK_INT >= 28)
-            return; // Unknown how to make this work for API level 28
-        Locale newLocale;
-        if ("default".equals(lang)) {
-            newLocale = Resources.getSystem().getConfiguration().locale;
-        } else if (lang.contains("_")) {
-            String[] parts = lang.split("_");
-            newLocale = new Locale(parts[0], parts[1]);
-        } else {
-            newLocale = new Locale(lang);
-        }
-        if (!newLocale.getLanguage().equals(Locale.getDefault().getLanguage())) {
-            Resources res = getResources();
-            Configuration config = res.getConfiguration();
-            config.locale = newLocale;
-            res.updateConfiguration(config, res.getDisplayMetrics());
-            Locale.setDefault(newLocale);
-            recreate();
-        }
     }
 
     /**

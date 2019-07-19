@@ -24,6 +24,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -152,6 +153,11 @@ public class LoadFEN extends ListActivity {
             setResult(RESULT_CANCELED);
             finish();
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(DroidFishApp.setLanguage(newBase, false));
     }
 
     @Override

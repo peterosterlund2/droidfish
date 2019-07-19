@@ -19,6 +19,7 @@
 package org.petero.droidfish.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -34,6 +35,7 @@ import android.widget.ArrayAdapter;
 
 import androidx.databinding.DataBindingUtil;
 
+import org.petero.droidfish.DroidFishApp;
 import org.petero.droidfish.R;
 import org.petero.droidfish.Util;
 import org.petero.droidfish.databinding.EditoptionsBinding;
@@ -70,6 +72,11 @@ public class EditOptions extends Activity {
             setResult(RESULT_CANCELED);
             finish();
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(DroidFishApp.setLanguage(newBase, false));
     }
 
     @Override

@@ -22,6 +22,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -180,6 +181,11 @@ public abstract class EditPGN extends ListActivity {
             setResult(RESULT_CANCELED);
             finish();
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(DroidFishApp.setLanguage(newBase, false));
     }
 
     @Override

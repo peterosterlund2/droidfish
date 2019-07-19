@@ -118,6 +118,11 @@ public class EditBoard extends Activity {
     }
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(DroidFishApp.setLanguage(newBase, false));
+    }
+
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         ChessBoardEdit oldCB = cb;

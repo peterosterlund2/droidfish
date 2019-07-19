@@ -18,12 +18,14 @@
 
 package org.petero.droidfish.activities;
 
+import org.petero.droidfish.DroidFishApp;
 import org.petero.droidfish.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -50,5 +52,10 @@ public class CPUWarning extends Activity {
         super.onCreate(savedInstanceState);
         DialogFragment df = new Fragment();
         df.show(getFragmentManager(), "");
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(DroidFishApp.setLanguage(newBase, false));
     }
 }

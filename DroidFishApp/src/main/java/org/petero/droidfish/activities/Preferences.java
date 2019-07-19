@@ -18,9 +18,11 @@
 
 package org.petero.droidfish.activities;
 
+import org.petero.droidfish.DroidFishApp;
 import org.petero.droidfish.R;
 import org.petero.droidfish.Util;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -83,6 +85,11 @@ public class Preferences extends PreferenceActivity {
                             .replace(android.R.id.content, new Fragment())
                             .commit();
         Util.setFullScreenMode(this, settings);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(DroidFishApp.setLanguage(newBase, false));
     }
 
     @Override

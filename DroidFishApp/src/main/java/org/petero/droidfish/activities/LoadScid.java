@@ -36,6 +36,7 @@ import android.app.Fragment;
 import android.app.ListActivity;
 import android.app.LoaderManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -182,6 +183,11 @@ public class LoadScid extends ListActivity {
             setResult(RESULT_CANCELED);
             finish();
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(DroidFishApp.setLanguage(newBase, false));
     }
 
     @Override
