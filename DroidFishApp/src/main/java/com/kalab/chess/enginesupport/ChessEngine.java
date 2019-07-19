@@ -52,7 +52,7 @@ public class ChessEngine {
     }
 
     public File copyToFiles(ContentResolver contentResolver, File destination)
-            throws FileNotFoundException, IOException {
+            throws IOException {
         Uri uri = getUri();
         File output = new File(destination, uri.getPath().toString());
         copyUri(contentResolver, uri, output.getAbsolutePath());
@@ -60,15 +60,13 @@ public class ChessEngine {
     }
 
     public void copyUri(final ContentResolver contentResolver,
-            final Uri source, String targetFilePath) throws IOException,
-            FileNotFoundException {
+            final Uri source, String targetFilePath) throws IOException {
         InputStream istream = contentResolver.openInputStream(source);
         copyFile(istream, targetFilePath);
         setExecutablePermission(targetFilePath);
     }
 
-    private void copyFile(InputStream istream, String targetFilePath)
-            throws FileNotFoundException, IOException {
+    private void copyFile(InputStream istream, String targetFilePath) throws IOException {
         FileOutputStream fout = new FileOutputStream(targetFilePath);
         byte[] b = new byte[1024];
         int numBytes = 0;
