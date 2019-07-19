@@ -56,24 +56,24 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public abstract class EditPGN extends ListActivity {
-    static ArrayList<GameInfo> gamesInFile = new ArrayList<>();
-    static boolean cacheValid = false;
-    PGNFile pgnFile;
-    ProgressDialog progress;
+    private static ArrayList<GameInfo> gamesInFile = new ArrayList<>();
+    private static boolean cacheValid = false;
+    private PGNFile pgnFile;
+    private ProgressDialog progress;
     private GameInfo selectedGi = null;
-    ArrayAdapter<GameInfo> aa = null;
+    private ArrayAdapter<GameInfo> aa = null;
 
-    SharedPreferences settings;
-    int defaultItem = 0;
-    String lastSearchString = "";
-    String lastFileName = "";
-    long lastModTime = -1;
+    private SharedPreferences settings;
+    private int defaultItem = 0;
+    private String lastSearchString = "";
+    private String lastFileName = "";
+    private long lastModTime = -1;
 
-    Thread workThread = null;
-    boolean canceled = false;
+    private Thread workThread = null;
+    private boolean canceled = false;
 
-    boolean loadGame; // True when loading game, false when saving
-    String pgnToSave;
+    private boolean loadGame; // True when loading game, false when saving
+    private String pgnToSave;
 
     private SelectGameBinding binding;
 
