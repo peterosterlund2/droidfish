@@ -2391,8 +2391,11 @@ public class DroidFish extends Activity
 
     private void shareImage() {
         View v = findViewById(R.id.chessboard);
-        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
-                                       Bitmap.Config.ARGB_8888);
+        int w = v.getWidth();
+        int h = v.getHeight();
+        if (w <= 0 || h <= 0)
+            return;
+        Bitmap b = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(b);
         v.draw(c);
         File imgDir = new File(getFilesDir(), "shared");
