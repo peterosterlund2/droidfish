@@ -680,14 +680,19 @@ public class DroidFish extends Activity
                           Editor editor = settings.edit();
                           editor.putBoolean("guideShowOnStart", false);
                           editor.apply();
-                          tourGuide.next();
-                          tourGuide = null;
+                          if (tourGuide != null) {
+                              tourGuide.next();
+                              tourGuide = null;
+                          }
                       }));
 
         Sequence sequence = new Sequence.SequenceBuilder()
                 .add(guides.toArray(new TourGuide[0]))
                 .setDefaultOverlay(new Overlay()
-                                   .setOnClickListener(v -> tourGuide.next()))
+                                   .setOnClickListener(v -> {
+                                       if (tourGuide != null)
+                                           tourGuide.next();
+                                   }))
                 .setDefaultPointer(new Pointer())
                 .setContinueMethod(Sequence.ContinueMethod.OverlayListener)
                 .build();
