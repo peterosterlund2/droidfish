@@ -1,3 +1,19 @@
+2019-07-20: Version 1.75
+- Remove incorrect "engine error" message at end of games.
+- Various small user interface improvements.
+- Fix null pointer exception in ColorPickerPreference.
+- Create EngineServer Java program that can be used as a server for the
+  DroidFish "network engine" function.
+- Send the full game history to chess engines. This is used by LC0 and similar
+  engines.
+- Set the working directory for external engines to ".../DroidFish/uci/logs".
+  This is useful for the OpenCL version of LC0, which needs to create a tuning
+  file.
+- Move the "New Game" menu action from the right to the left drawer menu.
+- Update the app icon to look better for Android 9.
+- Make the CPU usage notification work for Android 8 and later.
+- Fix language setting for Android 9.
+
 2019-04-17: Version 1.74
 - Fix incorrect rendering of chess pieces on some devices.
 - Add more chess piece sets, mostly from PyChess.
@@ -27,7 +43,7 @@
 - New Ukrainian and Belarusian translations, from Mix Gerder and Toru Hasegawa.
 
 2017-06-11: Version 1.69
-- Fixed crash in android 7 when handling large PGN games.
+- Fixed crash in Android 7 when handling large PGN games.
 
 2017-06-03: Version 1.68
 - Don't do network communication on the main thread.
@@ -37,7 +53,7 @@
 - Fixed thread safety problem in MoveGen class.
 - Fixed possible crash when canceling a progress dialog.
 - Fixed possible crash when starting the edit board activity.
-- Added support for multi windows in android 7.
+- Added support for multi windows in Android 7.
 
 2017-01-31: Version 1.67
 - Fixed crash in text to speech code.
@@ -91,7 +107,7 @@
 - Updated Stockfish engine to git version from 2016-08-28.
 
 2016-01-13: Version 1.61
-- Permission handling for android 6.
+- Permission handling for Android 6.
 - Let the human player claim a draw that involves specifying but not
   playing a move that would lead to a 50move/3rep draw.
 - Display usage hints the first time the program is started.
@@ -117,7 +133,7 @@
 2015-12-27: Version 1.59
 - Include higher resolution versions of the app icon.
 - More efficient way to detect if scid on the go is installed.
-- Fixed Stockfish startup problem for android 4.0 and earlier.
+- Fixed Stockfish startup problem for Android 4.0 and earlier.
 
 2015-12-26: Version 1.58
 - Handle "number of search threads" as a normal UCI option, to make it
@@ -185,7 +201,7 @@
 - Changed default preferences to favor analysis mode.
 - Don't read the whole engine file just to determine if it is a
   network engine or not.
-- Removed support for android 1.5.
+- Removed support for Android 1.5.
 
 2013-11-30: Version 1.53 DD
 - Updated Stockfish engine to version DD.
@@ -270,11 +286,11 @@
   running.
 - Implemented function to share a PGN game.
 - Handle PGN file intents with more than one game.
-- Disable use of boldface in android 4.1 to work around crash bug, see
+- Disable use of boldface in Android 4.1 to work around crash bug, see
   http://code.google.com/p/android/issues/detail?id=34872.
 
 2012-06-16: Version 1.43
-- Fixed crash when "Force GPU rendering" is enabled in android
+- Fixed crash when "Force GPU rendering" is enabled in Android
   preferences.
 
 2012-06-13: Version 1.42
@@ -359,7 +375,7 @@
 - When making a move, scroll the move list to make the current move
   visible.
 - German translation.
-- Fixed crash in some android versions when long pressing the analysis
+- Fixed crash in some Android versions when long pressing the analysis
   text area when the engine was not analyzing.
 - Made it possible to click on moves in the move list to navigate to
   the corresponding position in the game. Idea from Scid on the go.
