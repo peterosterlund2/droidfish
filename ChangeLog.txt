@@ -1,3 +1,6 @@
+2019-07-21: Version 1.76
+- Use check boxes instead of switches in settings, to work better on Android 4.
+
 2019-07-20: Version 1.75
 - Remove incorrect "engine error" message at end of games.
 - Various small user interface improvements.
