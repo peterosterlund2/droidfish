@@ -831,11 +831,13 @@ public class DroidChessController {
                     buf.append(String.format(Locale.US, " [%s]", moveStr));
                     tmpPos.makeMove(ponderMove, ui);
                 }
-                for (Move m : pv.pv) {
-                    if (m == null)
+                for (int i = 0; i < pv.pv.size(); i++) {
+                    Move m = pv.pv.get(i);
+                    if (!TextIO.isValid(tmpPos, m)) {
+                        while (pv.pv.size() > i)
+                            pv.pv.remove(pv.pv.size() - 1);
                         break;
-                    if (!TextIO.isValid(tmpPos, m))
-                        break;
+                    }
                     String moveStr = TextIO.moveToString(tmpPos, m, false, localPt());
                     buf.append(String.format(Locale.US, " %s", moveStr));
                     tmpPos.makeMove(m, ui);

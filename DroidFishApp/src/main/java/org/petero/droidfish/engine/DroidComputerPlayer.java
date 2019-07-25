@@ -998,12 +998,16 @@ public class DroidComputerPlayer {
             if (havePvData) {
                 while (statPvInfo.size() < pvNum)
                     statPvInfo.add(new PvInfo(0, 0, 0, 0, 0, 0, 0, 0, false, false, false, new ArrayList<Move>()));
-                while (statPvInfo.size() <= pvNum)
+                if (statPvInfo.size() == pvNum)
                     statPvInfo.add(null);
                 ArrayList<Move> moves = new ArrayList<>();
                 int nMoves = statPV.size();
-                for (i = 0; i < nMoves; i++)
-                    moves.add(TextIO.UCIstringToMove(statPV.get(i)));
+                for (i = 0; i < nMoves; i++) {
+                    Move m = TextIO.UCIstringToMove(statPV.get(i));
+                    if (m == null)
+                        break;
+                    moves.add(m);
+                }
                 statPvInfo.set(pvNum, new PvInfo(statPVDepth, statScore, statTime, statNodes, statNps,
                                                  statTBHits, statHash, statSelDepth,
                                                  statIsMate, statUpperBound, statLowerBound, moves));
