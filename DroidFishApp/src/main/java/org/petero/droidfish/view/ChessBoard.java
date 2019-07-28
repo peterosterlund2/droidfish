@@ -377,6 +377,8 @@ public abstract class ChessBoard extends View {
         final int width = getWidth();
         final int height = getHeight();
         sqSize = Math.min(getSqSizeW(width), getSqSizeH(height));
+        if (sqSize <= 0)
+            return;
         labelPaint.setTextSize(sqSize/4.0f);
         decorationPaint.setTextSize(sqSize/3.0f);
         computeOrigin(width, height);
