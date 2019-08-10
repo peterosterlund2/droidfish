@@ -18,6 +18,8 @@
 
 package org.petero.droidfish.gamelogic;
 
+import android.util.Pair;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;

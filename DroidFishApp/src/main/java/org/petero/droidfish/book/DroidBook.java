@@ -19,10 +19,11 @@
 package org.petero.droidfish.book;
 
 import android.annotation.SuppressLint;
+import android.util.Pair;
+
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -31,7 +32,6 @@ import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.MoveGen;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
-import org.petero.droidfish.gamelogic.Pair;
 
 /** Implements an opening book. */
 public final class DroidBook {

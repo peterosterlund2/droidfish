@@ -29,11 +29,10 @@ import java.util.ArrayList;
 
 import org.petero.droidfish.DroidFishApp;
 import org.petero.droidfish.R;
-import org.petero.droidfish.gamelogic.Pair;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
+import android.util.Pair;
 import android.widget.Toast;
 
 public class PGNFile {

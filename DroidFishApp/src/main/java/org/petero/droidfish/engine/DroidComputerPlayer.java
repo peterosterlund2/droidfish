@@ -18,6 +18,8 @@
 
 package org.petero.droidfish.engine;
 
+import android.util.Pair;
+
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
@@ -28,7 +30,6 @@ import org.petero.droidfish.book.BookOptions;
 import org.petero.droidfish.book.DroidBook;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.MoveGen;
-import org.petero.droidfish.gamelogic.Pair;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.SearchListener;
 import org.petero.droidfish.gamelogic.TextIO;

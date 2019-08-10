@@ -22,10 +22,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.petero.droidfish.gamelogic.Pair;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.util.Pair;
 
 public class FENFile {
     private final File fileName;

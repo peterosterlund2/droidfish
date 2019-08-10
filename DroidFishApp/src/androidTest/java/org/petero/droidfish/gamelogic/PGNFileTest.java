@@ -18,6 +18,8 @@
 
 package org.petero.droidfish.gamelogic;
 
+import android.util.Pair;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -45,7 +47,7 @@ public class PGNFileTest extends TestCase {
             };
             writeFile(f, lines);
             PGNFile pgnFile = new PGNFile(f.getAbsolutePath());
-            Pair<GameInfoResult,ArrayList<GameInfo>>  res = pgnFile.getGameInfo(null, null);
+            Pair<GameInfoResult,ArrayList<GameInfo>> res = pgnFile.getGameInfo(null, null);
             assertEquals(GameInfoResult.OK, res.first);
             ArrayList<GameInfo> gi = res.second;
             assertEquals(1, gi.size());

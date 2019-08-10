@@ -19,7 +19,7 @@
 package org.petero.droidfish.book;
 
 import android.annotation.SuppressLint;
-import android.text.style.TabStopSpan;
+import android.util.Pair;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -32,7 +32,6 @@ import org.petero.droidfish.DroidFishApp;
 import org.petero.droidfish.gamelogic.ChessParseError;
 import org.petero.droidfish.gamelogic.GameTree;
 import org.petero.droidfish.gamelogic.Move;
-import org.petero.droidfish.gamelogic.Pair;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gamelogic.UndoInfo;

@@ -18,12 +18,13 @@
 
 package org.petero.droidfish.tb;
 
+import android.util.Pair;
+
 import java.util.ArrayList;
 
 import org.petero.droidfish.gamelogic.ChessParseError;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.MoveGen;
-import org.petero.droidfish.gamelogic.Pair;
 import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;

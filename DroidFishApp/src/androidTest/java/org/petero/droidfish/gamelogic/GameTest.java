@@ -18,6 +18,8 @@
 
 package org.petero.droidfish.gamelogic;
 
+import android.util.Pair;
+
 import java.util.ArrayList;
 
 import org.petero.droidfish.PGNOptions;

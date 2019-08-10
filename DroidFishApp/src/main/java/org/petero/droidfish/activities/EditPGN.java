@@ -31,6 +31,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,7 +51,6 @@ import org.petero.droidfish.Util;
 import org.petero.droidfish.activities.PGNFile.GameInfo;
 import org.petero.droidfish.activities.PGNFile.GameInfoResult;
 import org.petero.droidfish.databinding.SelectGameBinding;
-import org.petero.droidfish.gamelogic.Pair;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -18,6 +18,8 @@
 
 package org.petero.droidfish.gamelogic;
 
+import android.util.Pair;
+
 import org.petero.droidfish.Speech;
 
 import junit.framework.TestCase;

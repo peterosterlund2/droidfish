@@ -22,7 +22,6 @@ import java.util.ArrayList;
 
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.MoveGen;
-import org.petero.droidfish.gamelogic.Pair;
 import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
@@ -32,6 +31,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.util.Pair;
 import android.widget.Toast;
 
 /** Chess board widget suitable for play mode. */
