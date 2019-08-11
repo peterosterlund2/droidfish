@@ -45,10 +45,4 @@ public class Piece {
     public static boolean isWhite(int pType) {
         return pType < BKING;
     }
-    public static int makeWhite(int pType) {
-        return pType < BKING ? pType : pType - (BKING - WKING);
-    }
-    public static int makeBlack(int pType) {
-        return ((pType > EMPTY) && (pType < BKING)) ? pType + (BKING - WKING) : pType;
-    }
 }

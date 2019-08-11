@@ -30,58 +30,13 @@ public class Move {
     /** Promotion piece. */
     public int promoteTo;
 
-    public int score;
-    
     /** Create a move object. */
     public Move(int from, int to, int promoteTo) {
         this.from = from;
         this.to = to;
         this.promoteTo = promoteTo;
-        this.score = 0;
     }
 
-    public Move(int from, int to, int promoteTo, int score) {
-        this.from = from;
-        this.to = to;
-        this.promoteTo = promoteTo;
-        this.score = score;
-    }
-    
-    static public class SortByScore implements Comparator<Move> {
-        public int compare(Move sm1, Move sm2) {
-            return sm2.score - sm1.score;
-        }
-    }
-    
-    public Move(Move m) {
-        this.from = m.from;
-        this.to = m.to;
-        this.promoteTo = m.promoteTo;
-        this.score = m.score;
-    }
-
-    public final void copyFrom(Move m) {
-        from      = m.from;
-        to        = m.to;
-        promoteTo = m.promoteTo;
-//        score = m.score;
-    }
-
-    public final void clear() {
-        from      = 0;
-        to        = 0;
-        promoteTo = 0;
-        score     = 0;
-    }
-
-    public final void setMove(int from, int to, int promoteTo, int score) {
-        this.from = from;
-        this.to = to;
-        this.promoteTo = promoteTo;
-        this.score = score;
-    }
-
-    /** Note that score is not included in the comparison. */
     @Override
     public boolean equals(Object o) {
         if ((o == null) || (o.getClass() != this.getClass()))

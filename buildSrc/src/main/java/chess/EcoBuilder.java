@@ -87,13 +87,11 @@ public class EcoBuilder {
     private void readGame(String pgn) throws Throwable {
         if (pgn.isEmpty())
             return;
-        Game game = new Game(null, new TimeControlData());
-        PGNOptions options = new PGNOptions();
-        game.readPGN(pgn, options);
+        GameTree tree = new GameTree();
+        tree.readPGN(pgn);
 
         // Determine name of opening
         HashMap<String,String> headers = new HashMap<>();
-        GameTree tree = game.tree;
         tree.getHeaders(headers);
         int ecoIdx = addData(headers, "ECO");
         int opnIdx = addData(headers, "Opening");

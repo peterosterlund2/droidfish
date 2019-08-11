@@ -33,7 +33,6 @@ public class Position {
 
     // Bitboards
     public long[] pieceTypeBB;
-    public long whiteBB, blackBB;
     
     public boolean whiteMove;
 
@@ -66,7 +65,6 @@ public class Position {
         for (int i = 0; i < Piece.nPieceTypes; i++) {
             pieceTypeBB[i] = 0L;
         }
-        whiteBB = blackBB = 0L;
         whiteMove = true;
         castleMask = 0;
         epSquare = -1;
@@ -84,8 +82,6 @@ public class Position {
         for (int i = 0; i < Piece.nPieceTypes; i++) {
             pieceTypeBB[i] = other.pieceTypeBB[i];
         }
-        whiteBB = other.whiteBB;
-        blackBB = other.blackBB;
         whiteMove = other.whiteMove;
         castleMask = other.castleMask;
         epSquare = other.epSquare;
@@ -126,22 +122,7 @@ public class Position {
     public final long zobristHash() {
         return hashKey;
     }
-    public final long pawnZobristHash() {
-        return pHashKey;
-    }
-    public final long kingZobristHash() {
-        return psHashKeys[Piece.WKING][wKingSq] ^ 
-               psHashKeys[Piece.BKING][bKingSq];
-    }
 
-    public final long historyHash() {
-        long ret = hashKey;
-        if (halfMoveClock >= 80) {
-            ret ^= moveCntKeys[Math.min(halfMoveClock, 100)];
-        }
-        return ret;
-    }
-    
     /**
      * Decide if two positions are equal in the sense of the draw by repetition rule.
      * @return True if positions are equal, false otherwise.
@@ -204,13 +185,9 @@ public class Position {
         pieceTypeBB[piece] &= ~sqMaskF;
         pieceTypeBB[piece] |= sqMaskT;
         if (Piece.isWhite(piece)) {
-            whiteBB &= ~sqMaskF;
-            whiteBB |= sqMaskT;
             if (piece == Piece.WKING)
                 wKingSq = to;
         } else {
-            blackBB &= ~sqMaskF;
-            blackBB |= sqMaskT;
             if (piece == Piece.BKING)
                 bKingSq = to;
         }
@@ -232,12 +209,10 @@ public class Position {
 
         if (removedPiece != Piece.EMPTY) {
             if (Piece.isWhite(removedPiece)) {
-                whiteBB &= ~sqMask;
                 if (removedPiece == Piece.WPAWN) {
                     pHashKey ^= psHashKeys[Piece.WPAWN][square];
                 }
             } else {
-                blackBB &= ~sqMask;
                 if (removedPiece == Piece.BPAWN) {
                     pHashKey ^= psHashKeys[Piece.BPAWN][square];
                 }
@@ -246,14 +221,12 @@ public class Position {
 
         if (piece != Piece.EMPTY) {
             if (Piece.isWhite(piece)) {
-                whiteBB |= sqMask;
                 if (piece == Piece.WPAWN) {
                     pHashKey ^= psHashKeys[Piece.WPAWN][square];
                 }
                 if (piece == Piece.WKING)
                     wKingSq = square;
             } else {
-                blackBB |= sqMask;
                 if (piece == Piece.BPAWN) {
                     pHashKey ^= psHashKeys[Piece.BPAWN][square];
                 }
@@ -263,50 +236,6 @@ public class Position {
         }
     }
 
-    /**
-     * Set a square to a piece value.
-     * Special version that only updates enough of the state for the SEE function to be happy.
-     */
-    public final void setSEEPiece(int square, int piece) {
-        int removedPiece = squares[square];
-
-        // Update board
-        squares[square] = piece;
-
-        // Update bitboards
-        long sqMask = 1L << square;
-        pieceTypeBB[removedPiece] &= ~sqMask;
-        pieceTypeBB[piece] |= sqMask;
-        if (removedPiece != Piece.EMPTY) {
-            if (Piece.isWhite(removedPiece))
-                whiteBB &= ~sqMask;
-            else
-                blackBB &= ~sqMask;
-        }
-        if (piece != Piece.EMPTY) {
-            if (Piece.isWhite(piece))
-                whiteBB |= sqMask;
-            else
-                blackBB |= sqMask;
-        }
-    }
-
-    /** Return true if white long castling right has not been lost. */
-    public final boolean a1Castle() {
-        return (castleMask & (1 << A1_CASTLE)) != 0;
-    }
-    /** Return true if white short castling right has not been lost. */
-    public final boolean h1Castle() {
-        return (castleMask & (1 << H1_CASTLE)) != 0;
-    }
-    /** Return true if black long castling right has not been lost. */
-    public final boolean a8Castle() {
-        return (castleMask & (1 << A8_CASTLE)) != 0;
-    }
-    /** Return true if black short castling right has not been lost. */
-    public final boolean h8Castle() {
-        return (castleMask & (1 << H8_CASTLE)) != 0;
-    }
     /** Bitmask describing castling rights. */
     public final int getCastleMask() {
         return castleMask;
@@ -332,15 +261,6 @@ public class Position {
 
     public final int getKingSq(boolean white) {
         return white ? wKingSq : bKingSq;
-    }
-
-    /** Count number of pieces of a certain type. */
-    public final int nPieces(int pType) {
-        int ret = 0;
-        for (int sq = 0; sq < 64; sq++)
-            if (squares[sq] == pType)
-                ret++;
-        return ret;
     }
 
     /** Apply a move to the current position. */
@@ -487,46 +407,6 @@ public class Position {
                 setPiece(move.to - 8, Piece.BPAWN);
             } else if (p == Piece.BPAWN) {
                 setPiece(move.to + 8, Piece.WPAWN);
-            }
-        }
-    }
-
-    /**
-     * Apply a move to the current position.
-     * Special version that only updates enough of the state for the SEE function to be happy.
-     */
-    public final void makeSEEMove(Move move, UndoInfo ui) {
-        ui.capturedPiece = squares[move.to];
-        
-        int p = squares[move.from];
-
-        // Handle en passant
-        if (move.to == epSquare) {
-            if (p == Piece.WPAWN) {
-                setSEEPiece(move.to - 8, Piece.EMPTY);
-            } else if (p == Piece.BPAWN) {
-                setSEEPiece(move.to + 8, Piece.EMPTY);
-            }
-        }
-
-        // Perform move
-        setSEEPiece(move.from, Piece.EMPTY);
-        setSEEPiece(move.to, p);
-        whiteMove = !whiteMove;
-    }
-
-    public final void unMakeSEEMove(Move move, UndoInfo ui) {
-        whiteMove = !whiteMove;
-        int p = squares[move.to];
-        setSEEPiece(move.from, p);
-        setSEEPiece(move.to, ui.capturedPiece);
-
-        // Handle en passant
-        if (move.to == epSquare) {
-            if (p == Piece.WPAWN) {
-                setSEEPiece(move.to - 8, Piece.BPAWN);
-            } else if (p == Piece.BPAWN) {
-                setSEEPiece(move.to + 8, Piece.WPAWN);
             }
         }
     }

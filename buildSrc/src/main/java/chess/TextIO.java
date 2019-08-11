@@ -105,7 +105,6 @@ public class TextIO {
             }
         }
         pos.setCastleMask(castleMask);
-        removeBogusCastleFlags(pos);
 
         if (words.length > 3) {
             // En passant target square
@@ -182,21 +181,6 @@ public class TextIO {
         return pos;
     }
 
-    public static void removeBogusCastleFlags(Position pos) {
-        int castleMask = pos.getCastleMask();
-        int validCastle = 0;
-        if (pos.getPiece(4) == Piece.WKING) {
-            if (pos.getPiece(0) == Piece.WROOK) validCastle |= (1 << Position.A1_CASTLE);
-            if (pos.getPiece(7) == Piece.WROOK) validCastle |= (1 << Position.H1_CASTLE);
-        }
-        if (pos.getPiece(60) == Piece.BKING) {
-            if (pos.getPiece(56) == Piece.BROOK) validCastle |= (1 << Position.A8_CASTLE);
-            if (pos.getPiece(63) == Piece.BROOK) validCastle |= (1 << Position.H8_CASTLE);
-        }
-        castleMask &= validCastle;
-        pos.setCastleMask(castleMask);
-    }
-
     /** Remove pseudo-legal EP square if it is not legal, ie would leave king in check. */
     public static void fixupEPSquare(Position pos) {
         int epSquare = pos.getEpSquare();
@@ -224,91 +208,6 @@ public class TextIO {
                 throw new ChessParseError("pawn on first last rank");
         }
         pos.setPiece(Position.getSquare(col, row), p);
-    }
-
-    /** Return a FEN string corresponding to a chess Position object. */
-    public static String toFEN(Position pos) {
-        StringBuilder ret = new StringBuilder();
-        // Piece placement
-        for (int r = 7; r >=0; r--) {
-            int numEmpty = 0;
-            for (int c = 0; c < 8; c++) {
-                int p = pos.getPiece(Position.getSquare(c, r));
-                if (p == Piece.EMPTY) {
-                    numEmpty++;
-                } else {
-                    if (numEmpty > 0) {
-                        ret.append(numEmpty);
-                        numEmpty = 0;
-                    }
-                    switch (p) {
-                        case Piece.WKING:   ret.append('K'); break;
-                        case Piece.WQUEEN:  ret.append('Q'); break;
-                        case Piece.WROOK:   ret.append('R'); break;
-                        case Piece.WBISHOP: ret.append('B'); break;
-                        case Piece.WKNIGHT: ret.append('N'); break;
-                        case Piece.WPAWN:   ret.append('P'); break;
-                        case Piece.BKING:   ret.append('k'); break;
-                        case Piece.BQUEEN:  ret.append('q'); break;
-                        case Piece.BROOK:   ret.append('r'); break;
-                        case Piece.BBISHOP: ret.append('b'); break;
-                        case Piece.BKNIGHT: ret.append('n'); break;
-                        case Piece.BPAWN:   ret.append('p'); break;
-                        default: throw new RuntimeException();
-                    }
-                }
-            }
-            if (numEmpty > 0) {
-                ret.append(numEmpty);
-            }
-            if (r > 0) {
-                ret.append('/');
-            }
-        }
-        ret.append(pos.whiteMove ? " w " : " b ");
-
-        // Castling rights
-        boolean anyCastle = false;
-        if (pos.h1Castle()) {
-            ret.append('K');
-            anyCastle = true;
-        }
-        if (pos.a1Castle()) {
-            ret.append('Q');
-            anyCastle = true;
-        }
-        if (pos.h8Castle()) {
-            ret.append('k');
-            anyCastle = true;
-        }
-        if (pos.a8Castle()) {
-            ret.append('q');
-            anyCastle = true;
-        }
-        if (!anyCastle) {
-            ret.append('-');
-        }
-
-        // En passant target square
-        {
-            ret.append(' ');
-            if (pos.getEpSquare() >= 0) {
-                int x = Position.getX(pos.getEpSquare());
-                int y = Position.getY(pos.getEpSquare());
-                ret.append((char)(x + 'a'));
-                ret.append((char)(y + '1'));
-            } else {
-                ret.append('-');
-            }
-        }
-
-        // Move counters
-        ret.append(' ');
-        ret.append(pos.halfMoveClock);
-        ret.append(' ');
-        ret.append(pos.fullMoveCounter);
-
-        return ret.toString();
     }
 
     /**
@@ -423,22 +322,6 @@ public class TextIO {
         } else {
             return true;
         }
-    }
-
-    /**
-     * Decide if move is valid in position pos.
-     * @param pos   Position for which to test move.
-     * @param move  The move to check for validity.
-     * @return True if move is valid in position pos, false otherwise.
-     */
-    public static boolean isValid(Position pos, Move move) {
-        if (move == null)
-            return false;
-        ArrayList<Move> moves = new MoveGen().legalMoves(pos);
-        for (int i = 0; i < moves.size(); i++)
-            if (move.equals(moves.get(i)))
-                return true;
-        return false;
     }
 
     private final static class MoveInfo {
@@ -580,82 +463,6 @@ public class TextIO {
         return move;
     }
 
-    /** Convert a move object to UCI string format. */
-    public static String moveToUCIString(Move m) {
-        String ret = squareToString(m.from);
-        ret += squareToString(m.to);
-        switch (m.promoteTo) {
-            case Piece.WQUEEN:
-            case Piece.BQUEEN:
-                ret += "q";
-                break;
-            case Piece.WROOK:
-            case Piece.BROOK:
-                ret += "r";
-                break;
-            case Piece.WBISHOP:
-            case Piece.BBISHOP:
-                ret += "b";
-                break;
-            case Piece.WKNIGHT:
-            case Piece.BKNIGHT:
-                ret += "n";
-                break;
-            default:
-                break;
-        }
-        return ret;
-    }
-
-    /**
-     * Convert a string in UCI move format to a Move object.
-     * @return A move object, or null if move has invalid syntax
-     */
-    public static Move UCIstringToMove(String move) {
-        Move m = null;
-        if ((move.length() < 4) || (move.length() > 5))
-            return m;
-        int fromSq = TextIO.getSquare(move.substring(0, 2));
-        int toSq   = TextIO.getSquare(move.substring(2, 4));
-        if ((fromSq < 0) || (toSq < 0)) {
-            return m;
-        }
-        char prom = ' ';
-        boolean white = true;
-        if (move.length() == 5) {
-            prom = move.charAt(4);
-            if (Position.getY(toSq) == 7) {
-                white = true;
-            } else if (Position.getY(toSq) == 0) {
-                white = false;
-            } else {
-                return m;
-            }
-        }
-        int promoteTo;
-        switch (prom) {
-            case ' ':
-                promoteTo = Piece.EMPTY;
-                break;
-            case 'q':
-                promoteTo = white ? Piece.WQUEEN : Piece.BQUEEN;
-                break;
-            case 'r':
-                promoteTo = white ? Piece.WROOK : Piece.BROOK;
-                break;
-            case 'b':
-                promoteTo = white ? Piece.WBISHOP : Piece.BBISHOP;
-                break;
-            case 'n':
-                promoteTo = white ? Piece.WKNIGHT : Piece.BKNIGHT;
-                break;
-            default:
-                return m;
-        }
-        m = new Move(fromSq, toSq, promoteTo);
-        return m;
-    }
-
     /**
      * Convert a string, such as "e4" to a square number.
      * @return The square number, or -1 if not a legal square.
@@ -666,18 +473,6 @@ public class TextIO {
         if ((x < 0) || (x > 7) || (y < 0) || (y > 7))
             return -1;
         return Position.getSquare(x, y);
-    }
-
-    /**
-     * Convert a square number to a string, such as "e4".
-     */
-    public static String squareToString(int square) {
-        StringBuilder ret = new StringBuilder();
-        int x = Position.getX(square);
-        int y = Position.getY(square);
-        ret.append((char) (x + 'a'));
-        ret.append((char) (y + '1'));
-        return ret.toString();
     }
 
     private static String pieceToChar(int p) {
@@ -701,19 +496,5 @@ public class TextIO {
             case 'P': case 'p': return white ? Piece.WPAWN   : Piece.BPAWN;
         }
         return -1;
-    }
-
-    /** Add an = sign to a promotion move, as required by the PGN standard. */
-    public static String pgnPromotion(String str) {
-        int idx = str.length() - 1;
-        while (idx > 0) {
-            char c = str.charAt(idx);
-            if ((c != '#') && (c != '+'))
-                break;
-            idx--;
-        }
-        if ((idx > 0) && (charToPiece(true, str.charAt(idx)) != -1))
-            idx--;
-        return str.substring(0, idx + 1) + '=' + str.substring(idx + 1, str.length());
     }
 }
