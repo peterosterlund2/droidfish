@@ -3684,7 +3684,7 @@ public class DroidFish extends Activity
         } else if (moveAnnounceType.startsWith("speech_")) {
             speech.say(pos, move);
         }
-        if (vibrateEnabled) {
+        if (vibrateEnabled && computerMove) {
             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             v.vibrate(500);
         }
