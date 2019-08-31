@@ -983,7 +983,6 @@ public class DroidFish extends Activity
                 public void run() {
                     pending = false;
                     handler.removeCallbacks(runnable);
-                    ((Vibrator)getSystemService(Context.VIBRATOR_SERVICE)).vibrate(20);
                     reShowDialog(BOARD_MENU_DIALOG);
                 }
             };

@@ -45,14 +45,12 @@ import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import androidx.core.view.MotionEventCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -197,7 +195,6 @@ public class EditBoard extends Activity {
                 public void run() {
                     pending = false;
                     handler.removeCallbacks(runnable);
-                    ((Vibrator)getSystemService(Context.VIBRATOR_SERVICE)).vibrate(20);
                     drawerLayout.openDrawer(Gravity.LEFT);
                 }
             };
