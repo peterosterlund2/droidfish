@@ -414,12 +414,13 @@ public class DroidComputerPlayer {
                 }
             }
 
-            // If only one move to search, play it without searching
             ArrayList<Move> moves = movesToSearch(sr);
+            // Check if user set up a position where computer has no valid moves
             if (moves.size() == 0) {
-                listener.notifySearchResult(sr.searchId, "", null); // User set up a position where computer has no valid moves.
+                listener.notifySearchResult(sr.searchId, "", null);
                 return;
             }
+            // If only one move to search, play it without searching
             if (moves.size() == 1) {
                 Move bestMove = moves.get(0);
                 if (canClaimDraw(sr.currPos, posHashList, posHashListSize, bestMove).isEmpty()) {
