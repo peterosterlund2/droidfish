@@ -36,7 +36,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AbsListView;
+import android.widget.Filter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,10 +63,11 @@ public abstract class EditPGN extends ListActivity {
     private PGNFile pgnFile;
     private ProgressDialog progress;
     private GameInfo selectedGi = null;
-    private ArrayAdapter<GameInfo> aa = null;
+    private GameAdapter<GameInfo> aa = null;
 
     private SharedPreferences settings;
-    private int defaultItem = 0;
+    private long defaultFilePos = 0;
+    private long currentFilePos = 0;
     private String lastSearchString = "";
     private String lastFileName = "";
     private long lastModTime = -1;
@@ -86,14 +88,14 @@ public abstract class EditPGN extends ListActivity {
         Util.setFullScreenMode(this, settings);
 
         if (savedInstanceState != null) {
-            defaultItem = savedInstanceState.getInt("defaultItem");
+            defaultFilePos = savedInstanceState.getLong("defaultFilePos");
             lastSearchString = savedInstanceState.getString("lastSearchString");
             if (lastSearchString == null) lastSearchString = "";
             lastFileName = savedInstanceState.getString("lastFileName");
             if (lastFileName == null) lastFileName = "";
             lastModTime = savedInstanceState.getLong("lastModTime");
         } else {
-            defaultItem = settings.getInt("defaultItem", 0);
+            defaultFilePos = settings.getLong("defaultFilePos", 0);
             lastSearchString = settings.getString("lastSearchString", "");
             lastFileName = settings.getString("lastFileName", "");
             lastModTime = settings.getLong("lastModTime", 0);
@@ -126,28 +128,37 @@ public abstract class EditPGN extends ListActivity {
             pgnFile = new PGNFile(fileName);
             loadGame = true;
             boolean next = action.equals("org.petero.droidfish.loadFileNextGame");
-            final int loadItem = defaultItem + (next ? 1 : -1);
-            if (loadItem < 0) {
-                DroidFishApp.toast(R.string.no_prev_game, Toast.LENGTH_SHORT);
-                setResult(RESULT_CANCELED);
-                finish();
-            } else {
-                workThread = new Thread(() -> {
-                    if (!readFile())
-                        return;
-                    runOnUiThread(() -> {
-                        if (loadItem >= gamesInFile.size()) {
-                            DroidFishApp.toast(R.string.no_next_game, Toast.LENGTH_SHORT);
-                            setResult(RESULT_CANCELED);
-                            finish();
-                        } else {
-                            defaultItem = loadItem;
-                            sendBackResult(gamesInFile.get(loadItem));
-                        }
-                    });
+            workThread = new Thread(() -> {
+                if (!readFile())
+                    return;
+                int itemNo = getItemNo(gamesInFile, defaultFilePos) + (next ? 1 : -1);
+                if (next) {
+                    while (itemNo < gamesInFile.size() &&
+                        !GameAdapter.matchItem(gamesInFile.get(itemNo), lastSearchString))
+                        itemNo++;
+                } else {
+                    while (itemNo >= 0 &&
+                        !GameAdapter.matchItem(gamesInFile.get(itemNo), lastSearchString))
+                        itemNo--;
+                }
+                final int loadItem = itemNo;
+                runOnUiThread(() -> {
+                    if (loadItem < 0) {
+                        DroidFishApp.toast(R.string.no_prev_game, Toast.LENGTH_SHORT);
+                        setResult(RESULT_CANCELED);
+                        finish();
+                    } else if (loadItem >= gamesInFile.size()) {
+                        DroidFishApp.toast(R.string.no_next_game, Toast.LENGTH_SHORT);
+                        setResult(RESULT_CANCELED);
+                        finish();
+                    } else {
+                        GameInfo gi = gamesInFile.get(loadItem);
+                        defaultFilePos = gi.startPos;
+                        sendBackResult(gi);
+                    }
                 });
-                workThread.start();
-            }
+            });
+            workThread.start();
         } else if ("org.petero.droidfish.saveFile".equals(action)) {
             loadGame = false;
             String token = i.getStringExtra("org.petero.droidfish.pgn");
@@ -191,7 +202,7 @@ public abstract class EditPGN extends ListActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("defaultItem", defaultItem);
+        outState.putLong("defaultFilePos", defaultFilePos);
         outState.putString("lastSearchString", lastSearchString);
         outState.putString("lastFileName", lastFileName);
         outState.putLong("lastModTime", lastModTime);
@@ -200,7 +211,7 @@ public abstract class EditPGN extends ListActivity {
     @Override
     protected void onPause() {
         Editor editor = settings.edit();
-        editor.putInt("defaultItem", defaultItem);
+        editor.putLong("defaultFilePos", defaultFilePos);
         editor.putString("lastSearchString", lastSearchString);
         editor.putString("lastFileName", lastFileName);
         editor.putLong("lastModTime", lastModTime);
@@ -242,27 +253,18 @@ public abstract class EditPGN extends ListActivity {
         removeDialog(PROGRESS_DIALOG);
         binding = DataBindingUtil.setContentView(this, R.layout.select_game);
         Util.overrideViewAttribs(findViewById(android.R.id.content));
-        aa = new ArrayAdapter<GameInfo>(this, R.layout.select_game_list_item, gamesInFile) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-                if (view instanceof TextView) {
-                    int fg = ColorTheme.instance().getColor(ColorTheme.FONT_FOREGROUND);
-                    ((TextView) view).setTextColor(fg);
-                }
-                return view;
-            }
-        };
-        setListAdapter(aa);
+        createAdapter();
         ListView lv = getListView();
-        lv.setSelectionFromTop(defaultItem, 0);
+        currentFilePos = defaultFilePos;
+        int itemNo = getItemNo(gamesInFile, defaultFilePos);
+        lv.setSelectionFromTop(itemNo, 0);
         lv.setFastScrollEnabled(true);
         lv.setOnItemClickListener((parent, view, pos, id) -> {
             selectedGi = aa.getItem(pos);
             if (selectedGi == null)
                 return;
             if (loadGame) {
-                defaultItem = pos;
+                defaultFilePos = selectedGi.startPos;
                 sendBackResult(selectedGi);
             } else {
                 reShowDialog(SAVE_GAME_DIALOG);
@@ -274,6 +276,17 @@ public abstract class EditPGN extends ListActivity {
                 reShowDialog(DELETE_GAME_DIALOG);
             return true;
         });
+        lv.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                if (visibleItemCount > 0)
+                    currentFilePos = aa.getItem(firstVisibleItem).startPos;
+            }
+        });
 
         binding.selectGameFilter.addTextChangedListener(new TextWatcher() {
             @Override
@@ -284,8 +297,9 @@ public abstract class EditPGN extends ListActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                aa.getFilter().filter(s);
-                lastSearchString = s.toString();
+                String fs = s.toString();
+                setFilterString(fs);
+                lastSearchString = fs;
             }
         });
         binding.selectGameFilter.setText(lastSearchString);
@@ -399,7 +413,7 @@ public abstract class EditPGN extends ListActivity {
     private boolean readFile() {
         String fileName = pgnFile.getName();
         if (!fileName.equals(lastFileName))
-            defaultItem = 0;
+            defaultFilePos = 0;
         long modTime = new File(fileName).lastModified();
         if (cacheValid && (modTime == lastModTime) && fileName.equals(lastFileName))
             return true;
@@ -444,14 +458,59 @@ public abstract class EditPGN extends ListActivity {
         if (pgnFile.deleteGame(gi, gamesInFile)) {
             ListView lv = getListView();
             int pos = lv.pointToPosition(0, 0);
-            aa = new ArrayAdapter<>(this, R.layout.select_game_list_item, gamesInFile);
-            setListAdapter(aa);
+            createAdapter();
             String s = binding.selectGameFilter.getText().toString();
-            aa.getFilter().filter(s);
+            setFilterString(s);
             lv.setSelection(pos);
             // Update lastModTime, since current change has already been handled
             String fileName = pgnFile.getName();
             lastModTime = new File(fileName).lastModified();
         }
+    }
+
+    private void createAdapter() {
+        aa = new GameAdapter<GameInfo>(this, R.layout.select_game_list_item, gamesInFile) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                if (view instanceof TextView) {
+                    int fg = ColorTheme.instance().getColor(ColorTheme.FONT_FOREGROUND);
+                    ((TextView) view).setTextColor(fg);
+                }
+                return view;
+            }
+        };
+        setListAdapter(aa);
+    }
+
+    private void setFilterString(String s) {
+        Filter.FilterListener listener = (count) -> {
+            ArrayList<GameInfo> arr = aa.getValues();
+            int itemNo = getItemNo(arr, currentFilePos);
+            if (itemNo < 0)
+                itemNo = 0;
+            while (itemNo < arr.size() &&
+                !GameAdapter.matchItem(arr.get(itemNo), lastSearchString))
+                itemNo++;
+            if (itemNo < arr.size())
+                getListView().setSelectionFromTop(itemNo, 0);
+        };
+        aa.getFilter().filter(s, listener);
+    }
+
+    /** Return index in "games" corresponding to a file position. */
+    private static int getItemNo(ArrayList<GameInfo> games, long filePos) {
+        int lo = -1;
+        int hi = games.size();
+        // games[lo].startPos <= filePos < games[hi].startPos
+        while (hi - lo > 1) {
+            int mid = (lo + hi) / 2;
+            long val = games.get(mid).startPos;
+            if (filePos < val)
+                hi = mid;
+            else
+                lo = mid;
+        }
+        return lo;
     }
 }
