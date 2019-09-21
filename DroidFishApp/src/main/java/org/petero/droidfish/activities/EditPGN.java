@@ -20,7 +20,6 @@ package org.petero.droidfish.activities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -42,6 +41,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import org.petero.droidfish.ColorTheme;
@@ -57,11 +57,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public abstract class EditPGN extends ListActivity {
+public abstract class EditPGN extends AppCompatActivity {
     private static ArrayList<GameInfo> gamesInFile = new ArrayList<>();
     private static boolean cacheValid = false;
     private PGNFile pgnFile;
     private ProgressDialog progress;
+
     private GameInfo selectedGi = null;
     private GameAdapter<GameInfo> aa = null;
 
@@ -109,7 +110,6 @@ public abstract class EditPGN extends ListActivity {
             pgnFile = new PGNFile(fileName);
             loadGame = true;
             showDialog(PROGRESS_DIALOG);
-            final EditPGN lpgn = this;
             workThread = new Thread(() -> {
                 if (!readFile())
                     return;
@@ -118,7 +118,7 @@ public abstract class EditPGN extends ListActivity {
                         setResult(RESULT_CANCELED);
                         finish();
                     } else {
-                        lpgn.showList();
+                        showList();
                     }
                 });
             });
@@ -170,7 +170,6 @@ public abstract class EditPGN extends ListActivity {
             } else {
                 pgnFile = new PGNFile(fileName);
                 showDialog(PROGRESS_DIALOG);
-                final EditPGN lpgn = this;
                 workThread = new Thread(() -> {
                     if (!readFile())
                         return;
@@ -182,7 +181,7 @@ public abstract class EditPGN extends ListActivity {
                             pgnFile.appendPGN(pgnToSave);
                             finish();
                         } else {
-                            lpgn.showList();
+                            showList();
                         }
                     });
                 });
@@ -254,7 +253,7 @@ public abstract class EditPGN extends ListActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.select_game);
         Util.overrideViewAttribs(findViewById(android.R.id.content));
         createAdapter();
-        ListView lv = getListView();
+        ListView lv = binding.listView;
         currentFilePos = defaultFilePos;
         int itemNo = getItemNo(gamesInFile, defaultFilePos);
         lv.setSelectionFromTop(itemNo, 0);
@@ -456,12 +455,9 @@ public abstract class EditPGN extends ListActivity {
 
     private void deleteGame(GameInfo gi) {
         if (pgnFile.deleteGame(gi, gamesInFile)) {
-            ListView lv = getListView();
-            int pos = lv.pointToPosition(0, 0);
             createAdapter();
             String s = binding.selectGameFilter.getText().toString();
             setFilterString(s);
-            lv.setSelection(pos);
             // Update lastModTime, since current change has already been handled
             String fileName = pgnFile.getName();
             lastModTime = new File(fileName).lastModified();
@@ -480,7 +476,7 @@ public abstract class EditPGN extends ListActivity {
                 return view;
             }
         };
-        setListAdapter(aa);
+        binding.listView.setAdapter(aa);
     }
 
     private void setFilterString(String s) {
@@ -493,7 +489,7 @@ public abstract class EditPGN extends ListActivity {
                 !GameAdapter.matchItem(arr.get(itemNo), lastSearchString))
                 itemNo++;
             if (itemNo < arr.size())
-                getListView().setSelectionFromTop(itemNo, 0);
+                binding.listView.setSelectionFromTop(itemNo, 0);
         };
         aa.getFilter().filter(s, listener);
     }
