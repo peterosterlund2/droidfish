@@ -193,7 +193,7 @@ If you are running on battery power, it is recommended that you change settings 
     <string name="lot_cpu_power">DroidFish is using a lot of CPU power</string>
     <string name="delete">Delete</string>
     <string name="delete_game">Delete game?</string>
-    <string name="delete_file">Delete file</string>
+    <string name="delete_file">Delete File</string>
     <string name="delete_file_question">Delete file?</string>
     <string name="delete_named_file">Delete file %s?</string>
     <string name="regexp_search">Regular Expression Search</string>
