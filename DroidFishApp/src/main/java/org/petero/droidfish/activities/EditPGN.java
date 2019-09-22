@@ -72,6 +72,7 @@ public abstract class EditPGN extends AppCompatActivity {
     private String lastSearchString = "";
     private String lastFileName = "";
     private long lastModTime = -1;
+    private boolean useRegExp = false;
 
     private Thread workThread = null;
     private boolean canceled = false;
@@ -95,11 +96,13 @@ public abstract class EditPGN extends AppCompatActivity {
             lastFileName = savedInstanceState.getString("lastFileName");
             if (lastFileName == null) lastFileName = "";
             lastModTime = savedInstanceState.getLong("lastModTime");
+            useRegExp = savedInstanceState.getBoolean("useRegExpSearch");
         } else {
             defaultFilePos = settings.getLong("defaultFilePos", 0);
             lastSearchString = settings.getString("lastSearchString", "");
             lastFileName = settings.getString("lastFileName", "");
             lastModTime = settings.getLong("lastModTime", 0);
+            useRegExp = settings.getBoolean("useRegExpSearch", false);
         }
 
         Intent i = getIntent();
@@ -131,14 +134,14 @@ public abstract class EditPGN extends AppCompatActivity {
             workThread = new Thread(() -> {
                 if (!readFile())
                     return;
+                GameAdapter.ItemMatcher<GameInfo> m =
+                    GameAdapter.getItemMatcher(lastSearchString, useRegExp);
                 int itemNo = getItemNo(gamesInFile, defaultFilePos) + (next ? 1 : -1);
                 if (next) {
-                    while (itemNo < gamesInFile.size() &&
-                        !GameAdapter.matchItem(gamesInFile.get(itemNo), lastSearchString))
+                    while (itemNo < gamesInFile.size() && !m.matches(gamesInFile.get(itemNo)))
                         itemNo++;
                 } else {
-                    while (itemNo >= 0 &&
-                        !GameAdapter.matchItem(gamesInFile.get(itemNo), lastSearchString))
+                    while (itemNo >= 0 && !m.matches(gamesInFile.get(itemNo)))
                         itemNo--;
                 }
                 final int loadItem = itemNo;
@@ -205,6 +208,7 @@ public abstract class EditPGN extends AppCompatActivity {
         outState.putString("lastSearchString", lastSearchString);
         outState.putString("lastFileName", lastFileName);
         outState.putLong("lastModTime", lastModTime);
+        outState.putBoolean("useRegExpSearch", useRegExp);
     }
 
     @Override
@@ -214,6 +218,7 @@ public abstract class EditPGN extends AppCompatActivity {
         editor.putString("lastSearchString", lastSearchString);
         editor.putString("lastFileName", lastFileName);
         editor.putLong("lastModTime", lastModTime);
+        editor.putBoolean("useRegExpSearch", useRegExp);
         editor.apply();
         super.onPause();
     }
@@ -234,6 +239,8 @@ public abstract class EditPGN extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.edit_file_options_menu, menu);
+        MenuItem item = menu.findItem(R.id.regexp_search);
+        item.setChecked(useRegExp);
         return true;
     }
 
@@ -242,6 +249,14 @@ public abstract class EditPGN extends AppCompatActivity {
         switch (item.getItemId()) {
         case R.id.item_delete_file:
             reShowDialog(DELETE_PGN_FILE_DIALOG);
+            break;
+        case R.id.regexp_search:
+            useRegExp = !useRegExp;
+            item.setChecked(useRegExp);
+            if (binding != null) {
+                String s = binding.selectGameFilter.getText().toString();
+                setFilterString(s);
+            }
             break;
         }
         return false;
@@ -480,17 +495,20 @@ public abstract class EditPGN extends AppCompatActivity {
     }
 
     private void setFilterString(String s) {
+        boolean regExp = useRegExp;
         Filter.FilterListener listener = (count) -> {
             ArrayList<GameInfo> arr = aa.getValues();
             int itemNo = getItemNo(arr, currentFilePos);
             if (itemNo < 0)
                 itemNo = 0;
-            while (itemNo < arr.size() &&
-                !GameAdapter.matchItem(arr.get(itemNo), lastSearchString))
+            GameAdapter.ItemMatcher<GameInfo> m =
+                GameAdapter.getItemMatcher(lastSearchString, regExp);
+            while (itemNo < arr.size() && !m.matches(arr.get(itemNo)))
                 itemNo++;
             if (itemNo < arr.size())
                 binding.listView.setSelectionFromTop(itemNo, 0);
         };
+        aa.setUseRegExp(regExp);
         aa.getFilter().filter(s, listener);
     }
 

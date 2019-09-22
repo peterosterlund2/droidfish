@@ -28,16 +28,19 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * An adapter for displaying an ArrayList<GameInfo> in a ListView.
  */
 public class GameAdapter<T> extends BaseAdapter implements Filterable {
-    private ArrayList<T> origValues; // Unfiltered values
-    private ArrayList<T> values;     // Filtered values. Equal to origValues if no filter used
+    private ArrayList<T> origValues;   // Unfiltered values
+    private ArrayList<T> values;       // Filtered values. Equal to origValues if no filter used
     private final LayoutInflater inflater;
     private int resource;
-    private GameFilter filter;       // Initialized at first use
+    private GameFilter filter;         // Initialized at first use
+    private boolean useRegExp = false; // If true, use regular expression in filter
 
     public GameAdapter(Context context, int resource, ArrayList<T> objects) {
         origValues = objects;
@@ -83,6 +86,10 @@ public class GameAdapter<T> extends BaseAdapter implements Filterable {
         return filter;
     }
 
+    public void setUseRegExp(boolean regExp) {
+        useRegExp = regExp;
+    }
+
     private class GameFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -91,10 +98,10 @@ public class GameAdapter<T> extends BaseAdapter implements Filterable {
                 res.values = origValues;
                 res.count = origValues.size();
             } else {
-                String s = constraint.toString().toLowerCase();
+                ItemMatcher<T> m = getItemMatcher(constraint.toString(), useRegExp);
                 ArrayList<T> newValues = new ArrayList<>();
                 for (T item : origValues)
-                    if (matchItem(item, s))
+                    if (m.matches(item))
                         newValues.add(item);
                 res.values = newValues;
                 res.count = newValues.size();
@@ -110,10 +117,27 @@ public class GameAdapter<T> extends BaseAdapter implements Filterable {
         }
     }
 
-    /** Return true if matchStr matches item.
-     * @param item The item to check. The toString() value converted to lowercase is used.
-     * @param matchStr The match string. Must be lowercase. */
-    static <U> boolean matchItem(U item, String matchStr) {
-        return item.toString().toLowerCase().contains(matchStr);
+    interface ItemMatcher<U> {
+        /** Return true if item matches the search criteria. */
+        boolean matches(U item);
+    }
+
+    /** Return an object that determines if an item matches given search criteria.
+     *  @param matchStr  The match string.
+     *  @param useRegExp If true matchStr is interpreted as a regular expression. */
+    static <U> ItemMatcher<U> getItemMatcher(String matchStr, boolean useRegExp) {
+        if (useRegExp) {
+            Pattern tmp;
+            try {
+                tmp = Pattern.compile(matchStr, Pattern.CASE_INSENSITIVE);
+            } catch (PatternSyntaxException ex) {
+                tmp = null;
+            }
+            Pattern p = tmp;
+            return item -> p == null || p.matcher(item.toString()).find();
+        } else {
+            String s = matchStr.toLowerCase();
+            return item -> item.toString().toLowerCase().contains(s);
+        }
     }
 }
