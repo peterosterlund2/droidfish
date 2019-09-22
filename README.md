@@ -435,10 +435,15 @@ the current game should be saved before, after or replace the selected game.
 
 There is a search field above the game list. If a string is entered in the
 search field, the game list is filtered to only show games matching the search
-string.
+string. The matching is case insensitive and by default matches a substring in
+the game list. It is possible to enable matching using [Java regular expression
+syntax](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html)
+by enabling *Regular Expression Search* in the menu.
 
 **Hint!** In the game list, tap and hold a game to delete that game from the PGN
 file.
+
+**Hint!** To delete the whole file, select *Delete File* from the menu.
 
 ### FEN/EPD
 
