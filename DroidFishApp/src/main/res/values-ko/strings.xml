@@ -134,7 +134,7 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
     <string name="blind_mode">눈가리개 모드</string>
     <string name="toggle_show_thinking">생각 나타내기 토글</string>
     <string name="toggle_book_hints">북 힌트 토글</string>
-    <string name="toggle_tb_hints">Toggle Tablebase Hints</string>
+    <string name="toggle_tb_hints">테이블베이스 힌트 토글</string>
     <string name="toggle_pgn_variations">변수 토글</string>
     <string name="toggle_pgn_comments">코멘트 토글</string>
     <string name="toggle_pgn_headers">헤더 토글</string>
@@ -201,6 +201,7 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
     <string name="delete_file">파일 삭제</string>
     <string name="delete_file_question">파일을 삭제할까요?</string>
     <string name="delete_named_file">%s 파일을 삭제할까요?</string>
+    <string name="regexp_search">Regular Expression Search</string>
     <string name="game_saved">게임 저장됨</string>
     <string name="failed_to_save_game">게임 저장 실패</string>
     <string name="failed_to_delete_game">게임 삭제 실패</string>
@@ -402,8 +403,8 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
     <string name="prefs_showVariationLine_summary">상태 영역에 현재 변수를 표시</string>
     <string name="prefs_viewPieceType_title">피스 이름</string>
     <string name="prefs_viewPieceType_summary">체스 피스 이름이 표시 되는 방법을 제어합니다</string>
-    <string name="prefs_viewPieceSet_title">Piece Set</string>
-    <string name="prefs_viewPieceSet_summary">Select chess piece set</string>
+    <string name="prefs_viewPieceSet_title">피스 세트</string>
+    <string name="prefs_viewPieceSet_summary">체스 피스 세트 선택</string>
     <string name="prefs_blindMode_title">눈가리개 모드</string>
     <string name="prefs_blindMode_summary">피스 대신 빈 보드 표시</string>
     <string name="prefs_pgn_import">PGN 가져오기</string>

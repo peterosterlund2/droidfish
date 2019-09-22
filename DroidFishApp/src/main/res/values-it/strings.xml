@@ -197,6 +197,7 @@ Se l\'alimentazione è a batteria, è consigliabile modificare le impostazioni p
     <string name="delete_file">Cancella il file</string>
     <string name="delete_file_question">Eliminare il file?</string>
     <string name="delete_named_file">Eliminare il file %s?</string>
+    <string name="regexp_search">Regular Expression Search</string>
     <string name="game_saved">Partita salvata</string>
     <string name="failed_to_save_game">Salvataggio fallito</string>
     <string name="failed_to_delete_game">Impossibile eliminare la partita</string>

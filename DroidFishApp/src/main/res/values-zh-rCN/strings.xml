@@ -197,6 +197,7 @@
     <string name="delete_file">删除文件</string>
     <string name="delete_file_question">删除文件?</string>
     <string name="delete_named_file">删除文件 %s?</string>
+    <string name="regexp_search">Regular Expression Search</string>
     <string name="game_saved">对局已保存</string>
     <string name="failed_to_save_game">无法保存对局</string>
     <string name="failed_to_delete_game">无法删除对局</string>

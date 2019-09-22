@@ -197,6 +197,7 @@ Se você está usando somente a bateria, recomenda-se que você mude as configur
     <string name="delete_file">Remover arquivo</string>
     <string name="delete_file_question">Remover arquivo?</string>
     <string name="delete_named_file">Remover arquivo %s?</string>
+    <string name="regexp_search">Regular Expression Search</string>
     <string name="game_saved">Partida salva</string>
     <string name="failed_to_save_game">Falha ao salvar partida</string>
     <string name="failed_to_delete_game">Falha ao remover partida</string>

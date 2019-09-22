@@ -197,6 +197,7 @@
     <string name="delete_file">Видалити файл</string>
     <string name="delete_file_question">Видалити партію?</string>
     <string name="delete_named_file">Видалення файлу %s?</string>
+    <string name="regexp_search">Regular Expression Search</string>
     <string name="game_saved">Партію збережено</string>
     <string name="failed_to_save_game">Не вдалося зберегти партію</string>
     <string name="failed_to_delete_game">Не вдалося вилучити партію</string>

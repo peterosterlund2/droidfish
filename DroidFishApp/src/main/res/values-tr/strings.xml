@@ -197,6 +197,7 @@ Pil gücüyle çalışıyorsanız, pil gücünden tasarruf etmek için ayarları
     <string name="delete_file">Dosyayı sil</string>
     <string name="delete_file_question">Dosya silinsin mi?</string>
     <string name="delete_named_file">%s dosyası sinsin mi?</string>
+    <string name="regexp_search">Regular Expression Search</string>
     <string name="game_saved">Oyun Kaydedildi</string>
     <string name="failed_to_save_game">Oyun kaydedilemedi</string>
     <string name="failed_to_delete_game">Oyun silinemedi</string>

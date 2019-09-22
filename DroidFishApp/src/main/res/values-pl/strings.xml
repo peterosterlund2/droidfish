@@ -197,6 +197,7 @@ Jeśli pracujesz na baterii, zalecana jest zmiana ustawień, w celu oszczędzani
     <string name="delete_file">Usuwanie pliku</string>
     <string name="delete_file_question">Usunąć plik?</string>
     <string name="delete_named_file">Usunąć plik %s?</string>
+    <string name="regexp_search">Regular Expression Search</string>
     <string name="game_saved">Partia zapisana</string>
     <string name="failed_to_save_game">Błąd podczas zapisywania partii</string>
     <string name="failed_to_delete_game">Błąd podczas usuwania partii</string>

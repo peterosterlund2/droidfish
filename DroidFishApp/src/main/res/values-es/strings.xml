@@ -197,6 +197,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="delete_file">Borrar archivo</string>
     <string name="delete_file_question">Borrar archivo?</string>
     <string name="delete_named_file">Borrar archivo %s?</string>
+    <string name="regexp_search">Regular Expression Search</string>
     <string name="game_saved">Partida Guardada</string>
     <string name="failed_to_save_game">No se ha podido guardar partida</string>
     <string name="failed_to_delete_game">No se ha podido borrar partida</string>

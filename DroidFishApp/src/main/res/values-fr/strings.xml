@@ -197,6 +197,7 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="delete_file">Supprimer le fichier</string>
     <string name="delete_file_question">Supprimer le fichier?</string>
     <string name="delete_named_file">Supprimer le fichier %s?</string>
+    <string name="regexp_search">Regular Expression Search</string>
     <string name="game_saved">Partie sauvegardée</string>
     <string name="failed_to_save_game">Impossible de sauvegarder la partie</string>
     <string name="failed_to_delete_game">Impossible de supprimer la partie</string>

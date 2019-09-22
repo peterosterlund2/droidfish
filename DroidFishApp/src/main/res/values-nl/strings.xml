@@ -197,6 +197,7 @@ Als uw telefoon op batterij werkt is het aan te raden om deze instellingen te wi
     <string name="delete_file">Verwijder bestand</string>
     <string name="delete_file_question">Bestand verwijderen?</string>
     <string name="delete_named_file">Bestand %s verwijderen?</string>
+    <string name="regexp_search">Regular Expression Search</string>
     <string name="game_saved">Partij opgeslagen</string>
     <string name="failed_to_save_game">Partij niet opgeslagen</string>
     <string name="failed_to_delete_game">Partij niet verwijderd</string>
