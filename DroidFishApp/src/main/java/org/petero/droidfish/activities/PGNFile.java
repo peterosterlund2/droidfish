@@ -42,7 +42,7 @@ public class PGNFile {
         this.fileName = new File(fileName);
     }
 
-    public final String getName() {
+    public String getName() {
         return fileName.getAbsolutePath();
     }
 
@@ -51,14 +51,14 @@ public class PGNFile {
         public long startPos;
         public long endPos;
 
-        final GameInfo setNull(long currPos) {
+        GameInfo setNull(long currPos) {
             info = null;
             startPos = currPos;
             endPos = currPos;
             return this;
         }
 
-        final boolean isNull() { return info == null; }
+        boolean isNull() { return info == null; }
 
         public String toString() {
             if (info == null)
@@ -160,29 +160,49 @@ public class PGNFile {
         }
     }
 
-    /** Return info about all PGN games in a file. */
-    public final Pair<GameInfoResult,ArrayList<GameInfo>> getGameInfo(Activity activity,
-                                                                      final ProgressDialog progress) {
-        return getGameInfo(activity, progress, -1);
+    private static class ProgressHandler {
+        final ProgressDialog progress;
+        final Activity activity;
+        int percent = -1;
+        long fileLen = -1;
+
+        ProgressHandler(File file, Activity activity, ProgressDialog progress) {
+            this.activity = activity;
+            this.progress = progress;
+            try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {
+                fileLen = raf.length();
+            } catch (IOException ignore) {
+            }
+        }
+
+        void reportProgress(long nRead) {
+            int newPercent = fileLen > 0 ? (int)(nRead * 100 / fileLen) : 0;
+            if (newPercent > percent) {
+                percent = newPercent;
+                activity.runOnUiThread(() -> progress.setProgress(newPercent));
+            }
+        }
     }
 
     /** Return info about all PGN games in a file. */
-    public final Pair<GameInfoResult,ArrayList<GameInfo>> getGameInfo(Activity activity,
-                                                                      final ProgressDialog progress,
-                                                                      int maxGames) {
-        ArrayList<GameInfo> gamesInFile = new ArrayList<>();
-        gamesInFile.clear();
-        long fileLen = 0;
-        BufferedInput f = null;
-        try {
-            int percent = -1;
-            {
-                RandomAccessFile raf = new RandomAccessFile(fileName, "r");
-                fileLen = raf.length();
-                raf.close();
-            }
-            f = new BufferedInput(new FileInputStream(fileName));
+    public Pair<GameInfoResult,ArrayList<GameInfo>> getGameInfo(Activity activity,
+                                                                ProgressDialog progress) {
+        if (activity == null || progress == null)
+            return getGameInfo(null, -1);
+        ProgressHandler handler = new ProgressHandler(fileName, activity, progress);
+        return getGameInfo(handler, -1);
+    }
 
+    /** Return info about up to "maxGames" PGN games in a file. */
+    public Pair<GameInfoResult,ArrayList<GameInfo>> getGameInfo(int maxGames) {
+        return getGameInfo(null, maxGames);
+    }
+
+    /** Return info about PGN games in a file. */
+    private Pair<GameInfoResult,ArrayList<GameInfo>> getGameInfo(ProgressHandler progress,
+                                                                 int maxGames) {
+        ArrayList<GameInfo> gamesInFile = new ArrayList<>();
+        try (BufferedInput f = new BufferedInput(new FileInputStream(fileName))) {
             GameInfo gi = null;
             HeaderInfo hi = null;
             boolean inHeader = false;
@@ -339,13 +359,8 @@ public class PGNFile {
                                 gi = null;
                                 break;
                             }
-                            final int newPercent = fileLen == 0 ? 0 : (int)(filePos * 100 / fileLen);
-                            if (newPercent > percent) {
-                                percent =  newPercent;
-                                if (progress != null) {
-                                    activity.runOnUiThread(() -> progress.setProgress(newPercent));
-                                }
-                            }
+                            if (progress != null)
+                                progress.reportProgress(filePos);
                             if (Thread.currentThread().isInterrupted())
                                 return new Pair<>(GameInfoResult.CANCEL, null);
                         }
@@ -363,14 +378,9 @@ public class PGNFile {
             }
         } catch (IOException ignore) {
         } catch (OutOfMemoryError e) {
-            gamesInFile.clear();
-            gamesInFile = null;
             return new Pair<>(GameInfoResult.OUT_OF_MEMORY, null);
-        } finally {
-            if (f != null)
-              f.close();
         }
-        if ((gamesInFile.size() == 0) && (fileLen > 0))
+        if (gamesInFile.isEmpty())
             return new Pair<>(GameInfoResult.NOT_PGN, null);
 
         return new Pair<>(GameInfoResult.OK, gamesInFile);
@@ -382,7 +392,7 @@ public class PGNFile {
     }
 
     /** Read one game defined by gi. Return null on failure. */
-    final String readOneGame(GameInfo gi) {
+    String readOneGame(GameInfo gi) {
         try (RandomAccessFile f = new RandomAccessFile(fileName, "r")) {
             byte[] pgnData = new byte[(int) (gi.endPos - gi.startPos)];
             f.seek(gi.startPos);
@@ -394,7 +404,7 @@ public class PGNFile {
     }
 
     /** Append PGN to the end of this PGN file. */
-    public final void appendPGN(String pgn) {
+    public void appendPGN(String pgn) {
         mkDirs();
         try (FileWriter fw = new FileWriter(fileName, true)) {
             fw.write(pgn);
@@ -404,7 +414,7 @@ public class PGNFile {
         }
     }
 
-    final boolean deleteGame(GameInfo gi, ArrayList<GameInfo> gamesInFile) {
+    boolean deleteGame(GameInfo gi, ArrayList<GameInfo> gamesInFile) {
         try {
             File tmpFile = new File(fileName + ".tmp_delete");
             try (RandomAccessFile fileReader = new RandomAccessFile(fileName, "r");
@@ -419,8 +429,8 @@ public class PGNFile {
             // Update gamesInFile
             if (gamesInFile != null) {
                 gamesInFile.remove(gi);
-                final int nGames = gamesInFile.size();
-                final long delta = gi.endPos - gi.startPos;
+                int nGames = gamesInFile.size();
+                long delta = gi.endPos - gi.startPos;
                 for (int i = 0; i < nGames; i++) {
                     GameInfo tmpGi = gamesInFile.get(i);
                     if (tmpGi.startPos > gi.startPos) {
@@ -436,7 +446,7 @@ public class PGNFile {
         return false;
     }
 
-    final void replacePGN(String pgnToSave, GameInfo gi) {
+    void replacePGN(String pgnToSave, GameInfo gi) {
         try {
             File tmpFile = new File(fileName + ".tmp_delete");
             try (RandomAccessFile fileReader = new RandomAccessFile(fileName, "r");
@@ -467,7 +477,7 @@ public class PGNFile {
         }
     }
 
-    final boolean delete() {
+    boolean delete() {
         return fileName.delete();
     }
 }

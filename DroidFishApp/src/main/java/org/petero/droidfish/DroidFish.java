@@ -798,7 +798,7 @@ public class DroidFish extends Activity
                     }
                     PGNFile pgnFile = new PGNFile(fn);
                     long fileLen = FileUtil.getFileLength(fn);
-                    Pair<GameInfoResult,ArrayList<GameInfo>> gi = pgnFile.getGameInfo(this, null, 2);
+                    Pair<GameInfoResult,ArrayList<GameInfo>> gi = pgnFile.getGameInfo(2);
                     if ((fileLen > 1024 * 1024) || (gi.first == GameInfoResult.OK && gi.second.size() > 1)) {
                         filename = fn;
                     } else {
