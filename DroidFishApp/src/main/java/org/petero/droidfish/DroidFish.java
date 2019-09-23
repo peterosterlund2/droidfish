@@ -2287,7 +2287,22 @@ public class DroidFish extends Activity
                     for (int i = 0; i < clip.getItemCount(); i++)
                         fenPgn.append(clip.getItemAt(i).coerceToText(getApplicationContext()));
                     try {
-                        ctrl.setFENOrPGN(fenPgn.toString());
+                        String fenPgnData = fenPgn.toString();
+                        Pair<GameInfoResult,ArrayList<GameInfo>> gi = PGNFile.getGameInfo(fenPgnData, 2);
+                        if (gi.first == GameInfoResult.OK && gi.second.size() > 1) {
+                            String sep = File.separator;
+                            String fn = Environment.getExternalStorageDirectory() + sep +
+                                        pgnDir + sep + ".sharedfile.pgn";
+                            try (FileOutputStream writer = new FileOutputStream(fn)) {
+                                writer.write(fenPgnData.getBytes());
+                                writer.close();
+                                loadPGNFromFile(fn);
+                            } catch (IOException ex) {
+                                ctrl.setFENOrPGN(fenPgnData);
+                            }
+                        } else {
+                            ctrl.setFENOrPGN(fenPgnData);
+                        }
                         setBoardFlip(true);
                     } catch (ChessParseError e) {
                         DroidFishApp.toast(getParseErrString(e), Toast.LENGTH_SHORT);
