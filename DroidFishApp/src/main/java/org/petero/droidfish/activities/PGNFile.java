@@ -18,6 +18,7 @@
 
 package org.petero.droidfish.activities;
 
+import java.io.ByteArrayInputStream;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,6 +26,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import org.petero.droidfish.DroidFishApp;
@@ -188,21 +190,41 @@ public class PGNFile {
     public Pair<GameInfoResult,ArrayList<GameInfo>> getGameInfo(Activity activity,
                                                                 ProgressDialog progress) {
         if (activity == null || progress == null)
-            return getGameInfo(null, -1);
+            return getGameInfoFromFile(null, -1);
         ProgressHandler handler = new ProgressHandler(fileName, activity, progress);
-        return getGameInfo(handler, -1);
+        return getGameInfoFromFile(handler, -1);
     }
 
     /** Return info about up to "maxGames" PGN games in a file. */
     public Pair<GameInfoResult,ArrayList<GameInfo>> getGameInfo(int maxGames) {
-        return getGameInfo(null, maxGames);
+        return getGameInfoFromFile(null, maxGames);
     }
 
+    public static Pair<GameInfoResult,ArrayList<GameInfo>> getGameInfo(String pgnData,
+                                                                       int maxGames) {
+        try (InputStream is = new ByteArrayInputStream(pgnData.getBytes("UTF-8"))) {
+            return getGameInfo(is, null, maxGames);
+        } catch (IOException ex) {
+            return new Pair<>(GameInfoResult.NOT_PGN, null);
+        }
+    }
+
+    private Pair<GameInfoResult,ArrayList<GameInfo>> getGameInfoFromFile(ProgressHandler progress,
+                                                                         int maxGames) {
+        try (InputStream is = new FileInputStream(fileName)) {
+            return getGameInfo(is, progress, maxGames);
+        } catch (IOException ex) {
+            return new Pair<>(GameInfoResult.NOT_PGN, null);
+        }
+    }
+
+
     /** Return info about PGN games in a file. */
-    private Pair<GameInfoResult,ArrayList<GameInfo>> getGameInfo(ProgressHandler progress,
-                                                                 int maxGames) {
+    private static Pair<GameInfoResult,ArrayList<GameInfo>> getGameInfo(InputStream is,
+                                                                        ProgressHandler progress,
+                                                                        int maxGames) {
         ArrayList<GameInfo> gamesInFile = new ArrayList<>();
-        try (BufferedInput f = new BufferedInput(new FileInputStream(fileName))) {
+        try (BufferedInput f = new BufferedInput(is)) {
             GameInfo gi = null;
             HeaderInfo hi = null;
             boolean inHeader = false;
