@@ -197,7 +197,7 @@ Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese Paramet
     <string name="delete_file">Datei löschen</string>
     <string name="delete_file_question">Datei löschen?</string>
     <string name="delete_named_file">Datei %s löschen?</string>
-    <string name="regexp_search">Regular Expression Search</string>
+    <string name="regexp_search">Suche mit regulären Ausdrücken</string>
     <string name="game_saved">Partie gespeichert</string>
     <string name="failed_to_save_game">Speichern der Partie nicht möglich</string>
     <string name="failed_to_delete_game">Löschen der Partie nicht möglich</string>
