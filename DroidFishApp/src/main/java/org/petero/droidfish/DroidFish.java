@@ -46,7 +46,6 @@ import org.petero.droidfish.activities.LoadFEN;
 import org.petero.droidfish.activities.LoadScid;
 import org.petero.droidfish.activities.PGNFile;
 import org.petero.droidfish.activities.PGNFile.GameInfo;
-import org.petero.droidfish.activities.PGNFile.GameInfoResult;
 import org.petero.droidfish.activities.Preferences;
 import org.petero.droidfish.book.BookOptions;
 import org.petero.droidfish.engine.EngineUtil;
@@ -798,8 +797,13 @@ public class DroidFish extends Activity
                     }
                     PGNFile pgnFile = new PGNFile(fn);
                     long fileLen = FileUtil.getFileLength(fn);
-                    Pair<GameInfoResult,ArrayList<GameInfo>> gi = pgnFile.getGameInfo(2);
-                    if ((fileLen > 1024 * 1024) || (gi.first == GameInfoResult.OK && gi.second.size() > 1)) {
+                    boolean moreThanOneGame = false;
+                    try {
+                        ArrayList<GameInfo> gi = pgnFile.getGameInfo(2);
+                        moreThanOneGame = gi.size() > 1;
+                    } catch (IOException ignore) {
+                    }
+                    if (fileLen > 1024 * 1024 || moreThanOneGame) {
                         filename = fn;
                     } else {
                         try (FileInputStream in = new FileInputStream(fn)) {
@@ -2288,8 +2292,8 @@ public class DroidFish extends Activity
                         fenPgn.append(clip.getItemAt(i).coerceToText(getApplicationContext()));
                     try {
                         String fenPgnData = fenPgn.toString();
-                        Pair<GameInfoResult,ArrayList<GameInfo>> gi = PGNFile.getGameInfo(fenPgnData, 2);
-                        if (gi.first == GameInfoResult.OK && gi.second.size() > 1) {
+                        ArrayList<GameInfo> gi = PGNFile.getGameInfo(fenPgnData, 2);
+                        if (gi.size() > 1) {
                             String sep = File.separator;
                             String fn = Environment.getExternalStorageDirectory() + sep +
                                         pgnDir + sep + ".sharedfile.pgn";

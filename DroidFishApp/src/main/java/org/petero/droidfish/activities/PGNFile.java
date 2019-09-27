@@ -33,7 +33,6 @@ import org.petero.droidfish.R;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.util.Pair;
 import android.widget.Toast;
 
 public class PGNFile {
@@ -111,13 +110,6 @@ public class PGNFile {
         }
     }
 
-    public static enum GameInfoResult {
-        OK,
-        CANCEL,
-        NOT_PGN,
-        OUT_OF_MEMORY;
-    }
-    
     private static class BytesToString {
         private byte[] buf = new byte[256];
         private int len = 0;
@@ -185,9 +177,21 @@ public class PGNFile {
         }
     }
 
+    public static class NotPgnFile extends IOException {
+        NotPgnFile() {
+            super("");
+        }
+    }
+
+    public static class CancelException extends IOException {
+        CancelException() {
+            super("");
+        }
+    }
+
     /** Return info about all PGN games in a file. */
-    public Pair<GameInfoResult,ArrayList<GameInfo>> getGameInfo(Activity activity,
-                                                                ProgressDialog progress) {
+    public ArrayList<GameInfo> getGameInfo(Activity activity,
+                                           ProgressDialog progress) throws IOException {
         if (activity == null || progress == null)
             return getGameInfoFromFile(null, -1);
         ProgressHandler handler = new ProgressHandler(fileName, activity, progress);
@@ -195,41 +199,36 @@ public class PGNFile {
     }
 
     /** Return info about up to "maxGames" PGN games in a file. */
-    public Pair<GameInfoResult,ArrayList<GameInfo>> getGameInfo(int maxGames) {
+    public ArrayList<GameInfo> getGameInfo(int maxGames) throws IOException {
         return getGameInfoFromFile(null, maxGames);
     }
 
-    public static Pair<GameInfoResult,ArrayList<GameInfo>> getGameInfo(String pgnData,
-                                                                       int maxGames) {
+    public static ArrayList<GameInfo> getGameInfo(String pgnData, int maxGames) {
         try (InputStream is = new ByteArrayInputStream(pgnData.getBytes("UTF-8"))) {
             return getGameInfo(is, null, maxGames);
         } catch (IOException ex) {
-            return new Pair<>(GameInfoResult.NOT_PGN, null);
+            return new ArrayList<>();
         }
     }
 
-    private Pair<GameInfoResult,ArrayList<GameInfo>> getGameInfoFromFile(ProgressHandler progress,
-                                                                         int maxGames) {
+    private ArrayList<GameInfo> getGameInfoFromFile(ProgressHandler progress,
+                                                    int maxGames) throws IOException {
         try (InputStream is = new FileInputStream(fileName)) {
             return getGameInfo(is, progress, maxGames);
-        } catch (IOException ex) {
-            return new Pair<>(GameInfoResult.NOT_PGN, null);
         }
     }
 
-
     /** Return info about PGN games in a file. */
-    private static Pair<GameInfoResult,ArrayList<GameInfo>> getGameInfo(InputStream is,
-                                                                        ProgressHandler progress,
-                                                                        int maxGames) {
+    private static ArrayList<GameInfo> getGameInfo(InputStream is, ProgressHandler progress,
+                                                   int maxGames) throws IOException {
         ArrayList<GameInfo> gamesInFile = new ArrayList<>();
+        long nRead = 0;
         try (BufferedInput f = new BufferedInput(is)) {
             GameInfo gi = null;
             HeaderInfo hi = null;
             boolean inHeader = false;
             boolean inHeaderSection = false;
             long filePos = 0;
-            long nRead = 0;
             int gameNo = 1;
 
             final int INITIAL       = 0;
@@ -383,7 +382,7 @@ public class PGNFile {
                             if (progress != null)
                                 progress.reportProgress(filePos);
                             if (Thread.currentThread().isInterrupted())
-                                return new Pair<>(GameInfoResult.CANCEL, null);
+                                throw new CancelException();
                         }
                         gi = new GameInfo();
                         gi.startPos = filePos;
@@ -397,14 +396,11 @@ public class PGNFile {
                 gi.info = hi.toString();
                 gamesInFile.add(gi);
             }
-        } catch (IOException ignore) {
-        } catch (OutOfMemoryError e) {
-            return new Pair<>(GameInfoResult.OUT_OF_MEMORY, null);
         }
-        if (gamesInFile.isEmpty())
-            return new Pair<>(GameInfoResult.NOT_PGN, null);
+        if (gamesInFile.isEmpty() && nRead > 1)
+            throw new NotPgnFile();
 
-        return new Pair<>(GameInfoResult.OK, gamesInFile);
+        return gamesInFile;
     }
 
     private void mkDirs() {

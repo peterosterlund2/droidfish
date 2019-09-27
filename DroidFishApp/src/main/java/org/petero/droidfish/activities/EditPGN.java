@@ -50,10 +50,11 @@ import org.petero.droidfish.ObjectCache;
 import org.petero.droidfish.R;
 import org.petero.droidfish.Util;
 import org.petero.droidfish.activities.PGNFile.GameInfo;
-import org.petero.droidfish.activities.PGNFile.GameInfoResult;
 import org.petero.droidfish.databinding.SelectGameBinding;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -180,7 +181,7 @@ public abstract class EditPGN extends AppCompatActivity {
                         if (canceled) {
                             setResult(RESULT_CANCELED);
                             finish();
-                        } else if (gamesInFile.size() == 0) {
+                        } else if (gamesInFile.isEmpty()) {
                             pgnFile.appendPGN(pgnToSave);
                             finish();
                         } else {
@@ -431,29 +432,33 @@ public abstract class EditPGN extends AppCompatActivity {
         long modTime = new File(fileName).lastModified();
         if (cacheValid && (modTime == lastModTime) && fileName.equals(lastFileName))
             return true;
-        Pair<GameInfoResult, ArrayList<GameInfo>> p = pgnFile.getGameInfo(this, progress);
-        if (p.first != GameInfoResult.OK) {
-            gamesInFile = new ArrayList<>();
-            switch (p.first) {
-            case OUT_OF_MEMORY:
-                runOnUiThread(() -> DroidFishApp.toast(R.string.file_too_large, Toast.LENGTH_SHORT));
-                break;
-            case NOT_PGN:
-                runOnUiThread(() -> DroidFishApp.toast(R.string.not_a_pgn_file, Toast.LENGTH_SHORT));
-                break;
-            case CANCEL:
-            case OK:
-                break;
+        try {
+            gamesInFile = pgnFile.getGameInfo(this, progress);
+            cacheValid = true;
+            lastModTime = modTime;
+            lastFileName = fileName;
+            return true;
+        } catch (PGNFile.CancelException ignore) {
+        } catch (PGNFile.NotPgnFile ex) {
+            runOnUiThread(() -> DroidFishApp.toast(R.string.not_a_pgn_file,
+                                                   Toast.LENGTH_SHORT));
+        } catch (FileNotFoundException ex) {
+            if (!loadGame) {
+                gamesInFile = new ArrayList<>();
+                return true;
             }
-            setResult(RESULT_CANCELED);
-            finish();
-            return false;
+            runOnUiThread(() -> DroidFishApp.toast(ex.getMessage(),
+                                                   Toast.LENGTH_LONG));
+        } catch (IOException ex) {
+            runOnUiThread(() -> DroidFishApp.toast(ex.getMessage(),
+                                                   Toast.LENGTH_LONG));
+        } catch (OutOfMemoryError ex) {
+            runOnUiThread(() -> DroidFishApp.toast(R.string.file_too_large,
+                                                   Toast.LENGTH_SHORT));
         }
-        gamesInFile = p.second;
-        cacheValid = true;
-        lastModTime = modTime;
-        lastFileName = fileName;
-        return true;
+        setResult(RESULT_CANCELED);
+        finish();
+        return false;
     }
 
     private void sendBackResult(GameInfo gi) {

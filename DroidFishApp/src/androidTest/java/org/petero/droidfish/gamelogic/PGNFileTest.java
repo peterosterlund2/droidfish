@@ -18,8 +18,6 @@
 
 package org.petero.droidfish.gamelogic;
 
-import android.util.Pair;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,7 +26,6 @@ import java.util.ArrayList;
 import org.petero.droidfish.DroidFishApp;
 import org.petero.droidfish.activities.PGNFile;
 import org.petero.droidfish.activities.PGNFile.GameInfo;
-import org.petero.droidfish.activities.PGNFile.GameInfoResult;
 
 import junit.framework.TestCase;
 
@@ -47,9 +44,7 @@ public class PGNFileTest extends TestCase {
             };
             writeFile(f, lines);
             PGNFile pgnFile = new PGNFile(f.getAbsolutePath());
-            Pair<GameInfoResult,ArrayList<GameInfo>> res = pgnFile.getGameInfo(null, null);
-            assertEquals(GameInfoResult.OK, res.first);
-            ArrayList<GameInfo> gi = res.second;
+            ArrayList<GameInfo> gi = pgnFile.getGameInfo(null, null);
             assertEquals(1, gi.size());
             assertEquals(0, gi.get(0).startPos);
             assertEquals(14, gi.get(0).endPos);
@@ -97,9 +92,7 @@ public class PGNFileTest extends TestCase {
             };
             writeFile(f, lines);
             PGNFile pgnFile = new PGNFile(f.getAbsolutePath());
-            Pair<GameInfoResult,ArrayList<GameInfo>>  res = pgnFile.getGameInfo(null, null);
-            assertEquals(GameInfoResult.OK, res.first);
-            ArrayList<GameInfo> gi = res.second;
+            ArrayList<GameInfo> gi = pgnFile.getGameInfo(null, null);
             assertEquals(2, gi.size());
             assertEquals(0, gi.get(0).startPos);
             assertEquals(660, gi.get(0).endPos);
@@ -127,9 +120,7 @@ public class PGNFileTest extends TestCase {
             };
             writeFile(f, lines);
             PGNFile pgnFile = new PGNFile(f.getAbsolutePath());
-            Pair<GameInfoResult,ArrayList<GameInfo>>  res = pgnFile.getGameInfo(null, null);
-            assertEquals(GameInfoResult.OK, res.first);
-            ArrayList<GameInfo> gi = res.second;
+            ArrayList<GameInfo> gi = pgnFile.getGameInfo(null, null);
             assertEquals(2, gi.size());
             assertEquals(4, gi.get(0).startPos);
             assertEquals(80, gi.get(0).endPos);
@@ -138,9 +129,8 @@ public class PGNFileTest extends TestCase {
             assertEquals(137, gi.get(1).endPos);
             assertEquals("2. w - b 1-0", gi.get(1).info);
 
-            res = pgnFile.getGameInfo(1);
-            assertEquals(GameInfoResult.OK, res.first);
-            assertEquals(1, res.second.size());
+            gi = pgnFile.getGameInfo(1);
+            assertEquals(1, gi.size());
         }
     }
     
