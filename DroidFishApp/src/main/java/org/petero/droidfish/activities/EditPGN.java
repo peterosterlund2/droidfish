@@ -272,7 +272,8 @@ public abstract class EditPGN extends AppCompatActivity {
         ListView lv = binding.listView;
         currentFilePos = defaultFilePos;
         int itemNo = getItemNo(gamesInFile, defaultFilePos);
-        lv.setSelectionFromTop(itemNo, 0);
+        if (itemNo >= 0)
+            lv.setSelectionFromTop(itemNo, 0);
         lv.setFastScrollEnabled(true);
         lv.setOnItemClickListener((parent, view, pos, id) -> {
             selectedGi = aa.getItem(pos);
