@@ -43,7 +43,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "thread.h"
 #include <iostream>
 #include "misc.h"
-#include <sys/timeb.h>
 
 PolyBook polybook1;  // global PolyBook1
 PolyBook polybook2;  // global PolyBook2
