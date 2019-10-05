@@ -1,27 +1,28 @@
 /*
-  Stockfish, a UCI chess playing engine derived from Glaurung 2.1
-  Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad
-  Copyright (C) 2015-2019 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
+ Honey, a UCI chess playing engine derived from Stockfish and Glaurung 2.1
+ Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
+ Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad (Stockfish Authors)
+ Copyright (C) 2015-2016 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad (Stockfish Authors)
+ Copyright (C) 2017-2019 Michael Byrne, Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad (Honey Authors)
 
-  Stockfish is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
+ Honey is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-  Stockfish is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
+ Honey is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #ifndef ENDGAME_H_INCLUDED
 #define ENDGAME_H_INCLUDED
 
-#include <map>
+#include <unordered_map>
 #include <memory>
 #include <string>
 #include <type_traits>
@@ -37,6 +38,7 @@ enum EndgameCode {
 
   EVALUATION_FUNCTIONS,
   KNNK,  // KNN vs K
+  KNNKP, // KNN vs KP
   KXK,   // Generic "mate lone king" eval
   KBNK,  // KBN vs K
   KPK,   // KP vs K
@@ -90,14 +92,18 @@ struct Endgame : public EndgameBase<T> {
 };
 
 
-/// The Endgames class stores the pointers to endgame evaluation and scaling
+/// The Endgames namespace handles the pointers to endgame evaluation and scaling
 /// base objects in two std::map. We use polymorphism to invoke the actual
 /// endgame function by calling its virtual operator().
 
-class Endgames {
+namespace Endgames {
 
   template<typename T> using Ptr = std::unique_ptr<EndgameBase<T>>;
-  template<typename T> using Map = std::map<Key, Ptr<T>>;
+  template<typename T> using Map = std::unordered_map<Key, Ptr<T>>;
+
+  extern std::pair<Map<Value>, Map<ScaleFactor>> maps;
+
+  void init();
 
   template<typename T>
   Map<T>& map() {
@@ -112,34 +118,11 @@ class Endgames {
     map<T>()[Position().set(code, BLACK, &st).material_key()] = Ptr<T>(new Endgame<E>(BLACK));
   }
 
-  std::pair<Map<Value>, Map<ScaleFactor>> maps;
-
-public:
-  Endgames() {
-
-    add<KPK>("KPK");
-    add<KNNK>("KNNK");
-    add<KBNK>("KBNK");
-    add<KRKP>("KRKP");
-    add<KRKB>("KRKB");
-    add<KRKN>("KRKN");
-    add<KQKP>("KQKP");
-    add<KQKR>("KQKR");
-
-    add<KNPK>("KNPK");
-    add<KNPKB>("KNPKB");
-    add<KRPKR>("KRPKR");
-    add<KRPKB>("KRPKB");
-    add<KBPKB>("KBPKB");
-    add<KBPKN>("KBPKN");
-    add<KBPPKB>("KBPPKB");
-    add<KRPPKRP>("KRPPKRP");
-  }
-
   template<typename T>
   const EndgameBase<T>* probe(Key key) {
-    return map<T>().count(key) ? map<T>()[key].get() : nullptr;
+    auto it = map<T>().find(key);
+    return it != map<T>().end() ? it->second.get() : nullptr;
   }
-};
+}
 
 #endif // #ifndef ENDGAME_H_INCLUDED

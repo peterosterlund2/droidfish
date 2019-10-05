@@ -1,27 +1,30 @@
 /*
-  Stockfish, a UCI chess playing engine derived from Glaurung 2.1
-  Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad
-  Copyright (C) 2015-2019 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
+ Honey, a UCI chess playing engine derived from Stockfish and Glaurung 2.1
+ Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
+ Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad (Stockfish Authors)
+ Copyright (C) 2015-2016 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad (Stockfish Authors)
+ Copyright (C) 2017-2019 Michael Byrne, Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad (Honey Authors)
 
-  Stockfish is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
+ Honey is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-  Stockfish is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
+ Honey is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include <cassert>
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <cmath>  // convert to winning %
+#include <iomanip> //set precision in winning %
 
 #include "evaluate.h"
 #include "movegen.h"
@@ -63,6 +66,11 @@ namespace {
     else if (token == "fen")
         while (is >> token && token != "moves")
             fen += token + " ";
+#ifdef Add_Features
+    else if (token == "f")
+        while (is >> token && token != "moves")
+            fen += token + " ";
+#endif
     else
         return;
 
@@ -99,9 +107,35 @@ namespace {
         Options[name] = value;
     else
         sync_cout << "No such option: " << name << sync_endl;
-  }
+}
+#ifdef Add_Features
+// set() is called by typing "s" from the terminal when the user wants to use abbreviated
+// non-UCI comamnds and avoid the uci option protocol "setoption name (option name) value (xxx) ",
+// e.g., instead of typing "setoption name threads value 8" to set cores to 8 at the terminal,
+// the user simply types "s threads 8" - restricted to option names that do not contain
+// any white spaces - see ucioption.cpp.  The argument can take white spaces e.g.,
+// "s syzygypath /endgame tablebases/syzygy" will work
+void set(istringstream& is) {
+    string token, name, value;
 
+    // Read option name (no white spaces in option name)
+    is >> token;
+    name = token;
 
+    // Read option value (can contain white spaces)
+    while (is >> token)
+        value += string(" ", value.empty() ? 0 : 1) + token;
+
+    // provide user confirmation
+    if (Options.count(name)) {
+        Options[name] = value;
+        sync_cout << "Confirmation: "<< name << " set to " << value << sync_endl;
+
+    }
+    else
+        sync_cout << "No such option: " << name << sync_endl;
+}
+#endif
   // go() is called when engine receives the "go" UCI command. The function sets
   // the thinking time and other parameters from the input string, then starts
   // the search.
@@ -115,7 +149,11 @@ namespace {
     limits.startTime = now(); // As early as possible!
 
     while (is >> token)
+#ifdef Add_Features
+        if (token == "searchmoves" || token == "sm")
+#else
         if (token == "searchmoves")
+#endif
             while (is >> token)
                 limits.searchmoves.push_back(UCI::to_move(pos, token));
 
@@ -131,6 +169,10 @@ namespace {
         else if (token == "perft")     is >> limits.perft;
         else if (token == "infinite")  limits.infinite = 1;
         else if (token == "ponder")    ponderMode = true;
+#ifdef Add_Features
+        else if (token == "d")         is >> limits.depth;
+        else if (token == "i")         limits.infinite = 1;
+#endif
 
     Threads.start_thinking(pos, states, limits, ponderMode);
   }
@@ -163,8 +205,11 @@ namespace {
             nodes += Threads.nodes_searched();
         }
         else if (token == "setoption")  setoption(is);
+#ifdef Add_Features
+        else if (token == "s")          set(is);
+#endif
         else if (token == "position")   position(pos, is, states);
-        else if (token == "ucinewgame") Search::clear();
+        else if (token == "ucinewgame") { Search::clear(); elapsed = now(); } // Search::clear() may take some while
     }
 
     elapsed = now() - elapsed + 1; // Ensure positivity to avoid a 'divide by zero'
@@ -198,48 +243,86 @@ void UCI::loop(int argc, char* argv[]) {
   for (int i = 1; i < argc; ++i)
       cmd += std::string(argv[i]) + " ";
 
-  do {
-      if (argc == 1 && !getline(cin, cmd)) // Block here waiting for input or EOF
-          cmd = "quit";
+    do {
+        if (argc == 1 && !getline(cin, cmd)) // Block here waiting for input or EOF
+            cmd = "quit";
+#ifdef Add_Features
+        else if (token == "q")
+            cmd = "quit";
+#endif
 
       istringstream is(cmd);
 
       token.clear(); // Avoid a stale if getline() returns empty or blank line
       is >> skipws >> token;
 
+        // The GUI sends 'ponderhit' to tell us the user has played the expected move.
+        // So 'ponderhit' will be sent if we were told to ponder on the same move the
+        // user has played. We should continue searching but switch from pondering to
+        // normal search. In case Threads.stopOnPonderhit is set we are waiting for
+        // 'ponderhit' to stop the search, for instance if max search depth is reached.
+        if (    token == "quit"
+                ||  token == "stop"
+#ifdef Add_Features
+                ||  token == "q"
+                ||  token == "?"
+#endif
+            )
+            Threads.stop = true;
+
       // The GUI sends 'ponderhit' to tell us the user has played the expected move.
       // So 'ponderhit' will be sent if we were told to ponder on the same move the
       // user has played. We should continue searching but switch from pondering to
-      // normal search. In case Threads.stopOnPonderhit is set we are waiting for
-      // 'ponderhit' to stop the search, for instance if max search depth is reached.
-      if (    token == "quit"
-          ||  token == "stop"
-          || (token == "ponderhit" && Threads.stopOnPonderhit))
-          Threads.stop = true;
-
+      // normal search.
       else if (token == "ponderhit")
-          Threads.ponder = false; // Switch to normal search
+          Threads.main()->ponder = false; // Switch to normal search
 
       else if (token == "uci")
           sync_cout << "id name " << engine_info(true)
                     << "\n"       << Options
                     << "\nuciok"  << sync_endl;
 
-      else if (token == "setoption")  setoption(is);
-      else if (token == "go")         go(pos, is, states);
-      else if (token == "position")   position(pos, is, states);
-      else if (token == "ucinewgame") Search::clear();
-      else if (token == "isready")    sync_cout << "readyok" << sync_endl;
+        else if (token == "setoption")  setoption(is);
+        else if (token == "go")         go(pos, is, states);
+#ifdef Add_Features
+        else if (token == "b")     bench(pos, is, states);
+        else if (token == "so")         setoption(is);
+        else if (token == "set")        set(is);
+        else if (token == "s")          set(is);
 
-      // Additional custom non-UCI commands, mainly for debugging
-      else if (token == "flip")  pos.flip();
-      else if (token == "bench") bench(pos, is, states);
-      else if (token == "d")     sync_cout << pos << sync_endl;
-      else if (token == "eval")  sync_cout << Eval::trace(pos) << sync_endl;
-      else
-          sync_cout << "Unknown command: " << cmd << sync_endl;
+        else if (token == "g")          go(pos, is, states);
+        else if (token == "q")          cmd = "quit";
+        else if (token == "position")
+        {
+            position(pos, is, states);
+            if (Options["Clear_Search"])
+                Search::clear();
+        }
+        else if (token == "p")
+        {
+            position(pos, is, states);
+            if (Options["Clear_Search"])
+                Search::clear();
+        }
+#else
+        else if (token == "position")   position(pos, is, states);
+#endif
+        else if (token == "ucinewgame") Search::clear();
+        else if (token == "isready")    sync_cout << "readyok" << sync_endl;
 
-  } while (token != "quit" && argc == 1); // Command line args are one-shot
+        // Additional custom non-UCI commands, mainly for debugging
+        else if (token == "flip")  pos.flip();
+        else if (token == "bench") bench(pos, is, states);
+        else if (token == "d")     sync_cout << pos << sync_endl;
+        else if (token == "eval")  sync_cout << Eval::trace(pos) << sync_endl;
+        else
+            sync_cout << "Unknown command: " << cmd << sync_endl;
+#ifdef Add_Features
+    } while (token != "quit" && token != "q" && argc == 1); // Command line args are one-shot
+#else
+    }
+    while (token != "quit" && argc == 1); // Command line args are one-shot
+#endif
 }
 
 
@@ -255,12 +338,32 @@ string UCI::value(Value v) {
   assert(-VALUE_INFINITE < v && v < VALUE_INFINITE);
 
   stringstream ss;
-
+#ifdef Sullivan
+  const float vs = (float)v;
+  constexpr float sf = 2.15; // scoring percentage factor
+  constexpr float vf = 0.31492; // centipawn value factor
+#endif
   if (abs(v) < VALUE_MATE - MAX_PLY)
-      ss << "cp " << v * 100 / PawnValueEg;
-  else
-      ss << "mate " << (v > 0 ? VALUE_MATE - v + 1 : -VALUE_MATE - v) / 2;
+#ifdef Sullivan
+  // Score percentage evalaution output, similair to Lc0 output.
+  // For use with GUIs that divide centipawn scores by 100, e.g, xBoard, Arena, Fritz, etc.
+  if ( Options["Score_Output"] == "ScorPct-GUI")
+       ss << "cp " << fixed << setprecision(0) << 10000 * (pow (sf,(sf * vs /1000)))
+	  / (pow(sf,(sf * vs /1000)) + 1);
+	
+  // Centipawn scoring, value times centipawn factor
+  // SF values the raw score of pawns much higher than 100, see types.h
+  // The higher raw score allows for greater precison in many evaluation functions
+  else if (Options["Score_Output"] == "CentiPawn")
+	  ss << fixed << setprecision(0) << "cp " << (vs * vf);
 
+  else ss << "cp " << fixed << setprecision(2) << 100 * (pow (sf,(sf * vs /1000)))
+                                / (pow(sf,(sf * vs /1000)) + 1);  // Commandline score percenatge
+#else
+  ss << "cp " << v * 100 / PawnValueEg;
+#endif
+  else
+    ss << "mate " << (v > 0 ? VALUE_MATE - v + 1 : -VALUE_MATE - v) / 2;
   return ss.str();
 }
 

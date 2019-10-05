@@ -1,22 +1,23 @@
 /*
-  Stockfish, a UCI chess playing engine derived from Glaurung 2.1
-  Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad
-  Copyright (C) 2015-2019 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
+ Honey, a UCI chess playing engine derived from Stockfish and Glaurung 2.1
+ Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
+ Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad (Stockfish Authors)
+ Copyright (C) 2015-2016 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad (Stockfish Authors)
+ Copyright (C) 2017-2019 Michael Byrne, Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad (Honey Authors)
 
-  Stockfish is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
+ Honey is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-  Stockfish is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
+ Honey is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include <cassert>
 
@@ -25,50 +26,8 @@
 
 namespace {
 
-  template<Color Us, CastlingSide Cs, bool Checks, bool Chess960>
-  ExtMove* generate_castling(const Position& pos, ExtMove* moveList) {
-
-    constexpr CastlingRight Cr = Us | Cs;
-    constexpr bool KingSide = (Cr == WHITE_OO || Cr == BLACK_OO);
-
-    if (pos.castling_impeded(Cr) || !pos.can_castle(Cr))
-        return moveList;
-
-    // After castling, the rook and king final positions are the same in Chess960
-    // as they would be in standard chess.
-    Square kfrom = pos.square<KING>(Us);
-    Square rfrom = pos.castling_rook_square(Cr);
-    Square kto = relative_square(Us, KingSide ? SQ_G1 : SQ_C1);
-    Bitboard enemies = pos.pieces(~Us);
-
-    assert(!pos.checkers());
-
-    const Direction step = Chess960 ? kto > kfrom ? WEST : EAST
-                                    : KingSide    ? WEST : EAST;
-
-    for (Square s = kto; s != kfrom; s += step)
-        if (pos.attackers_to(s) & enemies)
-            return moveList;
-
-    // Because we generate only legal castling moves we need to verify that
-    // when moving the castling rook we do not discover some hidden checker.
-    // For instance an enemy queen in SQ_A1 when castling rook is in SQ_B1.
-    if (Chess960 && (attacks_bb<ROOK>(kto, pos.pieces() ^ rfrom) & pos.pieces(~Us, ROOK, QUEEN)))
-        return moveList;
-
-    Move m = make<CASTLING>(kfrom, rfrom);
-
-    if (Checks && !pos.gives_check(m))
-        return moveList;
-
-    *moveList++ = m;
-    return moveList;
-  }
-
-
   template<GenType Type, Direction D>
   ExtMove* make_promotions(ExtMove* moveList, Square to, Square ksq) {
-
     if (Type == CAPTURES || Type == EVASIONS || Type == NON_EVASIONS)
         *moveList++ = make<PROMOTION>(to - D, to, QUEEN);
 
@@ -78,7 +37,6 @@ namespace {
         *moveList++ = make<PROMOTION>(to - D, to, BISHOP);
         *moveList++ = make<PROMOTION>(to - D, to, KNIGHT);
     }
-
     // Knight promotion is the only promotion that can give a direct check
     // that's not already included in the queen promotion.
     if (Type == QUIET_CHECKS && (PseudoAttacks[KNIGHT][to] & ksq))
@@ -93,10 +51,8 @@ namespace {
   template<Color Us, GenType Type>
   ExtMove* generate_pawn_moves(const Position& pos, ExtMove* moveList, Bitboard target) {
 
-    // Compute our parametrized parameters at compile time, named according to
-    // the point of view of white side.
+    // Compute some compile time parameters relative to the white side
     constexpr Color     Them     = (Us == WHITE ? BLACK      : WHITE);
-    constexpr Bitboard  TRank8BB = (Us == WHITE ? Rank8BB    : Rank1BB);
     constexpr Bitboard  TRank7BB = (Us == WHITE ? Rank7BB    : Rank2BB);
     constexpr Bitboard  TRank3BB = (Us == WHITE ? Rank3BB    : Rank6BB);
     constexpr Direction Up       = (Us == WHITE ? NORTH      : SOUTH);
@@ -136,10 +92,10 @@ namespace {
             // if the pawn is not on the same file as the enemy king, because we
             // don't generate captures. Note that a possible discovery check
             // promotion has been already generated amongst the captures.
-            Bitboard dcCandidates = pos.blockers_for_king(Them);
-            if (pawnsNotOn7 & dcCandidates)
+            Bitboard dcCandidateQuiets = pos.blockers_for_king(Them) & pawnsNotOn7;
+            if (dcCandidateQuiets)
             {
-                Bitboard dc1 = shift<Up>(pawnsNotOn7 & dcCandidates) & emptySquares & ~file_bb(ksq);
+                Bitboard dc1 = shift<Up>(dcCandidateQuiets) & emptySquares & ~file_bb(ksq);
                 Bitboard dc2 = shift<Up>(dc1 & TRank3BB) & emptySquares;
 
                 b1 |= dc1;
@@ -161,7 +117,7 @@ namespace {
     }
 
     // Promotions and underpromotions
-    if (pawnsOn7 && (Type != EVASIONS || (target & TRank8BB)))
+    if (pawnsOn7)
     {
         if (Type == CAPTURES)
             emptySquares = ~pos.pieces();
@@ -262,7 +218,9 @@ namespace {
   template<Color Us, GenType Type>
   ExtMove* generate_all(const Position& pos, ExtMove* moveList, Bitboard target) {
 
-    constexpr bool Checks = Type == QUIET_CHECKS;
+    constexpr CastlingRights OO  = Us & KING_SIDE;
+    constexpr CastlingRights OOO = Us & QUEEN_SIDE;
+    constexpr bool Checks = Type == QUIET_CHECKS; // Reduce template instantations
 
     moveList = generate_pawn_moves<Us, Type>(pos, moveList, target);
     moveList = generate_moves<KNIGHT, Checks>(pos, moveList, Us, target);
@@ -276,20 +234,15 @@ namespace {
         Bitboard b = pos.attacks_from<KING>(ksq) & target;
         while (b)
             *moveList++ = make_move(ksq, pop_lsb(&b));
-    }
+        if (Type != CAPTURES && pos.can_castle(CastlingRights(OO | OOO)))
+        {
+            if (!pos.castling_impeded(OO) && pos.can_castle(OO))
+                *moveList++ = make<CASTLING>(ksq, pos.castling_rook_square(OO));
 
-    if (Type != CAPTURES && Type != EVASIONS && pos.can_castle(Us))
-    {
-        if (pos.is_chess960())
-        {
-            moveList = generate_castling<Us, KING_SIDE, Checks, true>(pos, moveList);
-            moveList = generate_castling<Us, QUEEN_SIDE, Checks, true>(pos, moveList);
+            if (!pos.castling_impeded(OOO) && pos.can_castle(OOO))
+                *moveList++ = make<CASTLING>(ksq, pos.castling_rook_square(OOO));
         }
-        else
-        {
-            moveList = generate_castling<Us, KING_SIDE, Checks, false>(pos, moveList);
-            moveList = generate_castling<Us, QUEEN_SIDE, Checks, false>(pos, moveList);
-        }
+
     }
 
     return moveList;
@@ -298,14 +251,11 @@ namespace {
 } // namespace
 
 
-/// generate<CAPTURES> generates all pseudo-legal captures and queen
-/// promotions. Returns a pointer to the end of the move list.
+/// <CAPTURES>     Generates all pseudo-legal captures and queen promotions
+/// <QUIETS>       Generates all pseudo-legal non-captures and underpromotions
+/// <NON_EVASIONS> Generates all pseudo-legal captures and non-captures
 ///
-/// generate<QUIETS> generates all pseudo-legal non-captures and
-/// underpromotions. Returns a pointer to the end of the move list.
-///
-/// generate<NON_EVASIONS> generates all pseudo-legal captures and
-/// non-captures. Returns a pointer to the end of the move list.
+/// Returns a pointer to the end of the move list.
 
 template<GenType Type>
 ExtMove* generate(const Position& pos, ExtMove* moveList) {

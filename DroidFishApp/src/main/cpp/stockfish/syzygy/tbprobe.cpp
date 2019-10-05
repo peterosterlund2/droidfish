@@ -1,7 +1,7 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (c) 2013 Ronald de Man
-  Copyright (C) 2016-2018 Marco Costalba, Lucas Braesch
+  Copyright (C) 2016-2019 Marco Costalba, Lucas Braesch
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
 #include "../movegen.h"
 #include "../position.h"
 #include "../search.h"
-#include "../thread_win32.h"
+#include "../thread_win32_osx.h"
 #include "../types.h"
 #include "../uci.h"
 
@@ -214,39 +214,57 @@ public:
             return *baseAddress = nullptr, nullptr;
 
         fstat(fd, &statbuf);
+
+        if (statbuf.st_size % 64 != 16)
+        {
+            std::cerr << "Corrupt tablebase file " << fname << std::endl;
+            exit(EXIT_FAILURE);
+        }
+
         *mapping = statbuf.st_size;
         *baseAddress = mmap(nullptr, statbuf.st_size, PROT_READ, MAP_SHARED, fd, 0);
         madvise(*baseAddress, statbuf.st_size, MADV_RANDOM);
         ::close(fd);
 
-        if (*baseAddress == MAP_FAILED) {
+        if (*baseAddress == MAP_FAILED)
+        {
             std::cerr << "Could not mmap() " << fname << std::endl;
-            exit(1);
+            exit(EXIT_FAILURE);
         }
 #else
+        // Note FILE_FLAG_RANDOM_ACCESS is only a hint to Windows and as such may get ignored.
         HANDLE fd = CreateFile(fname.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr,
-                               OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+                               OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS, nullptr);
 
         if (fd == INVALID_HANDLE_VALUE)
             return *baseAddress = nullptr, nullptr;
 
         DWORD size_high;
         DWORD size_low = GetFileSize(fd, &size_high);
+
+        if (size_low % 64 != 16)
+        {
+            std::cerr << "Corrupt tablebase file " << fname << std::endl;
+            exit(EXIT_FAILURE);
+        }
+
         HANDLE mmap = CreateFileMapping(fd, nullptr, PAGE_READONLY, size_high, size_low, nullptr);
         CloseHandle(fd);
 
-        if (!mmap) {
+        if (!mmap)
+        {
             std::cerr << "CreateFileMapping() failed" << std::endl;
-            exit(1);
+            exit(EXIT_FAILURE);
         }
 
         *mapping = (uint64_t)mmap;
         *baseAddress = MapViewOfFile(mmap, FILE_MAP_READ, 0, 0, 0);
 
-        if (!*baseAddress) {
+        if (!*baseAddress)
+        {
             std::cerr << "MapViewOfFile() failed, name = " << fname
                       << ", error = " << GetLastError() << std::endl;
-            exit(1);
+            exit(EXIT_FAILURE);
         }
 #endif
         uint8_t* data = (uint8_t*)*baseAddress;
@@ -254,7 +272,8 @@ public:
         constexpr uint8_t Magics[][4] = { { 0xD7, 0x66, 0x0C, 0xA5 },
                                           { 0x71, 0xE8, 0x23, 0x5D } };
 
-        if (memcmp(data, Magics[type == WDL], 4)) {
+        if (memcmp(data, Magics[type == WDL], 4))
+        {
             std::cerr << "Corrupted table in file " << fname << std::endl;
             unmap(*baseAddress, *mapping);
             return *baseAddress = nullptr, nullptr;
@@ -348,7 +367,7 @@ TBTable<WDL>::TBTable(const std::string& code) : TBTable() {
     hasPawns = pos.pieces(PAWN);
 
     hasUniquePieces = false;
-    for (Color c = WHITE; c <= BLACK; ++c)
+    for (Color c : { WHITE, BLACK })
         for (PieceType pt = PAWN; pt < KING; ++pt)
             if (popcount(pos.pieces(c, pt)) == 1)
                 hasUniquePieces = true;
@@ -415,7 +434,7 @@ class TBTables {
             }
         }
         std::cerr << "TB hash table size too low!" << std::endl;
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
 public:
@@ -441,8 +460,6 @@ TBTables TBTables;
 // If the corresponding file exists two new objects TBTable<WDL> and TBTable<DTZ>
 // are created and added to the lists and hash table. Called at init time.
 void TBTables::add(const std::vector<PieceType>& pieces) {
-    if (sizeof(char*) < 8 && pieces.size() >= 6)
-        return; // Not enough address space to support 6-men TB on 32-bit OS
 
     std::string code;
 
@@ -1109,10 +1126,10 @@ void* mapped(TBTable<Type>& e, const Position& pos) {
 
     static Mutex mutex;
 
-    // Use 'aquire' to avoid a thread reads 'ready' == true while another is
-    // still working, this could happen due to compiler reordering.
+    // Use 'acquire' to avoid a thread reading 'ready' == true while
+    // another is still working. (compiler reordering may cause this).
     if (e.ready.load(std::memory_order_acquire))
-        return e.baseAddress; // Could be nullptr if file does not exsist
+        return e.baseAddress; // Could be nullptr if file does not exist
 
     std::unique_lock<Mutex> lk(mutex);
 

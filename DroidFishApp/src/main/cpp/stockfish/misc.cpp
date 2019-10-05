@@ -1,22 +1,23 @@
 /*
-  Stockfish, a UCI chess playing engine derived from Glaurung 2.1
-  Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad
-  Copyright (C) 2015-2019 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
+ Honey, a UCI chess playing engine derived from Stockfish and Glaurung 2.1
+ Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
+ Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad (Stockfish Authors)
+ Copyright (C) 2015-2016 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad (Stockfish Authors)
+ Copyright (C) 2017-2019 Michael Byrne, Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad (Honey Authors)
 
-  Stockfish is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
+ Honey is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-  Stockfish is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
+ Honey is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #ifdef _WIN32
 #if _WIN32_WINNT < 0x0601
@@ -49,6 +50,7 @@ typedef bool(*fun3_t)(HANDLE, CONST GROUP_AFFINITY*, PGROUP_AFFINITY);
 
 #include "misc.h"
 #include "thread.h"
+#include "uci.h"
 
 using namespace std;
 
@@ -56,7 +58,23 @@ namespace {
 
 /// Version number. If Version is left empty, then compile date in the format
 /// DD-MM-YY and show in engine_info.
-const string Version = "10";
+#ifndef Sullivan
+#define Stockfish
+#endif
+
+	
+#if (defined Sullivan && defined Add_Features && ReleaseVer)
+const string Version = "X5i";
+#elif (defined Sullivan && defined Add_Features)
+const string Version = "";
+#endif
+
+
+#if (defined Stockfish && defined Add_Features)
+const string Version = "";
+#elif (defined Stockfish)
+const string Version = "";
+#endif
 
 /// Our fancy logging facility. The trick here is to replace cin.rdbuf() and
 /// cout.rdbuf() with two Tie objects that tie cin and cout to a file stream. We
@@ -116,36 +134,51 @@ public:
 
 } // namespace
 
-/// engine_info() returns the full name of the current Stockfish version. This
-/// will be either "Stockfish <Tag> DD-MM-YY" (where DD-MM-YY is the date when
-/// the program was compiled) or "Stockfish <Version>", depending on whether
+/// engine_info() returns the full name of the current Honey version. This
+/// will be either "Honey <Tag> Mmm-dd-yy" (where Mmm-dd-yy is the date when
+/// the program was compiled) or "Honey <Version>", depending on whether
 /// Version is empty.
 
 const string engine_info(bool to_uci) {
 
-  const string months("Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec");
-  string month, day, year;
-  stringstream ss, date(__DATE__); // From compiler, format is "Sep 21 2008"
+    const string months("Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec");
+    string month, day, year;
+    stringstream ss, date(__DATE__); // From compiler, format is "Sep 21 2008"
+#ifdef Sullivan
+    ss << "Honey " << Version << setfill('0');
+#else
+    ss << "Stockfish " << Version << setfill('0');
+#endif
+#if (defined Sullivan && defined Test)
+	if (Version.empty())
+	{
+		date >> month >> day;
+		ss << setw(2) << (1 + months.find(month) / 4) <<setw(2) << day  << "-" << "";
+	}
 
-  ss << "Stockfish " << Version << setfill('0');
-
-  if (Version.empty())
-  {
-      date >> month >> day >> year;
-      ss << setw(2) << day << setw(2) << (1 + months.find(month) / 4) << year.substr(2);
-  }
-
-  ss << (Is64Bit ? " 64" : "")
-     << (HasPext ? " BMI2" : (HasPopCnt ? " POPCNT" : ""))
-     << (to_uci  ? "\nid author ": " by ")
-     << "T. Romstad, M. Costalba, J. Kiiski, G. Linscott";
+#else
+    if (Version.empty())
+    {
+        date >> month >> day >> year;
+		ss << setw(2) << (1 + months.find(month) / 4) <<setw(2) << day << year.substr(2) << "";
+    }
+#endif
+#ifdef Sullivan
+    ss	<< (to_uci  ? "\nid author ": " by ")
+            << "M. Byrne and scores of others...";
+#else
+//     ss << (Is64Bit ? " 64" : "") // 95% of systems are 64 bit
+//     << (HasPext ? " BMI2" : (HasPopCnt ? " POPCNT" : "")) // may disrupt some GUIs due to length
+	   ss << (to_uci  ? "\nid author ": " by ")
+       << "T. Romstad, M. Costalba, J. Kiiski, G. Linscott";
+#endif
 
   return ss.str();
 }
 
 
 /// Debug functions used mainly to collect run-time statistics
-static int64_t hits[2], means[2];
+static std::atomic<int64_t> hits[2], means[2];
 
 void dbg_hit_on(bool b) { ++hits[0]; if (b) ++hits[1]; }
 void dbg_hit_on(bool c, bool b) { if (c) dbg_hit_on(b); }
@@ -195,11 +228,11 @@ void prefetch(void*) {}
 
 void prefetch(void* addr) {
 
-#  if defined(__INTEL_COMPILER)
+//#  if defined(__INTEL_COMPILER)
    // This hack prevents prefetches from being optimized away by
    // Intel compiler. Both MSVC and gcc seem not be affected by this.
    __asm__ ("");
-#  endif
+//#  endif
 
 #  if defined(__INTEL_COMPILER) || defined(_MSC_VER)
   _mm_prefetch((char*)addr, _MM_HINT_T0);
@@ -209,12 +242,6 @@ void prefetch(void* addr) {
 }
 
 #endif
-
-void prefetch2(void* addr) {
-
-  prefetch(addr);
-  prefetch((uint8_t*)addr + 64);
-}
 
 namespace WinProcGroup {
 
@@ -257,7 +284,7 @@ int best_group(size_t idx) {
       return -1;
   }
 
-  while (ptr->Size > 0 && byteOffset + ptr->Size <= returnLength)
+  while (byteOffset < returnLength)
   {
       if (ptr->Relationship == RelationNumaNode)
           nodes++;
@@ -268,6 +295,7 @@ int best_group(size_t idx) {
           threads += (ptr->Processor.Flags == LTP_PC_SMT) ? 2 : 1;
       }
 
+      assert(ptr->Size);
       byteOffset += ptr->Size;
       ptr = (SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX*)(((char*)ptr) + ptr->Size);
   }
