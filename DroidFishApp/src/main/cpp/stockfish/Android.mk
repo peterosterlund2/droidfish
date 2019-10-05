@@ -9,6 +9,7 @@ MY_DEF := -DSullivan -DAdd_Features -DReleaseVer
 MY_ARCH_DEF :=
 ifeq ($(TARGET_ARCH_ABI),arm64-v8a)
   MY_ARCH_DEF += -DIS_64BIT
+  MY_DEF += -DUSE_POPCNT
 endif
 ifeq ($(TARGET_ARCH_ABI),x86_64)
   MY_ARCH_DEF += -DIS_64BIT
