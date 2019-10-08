@@ -375,6 +375,15 @@ public class DroidFish extends Activity
                 }
             });
             addAction(new UIAction() {
+                public String getId() { return "forceMove"; }
+                public int getName() { return R.string.option_force_computer_move; }
+                public int getIcon() { return R.raw.stop; }
+                public boolean enabled() { return true; }
+                public void run() {
+                    ctrl.stopSearch();
+                }
+            });
+            addAction(new UIAction() {
                 public String getId() { return "largeButtons"; }
                 public int getName() { return R.string.toggle_large_buttons; }
                 public int getIcon() { return R.raw.magnify; }

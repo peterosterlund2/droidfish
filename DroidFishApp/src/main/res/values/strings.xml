@@ -753,6 +753,7 @@ If you are running on battery power, it is recommended that you change settings 
         <item>Disabled</item>
         <item>@string/flip_board</item>
         <item>@string/toggle_analysis</item>
+        <item>@string/option_force_computer_move</item>
         <item>@string/toggle_show_thinking</item>
         <item>@string/toggle_book_hints</item>
         <item>@string/toggle_tb_hints</item>
@@ -770,6 +771,7 @@ If you are running on battery power, it is recommended that you change settings 
         <item></item>
         <item>flipboard</item>
         <item>toggleAnalysis</item>
+        <item>forceMove</item>
         <item>showThinking</item>
         <item>bookHints</item>
         <item>tbHints</item>
