@@ -197,7 +197,7 @@
     <string name="delete_file">Видалити файл</string>
     <string name="delete_file_question">Видалити партію?</string>
     <string name="delete_named_file">Видалення файлу %s?</string>
-    <string name="regexp_search">Regular Expression Search</string>
+    <string name="regexp_search">Пошук за регулярними виразами</string>
     <string name="game_saved">Партію збережено</string>
     <string name="failed_to_save_game">Не вдалося зберегти партію</string>
     <string name="failed_to_delete_game">Не вдалося вилучити партію</string>
@@ -754,6 +754,7 @@
         <item>Відключений</item>
         <item>@string/flip_board</item>
         <item>@string/toggle_analysis</item>
+        <item>@string/option_force_computer_move</item>
         <item>@string/toggle_show_thinking</item>
         <item>@string/toggle_book_hints</item>
         <item>@string/toggle_tb_hints</item>
@@ -771,6 +772,7 @@
         <item></item>
         <item>flipboard</item>
         <item>toggleAnalysis</item>
+        <item>forceMove</item>
         <item>showThinking</item>
         <item>bookHints</item>
         <item>tbHints</item>

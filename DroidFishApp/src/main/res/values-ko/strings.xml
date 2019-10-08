@@ -758,6 +758,7 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
         <item>사용 안 함</item>
         <item>@string/flip_board</item>
         <item>@string/toggle_analysis</item>
+        <item>@string/option_force_computer_move</item>
         <item>@string/toggle_show_thinking</item>
         <item>@string/toggle_book_hints</item>
         <item>@string/toggle_tb_hints</item>
@@ -775,6 +776,7 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
         <item></item>
         <item>flipboard</item>
         <item>toggleAnalysis</item>
+        <item>forceMove</item>
         <item>showThinking</item>
         <item>bookHints</item>
         <item>tbHints</item>
