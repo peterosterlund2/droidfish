@@ -442,7 +442,8 @@ public class EditBoard extends Activity {
 
     private void setPosFields() {
         setEPFile(getEPFile()); // To handle sideToMove change
-        TextIO.fixupEPSquare(cb.pos);
+        if (isValid())
+            TextIO.fixupEPSquare(cb.pos);
         TextIO.removeBogusCastleFlags(cb.pos);
     }
 
@@ -476,6 +477,16 @@ public class EditBoard extends Activity {
             status.setText(getParseErrString(e));
         }
         return false;
+    }
+
+    /** Return true if the position is valid. */
+    private boolean isValid() {
+        try {
+            TextIO.readFEN(TextIO.toFEN(cb.pos));
+            return true;
+        } catch (ChessParseError e) {
+            return false;
+        }
     }
 
     private String getParseErrString(ChessParseError e) {
