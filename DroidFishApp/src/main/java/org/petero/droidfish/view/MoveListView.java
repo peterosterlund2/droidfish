@@ -103,6 +103,18 @@ public class MoveListView extends View {
         return textPaint.getFontMetricsInt(null);
     }
 
+    /** Get the Y scroll value required to put line "lineNo" at the top of the view. */
+    public int getLineStartY(int lineNo) {
+        if (lineNo < 0)
+            return 0;
+        Paint.FontMetricsInt fmi = new Paint.FontMetricsInt();
+        int lineHeight = textPaint.getFontMetricsInt(fmi);
+        int y = lineHeight * lineNo;
+        if (lineNo > 0 && fmi.bottom > 0)
+            y += fmi.bottom - 1;
+        return y;
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);

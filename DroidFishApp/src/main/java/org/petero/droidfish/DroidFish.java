@@ -1995,7 +1995,7 @@ public class DroidFish extends Activity
         int currPos = gameTextListener.getCurrPos();
         int line = moveList.getLineForOffset(currPos);
         if (line >= 0 && autoScrollMoveList) {
-            int y = (line - 1) * moveList.getLineHeight();
+            int y = moveList.getLineStartY(line - 1);
             moveListScroll.scrollTo(0, y);
         }
     }
