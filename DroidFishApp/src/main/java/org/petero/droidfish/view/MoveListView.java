@@ -139,12 +139,13 @@ public class MoveListView extends View {
 
         int height = 0;
         if (layout != null) {
-            height = layout.getLineCount() * getLineHeight();
+            int nLines = layout.getLineCount();
+            height = nLines * getLineHeight();
             ViewParent p = getParent();
             if (p != null)
                 p = p.getParent();
             if (p instanceof MyRelativeLayout)
-                height += -getLineHeight() + ((MyRelativeLayout)p).getNewHeight();
+                height = getLineStartY(nLines - 1) + ((MyRelativeLayout)p).getNewHeight();
         }
         switch (MeasureSpec.getMode(heightMeasureSpec)) {
         case MeasureSpec.UNSPECIFIED:
