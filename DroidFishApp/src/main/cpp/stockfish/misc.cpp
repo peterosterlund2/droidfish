@@ -2,7 +2,7 @@
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
   Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad
-  Copyright (C) 2015-2019 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
+  Copyright (C) 2015-2020 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ namespace {
 
 /// Version number. If Version is left empty, then compile date in the format
 /// DD-MM-YY and show in engine_info.
-const string Version = "10";
+const string Version = "11";
 
 /// Our fancy logging facility. The trick here is to replace cin.rdbuf() and
 /// cout.rdbuf() with two Tie objects that tie cin and cout to a file stream. We
@@ -102,6 +102,13 @@ public:
     if (!fname.empty() && !l.file.is_open())
     {
         l.file.open(fname, ifstream::out);
+
+        if (!l.file.is_open())
+        {
+            cerr << "Unable to open debug log file " << fname << endl;
+            exit(EXIT_FAILURE);
+        }
+
         cin.rdbuf(&l.in);
         cout.rdbuf(&l.out);
     }
@@ -144,8 +151,79 @@ const string engine_info(bool to_uci) {
 }
 
 
+/// compiler_info() returns a string trying to describe the compiler we use
+
+const std::string compiler_info() {
+
+  #define STRINGIFY2(x) #x
+  #define STRINGIFY(x) STRINGIFY2(x)
+  #define VER_STRING(major, minor, patch) STRINGIFY(major) "." STRINGIFY(minor) "." STRINGIFY(patch)
+
+/// Predefined macros hell:
+///
+/// __GNUC__           Compiler is gcc, Clang or Intel on Linux
+/// __INTEL_COMPILER   Compiler is Intel
+/// _MSC_VER           Compiler is MSVC or Intel on Windows
+/// _WIN32             Building on Windows (any)
+/// _WIN64             Building on Windows 64 bit
+
+  std::string compiler = "\nCompiled by ";
+
+  #ifdef __clang__
+     compiler += "clang++ ";
+     compiler += VER_STRING(__clang_major__, __clang_minor__, __clang_patchlevel__);
+  #elif __INTEL_COMPILER
+     compiler += "Intel compiler ";
+     compiler += "(version ";
+     compiler += STRINGIFY(__INTEL_COMPILER) " update " STRINGIFY(__INTEL_COMPILER_UPDATE);
+     compiler += ")";
+  #elif _MSC_VER
+     compiler += "MSVC ";
+     compiler += "(version ";
+     compiler += STRINGIFY(_MSC_FULL_VER) "." STRINGIFY(_MSC_BUILD);
+     compiler += ")";
+  #elif __GNUC__
+     compiler += "g++ (GNUC) ";
+     compiler += VER_STRING(__GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
+  #else
+     compiler += "Unknown compiler ";
+     compiler += "(unknown version)";
+  #endif
+
+  #if defined(__APPLE__) 
+     compiler += " on Apple";
+  #elif defined(__CYGWIN__)
+     compiler += " on Cygwin";
+  #elif defined(__MINGW64__)
+     compiler += " on MinGW64";
+  #elif defined(__MINGW32__)
+     compiler += " on MinGW32";
+  #elif defined(__ANDROID__)
+     compiler += " on Android";
+  #elif defined(__linux__)
+     compiler += " on Linux";
+  #elif defined(_WIN64)
+     compiler += " on Microsoft Windows 64-bit";
+  #elif defined(_WIN32)
+     compiler += " on Microsoft Windows 32-bit";
+  #else
+     compiler += " on unknown system";
+  #endif
+
+  compiler += "\n __VERSION__ macro expands to: ";
+  #ifdef __VERSION__
+     compiler += __VERSION__;
+  #else
+     compiler += "(undefined macro)";
+  #endif
+  compiler += "\n";
+
+  return compiler;
+}
+
+
 /// Debug functions used mainly to collect run-time statistics
-static int64_t hits[2], means[2];
+static std::atomic<int64_t> hits[2], means[2];
 
 void dbg_hit_on(bool b) { ++hits[0]; if (b) ++hits[1]; }
 void dbg_hit_on(bool c, bool b) { if (c) dbg_hit_on(b); }
@@ -168,7 +246,7 @@ void dbg_print() {
 
 std::ostream& operator<<(std::ostream& os, SyncCout sc) {
 
-  static Mutex m;
+  static std::mutex m;
 
   if (sc == IO_LOCK)
       m.lock();
@@ -209,12 +287,6 @@ void prefetch(void* addr) {
 }
 
 #endif
-
-void prefetch2(void* addr) {
-
-  prefetch(addr);
-  prefetch((uint8_t*)addr + 64);
-}
 
 namespace WinProcGroup {
 
@@ -257,7 +329,7 @@ int best_group(size_t idx) {
       return -1;
   }
 
-  while (ptr->Size > 0 && byteOffset + ptr->Size <= returnLength)
+  while (byteOffset < returnLength)
   {
       if (ptr->Relationship == RelationNumaNode)
           nodes++;
@@ -268,6 +340,7 @@ int best_group(size_t idx) {
           threads += (ptr->Processor.Flags == LTP_PC_SMT) ? 2 : 1;
       }
 
+      assert(ptr->Size);
       byteOffset += ptr->Size;
       ptr = (SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX*)(((char*)ptr) + ptr->Size);
   }

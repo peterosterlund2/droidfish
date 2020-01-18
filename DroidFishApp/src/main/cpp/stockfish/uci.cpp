@@ -2,7 +2,7 @@
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
   Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad
-  Copyright (C) 2015-2019 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
+  Copyright (C) 2015-2020 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -146,7 +146,7 @@ namespace {
     uint64_t num, nodes = 0, cnt = 1;
 
     vector<string> list = setup_bench(pos, args);
-    num = count_if(list.begin(), list.end(), [](string s) { return s.find("go ") == 0; });
+    num = count_if(list.begin(), list.end(), [](string s) { return s.find("go ") == 0 || s.find("eval") == 0; });
 
     TimePoint elapsed = now();
 
@@ -155,16 +155,21 @@ namespace {
         istringstream is(cmd);
         is >> skipws >> token;
 
-        if (token == "go")
+        if (token == "go" || token == "eval")
         {
             cerr << "\nPosition: " << cnt++ << '/' << num << endl;
-            go(pos, is, states);
-            Threads.main()->wait_for_search_finished();
-            nodes += Threads.nodes_searched();
+            if (token == "go")
+            {
+               go(pos, is, states);
+               Threads.main()->wait_for_search_finished();
+               nodes += Threads.nodes_searched();
+            }
+            else
+               sync_cout << "\n" << Eval::trace(pos) << sync_endl;
         }
         else if (token == "setoption")  setoption(is);
         else if (token == "position")   position(pos, is, states);
-        else if (token == "ucinewgame") Search::clear();
+        else if (token == "ucinewgame") { Search::clear(); elapsed = now(); } // Search::clear() may take some while
     }
 
     elapsed = now() - elapsed + 1; // Ensure positivity to avoid a 'divide by zero'
@@ -191,9 +196,8 @@ void UCI::loop(int argc, char* argv[]) {
   Position pos;
   string token, cmd;
   StateListPtr states(new std::deque<StateInfo>(1));
-  auto uiThread = std::make_shared<Thread>(0);
 
-  pos.set(StartFEN, false, &states->back(), uiThread.get());
+  pos.set(StartFEN, false, &states->back(), Threads.main());
 
   for (int i = 1; i < argc; ++i)
       cmd += std::string(argv[i]) + " ";
@@ -207,18 +211,16 @@ void UCI::loop(int argc, char* argv[]) {
       token.clear(); // Avoid a stale if getline() returns empty or blank line
       is >> skipws >> token;
 
+      if (    token == "quit"
+          ||  token == "stop")
+          Threads.stop = true;
+
       // The GUI sends 'ponderhit' to tell us the user has played the expected move.
       // So 'ponderhit' will be sent if we were told to ponder on the same move the
       // user has played. We should continue searching but switch from pondering to
-      // normal search. In case Threads.stopOnPonderhit is set we are waiting for
-      // 'ponderhit' to stop the search, for instance if max search depth is reached.
-      if (    token == "quit"
-          ||  token == "stop"
-          || (token == "ponderhit" && Threads.stopOnPonderhit))
-          Threads.stop = true;
-
+      // normal search.
       else if (token == "ponderhit")
-          Threads.ponder = false; // Switch to normal search
+          Threads.main()->ponder = false; // Switch to normal search
 
       else if (token == "uci")
           sync_cout << "id name " << engine_info(true)
@@ -231,11 +233,13 @@ void UCI::loop(int argc, char* argv[]) {
       else if (token == "ucinewgame") Search::clear();
       else if (token == "isready")    sync_cout << "readyok" << sync_endl;
 
-      // Additional custom non-UCI commands, mainly for debugging
-      else if (token == "flip")  pos.flip();
-      else if (token == "bench") bench(pos, is, states);
-      else if (token == "d")     sync_cout << pos << sync_endl;
-      else if (token == "eval")  sync_cout << Eval::trace(pos) << sync_endl;
+      // Additional custom non-UCI commands, mainly for debugging.
+      // Do not use these commands during a search!
+      else if (token == "flip")     pos.flip();
+      else if (token == "bench")    bench(pos, is, states);
+      else if (token == "d")        sync_cout << pos << sync_endl;
+      else if (token == "eval")     sync_cout << Eval::trace(pos) << sync_endl;
+      else if (token == "compiler") sync_cout << compiler_info() << sync_endl;
       else
           sync_cout << "Unknown command: " << cmd << sync_endl;
 

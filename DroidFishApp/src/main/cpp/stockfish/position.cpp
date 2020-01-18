@@ -2,7 +2,7 @@
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
   Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad
-  Copyright (C) 2015-2019 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
+  Copyright (C) 2015-2020 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -50,41 +50,6 @@ const string PieceToChar(" PNBRQK  pnbrqk");
 
 constexpr Piece Pieces[] = { W_PAWN, W_KNIGHT, W_BISHOP, W_ROOK, W_QUEEN, W_KING,
                              B_PAWN, B_KNIGHT, B_BISHOP, B_ROOK, B_QUEEN, B_KING };
-
-// min_attacker() is a helper function used by see_ge() to locate the least
-// valuable attacker for the side to move, remove the attacker we just found
-// from the bitboards and scan for new X-ray attacks behind it.
-
-template<int Pt>
-PieceType min_attacker(const Bitboard* byTypeBB, Square to, Bitboard stmAttackers,
-                       Bitboard& occupied, Bitboard& attackers) {
-
-  Bitboard b = stmAttackers & byTypeBB[Pt];
-  if (!b)
-      return min_attacker<Pt + 1>(byTypeBB, to, stmAttackers, occupied, attackers);
-
-  occupied ^= lsb(b); // Remove the attacker from occupied
-
-  // Add any X-ray attack behind the just removed piece. For instance with
-  // rooks in a8 and a7 attacking a1, after removing a7 we add rook in a8.
-  // Note that new added attackers can be of any color.
-  if (Pt == PAWN || Pt == BISHOP || Pt == QUEEN)
-      attackers |= attacks_bb<BISHOP>(to, occupied) & (byTypeBB[BISHOP] | byTypeBB[QUEEN]);
-
-  if (Pt == ROOK || Pt == QUEEN)
-      attackers |= attacks_bb<ROOK>(to, occupied) & (byTypeBB[ROOK] | byTypeBB[QUEEN]);
-
-  // X-ray may add already processed pieces because byTypeBB[] is constant: in
-  // the rook example, now attackers contains _again_ rook in a7, so remove it.
-  attackers &= occupied;
-  return (PieceType)Pt;
-}
-
-template<>
-PieceType min_attacker<KING>(const Bitboard*, Square, Bitboard, Bitboard&, Bitboard&) {
-  return KING; // No need to update bitboards: it is the last cycle
-}
-
 } // namespace
 
 
@@ -183,7 +148,7 @@ void Position::init() {
                   {
                       std::swap(cuckoo[i], key);
                       std::swap(cuckooMove[i], move);
-                      if (move == 0)   // Arrived at empty slot ?
+                      if (move == MOVE_NONE) // Arrived at empty slot?
                           break;
                       i = (i == H1(key)) ? H2(key) : H1(key); // Push victim to alternative slot
                   }
@@ -330,24 +295,18 @@ Position& Position::set(const string& fenStr, bool isChess960, StateInfo* si, Th
 void Position::set_castling_right(Color c, Square rfrom) {
 
   Square kfrom = square<KING>(c);
-  CastlingSide cs = kfrom < rfrom ? KING_SIDE : QUEEN_SIDE;
-  CastlingRight cr = (c | cs);
+  CastlingRights cr = c & (kfrom < rfrom ? KING_SIDE: QUEEN_SIDE);
 
   st->castlingRights |= cr;
   castlingRightsMask[kfrom] |= cr;
   castlingRightsMask[rfrom] |= cr;
   castlingRookSquare[cr] = rfrom;
 
-  Square kto = relative_square(c, cs == KING_SIDE ? SQ_G1 : SQ_C1);
-  Square rto = relative_square(c, cs == KING_SIDE ? SQ_F1 : SQ_D1);
+  Square kto = relative_square(c, cr & KING_SIDE ? SQ_G1 : SQ_C1);
+  Square rto = relative_square(c, cr & KING_SIDE ? SQ_F1 : SQ_D1);
 
-  for (Square s = std::min(rfrom, rto); s <= std::max(rfrom, rto); ++s)
-      if (s != kfrom && s != rfrom)
-          castlingPath[cr] |= s;
-
-  for (Square s = std::min(kfrom, kto); s <= std::max(kfrom, kto); ++s)
-      if (s != kfrom && s != rfrom)
-          castlingPath[cr] |= s;
+  castlingPath[cr] =   (between_bb(rfrom, rto) | between_bb(kfrom, kto) | rto | kto)
+                    & ~(square_bb(kfrom) | rfrom);
 }
 
 
@@ -388,6 +347,12 @@ void Position::set_state(StateInfo* si) const {
       Square s = pop_lsb(&b);
       Piece pc = piece_on(s);
       si->key ^= Zobrist::psq[pc][s];
+
+      if (type_of(pc) == PAWN)
+          si->pawnKey ^= Zobrist::psq[pc][s];
+
+      else if (type_of(pc) != KING)
+          si->nonPawnMaterial[color_of(pc)] += PieceValue[MG][pc];
   }
 
   if (si->epSquare != SQ_NONE)
@@ -398,20 +363,9 @@ void Position::set_state(StateInfo* si) const {
 
   si->key ^= Zobrist::castling[si->castlingRights];
 
-  for (Bitboard b = pieces(PAWN); b; )
-  {
-      Square s = pop_lsb(&b);
-      si->pawnKey ^= Zobrist::psq[piece_on(s)][s];
-  }
-
   for (Piece pc : Pieces)
-  {
-      if (type_of(pc) != PAWN && type_of(pc) != KING)
-          si->nonPawnMaterial[color_of(pc)] += pieceCount[pc] * PieceValue[MG][pc];
-
       for (int cnt = 0; cnt < pieceCount[pc]; ++cnt)
           si->materialKey ^= Zobrist::psq[pc][cnt];
-  }
 }
 
 
@@ -465,18 +419,18 @@ const string Position::fen() const {
   ss << (sideToMove == WHITE ? " w " : " b ");
 
   if (can_castle(WHITE_OO))
-      ss << (chess960 ? char('A' + file_of(castling_rook_square(WHITE |  KING_SIDE))) : 'K');
+      ss << (chess960 ? char('A' + file_of(castling_rook_square(WHITE_OO ))) : 'K');
 
   if (can_castle(WHITE_OOO))
-      ss << (chess960 ? char('A' + file_of(castling_rook_square(WHITE | QUEEN_SIDE))) : 'Q');
+      ss << (chess960 ? char('A' + file_of(castling_rook_square(WHITE_OOO))) : 'Q');
 
   if (can_castle(BLACK_OO))
-      ss << (chess960 ? char('a' + file_of(castling_rook_square(BLACK |  KING_SIDE))) : 'k');
+      ss << (chess960 ? char('a' + file_of(castling_rook_square(BLACK_OO ))) : 'k');
 
   if (can_castle(BLACK_OOO))
-      ss << (chess960 ? char('a' + file_of(castling_rook_square(BLACK | QUEEN_SIDE))) : 'q');
+      ss << (chess960 ? char('a' + file_of(castling_rook_square(BLACK_OOO))) : 'q');
 
-  if (!can_castle(WHITE) && !can_castle(BLACK))
+  if (!can_castle(ANY_CASTLING))
       ss << '-';
 
   ss << (ep_square() == SQ_NONE ? " - " : " " + UCI::square(ep_square()) + " ")
@@ -498,14 +452,15 @@ Bitboard Position::slider_blockers(Bitboard sliders, Square s, Bitboard& pinners
   Bitboard blockers = 0;
   pinners = 0;
 
-  // Snipers are sliders that attack 's' when a piece is removed
+  // Snipers are sliders that attack 's' when a piece and other snipers are removed
   Bitboard snipers = (  (PseudoAttacks[  ROOK][s] & pieces(QUEEN, ROOK))
                       | (PseudoAttacks[BISHOP][s] & pieces(QUEEN, BISHOP))) & sliders;
+  Bitboard occupancy = pieces() ^ snipers;
 
   while (snipers)
   {
     Square sniperSq = pop_lsb(&snipers);
-    Bitboard b = between_bb(s, sniperSq) & pieces();
+    Bitboard b = between_bb(s, sniperSq) & occupancy;
 
     if (b && !more_than_one(b))
     {
@@ -540,6 +495,7 @@ bool Position::legal(Move m) const {
 
   Color us = sideToMove;
   Square from = from_sq(m);
+  Square to = to_sq(m);
 
   assert(color_of(moved_piece(m)) == us);
   assert(piece_on(square<KING>(us)) == make_piece(us, KING));
@@ -550,7 +506,6 @@ bool Position::legal(Move m) const {
   if (type_of(m) == ENPASSANT)
   {
       Square ksq = square<KING>(us);
-      Square to = to_sq(m);
       Square capsq = to - pawn_push(us);
       Bitboard occupied = (pieces() ^ from ^ capsq) | to;
 
@@ -563,16 +518,35 @@ bool Position::legal(Move m) const {
             && !(attacks_bb<BISHOP>(ksq, occupied) & pieces(~us, QUEEN, BISHOP));
   }
 
-  // If the moving piece is a king, check whether the destination
-  // square is attacked by the opponent. Castling moves are checked
-  // for legality during move generation.
+  // Castling moves generation does not check if the castling path is clear of
+  // enemy attacks, it is delayed at a later time: now!
+  if (type_of(m) == CASTLING)
+  {
+      // After castling, the rook and king final positions are the same in
+      // Chess960 as they would be in standard chess.
+      to = relative_square(us, to > from ? SQ_G1 : SQ_C1);
+      Direction step = to > from ? WEST : EAST;
+
+      for (Square s = to; s != from; s += step)
+          if (attackers_to(s) & pieces(~us))
+              return false;
+
+      // In case of Chess960, verify that when moving the castling rook we do
+      // not discover some hidden checker.
+      // For instance an enemy queen in SQ_A1 when castling rook is in SQ_B1.
+      return   !chess960
+            || !(attacks_bb<ROOK>(to, pieces() ^ to_sq(m)) & pieces(~us, ROOK, QUEEN));
+  }
+
+  // If the moving piece is a king, check whether the destination square is
+  // attacked by the opponent.
   if (type_of(piece_on(from)) == KING)
-      return type_of(m) == CASTLING || !(attackers_to(to_sq(m)) & pieces(~us));
+      return !(attackers_to(to) & pieces(~us));
 
   // A non-king move is legal if and only if it is not pinned or it
   // is moving along the ray towards or away from the king.
   return   !(blockers_for_king(us) & from)
-        ||  aligned(from, to_sq(m), square<KING>(us));
+        ||  aligned(from, to, square<KING>(us));
 }
 
 
@@ -609,7 +583,7 @@ bool Position::pseudo_legal(const Move m) const {
   {
       // We have already handled promotion moves, so destination
       // cannot be on the 8th/1st rank.
-      if (rank_of(to) == relative_rank(us, RANK_8))
+      if ((Rank8BB | Rank1BB) & to)
           return false;
 
       if (   !(attacks_from<PAWN>(from, us) & pieces(~us) & to) // Not a capture
@@ -843,9 +817,8 @@ void Position::do_move(Move m, StateInfo& newSt, bool givesCheck) {
           st->nonPawnMaterial[us] += PieceValue[MG][promotion];
       }
 
-      // Update pawn hash key and prefetch access to pawnsTable
+      // Update pawn hash key
       st->pawnKey ^= Zobrist::psq[pc][from] ^ Zobrist::psq[pc][to];
-      prefetch2(thisThread->pawnsTable[st->pawnKey]);
 
       // Reset rule 50 draw counter
       st->rule50 = 0;
@@ -864,6 +837,25 @@ void Position::do_move(Move m, StateInfo& newSt, bool givesCheck) {
 
   // Update king attacks used for fast check detection
   set_check_info(st);
+
+  // Calculate the repetition info. It is the ply distance from the previous
+  // occurrence of the same position, negative in the 3-fold case, or zero
+  // if the position was not repeated.
+  st->repetition = 0;
+  int end = std::min(st->rule50, st->pliesFromNull);
+  if (end >= 4)
+  {
+      StateInfo* stp = st->previous->previous;
+      for (int i = 4; i <= end; i += 2)
+      {
+          stp = stp->previous->previous;
+          if (stp->key == st->key)
+          {
+              st->repetition = stp->repetition ? -i : i;
+              break;
+          }
+      }
+  }
 
   assert(pos_is_ok());
 }
@@ -952,7 +944,7 @@ void Position::do_castling(Color us, Square from, Square& to, Square& rfrom, Squ
 }
 
 
-/// Position::do(undo)_null_move() is used to do(undo) a "null move": It flips
+/// Position::do(undo)_null_move() is used to do(undo) a "null move": it flips
 /// the side to move without executing any move on the board.
 
 void Position::do_null_move(StateInfo& newSt) {
@@ -979,6 +971,8 @@ void Position::do_null_move(StateInfo& newSt) {
   sideToMove = ~sideToMove;
 
   set_check_info(st);
+
+  st->repetition = 0;
 
   assert(pos_is_ok());
 }
@@ -1023,77 +1017,96 @@ bool Position::see_ge(Move m, Value threshold) const {
   if (type_of(m) != NORMAL)
       return VALUE_ZERO >= threshold;
 
-  Bitboard stmAttackers;
   Square from = from_sq(m), to = to_sq(m);
-  PieceType nextVictim = type_of(piece_on(from));
-  Color us = color_of(piece_on(from));
-  Color stm = ~us; // First consider opponent's move
-  Value balance;   // Values of the pieces taken by us minus opponent's ones
 
-  // The opponent may be able to recapture so this is the best result
-  // we can hope for.
-  balance = PieceValue[MG][piece_on(to)] - threshold;
-
-  if (balance < VALUE_ZERO)
+  int swap = PieceValue[MG][piece_on(to)] - threshold;
+  if (swap < 0)
       return false;
 
-  // Now assume the worst possible result: that the opponent can
-  // capture our piece for free.
-  balance -= PieceValue[MG][nextVictim];
-
-  // If it is enough (like in PxQ) then return immediately. Note that
-  // in case nextVictim == KING we always return here, this is ok
-  // if the given move is legal.
-  if (balance >= VALUE_ZERO)
+  swap = PieceValue[MG][piece_on(from)] - swap;
+  if (swap <= 0)
       return true;
 
-  // Find all attackers to the destination square, with the moving piece
-  // removed, but possibly an X-ray attacker added behind it.
   Bitboard occupied = pieces() ^ from ^ to;
-  Bitboard attackers = attackers_to(to, occupied) & occupied;
+  Color stm = color_of(piece_on(from));
+  Bitboard attackers = attackers_to(to, occupied);
+  Bitboard stmAttackers, bb;
+  int res = 1;
 
   while (true)
   {
-      stmAttackers = attackers & pieces(stm);
-
-      // Don't allow pinned pieces to attack (except the king) as long as
-      // all pinners are on their original square.
-      if (!(st->pinners[~stm] & ~occupied))
-          stmAttackers &= ~st->blockersForKing[stm];
+      stm = ~stm;
+      attackers &= occupied;
 
       // If stm has no more attackers then give up: stm loses
+      if (!(stmAttackers = attackers & pieces(stm)))
+          break;
+
+      // Don't allow pinned pieces to attack (except the king) as long as
+      // there are pinners on their original square.
+      if (st->pinners[~stm] & occupied)
+          stmAttackers &= ~st->blockersForKing[stm];
+
       if (!stmAttackers)
           break;
 
+      res ^= 1;
+
       // Locate and remove the next least valuable attacker, and add to
-      // the bitboard 'attackers' the possibly X-ray attackers behind it.
-      nextVictim = min_attacker<PAWN>(byTypeBB, to, stmAttackers, occupied, attackers);
-
-      stm = ~stm; // Switch side to move
-
-      // Negamax the balance with alpha = balance, beta = balance+1 and
-      // add nextVictim's value.
-      //
-      //      (balance, balance+1) -> (-balance-1, -balance)
-      //
-      assert(balance < VALUE_ZERO);
-
-      balance = -balance - 1 - PieceValue[MG][nextVictim];
-
-      // If balance is still non-negative after giving away nextVictim then we
-      // win. The only thing to be careful about it is that we should revert
-      // stm if we captured with the king when the opponent still has attackers.
-      if (balance >= VALUE_ZERO)
+      // the bitboard 'attackers' any X-ray attackers behind it.
+      if ((bb = stmAttackers & pieces(PAWN)))
       {
-          if (nextVictim == KING && (attackers & pieces(stm)))
-              stm = ~stm;
-          break;
-      }
-      assert(nextVictim != KING);
-  }
-  return us != stm; // We break the above loop when stm loses
-}
+          if ((swap = PawnValueMg - swap) < res)
+              break;
 
+          occupied ^= lsb(bb);
+          attackers |= attacks_bb<BISHOP>(to, occupied) & pieces(BISHOP, QUEEN);
+      }
+
+      else if ((bb = stmAttackers & pieces(KNIGHT)))
+      {
+          if ((swap = KnightValueMg - swap) < res)
+              break;
+
+          occupied ^= lsb(bb);
+      }
+
+      else if ((bb = stmAttackers & pieces(BISHOP)))
+      {
+          if ((swap = BishopValueMg - swap) < res)
+              break;
+
+          occupied ^= lsb(bb);
+          attackers |= attacks_bb<BISHOP>(to, occupied) & pieces(BISHOP, QUEEN);
+      }
+
+      else if ((bb = stmAttackers & pieces(ROOK)))
+      {
+          if ((swap = RookValueMg - swap) < res)
+              break;
+
+          occupied ^= lsb(bb);
+          attackers |= attacks_bb<ROOK>(to, occupied) & pieces(ROOK, QUEEN);
+      }
+
+      else if ((bb = stmAttackers & pieces(QUEEN)))
+      {
+          if ((swap = QueenValueMg - swap) < res)
+              break;
+
+          occupied ^= lsb(bb);
+          attackers |=  (attacks_bb<BISHOP>(to, occupied) & pieces(BISHOP, QUEEN))
+                      | (attacks_bb<ROOK  >(to, occupied) & pieces(ROOK  , QUEEN));
+      }
+
+      else // KING
+           // If we "capture" with the king but opponent still has attackers,
+           // reverse the result.
+          return (attackers & ~pieces(stm)) ? res ^ 1 : res;
+  }
+
+  return bool(res);
+}
 
 /// Position::is_draw() tests whether the position is drawn by 50-move rule
 /// or by repetition. It does not detect stalemates.
@@ -1103,24 +1116,10 @@ bool Position::is_draw(int ply) const {
   if (st->rule50 > 99 && (!checkers() || MoveList<LEGAL>(*this).size()))
       return true;
 
-  int end = std::min(st->rule50, st->pliesFromNull);
-
-  if (end < 4)
-    return false;
-
-  StateInfo* stp = st->previous->previous;
-  int cnt = 0;
-
-  for (int i = 4; i <= end; i += 2)
-  {
-      stp = stp->previous->previous;
-
-      // Return a draw score if a position repeats once earlier but strictly
-      // after the root, or repeats twice before or at the root.
-      if (   stp->key == st->key
-          && ++cnt + (ply > i) == 2)
-          return true;
-  }
+  // Return a draw score if a position repeats once earlier but strictly
+  // after the root, or repeats twice before or at the root.
+  if (st->repetition && st->repetition < ply)
+      return true;
 
   return false;
 }
@@ -1132,26 +1131,15 @@ bool Position::is_draw(int ply) const {
 bool Position::has_repeated() const {
 
     StateInfo* stc = st;
-    while (true)
+    int end = std::min(st->rule50, st->pliesFromNull);
+    while (end-- >= 4)
     {
-        int i = 4, end = std::min(stc->rule50, stc->pliesFromNull);
-
-        if (end < i)
-            return false;
-
-        StateInfo* stp = stc->previous->previous;
-
-        do {
-            stp = stp->previous->previous;
-
-            if (stp->key == stc->key)
-                return true;
-
-            i += 2;
-        } while (i <= end);
+        if (stc->repetition)
+            return true;
 
         stc = stc->previous;
     }
+    return false;
 }
 
 
@@ -1184,22 +1172,19 @@ bool Position::has_game_cycle(int ply) const {
 
           if (!(between_bb(s1, s2) & pieces()))
           {
-              // In the cuckoo table, both moves Rc1c5 and Rc5c1 are stored in the same
-              // location. We select the legal one by reversing the move variable if necessary.
-              if (empty(s1))
-                  move = make_move(s2, s1);
-
               if (ply > i)
                   return true;
 
+              // For nodes before or at the root, check that the move is a
+              // repetition rather than a move to the current position.
+              // In the cuckoo table, both moves Rc1c5 and Rc5c1 are stored in
+              // the same location, so we have to select which square to check.
+              if (color_of(piece_on(empty(s1) ? s2 : s1)) != side_to_move())
+                  continue;
+
               // For repetitions before or at the root, require one more
-              StateInfo* next_stp = stp;
-              for (int k = i + 2; k <= end; k += 2)
-              {
-                  next_stp = next_stp->previous->previous;
-                  if (next_stp->key == stp->key)
-                     return true;
-              }
+              if (stp->repetition)
+                  return true;
           }
       }
   }
@@ -1297,15 +1282,15 @@ bool Position::pos_is_ok() const {
               assert(0 && "pos_is_ok: Index");
   }
 
-  for (Color c = WHITE; c <= BLACK; ++c)
-      for (CastlingSide s = KING_SIDE; s <= QUEEN_SIDE; s = CastlingSide(s + 1))
+  for (Color c : { WHITE, BLACK })
+      for (CastlingRights cr : {c & KING_SIDE, c & QUEEN_SIDE})
       {
-          if (!can_castle(c | s))
+          if (!can_castle(cr))
               continue;
 
-          if (   piece_on(castlingRookSquare[c | s]) != make_piece(c, ROOK)
-              || castlingRightsMask[castlingRookSquare[c | s]] != (c | s)
-              || (castlingRightsMask[square<KING>(c)] & (c | s)) != (c | s))
+          if (   piece_on(castlingRookSquare[cr]) != make_piece(c, ROOK)
+              || castlingRightsMask[castlingRookSquare[cr]] != cr
+              || (castlingRightsMask[square<KING>(c)] & cr) != cr)
               assert(0 && "pos_is_ok: Castling");
       }
 

@@ -2,7 +2,7 @@
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
   Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad
-  Copyright (C) 2015-2019 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
+  Copyright (C) 2015-2020 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <algorithm> // For std::count
 #include <cassert>
 
+#include <algorithm> // For std::count
 #include "movegen.h"
 #include "search.h"
 #include "thread.h"
@@ -32,7 +32,7 @@ ThreadPool Threads; // Global object
 
 
 /// Thread constructor launches the thread and waits until it goes to sleep
-/// in idle_loop(). Note that 'searching' and 'exit' should be alredy set.
+/// in idle_loop(). Note that 'searching' and 'exit' should be already set.
 
 Thread::Thread(size_t n) : idx(n), stdThread(&Thread::idle_loop, this) {
 
@@ -52,6 +52,15 @@ Thread::~Thread() {
   stdThread.join();
 }
 
+/// Thread::bestMoveCount(Move move) return best move counter for the given root move
+
+int Thread::best_move_count(Move move) {
+
+  auto rm = std::find(rootMoves.begin() + pvIdx,
+                      rootMoves.begin() + pvLast, move);
+
+  return rm != rootMoves.begin() + pvLast ? rm->bestMoveCount : 0;
+}
 
 /// Thread::clear() reset histories, usually before a new game
 
@@ -61,18 +70,22 @@ void Thread::clear() {
   mainHistory.fill(0);
   captureHistory.fill(0);
 
-  for (auto& to : continuationHistory)
-      for (auto& h : to)
+  for (bool inCheck : { false, true })
+    for (StatsType c : { NoCaptures, Captures })
+      for (auto& to : continuationHistory[inCheck][c])
+        for (auto& h : to)
           h->fill(0);
 
-  continuationHistory[NO_PIECE][0]->fill(Search::CounterMovePruneThreshold - 1);
+  for (bool inCheck : { false, true })
+    for (StatsType c : { NoCaptures, Captures })
+      continuationHistory[inCheck][c][NO_PIECE][0]->fill(Search::CounterMovePruneThreshold - 1);
 }
 
 /// Thread::start_searching() wakes up the thread that will start the search
 
 void Thread::start_searching() {
 
-  std::lock_guard<Mutex> lk(mutex);
+  std::lock_guard<std::mutex> lk(mutex);
   searching = true;
   cv.notify_one(); // Wake up the thread in idle_loop()
 }
@@ -83,7 +96,7 @@ void Thread::start_searching() {
 
 void Thread::wait_for_search_finished() {
 
-  std::unique_lock<Mutex> lk(mutex);
+  std::unique_lock<std::mutex> lk(mutex);
   cv.wait(lk, [&]{ return !searching; });
 }
 
@@ -103,7 +116,7 @@ void Thread::idle_loop() {
 
   while (true)
   {
-      std::unique_lock<Mutex> lk(mutex);
+      std::unique_lock<std::mutex> lk(mutex);
       searching = false;
       cv.notify_one(); // Wake up anyone waiting for search finished
       cv.wait(lk, [&]{ return searching; });
@@ -118,7 +131,7 @@ void Thread::idle_loop() {
 }
 
 /// ThreadPool::set() creates/destroys threads to match the requested number.
-/// Created and launched threads will go immediately to sleep in idle_loop.
+/// Created and launched threads will immediately go to sleep in idle_loop.
 /// Upon resizing, threads are recreated to allow for binding if necessary.
 
 void ThreadPool::set(size_t requested) {
@@ -136,10 +149,13 @@ void ThreadPool::set(size_t requested) {
       while (size() < requested)
           push_back(new Thread(size()));
       clear();
-  }
 
-  // Reallocate the hash with the new threadpool size
-  TT.resize(Options["Hash"]);
+      // Reallocate the hash with the new threadpool size
+      TT.resize(Options["Hash"]);
+
+      // Init thread number dependent search params.
+      Search::init();
+  }
 }
 
 /// ThreadPool::clear() sets threadPool data to initial values.
@@ -162,8 +178,9 @@ void ThreadPool::start_thinking(Position& pos, StateListPtr& states,
 
   main()->wait_for_search_finished();
 
-  stopOnPonderhit = stop = false;
-  ponder = ponderMode;
+  main()->stopOnPonderhit = stop = false;
+  increaseDepth = true;
+  main()->ponder = ponderMode;
   Search::Limits = limits;
   Search::RootMoves rootMoves;
 
@@ -192,7 +209,7 @@ void ThreadPool::start_thinking(Position& pos, StateListPtr& states,
   for (Thread* th : *this)
   {
       th->nodes = th->tbHits = th->nmpMinPly = 0;
-      th->rootDepth = th->completedDepth = DEPTH_ZERO;
+      th->rootDepth = th->completedDepth = 0;
       th->rootMoves = rootMoves;
       th->rootPos.set(pos.fen(), pos.is_chess960(), &setupStates->back(), th);
   }
