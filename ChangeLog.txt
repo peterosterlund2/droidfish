@@ -1,3 +1,10 @@
+2020-01-18: Version 1.78
+- Update to Stockfish 11.
+- Add button action "Force computer move".
+- Don't try to fixup invalid e.p. square if the position is invalid.
+- Update translations.
+- Use less CPU while waiting for human player to move.
+
 2019-09-29: Version 1.77
 - Add a user manual.
 - Include link to source code in about/help dialog text.

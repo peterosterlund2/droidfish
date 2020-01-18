@@ -6,8 +6,8 @@ android {
         applicationId "org.petero.droidfish"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 87
-        versionName "1.77"
+        versionCode 88
+        versionName "1.78"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             ndkBuild {
