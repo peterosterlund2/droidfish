@@ -328,7 +328,7 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="prefs_squareSelectType_title">Sélection de la case</string>
     <string name="prefs_squareSelectType_summary">Définir le comportement de la saisie des cases</string>
     <string name="prefs_language_title">Language</string>
-    <string name="prefs_language_summary">User interface language</string>
+    <string name="prefs_language_summary">Langue de l\'interface utilisateur</string>
     <string name="prefs_fontSize_title">Taille du texte</string>
     <string name="prefs_fontSize_summary">Taille de police pour la liste des coups et des informations de la partie</string>
     <string name="prefs_largeButtons_title">Grands boutons</string>
