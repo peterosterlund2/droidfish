@@ -925,7 +925,8 @@ public class DroidComputerPlayer {
     }
 
     private synchronized int getReadTimeout() {
-        boolean needGuiUpdate = depthModified || currMoveModified || pvModified || statsModified;
+        boolean needGuiUpdate = (searchRequest != null && searchRequest.currPos != null) &&
+            (depthModified || currMoveModified || pvModified || statsModified);
         int timeout = 2000000000;
         if (needGuiUpdate) {
             long now = System.currentTimeMillis();
