@@ -818,16 +818,17 @@ menu* -> *Set Color Theme*.
 
 ## Move announcement
 
-Use *Left drawer menu* -> *Settings* -> *Appearance* -> *Move Announcement* to
-control how played moves are announced. The following settings are available:
+Use *Left drawer menu* -> *Settings* -> *Appearance* -> *Speak moves* to control
+how played moves are announced. The following settings are available:
 
 * *Off*: Moves are not announced.
 
-* *Play sound*: A sound is played when the computer makes a move.
+* *Speech*: When a move is played by either a human or the computer, the played
+  move is spoken using short algebraic notation. English, German and Spanish
+  speech is available.
 
-* *Speech*: When a move is played by either a human or the computer, a sound is
-  played and the played move is spoken using short algebraic notation. English,
-  German and Spanish speech is available.
+Enable *Settings* -> *Appearance* -> *Move sound* to play a sound when the
+computer player makes a move.
 
 Use *Settings* -> *Appearance* -> *Enable Vibration* to make the device vibrate
 when the computer player makes a move.
