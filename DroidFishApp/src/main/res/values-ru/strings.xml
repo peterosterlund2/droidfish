@@ -788,14 +788,12 @@
     </string-array>
     <string-array name="move_announce_type_values">
         <item>off</item>
-        <item>sound</item>
         <item>speech_en</item>
         <item>speech_de</item>
         <item>speech_es</item>
     </string-array>
     <string-array name="move_announce_type_texts">
         <item>Выкл.</item>
-        <item>Воспроизведение звука</item>
         <item>По-английски</item>
         <item>По-немецки</item>
         <item>По-испански</item>

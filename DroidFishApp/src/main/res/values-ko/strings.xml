@@ -792,14 +792,12 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
     </string-array>
     <string-array name="move_announce_type_values">
         <item>off</item>
-        <item>sound</item>
         <item>speech_en</item>
         <item>speech_de</item>
         <item>speech_es</item>
     </string-array>
     <string-array name="move_announce_type_texts">
         <item>끄기</item>
-        <item>사운드 재생</item>
         <item>영어 말하기</item>
         <item>독일어 말하기</item>
         <item>스페인어 말하기</item>

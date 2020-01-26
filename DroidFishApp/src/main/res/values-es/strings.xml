@@ -788,14 +788,12 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     </string-array>
     <string-array name="move_announce_type_values">
         <item>off</item>
-        <item>sound</item>
         <item>speech_en</item>
         <item>speech_de</item>
         <item>speech_es</item>
     </string-array>
     <string-array name="move_announce_type_texts">
         <item>Anuncio de movimientos desconectado</item>
-        <item>Aviso de movimiento</item>
         <item>Texto hablado en inglés</item>
         <item>Texto hablado en alemán</item>
         <item>Texto hablado en español</item>

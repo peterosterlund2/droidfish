@@ -788,14 +788,12 @@ Pil gücüyle çalışıyorsanız, pil gücünden tasarruf etmek için ayarları
     </string-array>
     <string-array name="move_announce_type_values">
         <item>off</item>
-        <item>sound</item>
         <item>speech_en</item>
         <item>speech_de</item>
         <item>speech_es</item>
     </string-array>
     <string-array name="move_announce_type_texts">
         <item>Kapalı</item>
-        <item>Ses çal</item>
         <item>İngilizce konuşma</item>
         <item>Almanca konuşma</item>
         <item>İspanyolca konuşma</item>

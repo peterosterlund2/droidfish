@@ -788,14 +788,12 @@ Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese Paramet
     </string-array>
     <string-array name="move_announce_type_values">
         <item>off</item>
-        <item>sound</item>
         <item>speech_en</item>
         <item>speech_de</item>
         <item>speech_es</item>
     </string-array>
     <string-array name="move_announce_type_texts">
         <item>Keine Benachrichtigung</item>
-        <item>Benachrichtigungston</item>
         <item>Zugansage auf Englisch</item>
         <item>Zugansage auf Deutsch</item>
         <item>Zugansage auf Spanisch</item>

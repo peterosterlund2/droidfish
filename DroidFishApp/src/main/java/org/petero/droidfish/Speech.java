@@ -34,7 +34,8 @@ import android.widget.Toast;
 public class Speech {
     private TextToSpeech tts;
     private boolean initialized = false;
-    private String toSpeak = null;
+    private String toSpeak = null; // Pending text to speak after initialization
+    private boolean toPlaySound = false; // Pending sound to play after initialization
 
     public enum Language {
         EN,   // English
@@ -82,7 +83,7 @@ public class Speech {
                 case TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE:
                     lang = Language.fromString(langStr);
                     tts.addEarcon("[move]", "org.petero.droidfish", R.raw.movesound);
-                    say(toSpeak);
+                    say(toSpeak, toPlaySound);
                     break;
                 case TextToSpeech.LANG_MISSING_DATA:
                     toast = R.string.tts_data_missing;
@@ -102,16 +103,17 @@ public class Speech {
     }
 
     @SuppressWarnings("deprecation")
-    private void say(String text) {
+    private void say(String text, boolean playSound) {
         if (initialized) {
             if (lang != Language.NONE && text != null) {
-                if (!tts.isSpeaking())
+                if (playSound && !tts.isSpeaking())
                     tts.playEarcon("[move]", TextToSpeech.QUEUE_ADD, null);
                 tts.speak(text, TextToSpeech.QUEUE_ADD, null);
             }
             toSpeak = null;
         } else {
             toSpeak = text;
+            toPlaySound = playSound;
         }
     }
 
@@ -133,11 +135,11 @@ public class Speech {
     }
 
     /** Convert move "move" in position "pos" to a sentence and speak it. */
-    public void say(Position pos, Move move) {
+    public void say(Position pos, Move move, boolean playSound) {
         String s = moveToText(pos, move, lang);
 //        System.out.printf("%.3f Speech.say(): %s\n", System.currentTimeMillis() * 1e-3, s);
         if (!s.isEmpty())
-            say(s);
+            say(s, playSound);
     }
 
     /** Convert move "move" in position "pos" to a sentence that can be spoken. */

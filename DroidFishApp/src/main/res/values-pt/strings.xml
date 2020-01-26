@@ -788,14 +788,12 @@ Se você está usando somente a bateria, recomenda-se que você mude as configur
     </string-array>
     <string-array name="move_announce_type_values">
         <item>off</item>
-        <item>sound</item>
         <item>speech_en</item>
         <item>speech_de</item>
         <item>speech_es</item>
     </string-array>
     <string-array name="move_announce_type_texts">
         <item>Desligado</item>
-        <item>Tocar som</item>
         <item>Voz em inglês</item>
         <item>Voz em alemão</item>
         <item>Voz em espanhol</item>

@@ -173,6 +173,12 @@
             android:summary="@string/prefs_vibrateEnabled_summary" 
             android:defaultValue="false">
         </CheckBoxPreference>
+        <CheckBoxPreference
+            android:key="moveSoundEnabled"
+            android:title="@string/prefs_moveSoundEnabled_title"
+            android:summary="@string/prefs_moveSoundEnabled_summary"
+            android:defaultValue="false">
+        </CheckBoxPreference>
         <ListPreference
             android:key="moveAnnounceType"
             android:title="@string/prefs_moveAnnounceType_title"

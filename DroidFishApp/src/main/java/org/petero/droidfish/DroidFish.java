@@ -221,6 +221,7 @@ public class DroidFish extends Activity
 
     private boolean leftHanded;
     private String moveAnnounceType;
+    private boolean moveSoundEnabled;
     private MediaPlayer moveSound;
     private boolean vibrateEnabled;
     private boolean animateMoves;
@@ -1290,6 +1291,15 @@ public class DroidFish extends Activity
             statusFontSize = Math.min(statusFontSize, 16);
         status.setTextSize(statusFontSize);
         moveAnnounceType = settings.getString("moveAnnounceType", "off");
+        moveSoundEnabled = settings.getBoolean("moveSoundEnabled", false);
+        if (moveAnnounceType.equals("sound")) {
+            moveAnnounceType = "off";
+            moveSoundEnabled = true;
+            Editor editor = settings.edit();
+            editor.putString("moveAnnounceType", moveAnnounceType);
+            editor.putBoolean("moveSoundEnabled", moveSoundEnabled);
+            editor.apply();
+        }
         initSpeech();
         vibrateEnabled = settings.getBoolean("vibrateEnabled", false);
         animateMoves = settings.getBoolean("animateMoves", true);
@@ -3690,19 +3700,17 @@ public class DroidFish extends Activity
 
     @Override
     public void movePlayed(Position pos, Move move, boolean computerMove) {
-        if ("sound".equals(moveAnnounceType)) {
-            if (computerMove) {
+        if (moveAnnounceType.startsWith("speech_")) {
+            speech.say(pos, move, moveSoundEnabled && computerMove);
+        } else if (moveSoundEnabled && computerMove) {
+            if (moveSound != null)
+                moveSound.release();
+            try {
+                moveSound = MediaPlayer.create(this, R.raw.movesound);
                 if (moveSound != null)
-                    moveSound.release();
-                try {
-                    moveSound = MediaPlayer.create(this, R.raw.movesound);
-                    if (moveSound != null)
-                        moveSound.start();
-                } catch (NotFoundException ignore) {
-                }
+                    moveSound.start();
+            } catch (NotFoundException ignore) {
             }
-        } else if (moveAnnounceType.startsWith("speech_")) {
-            speech.say(pos, move);
         }
         if (vibrateEnabled && computerMove) {
             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);

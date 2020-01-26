@@ -788,14 +788,12 @@ Jeśli pracujesz na baterii, zalecana jest zmiana ustawień, w celu oszczędzani
     </string-array>
     <string-array name="move_announce_type_values">
         <item>off</item>
-        <item>sound</item>
         <item>speech_en</item>
         <item>speech_de</item>
         <item>speech_es</item>
     </string-array>
     <string-array name="move_announce_type_texts">
         <item>Wyłączone</item>
-        <item>Odtwórz dźwięk</item>
         <item>Wymowa angielska</item>
         <item>Mowa niemiecka</item>
         <item>Mowa hiszpańska</item>

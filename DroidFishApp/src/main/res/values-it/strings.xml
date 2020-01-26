@@ -788,14 +788,12 @@ Se l\'alimentazione è a batteria, è consigliabile modificare le impostazioni p
     </string-array>
     <string-array name="move_announce_type_values">
         <item>off</item>
-        <item>sound</item>
         <item>speech_en</item>
         <item>speech_de</item>
         <item>speech_es</item>
     </string-array>
     <string-array name="move_announce_type_texts">
         <item>Spento</item>
-        <item>Riproduci un suono</item>
         <item>Annuncio vocale in inglese</item>
         <item>Annuncio vocale in tedesco</item>
         <item>Annuncio vocale in Spagnolo</item>
