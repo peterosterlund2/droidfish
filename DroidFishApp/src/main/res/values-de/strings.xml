@@ -304,8 +304,10 @@ Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese Paramet
     <string name="prefs_autoScrollTitle_summary">Titelleiste bei zu langen Spielernamen automatisch scrollen</string>
     <string name="prefs_quickMoveInput_title">Schnelle Zugeingabe</string>
     <string name="prefs_quickMoveInput_summary">Die Reihenfolge der Auswahl für einen Zug (von bzw. nach) ist beliebig. Eindeutige Züge werden sofort durchgeführt.</string>
-    <string name="prefs_moveAnnounceType_title">Audioeinstellung</string>
-    <string name="prefs_moveAnnounceType_summary">Benachrichtigung bei Ausführung eines Zuges</string>
+    <string name="prefs_moveSoundEnabled_title">Move sound</string>
+    <string name="prefs_moveSoundEnabled_summary">Play sound when computer makes a move</string>
+    <string name="prefs_moveAnnounceType_title">Speak moves</string>
+    <string name="prefs_moveAnnounceType_summary">Speak when computer makes a move</string>
     <string name="prefs_vibrateEnabled_title">Vibration aktivieren</string>
     <string name="prefs_vibrateEnabled_summary">Bei Zug des Computers vibrieren</string>
     <string name="prefs_fullScreenMode_title">Vollbildanzeige</string>

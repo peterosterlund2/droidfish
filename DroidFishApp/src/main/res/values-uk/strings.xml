@@ -304,8 +304,10 @@
     <string name="prefs_autoScrollTitle_summary">Автопрокручування строки заголовку при наддовгими іменами гравців</string>
     <string name="prefs_quickMoveInput_title">Швидке введення ходу</string>
     <string name="prefs_quickMoveInput_summary">Клітини Звідки і Куди можуть бути натиснутими в будь-якому порядку. Хід грається відразу, якщо є допустимим.</string>
-    <string name="prefs_moveAnnounceType_title">Оголошення ходів</string>
-    <string name="prefs_moveAnnounceType_summary">Звукове оголошення ходів комп\'ютера</string>
+    <string name="prefs_moveSoundEnabled_title">Move sound</string>
+    <string name="prefs_moveSoundEnabled_summary">Play sound when computer makes a move</string>
+    <string name="prefs_moveAnnounceType_title">Speak moves</string>
+    <string name="prefs_moveAnnounceType_summary">Speak when computer makes a move</string>
     <string name="prefs_vibrateEnabled_title">Увімкнути вібрування</string>
     <string name="prefs_vibrateEnabled_summary">Вібрування під час ходу комп\'ютера</string>
     <string name="prefs_fullScreenMode_title">Режим відображення повного екрану</string>

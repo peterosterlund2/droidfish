@@ -304,8 +304,10 @@
     <string name="prefs_autoScrollTitle_summary">Аўтапрагортка радка загалоўка пры задоўгіх імёнах гульцоў</string>
     <string name="prefs_quickMoveInput_title">Хуткі ўвод ходу</string>
     <string name="prefs_quickMoveInput_summary">Клеткі Адкуль і Куды могуць быць націснуты ў кожным парадку. Ход гуляецца адразу, калі з\'яўляецца дапушчальным.</string>
-    <string name="prefs_moveAnnounceType_title">Аб\'ява хадоў</string>
-    <string name="prefs_moveAnnounceType_summary">Гукавая аб\'ява ходу кампутара</string>
+    <string name="prefs_moveSoundEnabled_title">Move sound</string>
+    <string name="prefs_moveSoundEnabled_summary">Play sound when computer makes a move</string>
+    <string name="prefs_moveAnnounceType_title">Speak moves</string>
+    <string name="prefs_moveAnnounceType_summary">Speak when computer makes a move</string>
     <string name="prefs_vibrateEnabled_title">Уключыць вібраванне</string>
     <string name="prefs_vibrateEnabled_summary">Вібраваць падчас ходу кампутара</string>
     <string name="prefs_fullScreenMode_title">Рэжым адлюстравання на ўвесь экран</string>

@@ -304,8 +304,10 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="prefs_autoScrollTitle_summary">Défilement automatique de la barre principale si les noms sont trop longs</string>
     <string name="prefs_quickMoveInput_title">Entrée rapide des coups</string>
     <string name="prefs_quickMoveInput_summary">Les cases de départ et d\'arrivée peuvent être touchées dans n\'importe quel ordre. Le coup est joué lorsqu\'il n\'y a plus d’ambiguïté.</string>
-    <string name="prefs_moveAnnounceType_title">Move Announcement</string>
-    <string name="prefs_moveAnnounceType_summary">Announcement sound when computer makes a move</string>
+    <string name="prefs_moveSoundEnabled_title">Move sound</string>
+    <string name="prefs_moveSoundEnabled_summary">Play sound when computer makes a move</string>
+    <string name="prefs_moveAnnounceType_title">Speak moves</string>
+    <string name="prefs_moveAnnounceType_summary">Speak when computer makes a move</string>
     <string name="prefs_vibrateEnabled_title">Activer les vibrations</string>
     <string name="prefs_vibrateEnabled_summary">Vibrer lorsque l\'ordinateur joue un coup</string>
     <string name="prefs_fullScreenMode_title">Mode Plein écran</string>

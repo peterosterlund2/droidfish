@@ -304,8 +304,10 @@ Se l\'alimentazione è a batteria, è consigliabile modificare le impostazioni p
     <string name="prefs_autoScrollTitle_summary">Auto-scorrimento della barra del titolo se i nomi dei giocatori sono troppo lunghi</string>
     <string name="prefs_quickMoveInput_title">Inserimento veloce delle mosse</string>
     <string name="prefs_quickMoveInput_summary">Il tocco da e per la casa può essere effettuato in qualsiasi ordine.</string>
-    <string name="prefs_moveAnnounceType_title">Avviso della mossa</string>
-    <string name="prefs_moveAnnounceType_summary">Emetti un suono quando il Computer muove</string>
+    <string name="prefs_moveSoundEnabled_title">Move sound</string>
+    <string name="prefs_moveSoundEnabled_summary">Play sound when computer makes a move</string>
+    <string name="prefs_moveAnnounceType_title">Speak moves</string>
+    <string name="prefs_moveAnnounceType_summary">Speak when computer makes a move</string>
     <string name="prefs_vibrateEnabled_title">Abilita la vibrazione</string>
     <string name="prefs_vibrateEnabled_summary">Vibra quando il computer fa una mossa</string>
     <string name="prefs_fullScreenMode_title">Modalità a schermo intero</string>

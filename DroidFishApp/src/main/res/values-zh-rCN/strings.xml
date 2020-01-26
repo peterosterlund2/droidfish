@@ -304,8 +304,10 @@
     <string name="prefs_autoScrollTitle_summary">棋手名字过长时自动滚动标题栏</string>
     <string name="prefs_quickMoveInput_title">快速着法输入</string>
     <string name="prefs_quickMoveInput_summary">从与到该棋格可以按任意顺序触摸，仅支持着法是唯一符合对弈规则的输入</string>
-    <string name="prefs_moveAnnounceType_title">走棋通告</string>
-    <string name="prefs_moveAnnounceType_summary">电脑走棋时发出通告声音</string>
+    <string name="prefs_moveSoundEnabled_title">Move sound</string>
+    <string name="prefs_moveSoundEnabled_summary">Play sound when computer makes a move</string>
+    <string name="prefs_moveAnnounceType_title">Speak moves</string>
+    <string name="prefs_moveAnnounceType_summary">Speak when computer makes a move</string>
     <string name="prefs_vibrateEnabled_title">启用振动</string>
     <string name="prefs_vibrateEnabled_summary">电脑走棋时振动</string>
     <string name="prefs_fullScreenMode_title">全屏模式</string>

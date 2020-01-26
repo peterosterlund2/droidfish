@@ -304,8 +304,10 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="prefs_autoScrollTitle_summary">Desplaza automáticamente la barra de título si los nombres de los jugadores son demasiado largos</string>
     <string name="prefs_quickMoveInput_title">Introducción rápida de la jugada</string>
     <string name="prefs_quickMoveInput_summary">Las casillas de origen y destino pueden ser pulsadas en cualquier orden. El movimiento se lleva a cabo tan pronto como se define de forma inequívoca (jugada única posible).</string>
-    <string name="prefs_moveAnnounceType_title">Anuncio de jugadas</string>
-    <string name="prefs_moveAnnounceType_summary">Anuncio, mediante voz, cuando el programa realiza un movimiento</string>
+    <string name="prefs_moveSoundEnabled_title">Move sound</string>
+    <string name="prefs_moveSoundEnabled_summary">Play sound when computer makes a move</string>
+    <string name="prefs_moveAnnounceType_title">Speak moves</string>
+    <string name="prefs_moveAnnounceType_summary">Speak when computer makes a move</string>
     <string name="prefs_vibrateEnabled_title">Permitir vibración</string>
     <string name="prefs_vibrateEnabled_summary">Vibra cuando la computadora efectúa una jugada</string>
     <string name="prefs_fullScreenMode_title">Modo Pantalla Completa</string>
