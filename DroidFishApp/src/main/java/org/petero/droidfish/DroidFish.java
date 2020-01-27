@@ -60,7 +60,6 @@ import org.petero.droidfish.gamelogic.GameTree.Node;
 import org.petero.droidfish.gamelogic.TimeControlData;
 import org.petero.droidfish.tb.Probe;
 import org.petero.droidfish.tb.ProbeResult;
-import org.petero.droidfish.view.ChessBoard;
 import org.petero.droidfish.view.MoveListView;
 import org.petero.droidfish.view.ChessBoard.SquareDecoration;
 
@@ -119,7 +118,6 @@ import android.preference.PreferenceManager;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.core.view.MotionEventCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import android.text.Editable;
 import android.text.Html;
@@ -128,7 +126,6 @@ import android.text.TextWatcher;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.ViewConfiguration;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -173,7 +170,7 @@ public class DroidFish extends Activity
     // FIXME!!! Use two engines in engine/engine games
 
     private ChessBoardPlay cb;
-    private DroidChessController ctrl = null;
+    DroidChessController ctrl = null;
     private boolean mShowThinking;
     private boolean mShowStats;
     private boolean fullPVLines;
@@ -182,7 +179,7 @@ public class DroidFish extends Activity
     private boolean mShowBookHints;
     private int mEcoHints;
     private int maxNumArrows;
-    private GameMode gameMode;
+    GameMode gameMode;
     private boolean mPonderMode;
     private int timeControl;
     private int movesPerSession;
@@ -214,9 +211,9 @@ public class DroidFish extends Activity
     private SharedPreferences settings;
     private ObjectCache cache;
 
-    private float scrollSensitivity;
-    private boolean invertScrollDirection;
-    private boolean scrollGames;
+    float scrollSensitivity;
+    boolean invertScrollDirection;
+    boolean scrollGames;
     private boolean autoScrollMoveList;
 
     private boolean leftHanded;
@@ -274,7 +271,7 @@ public class DroidFish extends Activity
 
 
     /** Defines all configurable button actions. */
-    private ActionFactory actionFactory = new ActionFactory() {
+    ActionFactory actionFactory = new ActionFactory() {
         private HashMap<String, UIAction> actions;
 
         private void addAction(UIAction a) {
@@ -976,164 +973,9 @@ public class DroidFish extends Activity
         cb.setClickable(true);
         cb.setPgnOptions(pgnOptions);
 
-        cb.setOnTouchListener(new OnTouchListener() {
-            private boolean pending = false;
-            private boolean pendingClick = false;
-            private int sq0 = -1;
-            private float scrollX = 0;
-            private float scrollY = 0;
-            private float prevX = 0;
-            private float prevY = 0;
-            private Handler handler = new Handler();
-            private Runnable runnable = new Runnable() {
-                public void run() {
-                    pending = false;
-                    handler.removeCallbacks(runnable);
-                    reShowDialog(BOARD_MENU_DIALOG);
-                }
-            };
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = MotionEventCompat.getActionMasked(event);
-                switch (action) {
-                case MotionEvent.ACTION_DOWN:
-                    handler.postDelayed(runnable, ViewConfiguration.getLongPressTimeout());
-                    pending = true;
-                    pendingClick = true;
-                    sq0 = cb.eventToSquare(event);
-                    scrollX = 0;
-                    scrollY = 0;
-                    prevX = event.getX();
-                    prevY = event.getY();
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    if (pending) {
-                        int sq = cb.eventToSquare(event);
-                        if (sq != sq0) {
-                            handler.removeCallbacks(runnable);
-                            pendingClick = false;
-                        }
-                        float currX = event.getX();
-                        float currY = event.getY();
-                        if (onScroll(currX - prevX, currY - prevY)) {
-                            handler.removeCallbacks(runnable);
-                            pendingClick = false;
-                        }
-                        prevX = currX;
-                        prevY = currY;
-                    }
-                    break;
-                case MotionEvent.ACTION_UP:
-                    if (pending) {
-                        pending = false;
-                        handler.removeCallbacks(runnable);
-                        if (!pendingClick)
-                            break;
-                        int sq = cb.eventToSquare(event);
-                        if (sq == sq0) {
-                            if (ctrl.humansTurn()) {
-                                Move m = cb.mousePressed(sq);
-                                if (m != null) {
-                                    setAutoMode(AutoMode.OFF);
-                                    ctrl.makeHumanMove(m);
-                                }
-                                setEgtbHints(cb.getSelectedSquare());
-                            }
-                        }
-                    }
-                    break;
-                case MotionEvent.ACTION_CANCEL:
-                    pending = false;
-                    handler.removeCallbacks(runnable);
-                    break;
-                }
-                return true;
-            }
-
-            private boolean onScroll(float distanceX, float distanceY) {
-                if (invertScrollDirection) {
-                    distanceX = -distanceX;
-                    distanceY = -distanceY;
-                }
-                if ((scrollSensitivity > 0) && (cb.sqSize > 0)) {
-                    scrollX += distanceX;
-                    scrollY += distanceY;
-                    final float scrollUnit = cb.sqSize * scrollSensitivity;
-                    if (Math.abs(scrollX) >= Math.abs(scrollY)) {
-                        // Undo/redo
-                        int nRedo = 0, nUndo = 0;
-                        while (scrollX > scrollUnit) {
-                            nRedo++;
-                            scrollX -= scrollUnit;
-                        }
-                        while (scrollX < -scrollUnit) {
-                            nUndo++;
-                            scrollX += scrollUnit;
-                        }
-                        if (nUndo + nRedo > 0) {
-                            scrollY = 0;
-                            setAutoMode(AutoMode.OFF);
-                        }
-                        if (nRedo + nUndo > 1) {
-                            boolean analysis = gameMode.analysisMode();
-                            boolean human = gameMode.playerWhite() || gameMode.playerBlack();
-                            if (analysis || !human)
-                                ctrl.setGameMode(new GameMode(GameMode.TWO_PLAYERS));
-                        }
-                        if (scrollGames) {
-                            if (nRedo > 0) {
-                                UIAction nextGame = actionFactory.getAction("nextGame");
-                                if (nextGame.enabled())
-                                    for (int i = 0; i < nRedo; i++)
-                                        nextGame.run();
-                            }
-                            if (nUndo > 0) {
-                                UIAction prevGame = actionFactory.getAction("prevGame");
-                                if (prevGame.enabled())
-                                    for (int i = 0; i < nUndo; i++)
-                                        prevGame.run();
-                            }
-                        } else {
-                            for (int i = 0; i < nRedo; i++) ctrl.redoMove();
-                            for (int i = 0; i < nUndo; i++) ctrl.undoMove();
-                        }
-                        ctrl.setGameMode(gameMode);
-                        return nRedo + nUndo > 0;
-                    } else {
-                        // Next/previous variation
-                        int varDelta = 0;
-                        while (scrollY > scrollUnit) {
-                            varDelta++;
-                            scrollY -= scrollUnit;
-                        }
-                        while (scrollY < -scrollUnit) {
-                            varDelta--;
-                            scrollY += scrollUnit;
-                        }
-                        if (varDelta != 0) {
-                            scrollX = 0;
-                            setAutoMode(AutoMode.OFF);
-                            ctrl.changeVariation(varDelta);
-                        }
-                        return varDelta != 0;
-                    }
-                }
-                return false;
-            }
-        });
-        cb.setOnTrackballListener(new ChessBoard.OnTrackballListener() {
-            public void onTrackballEvent(MotionEvent event) {
-                if (ctrl.humansTurn()) {
-                    Move m = cb.handleTrackballEvent(event);
-                    if (m != null) {
-                        setAutoMode(AutoMode.OFF);
-                        ctrl.makeHumanMove(m);
-                    }
-                    setEgtbHints(cb.getSelectedSquare());
-                }
-            }
-        });
+        ChessBoardPlayListener cbpListener = new ChessBoardPlayListener(this, cb);
+        cb.setOnTouchListener(cbpListener);
+        cb.setOnTrackballListener(cbpListener);
 
         moveList.setOnLongClickListener(v -> {
             reShowDialog(MOVELIST_MENU_DIALOG);
@@ -1579,7 +1421,7 @@ public class DroidFish extends Activity
         engineOptions.networkID = id;
     }
 
-    private void setEgtbHints(int sq) {
+    void setEgtbHints(int sq) {
         if (!engineOptions.hints || (sq < 0)) {
             cb.setSquareDecorations(null);
             return;
@@ -2164,7 +2006,7 @@ public class DroidFish extends Activity
     }
 
     static private final int PROMOTE_DIALOG = 0;
-    static private final int BOARD_MENU_DIALOG = 1;
+    static         final int BOARD_MENU_DIALOG = 1;
     static private final int ABOUT_DIALOG = 2;
     static private final int SELECT_BOOK_DIALOG = 4;
     static private final int SELECT_ENGINE_DIALOG = 5;
@@ -2192,7 +2034,7 @@ public class DroidFish extends Activity
     static private final int SELECT_FEN_FILE_DIALOG = 27;
 
     /** Remove and show a dialog. */
-    private void reShowDialog(int id) {
+    void reShowDialog(int id) {
         removeDialog(id);
         showDialog(id);
     }

@@ -562,8 +562,8 @@ public abstract class ChessBoard extends View {
 
     protected abstract Move mousePressed(int sq);
 
-    public static class OnTrackballListener {
-        public void onTrackballEvent(MotionEvent event) { }
+    public interface OnTrackballListener {
+        void onTrackballEvent(MotionEvent event);
     }
     private OnTrackballListener otbl = null;
     public final void setOnTrackballListener(OnTrackballListener onTrackballListener) {

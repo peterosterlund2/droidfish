@@ -228,6 +228,7 @@ public class EditBoard extends Activity {
             }
         });
         cb.setOnTrackballListener(new ChessBoard.OnTrackballListener() {
+            @Override
             public void onTrackballEvent(MotionEvent event) {
                 Move m = cb.handleTrackballEvent(event);
                 if (m != null)
