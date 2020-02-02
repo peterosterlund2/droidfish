@@ -154,9 +154,7 @@ public abstract class ChessBoard extends View {
             return animActive();
         }
         private boolean animActive() {
-            if (paused || (startTime < 0) || (now >= stopTime) || (posHash != pos.zobristHash()))
-                return false;
-            return true;
+            return !paused && startTime >= 0 && now < stopTime && posHash == pos.zobristHash();
         }
         public final boolean squareHidden(int sq) {
             if (!animActive())
@@ -170,10 +168,10 @@ public abstract class ChessBoard extends View {
             drawAnimPiece(canvas, piece2, from2, to2, animState);
             drawAnimPiece(canvas, piece1, from1, to1, animState);
             long now2 = System.currentTimeMillis();
-            long delay = 20 - (now2 - now);
+            long delay = 10 - (now2 - now);
 //          System.out.printf("delay:%d\n", delay);
             if (delay < 1) delay = 1;
-            handlerTimer.postDelayed(() -> invalidate(), delay);
+            handlerTimer.postDelayed(ChessBoard.this::invalidate, delay);
         }
         private void drawAnimPiece(Canvas canvas, int piece, int from, int to, double animState) {
             if (piece == Piece.EMPTY)
@@ -235,6 +233,14 @@ public abstract class ChessBoard extends View {
                     anim.piece2 = p2;
                     anim.from2 = move.to;
                     anim.to2 = move.to;
+                } else if (move.to == sourcePos.getEpSquare()) {
+                    if (sourcePos.whiteMove) {
+                        anim.piece2 = Piece.BPAWN;
+                        anim.from2 = anim.to2 = move.to - 8;
+                    } else {
+                        anim.piece2 = Piece.WPAWN;
+                        anim.from2 = anim.to2 = move.to + 8;
+                    }
                 } else if ((p == Piece.WKING) || (p == Piece.BKING)) {
                     boolean wtm = Piece.isWhite(p);
                     if (move.to == move.from + 2) { // O-O
