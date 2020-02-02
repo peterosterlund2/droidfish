@@ -48,8 +48,6 @@ public abstract class ChessBoard extends View {
     public int selectedSquare;
     public boolean userSelectedSquare;  // True if selectedSquare was set by user tap/click,
                                         // false if selectedSquare used to highlight last move
-    public float cursorX, cursorY;
-    public boolean cursorVisible;
     protected int x0, y0;
     public int sqSize;
     public boolean flipped;
@@ -78,7 +76,6 @@ public abstract class ChessBoard extends View {
     protected Paint darkPaint;
     protected Paint brightPaint;
     private Paint selectedSquarePaint;
-    private Paint cursorSquarePaint;
     private Paint piecePaint;
     private Paint labelPaint;
     private Paint decorationPaint;
@@ -89,8 +86,6 @@ public abstract class ChessBoard extends View {
         pos = new Position();
         selectedSquare = -1;
         userSelectedSquare = false;
-        cursorX = cursorY = 0;
-        cursorVisible = false;
         x0 = y0 = sqSize = 0;
         flipped = false;
         drawSquareLabels = false;
@@ -104,10 +99,6 @@ public abstract class ChessBoard extends View {
         selectedSquarePaint = new Paint();
         selectedSquarePaint.setStyle(Paint.Style.STROKE);
         selectedSquarePaint.setAntiAlias(true);
-
-        cursorSquarePaint = new Paint();
-        cursorSquarePaint.setStyle(Paint.Style.STROKE);
-        cursorSquarePaint.setAntiAlias(true);
 
         piecePaint = new Paint();
         piecePaint.setAntiAlias(true);
@@ -138,7 +129,6 @@ public abstract class ChessBoard extends View {
         darkPaint.setColor(ct.getColor(ColorTheme.DARK_SQUARE));
         brightPaint.setColor(ct.getColor(ColorTheme.BRIGHT_SQUARE));
         selectedSquarePaint.setColor(ct.getColor(ColorTheme.SELECTED_SQUARE));
-        cursorSquarePaint.setColor(ct.getColor(ColorTheme.CURSOR_SQUARE));
         labelPaint.setColor(ct.getColor(ColorTheme.SQUARE_LABEL));
         decorationPaint.setColor(ct.getColor(ColorTheme.DECORATION));
         for (int i = 0; i < ColorTheme.MAX_ARROWS; i++)
@@ -415,15 +405,6 @@ public abstract class ChessBoard extends View {
             int y0 = crd.y;
             canvas.drawRect(x0, y0, x0 + sqSize, y0 + sqSize, selectedSquarePaint);
         }
-        if (cursorVisible) {
-            int x = Math.round(cursorX);
-            int y = Math.round(cursorY);
-            XYCoord crd = sqToPix(x, y);
-            int x0 = crd.x;
-            int y0 = crd.y;
-            cursorSquarePaint.setStrokeWidth(sqSize/(float)16);
-            canvas.drawRect(x0, y0, x0 + sqSize, y0 + sqSize, cursorSquarePaint);
-        }
         if (!animActive) {
             drawMoveHints(canvas);
             drawDecorations(canvas);
@@ -562,51 +543,7 @@ public abstract class ChessBoard extends View {
 
     protected abstract Move mousePressed(int sq);
 
-    public interface OnTrackballListener {
-        void onTrackballEvent(MotionEvent event);
-    }
-    private OnTrackballListener otbl = null;
-    public final void setOnTrackballListener(OnTrackballListener onTrackballListener) {
-        otbl = onTrackballListener;
-    }
-    @Override
-    public boolean onTrackballEvent(MotionEvent event) {
-        if (otbl != null) {
-            otbl.onTrackballEvent(event);
-            return true;
-        }
-        return false;
-    }
-
-    protected abstract int minValidY();
-    protected abstract int maxValidX();
     protected abstract int getSquare(int x, int y);
-
-    public final Move handleTrackballEvent(MotionEvent event) {
-        switch (event.getAction()) {
-        case MotionEvent.ACTION_DOWN:
-            invalidate();
-            if (cursorVisible) {
-                int x = Math.round(cursorX);
-                int y = Math.round(cursorY);
-                cursorX = x;
-                cursorY = y;
-                int sq = getSquare(x, y);
-                return mousePressed(sq);
-            }
-            return null;
-        }
-        cursorVisible = true;
-        int c = flipped ? -1 : 1;
-        cursorX += c * event.getX();
-        cursorY -= c * event.getY();
-        if (cursorX < 0) cursorX = 0;
-        if (cursorX > maxValidX()) cursorX = maxValidX();
-        if (cursorY < minValidY()) cursorY = minValidY();
-        if (cursorY > 7) cursorY = 7;
-        invalidate();
-        return null;
-    }
 
     public final void setMoveHints(List<Move> moveHints) {
         boolean equal;

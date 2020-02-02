@@ -355,7 +355,6 @@ If you are running on battery power, it is recommended that you change settings 
     <string name="prefs_color_brightSquare_title">Bright Squares</string>
     <string name="prefs_color_darkSquare_title">Dark Squares</string>
     <string name="prefs_color_selectedSquare_title">Selected Square</string>
-    <string name="prefs_color_cursorSquare_title">Trackball Cursor</string>
     <string name="prefs_color_brightPiece_title">White Pieces</string>
     <string name="prefs_color_darkPiece_title">Black Pieces</string>
     <string name="prefs_color_arrow0_title">Arrow 1</string>

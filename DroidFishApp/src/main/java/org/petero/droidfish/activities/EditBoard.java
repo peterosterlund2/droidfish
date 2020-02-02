@@ -33,7 +33,6 @@ import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.tb.Probe;
 import org.petero.droidfish.tb.ProbeResult;
-import org.petero.droidfish.view.ChessBoard;
 import org.petero.droidfish.view.ChessBoard.SquareDecoration;
 
 import android.annotation.SuppressLint;
@@ -126,9 +125,6 @@ public class EditBoard extends Activity {
         ChessBoardEdit oldCB = cb;
         String statusStr = status.getText().toString();
         initUI();
-        cb.cursorX = oldCB.cursorX;
-        cb.cursorY = oldCB.cursorY;
-        cb.cursorVisible = oldCB.cursorVisible;
         cb.setPosition(oldCB.pos);
         setSelection(oldCB.selectedSquare);
         cb.userSelectedSquare = oldCB.userSelectedSquare;
@@ -225,15 +221,6 @@ public class EditBoard extends Activity {
                     break;
                 }
                 return true;
-            }
-        });
-        cb.setOnTrackballListener(new ChessBoard.OnTrackballListener() {
-            @Override
-            public void onTrackballEvent(MotionEvent event) {
-                Move m = cb.handleTrackballEvent(event);
-                if (m != null)
-                    doMove(m);
-                setEgtbHints(cb.getSelectedSquare());
             }
         });
     }

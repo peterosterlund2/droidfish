@@ -23,12 +23,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 
-import org.petero.droidfish.gamelogic.DroidChessController;
 import org.petero.droidfish.gamelogic.Move;
-import org.petero.droidfish.view.ChessBoard;
 
-public class ChessBoardPlayListener implements View.OnTouchListener,
-                                               ChessBoard.OnTrackballListener {
+public class ChessBoardPlayListener implements View.OnTouchListener {
     private DroidFish df;
     private ChessBoardPlay cb;
 
@@ -180,17 +177,5 @@ public class ChessBoardPlayListener implements View.OnTouchListener,
             }
         }
         return false;
-    }
-
-    @Override
-    public void onTrackballEvent(MotionEvent event) {
-        if (df.ctrl.humansTurn()) {
-            Move m = cb.handleTrackballEvent(event);
-            if (m != null) {
-                df.setAutoMode(DroidFish.AutoMode.OFF);
-                df.ctrl.makeHumanMove(m);
-            }
-            df.setEgtbHints(cb.getSelectedSquare());
-        }
     }
 }

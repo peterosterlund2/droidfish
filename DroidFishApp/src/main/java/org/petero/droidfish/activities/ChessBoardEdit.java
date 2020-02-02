@@ -195,7 +195,6 @@ public class ChessBoardEdit extends ChessBoard {
     Move mousePressed(int sq) {
         if (sq == -1)
             return null;
-        cursorVisible = false;
         if (selectedSquare != -1) {
             if (sq != selectedSquare) {
                 Move m = new Move(selectedSquare, sq, Piece.EMPTY);
@@ -207,15 +206,6 @@ public class ChessBoardEdit extends ChessBoard {
             setSelection(sq);
         }
         return null;
-    }
-
-    @Override
-    protected int minValidY() {
-        return landScape ? 0 : -2;
-    }
-    @Override
-    protected int maxValidX() {
-        return landScape ? 9 : 7;
     }
 
     @Override

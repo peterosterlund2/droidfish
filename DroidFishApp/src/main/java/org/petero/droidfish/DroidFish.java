@@ -866,9 +866,6 @@ public class DroidFish extends Activity
         String statusStr = status.getText().toString();
         initUI();
         readPrefs(true);
-        cb.cursorX = oldCB.cursorX;
-        cb.cursorY = oldCB.cursorY;
-        cb.cursorVisible = oldCB.cursorVisible;
         cb.setPosition(oldCB.pos);
         cb.setFlipped(oldCB.flipped);
         cb.setDrawSquareLabels(oldCB.drawSquareLabels);
@@ -975,7 +972,6 @@ public class DroidFish extends Activity
 
         ChessBoardPlayListener cbpListener = new ChessBoardPlayListener(this, cb);
         cb.setOnTouchListener(cbpListener);
-        cb.setOnTrackballListener(cbpListener);
 
         moveList.setOnLongClickListener(v -> {
             reShowDialog(MOVELIST_MENU_DIALOG);

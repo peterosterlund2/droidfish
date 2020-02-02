@@ -88,10 +88,6 @@ public class ChessBoardPlay extends ChessBoard {
     protected int getYFromSq(int sq) { return Position.getY(sq); }
 
     @Override
-    protected int minValidY() { return 0; }
-    @Override
-    protected int maxValidX() { return 7; }
-    @Override
     protected int getSquare(int x, int y) { return Position.getSquare(x, y); }
 
     @Override
@@ -105,7 +101,6 @@ public class ChessBoardPlay extends ChessBoard {
     public Move mousePressed(int sq) {
         if (sq < 0)
             return null;
-        cursorVisible = false;
         if ((selectedSquare != -1) && !userSelectedSquare)
             setSelection(-1); // Remove selection of opponents last moving piece
 

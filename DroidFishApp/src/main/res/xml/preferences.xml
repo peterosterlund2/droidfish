@@ -240,13 +240,7 @@
                     alphaSlider="true" 
                     android:defaultValue="#FF3232D1">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
-                <net.margaritov.preference.colorpicker.ColorPickerPreference 
-                    android:key="color_cursorSquare" 
-                    android:title="@string/prefs_color_cursorSquare_title" 
-                    alphaSlider="true" 
-                    android:defaultValue="#FF5F5FFD">
-                </net.margaritov.preference.colorpicker.ColorPickerPreference>
-                <net.margaritov.preference.colorpicker.ColorPickerPreference 
+                <net.margaritov.preference.colorpicker.ColorPickerPreference
                     android:key="color_brightPiece" 
                     android:title="@string/prefs_color_brightPiece_title" 
                     alphaSlider="true" 
