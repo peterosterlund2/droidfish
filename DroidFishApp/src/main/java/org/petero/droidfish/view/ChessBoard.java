@@ -48,7 +48,12 @@ public abstract class ChessBoard extends View {
     public int selectedSquare;
     public boolean userSelectedSquare;  // True if selectedSquare was set by user tap/click,
                                         // false if selectedSquare used to highlight last move
-    protected int x0, y0;
+
+    private int dragSquare = -1;   // Square of currently dragged piece, or -1 when no draggning
+    private int dragXCrd = -1;     // Current drag X pixel coordinate
+    private int dragYCrd = -1;     // Current drag Y pixel coordinate
+
+    protected int x0, y0;          // Upper left corner of board in pixel coordinates
     public int sqSize;
     public boolean flipped;
     public boolean drawSquareLabels;
@@ -189,6 +194,11 @@ public abstract class ChessBoard extends View {
     }
     private AnimInfo anim = new AnimInfo();
 
+    /** Return true if piece has the same color as the side to move. */
+    protected boolean myColor(int piece) {
+        return (piece != Piece.EMPTY) && (Piece.isWhite(piece) == pos.whiteMove);
+    }
+
     /**
      * Set up move animation. The animation will start the next time setPosition is called.
      * @param sourcePos The source position for the animation.
@@ -294,8 +304,46 @@ public abstract class ChessBoard extends View {
             this.pos = new Position(pos);
             doInvalidate = true;
         }
+        if (setDragStateInternal(-1, 0, 0))
+            doInvalidate = true;
         if (doInvalidate)
             invalidate();
+    }
+
+    /** Set the pixel position (xCrd,yCrd) of the currently dragged piece.
+     *  "sq" is the original square of the piece being dragged, or -1 to
+     *  cancel the current dragging.
+     *  @return true if dragging is active. */
+    public final boolean setDragState(int sq, int xCrd, int yCrd) {
+        if (setDragStateInternal(sq, xCrd, yCrd))
+            invalidate();
+        return dragSquare != -1;
+    }
+
+    /** Return true if the piece at "sq" can be dragged. */
+    public final boolean isValidDragSquare(int sq) {
+        return sq != -1 && myColor(pos.getPiece(sq));
+    }
+
+    /** Set drag state. Return true if any changes were made. */
+    private final boolean setDragStateInternal(int sq, int xCrd, int yCrd) {
+        boolean modified = false;
+        if (!isValidDragSquare(sq)) {
+            if (dragSquare != -1) {
+                dragSquare = -1;
+                modified = true;
+            }
+        } else {
+            int newX = xCrd - sqSize / 2;
+            int newY = yCrd - sqSize / 2;
+            if (dragSquare != sq || dragXCrd != newX || dragYCrd != newY) {
+                dragSquare = sq;
+                dragXCrd = newX;
+                dragYCrd = newY;
+                modified = true;
+            }
+        }
+        return modified;
     }
 
     /** Set/clear the board flipped status. */
@@ -360,7 +408,9 @@ public abstract class ChessBoard extends View {
         setMeasuredDimension(width, height);
     }
 
+    /** Compute pixel coordinates (x0,y0) for upper left corner of board. */
     protected abstract void computeOrigin(int width, int height);
+
     protected abstract int getXFromSq(int sq);
     protected abstract int getYFromSq(int sq);
 
@@ -387,7 +437,7 @@ public abstract class ChessBoard extends View {
                 canvas.drawRect(xCrd, yCrd, xCrd+sqSize, yCrd+sqSize, paint);
 
                 int sq = Position.getSquare(x, y);
-                if (!animActive || !anim.squareHidden(sq)) {
+                if (!(animActive && anim.squareHidden(sq) || sq == dragSquare)) {
                     int p = pos.getPiece(sq);
                     drawPiece(canvas, xCrd, yCrd, p);
                 }
@@ -417,6 +467,15 @@ public abstract class ChessBoard extends View {
         }
 
         anim.draw(canvas);
+
+        if (dragSquare != -1) {
+            drawPiece(canvas, dragXCrd, dragYCrd, pos.getPiece(dragSquare));
+            float h = (float)(sqSize / 2.0);
+            float xCrd = dragXCrd + h;
+            float yCrd = dragYCrd + h;
+            drawDragMarker(canvas, xCrd, yCrd);
+        }
+
 //      long t1 = System.currentTimeMillis();
 //      System.out.printf("draw: %d\n", t1-t0);
     }
@@ -512,6 +571,27 @@ public abstract class ChessBoard extends View {
             yCrd += -labelBounds.top + margin;
         }
         canvas.drawText(s, xCrd, yCrd, labelPaint);
+    }
+
+    private void drawDragMarker(Canvas canvas, float x0, float y0) {
+        float L = sqSize * 2.0f;
+        float d1 = sqSize * 0.03f;
+        float d2 = sqSize * 0.06f;
+        Path path = new Path();
+        path.moveTo(x0 - L,  y0 - d1);
+        path.lineTo(x0 - d2, y0 - d2);
+        path.lineTo(x0 - d1, y0 - L );
+        path.lineTo(x0 + d1, y0 - L );
+        path.lineTo(x0 + d2, y0 - d2);
+        path.lineTo(x0 + L,  y0 - d1);
+        path.lineTo(x0 + L,  y0 + d1);
+        path.lineTo(x0 + d2, y0 + d2);
+        path.lineTo(x0 + d1, y0 + L );
+        path.lineTo(x0 - d1, y0 + L );
+        path.lineTo(x0 - d2, y0 + d2);
+        path.lineTo(x0 - L,  y0 + d1);
+        path.close();
+        canvas.drawPath(path, moveMarkPaint.get(2));
     }
 
     protected static class XYCoord {

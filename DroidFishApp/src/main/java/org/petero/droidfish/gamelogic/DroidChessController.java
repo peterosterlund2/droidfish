@@ -291,7 +291,7 @@ public class DroidChessController {
     }
 
     /** Make a move for a human player. */
-    public final synchronized void makeHumanMove(Move m) {
+    public final synchronized void makeHumanMove(Move m, boolean animate) {
         if (!humansTurn())
             return;
         Position oldPos = new Position(game.currPos());
@@ -318,7 +318,8 @@ public class DroidChessController {
                 abortSearch();
                 updateComputeThreads();
             }
-            setAnimMove(oldPos, m, true);
+            if (animate)
+                setAnimMove(oldPos, m, true);
             updateGUI();
         } else {
             gui.setSelection(-1);
@@ -349,7 +350,7 @@ public class DroidChessController {
         promoteMove.promoteTo = promoteTo;
         Move m = promoteMove;
         promoteMove = null;
-        makeHumanMove(m);
+        makeHumanMove(m, true);
     }
 
     /** Add a null-move to the game tree. */

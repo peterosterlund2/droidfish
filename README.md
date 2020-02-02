@@ -34,10 +34,11 @@ that even beginners have a reasonable chance to beat it.
   left/right half of the app title bar.
 
 * To play a move on the board first tap the piece to move, then tap the
-  destination square. For pawn promotion moves a context menu is opened that
-  lets the user select the piece to promote to. For castling moves, first tap on
-  the king and then tap on the king destination square. The rook is moved
-  automatically.  
+  destination square. Alternatively, touch the piece to move, drag it to the
+  destination square and release the piece. For pawn promotion moves a context
+  menu is opened that lets the user select the piece to promote to. For castling
+  moves, first tap on the king and then tap on the king destination square. The
+  rook is moved automatically.  
   **Note!** Castling is only allowed if the king and rook have not previously
   been moved. When setting up a position manually (see below), make sure to also
   set the castling right flags appropriately.

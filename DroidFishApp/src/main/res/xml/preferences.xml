@@ -525,6 +525,12 @@
             android:entries="@array/squareSelectType_texts" 
             android:defaultValue="@string/squareSelectType_default">
         </ListPreference>
+        <CheckBoxPreference
+            android:key="dragMoveEnabled"
+            android:title="@string/prefs_dragMoveEnabled_title"
+            android:summary="@string/prefs_dragMoveEnabled_summary"
+            android:defaultValue="true">
+        </CheckBoxPreference>
         <ListPreference
             android:key="scrollSensitivity"
             android:title="@string/prefs_scrollSensitivity_title"

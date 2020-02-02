@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 
 import org.petero.droidfish.gamelogic.Move;
+import org.petero.droidfish.gamelogic.Piece;
 
 public class ChessBoardPlayListener implements View.OnTouchListener {
     private DroidFish df;
@@ -32,6 +33,8 @@ public class ChessBoardPlayListener implements View.OnTouchListener {
     private boolean pending = false;
     private boolean pendingClick = false;
     private int sq0 = -1;
+    private boolean isValidDragSquare; // True if dragging starting at "sq0" is valid
+    private int dragSquare = -1;
     private float scrollX = 0;
     private float scrollY = 0;
     private float prevX = 0;
@@ -59,6 +62,8 @@ public class ChessBoardPlayListener implements View.OnTouchListener {
             pending = true;
             pendingClick = true;
             sq0 = cb.eventToSquare(event);
+            isValidDragSquare = cb.isValidDragSquare(sq0);
+            dragSquare = -1;
             scrollX = 0;
             scrollY = 0;
             prevX = event.getX();
@@ -73,7 +78,7 @@ public class ChessBoardPlayListener implements View.OnTouchListener {
                 }
                 float currX = event.getX();
                 float currY = event.getY();
-                if (onScroll(currX - prevX, currY - prevY)) {
+                if (onMove(event)) {
                     handler.removeCallbacks(runnable);
                     pendingClick = false;
                 }
@@ -85,27 +90,57 @@ public class ChessBoardPlayListener implements View.OnTouchListener {
             if (pending) {
                 pending = false;
                 handler.removeCallbacks(runnable);
-                if (!pendingClick)
-                    break;
-                int sq = cb.eventToSquare(event);
-                if (sq == sq0) {
-                    if (df.ctrl.humansTurn()) {
+                if (df.ctrl.humansTurn()) {
+                    int sq = cb.eventToSquare(event);
+                    if (dragSquare != -1) {
+                        if (sq != -1 && sq != sq0) {
+                            cb.setSelection(cb.highlightLastMove ? sq : -1);
+                            cb.userSelectedSquare = false;
+                            Move m = new Move(sq0, sq, Piece.EMPTY);
+                            df.setAutoMode(DroidFish.AutoMode.OFF);
+                            df.ctrl.makeHumanMove(m, false);
+                        }
+                    } else if (pendingClick && (sq == sq0)) {
                         Move m = cb.mousePressed(sq);
                         if (m != null) {
                             df.setAutoMode(DroidFish.AutoMode.OFF);
-                            df.ctrl.makeHumanMove(m);
+                            df.ctrl.makeHumanMove(m, true);
                         }
                         df.setEgtbHints(cb.getSelectedSquare());
                     }
                 }
+                cb.setDragState(-1, 0, 0);
             }
             break;
         case MotionEvent.ACTION_CANCEL:
             pending = false;
+            cb.setDragState(-1, 0, 0);
             handler.removeCallbacks(runnable);
             break;
         }
         return true;
+    }
+
+    /** Process an ACTION_MOVE event. Return true if a gesture is detected,
+     *  which means that a click will not happen when ACTION_UP is received. */
+    private boolean onMove(MotionEvent event) {
+        if (df.dragMoveEnabled && isValidDragSquare) {
+            return onDrag(event);
+        } else {
+            return onScroll(event.getX() - prevX, event.getY() - prevY);
+        }
+    }
+
+    private boolean onDrag(MotionEvent event) {
+        if (dragSquare == -1) {
+            int sq = cb.eventToSquare(event);
+            if (sq != sq0)
+                dragSquare = sq0;
+        }
+        if (dragSquare != -1)
+            if (!cb.setDragState(dragSquare, (int)event.getX(), (int)event.getY()))
+                dragSquare = -1;
+        return false;
     }
 
     private boolean onScroll(float distanceX, float distanceY) {

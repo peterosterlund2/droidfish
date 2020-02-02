@@ -211,6 +211,7 @@ public class DroidFish extends Activity
     private SharedPreferences settings;
     private ObjectCache cache;
 
+    boolean dragMoveEnabled;
     float scrollSensitivity;
     boolean invertScrollDirection;
     boolean scrollGames;
@@ -1112,6 +1113,7 @@ public class DroidFish extends Activity
 
         autoMoveDelay = getIntSetting("autoDelay", 5000);
 
+        dragMoveEnabled = settings.getBoolean("dragMoveEnabled", true);
         scrollSensitivity = Float.parseFloat(settings.getString("scrollSensitivity", "2"));
         invertScrollDirection = settings.getBoolean("invertScrollDirection", false);
         scrollGames = settings.getBoolean("scrollGames", false);

@@ -314,6 +314,8 @@ If you are running on battery power, it is recommended that you change settings 
     <string name="prefs_wakeLock_title">Disable Screen Timeout</string>
     <string name="prefs_drawSquareLabels_title">Square Labels</string>
     <string name="prefs_drawSquareLabels_summary">Display square labels: a–h and 1–8</string>
+    <string name="prefs_dragMoveEnabled_title">Drag Pieces</string>
+    <string name="prefs_dragMoveEnabled_summary">Drag a piece to make a move</string>
     <string name="prefs_scrollSensitivity_title">Scrolling Speed</string>
     <string name="prefs_scrollSensitivity_summary">Scrolling speed for game navigation</string>
     <string name="prefs_invertScrollDirection_title">Invert Scroll Direction</string>

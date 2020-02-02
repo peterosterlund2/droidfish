@@ -57,8 +57,8 @@ public class ChessBoardPlay extends ChessBoard {
 
     @Override
     protected XYCoord pixToSq(int xCrd, int yCrd) {
-        int x = (xCrd - x0) / sqSize; if (flipped) x = 7 - x;
-        int y = (yCrd - y0) / sqSize; if (!flipped) y = 7 - y;
+        int x = (int)Math.floor((xCrd - x0) / (double)sqSize); if (flipped) x = 7 - x;
+        int y = (int)Math.floor((yCrd - y0) / (double)sqSize); if (!flipped) y = 7 - y;
         return new XYCoord(x, y);
     }
 
@@ -92,10 +92,6 @@ public class ChessBoardPlay extends ChessBoard {
 
     @Override
     protected void drawExtraSquares(Canvas canvas) {
-    }
-
-    private boolean myColor(int piece) {
-        return (piece != Piece.EMPTY) && (Piece.isWhite(piece) == pos.whiteMove);
     }
 
     public Move mousePressed(int sq) {
