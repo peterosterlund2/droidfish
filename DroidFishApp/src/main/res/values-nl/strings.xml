@@ -315,6 +315,8 @@ Als uw telefoon op batterij werkt is het aan te raden om deze instellingen te wi
     <string name="prefs_wakeLock_title">Scherm timeout uitzetten</string>
     <string name="prefs_drawSquareLabels_title">Veldnummering</string>
     <string name="prefs_drawSquareLabels_summary">Toon veldnummering: a–h en 1–8</string>
+    <string name="prefs_dragMoveEnabled_title">Drag Pieces</string>
+    <string name="prefs_dragMoveEnabled_summary">Drag a piece to make a move</string>
     <string name="prefs_scrollSensitivity_title">Scroll snelheid</string>
     <string name="prefs_scrollSensitivity_summary">Scroll snelheid voor partij navigatie</string>
     <string name="prefs_invertScrollDirection_title">Omgekeerde scroll richting</string>
@@ -356,7 +358,6 @@ Als uw telefoon op batterij werkt is het aan te raden om deze instellingen te wi
     <string name="prefs_color_brightSquare_title">Lichte velden</string>
     <string name="prefs_color_darkSquare_title">Donkere velden</string>
     <string name="prefs_color_selectedSquare_title">Geselecteerde velden</string>
-    <string name="prefs_color_cursorSquare_title">Trackball cursor</string>
     <string name="prefs_color_brightPiece_title">Witte stukken</string>
     <string name="prefs_color_darkPiece_title">Zwarte stukken</string>
     <string name="prefs_color_arrow0_title">Pijl 1</string>

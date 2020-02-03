@@ -315,6 +315,8 @@ Se l\'alimentazione è a batteria, è consigliabile modificare le impostazioni p
     <string name="prefs_wakeLock_title">Disabilita la schermata del Timeout</string>
     <string name="prefs_drawSquareLabels_title">Etichette di riga e colonna</string>
     <string name="prefs_drawSquareLabels_summary">Visualizza le etichette di riga e colonna: a–h e 1–8</string>
+    <string name="prefs_dragMoveEnabled_title">Drag Pieces</string>
+    <string name="prefs_dragMoveEnabled_summary">Drag a piece to make a move</string>
     <string name="prefs_scrollSensitivity_title">Velocità di scorrimento</string>
     <string name="prefs_scrollSensitivity_summary">Velocità di scorrimento per la navigazione nel gioco</string>
     <string name="prefs_invertScrollDirection_title">Inverti la direzione di scorrimento</string>
@@ -356,7 +358,6 @@ Se l\'alimentazione è a batteria, è consigliabile modificare le impostazioni p
     <string name="prefs_color_brightSquare_title">Case chiare</string>
     <string name="prefs_color_darkSquare_title">Case scure</string>
     <string name="prefs_color_selectedSquare_title">Casa selezionata</string>
-    <string name="prefs_color_cursorSquare_title">Cursore Trackball</string>
     <string name="prefs_color_brightPiece_title">Pezzi bianchi</string>
     <string name="prefs_color_darkPiece_title">Pezzi neri</string>
     <string name="prefs_color_arrow0_title">Freccia 1</string>

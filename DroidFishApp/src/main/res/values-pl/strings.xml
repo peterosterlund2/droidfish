@@ -315,6 +315,8 @@ Jeśli pracujesz na baterii, zalecana jest zmiana ustawień, w celu oszczędzani
     <string name="prefs_wakeLock_title">Wyłącz wygaszanie ekranu</string>
     <string name="prefs_drawSquareLabels_title">Etykiety pól</string>
     <string name="prefs_drawSquareLabels_summary">Wyświetl etykiety pól: a–h / 1–8</string>
+    <string name="prefs_dragMoveEnabled_title">Drag Pieces</string>
+    <string name="prefs_dragMoveEnabled_summary">Drag a piece to make a move</string>
     <string name="prefs_scrollSensitivity_title">Szybkość przewijania</string>
     <string name="prefs_scrollSensitivity_summary">Szybkość przewijania przy nawigowaniu po partii</string>
     <string name="prefs_invertScrollDirection_title">Odwróć kierunek przwijania</string>
@@ -356,7 +358,6 @@ Jeśli pracujesz na baterii, zalecana jest zmiana ustawień, w celu oszczędzani
     <string name="prefs_color_brightSquare_title">Jasne pola</string>
     <string name="prefs_color_darkSquare_title">Ciemne pola</string>
     <string name="prefs_color_selectedSquare_title">Wybrane pola</string>
-    <string name="prefs_color_cursorSquare_title">Kursor trackballa</string>
     <string name="prefs_color_brightPiece_title">Białe bierki</string>
     <string name="prefs_color_darkPiece_title">Czarne bierki</string>
     <string name="prefs_color_arrow0_title">Strzałka 1</string>

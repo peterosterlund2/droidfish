@@ -315,6 +315,8 @@
     <string name="prefs_wakeLock_title">Адключыць пераход у рэжым чакання для экрана</string>
     <string name="prefs_drawSquareLabels_title">Пазначэнні клетак</string>
     <string name="prefs_drawSquareLabels_summary">Адлюстроўваць пазначэнні клетак: a–h і 1–8</string>
+    <string name="prefs_dragMoveEnabled_title">Drag Pieces</string>
+    <string name="prefs_dragMoveEnabled_summary">Drag a piece to make a move</string>
     <string name="prefs_scrollSensitivity_title">Хуткасць прагорткі</string>
     <string name="prefs_scrollSensitivity_summary">Хуткасць прагорткі для навігацыі ў партыі</string>
     <string name="prefs_invertScrollDirection_title">Інвертаваць кірунак прагорткі</string>
@@ -356,7 +358,6 @@
     <string name="prefs_color_brightSquare_title">Светлыя клеткі</string>
     <string name="prefs_color_darkSquare_title">Цёмныя клеткі</string>
     <string name="prefs_color_selectedSquare_title">Вылучаныя клеткі</string>
-    <string name="prefs_color_cursorSquare_title">Курсор трэкбола</string>
     <string name="prefs_color_brightPiece_title">Белыя фігуры</string>
     <string name="prefs_color_darkPiece_title">Чорныя фігуры</string>
     <string name="prefs_color_arrow0_title">Стрэлка 1</string>

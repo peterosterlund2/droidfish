@@ -315,6 +315,8 @@
     <string name="prefs_wakeLock_title">Відключити перехід до режиму очікування екрану</string>
     <string name="prefs_drawSquareLabels_title">Позначення клітин</string>
     <string name="prefs_drawSquareLabels_summary">Відображати позначення клітин: a-h та 1-8</string>
+    <string name="prefs_dragMoveEnabled_title">Drag Pieces</string>
+    <string name="prefs_dragMoveEnabled_summary">Drag a piece to make a move</string>
     <string name="prefs_scrollSensitivity_title">Швидкість прокручування</string>
     <string name="prefs_scrollSensitivity_summary">Швидкість прокручування для навігації у партії</string>
     <string name="prefs_invertScrollDirection_title">Інвертувати напрямок прокручування</string>
@@ -356,7 +358,6 @@
     <string name="prefs_color_brightSquare_title">Світлі клітини</string>
     <string name="prefs_color_darkSquare_title">Темні клітини</string>
     <string name="prefs_color_selectedSquare_title">Обрані клітини</string>
-    <string name="prefs_color_cursorSquare_title">Курсор трекболу</string>
     <string name="prefs_color_brightPiece_title">Білі фігури</string>
     <string name="prefs_color_darkPiece_title">Чорні фігури</string>
     <string name="prefs_color_arrow0_title">Стрілка 1</string>

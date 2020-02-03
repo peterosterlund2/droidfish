@@ -315,6 +315,8 @@ Se você está usando somente a bateria, recomenda-se que você mude as configur
     <string name="prefs_wakeLock_title">Tela sempre ligada</string>
     <string name="prefs_drawSquareLabels_title">Rótulos nas casas</string>
     <string name="prefs_drawSquareLabels_summary">Mostrar rótulos nas casas: a–h e 1–8</string>
+    <string name="prefs_dragMoveEnabled_title">Drag Pieces</string>
+    <string name="prefs_dragMoveEnabled_summary">Drag a piece to make a move</string>
     <string name="prefs_scrollSensitivity_title">Velocidade do movimento</string>
     <string name="prefs_scrollSensitivity_summary">Velocidade do movimento para navegação em partida</string>
     <string name="prefs_invertScrollDirection_title">Inverter rolagem</string>
@@ -356,7 +358,6 @@ Se você está usando somente a bateria, recomenda-se que você mude as configur
     <string name="prefs_color_brightSquare_title">Casas brancas</string>
     <string name="prefs_color_darkSquare_title">Casas pretas</string>
     <string name="prefs_color_selectedSquare_title">Casa selecionada</string>
-    <string name="prefs_color_cursorSquare_title">Cursor</string>
     <string name="prefs_color_brightPiece_title">Peças brancas</string>
     <string name="prefs_color_darkPiece_title">Peças pretas</string>
     <string name="prefs_color_arrow0_title">Seta 1</string>

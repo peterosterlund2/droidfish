@@ -315,6 +315,8 @@
     <string name="prefs_wakeLock_title">禁用屏幕超时</string>
     <string name="prefs_drawSquareLabels_title">棋格标签</string>
     <string name="prefs_drawSquareLabels_summary">显示棋格标签: a–h 和 1–8</string>
+    <string name="prefs_dragMoveEnabled_title">Drag Pieces</string>
+    <string name="prefs_dragMoveEnabled_summary">Drag a piece to make a move</string>
     <string name="prefs_scrollSensitivity_title">滚动速度</string>
     <string name="prefs_scrollSensitivity_summary">对局导航的滚动速度</string>
     <string name="prefs_invertScrollDirection_title">反向滚动</string>
@@ -356,7 +358,6 @@
     <string name="prefs_color_brightSquare_title">亮色棋格</string>
     <string name="prefs_color_darkSquare_title">暗色棋格</string>
     <string name="prefs_color_selectedSquare_title">已选棋格</string>
-    <string name="prefs_color_cursorSquare_title">轨迹球指针</string>
     <string name="prefs_color_brightPiece_title">白方棋子</string>
     <string name="prefs_color_darkPiece_title">黑方棋子</string>
     <string name="prefs_color_arrow0_title">箭头 1</string>

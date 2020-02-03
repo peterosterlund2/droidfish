@@ -315,6 +315,8 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="prefs_wakeLock_title">Désactiver la veille de l\'écran</string>
     <string name="prefs_drawSquareLabels_title">Coordonnées</string>
     <string name="prefs_drawSquareLabels_summary">Afficher les coordonnées: a–h et 1–8</string>
+    <string name="prefs_dragMoveEnabled_title">Drag Pieces</string>
+    <string name="prefs_dragMoveEnabled_summary">Drag a piece to make a move</string>
     <string name="prefs_scrollSensitivity_title">Vitesse de défilement</string>
     <string name="prefs_scrollSensitivity_summary">Vitesse de défilement lors de la navigation dans la partie</string>
     <string name="prefs_invertScrollDirection_title">Inverser le sens de défilement</string>
@@ -356,7 +358,6 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="prefs_color_brightSquare_title">Cases claires</string>
     <string name="prefs_color_darkSquare_title">Cases noires</string>
     <string name="prefs_color_selectedSquare_title">Case sélectionnée</string>
-    <string name="prefs_color_cursorSquare_title">Curseur</string>
     <string name="prefs_color_brightPiece_title">Pièces blanches</string>
     <string name="prefs_color_darkPiece_title">Pièces noires</string>
     <string name="prefs_color_arrow0_title">Flèche 1</string>

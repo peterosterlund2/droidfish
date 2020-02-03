@@ -315,6 +315,8 @@ Pil gücüyle çalışıyorsanız, pil gücünden tasarruf etmek için ayarları
     <string name="prefs_wakeLock_title">Ekran zaman aşımını devredışı bırak</string>
     <string name="prefs_drawSquareLabels_title">Kare Etiketleri</string>
     <string name="prefs_drawSquareLabels_summary">Kare etiketlerini göster: a-h ve 1-8</string>
+    <string name="prefs_dragMoveEnabled_title">Drag Pieces</string>
+    <string name="prefs_dragMoveEnabled_summary">Drag a piece to make a move</string>
     <string name="prefs_scrollSensitivity_title">Kaydırma Hızı</string>
     <string name="prefs_scrollSensitivity_summary">Oyun navigasyonu için kaydırma hızı</string>
     <string name="prefs_invertScrollDirection_title">Kaydırmayı Ters Çevir</string>
@@ -356,7 +358,6 @@ Pil gücüyle çalışıyorsanız, pil gücünden tasarruf etmek için ayarları
     <string name="prefs_color_brightSquare_title">Açık Kareler</string>
     <string name="prefs_color_darkSquare_title">Koyu Kareler</string>
     <string name="prefs_color_selectedSquare_title">Seçili kare</string>
-    <string name="prefs_color_cursorSquare_title">Takip imleci</string>
     <string name="prefs_color_brightPiece_title">Beyazın Taşları</string>
     <string name="prefs_color_darkPiece_title">Siyahın Taşları</string>
     <string name="prefs_color_arrow0_title">Ok 1</string>

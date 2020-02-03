@@ -315,6 +315,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="prefs_wakeLock_title">Desconectar el Tiempo Muerto de la Pantalla</string>
     <string name="prefs_drawSquareLabels_title">Coordenadas</string>
     <string name="prefs_drawSquareLabels_summary">Muestra coordenadas en pantalla: a–h y 1–8</string>
+    <string name="prefs_dragMoveEnabled_title">Drag Pieces</string>
+    <string name="prefs_dragMoveEnabled_summary">Drag a piece to make a move</string>
     <string name="prefs_scrollSensitivity_title">Velocidad de Desplazamiento</string>
     <string name="prefs_scrollSensitivity_summary">Velocidad de desplazamiento de la información durante la partida </string>
     <string name="prefs_invertScrollDirection_title">Invertir dirección desplazamiento</string>
@@ -356,7 +358,6 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="prefs_color_brightSquare_title">Casillas Blancas</string>
     <string name="prefs_color_darkSquare_title">Casillas Negras</string>
     <string name="prefs_color_selectedSquare_title">Casilla elegida</string>
-    <string name="prefs_color_cursorSquare_title">Cursor</string>
     <string name="prefs_color_brightPiece_title">Piezas Blancas</string>
     <string name="prefs_color_darkPiece_title">Piezas Negras</string>
     <string name="prefs_color_arrow0_title">Flecha 1</string>

@@ -319,6 +319,8 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
     <string name="prefs_wakeLock_title">화면 시간 제한 사용 안 함</string>
     <string name="prefs_drawSquareLabels_title">사각형 레이블</string>
     <string name="prefs_drawSquareLabels_summary">사각형 레이블 표시: a-h &amp; 1-8</string>
+    <string name="prefs_dragMoveEnabled_title">Drag Pieces</string>
+    <string name="prefs_dragMoveEnabled_summary">Drag a piece to make a move</string>
     <string name="prefs_scrollSensitivity_title">스크롤 속도</string>
     <string name="prefs_scrollSensitivity_summary">게임 탐색에 대한 스크롤 속도</string>
     <string name="prefs_invertScrollDirection_title">스크롤 방향 반전</string>
@@ -360,7 +362,6 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
     <string name="prefs_color_brightSquare_title">밝은 사각형</string>
     <string name="prefs_color_darkSquare_title">어두운 사각형</string>
     <string name="prefs_color_selectedSquare_title">선택된 사각형</string>
-    <string name="prefs_color_cursorSquare_title">트랙볼 커서</string>
     <string name="prefs_color_brightPiece_title">화이트 피스</string>
     <string name="prefs_color_darkPiece_title">블랙 피스</string>
     <string name="prefs_color_arrow0_title">화살표 1</string>
