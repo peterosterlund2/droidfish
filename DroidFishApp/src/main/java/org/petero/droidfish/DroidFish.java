@@ -2822,15 +2822,17 @@ public class DroidFish extends Activity
     }
 
     private Dialog thinkingMenuDialog() {
-        final int ADD_ANALYSIS    = 0;
-        final int MULTIPV_SET     = 1;
-        final int SHOW_WHOLE_VARS = 2;
-        final int TRUNCATE_VARS   = 3;
-        final int HIDE_STATISTICS = 4;
-        final int SHOW_STATISTICS = 5;
+        final int ADD_ANALYSIS      = 0;
+        final int COPY_TO_CLIPBOARD = 1;
+        final int MULTIPV_SET       = 2;
+        final int SHOW_WHOLE_VARS   = 3;
+        final int TRUNCATE_VARS     = 4;
+        final int HIDE_STATISTICS   = 5;
+        final int SHOW_STATISTICS   = 6;
         List<String> lst = new ArrayList<>();
         final List<Integer> actions = new ArrayList<>();
-        lst.add(getString(R.string.add_analysis)); actions.add(ADD_ANALYSIS);
+        lst.add(getString(R.string.add_analysis));      actions.add(ADD_ANALYSIS);
+        lst.add(getString(R.string.copy_to_clipboard)); actions.add(COPY_TO_CLIPBOARD);
         int numPV = this.numPV;
         final int maxPV = ctrl.maxPV();
         if (gameMode.analysisMode()) {
@@ -2876,6 +2878,21 @@ public class DroidFish extends Activity
                     boolean updateDefault = (i == 0);
                     ctrl.addVariation(preComment.toString(), pv, updateDefault);
                 }
+                break;
+            }
+            case COPY_TO_CLIPBOARD: {
+                StringBuilder sb = new StringBuilder();
+                if (!thinkingStr1.isEmpty()) {
+                    sb.append(thinkingStr1);
+                    if (!thinkingStr2.isEmpty())
+                        sb.append('\n');
+                }
+                sb.append(thinkingStr2);
+                ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+                ClipData cd = new ClipData("DroidFish game",
+                                           new String[]{ ClipDescription.MIMETYPE_TEXT_PLAIN },
+                                           new ClipData.Item(sb.toString()));
+                clipboard.setPrimaryClip(cd);
                 break;
             }
             case MULTIPV_SET: {

@@ -183,6 +183,7 @@ If you are running on battery power, it is recommended that you change settings 
     <string name="failed_to_read_pgn_data">Failed to read PGN data</string>
     <string name="variation">Var:</string>
     <string name="add_analysis">Add Analysis</string>
+    <string name="copy_to_clipboard">Copy to Clipboard</string>
     <string name="num_variations">Number of Variations</string>
     <string name="hide_statistics">Hide statistics</string>
     <string name="show_statistics">Show statistics</string>
