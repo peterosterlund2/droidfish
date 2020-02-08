@@ -184,6 +184,7 @@ Se você está usando somente a bateria, recomenda-se que você mude as configur
     <string name="failed_to_read_pgn_data">Falha na leitura de arquivo PGN</string>
     <string name="variation">Var:</string>
     <string name="add_analysis">Adicionar análise</string>
+    <string name="copy_to_clipboard">Copy to Clipboard</string>
     <string name="num_variations">Número de variantes</string>
     <string name="hide_statistics">Ocultar estatísticas</string>
     <string name="show_statistics">Mostrar estatísticas</string>

@@ -184,6 +184,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="failed_to_read_pgn_data">Fallo al leer datos PGN</string>
     <string name="variation">Variante:</string>
     <string name="add_analysis">Añadir Análisis</string>
+    <string name="copy_to_clipboard">Copy to Clipboard</string>
     <string name="num_variations">Número de Variantes</string>
     <string name="hide_statistics">Ocultar Estadísticas</string>
     <string name="show_statistics">Mostrar Estadísticas</string>

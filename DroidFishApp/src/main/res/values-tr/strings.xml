@@ -184,6 +184,7 @@ Pil gücüyle çalışıyorsanız, pil gücünden tasarruf etmek için ayarları
     <string name="failed_to_read_pgn_data">PGN dosya okuma hatası</string>
     <string name="variation">Var:</string>
     <string name="add_analysis">Analiz ekle</string>
+    <string name="copy_to_clipboard">Copy to Clipboard</string>
     <string name="num_variations">Varyasyon sayısı</string>
     <string name="hide_statistics">İstatistikleri gizle</string>
     <string name="show_statistics">İstatistikleri göster</string>

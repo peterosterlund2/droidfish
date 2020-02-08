@@ -184,6 +184,7 @@ Se l\'alimentazione è a batteria, è consigliabile modificare le impostazioni p
     <string name="failed_to_read_pgn_data">Impossibile leggere dati dal file PGN</string>
     <string name="variation">Var:</string>
     <string name="add_analysis">Aggiungi Analisi</string>
+    <string name="copy_to_clipboard">Copy to Clipboard</string>
     <string name="num_variations">Numero di Variazioni</string>
     <string name="hide_statistics">Nascondi le statistiche</string>
     <string name="show_statistics">Visualizza le statistiche</string>

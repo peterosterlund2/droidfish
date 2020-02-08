@@ -188,6 +188,7 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
     <string name="failed_to_read_pgn_data">PGN 데이터 읽기 실패</string>
     <string name="variation">변수:</string>
     <string name="add_analysis">분석 추가</string>
+    <string name="copy_to_clipboard">Copy to Clipboard</string>
     <string name="num_variations">변수의 수</string>
     <string name="hide_statistics">통계 숨기기</string>
     <string name="show_statistics">통계 보기</string>

@@ -184,6 +184,7 @@
     <string name="failed_to_read_pgn_data">Не вдалося прочитати pgn дані</string>
     <string name="variation">Зміна:</string>
     <string name="add_analysis">Додати аналіз</string>
+    <string name="copy_to_clipboard">Copy to Clipboard</string>
     <string name="num_variations">Кількість варіацій</string>
     <string name="hide_statistics">Приховати статистику</string>
     <string name="show_statistics">Відобразити статистику</string>

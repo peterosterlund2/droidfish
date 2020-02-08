@@ -184,6 +184,7 @@ Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese Paramet
     <string name="failed_to_read_pgn_data">PGN-Daten konnten nicht gelesen werden</string>
     <string name="variation">Variante:</string>
     <string name="add_analysis">Analyse hinzufügen</string>
+    <string name="copy_to_clipboard">Copy to Clipboard</string>
     <string name="num_variations">Zahl der Varianten</string>
     <string name="hide_statistics">Statistik verbergen</string>
     <string name="show_statistics">Statistik anzeigen</string>
@@ -315,8 +316,8 @@ Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese Paramet
     <string name="prefs_wakeLock_title">Bildschirmabschaltung deaktivieren</string>
     <string name="prefs_drawSquareLabels_title">Feldbeschriftung</string>
     <string name="prefs_drawSquareLabels_summary">Feldbeschriftung (a–h und 1–8) anzeigen</string>
-    <string name="prefs_dragMoveEnabled_title">Drag Pieces</string>
-    <string name="prefs_dragMoveEnabled_summary">Drag a piece to make a move</string>
+    <string name="prefs_dragMoveEnabled_title">Zugausführung durch Ziehen</string>
+    <string name="prefs_dragMoveEnabled_summary">Einen Zug durch Drag &amp; Drop ausführen</string>
     <string name="prefs_scrollSensitivity_title">Wischgeschwindigkeit</string>
     <string name="prefs_scrollSensitivity_summary">Wischgeschwindigkeit für Partie-Navigation einstellen</string>
     <string name="prefs_invertScrollDirection_title">Wischrichtung</string>

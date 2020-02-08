@@ -184,6 +184,7 @@ Jeśli pracujesz na baterii, zalecana jest zmiana ustawień, w celu oszczędzani
     <string name="failed_to_read_pgn_data">Błąd przy odczycie danych w formacie PGN</string>
     <string name="variation">Wariant:</string>
     <string name="add_analysis">Dodaj analizę</string>
+    <string name="copy_to_clipboard">Copy to Clipboard</string>
     <string name="num_variations">Liczba wariantów</string>
     <string name="hide_statistics">Schowaj statystyki</string>
     <string name="show_statistics">Pokaż statystyki</string>

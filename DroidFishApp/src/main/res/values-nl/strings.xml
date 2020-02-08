@@ -184,6 +184,7 @@ Als uw telefoon op batterij werkt is het aan te raden om deze instellingen te wi
     <string name="failed_to_read_pgn_data">De PGN data kon niet gelezen worden</string>
     <string name="variation">Variant:</string>
     <string name="add_analysis">Analyse toevoegen</string>
+    <string name="copy_to_clipboard">Copy to Clipboard</string>
     <string name="num_variations">Aantal variaties</string>
     <string name="hide_statistics">Statistieken verbergen</string>
     <string name="show_statistics">Statistieken tonen</string>

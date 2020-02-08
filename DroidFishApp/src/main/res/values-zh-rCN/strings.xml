@@ -184,6 +184,7 @@
     <string name="failed_to_read_pgn_data">无法读取 FGN 数据</string>
     <string name="variation">变例:</string>
     <string name="add_analysis">添加分析</string>
+    <string name="copy_to_clipboard">Copy to Clipboard</string>
     <string name="num_variations">变例数</string>
     <string name="hide_statistics">隐藏统计</string>
     <string name="show_statistics">显示统计</string>
