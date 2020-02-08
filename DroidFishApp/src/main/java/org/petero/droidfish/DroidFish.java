@@ -2889,7 +2889,7 @@ public class DroidFish extends Activity
                 }
                 sb.append(thinkingStr2);
                 ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-                ClipData cd = new ClipData("DroidFish game",
+                ClipData cd = new ClipData("DroidFish analysis",
                                            new String[]{ ClipDescription.MIMETYPE_TEXT_PLAIN },
                                            new ClipData.Item(sb.toString()));
                 clipboard.setPrimaryClip(cd);
