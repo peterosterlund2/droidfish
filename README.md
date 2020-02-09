@@ -458,6 +458,15 @@ game with the selected position.
 
 Saving a position to a FEN/EPD file has not been implemented.
 
+## Autosave
+
+When an action is performed that causes the current game to be discarded, the
+game is automatically saved in the file `DroidFish/pgn/.autosave.pgn` before
+being discarded. The autosave file has a maximum size of 20 games and the most
+recently autosaved game is stored first in the file. If the number of games
+becomes too large, the oldest stored game is removed from the file.
+
+
 ## OI File Manager
 
 If the [*OI File Manager*](https://play.google.com/store/apps/details?id=org.openintents.filemanager)

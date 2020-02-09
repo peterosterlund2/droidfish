@@ -27,11 +27,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.petero.droidfish.PGNOptions;
+import org.petero.droidfish.Util;
 import org.petero.droidfish.gamelogic.GameTree.Node;
 
 public class Game {
     boolean pendingDrawOffer;
     public GameTree tree;
+    long treeHashSignature;  // Hash corresponding to "tree" when last saved to file
     TimeControl timeController;
     private boolean gamePaused;
     /** If true, add new moves as mainline moves. */
@@ -51,6 +53,8 @@ public class Game {
     /** De-serialize from input stream. */
     final void readFromStream(DataInputStream dis, int version) throws IOException, ChessParseError {
         tree.readFromStream(dis, version);
+        if (version >= 4)
+            treeHashSignature = dis.readLong();
         if (version >= 3)
             timeController.readFromStream(dis, version);
         updateTimeControl(true);
@@ -59,7 +63,13 @@ public class Game {
     /** Serialize to output stream. */
     final synchronized void writeToStream(DataOutputStream dos) throws IOException {
         tree.writeToStream(dos);
+        dos.writeLong(treeHashSignature);
         timeController.writeToStream(dos);
+    }
+
+    /** Set game to "not modified" state. */
+    final void resetModified(PGNOptions options) {
+        treeHashSignature = Util.stringHash(tree.toPGN(options));
     }
 
     public final void setGamePaused(boolean gamePaused) {

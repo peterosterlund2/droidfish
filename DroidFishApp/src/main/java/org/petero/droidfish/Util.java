@@ -128,4 +128,26 @@ public final class Util {
             ((MoveListView) v).setTextColor(fg);
         }
     }
+
+    /** Return a hash value for a string, with better quality than String.hashCode(). */
+    public static long stringHash(String s) {
+        int n = s.length();
+        long h = n;
+        for (int i = 0; i < n; i += 4) {
+            long tmp = s.charAt(i) & 0xffff;
+            try {
+                tmp = (tmp << 16) | (s.charAt(i+1) & 0xffff);
+                tmp = (tmp << 16) | (s.charAt(i+2) & 0xffff);
+                tmp = (tmp << 16) | (s.charAt(i+3) & 0xffff);
+            } catch (IndexOutOfBoundsException ignore) {}
+
+            h += tmp;
+
+            h *= 0x7CF9ADC6FE4A7653L;
+            h ^= h >>> 37;
+            h *= 0xC25D3F49433E7607L;
+            h ^= h >>> 43;
+        }
+        return h;
+    }
 }

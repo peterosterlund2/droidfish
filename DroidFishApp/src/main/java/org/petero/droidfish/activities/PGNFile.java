@@ -121,6 +121,7 @@ public class PGNFile {
         public void reset() {
             len = 0;
         }
+        @Override
         public String toString() {
             return new String(buf, 0, len);
         }
@@ -421,11 +422,37 @@ public class PGNFile {
     }
 
     /** Append PGN to the end of this PGN file. */
-    public void appendPGN(String pgn) {
+    public void appendPGN(String pgn, boolean silent) {
         mkDirs();
         try (FileWriter fw = new FileWriter(fileName, true)) {
             fw.write(pgn);
-            DroidFishApp.toast(R.string.game_saved, Toast.LENGTH_SHORT);
+            if (!silent)
+                DroidFishApp.toast(R.string.game_saved, Toast.LENGTH_SHORT);
+        } catch (IOException e) {
+            DroidFishApp.toast(R.string.failed_to_save_game, Toast.LENGTH_SHORT);
+        }
+    }
+
+    /** Save a PGN game first in the file and remove games at the end of the file
+     *  to enforce a maximum number of games in the auto-save file. */
+    public void autoSave(String pgn) {
+        final int maxAutoSaveGames = 20;
+        try {
+            if (!fileName.exists()) {
+                appendPGN(pgn, true);
+            } else {
+                ArrayList<GameInfo> gamesInFile = getGameInfo(null, null);
+                for (int i = gamesInFile.size() - 1; i >= 0; i--) {
+                    GameInfo gi = gamesInFile.get(i);
+                    String oldGame = readOneGame(gi);
+                    if (pgn.equals(oldGame))
+                        deleteGame(gi, gamesInFile);
+                }
+                while (gamesInFile.size() > maxAutoSaveGames - 1)
+                    deleteGame(gamesInFile.get(gamesInFile.size() - 1), gamesInFile);
+                GameInfo gi = new GameInfo().setNull(0);
+                replacePGN(pgn, gi, true);
+            }
         } catch (IOException e) {
             DroidFishApp.toast(R.string.failed_to_save_game, Toast.LENGTH_SHORT);
         }
@@ -463,7 +490,7 @@ public class PGNFile {
         return false;
     }
 
-    void replacePGN(String pgnToSave, GameInfo gi) {
+    void replacePGN(String pgnToSave, GameInfo gi, boolean silent) {
         try {
             File tmpFile = new File(fileName + ".tmp_delete");
             try (RandomAccessFile fileReader = new RandomAccessFile(fileName, "r");
@@ -475,7 +502,8 @@ public class PGNFile {
             }
             if (!tmpFile.renameTo(fileName))
                 throw new IOException();
-            DroidFishApp.toast(R.string.game_saved, Toast.LENGTH_SHORT);
+            if (!silent)
+                DroidFishApp.toast(R.string.game_saved, Toast.LENGTH_SHORT);
         } catch (IOException e) {
             DroidFishApp.toast(R.string.failed_to_save_game, Toast.LENGTH_SHORT);
         }
@@ -494,6 +522,7 @@ public class PGNFile {
         }
     }
 
+    /** Delete the file. */
     boolean delete() {
         return fileName.delete();
     }

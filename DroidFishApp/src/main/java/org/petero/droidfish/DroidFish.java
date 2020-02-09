@@ -588,7 +588,7 @@ public class DroidFish extends Activity
         ctrl.startGame();
         if (intentPgnOrFen != null) {
             try {
-                ctrl.setFENOrPGN(intentPgnOrFen);
+                ctrl.setFENOrPGN(intentPgnOrFen, true);
                 setBoardFlip(true);
             } catch (ChessParseError e) {
                 // If FEN corresponds to illegal chess position, go into edit board mode.
@@ -1019,6 +1019,8 @@ public class DroidFish extends Activity
         });
     }
 
+    private static final int serializeVersion = 4;
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -1026,7 +1028,7 @@ public class DroidFish extends Activity
             byte[] data = ctrl.toByteArray();
             byte[] token = data == null ? null : cache.storeBytes(data);
             outState.putByteArray("gameStateT", token);
-            outState.putInt("gameStateVersion", 3);
+            outState.putInt("gameStateVersion", serializeVersion);
         }
     }
 
@@ -1049,7 +1051,7 @@ public class DroidFish extends Activity
             Editor editor = settings.edit();
             String dataStr = byteArrToString(data);
             editor.putString("gameState", dataStr);
-            editor.putInt("gameStateVersion", 3);
+            editor.putInt("gameStateVersion", serializeVersion);
             editor.apply();
         }
         lastVisibleMillis = System.currentTimeMillis();
@@ -1568,16 +1570,17 @@ public class DroidFish extends Activity
         }
     }
 
-    static private final int RESULT_EDITBOARD = 0;
-    static private final int RESULT_SETTINGS = 1;
-    static private final int RESULT_LOAD_PGN = 2;
-    static private final int RESULT_LOAD_FEN = 3;
-    static private final int RESULT_SELECT_SCID = 4;
-    static private final int RESULT_OI_PGN_SAVE = 5;
-    static private final int RESULT_OI_PGN_LOAD = 6;
-    static private final int RESULT_OI_FEN_LOAD = 7;
-    static private final int RESULT_GET_FEN = 8;
-    static private final int RESULT_EDITOPTIONS = 9;
+    static private final int RESULT_EDITBOARD   =  0;
+    static private final int RESULT_SETTINGS    =  1;
+    static private final int RESULT_LOAD_PGN    =  2;
+    static private final int RESULT_LOAD_FEN    =  3;
+    static private final int RESULT_SAVE_PGN    =  4;
+    static private final int RESULT_SELECT_SCID =  5;
+    static private final int RESULT_OI_PGN_SAVE =  6;
+    static private final int RESULT_OI_PGN_LOAD =  7;
+    static private final int RESULT_OI_FEN_LOAD =  8;
+    static private final int RESULT_GET_FEN     =  9;
+    static private final int RESULT_EDITOPTIONS = 10;
 
     private void startEditBoard(String fen) {
         Intent i = new Intent(DroidFish.this, EditBoard.class);
@@ -1595,7 +1598,7 @@ public class DroidFish extends Activity
             if (resultCode == RESULT_OK) {
                 try {
                     String fen = data.getAction();
-                    ctrl.setFENOrPGN(fen);
+                    ctrl.setFENOrPGN(fen, true);
                     setBoardFlip(false);
                 } catch (ChessParseError ignore) {
                 }
@@ -1609,11 +1612,17 @@ public class DroidFish extends Activity
                     int modeNr = ctrl.getGameMode().getModeNr();
                     if ((modeNr != GameMode.ANALYSIS) && (modeNr != GameMode.EDIT_GAME))
                         newGameMode(GameMode.EDIT_GAME);
-                    ctrl.setFENOrPGN(pgn);
+                    ctrl.setFENOrPGN(pgn, false);
                     setBoardFlip(true);
                 } catch (ChessParseError e) {
                     DroidFishApp.toast(getParseErrString(e), Toast.LENGTH_SHORT);
                 }
+            }
+            break;
+        case RESULT_SAVE_PGN:
+            if (resultCode == RESULT_OK) {
+                long hash = data.getLongExtra("org.petero.droidfish.treeHash", -1);
+                ctrl.setLastSaveHash(hash);
             }
             break;
         case RESULT_SELECT_SCID:
@@ -1662,13 +1671,13 @@ public class DroidFish extends Activity
                     String pathName = getFilePathFromUri(data.getData());
                     loadFENFromFile(pathName);
                 }
-                setFenHelper(fen);
+                setFenHelper(fen, true);
             }
             break;
         case RESULT_LOAD_FEN:
             if (resultCode == RESULT_OK) {
                 String fen = data.getAction();
-                setFenHelper(fen);
+                setFenHelper(fen, false);
             }
             break;
         case RESULT_EDITOPTIONS:
@@ -2090,7 +2099,6 @@ public class DroidFish extends Activity
             editor.apply();
             gameMode = new GameMode(gameModeType);
         }
-//        savePGNToFile(".autosave.pgn", true);
         TimeControlData tcData = new TimeControlData();
         tcData.setTimeControl(timeControl, movesPerSession, timeIncrement);
         speech.flushQueue();
@@ -2161,10 +2169,10 @@ public class DroidFish extends Activity
                                 writer.close();
                                 loadPGNFromFile(fn);
                             } catch (IOException ex) {
-                                ctrl.setFENOrPGN(fenPgnData);
+                                ctrl.setFENOrPGN(fenPgnData, true);
                             }
                         } else {
-                            ctrl.setFENOrPGN(fenPgnData);
+                            ctrl.setFENOrPGN(fenPgnData, true);
                         }
                         setBoardFlip(true);
                     } catch (ChessParseError e) {
@@ -3476,8 +3484,33 @@ public class DroidFish extends Activity
         i.setAction("org.petero.droidfish.saveFile");
         i.putExtra("org.petero.droidfish.pathname", pathName);
         i.putExtra("org.petero.droidfish.pgn", pgnToken);
-        i.putExtra("org.petero.droidfish.silent", false);
-        startActivity(i);
+        setEditPGNBackup(i, pathName);
+        startActivityForResult(i, RESULT_SAVE_PGN);
+    }
+
+    /** Set a Boolean value in the Intent to decide if backups should be made
+     *  when games in a PGN file are overwritten or deleted. */
+    private void setEditPGNBackup(Intent i, String pathName) {
+        boolean backup = storageAvailable() && !pathName.equals(getAutoSaveFile());
+        i.putExtra("org.petero.droidfish.backup", backup);
+    }
+
+    /** Get the full path to the auto-save file. */
+    private static String getAutoSaveFile() {
+        String sep = File.separator;
+        return Environment.getExternalStorageDirectory() + sep + pgnDir + sep + ".autosave.pgn";
+    }
+
+    @Override
+    public void autoSaveGameIfAllowed(String pgn) {
+        if (storageAvailable())
+            autoSaveGame(pgn);
+    }
+
+    /** Save a copy of the pgn data in the .autosave.pgn file. */
+    public static void autoSaveGame(String pgn) {
+        PGNFile pgnFile = new PGNFile(getAutoSaveFile());
+        pgnFile.autoSave(pgn);
     }
 
     /** Load a PGN game from a file. */
@@ -3489,6 +3522,7 @@ public class DroidFish extends Activity
         Intent i = new Intent(DroidFish.this, EditPGNLoad.class);
         i.setAction("org.petero.droidfish.loadFile");
         i.putExtra("org.petero.droidfish.pathname", pathName);
+        setEditPGNBackup(i, pathName);
         startActivityForResult(i, RESULT_LOAD_PGN);
     }
 
@@ -3506,11 +3540,11 @@ public class DroidFish extends Activity
         startActivityForResult(i, RESULT_LOAD_FEN);
     }
 
-    private void setFenHelper(String fen) {
+    private void setFenHelper(String fen, boolean setModified) {
         if (fen == null)
             return;
         try {
-            ctrl.setFENOrPGN(fen);
+            ctrl.setFENOrPGN(fen, setModified);
         } catch (ChessParseError e) {
             // If FEN corresponds to illegal chess position, go into edit board mode.
             try {

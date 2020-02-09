@@ -108,4 +108,7 @@ public interface GUIInterface {
 
     /** Return true if only main-line moves are to be kept. */
     boolean discardVariations();
+
+    /** Save the current game to the auto-save file, if storage permission has been granted. */
+    void autoSaveGameIfAllowed(String pgn);
 }

@@ -30,7 +30,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,6 +44,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import org.petero.droidfish.ColorTheme;
+import org.petero.droidfish.DroidFish;
 import org.petero.droidfish.DroidFishApp;
 import org.petero.droidfish.ObjectCache;
 import org.petero.droidfish.R;
@@ -74,6 +74,7 @@ public abstract class EditPGN extends AppCompatActivity {
     private String lastFileName = "";
     private long lastModTime = -1;
     private boolean useRegExp = false;
+    private boolean backup = false; // If true, backup PGN games before overwriting
 
     private Thread workThread = null;
     private boolean canceled = false;
@@ -109,6 +110,7 @@ public abstract class EditPGN extends AppCompatActivity {
         Intent i = getIntent();
         String action = i.getAction();
         String fileName = i.getStringExtra("org.petero.droidfish.pathname");
+        backup = i.getBooleanExtra("org.petero.droidfish.backup", false);
         canceled = false;
         if ("org.petero.droidfish.loadFile".equals(action)) {
             pgnFile = new PGNFile(fileName);
@@ -167,34 +169,35 @@ public abstract class EditPGN extends AppCompatActivity {
             loadGame = false;
             String token = i.getStringExtra("org.petero.droidfish.pgn");
             pgnToSave = (new ObjectCache()).retrieveString(token);
-            boolean silent = i.getBooleanExtra("org.petero.droidfish.silent", false);
-            if (silent) { // Silently append to file
-                PGNFile pgnFile2 = new PGNFile(fileName);
-                pgnFile2.appendPGN(pgnToSave);
-            } else {
-                pgnFile = new PGNFile(fileName);
-                showDialog(PROGRESS_DIALOG);
-                workThread = new Thread(() -> {
-                    if (!readFile())
-                        return;
-                    runOnUiThread(() -> {
-                        if (canceled) {
-                            setResult(RESULT_CANCELED);
-                            finish();
-                        } else if (gamesInFile.isEmpty()) {
-                            pgnFile.appendPGN(pgnToSave);
-                            finish();
-                        } else {
-                            showList();
-                        }
-                    });
+            pgnFile = new PGNFile(fileName);
+            showDialog(PROGRESS_DIALOG);
+            workThread = new Thread(() -> {
+                if (!readFile())
+                    return;
+                runOnUiThread(() -> {
+                    if (canceled) {
+                        setResult(RESULT_CANCELED);
+                        finish();
+                    } else if (gamesInFile.isEmpty()) {
+                        pgnFile.appendPGN(pgnToSave, false);
+                        saveFileFinished();
+                    } else {
+                        showList();
+                    }
                 });
-                workThread.start();
-            }
+            });
+            workThread.start();
         } else { // Unsupported action
             setResult(RESULT_CANCELED);
             finish();
         }
+    }
+
+    private void saveFileFinished() {
+        Intent i = new Intent();
+        i.putExtra("org.petero.droidfish.treeHash", Util.stringHash(pgnToSave));
+        setResult(RESULT_OK, i);
+        finish();
     }
 
     @Override
@@ -403,8 +406,9 @@ public abstract class EditPGN extends AppCompatActivity {
                     finish();
                     return;
                 }
-                pgnFile.replacePGN(pgnToSave, giToReplace);
-                finish();
+                doBackup(giToReplace);
+                pgnFile.replacePGN(pgnToSave, giToReplace, false);
+                saveFileFinished();
             });
             return builder.create();
         }
@@ -475,6 +479,7 @@ public abstract class EditPGN extends AppCompatActivity {
     }
 
     private void deleteGame(GameInfo gi) {
+        doBackup(gi);
         if (pgnFile.deleteGame(gi, gamesInFile)) {
             createAdapter();
             String s = binding.selectGameFilter.getText().toString();
@@ -483,6 +488,15 @@ public abstract class EditPGN extends AppCompatActivity {
             String fileName = pgnFile.getName();
             lastModTime = new File(fileName).lastModified();
         }
+    }
+
+    private void doBackup(GameInfo gi) {
+        if (!backup)
+            return;
+        String pgn = pgnFile.readOneGame(gi);
+        if (pgn == null || pgn.isEmpty())
+            return;
+        DroidFish.autoSaveGame(pgn);
     }
 
     private void createAdapter() {

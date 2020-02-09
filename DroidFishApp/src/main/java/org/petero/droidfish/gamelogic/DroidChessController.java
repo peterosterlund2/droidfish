@@ -49,7 +49,7 @@ import org.petero.droidfish.gamelogic.GameTree.Node;
 /** The glue between the chess engine and the GUI. */
 public class DroidChessController {
     private DroidComputerPlayer computerPlayer = null;
-    private PgnToken.PgnTokenReceiver gameTextListener = null;
+    private PgnToken.PgnTokenReceiver gameTextListener;
     private BookOptions bookOptions = new BookOptions();
     private EngineOptions engineOptions = new EngineOptions();
     private Game game = null;
@@ -94,10 +94,25 @@ public class DroidChessController {
         }
         computerPlayer.queueStartEngine(searchId, engine);
         searchId++;
+        Game oldGame = game;
         game = new Game(gameTextListener, tcData);
         computerPlayer.uciNewGame();
         setPlayerNames(game);
         updateGameMode();
+        game.resetModified(pgnOptions);
+        autoSaveOldGame(oldGame, game.treeHashSignature);
+    }
+
+    /** Save old game if has been modified since start/load of game and is
+     *  not equal to the new game. */
+    private void autoSaveOldGame(Game oldGame, long newGameHash) {
+        if (oldGame == null)
+            return;
+        String pgn = oldGame.tree.toPGN(pgnOptions);
+        long oldGameOrigHash = oldGame.treeHashSignature;
+        long oldGameCurrHash = Util.stringHash(pgn);
+        if (oldGameCurrHash != oldGameOrigHash && oldGameCurrHash != newGameHash)
+            gui.autoSaveGameIfAllowed(pgn);
     }
 
     /** Start playing a new game. Should be called after newGame(). */
@@ -137,7 +152,7 @@ public class DroidChessController {
         }
     }
 
-    public GameMode getGameMode() {
+    public final GameMode getGameMode() {
         return gameMode;
     }
 
@@ -245,7 +260,7 @@ public class DroidChessController {
     }
 
     /** Parse a string as FEN or PGN data. */
-    public final synchronized void setFENOrPGN(String fenPgn) throws ChessParseError {
+    public final synchronized void setFENOrPGN(String fenPgn, boolean setModified) throws ChessParseError {
         if (!fenPgn.isEmpty() && fenPgn.charAt(0) == '\ufeff')
             fenPgn = fenPgn.substring(1); // Remove BOM
         Game newGame = new Game(gameTextListener, game.timeController.tcData);
@@ -260,6 +275,7 @@ public class DroidChessController {
             newGame.tree.translateMoves();
         }
         searchId++;
+        Game oldGame = game;
         game = newGame;
         gameTextListener.clear();
         updateGameMode();
@@ -268,6 +284,14 @@ public class DroidChessController {
         updateComputeThreads();
         gui.setSelection(-1);
         updateGUI();
+        game.resetModified(pgnOptions);
+        autoSaveOldGame(oldGame, game.treeHashSignature);
+        if (setModified)
+            game.treeHashSignature = oldGame.treeHashSignature;
+    }
+
+    public final synchronized void setLastSaveHash(long hash) {
+        game.treeHashSignature = hash;
     }
 
     /** True if human's turn to make a move. (True in analysis mode.) */
