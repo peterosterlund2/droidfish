@@ -39,6 +39,7 @@ If you are running on battery power, it is recommended that you change settings 
     <string name="load_game">Load game from PGN file</string>
     <string name="load_position">Load position from file</string>
     <string name="load_scid_game">Load game from Scid file</string>
+    <string name="load_del_game">Load deleted game</string>
     <string name="save_game">Save game to PGN file</string>
     <string name="get_fen">Retrieve Position</string>
     <string name="repeat_last_move">Repeat last move</string>

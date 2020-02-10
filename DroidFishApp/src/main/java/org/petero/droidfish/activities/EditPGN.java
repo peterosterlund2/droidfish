@@ -69,6 +69,7 @@ public abstract class EditPGN extends AppCompatActivity {
 
     private SharedPreferences settings;
     private long defaultFilePos = 0;
+    private boolean updateDefaultFilePos;
     private long currentFilePos = 0;
     private String lastSearchString = "";
     private String lastFileName = "";
@@ -111,6 +112,7 @@ public abstract class EditPGN extends AppCompatActivity {
         String action = i.getAction();
         String fileName = i.getStringExtra("org.petero.droidfish.pathname");
         backup = i.getBooleanExtra("org.petero.droidfish.backup", false);
+        updateDefaultFilePos = i.getBooleanExtra("org.petero.droidfish.updateDefFilePos", true);
         canceled = false;
         if ("org.petero.droidfish.loadFile".equals(action)) {
             pgnFile = new PGNFile(fileName);
@@ -159,7 +161,7 @@ public abstract class EditPGN extends AppCompatActivity {
                         finish();
                     } else {
                         GameInfo gi = gamesInFile.get(loadItem);
-                        defaultFilePos = gi.startPos;
+                        setDefaultFilePos(gi.startPos);
                         sendBackResult(gi);
                     }
                 });
@@ -283,7 +285,7 @@ public abstract class EditPGN extends AppCompatActivity {
             if (selectedGi == null)
                 return;
             if (loadGame) {
-                defaultFilePos = selectedGi.startPos;
+                setDefaultFilePos(selectedGi.startPos);
                 sendBackResult(selectedGi);
             } else {
                 reShowDialog(SAVE_GAME_DIALOG);
@@ -430,18 +432,27 @@ public abstract class EditPGN extends AppCompatActivity {
         }
     }
 
+    private void setDefaultFilePos(long pos) {
+        if (updateDefaultFilePos)
+            defaultFilePos = pos;
+    }
+
     private boolean readFile() {
         String fileName = pgnFile.getName();
         if (!fileName.equals(lastFileName))
-            defaultFilePos = 0;
+            setDefaultFilePos(0);
         long modTime = new File(fileName).lastModified();
         if (cacheValid && (modTime == lastModTime) && fileName.equals(lastFileName))
             return true;
         try {
             gamesInFile = pgnFile.getGameInfo(this, progress);
-            cacheValid = true;
-            lastModTime = modTime;
-            lastFileName = fileName;
+            if (updateDefaultFilePos) {
+                cacheValid = true;
+                lastModTime = modTime;
+                lastFileName = fileName;
+            } else {
+                cacheValid = false;
+            }
             return true;
         } catch (PGNFile.CancelException ignore) {
         } catch (PGNFile.NotPgnFile ex) {

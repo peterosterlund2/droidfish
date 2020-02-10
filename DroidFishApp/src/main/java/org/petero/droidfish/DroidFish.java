@@ -2305,11 +2305,12 @@ public class DroidFish extends Activity
     }
 
     private Dialog fileMenuDialog() {
-        final int LOAD_LAST_FILE = 0;
-        final int LOAD_GAME      = 1;
-        final int LOAD_POS       = 2;
-        final int LOAD_SCID_GAME = 3;
-        final int SAVE_GAME      = 4;
+        final int LOAD_LAST_FILE    = 0;
+        final int LOAD_GAME         = 1;
+        final int LOAD_POS          = 2;
+        final int LOAD_SCID_GAME    = 3;
+        final int SAVE_GAME         = 4;
+        final int LOAD_DELETED_GAME = 5;
 
         setAutoMode(AutoMode.OFF);
         List<String> lst = new ArrayList<>();
@@ -2321,6 +2322,9 @@ public class DroidFish extends Activity
         lst.add(getString(R.string.load_position)); actions.add(LOAD_POS);
         if (hasScidProvider()) {
             lst.add(getString(R.string.load_scid_game)); actions.add(LOAD_SCID_GAME);
+        }
+        if (storageAvailable() && (new File(getAutoSaveFile())).exists()) {
+            lst.add(getString(R.string.load_del_game));  actions.add(LOAD_DELETED_GAME);
         }
         lst.add(getString(R.string.save_game));     actions.add(SAVE_GAME);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -2344,6 +2348,9 @@ public class DroidFish extends Activity
                 break;
             case LOAD_SCID_GAME:
                 selectScidFile();
+                break;
+            case LOAD_DELETED_GAME:
+                loadPGNFromFile(getAutoSaveFile(), false);
                 break;
             }
         });
@@ -3515,13 +3522,21 @@ public class DroidFish extends Activity
 
     /** Load a PGN game from a file. */
     private void loadPGNFromFile(String pathName) {
-        Editor editor = settings.edit();
-        editor.putString("currentPGNFile", pathName);
-        editor.putInt("currFT", FT_PGN);
-        editor.apply();
+        loadPGNFromFile(pathName, true);
+    }
+
+    /** Load a PGN game from a file. */
+    private void loadPGNFromFile(String pathName, boolean updateCurrFile) {
+        if (updateCurrFile) {
+            Editor editor = settings.edit();
+            editor.putString("currentPGNFile", pathName);
+            editor.putInt("currFT", FT_PGN);
+            editor.apply();
+        }
         Intent i = new Intent(DroidFish.this, EditPGNLoad.class);
         i.setAction("org.petero.droidfish.loadFile");
         i.putExtra("org.petero.droidfish.pathname", pathName);
+        i.putExtra("org.petero.droidfish.updateDefFilePos", updateCurrFile);
         setEditPGNBackup(i, pathName);
         startActivityForResult(i, RESULT_LOAD_PGN);
     }
