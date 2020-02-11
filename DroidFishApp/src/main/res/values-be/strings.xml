@@ -40,6 +40,7 @@
     <string name="load_game">Загрузіць партыю з PGN-файла</string>
     <string name="load_position">Загрузіць пазіцыю з файла</string>
     <string name="load_scid_game">Загрузіць партыю з Scid-файла</string>
+    <string name="load_del_game">Load deleted game</string>
     <string name="save_game">Захаваць партыю ў PGN-файле</string>
     <string name="get_fen">Атрымаць пазіцыю</string>
     <string name="repeat_last_move">Паўтарыць апошні ход</string>

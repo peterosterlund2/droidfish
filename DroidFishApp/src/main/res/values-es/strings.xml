@@ -40,6 +40,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="load_game">Cargar partida desde archivo PGN</string>
     <string name="load_position">Cargar posición desde el archivo</string>
     <string name="load_scid_game">Cargar partida desde archivo Scid</string>
+    <string name="load_del_game">Load deleted game</string>
     <string name="save_game">Guardar partida en archivo PGN</string>
     <string name="get_fen">Importar Posición</string>
     <string name="repeat_last_move">Repetir último movimiento</string>

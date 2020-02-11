@@ -44,6 +44,7 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
     <string name="load_game">PGN 파일에서 게임 불러오기</string>
     <string name="load_position">파일로부터 포지션 불러오기</string>
     <string name="load_scid_game">Scid 파일로부터 게임 불러오기</string>
+    <string name="load_del_game">Load deleted game</string>
     <string name="save_game">PGN 파일로 게임 저장</string>
     <string name="get_fen">포지션 검색</string>
     <string name="repeat_last_move">마지막 이동 반복</string>

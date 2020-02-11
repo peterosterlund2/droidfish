@@ -40,6 +40,7 @@ Als uw telefoon op batterij werkt is het aan te raden om deze instellingen te wi
     <string name="load_game">Partij laden vanuit PGN bestand</string>
     <string name="load_position">Positie uit bestand ophalen</string>
     <string name="load_scid_game">Partij laden vanuit Scid bestand</string>
+    <string name="load_del_game">Load deleted game</string>
     <string name="save_game">Partij opslaan als PGN bestand</string>
     <string name="get_fen">Positie ophalen</string>
     <string name="repeat_last_move">Herhaal laatste zet</string>

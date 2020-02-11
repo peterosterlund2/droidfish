@@ -40,6 +40,7 @@ Se você está usando somente a bateria, recomenda-se que você mude as configur
     <string name="load_game">Carregar partida de arquivo PGN</string>
     <string name="load_position">Carregar posição de um ficheiro</string>
     <string name="load_scid_game">Carregar partida de arquivo Scid</string>
+    <string name="load_del_game">Load deleted game</string>
     <string name="save_game">Salvar partida em arquivo PGN</string>
     <string name="get_fen">Recuperar posição</string>
     <string name="repeat_last_move">Repetir último lance</string>

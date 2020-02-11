@@ -40,6 +40,7 @@ Jeśli pracujesz na baterii, zalecana jest zmiana ustawień, w celu oszczędzani
     <string name="load_game">Załaduj partię z pliku PGN</string>
     <string name="load_position">Załaduj ustawienie z pliku</string>
     <string name="load_scid_game">Załaduj partię z pliku Scid</string>
+    <string name="load_del_game">Load deleted game</string>
     <string name="save_game">Zapisz partię w pliku PGN</string>
     <string name="get_fen">Pobierz ustawienie</string>
     <string name="repeat_last_move">Powtórz ostatni ruch</string>

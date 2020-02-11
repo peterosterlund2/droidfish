@@ -40,6 +40,7 @@ Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese Paramet
     <string name="load_game">Partie aus einer PGN-Datei laden</string>
     <string name="load_position">Position aus Datei laden</string>
     <string name="load_scid_game">Partie aus einer Scid-Datei laden</string>
+    <string name="load_del_game">Load deleted game</string>
     <string name="save_game">Partie in eine PGN-Datei speichern</string>
     <string name="get_fen">Position auslesen</string>
     <string name="repeat_last_move">Letzten Zug wiederholen</string>
@@ -184,7 +185,7 @@ Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese Paramet
     <string name="failed_to_read_pgn_data">PGN-Daten konnten nicht gelesen werden</string>
     <string name="variation">Variante:</string>
     <string name="add_analysis">Analyse hinzufügen</string>
-    <string name="copy_to_clipboard">Copy to Clipboard</string>
+    <string name="copy_to_clipboard">In the Zwischenablage kopieren</string>
     <string name="num_variations">Zahl der Varianten</string>
     <string name="hide_statistics">Statistik verbergen</string>
     <string name="show_statistics">Statistik anzeigen</string>

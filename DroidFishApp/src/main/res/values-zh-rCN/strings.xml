@@ -40,6 +40,7 @@
     <string name="load_game">从 PGN 文件加载对局</string>
     <string name="load_position">从文件加载局面</string>
     <string name="load_scid_game">从 Scid 文件加载对局</string>
+    <string name="load_del_game">Load deleted game</string>
     <string name="save_game">保存对局到 PGN 文件</string>
     <string name="get_fen">检索局面</string>
     <string name="repeat_last_move">恢复最后一步棋</string>

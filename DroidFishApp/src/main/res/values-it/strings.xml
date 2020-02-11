@@ -40,6 +40,7 @@ Se l\'alimentazione è a batteria, è consigliabile modificare le impostazioni p
     <string name="load_game">Carica una partita da un file PGN</string>
     <string name="load_position">Carica posizione dal file</string>
     <string name="load_scid_game">Carica una partita da un file di Scid</string>
+    <string name="load_del_game">Load deleted game</string>
     <string name="save_game">Salva la partita in formato PGN</string>
     <string name="get_fen">Recupera la posizione</string>
     <string name="repeat_last_move">Ripeti l\'ultima mossa</string>

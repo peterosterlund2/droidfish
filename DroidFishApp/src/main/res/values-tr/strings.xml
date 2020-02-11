@@ -40,6 +40,7 @@ Pil gücüyle çalışıyorsanız, pil gücünden tasarruf etmek için ayarları
     <string name="load_game">PGN dosyasından oyun yükle</string>
     <string name="load_position">Dosyadan pozisyon yükle</string>
     <string name="load_scid_game">Scid dosyasından oyun yükle</string>
+    <string name="load_del_game">Load deleted game</string>
     <string name="save_game">PGN olarak kaydet</string>
     <string name="get_fen">Pozisyonu geri al</string>
     <string name="repeat_last_move">Son hareketi tekrarla</string>

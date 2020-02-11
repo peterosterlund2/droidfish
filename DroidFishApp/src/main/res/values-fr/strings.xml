@@ -40,6 +40,7 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="load_game">Charger une partie PGN</string>
     <string name="load_position">Charger une position depuis un fichier</string>
     <string name="load_scid_game">Charger une partie Scid</string>
+    <string name="load_del_game">Load deleted game</string>
     <string name="save_game">Sauvegarder la partie au format PGN</string>
     <string name="get_fen">Récupérer la position</string>
     <string name="repeat_last_move">Repeat last move</string>
