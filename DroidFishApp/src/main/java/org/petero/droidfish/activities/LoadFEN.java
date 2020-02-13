@@ -258,7 +258,7 @@ public class LoadFEN extends ListActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (binding.loadfenChessboard != null) {
+        if (binding != null && binding.loadfenChessboard != null) {
             Position pos = binding.loadfenChessboard.pos;
             showList();
             binding.loadfenChessboard.setPosition(pos);
