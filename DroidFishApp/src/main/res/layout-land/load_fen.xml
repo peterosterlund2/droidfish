@@ -16,41 +16,31 @@
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_weight="2"
             android:baselineAligned="false"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <org.petero.droidfish.ChessBoardPlay
-                    android:id="@+id/loadfen_chessboard"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+            <org.petero.droidfish.ChessBoardPlay
+                android:id="@+id/loadfen_chessboard"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"/>
 
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <Button
                     android:id="@+id/loadfen_cancel"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:text="@string/cancel" />
 
                 <Button
                     android:id="@+id/loadfen_ok"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:text="@android:string/ok" />
             </LinearLayout>
         </LinearLayout>
