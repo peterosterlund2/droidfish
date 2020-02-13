@@ -26,117 +26,113 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 public class ColorPickerDialog 
-	extends 
-		Dialog 
-	implements
-		ColorPickerView.OnColorChangedListener,
-		View.OnClickListener {
+    extends 
+        Dialog 
+    implements
+        ColorPickerView.OnColorChangedListener,
+        View.OnClickListener {
 
-	private ColorPickerView mColorPicker;
+    private ColorPickerView mColorPicker;
 
-	private ColorPickerPanelView mOldColor;
-	private ColorPickerPanelView mNewColor;
+    private ColorPickerPanelView mOldColor;
+    private ColorPickerPanelView mNewColor;
 
-	private OnColorChangedListener mListener;
+    private OnColorChangedListener mListener;
 
     private CharSequence additionalInfo;
 
-	public interface OnColorChangedListener {
-		public void onColorChanged(int color);
-	}
-	
+    public interface OnColorChangedListener {
+        public void onColorChanged(int color);
+    }
+    
     public ColorPickerDialog(Context context, int initialColor,
-            CharSequence additionalInfo) {
-		super(context);
+                             CharSequence additionalInfo) {
+        super(context);
         this.additionalInfo = additionalInfo;
-		init(initialColor);
-	}
+        init(initialColor);
+    }
 
-	private void init(int color) {
-		// To fight color banding.
-		getWindow().setFormat(PixelFormat.RGBA_8888);
+    private void init(int color) {
+        // To fight color banding.
+        getWindow().setFormat(PixelFormat.RGBA_8888);
 
-		setUp(color);
+        setUp(color);
+    }
 
-	}
-
-	private void setUp(int color) {
+    private void setUp(int color) {
         setContentView(R.layout.dialog_color_picker);
 
         setTitle(getContext().getText(R.string.prefs_colors_title) + " '"
                 + additionalInfo + "'");
 
-		mColorPicker = findViewById(R.id.color_picker_view);
-		mOldColor = findViewById(R.id.old_color_panel);
-		mNewColor = findViewById(R.id.new_color_panel);
+        mColorPicker = findViewById(R.id.color_picker_view);
+        mOldColor = findViewById(R.id.old_color_panel);
+        mNewColor = findViewById(R.id.new_color_panel);
 
-		((LinearLayout) mOldColor.getParent()).setPadding(
-			Math.round(mColorPicker.getDrawingOffset()), 
-			0, 
-			Math.round(mColorPicker.getDrawingOffset()), 
-			0
-		);	
-		
-		mOldColor.setOnClickListener(this);
-		mNewColor.setOnClickListener(this);
-		mColorPicker.setOnColorChangedListener(this);
-		mOldColor.setColor(color);
-		mColorPicker.setColor(color, true);
+        ((LinearLayout) mOldColor.getParent()).setPadding(
+            Math.round(mColorPicker.getDrawingOffset()), 
+            0, 
+            Math.round(mColorPicker.getDrawingOffset()), 
+            0
+        );    
+        
+        mOldColor.setOnClickListener(this);
+        mNewColor.setOnClickListener(this);
+        mColorPicker.setOnColorChangedListener(this);
+        mOldColor.setColor(color);
+        mColorPicker.setColor(color, true);
+    }
 
-	}
+    @Override
+    public void onColorChanged(int color) {
+        mNewColor.setColor(color);
 
-	@Override
-	public void onColorChanged(int color) {
+        /*
+        if (mListener != null) {
+            mListener.onColorChanged(color);
+        }
+        */
+    }
 
-		mNewColor.setColor(color);
+    public void setAlphaSliderVisible(boolean visible) {
+        mColorPicker.setAlphaSliderVisible(visible);
+    }
+    
+    /**
+     * Set a OnColorChangedListener to get notified when the color
+     * selected by the user has changed.
+     * @param listener
+     */
+    public void setOnColorChangedListener(OnColorChangedListener listener) {
+        mListener = listener;
+    }
 
-		/*
-		if (mListener != null) {
-			mListener.onColorChanged(color);
-		}
-		*/
+    public int getColor() {
+        return mColorPicker.getColor();
+    }
 
-	}
-
-	public void setAlphaSliderVisible(boolean visible) {
-		mColorPicker.setAlphaSliderVisible(visible);
-	}
-	
-	/**
-	 * Set a OnColorChangedListener to get notified when the color
-	 * selected by the user has changed.
-	 * @param listener
-	 */
-	public void setOnColorChangedListener(OnColorChangedListener listener){
-		mListener = listener;
-	}
-
-	public int getColor() {
-		return mColorPicker.getColor();
-	}
-
-	@Override
-	public void onClick(View v) {
-		if (v.getId() == R.id.new_color_panel) {
-			if (mListener != null) {
-				mListener.onColorChanged(mNewColor.getColor());
-			}
-		}
-		dismiss();
-	}
-	
-	@Override
-	public Bundle onSaveInstanceState() {
-		Bundle state = super.onSaveInstanceState();
-		state.putInt("old_color", mOldColor.getColor());
-		state.putInt("new_color", mNewColor.getColor());
-		return state;
-	}
-	
-	@Override
-	public void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		mOldColor.setColor(savedInstanceState.getInt("old_color"));
-		mColorPicker.setColor(savedInstanceState.getInt("new_color"), true);
-	}
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.new_color_panel) {
+            if (mListener != null) {
+                mListener.onColorChanged(mNewColor.getColor());
+            }
+        }
+        dismiss();
+    }
+    
+    @Override
+    public Bundle onSaveInstanceState() {
+        Bundle state = super.onSaveInstanceState();
+        state.putInt("old_color", mOldColor.getColor());
+        state.putInt("new_color", mNewColor.getColor());
+        return state;
+    }
+    
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mOldColor.setColor(savedInstanceState.getInt("old_color"));
+        mColorPicker.setColor(savedInstanceState.getInt("new_color"), true);
+    }
 }

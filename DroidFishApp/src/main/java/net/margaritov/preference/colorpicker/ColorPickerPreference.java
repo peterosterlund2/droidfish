@@ -31,118 +31,115 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 /**
- * A preference type that allows a user to choose a time
  * @author Sergey Margaritov
  */
 public class ColorPickerPreference
-	extends
-		Preference
-	implements
-		Preference.OnPreferenceClickListener,
-		ColorPickerDialog.OnColorChangedListener {
+    extends
+        Preference
+    implements
+        Preference.OnPreferenceClickListener,
+        ColorPickerDialog.OnColorChangedListener {
 
-	View mView;
-	ColorPickerDialog mDialog;
-	int mDefaultValue = Color.BLACK;
-	private int mValue = Color.BLACK;
-	private float mDensity = 0;
-	private boolean mAlphaSliderEnabled = false;
+    private View mView;
+    private ColorPickerDialog mDialog;
+    private int mDefaultValue = Color.BLACK;
+    private int mValue = Color.BLACK;
+    private float mDensity = 0;
+    private boolean mAlphaSliderEnabled = false;
 
-	private static final String androidns = "http://schemas.android.com/apk/res/android";
+    private static final String androidns = "http://schemas.android.com/apk/res/android";
 
-	public ColorPickerPreference(Context context) {
-		super(context);
-		init(context, null);
-	}
+    public ColorPickerPreference(Context context) {
+        super(context);
+        init(context, null);
+    }
 
-	public ColorPickerPreference(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		init(context, attrs);
-	}
+    public ColorPickerPreference(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context, attrs);
+    }
 
-	public ColorPickerPreference(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		init(context, attrs);
-	}
-	
-	@Override
-	protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
-		onColorChanged(restoreValue ? getValue() : (Integer) defaultValue);
-	}
+    public ColorPickerPreference(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        init(context, attrs);
+    }
+    
+    @Override
+    protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
+        onColorChanged(restoreValue ? getValue() : (Integer) defaultValue);
+    }
 
-	private void init(Context context, AttributeSet attrs) {
-		mDensity = getContext().getResources().getDisplayMetrics().density;
-		setOnPreferenceClickListener(this);
-		if (attrs != null) {
-			String defaultValue = attrs.getAttributeValue(androidns, "defaultValue");
-			if (defaultValue.startsWith("#")) {
-				try {
-					mDefaultValue = convertToColorInt(defaultValue);
-				} catch (NumberFormatException e) {
-					Log.e("ColorPickerPreference", "Wrong color: " + defaultValue);
-					mDefaultValue = convertToColorInt("#FF000000");
-				}
-			} else {
-				int resourceId = attrs.getAttributeResourceValue(androidns, "defaultValue", 0);
-				if (resourceId != 0) {
-					mDefaultValue = context.getResources().getInteger(resourceId);
-				}
-			}
-			mAlphaSliderEnabled = attrs.getAttributeBooleanValue(null, "alphaSlider", false);
-		}
-		mValue = mDefaultValue;
-	}
+    private void init(Context context, AttributeSet attrs) {
+        mDensity = getContext().getResources().getDisplayMetrics().density;
+        setOnPreferenceClickListener(this);
+        if (attrs != null) {
+            String defaultValue = attrs.getAttributeValue(androidns, "defaultValue");
+            if (defaultValue.startsWith("#")) {
+                try {
+                    mDefaultValue = convertToColorInt(defaultValue);
+                } catch (NumberFormatException e) {
+                    Log.e("ColorPickerPreference", "Wrong color: " + defaultValue);
+                    mDefaultValue = convertToColorInt("#FF000000");
+                }
+            } else {
+                int resourceId = attrs.getAttributeResourceValue(androidns, "defaultValue", 0);
+                if (resourceId != 0) {
+                    mDefaultValue = context.getResources().getInteger(resourceId);
+                }
+            }
+            mAlphaSliderEnabled = attrs.getAttributeBooleanValue(null, "alphaSlider", false);
+        }
+        mValue = mDefaultValue;
+    }
 
-	@Override
-	protected void onBindView(View view) {
-		super.onBindView(view);
-		mView = view;
-		setPreviewColor();
-	}
+    @Override
+    protected void onBindView(View view) {
+        super.onBindView(view);
+        mView = view;
+        setPreviewColor();
+    }
 
-    @SuppressWarnings("deprecation")
-	private void setPreviewColor() {
-		if (mView == null) return;
-		ImageView iView = new ImageView(getContext());
-		LinearLayout widgetFrameView = mView.findViewById(android.R.id.widget_frame);
-		if (widgetFrameView == null) return;
-		widgetFrameView.setVisibility(View.VISIBLE);
-		widgetFrameView.setPadding(
-			widgetFrameView.getPaddingLeft(),
-			widgetFrameView.getPaddingTop(),
-			(int)(mDensity * 8),
-			widgetFrameView.getPaddingBottom()
-		);
-		// remove already create preview image
-		int count = widgetFrameView.getChildCount();
-		if (count > 0) {
-			widgetFrameView.removeViews(0, count);
-		}
-		widgetFrameView.addView(iView);
-		widgetFrameView.setMinimumWidth(0);
-		iView.setBackgroundDrawable(new AlphaPatternDrawable((int)(5 * mDensity)));
-		iView.setImageBitmap(getPreviewBitmap());
-	}
+    private void setPreviewColor() {
+        if (mView == null) return;
+        ImageView iView = new ImageView(getContext());
+        LinearLayout widgetFrameView = mView.findViewById(android.R.id.widget_frame);
+        if (widgetFrameView == null) return;
+        widgetFrameView.setVisibility(View.VISIBLE);
+        widgetFrameView.setPadding(
+            widgetFrameView.getPaddingLeft(),
+            widgetFrameView.getPaddingTop(),
+            (int)(mDensity * 8),
+            widgetFrameView.getPaddingBottom()
+        );
+        // remove already create preview image
+        int count = widgetFrameView.getChildCount();
+        if (count > 0) {
+            widgetFrameView.removeViews(0, count);
+        }
+        widgetFrameView.addView(iView);
+        widgetFrameView.setMinimumWidth(0);
+        iView.setBackgroundDrawable(new AlphaPatternDrawable((int)(5 * mDensity)));
+        iView.setImageBitmap(getPreviewBitmap());
+    }
 
-	private Bitmap getPreviewBitmap() {
-		int d = (int) (mDensity * 31); //30dip
-		int color = getValue();
-		Bitmap bm = Bitmap.createBitmap(d, d, Config.ARGB_8888);
-		int w = bm.getWidth();
-		int h = bm.getHeight();
-		int c = color;
-		for (int i = 0; i < w; i++) {
-			for (int j = i; j < h; j++) {
-				c = (i <= 1 || j <= 1 || i >= w-2 || j >= h-2) ? Color.GRAY : color;
-				bm.setPixel(i, j, c);
-				if (i != j) {
-					bm.setPixel(j, i, c);
-				}
-			}
-		}
+    private Bitmap getPreviewBitmap() {
+        int d = (int) (mDensity * 31); //30dip
+        int color = getValue();
+        Bitmap bm = Bitmap.createBitmap(d, d, Config.ARGB_8888);
+        int w = bm.getWidth();
+        int h = bm.getHeight();
+        for (int i = 0; i < w; i++) {
+            for (int j = i; j < h; j++) {
+                int c = (i <= 1 || j <= 1 || i >= w-2 || j >= h-2) ? Color.GRAY : color;
+                bm.setPixel(i, j, c);
+                if (i != j) {
+                    bm.setPixel(j, i, c);
+                }
+            }
+        }
 
-		return bm;
-	}
+        return bm;
+    }
 
     public int getValue() {
         try {
@@ -183,42 +180,42 @@ public class ColorPickerPreference
         try {
             Preference.OnPreferenceChangeListener listener = getOnPreferenceChangeListener();
             if (listener != null)
-            	listener.onPreferenceChange(this, color);
+                listener.onPreferenceChange(this, color);
         } catch (NullPointerException ignore) {
         }
     }
 
-	public boolean onPreferenceClick(Preference preference) {
-		showDialog(null);
-		return false;
-	}
-	
-	protected void showDialog(Bundle state) {
+    public boolean onPreferenceClick(Preference preference) {
+        showDialog(null);
+        return false;
+    }
+    
+    private void showDialog(Bundle state) {
         mDialog = new ColorPickerDialog(getContext(), getValue(), getTitle());
-		mDialog.setOnColorChangedListener(this);
-		if (mAlphaSliderEnabled) {
-			mDialog.setAlphaSliderVisible(true);
-		}
-		if (state != null) {
-			mDialog.onRestoreInstanceState(state);
-		}
-		mDialog.show();
-	}
+        mDialog.setOnColorChangedListener(this);
+        if (mAlphaSliderEnabled) {
+            mDialog.setAlphaSliderVisible(true);
+        }
+        if (state != null) {
+            mDialog.onRestoreInstanceState(state);
+        }
+        mDialog.show();
+    }
 
-	/**
-	 * Toggle Alpha Slider visibility (by default it's disabled)
-	 * @param enable
-	 */
-	public void setAlphaSliderEnabled(boolean enable) {
-		mAlphaSliderEnabled = enable;
-	}
+    /**
+     * Toggle Alpha Slider visibility (by default it's disabled)
+     * @param enable
+     */
+    public void setAlphaSliderEnabled(boolean enable) {
+        mAlphaSliderEnabled = enable;
+    }
 
-	/**
-	 * For custom purposes. Not used by ColorPickerPreferrence
-	 * @param color
-	 * @author Unknown
-	 */
-    public static String convertToARGB(int color) {
+    /**
+     * For custom purposes. Not used by ColorPickerPreference
+     * @param color
+     * @author Unknown
+     */
+    private static String convertToARGB(int color) {
         String alpha = Integer.toHexString(Color.alpha(color));
         String red = Integer.toHexString(Color.red(color));
         String green = Integer.toHexString(Color.green(color));
@@ -249,11 +246,10 @@ public class ColorPickerPreference
      * @throws NumberFormatException
      * @author Unknown
      */
-    public static int convertToColorInt(String argb) throws NumberFormatException {
-
-    	if (argb.startsWith("#")) {
-    		argb = argb.replace("#", "");
-    	}
+    private static int convertToColorInt(String argb) throws NumberFormatException {
+        if (argb.startsWith("#")) {
+            argb = argb.replace("#", "");
+        }
 
         int alpha = 0, red = 0, green = 0, blue = 0;
 
