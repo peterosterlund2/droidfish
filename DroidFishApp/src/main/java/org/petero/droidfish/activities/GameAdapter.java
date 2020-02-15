@@ -112,7 +112,7 @@ public class GameAdapter<T> extends BaseAdapter implements Filterable {
         @SuppressWarnings("unchecked")
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            values = (ArrayList<T>) results.values;
+            values = results == null ? new ArrayList<T>() : (ArrayList<T>) results.values;
             notifyDataSetChanged();
         }
     }
