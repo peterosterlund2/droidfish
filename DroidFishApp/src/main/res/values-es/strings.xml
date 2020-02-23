@@ -39,7 +39,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="load_game">Cargar partida desde archivo PGN</string>
     <string name="load_position">Cargar posición desde el archivo</string>
     <string name="load_scid_game">Cargar partida desde archivo Scid</string>
-    <string name="load_del_game">Load deleted game</string>
+    <string name="load_del_game">Cargar la partida eliminada</string>
     <string name="save_game">Guardar partida en archivo PGN</string>
     <string name="get_fen">Importar Posición</string>
     <string name="repeat_last_move">Repetir último movimiento</string>
@@ -184,7 +184,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="failed_to_read_pgn_data">Fallo al leer datos PGN</string>
     <string name="variation">Variante:</string>
     <string name="add_analysis">Añadir Análisis</string>
-    <string name="copy_to_clipboard">Copy to Clipboard</string>
+    <string name="copy_to_clipboard">Copiar al portapapeles</string>
     <string name="num_variations">Número de Variantes</string>
     <string name="hide_statistics">Ocultar Estadísticas</string>
     <string name="show_statistics">Mostrar Estadísticas</string>
@@ -198,7 +198,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="delete_file">Borrar archivo</string>
     <string name="delete_file_question">Borrar archivo?</string>
     <string name="delete_named_file">Borrar archivo %s?</string>
-    <string name="regexp_search">Regular Expression Search</string>
+    <string name="regexp_search">Búsqueda de expresiones regulares</string>
     <string name="game_saved">Partida Guardada</string>
     <string name="failed_to_save_game">No se ha podido guardar partida</string>
     <string name="failed_to_delete_game">No se ha podido borrar partida</string>
@@ -305,10 +305,10 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="prefs_autoScrollTitle_summary">Desplaza automáticamente la barra de título si los nombres de los jugadores son demasiado largos</string>
     <string name="prefs_quickMoveInput_title">Introducción rápida de la jugada</string>
     <string name="prefs_quickMoveInput_summary">Las casillas de origen y destino pueden ser pulsadas en cualquier orden. El movimiento se lleva a cabo tan pronto como se define de forma inequívoca (jugada única posible).</string>
-    <string name="prefs_moveSoundEnabled_title">Move sound</string>
-    <string name="prefs_moveSoundEnabled_summary">Play sound when computer makes a move</string>
-    <string name="prefs_moveAnnounceType_title">Speak moves</string>
-    <string name="prefs_moveAnnounceType_summary">Speak when computer makes a move</string>
+    <string name="prefs_moveSoundEnabled_title">Sonido al realizar una jugada</string>
+    <string name="prefs_moveSoundEnabled_summary">Notificación de jugada cuando el ordenador realiza un movimiento</string>
+    <string name="prefs_moveAnnounceType_title">Enunciado de las jugadas</string>
+    <string name="prefs_moveAnnounceType_summary">Hablar cuando el ordenador realiza un movimiento</string>
     <string name="prefs_vibrateEnabled_title">Permitir vibración</string>
     <string name="prefs_vibrateEnabled_summary">Vibra cuando la computadora efectúa una jugada</string>
     <string name="prefs_fullScreenMode_title">Modo Pantalla Completa</string>
@@ -316,8 +316,8 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="prefs_wakeLock_title">Desconectar el Tiempo Muerto de la Pantalla</string>
     <string name="prefs_drawSquareLabels_title">Coordenadas</string>
     <string name="prefs_drawSquareLabels_summary">Muestra coordenadas en pantalla: a–h y 1–8</string>
-    <string name="prefs_dragMoveEnabled_title">Drag Pieces</string>
-    <string name="prefs_dragMoveEnabled_summary">Drag a piece to make a move</string>
+    <string name="prefs_dragMoveEnabled_title">Arrastrar las piezas</string>
+    <string name="prefs_dragMoveEnabled_summary">Arrastrar una pieza para realizar una jugada</string>
     <string name="prefs_scrollSensitivity_title">Velocidad de Desplazamiento</string>
     <string name="prefs_scrollSensitivity_summary">Velocidad de desplazamiento de la información durante la partida </string>
     <string name="prefs_invertScrollDirection_title">Invertir dirección desplazamiento</string>
@@ -644,20 +644,20 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     </string-array>
     <string-array name="language_texts">
         <item>Del sistema por defecto</item>
-        <item>English</item>
-        <item>Belarusian</item>
-        <item>Chinese Simplified</item>
-        <item>German</item>
-        <item>Spanish</item>
-        <item>French</item>
-        <item>Italian</item>
-        <item>Korean</item>
-        <item>Dutch</item>
-        <item>Polish</item>
-        <item>Portuguese</item>
-        <item>Russian</item>
-        <item>Turkish</item>
-        <item>Ukrainian</item>
+        <item>Inglés (English)</item>
+        <item>Bielorruso (Belarusian)</item>
+        <item>Chino simplificado (Chinese Simplified)</item>
+        <item>Alemán (German)</item>
+        <item>Español (Spanish)</item>
+        <item>Francés (French)</item>
+        <item>Italiano (Italian)</item>
+        <item>Coreano (Korean)</item>
+        <item>Holandés (Dutch)</item>
+        <item>Polaco (Polish)</item>
+        <item>Portugués (Portuguese)</item>
+        <item>Ruso (Russian)</item>
+        <item>Turco (Turkish)</item>
+        <item>Ucraniano (Ukrainian)</item>
     </string-array>
     <string-array name="language_values">
         <item>default</item>
