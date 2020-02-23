@@ -1,3 +1,12 @@
+2020-02-23: Version 1.79
+- Separate settings for "move sound" and "move speech".
+- Support for move input using drag and drop.
+- Function to copy analysis information as text to the clipboard.
+- Autosave old game when new game is started.
+- New file menu action "load deleted game" to retrieve previoulsy autosaved
+  games.
+- Update translations.
+
 2020-01-18: Version 1.78
 - Update to Stockfish 11.
 - Add button action "Force computer move".
