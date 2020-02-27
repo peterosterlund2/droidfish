@@ -304,7 +304,7 @@ Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese Paramet
     <string name="prefs_autoScrollTitle_title">Titelleiste scrollen</string>
     <string name="prefs_autoScrollTitle_summary">Titelleiste bei zu langen Spielernamen automatisch scrollen</string>
     <string name="prefs_quickMoveInput_title">Schnelle Zugeingabe</string>
-    <string name="prefs_quickMoveInput_summary">Die Reihenfolge der Auswahl für einen Zug (von bzw. nach) ist beliebig. Eindeutige Züge werden sofort durchgeführt.</string>
+    <string name="prefs_quickMoveInput_summary">Start- und Zielfeld können in beliebiger Reihenfolge berührt werden. Eindeutige Züge werden sofort durchgeführt.</string>
     <string name="prefs_moveSoundEnabled_title">Ton bei Zug</string>
     <string name="prefs_moveSoundEnabled_summary">Einen Ton ausgeben, wenn das Programm einen Zug ausführt</string>
     <string name="prefs_moveAnnounceType_title">Sprachausgabe</string>
@@ -402,7 +402,7 @@ Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese Paramet
     <string name="prefs_showVariationLine_title">Aktuelle Varianten anzeigen</string>
     <string name="prefs_showVariationLine_summary">Aktuelle Varianten im Statusbereich anzeigen</string>
     <string name="prefs_viewPieceType_title">Figurenbezeichnungen</string>
-    <string name="prefs_viewPieceType_summary">Einstellung der Figurenbezeichnungen</string>
+    <string name="prefs_viewPieceType_summary">Bezeichnungen der Figuren einstellen</string>
     <string name="prefs_viewPieceSet_title">Figurensatz</string>
     <string name="prefs_viewPieceSet_summary">Figurensatz auswählen</string>
     <string name="prefs_blindMode_title">Blindspiel-Modus</string>
@@ -443,7 +443,7 @@ Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese Paramet
     <string name="prefs_rtbPathNet_title">Syzygy-Netzwerkverzeichnis</string>
     <string name="prefs_rtbPathNet_summary">Verzeichnung mit Syzygy-Endspieldatenbanken für Netzwerk-Engines</string>
     <string name="prefs_guideShowOnStart_title">Einführung</string>
-    <string name="prefs_guideShowOnStart_summary">Die Einführung beim nächsten Programmstart zeigen.</string>
+    <string name="prefs_guideShowOnStart_summary">Einführung beim nächsten Programmstart zeigen.</string>
     <string name="tour_leftMenu_title">Linkes Menü</string>
     <string name="tour_leftMenu_desc">Um das linke Menü zu öffnen, tippen Sie auf die linke Seite der Titelleiste oder wischen Sie vom linken Bildschirmrand zur rechten Seite.</string>
     <string name="tour_rightMenu_title">Rechtes Menü</string>
@@ -644,20 +644,20 @@ Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese Paramet
     </string-array>
     <string-array name="language_texts">
         <item>Systemvorgabe</item>
-        <item>English</item>
-        <item>Belarusian</item>
-        <item>Chinese Simplified</item>
-        <item>German</item>
-        <item>Spanish</item>
-        <item>French</item>
-        <item>Italian</item>
-        <item>Korean</item>
-        <item>Dutch</item>
-        <item>Polish</item>
-        <item>Portuguese</item>
-        <item>Russian</item>
-        <item>Turkish</item>
-        <item>Ukrainian</item>
+        <item>Englisch</item>
+        <item>Weißrussisch</item>
+        <item>Vereinfachtes Chinesisch</item>
+        <item>Deutsch</item>
+        <item>Spanisch</item>
+        <item>Französisch</item>
+        <item>Italienisch</item>
+        <item>Koreanisch</item>
+        <item>Niederländisch</item>
+        <item>Polnisch</item>
+        <item>Portugiesisch</item>
+        <item>Russisch</item>
+        <item>Türkisch</item>
+        <item>Ukrainisch</item>
     </string-array>
     <string-array name="language_values">
         <item>default</item>
