@@ -49,12 +49,10 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class LoadScid extends ListActivity {
     private static final class GameInfo {
@@ -294,28 +292,34 @@ public class LoadScid extends ListActivity {
 
         gamesInFile.clear();
         if (cursor != null) {
-            int noGames = cursor.getCount();
-            gamesInFile.ensureCapacity(noGames);
-            int percent = -1;
-            if (cursor.moveToFirst()) {
-                addGameInfo(cursor);
-                int gameNo = 1;
-                while (cursor.moveToNext()) {
-                    if (Thread.currentThread().isInterrupted()) {
-                        setResult(RESULT_CANCELED);
-                        finish();
-                        return false;
-                    }
+            try {
+                int noGames = cursor.getCount();
+                gamesInFile.ensureCapacity(noGames);
+                int percent = -1;
+                if (cursor.moveToFirst()) {
                     addGameInfo(cursor);
-                    gameNo++;
-                    final int newPercent = gameNo * 100 / noGames;
-                    if (newPercent > percent) {
-                        percent = newPercent;
-                        if (progress != null) {
-                            runOnUiThread(() -> progress.setProgress(newPercent));
+                    int gameNo = 1;
+                    while (cursor.moveToNext()) {
+                        if (Thread.currentThread().isInterrupted()) {
+                            setResult(RESULT_CANCELED);
+                            finish();
+                            return false;
+                        }
+                        addGameInfo(cursor);
+                        gameNo++;
+                        final int newPercent = gameNo * 100 / noGames;
+                        if (newPercent > percent) {
+                            percent = newPercent;
+                            if (progress != null) {
+                                runOnUiThread(() -> progress.setProgress(newPercent));
+                            }
                         }
                     }
                 }
+            } catch (IllegalArgumentException ignore) {
+                setResult(RESULT_CANCELED);
+                finish();
+                return false;
             }
         }
         cacheValid = true;
