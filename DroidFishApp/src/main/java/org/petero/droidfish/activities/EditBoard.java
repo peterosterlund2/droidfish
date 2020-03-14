@@ -23,6 +23,7 @@ import java.util.Locale;
 
 import org.petero.droidfish.DroidFish;
 import org.petero.droidfish.DroidFishApp;
+import org.petero.droidfish.FileUtil;
 import org.petero.droidfish.R;
 import org.petero.droidfish.Util;
 import org.petero.droidfish.Util.MaterialDiff;
@@ -625,7 +626,7 @@ public class EditBoard extends Activity {
             if (resultCode == RESULT_OK) {
                 String fen = data.getStringExtra(Intent.EXTRA_TEXT);
                 if (fen == null) {
-                    String pathName = DroidFish.getFilePathFromUri(data.getData());
+                    String pathName = FileUtil.getFilePathFromUri(data.getData());
                     Intent i = new Intent(EditBoard.this, LoadFEN.class);
                     i.setAction("org.petero.droidfish.loadFen");
                     i.putExtra("org.petero.droidfish.pathname", pathName);

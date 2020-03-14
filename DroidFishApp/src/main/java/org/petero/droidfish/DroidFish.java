@@ -1642,14 +1642,14 @@ public class DroidFish extends Activity
             break;
         case RESULT_OI_PGN_LOAD:
             if (resultCode == RESULT_OK) {
-                String pathName = getFilePathFromUri(data.getData());
+                String pathName = FileUtil.getFilePathFromUri(data.getData());
                 if (pathName != null)
                     loadPGNFromFile(pathName);
             }
             break;
         case RESULT_OI_PGN_SAVE:
             if (resultCode == RESULT_OK) {
-                String pathName = getFilePathFromUri(data.getData());
+                String pathName = FileUtil.getFilePathFromUri(data.getData());
                 if (pathName != null) {
                     if ((pathName.length() > 0) && !pathName.contains("."))
                         pathName += ".pgn";
@@ -1659,7 +1659,7 @@ public class DroidFish extends Activity
             break;
         case RESULT_OI_FEN_LOAD:
             if (resultCode == RESULT_OK) {
-                String pathName = getFilePathFromUri(data.getData());
+                String pathName = FileUtil.getFilePathFromUri(data.getData());
                 if (pathName != null)
                     loadFENFromFile(pathName);
             }
@@ -1668,7 +1668,7 @@ public class DroidFish extends Activity
             if (resultCode == RESULT_OK) {
                 String fen = data.getStringExtra(Intent.EXTRA_TEXT);
                 if (fen == null) {
-                    String pathName = getFilePathFromUri(data.getData());
+                    String pathName = FileUtil.getFilePathFromUri(data.getData());
                     loadFENFromFile(pathName);
                 }
                 setFenHelper(fen, true);
@@ -1700,12 +1700,6 @@ public class DroidFish extends Activity
         gameMode = new GameMode(gameModeType);
         maybeAutoModeOff(gameMode);
         ctrl.setGameMode(gameMode);
-    }
-
-    public static String getFilePathFromUri(Uri uri) {
-        if (uri == null)
-            return null;
-        return uri.getPath();
     }
 
     private String getParseErrString(ChessParseError e) {
@@ -2400,7 +2394,7 @@ public class DroidFish extends Activity
     }
 
     private Dialog selectBookDialog() {
-        String[] fileNames = findFilesInDirectory(bookDir, filename -> {
+        String[] fileNames = FileUtil.findFilesInDirectory(bookDir, filename -> {
             int dotIdx = filename.lastIndexOf(".");
             if (dotIdx < 0)
                 return false;
@@ -2480,7 +2474,8 @@ public class DroidFish extends Activity
                 }
             }
 
-            String[] fileNames = findFilesInDirectory(engineDir, filename -> !reservedEngineName(filename));
+            String[] fileNames = FileUtil.findFilesInDirectory(engineDir,
+                                                               fname -> !reservedEngineName(fname));
             for (String file : fileNames) {
                 ids.add(base + file);
                 items.add(file);
@@ -2535,7 +2530,7 @@ public class DroidFish extends Activity
     private Dialog selectFileDialog(final String defaultDir, int selectFileMsg, int noFilesMsg,
                                           String settingsName, final Loader loader) {
         setAutoMode(AutoMode.OFF);
-        final String[] fileNames = findFilesInDirectory(defaultDir, null);
+        final String[] fileNames = FileUtil.findFilesInDirectory(defaultDir, null);
         final int numFiles = fileNames.length;
         if (numFiles == 0) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -2565,7 +2560,7 @@ public class DroidFish extends Activity
 
     private Dialog selectPgnFileSaveDialog() {
         setAutoMode(AutoMode.OFF);
-        final String[] fileNames = findFilesInDirectory(pgnDir, null);
+        final String[] fileNames = FileUtil.findFilesInDirectory(pgnDir, null);
         final int numFiles = fileNames.length;
         int defaultItem = 0;
         String currentPGNFile = settings.getString("currentPGNFile", "");
@@ -3191,7 +3186,7 @@ public class DroidFish extends Activity
     }
 
     private Dialog networkEngineDialog() {
-        String[] fileNames = findFilesInDirectory(engineDir, filename -> {
+        String[] fileNames = FileUtil.findFilesInDirectory(engineDir, filename -> {
             if (reservedEngineName(filename))
                 return false;
             return EngineUtil.isNetEngine(filename);
@@ -3454,29 +3449,6 @@ public class DroidFish extends Activity
         default:
             return "";
         }
-    }
-
-    private interface FileNameFilter {
-        boolean accept(String filename);
-    }
-
-    private String[] findFilesInDirectory(String dirName, final FileNameFilter filter) {
-        File extDir = Environment.getExternalStorageDirectory();
-        String sep = File.separator;
-        File dir = new File(extDir.getAbsolutePath() + sep + dirName);
-        File[] files = dir.listFiles(pathname -> {
-            if (!pathname.isFile())
-                return false;
-            return (filter == null) || filter.accept(pathname.getAbsolutePath());
-        });
-        if (files == null)
-            files = new File[0];
-        final int numFiles = files.length;
-        String[] fileNames = new String[numFiles];
-        for (int i = 0; i < files.length; i++)
-            fileNames[i] = files[i].getName();
-        Arrays.sort(fileNames, String.CASE_INSENSITIVE_ORDER);
-        return fileNames;
     }
 
     /** Save current game to a PGN file. */

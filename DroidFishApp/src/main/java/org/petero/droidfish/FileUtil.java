@@ -18,7 +18,11 @@
 
 package org.petero.droidfish;
 
+import android.net.Uri;
+import android.os.Environment;
+
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,6 +32,7 @@ import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class FileUtil {
     /** Read a text file. Return string array with one string per line. */
@@ -81,5 +86,34 @@ public class FileUtil {
         } catch (IOException ex) {
             return -1;
         }
+    }
+
+    public interface FileNameFilter {
+        boolean accept(String filename);
+    }
+
+    public static String[] findFilesInDirectory(String dirName, final FileNameFilter filter) {
+        File extDir = Environment.getExternalStorageDirectory();
+        String sep = File.separator;
+        File dir = new File(extDir.getAbsolutePath() + sep + dirName);
+        File[] files = dir.listFiles(pathname -> {
+            if (!pathname.isFile())
+                return false;
+            return (filter == null) || filter.accept(pathname.getAbsolutePath());
+        });
+        if (files == null)
+            files = new File[0];
+        final int numFiles = files.length;
+        String[] fileNames = new String[numFiles];
+        for (int i = 0; i < files.length; i++)
+            fileNames[i] = files[i].getName();
+        Arrays.sort(fileNames, String.CASE_INSENSITIVE_ORDER);
+        return fileNames;
+    }
+
+    public static String getFilePathFromUri(Uri uri) {
+        if (uri == null)
+            return null;
+        return uri.getPath();
     }
 }
