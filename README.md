@@ -107,7 +107,7 @@ modes:
 
 1. To play games, use one of the modes *Play white*, *Play black*, *Two
    players*, *Computer vs computer*. In these modes chess clocks are used and
-   when a computer engine is playing it will limits its thinking time to respect
+   when a computer engine is playing it will limit its thinking time to respect
    the time available on the clock.
 
 **Note!** When the left/right arrow buttons are used to move back/forward in a
