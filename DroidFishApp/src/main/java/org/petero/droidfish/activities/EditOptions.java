@@ -105,94 +105,10 @@ public class EditOptions extends Activity {
         if (uciOpts != null) {
             for (String name : uciOpts.getOptionNames()) {
                 UCIOptions.OptionBase o = uciOpts.getOption(name);
-                if (!o.visible)
-                    continue;
-                switch (o.type) {
-                case CHECK: {
-                    UciOptionCheckBinding holder = UciOptionCheckBinding.inflate(getLayoutInflater(), null, false);
-                    holder.eoValue.setText(o.name);
-                    final UCIOptions.CheckOption co = (UCIOptions.CheckOption) o;
-                    holder.eoValue.setChecked(co.value);
-                    holder.eoValue.setOnCheckedChangeListener((buttonView, isChecked) -> co.set(isChecked));
-                    binding.eoContent.addView(holder.getRoot());
-                    break;
-                }
-                case SPIN: {
-                    UciOptionSpinBinding holder = UciOptionSpinBinding.inflate(getLayoutInflater(), null, false);
-                    final UCIOptions.SpinOption so = (UCIOptions.SpinOption) o;
-                    String labelText = String.format(Locale.US, "%s (%d\u2013%d)", so.name, so.minValue, so.maxValue);
-                    holder.eoLabel.setText(labelText);
-                    holder.eoValue.setText(so.getStringValue());
-                    if (so.minValue >= 0)
-                        holder.eoValue.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
-                    holder.eoValue.addTextChangedListener(new TextWatcher() {
-                        public void onTextChanged(CharSequence s, int start, int before, int count) { }
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            try {
-                                int newVal = Integer.parseInt(s.toString());
-                                if (newVal < so.minValue)
-                                    so.set(so.minValue);
-                                else if (newVal > so.maxValue)
-                                    so.set(so.maxValue);
-                                else
-                                    so.set(newVal);
-                            } catch (NumberFormatException ignore) {
-                            }
-                        }
-                    });
-                    binding.eoContent.addView(holder.getRoot());
-                    break;
-                }
-                case COMBO: {
-                    UciOptionComboBinding holder = UciOptionComboBinding.inflate(getLayoutInflater(), null, false);
-                    holder.eoLabel.setText(o.name);
-                    final UCIOptions.ComboOption co = (UCIOptions.ComboOption) o;
-                    ArrayAdapter<CharSequence> adapter =
-                        new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, co.allowedValues);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    holder.eoValue.setAdapter(adapter);
-                    holder.eoValue.setSelection(adapter.getPosition(co.value));
-                    holder.eoValue.setOnItemSelectedListener(new OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> av, View view, int position, long id) {
-                            if ((position >= 0) && (position < co.allowedValues.length))
-                                co.set(co.allowedValues[position]);
-                        }
-
-                        public void onNothingSelected(AdapterView<?> arg0) { }
-                    });
-                    binding.eoContent.addView(holder.getRoot());
-                    break;
-                }
-                case BUTTON: {
-                    UciOptionButtonBinding holder = UciOptionButtonBinding.inflate(getLayoutInflater(), null, false);
-                    final UCIOptions.ButtonOption bo = (UCIOptions.ButtonOption) o;
-                    bo.trigger = false;
-                    holder.eoLabel.setText(o.name);
-                    holder.eoLabel.setTextOn(o.name);
-                    holder.eoLabel.setTextOff(o.name);
-                    holder.eoLabel.setOnCheckedChangeListener((buttonView, isChecked) -> bo.trigger = isChecked);
-                    binding.eoContent.addView(holder.getRoot());
-                    break;
-                }
-                case STRING: {
-                    UciOptionStringBinding holder = UciOptionStringBinding.inflate(getLayoutInflater(), null, false);
-                    holder.eoLabel.setText(String.format("%s ", o.name));
-                    final UCIOptions.StringOption so = (UCIOptions.StringOption) o;
-                    holder.eoValue.setText(so.value);
-                    holder.eoValue.addTextChangedListener(new TextWatcher() {
-                        public void onTextChanged(CharSequence s, int start, int before, int count) { }
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            so.set(s.toString());
-                        }
-                    });
-                    binding.eoContent.addView(holder.getRoot());
-                    break;
-                }
+                if (o.visible) {
+                    View v = getViewForOption(o);
+                    if (v != null)
+                        binding.eoContent.addView(v);
                 }
             }
         }
@@ -240,6 +156,93 @@ public class EditOptions extends Activity {
                     initUI();
             }
         });
+    }
+
+    private View getViewForOption(UCIOptions.OptionBase o) {
+        switch (o.type) {
+        case CHECK: {
+            UciOptionCheckBinding holder = UciOptionCheckBinding.inflate(getLayoutInflater(), null, false);
+            holder.eoValue.setText(o.name);
+            final UCIOptions.CheckOption co = (UCIOptions.CheckOption) o;
+            holder.eoValue.setChecked(co.value);
+            holder.eoValue.setOnCheckedChangeListener((buttonView, isChecked) -> co.set(isChecked));
+            return holder.getRoot();
+        }
+        case SPIN: {
+            UciOptionSpinBinding holder = UciOptionSpinBinding.inflate(getLayoutInflater(), null, false);
+            final UCIOptions.SpinOption so = (UCIOptions.SpinOption) o;
+            String labelText = String.format(Locale.US, "%s (%d\u2013%d)", so.name, so.minValue, so.maxValue);
+            holder.eoLabel.setText(labelText);
+            holder.eoValue.setText(so.getStringValue());
+            if (so.minValue >= 0)
+                holder.eoValue.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
+            holder.eoValue.addTextChangedListener(new TextWatcher() {
+                public void onTextChanged(CharSequence s, int start, int before, int count) { }
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+                @Override
+                public void afterTextChanged(Editable s) {
+                    try {
+                        int newVal = Integer.parseInt(s.toString());
+                        if (newVal < so.minValue)
+                            so.set(so.minValue);
+                        else if (newVal > so.maxValue)
+                            so.set(so.maxValue);
+                        else
+                            so.set(newVal);
+                    } catch (NumberFormatException ignore) {
+                    }
+                }
+            });
+            return holder.getRoot();
+        }
+        case COMBO: {
+            UciOptionComboBinding holder = UciOptionComboBinding.inflate(getLayoutInflater(), null, false);
+            holder.eoLabel.setText(o.name);
+            final UCIOptions.ComboOption co = (UCIOptions.ComboOption) o;
+            ArrayAdapter<CharSequence> adapter =
+                new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, co.allowedValues);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            holder.eoValue.setAdapter(adapter);
+            holder.eoValue.setSelection(adapter.getPosition(co.value));
+            holder.eoValue.setOnItemSelectedListener(new OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> av, View view, int position, long id) {
+                    if ((position >= 0) && (position < co.allowedValues.length))
+                        co.set(co.allowedValues[position]);
+                }
+
+                public void onNothingSelected(AdapterView<?> arg0) { }
+            });
+            return holder.getRoot();
+        }
+        case BUTTON: {
+            UciOptionButtonBinding holder = UciOptionButtonBinding.inflate(getLayoutInflater(), null, false);
+            final UCIOptions.ButtonOption bo = (UCIOptions.ButtonOption) o;
+            bo.trigger = false;
+            holder.eoLabel.setText(o.name);
+            holder.eoLabel.setTextOn(o.name);
+            holder.eoLabel.setTextOff(o.name);
+            holder.eoLabel.setOnCheckedChangeListener((buttonView, isChecked) -> bo.trigger = isChecked);
+            return holder.getRoot();
+        }
+        case STRING: {
+            UciOptionStringBinding holder = UciOptionStringBinding.inflate(getLayoutInflater(), null, false);
+            holder.eoLabel.setText(String.format("%s ", o.name));
+            final UCIOptions.StringOption so = (UCIOptions.StringOption) o;
+            holder.eoValue.setText(so.value);
+            holder.eoValue.addTextChangedListener(new TextWatcher() {
+                public void onTextChanged(CharSequence s, int start, int before, int count) { }
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+                @Override
+                public void afterTextChanged(Editable s) {
+                    so.set(s.toString());
+                }
+            });
+            return holder.getRoot();
+        }
+        default:
+            return null;
+        }
     }
 
     private void sendBackResult() {
