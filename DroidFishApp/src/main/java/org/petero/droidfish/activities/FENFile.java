@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.util.Pair;
 
 public class FENFile {
@@ -55,24 +54,18 @@ public class FENFile {
         }
     }
 
-    public static enum FenInfoResult {
+    public enum FenInfoResult {
         OK,
-        CANCEL,
         OUT_OF_MEMORY;
     }
 
     /** Read all FEN strings (one per line) in a file. */
-    public final Pair<FenInfoResult,ArrayList<FenInfo>> getFenInfo(Activity activity,
-                                                                   final ProgressDialog progress) {
+    public final Pair<FenInfoResult,ArrayList<FenInfo>> getFenInfo() {
         ArrayList<FenInfo> fensInFile = new ArrayList<>();
         try (BufferedRandomAccessFileReader f =
                  new BufferedRandomAccessFileReader(fileName.getAbsolutePath())) {
-            int percent = -1;
-            long fileLen = f.length();
-            long filePos = 0;
             int fenNo = 1;
             while (true) {
-                filePos = f.getFilePointer();
                 String line = f.readLine();
                 if (line == null)
                     break; // EOF
@@ -80,15 +73,6 @@ public class FENFile {
                     continue;
                 FenInfo fi = new FenInfo(fenNo++, line.trim());
                 fensInFile.add(fi);
-                final int newPercent = fileLen == 0 ? 0 : (int)(filePos * 100 / fileLen);
-                if (newPercent > percent) {
-                    percent =  newPercent;
-                    if (progress != null) {
-                        activity.runOnUiThread(() -> progress.setProgress(newPercent));
-                    }
-                }
-                if (Thread.currentThread().isInterrupted())
-                    return new Pair<>(FenInfoResult.CANCEL, null);
             }
         } catch (IOException ignore) {
         } catch (OutOfMemoryError e) {

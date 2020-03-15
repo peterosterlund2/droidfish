@@ -18,14 +18,8 @@
 
 package org.petero.droidfish.activities;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.Fragment;
 import android.app.ListActivity;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -55,13 +49,11 @@ import org.petero.droidfish.gamelogic.TextIO;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.concurrent.CountDownLatch;
 
 public class LoadFEN extends ListActivity {
     private static ArrayList<FenInfo> fensInFile = new ArrayList<>();
     private static boolean cacheValid = false;
     private FENFile fenFile;
-    private ProgressDialog progress;
     private FenInfo selectedFi = null;
     private ArrayAdapter<FenInfo> aa = null;
 
@@ -71,8 +63,6 @@ public class LoadFEN extends ListActivity {
     private long lastModTime = -1;
 
     private Thread workThread = null;
-    private CountDownLatch progressLatch = null;
-    private boolean canceled = false;
 
     LoadFenBinding binding;
 
@@ -99,26 +89,12 @@ public class LoadFEN extends ListActivity {
         String fileName = i.getStringExtra("org.petero.droidfish.pathname");
         if ("org.petero.droidfish.loadFen".equals(action)) {
             fenFile = new FENFile(fileName);
-            progressLatch = new CountDownLatch(1);
-            showProgressDialog();
             final LoadFEN lfen = this;
             workThread = new Thread(() -> {
-                try {
-                    progressLatch.await();
-                } catch (InterruptedException e) {
-                    setResult(RESULT_CANCELED);
-                    finish();
-                    return;
-                }
                 if (!readFile())
                     return;
                 runOnUiThread(() -> {
-                    if (canceled) {
-                        setResult(RESULT_CANCELED);
-                        finish();
-                    } else {
-                        lfen.showList();
-                    }
+                    lfen.showList();
                 });
             });
             workThread.start();
@@ -191,8 +167,6 @@ public class LoadFEN extends ListActivity {
     }
 
     private void showList() {
-        progress = null;
-        removeProgressDialog();
         setContentView(R.layout.load_fen);
         binding = DataBindingUtil.setContentView(this, R.layout.load_fen);
         binding.loadfenOk.setEnabled(false);
@@ -266,43 +240,6 @@ public class LoadFEN extends ListActivity {
         }
     }
 
-    public static class ProgressFragment extends DialogFragment {
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            LoadFEN a = (LoadFEN) getActivity();
-            ProgressDialog progress = new ProgressDialog(a);
-            progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progress.setTitle(R.string.reading_fen_file);
-            a.progress = progress;
-            a.progressLatch.countDown();
-            return progress;
-        }
-
-        @Override
-        public void onCancel(DialogInterface dialog) {
-            super.onCancel(dialog);
-            Activity a = getActivity();
-            if (a instanceof LoadFEN) {
-                LoadFEN lf = (LoadFEN) a;
-                lf.canceled = true;
-                Thread thr = lf.workThread;
-                if (thr != null)
-                    thr.interrupt();
-            }
-        }
-    }
-
-    private void showProgressDialog() {
-        ProgressFragment f = new ProgressFragment();
-        f.show(getFragmentManager(), "progress");
-    }
-
-    private void removeProgressDialog() {
-        Fragment f = getFragmentManager().findFragmentByTag("progress");
-        if (f instanceof DialogFragment)
-            ((DialogFragment) f).dismiss();
-    }
-
     private boolean readFile() {
         String fileName = fenFile.getName();
         if (!fileName.equals(lastFileName))
@@ -311,7 +248,7 @@ public class LoadFEN extends ListActivity {
         if (cacheValid && (modTime == lastModTime) && fileName.equals(lastFileName))
             return true;
         fenFile = new FENFile(fileName);
-        Pair<FenInfoResult, ArrayList<FenInfo>> p = fenFile.getFenInfo(this, progress);
+        Pair<FenInfoResult, ArrayList<FenInfo>> p = fenFile.getFenInfo();
         if (p.first != FenInfoResult.OK) {
             fensInFile = new ArrayList<>();
             if (p.first == FenInfoResult.OUT_OF_MEMORY) {
