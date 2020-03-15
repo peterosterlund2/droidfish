@@ -3181,6 +3181,9 @@ public class DroidFish extends Activity
         if (uciOpts != null) {
             i.putExtra("org.petero.droidfish.ucioptions", uciOpts);
             i.putExtra("org.petero.droidfish.enginename", engineTitleText.getText());
+            i.putExtra("org.petero.droidfish.workDir", engineOptions.workDir);
+            boolean localEngine = engineOptions.networkID.isEmpty();
+            i.putExtra("org.petero.droidfish.localEngine", localEngine);
             startActivityForResult(i, RESULT_EDITOPTIONS);
         }
     }

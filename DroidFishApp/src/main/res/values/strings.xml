@@ -81,6 +81,7 @@ If you are running on battery power, it is recommended that you change settings 
     <string name="select_pgn_file">Open PGN file</string>
     <string name="select_pgn_file_save">Save to PGN file</string>
     <string name="select_fen_file">Open FEN/EPD file</string>
+    <string name="select_file">Select file</string>
     <string name="pgn_load">Load</string>
     <string name="pgn_save">Save</string>
     <string name="reading_pgn_file">Reading PGN file…</string>

@@ -19,24 +19,39 @@
 package org.petero.droidfish.activities;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.drawable.StateListDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+
+import com.caverock.androidsvg.SVG;
+import com.caverock.androidsvg.SVGParseException;
 
 import androidx.databinding.DataBindingUtil;
 
 import org.petero.droidfish.DroidFishApp;
+import org.petero.droidfish.FileUtil;
 import org.petero.droidfish.R;
+import org.petero.droidfish.SVGPictureDrawable;
 import org.petero.droidfish.Util;
 import org.petero.droidfish.databinding.EditoptionsBinding;
 import org.petero.droidfish.databinding.UciOptionButtonBinding;
@@ -46,6 +61,7 @@ import org.petero.droidfish.databinding.UciOptionSpinBinding;
 import org.petero.droidfish.databinding.UciOptionStringBinding;
 import org.petero.droidfish.engine.UCIOptions;
 
+import java.io.File;
 import java.util.Locale;
 import java.util.TreeMap;
 
@@ -55,6 +71,11 @@ import java.util.TreeMap;
 public class EditOptions extends Activity {
     private UCIOptions uciOpts = null;
     private String engineName = "";
+    private String workDir = "";
+    private boolean hasBrowser = false; // True if OI file manager available
+
+    private UCIOptions.StringOption currentStringOption; // Option that triggered file browsing
+    private EditText currentTextField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +87,13 @@ public class EditOptions extends Activity {
         Intent i = getIntent();
         uciOpts = (UCIOptions) i.getSerializableExtra("org.petero.droidfish.ucioptions");
         engineName = (String) i.getSerializableExtra("org.petero.droidfish.enginename");
+        workDir = (String) i.getSerializableExtra("org.petero.droidfish.workDir");
+        hasBrowser = (Boolean) i.getSerializableExtra("org.petero.droidfish.localEngine");
         if (uciOpts != null) {
+            if (hasBrowser) {
+                Intent browser = new Intent("org.openintents.action.PICK_FILE");
+                hasBrowser = browser.resolveActivity(getPackageManager()) != null;
+            }
             initUI();
         } else {
             setResult(RESULT_CANCELED);
@@ -238,10 +265,81 @@ public class EditOptions extends Activity {
                     so.set(s.toString());
                 }
             });
+            boolean isFileOption = hasBrowser && (o.name.toLowerCase().contains("file") ||
+                                                  o.name.toLowerCase().contains("path"));
+            setBrowseImage(holder.eoBrowse, isFileOption);
+            holder.eoBrowse.setOnClickListener(view -> {
+                browseFile(so, holder.eoValue);
+            });
             return holder.getRoot();
         }
         default:
             return null;
+        }
+    }
+
+    private void setBrowseImage(ImageButton button, boolean visible) {
+        button.setVisibility(visible ? View.VISIBLE : View.GONE);
+
+        Resources r = getResources();
+        try {
+            SVG svg = SVG.getFromResource(r, R.raw.open_last_file);
+            button.setBackgroundDrawable(new SVGPictureDrawable(svg));
+        } catch (SVGParseException ignore) {
+        }
+
+        try {
+            SVG touched = SVG.getFromResource(r, R.raw.touch);
+            StateListDrawable sld = new StateListDrawable();
+            sld.addState(new int[]{android.R.attr.state_pressed}, new SVGPictureDrawable(touched));
+            button.setImageDrawable(sld);
+        } catch (SVGParseException ignore) {
+        }
+
+        int bWidth  = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                                                           36, r.getDisplayMetrics()));
+        int bHeight = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                                                           32, r.getDisplayMetrics()));
+        ViewGroup.LayoutParams lp = button.getLayoutParams();
+        lp.width = bWidth;
+        lp.height = bHeight;
+        button.setLayoutParams(lp);
+        button.setPadding(0,0,0,0);
+        button.setScaleType(ImageView.ScaleType.FIT_XY);
+    }
+
+    private void browseFile(UCIOptions.StringOption so, EditText textField) {
+        String currentFile = so.getStringValue();
+        String sep = File.separator;
+        if (!currentFile.contains(sep))
+            currentFile = workDir + sep + currentFile;
+        Intent i = new Intent("org.openintents.action.PICK_FILE");
+        i.setData(Uri.fromFile(new File(currentFile)));
+        i.putExtra("org.openintents.extra.TITLE", getString(R.string.select_file));
+        try {
+            startActivityForResult(i, RESULT_OI_SELECT_FILE);
+            currentStringOption = so;
+            currentTextField = textField;
+        } catch (ActivityNotFoundException ignore) {
+        }
+    }
+
+    static private final int RESULT_OI_SELECT_FILE = 0;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+        case RESULT_OI_SELECT_FILE:
+            if (resultCode == RESULT_OK && currentStringOption != null) {
+                String pathName = FileUtil.getFilePathFromUri(data.getData());
+                if (pathName != null && currentTextField != null) {
+                    if (currentStringOption.set(pathName))
+                        currentTextField.setText(pathName);
+                }
+            }
+            currentStringOption = null;
+            currentTextField = null;
+            break;
         }
     }
 

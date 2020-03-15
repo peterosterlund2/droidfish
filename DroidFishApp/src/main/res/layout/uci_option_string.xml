@@ -16,5 +16,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:inputType="text" />
+
+        <ImageButton
+            android:id="@+id/eo_browse"
+            android:layout_width="36dp"
+            android:layout_height="32dp" />
     </LinearLayout>
 </layout>
