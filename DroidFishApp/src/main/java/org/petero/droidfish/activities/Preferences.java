@@ -1,6 +1,6 @@
 /*
     DroidFish - An Android chess program.
-    Copyright (C) 2011  Peter Österlund, peterosterlund2@gmail.com
+    Copyright (C) 2011,2020  Peter Österlund, peterosterlund2@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ import org.petero.droidfish.R;
 import org.petero.droidfish.Util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -35,6 +36,9 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Preferences extends PreferenceActivity {
     private static int currentItem = -1;
@@ -99,5 +103,29 @@ public class Preferences extends PreferenceActivity {
         Editor editor = settings.edit();
         editor.putInt("prefsViewInitialItem", currentItem);
         editor.apply();
+    }
+
+    public interface ActivityHandler {
+        void handleResult(int resultCode, Intent data);
+    }
+
+    private int nextRequestCode = 129866295;
+    private Map<Integer, ActivityHandler> handlers = new HashMap<>();
+
+    /** Start an activity and invoke handler when the activity finishes. */
+    public void runActivity(Intent data, ActivityHandler handler) {
+        int requestCode = nextRequestCode++;
+        startActivityForResult(data, requestCode);
+        handlers.put(requestCode, handler);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ActivityHandler handler = handlers.get(requestCode);
+        if (handler != null) {
+            handlers.remove(requestCode);
+            handler.handleResult(resultCode, data);
+        }
     }
 }

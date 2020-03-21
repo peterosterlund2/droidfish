@@ -2408,17 +2408,25 @@ public class DroidFish extends Activity
         items[numFiles] = getString(R.string.internal_book);
         items[numFiles + 1] = getString(R.string.eco_book);
         items[numFiles + 2] = getString(R.string.no_book);
+
         int defaultItem = numFiles;
         if ("eco:".equals(bookOptions.filename))
             defaultItem = numFiles + 1;
         else if ("nobook:".equals(bookOptions.filename))
             defaultItem = numFiles + 2;
+        String oldName = bookOptions.filename;
+        File extDir = Environment.getExternalStorageDirectory();
+        String sep = File.separator;
+        String defDir = extDir.getAbsolutePath() + sep + bookDir + sep;
+        if (oldName.startsWith(defDir))
+            oldName = oldName.substring(defDir.length());
         for (int i = 0; i < numFiles; i++) {
-            if (bookOptions.filename.equals(items[i])) {
+            if (oldName.equals(items[i])) {
                 defaultItem = i;
                 break;
             }
         }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.select_opening_book_file);
         builder.setSingleChoiceItems(items, defaultItem, (dialog, item) -> {

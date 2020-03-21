@@ -609,12 +609,14 @@
                 android:defaultValue="500"
                 android:title="@string/prefs_bookRandom_title">
             </org.petero.droidfish.activities.SeekBarPreference>
-            <EditTextPreference
+            <org.petero.droidfish.activities.EditFilePreference
                 android:key="bookFile"
                 android:title="@string/prefs_bookFile_title"
                 android:summary="@string/prefs_bookFile_summary"
+                defaultPath="DroidFish/book/"
+                ignorePattern=".*:$"
                 android:defaultValue="">
-            </EditTextPreference>
+            </org.petero.droidfish.activities.EditFilePreference>
         </PreferenceScreen>
         <PreferenceScreen
             android:key="pgnSettings"
@@ -735,24 +737,28 @@
                 android:summary="@string/prefs_tbEngineProbe_summary"
                 android:defaultValue="true">
             </CheckBoxPreference>
-            <EditTextPreference
+            <org.petero.droidfish.activities.EditFilePreference
                 android:key="gtbPath"
                 android:title="@string/prefs_gtbPath_title"
                 android:summary="@string/prefs_gtbPath_summary"
+                pickDirectory="true"
+                defaultPath="DroidFish/gtb"
                 android:defaultValue="">
-            </EditTextPreference>
+            </org.petero.droidfish.activities.EditFilePreference>
             <EditTextPreference
                 android:key="gtbPathNet"
                 android:title="@string/prefs_gtbPathNet_title"
                 android:summary="@string/prefs_gtbPathNet_summary"
                 android:defaultValue="">
             </EditTextPreference>
-            <EditTextPreference
+            <org.petero.droidfish.activities.EditFilePreference
                 android:key="rtbPath"
                 android:title="@string/prefs_rtbPath_title"
                 android:summary="@string/prefs_rtbPath_summary"
+                pickDirectory="true"
+                defaultPath="DroidFish/rtb"
                 android:defaultValue="">
-            </EditTextPreference>
+            </org.petero.droidfish.activities.EditFilePreference>
             <EditTextPreference
                 android:key="rtbPathNet"
                 android:title="@string/prefs_rtbPathNet_title"

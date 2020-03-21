@@ -24,34 +24,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-
-import com.caverock.androidsvg.SVG;
-import com.caverock.androidsvg.SVGParseException;
 
 import androidx.databinding.DataBindingUtil;
 
 import org.petero.droidfish.DroidFishApp;
 import org.petero.droidfish.FileUtil;
 import org.petero.droidfish.R;
-import org.petero.droidfish.SVGPictureDrawable;
 import org.petero.droidfish.Util;
 import org.petero.droidfish.databinding.EditoptionsBinding;
 import org.petero.droidfish.databinding.UciOptionButtonBinding;
@@ -90,10 +79,8 @@ public class EditOptions extends Activity {
         workDir = (String) i.getSerializableExtra("org.petero.droidfish.workDir");
         hasBrowser = (Boolean) i.getSerializableExtra("org.petero.droidfish.localEngine");
         if (uciOpts != null) {
-            if (hasBrowser) {
-                Intent browser = new Intent("org.openintents.action.PICK_FILE");
-                hasBrowser = browser.resolveActivity(getPackageManager()) != null;
-            }
+            if (hasBrowser)
+                hasBrowser = FileBrowseUtil.hasBrowser(getPackageManager(), false);
             initUI();
         } else {
             setResult(RESULT_CANCELED);
@@ -267,10 +254,8 @@ public class EditOptions extends Activity {
             });
             boolean isFileOption = hasBrowser && (o.name.toLowerCase().contains("file") ||
                                                   o.name.toLowerCase().contains("path"));
-            setBrowseImage(holder.eoBrowse, isFileOption);
-            holder.eoBrowse.setOnClickListener(view -> {
-                browseFile(so, holder.eoValue);
-            });
+            FileBrowseUtil.setBrowseImage(getResources(), holder.eoBrowse, isFileOption);
+            holder.eoBrowse.setOnClickListener(view -> browseFile(so, holder.eoValue));
             return holder.getRoot();
         }
         default:
@@ -278,42 +263,12 @@ public class EditOptions extends Activity {
         }
     }
 
-    private void setBrowseImage(ImageButton button, boolean visible) {
-        button.setVisibility(visible ? View.VISIBLE : View.GONE);
-
-        Resources r = getResources();
-        try {
-            SVG svg = SVG.getFromResource(r, R.raw.open_last_file);
-            button.setBackgroundDrawable(new SVGPictureDrawable(svg));
-        } catch (SVGParseException ignore) {
-        }
-
-        try {
-            SVG touched = SVG.getFromResource(r, R.raw.touch);
-            StateListDrawable sld = new StateListDrawable();
-            sld.addState(new int[]{android.R.attr.state_pressed}, new SVGPictureDrawable(touched));
-            button.setImageDrawable(sld);
-        } catch (SVGParseException ignore) {
-        }
-
-        int bWidth  = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                                                           36, r.getDisplayMetrics()));
-        int bHeight = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                                                           32, r.getDisplayMetrics()));
-        ViewGroup.LayoutParams lp = button.getLayoutParams();
-        lp.width = bWidth;
-        lp.height = bHeight;
-        button.setLayoutParams(lp);
-        button.setPadding(0,0,0,0);
-        button.setScaleType(ImageView.ScaleType.FIT_XY);
-    }
-
     private void browseFile(UCIOptions.StringOption so, EditText textField) {
         String currentFile = so.getStringValue();
         String sep = File.separator;
         if (!currentFile.contains(sep))
             currentFile = workDir + sep + currentFile;
-        Intent i = new Intent("org.openintents.action.PICK_FILE");
+        Intent i = new Intent(FileBrowseUtil.getPickAction(false));
         i.setData(Uri.fromFile(new File(currentFile)));
         i.putExtra("org.openintents.extra.TITLE", getString(R.string.select_file));
         try {
