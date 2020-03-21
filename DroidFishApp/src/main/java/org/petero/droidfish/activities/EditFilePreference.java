@@ -115,10 +115,9 @@ public class EditFilePreference extends EditTextPreference {
             currentPath = newPath;
         }
 
-        final String action = FileBrowseUtil.getPickAction(pickDirectory);
-        final String title = getContext().getString(pickDirectory ? R.string.select_directory
-                                                                  : R.string.select_file);
-        Intent i = new Intent(action);
+        String title = getContext().getString(pickDirectory ? R.string.select_directory
+                                                            : R.string.select_file);
+        Intent i = new Intent(FileBrowseUtil.getPickAction(pickDirectory));
         i.setData(Uri.fromFile(new File(currentPath)));
         i.putExtra("org.openintents.extra.TITLE", title);
         try {
@@ -140,9 +139,8 @@ public class EditFilePreference extends EditTextPreference {
     private boolean matchPattern(String s) {
         if (ignorePattern.isEmpty())
             return false;
-        Pattern p;
         try {
-            p = Pattern.compile(ignorePattern);
+            Pattern p = Pattern.compile(ignorePattern);
             return p.matcher(s).find();
         } catch (PatternSyntaxException ex) {
             return false;
