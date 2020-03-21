@@ -81,6 +81,8 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="select_pgn_file">Ouvrir un fichier PGN</string>
     <string name="select_pgn_file_save">Sauvegarder dans un fichier PGN</string>
     <string name="select_fen_file">Ouvrir un fichier FEN/EPD</string>
+    <string name="select_file">Select file</string>
+    <string name="select_directory">Select directory</string>
     <string name="pgn_load">Charger</string>
     <string name="pgn_save">Sauvegarder</string>
     <string name="reading_pgn_file">Lecture du fichier PGN&#8230;</string>

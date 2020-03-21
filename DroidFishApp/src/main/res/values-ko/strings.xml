@@ -85,6 +85,8 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
     <string name="select_pgn_file">PGN 파일 열기</string>
     <string name="select_pgn_file_save">PGN 파일로 저장</string>
     <string name="select_fen_file">FEN/EPD 파일 열기</string>
+    <string name="select_file">Select file</string>
+    <string name="select_directory">Select directory</string>
     <string name="pgn_load">불러오기</string>
     <string name="pgn_save">저장</string>
     <string name="reading_pgn_file">PGN 파일 읽는 중...</string>

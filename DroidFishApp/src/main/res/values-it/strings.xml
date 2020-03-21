@@ -81,6 +81,8 @@ Se l\'alimentazione è a batteria, è consigliabile modificare le impostazioni p
     <string name="select_pgn_file">Apri un file PGN</string>
     <string name="select_pgn_file_save">Salva in un file PGN</string>
     <string name="select_fen_file">Apri un file FEN/EPD</string>
+    <string name="select_file">Select file</string>
+    <string name="select_directory">Select directory</string>
     <string name="pgn_load">Apri</string>
     <string name="pgn_save">Salva</string>
     <string name="reading_pgn_file">Caricamento di un file PGN&#8230;</string>

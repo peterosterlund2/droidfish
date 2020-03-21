@@ -81,6 +81,8 @@ Als uw telefoon op batterij werkt is het aan te raden om deze instellingen te wi
     <string name="select_pgn_file">Open PGN bestand</string>
     <string name="select_pgn_file_save">Opslaan als PGN</string>
     <string name="select_fen_file">FEN/EPD bestand openen</string>
+    <string name="select_file">Select file</string>
+    <string name="select_directory">Select directory</string>
     <string name="pgn_load">Laad</string>
     <string name="pgn_save">Opslaan</string>
     <string name="reading_pgn_file">PGN bestand lezen&#8230;</string>

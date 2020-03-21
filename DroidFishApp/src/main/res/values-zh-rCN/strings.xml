@@ -39,7 +39,7 @@
     <string name="load_game">从 PGN 文件加载对局</string>
     <string name="load_position">从文件加载局面</string>
     <string name="load_scid_game">从 Scid 文件加载对局</string>
-    <string name="load_del_game">Load deleted game</string>
+    <string name="load_del_game">加载已删对局</string>
     <string name="save_game">保存对局到 PGN 文件</string>
     <string name="get_fen">检索局面</string>
     <string name="repeat_last_move">恢复最后一步棋</string>
@@ -81,6 +81,8 @@
     <string name="select_pgn_file">打开 PGN 文件</string>
     <string name="select_pgn_file_save">保存到 PGN 文件</string>
     <string name="select_fen_file">打开 FEN/EPD 文件</string>
+    <string name="select_file">选择文件</string>
+    <string name="select_directory">Select directory</string>
     <string name="pgn_load">加载</string>
     <string name="pgn_save">保存</string>
     <string name="reading_pgn_file">正在读取 PGN 文件&#8230;</string>
@@ -130,7 +132,7 @@
     <string name="blind_mode">蒙眼模式</string>
     <string name="toggle_show_thinking">切换显示思考</string>
     <string name="toggle_book_hints">切换开局书提示</string>
-    <string name="toggle_tb_hints">Toggle Tablebase Hints</string>
+    <string name="toggle_tb_hints">切换残局库提示</string>
     <string name="toggle_pgn_variations">切换变例</string>
     <string name="toggle_pgn_comments">切换评注</string>
     <string name="toggle_pgn_headers">切换标题</string>
@@ -184,7 +186,7 @@
     <string name="failed_to_read_pgn_data">无法读取 FGN 数据</string>
     <string name="variation">变例:</string>
     <string name="add_analysis">添加分析</string>
-    <string name="copy_to_clipboard">Copy to Clipboard</string>
+    <string name="copy_to_clipboard">复制到剪贴板</string>
     <string name="num_variations">变例数</string>
     <string name="hide_statistics">隐藏统计</string>
     <string name="show_statistics">显示统计</string>
@@ -305,10 +307,10 @@
     <string name="prefs_autoScrollTitle_summary">棋手名字过长时自动滚动标题栏</string>
     <string name="prefs_quickMoveInput_title">快速着法输入</string>
     <string name="prefs_quickMoveInput_summary">从与到该棋格可以按任意顺序触摸，仅支持着法是唯一符合对弈规则的输入</string>
-    <string name="prefs_moveSoundEnabled_title">Move sound</string>
-    <string name="prefs_moveSoundEnabled_summary">Play sound when computer makes a move</string>
-    <string name="prefs_moveAnnounceType_title">Speak moves</string>
-    <string name="prefs_moveAnnounceType_summary">Speak when computer makes a move</string>
+    <string name="prefs_moveSoundEnabled_title">行棋声音</string>
+    <string name="prefs_moveSoundEnabled_summary">电脑行棋时播放声音</string>
+    <string name="prefs_moveAnnounceType_title">行棋语音</string>
+    <string name="prefs_moveAnnounceType_summary">电脑行棋时发出语音</string>
     <string name="prefs_vibrateEnabled_title">启用振动</string>
     <string name="prefs_vibrateEnabled_summary">电脑走棋时振动</string>
     <string name="prefs_fullScreenMode_title">全屏模式</string>
@@ -316,14 +318,14 @@
     <string name="prefs_wakeLock_title">禁用屏幕超时</string>
     <string name="prefs_drawSquareLabels_title">棋格标签</string>
     <string name="prefs_drawSquareLabels_summary">显示棋格标签: a–h 和 1–8</string>
-    <string name="prefs_dragMoveEnabled_title">Drag Pieces</string>
-    <string name="prefs_dragMoveEnabled_summary">Drag a piece to make a move</string>
+    <string name="prefs_dragMoveEnabled_title">拖放棋子</string>
+    <string name="prefs_dragMoveEnabled_summary">通过拖放棋子输入着法</string>
     <string name="prefs_scrollSensitivity_title">滚动速度</string>
     <string name="prefs_scrollSensitivity_summary">对局导航的滚动速度</string>
     <string name="prefs_invertScrollDirection_title">反向滚动</string>
     <string name="prefs_invertScrollDirection_summary">如果认为滚动着法的方向不对，启用该选项</string>
     <string name="prefs_scrollGames_title">Sweep horizontally loads game</string>
-    <string name="prefs_scrollGames_summary">If enabled, sweeping horizontally on the chess board moves to the next/previous game</string>
+    <string name="prefs_scrollGames_summary">如果启用，在棋盘上左右滑动将加载 下一/上一 对局</string>
     <string name="prefs_autoScrollMoveList_title">自动滚动着法列表</string>
     <string name="prefs_autoScrollMoveList_summary">自动滚动着法列表到当前棋盘局面</string>
     <string name="prefs_discardVariations_title">丢弃变例</string>
@@ -403,8 +405,8 @@
     <string name="prefs_showVariationLine_summary">显示当前变例在状态区域</string>
     <string name="prefs_viewPieceType_title">棋子名称</string>
     <string name="prefs_viewPieceType_summary">控制如何显示国际象棋的棋子名称</string>
-    <string name="prefs_viewPieceSet_title">Piece Set</string>
-    <string name="prefs_viewPieceSet_summary">Select chess piece set</string>
+    <string name="prefs_viewPieceSet_title">棋子风格</string>
+    <string name="prefs_viewPieceSet_summary">选择国际象棋棋子风格</string>
     <string name="prefs_blindMode_title">蒙眼模式</string>
     <string name="prefs_blindMode_summary">显示空白棋盘而不显示棋子</string>
     <string name="prefs_pgn_import">PGN 导入</string>
@@ -644,20 +646,20 @@
     </string-array>
     <string-array name="language_texts">
         <item>系统默认</item>
-        <item>English</item>
-        <item>Belarusian</item>
-        <item>Chinese Simplified</item>
-        <item>German</item>
-        <item>Spanish</item>
-        <item>French</item>
-        <item>Italian</item>
-        <item>Korean</item>
-        <item>Dutch</item>
-        <item>Polish</item>
-        <item>Portuguese</item>
-        <item>Russian</item>
-        <item>Turkish</item>
-        <item>Ukrainian</item>
+        <item>英语</item>
+        <item>白俄罗斯语</item>
+        <item>简体中文</item>
+        <item>德语</item>
+        <item>西班牙语</item>
+        <item>法语</item>
+        <item>意大利语</item>
+        <item>朝鲜语</item>
+        <item>荷兰语</item>
+        <item>波兰语</item>
+        <item>葡萄牙语</item>
+        <item>俄语</item>
+        <item>土耳其语</item>
+        <item>乌克兰语</item>
     </string-array>
     <string-array name="language_values">
         <item>default</item>

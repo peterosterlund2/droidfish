@@ -81,6 +81,8 @@
     <string name="select_pgn_file">Открыть PGN файл</string>
     <string name="select_pgn_file_save">Сохранить в PGN файле</string>
     <string name="select_fen_file">Открыть FEN/EPD файл</string>
+    <string name="select_file">Select file</string>
+    <string name="select_directory">Select directory</string>
     <string name="pgn_load">Загрузить</string>
     <string name="pgn_save">Сохранить</string>
     <string name="reading_pgn_file">Чтение PGN файла&#8230;</string>

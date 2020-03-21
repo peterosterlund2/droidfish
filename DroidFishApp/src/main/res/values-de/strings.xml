@@ -81,6 +81,8 @@ Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese Paramet
     <string name="select_pgn_file">PGN-Datei zum Öffnen wählen</string>
     <string name="select_pgn_file_save">In eine PGN-Datei speichern</string>
     <string name="select_fen_file">FEN/EPD-Datei öffnen</string>
+    <string name="select_file">Select file</string>
+    <string name="select_directory">Select directory</string>
     <string name="pgn_load">Laden</string>
     <string name="pgn_save">Speichern</string>
     <string name="reading_pgn_file">PGN-Datei wird gelesen&#8230;</string>

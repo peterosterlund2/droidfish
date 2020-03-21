@@ -81,6 +81,8 @@ Jeśli pracujesz na baterii, zalecana jest zmiana ustawień, w celu oszczędzani
     <string name="select_pgn_file">Otwórz plik PGN</string>
     <string name="select_pgn_file_save">Zapisz do pliku PGN</string>
     <string name="select_fen_file">Otwórz plik FEN/EPD</string>
+    <string name="select_file">Select file</string>
+    <string name="select_directory">Select directory</string>
     <string name="pgn_load">Załaduj</string>
     <string name="pgn_save">Zapisz</string>
     <string name="reading_pgn_file">Czytam plik PGN&#8230;</string>

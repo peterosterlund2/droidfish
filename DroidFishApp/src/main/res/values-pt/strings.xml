@@ -81,6 +81,8 @@ Se você está usando somente a bateria, recomenda-se que você mude as configur
     <string name="select_pgn_file">Abrir arquivo PGN</string>
     <string name="select_pgn_file_save">Salvar em arquivo PGN</string>
     <string name="select_fen_file">Abrir ficheiro FEN/EPD</string>
+    <string name="select_file">Select file</string>
+    <string name="select_directory">Select directory</string>
     <string name="pgn_load">Carregar</string>
     <string name="pgn_save">Salvar</string>
     <string name="reading_pgn_file">A ler ficheiro PGN&#8230;</string>
