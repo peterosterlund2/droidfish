@@ -21,7 +21,6 @@ import org.petero.droidfish.R;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.PixelFormat;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -42,7 +41,7 @@ public class ColorPickerDialog
     private CharSequence additionalInfo;
 
     public interface OnColorChangedListener {
-        public void onColorChanged(int color);
+        void onColorChanged(int color);
     }
     
     public ColorPickerDialog(Context context, int initialColor,
@@ -56,10 +55,18 @@ public class ColorPickerDialog
         // To fight color banding.
         getWindow().setFormat(PixelFormat.RGBA_8888);
 
-        setUp(color);
+        setUp(color, color);
     }
 
-    private void setUp(int color) {
+    public void reInitUI() {
+        int oldColor = mOldColor.getColor();
+        int newColor = mNewColor.getColor();
+        boolean alphaSlider = mColorPicker.getAlphaSliderVisible();
+        setUp(oldColor, newColor);
+        setAlphaSliderVisible(alphaSlider);
+    }
+
+    private void setUp(int oldColor, int newColor) {
         setContentView(R.layout.dialog_color_picker);
 
         setTitle(getContext().getText(R.string.prefs_colors_title) + " '"
@@ -79,8 +86,8 @@ public class ColorPickerDialog
         mOldColor.setOnClickListener(this);
         mNewColor.setOnClickListener(this);
         mColorPicker.setOnColorChangedListener(this);
-        mOldColor.setColor(color);
-        mColorPicker.setColor(color, true);
+        mOldColor.setColor(oldColor);
+        mColorPicker.setColor(newColor, true);
     }
 
     @Override
@@ -107,25 +114,9 @@ public class ColorPickerDialog
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.new_color_panel) {
-            if (mListener != null) {
+            if (mListener != null)
                 mListener.onColorChanged(mNewColor.getColor());
-            }
         }
         dismiss();
-    }
-    
-    @Override
-    public Bundle onSaveInstanceState() {
-        Bundle state = super.onSaveInstanceState();
-        state.putInt("old_color", mOldColor.getColor());
-        state.putInt("new_color", mNewColor.getColor());
-        return state;
-    }
-    
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        mOldColor.setColor(savedInstanceState.getInt("old_color"));
-        mColorPicker.setColor(savedInstanceState.getInt("new_color"), true);
     }
 }

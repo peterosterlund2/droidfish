@@ -39,7 +39,9 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Preferences extends PreferenceActivity {
     private static int currentItem = -1;
@@ -106,9 +108,26 @@ public class Preferences extends PreferenceActivity {
         editor.apply();
     }
 
+
+    public interface ConfigChangedListener {
+        void onConfigurationChanged(Configuration newConfig);
+    }
+
+    private Set<ConfigChangedListener> configChangedListeners = new HashSet<>();
+
+    public void addRemoveConfigChangedListener(ConfigChangedListener listener, boolean add) {
+        if (add) {
+            configChangedListeners.add(listener);
+        } else {
+            configChangedListeners.remove(listener);
+        }
+    }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        for (ConfigChangedListener cl : configChangedListeners)
+            cl.onConfigurationChanged(newConfig);
     }
 
     public interface ActivityHandler {

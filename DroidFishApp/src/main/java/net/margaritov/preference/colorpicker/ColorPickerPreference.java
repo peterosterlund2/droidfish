@@ -17,18 +17,19 @@
 package net.margaritov.preference.colorpicker;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.preference.Preference;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import org.petero.droidfish.activities.Preferences;
 
 /**
  * @author Sergey Margaritov
@@ -38,7 +39,9 @@ public class ColorPickerPreference
         Preference
     implements
         Preference.OnPreferenceClickListener,
-        ColorPickerDialog.OnColorChangedListener {
+        ColorPickerDialog.OnColorChangedListener,
+        DialogInterface.OnDismissListener,
+        Preferences.ConfigChangedListener {
 
     private View mView;
     private ColorPickerDialog mDialog;
@@ -186,22 +189,39 @@ public class ColorPickerPreference
     }
 
     public boolean onPreferenceClick(Preference preference) {
-        showDialog(null);
+        showDialog();
         return false;
     }
     
-    private void showDialog(Bundle state) {
+    private void showDialog() {
         mDialog = new ColorPickerDialog(getContext(), getValue(), getTitle());
-        mDialog.setOnColorChangedListener(this);
-        if (mAlphaSliderEnabled) {
+        if (mAlphaSliderEnabled)
             mDialog.setAlphaSliderVisible(true);
-        }
-        if (state != null) {
-            mDialog.onRestoreInstanceState(state);
-        }
+        mDialog.setOnColorChangedListener(this);
+        mDialog.setOnDismissListener(this);
+        addRemoveConfigChangedListener();
         mDialog.show();
     }
 
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        mDialog = null;
+        addRemoveConfigChangedListener();
+    }
+
+    private void addRemoveConfigChangedListener() {
+        Context context = getContext();
+        if (context instanceof Preferences) {
+            Preferences prefs = ((Preferences)context);
+            prefs.addRemoveConfigChangedListener(this, mDialog != null);
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        if (mDialog != null)
+            mDialog.reInitUI();
+    }
     /**
      * Toggle Alpha Slider visibility (by default it's disabled)
      */
@@ -255,60 +275,5 @@ public class ColorPickerPreference
         }
 
         return Color.argb(alpha, red, green, blue);
-    }
-    
-    @Override
-    protected Parcelable onSaveInstanceState() {
-        final Parcelable superState = super.onSaveInstanceState();
-        if (mDialog == null || !mDialog.isShowing()) {
-            return superState;
-        }
-
-        final SavedState myState = new SavedState(superState);
-        myState.dialogBundle = mDialog.onSaveInstanceState();
-        return myState;
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Parcelable state) {
-        if (state == null || !(state instanceof SavedState)) {
-            // Didn't save state for us in onSaveInstanceState
-            super.onRestoreInstanceState(state);
-            return;
-        }
-
-        SavedState myState = (SavedState) state;
-        super.onRestoreInstanceState(myState.getSuperState());
-        showDialog(myState.dialogBundle);
-    }
-
-    private static class SavedState extends BaseSavedState {
-        Bundle dialogBundle;
-        
-        public SavedState(Parcel source) {
-            super(source);
-            dialogBundle = source.readBundle();
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            super.writeToParcel(dest, flags);
-            dest.writeBundle(dialogBundle);
-        }
-
-        public SavedState(Parcelable superState) {
-            super(superState);
-        }
-        
-        @SuppressWarnings("unused")
-        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
-            public SavedState createFromParcel(Parcel in) {
-                return new SavedState(in);
-            }
-
-            public SavedState[] newArray(int size) {
-                return new SavedState[size];
-            }
-        };
     }
 }
