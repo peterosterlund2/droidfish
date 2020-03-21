@@ -94,7 +94,8 @@
             </intent-filter>
             </activity>
         <activity android:name=".activities.Preferences"
-                  android:label="@string/preferences">
+                  android:label="@string/preferences"
+                  android:configChanges="orientation|screenSize|keyboardHidden|screenLayout|smallestScreenSize">
         </activity>
         <activity android:name=".activities.EditBoard"
                   android:label="@string/edit_board"
