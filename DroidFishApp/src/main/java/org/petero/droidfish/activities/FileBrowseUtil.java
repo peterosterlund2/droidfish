@@ -49,7 +49,7 @@ public class FileBrowseUtil {
         button.setVisibility(visible ? View.VISIBLE : View.GONE);
 
         try {
-            SVG svg = SVG.getFromResource(r, R.raw.open_last_file);
+            SVG svg = SVG.getFromResource(r, R.raw.open_file);
             button.setBackgroundDrawable(new SVGPictureDrawable(svg));
         } catch (SVGParseException ignore) {
         }
