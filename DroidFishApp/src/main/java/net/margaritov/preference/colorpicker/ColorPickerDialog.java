@@ -86,12 +86,6 @@ public class ColorPickerDialog
     @Override
     public void onColorChanged(int color) {
         mNewColor.setColor(color);
-
-        /*
-        if (mListener != null) {
-            mListener.onColorChanged(color);
-        }
-        */
     }
 
     public void setAlphaSliderVisible(boolean visible) {
@@ -101,7 +95,6 @@ public class ColorPickerDialog
     /**
      * Set a OnColorChangedListener to get notified when the color
      * selected by the user has changed.
-     * @param listener
      */
     public void setOnColorChangedListener(OnColorChangedListener listener) {
         mListener = listener;

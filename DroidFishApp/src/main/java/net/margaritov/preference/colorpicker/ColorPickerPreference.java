@@ -204,17 +204,11 @@ public class ColorPickerPreference
 
     /**
      * Toggle Alpha Slider visibility (by default it's disabled)
-     * @param enable
      */
     public void setAlphaSliderEnabled(boolean enable) {
         mAlphaSliderEnabled = enable;
     }
 
-    /**
-     * For custom purposes. Not used by ColorPickerPreference
-     * @param color
-     * @author Unknown
-     */
     private static String convertToARGB(int color) {
         String alpha = Integer.toHexString(Color.alpha(color));
         String red = Integer.toHexString(Color.red(color));
@@ -240,12 +234,6 @@ public class ColorPickerPreference
         return "#" + alpha + red + green + blue;
     }
 
-    /**
-     * For custom purposes. Not used by ColorPickerPreference
-     * @param argb
-     * @throws NumberFormatException
-     * @author Unknown
-     */
     private static int convertToColorInt(String argb) throws NumberFormatException {
         if (argb.startsWith("#")) {
             argb = argb.replace("#", "");

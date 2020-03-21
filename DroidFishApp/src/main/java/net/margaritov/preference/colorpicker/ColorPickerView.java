@@ -317,9 +317,9 @@ public class ColorPickerView extends View {
 
         canvas.drawRect(rect, mAlphaPaint);
 
-        if (mAlphaSliderText != null && mAlphaSliderText!= "") {
-            canvas.drawText(mAlphaSliderText, rect.centerX(), rect.centerY() + 4 * mDensity, mAlphaTextPaint);
-        }
+        if (mAlphaSliderText != null && !mAlphaSliderText.isEmpty())
+            canvas.drawText(mAlphaSliderText, rect.centerX(), rect.centerY() + 4 * mDensity,
+                            mAlphaTextPaint);
 
         float rectWidth = 4 * mDensity / 2;
 
@@ -677,7 +677,6 @@ public class ColorPickerView extends View {
     /**
      * Set a OnColorChangedListener to get notified when the color
      * selected by the user has changed.
-     * @param listener
      */
     public void setOnColorChangedListener(OnColorChangedListener listener) {
         mListener = listener;
@@ -685,7 +684,6 @@ public class ColorPickerView extends View {
 
     /**
      * Set the color of the border surrounding all panels.
-     * @param color
      */
     public void setBorderColor(int color) {
         mBorderColor = color;
@@ -718,8 +716,7 @@ public class ColorPickerView extends View {
     /**
      * Set the color this view should show.
      * @param color The color that should be selected.
-     * @param callback If you want to get a callback to
-     * your OnColorChangedListener.
+     * @param callback If you want to get a callback to your OnColorChangedListener.
      */
     public void setColor(int color, boolean callback) {
         int alpha = Color.alpha(color);
@@ -757,7 +754,6 @@ public class ColorPickerView extends View {
     /**
      * Set if the user is allowed to adjust the alpha panel. Default is false.
      * If it is set to false no alpha will be set.
-     * @param visible
      */
     public void setAlphaSliderVisible(boolean visible) {
         if (mShowAlphaPanel != visible) {
@@ -788,8 +784,7 @@ public class ColorPickerView extends View {
     }
 
     /**
-     * Set the text that should be shown in the
-     * alpha slider. Set to null to disable text.
+     * Set the text that should be shown in the alpha slider. Set to null to disable text.
      * @param res string resource id.
      */
     public void setAlphaSliderText(int res) {
@@ -798,8 +793,7 @@ public class ColorPickerView extends View {
     }
 
     /**
-     * Set the text that should be shown in the
-     * alpha slider. Set to null to disable text.
+     * Set the text that should be shown in the alpha slider. Set to null to disable text.
      * @param text Text that should be shown.
      */
     public void setAlphaSliderText(String text) {
@@ -808,10 +802,7 @@ public class ColorPickerView extends View {
     }
 
     /**
-     * Get the current value of the text
-     * that will be shown in the alpha
-     * slider.
-     * @return
+     * Get the current value of the text that will be shown in the alpha slider.
      */
     public String getAlphaSliderText() {
         return mAlphaSliderText;
