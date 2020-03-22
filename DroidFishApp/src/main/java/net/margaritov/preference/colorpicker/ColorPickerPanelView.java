@@ -31,22 +31,18 @@ import android.view.View;
  */
 public class ColorPickerPanelView extends View {
 
-    /**
-     * The width in pixels of the border
-     * surrounding the color panel.
-     */
+    /** The width in pixels of the border surrounding the color panel. */
     private final static float    BORDER_WIDTH_PX = 1;
 
     private float mDensity = 1f;
 
-    private int         mBorderColor = 0xff6E6E6E;
     private int         mColor = 0xff000000;
 
-    private Paint        mBorderPaint;
-    private Paint        mColorPaint;
+    private Paint       mBorderPaint = new Paint();
+    private Paint       mColorPaint = new Paint();
 
-    private RectF        mDrawingRect;
-    private RectF        mColorRect;
+    private RectF       mDrawingRect;
+    private RectF       mColorRect;
 
     private AlphaPatternDrawable mAlphaPattern;
 
@@ -65,27 +61,21 @@ public class ColorPickerPanelView extends View {
     }
 
     private void init() {
-        mBorderPaint = new Paint();
-        mColorPaint = new Paint();
         mDensity = getContext().getResources().getDisplayMetrics().density;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        final RectF    rect = mColorRect;
-
         if (BORDER_WIDTH_PX > 0) {
-            mBorderPaint.setColor(mBorderColor);
+            mBorderPaint.setColor(0xff6E6E6E);
             canvas.drawRect(mDrawingRect, mBorderPaint);
         }
 
-        if (mAlphaPattern != null) {
+        if (mAlphaPattern != null)
             mAlphaPattern.draw(canvas);
-        }
 
         mColorPaint.setColor(mColor);
-
-        canvas.drawRect(rect, mColorPaint);
+        canvas.drawRect(mColorRect, mColorPaint);
     }
 
     @Override
@@ -121,12 +111,10 @@ public class ColorPickerPanelView extends View {
 
         mAlphaPattern = new AlphaPatternDrawable((int)(5 * mDensity));
 
-        mAlphaPattern.setBounds(
-            Math.round(mColorRect.left),
-            Math.round(mColorRect.top),
-            Math.round(mColorRect.right),
-            Math.round(mColorRect.bottom)
-        );
+        mAlphaPattern.setBounds(Math.round(mColorRect.left),
+                                Math.round(mColorRect.top),
+                                Math.round(mColorRect.right),
+                                Math.round(mColorRect.bottom));
     }
 
     /**
@@ -138,24 +126,9 @@ public class ColorPickerPanelView extends View {
     }
 
     /**
-     * Get the color currently show by this view.
+     * Get the color currently shown by this view.
      */
     public int getColor() {
         return mColor;
-    }
-
-    /**
-     * Set the color of the border surrounding the panel.
-     */
-    public void setBorderColor(int color) {
-        mBorderColor = color;
-        invalidate();
-    }
-
-    /**
-     * Get the color of the border surrounding the panel.
-     */
-    public int getBorderColor() {
-        return mBorderColor;
     }
 }

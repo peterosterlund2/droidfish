@@ -34,41 +34,28 @@ import android.view.MotionEvent;
 import android.view.View;
 
 /**
- * Displays a color picker to the user and allow them
- * to select a color.
+ * Displays a color picker to the user and allow them to select a color.
  * @author Daniel Nilsson
  */
 @SuppressLint("ClickableViewAccessibility")
 public class ColorPickerView extends View {
-
-    /**
-     * The width in pixels of the border
-     * surrounding all color panels.
-     */
+    /** The width in pixels of the border surrounding all color panels. */
     private final static float    BORDER_WIDTH_PX = 1;
 
-    /**
-     * The width in dp of the hue panel.
-     */
+    /** The width in dp of the hue panel. */
     private float         HUE_PANEL_WIDTH = 30f;
-    /**
-     * The height in dp of the alpha panel
-     */
-    private float        ALPHA_PANEL_HEIGHT = 20f;
-    /**
-     * The distance in dp between the different
-     * color panels.
-     */
+
+    /** The height in dp of the alpha panel */
+    private float         ALPHA_PANEL_HEIGHT = 20f;
+
+    /** The distance in dp between the different color panels. */
     private float         PANEL_SPACING = 10f;
-    /**
-     * The radius in dp of the color palette tracker circle.
-     */
+
+    /** The radius in dp of the color palette tracker circle. */
     private float         PALETTE_CIRCLE_TRACKER_RADIUS = 5f;
-    /**
-     * The dp which the tracker of the hue or alpha panel
-     * will extend outside of its bounds.
-     */
-    private float        RECTANGLE_TRACKER_OFFSET = 2f;
+
+    /** The dp which the tracker of the hue or alpha panel will extend outside of its bounds. */
+    private float         RECTANGLE_TRACKER_OFFSET = 2f;
 
 
     private float         mDensity = 1f;
@@ -91,26 +78,20 @@ public class ColorPickerView extends View {
 
     private final int     mBorderColor = 0xff6E6E6E;
 
-    /**
-     * Offset from the edge we must have or else
-     * the finger tracker will get clipped when
-     * it is drawn outside of the view.
-     */
+    /** Offset from the edge we must have or else the finger tracker will
+     *  get clipped when it is drawn outside of the view. */
     private float         mDrawingOffset;
 
-    /*
-     * Distance form the edges of the view
-     * of where we are allowed to draw.
-     */
-    private RectF    mDrawingRect;
+    /** Distance form the edges of the view of where we are allowed to draw. */
+    private RectF mDrawingRect;
 
-    private RectF    mSatValRect;
-    private RectF    mHueRect;
-    private RectF    mAlphaRect;
+    private RectF mSatValRect;
+    private RectF mHueRect;
+    private RectF mAlphaRect;
 
-    private AlphaPatternDrawable    mAlphaPattern;
+    private AlphaPatternDrawable mAlphaPattern;
 
-    private Point    mStartTouchPoint = null;
+    private Point mStartTouchPoint = null;
 
     public interface OnColorChangedListener {
         void onColorChanged(int color);
