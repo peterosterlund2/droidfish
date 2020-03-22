@@ -87,10 +87,7 @@ public class ColorPickerView extends View {
     private Shader        mValShader;
     private Shader        mHueShader;
 
-    private int           mAlpha = 0xff;
-    private float         mHue = 360f;
-    private float         mSat = 0f;
-    private float         mVal = 0f;
+    private AHSVColor     color = new AHSVColor();
 
     private final int     mBorderColor = 0xff6E6E6E;
 
@@ -202,16 +199,20 @@ public class ColorPickerView extends View {
             mValShader = new LinearGradient(rect.left, rect.top, rect.left, rect.bottom,
                     0xffffffff, 0xff000000, TileMode.CLAMP);
 
-        int rgb = Color.HSVToColor(new float[]{mHue,1f,1f});
-
+        float[] hsv = color.getHSV();
+        hsv[1] = 1f;
+        hsv[2] = 1f;
+        AHSVColor hue = new AHSVColor();
+        hue.setHSV(hsv);
         Shader mSatShader = new LinearGradient(rect.left, rect.top, rect.right, rect.top,
-                                               0xffffffff, rgb, TileMode.CLAMP);
+                                               0xffffffff, hue.getARGB(), TileMode.CLAMP);
         ComposeShader mShader = new ComposeShader(mValShader, mSatShader, PorterDuff.Mode.MULTIPLY);
         mSatValPaint.setShader(mShader);
 
         canvas.drawRect(rect, mSatValPaint);
 
-        Point p = satValToPoint(mSat, mVal);
+        hsv = color.getHSV();
+        Point p = satValToPoint(hsv[1], hsv[2]);
 
         float r = PALETTE_CIRCLE_TRACKER_RADIUS;
         mSatValTrackerPaint.setColor(0xff000000);
@@ -242,7 +243,7 @@ public class ColorPickerView extends View {
 
         float rectHeight = 4 * mDensity / 2;
 
-        Point p = hueToPoint(mHue);
+        Point p = hueToPoint(color.getHSV()[0]);
 
         RectF r = new RectF();
         r.left = rect.left - RECTANGLE_TRACKER_OFFSET;
@@ -270,12 +271,11 @@ public class ColorPickerView extends View {
 
         mAlphaPattern.draw(canvas);
 
-        float[] hsv = new float[]{mHue,mSat,mVal};
-        int color = Color.HSVToColor(hsv);
-        int acolor = Color.HSVToColor(0, hsv);
-
+        int rgb = color.getARGB();
+        int colorFF = rgb | 0xff000000;
+        int color00 = rgb & 0x00ffffff;
         Shader mAlphaShader = new LinearGradient(rect.left, rect.top, rect.right, rect.top,
-                                                 color, acolor, TileMode.CLAMP);
+                                                 colorFF, color00, TileMode.CLAMP);
 
         mAlphaPaint.setShader(mAlphaShader);
 
@@ -283,7 +283,7 @@ public class ColorPickerView extends View {
 
         float rectWidth = 4 * mDensity / 2;
 
-        Point p = alphaToPoint(mAlpha);
+        Point p = alphaToPoint(color.getAlpha());
 
         RectF r = new RectF();
         r.left = p.x - rectWidth;
@@ -372,7 +372,7 @@ public class ColorPickerView extends View {
 
         if (update) {
             if (mListener != null)
-                mListener.onColorChanged(Color.HSVToColor(mAlpha, new float[]{mHue, mSat, mVal}));
+                mListener.onColorChanged(color.getARGB());
             invalidate();
             return true;
         }
@@ -388,16 +388,20 @@ public class ColorPickerView extends View {
         int startX = mStartTouchPoint.x;
         int startY = mStartTouchPoint.y;
 
+        float[] hsv = color.getHSV();
         if (mHueRect.contains(startX, startY)) {
-            mHue = pointToHue(event.getY());
+            hsv[0] = pointToHue(event.getY());
+            color.setHSV(hsv);
             update = true;
         } else if (mSatValRect.contains(startX, startY)) {
             float[] result = pointToSatVal(event.getX(), event.getY());
-            mSat = result[0];
-            mVal = result[1];
+            hsv[1] = result[0];
+            hsv[2] = result[1];
+            color.setHSV(hsv);
             update = true;
         } else if (mAlphaRect != null && mAlphaRect.contains(startX, startY)) {
-            mAlpha = pointToAlpha((int)event.getX());
+            int alpha = pointToAlpha((int)event.getX());
+            color.setAlpha(alpha);
             update = true;
         }
 
@@ -524,32 +528,18 @@ public class ColorPickerView extends View {
      * @return the current color.
      */
     public int getColor() {
-        return Color.HSVToColor(mAlpha, new float[]{mHue,mSat,mVal});
+        return color.getARGB();
     }
 
     /**
      * Set the color this view should show.
-     * @param color The color that should be selected.
-     * @param callback If you want to get a callback to your OnColorChangedListener.
+     * @param colorARGB The color that should be selected.
+     * @param callback  If you want to get a callback to your OnColorChangedListener.
      */
-    public void setColor(int color, boolean callback) {
-        int alpha = Color.alpha(color);
-        int red = Color.red(color);
-        int blue = Color.blue(color);
-        int green = Color.green(color);
-
-        float[] hsv = new float[3];
-
-        Color.RGBToHSV(red, green, blue, hsv);
-
-        mAlpha = alpha;
-        mHue = hsv[0];
-        mSat = hsv[1];
-        mVal = hsv[2];
-
+    public void setColor(int colorARGB, boolean callback) {
+        color.setARGB(colorARGB);
         if (callback && mListener != null)
-            mListener.onColorChanged(Color.HSVToColor(mAlpha, new float[]{mHue, mSat, mVal}));
-
+            mListener.onColorChanged(color.getARGB());
         invalidate();
     }
 
