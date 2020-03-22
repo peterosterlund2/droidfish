@@ -19,16 +19,8 @@ package net.margaritov.preference.colorpicker;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ComposeShader;
-import android.graphics.LinearGradient;
-import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.PorterDuff;
 import android.graphics.RectF;
-import android.graphics.Shader;
-import android.graphics.Paint.Style;
-import android.graphics.Shader.TileMode;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,56 +32,33 @@ import android.view.View;
 @SuppressLint("ClickableViewAccessibility")
 public class ColorPickerView extends View {
     /** The width in pixels of the border surrounding all color panels. */
-    private final static float    BORDER_WIDTH_PX = 1;
+    private final static float BORDER_WIDTH_PX = 1;
 
     /** The width in dp of the hue panel. */
-    private float         HUE_PANEL_WIDTH = 30f;
+    private float HUE_PANEL_WIDTH = 30f;
 
     /** The height in dp of the alpha panel */
-    private float         ALPHA_PANEL_HEIGHT = 20f;
+    private float ALPHA_PANEL_HEIGHT = 20f;
 
     /** The distance in dp between the different color panels. */
-    private float         PANEL_SPACING = 10f;
+    private float PANEL_SPACING = 10f;
 
-    /** The radius in dp of the color palette tracker circle. */
-    private float         PALETTE_CIRCLE_TRACKER_RADIUS = 5f;
+    private float mDensity = 1f;
 
-    /** The dp which the tracker of the hue or alpha panel will extend outside of its bounds. */
-    private float         RECTANGLE_TRACKER_OFFSET = 2f;
+    private OnColorChangedListener mListener;
 
-
-    private float         mDensity = 1f;
-
-    private OnColorChangedListener    mListener;
-
-    private Paint         mSatValPaint = new Paint();
-    private Paint         mSatValTrackerPaint = new Paint();
-
-    private Paint         mHuePaint = new Paint();
-    private Paint         mHueTrackerPaint = new Paint();
-
-    private Paint         mAlphaPaint = new Paint();
-    private Paint         mBorderPaint = new Paint();
-
-    private Shader        mValShader;
-    private Shader        mHueShader;
-
-    private AHSVColor     color = new AHSVColor();
-
-    private final int     mBorderColor = 0xff6E6E6E;
+    private AHSVColor color = new AHSVColor();
 
     /** Offset from the edge we must have or else the finger tracker will
      *  get clipped when it is drawn outside of the view. */
-    private float         mDrawingOffset;
+    private float mDrawingOffset;
 
     /** Distance form the edges of the view of where we are allowed to draw. */
     private RectF mDrawingRect;
 
-    private RectF mSatValRect;
-    private RectF mHueRect;
-    private RectF mAlphaRect;
-
-    private AlphaPatternDrawable mAlphaPattern;
+    private GradientPanel satValPanel;
+    private GradientPanel huePanel;
+    private GradientPanel alphaPanel;
 
     private Point mStartTouchPoint = null;
 
@@ -112,49 +81,16 @@ public class ColorPickerView extends View {
 
     private void init() {
         mDensity = getContext().getResources().getDisplayMetrics().density;
-        PALETTE_CIRCLE_TRACKER_RADIUS *= mDensity;
-        RECTANGLE_TRACKER_OFFSET *= mDensity;
         HUE_PANEL_WIDTH *= mDensity;
         ALPHA_PANEL_HEIGHT *= mDensity;
         PANEL_SPACING *= mDensity;
 
-        mDrawingOffset = calculateRequiredOffset();
+        mDrawingOffset = Math.max(5, BORDER_WIDTH_PX) * mDensity * 1.5f;
 
-        initPaintTools();
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         setFocusable(true);
         setFocusableInTouchMode(true);
-    }
-
-    private void initPaintTools() {
-        mSatValTrackerPaint.setStyle(Style.STROKE);
-        mSatValTrackerPaint.setStrokeWidth(2f * mDensity);
-        mSatValTrackerPaint.setAntiAlias(true);
-
-        mHueTrackerPaint.setColor(0xff1c1c1c);
-        mHueTrackerPaint.setStyle(Style.STROKE);
-        mHueTrackerPaint.setStrokeWidth(2f * mDensity);
-        mHueTrackerPaint.setAntiAlias(true);
-
-        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-    }
-
-    private float calculateRequiredOffset() {
-        float offset = Math.max(PALETTE_CIRCLE_TRACKER_RADIUS, RECTANGLE_TRACKER_OFFSET);
-        offset = Math.max(offset, BORDER_WIDTH_PX * mDensity);
-
-        return offset * 1.5f;
-    }
-
-    private int[] buildHueColorArray() {
-        int[] hue = new int[361];
-
-        int count = 0;
-        for (int i = hue.length - 1; i >= 0; i--, count++) {
-            hue[count] = Color.HSVToColor(new float[]{i, 1f, 1f});
-        }
-
-        return hue;
     }
 
     @Override
@@ -162,176 +98,12 @@ public class ColorPickerView extends View {
         if (mDrawingRect.width() <= 0 || mDrawingRect.height() <= 0)
             return;
 
-        drawSatValPanel(canvas);
-        drawHuePanel(canvas);
-        drawAlphaPanel(canvas);
-    }
-
-    private void drawSatValPanel(Canvas canvas) {
-        final RectF    rect = mSatValRect;
-
-        if (BORDER_WIDTH_PX > 0) {
-            mBorderPaint.setColor(mBorderColor);
-            canvas.drawRect(mDrawingRect.left, mDrawingRect.top, rect.right + BORDER_WIDTH_PX,
-                            rect.bottom + BORDER_WIDTH_PX, mBorderPaint);
-        }
-
-        if (mValShader == null)
-            mValShader = new LinearGradient(rect.left, rect.top, rect.left, rect.bottom,
-                    0xffffffff, 0xff000000, TileMode.CLAMP);
-
-        float[] hsv = color.getHSV();
-        hsv[1] = 1f;
-        hsv[2] = 1f;
-        AHSVColor hue = new AHSVColor();
-        hue.setHSV(hsv);
-        Shader mSatShader = new LinearGradient(rect.left, rect.top, rect.right, rect.top,
-                                               0xffffffff, hue.getARGB(), TileMode.CLAMP);
-        ComposeShader mShader = new ComposeShader(mValShader, mSatShader, PorterDuff.Mode.MULTIPLY);
-        mSatValPaint.setShader(mShader);
-
-        canvas.drawRect(rect, mSatValPaint);
-
-        hsv = color.getHSV();
-        Point p = satValToPoint(hsv[1], hsv[2]);
-
-        float r = PALETTE_CIRCLE_TRACKER_RADIUS;
-        mSatValTrackerPaint.setColor(0xff000000);
-        canvas.drawCircle(p.x, p.y, r - 1f * mDensity, mSatValTrackerPaint);
-        mSatValTrackerPaint.setColor(0xffdddddd);
-        canvas.drawCircle(p.x, p.y, r, mSatValTrackerPaint);
-    }
-
-    private void drawHuePanel(Canvas canvas) {
-        final RectF rect = mHueRect;
-
-        if (BORDER_WIDTH_PX > 0) {
-            mBorderPaint.setColor(mBorderColor);
-            canvas.drawRect(rect.left - BORDER_WIDTH_PX,
-                            rect.top - BORDER_WIDTH_PX,
-                            rect.right + BORDER_WIDTH_PX,
-                            rect.bottom + BORDER_WIDTH_PX,
-                            mBorderPaint);
-        }
-
-        if (mHueShader == null) {
-            mHueShader = new LinearGradient(rect.left, rect.top, rect.left, rect.bottom,
-                                            buildHueColorArray(), null, TileMode.CLAMP);
-            mHuePaint.setShader(mHueShader);
-        }
-
-        canvas.drawRect(rect, mHuePaint);
-
-        float rectHeight = 4 * mDensity / 2;
-
-        Point p = hueToPoint(color.getHSV()[0]);
-
-        RectF r = new RectF();
-        r.left = rect.left - RECTANGLE_TRACKER_OFFSET;
-        r.right = rect.right + RECTANGLE_TRACKER_OFFSET;
-        r.top = p.y - rectHeight;
-        r.bottom = p.y + rectHeight;
-
-        canvas.drawRoundRect(r, 2, 2, mHueTrackerPaint);
-    }
-
-    private void drawAlphaPanel(Canvas canvas) {
-        if (mAlphaRect == null || mAlphaPattern == null)
-            return;
-
-        final RectF rect = mAlphaRect;
-
-        if (BORDER_WIDTH_PX > 0) {
-            mBorderPaint.setColor(mBorderColor);
-            canvas.drawRect(rect.left - BORDER_WIDTH_PX,
-                            rect.top - BORDER_WIDTH_PX,
-                            rect.right + BORDER_WIDTH_PX,
-                            rect.bottom + BORDER_WIDTH_PX,
-                            mBorderPaint);
-        }
-
-        mAlphaPattern.draw(canvas);
-
-        int rgb = color.getARGB();
-        int colorFF = rgb | 0xff000000;
-        int color00 = rgb & 0x00ffffff;
-        Shader mAlphaShader = new LinearGradient(rect.left, rect.top, rect.right, rect.top,
-                                                 colorFF, color00, TileMode.CLAMP);
-
-        mAlphaPaint.setShader(mAlphaShader);
-
-        canvas.drawRect(rect, mAlphaPaint);
-
-        float rectWidth = 4 * mDensity / 2;
-
-        Point p = alphaToPoint(color.getAlpha());
-
-        RectF r = new RectF();
-        r.left = p.x - rectWidth;
-        r.right = p.x + rectWidth;
-        r.top = rect.top - RECTANGLE_TRACKER_OFFSET;
-        r.bottom = rect.bottom + RECTANGLE_TRACKER_OFFSET;
-
-        canvas.drawRoundRect(r, 2, 2, mHueTrackerPaint);
-    }
-
-    private Point hueToPoint(float hue) {
-        final RectF rect = mHueRect;
-        final float height = rect.height();
-
-        return new Point((int) rect.left,
-                         (int) (height - (hue * height / 360f) + rect.top));
-    }
-
-    private Point satValToPoint(float sat, float val) {
-        final RectF rect = mSatValRect;
-        final float width = rect.width();
-        final float height = rect.height();
-
-        return new Point((int) (sat * width + rect.left),
-                         (int) ((1f - val) * height + rect.top));
-    }
-
-    private Point alphaToPoint(int alpha) {
-        final RectF rect = mAlphaRect;
-        final float width = rect.width();
-
-        return new Point((int) (width - (alpha * width / 0xff) + rect.left),
-                         (int) rect.top);
-    }
-
-    private static float clampF(float val, float min, float max) {
-        return Math.min(Math.max(val, min), max);
-    }
-
-    private float[] pointToSatVal(float x, float y) {
-        final RectF rect = mSatValRect;
-
-        float width = rect.width();
-        float height = rect.height();
-
-        x = clampF(x - rect.left, 0f, width);
-        y = clampF(y - rect.top, 0f, height);
-
-        return new float[]{ x / width, 1f - y / height };
-    }
-
-    private float pointToHue(float y) {
-        final RectF rect = mHueRect;
-
-        float height = rect.height();
-        y = clampF(y - rect.top, 0f, height);
-
-        return 360f - (y * 360f / height);
-    }
-
-    private int pointToAlpha(int x) {
-        final RectF rect = mAlphaRect;
-
-        final int width = (int) rect.width();
-        x = Math.min(Math.max(x - (int)rect.left, 0), width);
-
-        return 0xff - (x * 0xff / width);
+        if (satValPanel != null)
+            satValPanel.draw(canvas);
+        if (huePanel != null)
+            huePanel.draw(canvas);
+        if (alphaPanel != null)
+            alphaPanel.draw(canvas);
     }
 
     @Override
@@ -365,28 +137,16 @@ public class ColorPickerView extends View {
         if (mStartTouchPoint == null)
             return false;
 
-        boolean update = false;
-        int startX = mStartTouchPoint.x;
-        int startY = mStartTouchPoint.y;
-
-        float[] hsv = color.getHSV();
-        if (mHueRect.contains(startX, startY)) {
-            hsv[0] = pointToHue(event.getY());
-            color.setHSV(hsv);
-            update = true;
-        } else if (mSatValRect.contains(startX, startY)) {
-            float[] result = pointToSatVal(event.getX(), event.getY());
-            hsv[1] = result[0];
-            hsv[2] = result[1];
-            color.setHSV(hsv);
-            update = true;
-        } else if (mAlphaRect != null && mAlphaRect.contains(startX, startY)) {
-            int alpha = pointToAlpha((int)event.getX());
-            color.setAlpha(alpha);
-            update = true;
+        for (GradientPanel pnl : new GradientPanel[]{satValPanel, huePanel, alphaPanel}) {
+            if (pnl != null && pnl.contains(mStartTouchPoint)) {
+                Point curPnt = new Point((int)event.getX(),
+                                         (int)event.getY());
+                pnl.updateColor(curPnt);
+                return true;
+            }
         }
 
-        return update;
+        return false;
     }
 
     @Override
@@ -445,55 +205,52 @@ public class ColorPickerView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
 
         mDrawingRect = new RectF();
-        mDrawingRect.left = mDrawingOffset + getPaddingLeft();
+        mDrawingRect.left   =     mDrawingOffset + getPaddingLeft();
         mDrawingRect.right  = w - mDrawingOffset - getPaddingRight();
-        mDrawingRect.top = mDrawingOffset + getPaddingTop();
+        mDrawingRect.top    =     mDrawingOffset + getPaddingTop();
         mDrawingRect.bottom = h - mDrawingOffset - getPaddingBottom();
 
-        setUpSatValRect();
-        setUpHueRect();
-        setUpAlphaRect();
+        setUpSatValPanel();
+        setUpHuePanel();
+        setUpAlphaPanel();
     }
 
-    private void setUpSatValRect() {
-        final RectF    dRect = mDrawingRect;
+    private void setUpSatValPanel() {
+        final RectF dRect = mDrawingRect;
         float panelSide = dRect.height() - BORDER_WIDTH_PX * 2;
         panelSide -= PANEL_SPACING + ALPHA_PANEL_HEIGHT;
 
-        float left = dRect.left + BORDER_WIDTH_PX;
-        float top = dRect.top + BORDER_WIDTH_PX;
+        float left   = dRect.left + BORDER_WIDTH_PX;
+        float right  = left + panelSide;
+        float top    = dRect.top + BORDER_WIDTH_PX;
         float bottom = top + panelSide;
-        float right = left + panelSide;
 
-        mSatValRect = new RectF(left,top, right, bottom);
+        RectF satValRect = new RectF(left,top, right, bottom);
+        satValPanel = new SatValGradientPanel(satValRect, color, mDensity);
     }
 
-    private void setUpHueRect() {
+    private void setUpHuePanel() {
         final RectF    dRect = mDrawingRect;
 
-        float left = dRect.right - HUE_PANEL_WIDTH + BORDER_WIDTH_PX;
-        float top = dRect.top + BORDER_WIDTH_PX;
+        float left   = dRect.right  - HUE_PANEL_WIDTH + BORDER_WIDTH_PX;
+        float right  = dRect.right  - BORDER_WIDTH_PX;
+        float top    = dRect.top    + BORDER_WIDTH_PX;
         float bottom = dRect.bottom - BORDER_WIDTH_PX - (PANEL_SPACING + ALPHA_PANEL_HEIGHT);
-        float right = dRect.right - BORDER_WIDTH_PX;
 
-        mHueRect = new RectF(left, top, right, bottom);
+        RectF hueRect = new RectF(left, top, right, bottom);
+        huePanel = new HueGradientPanel(hueRect, color, mDensity);
     }
 
-    private void setUpAlphaRect() {
+    private void setUpAlphaPanel() {
         final RectF    dRect = mDrawingRect;
 
-        float left = dRect.left + BORDER_WIDTH_PX;
-        float top = dRect.bottom - ALPHA_PANEL_HEIGHT + BORDER_WIDTH_PX;
+        float left   = dRect.left   + BORDER_WIDTH_PX;
+        float right  = dRect.right  - BORDER_WIDTH_PX;
+        float top    = dRect.bottom - ALPHA_PANEL_HEIGHT + BORDER_WIDTH_PX;
         float bottom = dRect.bottom - BORDER_WIDTH_PX;
-        float right = dRect.right - BORDER_WIDTH_PX;
 
-        mAlphaRect = new RectF(left, top, right, bottom);
-
-        mAlphaPattern = new AlphaPatternDrawable((int) (5 * mDensity));
-        mAlphaPattern.setBounds(Math.round(mAlphaRect.left),
-                                Math.round(mAlphaRect.top),
-                                Math.round(mAlphaRect.right),
-                                Math.round(mAlphaRect.bottom));
+        RectF alphaRect = new RectF(left, top, right, bottom);
+        alphaPanel = new AlphaGradientPanel(alphaRect, color, mDensity);
     }
 
     /**
@@ -504,10 +261,7 @@ public class ColorPickerView extends View {
         mListener = listener;
     }
 
-    /**
-     * Get the current color this view is showing.
-     * @return the current color.
-     */
+    /** Get the current color this view is showing. */
     public int getColor() {
         return color.getARGB();
     }

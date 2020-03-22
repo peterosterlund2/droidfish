@@ -20,7 +20,7 @@ import android.graphics.Color;
 
 /** Represents a color in HSV float format and an alpha value. */
 class AHSVColor {
-    private int     alpha = 0xff;
+    private int alpha = 0xff;
     private float[] hsv = new float[]{360f, 0f, 0f};
 
     AHSVColor() { }
