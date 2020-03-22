@@ -225,91 +225,76 @@
                 <net.margaritov.preference.colorpicker.ColorPickerPreference
                     android:key="color_brightSquare"
                     android:title="@string/prefs_color_brightSquare_title" 
-                    alphaSlider="true" 
                     android:defaultValue="#FFFFFFFA">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
                 <net.margaritov.preference.colorpicker.ColorPickerPreference 
                     android:key="color_darkSquare" 
                     android:title="@string/prefs_color_darkSquare_title" 
-                    alphaSlider="true" 
                     android:defaultValue="#FF83A5D2">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
                 <net.margaritov.preference.colorpicker.ColorPickerPreference 
                     android:key="color_selectedSquare" 
                     android:title="@string/prefs_color_selectedSquare_title" 
-                    alphaSlider="true" 
                     android:defaultValue="#FF3232D1">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
                 <net.margaritov.preference.colorpicker.ColorPickerPreference
                     android:key="color_brightPiece" 
                     android:title="@string/prefs_color_brightPiece_title" 
-                    alphaSlider="true" 
                     android:defaultValue="#FFF0F0F0">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
                 <net.margaritov.preference.colorpicker.ColorPickerPreference 
                     android:key="color_darkPiece" 
                     android:title="@string/prefs_color_darkPiece_title" 
-                    alphaSlider="true" 
                     android:defaultValue="#FF282828">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
                 <net.margaritov.preference.colorpicker.ColorPickerPreference 
                     android:key="color_arrow0" 
                     android:title="@string/prefs_color_arrow0_title" 
-                    alphaSlider="true" 
                     android:defaultValue="#A01F1FFF">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
                 <net.margaritov.preference.colorpicker.ColorPickerPreference 
                     android:key="color_arrow1" 
                     android:title="@string/prefs_color_arrow1_title" 
-                    alphaSlider="true" 
                     android:defaultValue="#A01FFF1F">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
                 <net.margaritov.preference.colorpicker.ColorPickerPreference 
                     android:key="color_arrow2" 
                     android:title="@string/prefs_color_arrow2_title" 
-                    alphaSlider="true" 
                     android:defaultValue="#501F1FFF">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
                 <net.margaritov.preference.colorpicker.ColorPickerPreference 
                     android:key="color_arrow3" 
                     android:title="@string/prefs_color_arrow3_title" 
-                    alphaSlider="true" 
                     android:defaultValue="#501FFF1F">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
                 <net.margaritov.preference.colorpicker.ColorPickerPreference 
                     android:key="color_arrow4" 
                     android:title="@string/prefs_color_arrow4_title" 
-                    alphaSlider="true" 
                     android:defaultValue="#371F1FFF">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
                 <net.margaritov.preference.colorpicker.ColorPickerPreference 
                     android:key="color_arrow5" 
                     android:title="@string/prefs_color_arrow5_title" 
-                    alphaSlider="true" 
                     android:defaultValue="#3C1FFF1F">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
                 <net.margaritov.preference.colorpicker.ColorPickerPreference 
                     android:key="color_arrow6"
                     android:title="@string/prefs_color_arrow6_title"
-                    alphaSlider="true"
                     android:defaultValue="#1E1F1FFF">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
                 <net.margaritov.preference.colorpicker.ColorPickerPreference 
                     android:key="color_arrow7"
                     android:title="@string/prefs_color_arrow7_title"
-                    alphaSlider="true"
                     android:defaultValue="#281FFF1F">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
                 <net.margaritov.preference.colorpicker.ColorPickerPreference 
                      android:key="color_squareLabel" 
                      android:title="@string/prefs_color_squareLabel_title" 
-                     alphaSlider="true" 
                      android:defaultValue="#FFFF0000">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
                 <net.margaritov.preference.colorpicker.ColorPickerPreference 
                     android:key="color_decoration" 
                     android:title="@string/prefs_color_decoration_title" 
-                    alphaSlider="true" 
                     android:defaultValue="#FF808080">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
             </PreferenceCategory>
@@ -318,25 +303,21 @@
                 <net.margaritov.preference.colorpicker.ColorPickerPreference 
                     android:key="color_currentMove" 
                     android:title="@string/prefs_color_currentMove_title" 
-                    alphaSlider="true" 
                     android:defaultValue="#FF3333FF">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
                 <net.margaritov.preference.colorpicker.ColorPickerPreference 
                     android:key="color_pgnComment" 
                     android:title="@string/prefs_color_pgnComment_title" 
-                    alphaSlider="true" 
                     android:defaultValue="#FFC0C000">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
                 <net.margaritov.preference.colorpicker.ColorPickerPreference 
                     android:key="color_fontForeground" 
                     android:title="@string/prefs_color_fontForeground_title" 
-                    alphaSlider="false" 
                     android:defaultValue="#FFFFFF00">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
                 <net.margaritov.preference.colorpicker.ColorPickerPreference 
                     android:key="color_generalBackground" 
                     android:title="@string/prefs_color_generalBackground_title" 
-                    alphaSlider="false" 
                     android:defaultValue="#FF2E2B53">
                 </net.margaritov.preference.colorpicker.ColorPickerPreference>
             </PreferenceCategory>

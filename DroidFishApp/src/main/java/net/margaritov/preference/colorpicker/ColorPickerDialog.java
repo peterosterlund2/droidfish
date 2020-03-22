@@ -61,9 +61,7 @@ public class ColorPickerDialog
     public void reInitUI() {
         int oldColor = mOldColor.getColor();
         int newColor = mNewColor.getColor();
-        boolean alphaSlider = mColorPicker.getAlphaSliderVisible();
         setUp(oldColor, newColor);
-        setAlphaSliderVisible(alphaSlider);
     }
 
     private void setUp(int oldColor, int newColor) {
@@ -95,10 +93,6 @@ public class ColorPickerDialog
         mNewColor.setColor(color);
     }
 
-    public void setAlphaSliderVisible(boolean visible) {
-        mColorPicker.setAlphaSliderVisible(visible);
-    }
-    
     /**
      * Set a OnColorChangedListener to get notified when the color
      * selected by the user has changed.

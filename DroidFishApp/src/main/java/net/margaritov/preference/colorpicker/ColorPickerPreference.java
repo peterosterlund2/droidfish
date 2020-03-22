@@ -48,7 +48,6 @@ public class ColorPickerPreference
     private int mDefaultValue = Color.BLACK;
     private int mValue = Color.BLACK;
     private float mDensity = 0;
-    private boolean mAlphaSliderEnabled = false;
 
     private static final String androidns = "http://schemas.android.com/apk/res/android";
 
@@ -90,7 +89,6 @@ public class ColorPickerPreference
                     mDefaultValue = context.getResources().getInteger(resourceId);
                 }
             }
-            mAlphaSliderEnabled = attrs.getAttributeBooleanValue(null, "alphaSlider", false);
         }
         mValue = mDefaultValue;
     }
@@ -195,8 +193,6 @@ public class ColorPickerPreference
     
     private void showDialog() {
         mDialog = new ColorPickerDialog(getContext(), getValue(), getTitle());
-        if (mAlphaSliderEnabled)
-            mDialog.setAlphaSliderVisible(true);
         mDialog.setOnColorChangedListener(this);
         mDialog.setOnDismissListener(this);
         addRemoveConfigChangedListener();
@@ -221,12 +217,6 @@ public class ColorPickerPreference
     public void onConfigurationChanged(Configuration newConfig) {
         if (mDialog != null)
             mDialog.reInitUI();
-    }
-    /**
-     * Toggle Alpha Slider visibility (by default it's disabled)
-     */
-    public void setAlphaSliderEnabled(boolean enable) {
-        mAlphaSliderEnabled = enable;
     }
 
     private static String convertToARGB(int color) {
