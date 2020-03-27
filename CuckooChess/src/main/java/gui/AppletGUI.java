@@ -138,7 +138,7 @@ public class AppletGUI extends javax.swing.JApplet implements GUIInterface {
 
         NewGame.setText("New Game");
         NewGame.setFocusable(false);
-        NewGame.addActionListener(evt -> NewGameActionPerformed(evt));
+        NewGame.addActionListener(this::NewGameActionPerformed);
 
         SettingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Settings"));
         SettingsPanel.setFocusable(false);
@@ -161,15 +161,15 @@ public class AppletGUI extends javax.swing.JApplet implements GUIInterface {
         TimeSlider.setPaintTicks(true);
         TimeSlider.setValue(5);
         TimeSlider.setFocusable(false);
-        TimeSlider.addChangeListener(evt -> TimeSliderStateChanged(evt));
+        TimeSlider.addChangeListener(this::TimeSliderStateChanged);
 
         ShowThinking.setText("Show Thinking");
         ShowThinking.setFocusable(false);
-        ShowThinking.addChangeListener(evt -> ShowThinkingStateChanged(evt));
+        ShowThinking.addChangeListener(this::ShowThinkingStateChanged);
 
         FlipBoard.setText("Flip Board");
         FlipBoard.setFocusable(false);
-        FlipBoard.addChangeListener(evt -> FlipBoardStateChanged(evt));
+        FlipBoard.addChangeListener(this::FlipBoardStateChanged);
 
         javax.swing.GroupLayout SettingsPanelLayout = new javax.swing.GroupLayout(SettingsPanel);
         SettingsPanel.setLayout(SettingsPanelLayout);
@@ -215,13 +215,13 @@ public class AppletGUI extends javax.swing.JApplet implements GUIInterface {
         Forward.setDefaultCapable(false);
         Forward.setFocusPainted(false);
         Forward.setFocusable(false);
-        Forward.addActionListener(evt -> ForwardActionPerformed(evt));
+        Forward.addActionListener(this::ForwardActionPerformed);
 
         Backward.setText("<-");
         Backward.setDefaultCapable(false);
         Backward.setFocusPainted(false);
         Backward.setFocusable(false);
-        Backward.addActionListener(evt -> BackwardActionPerformed(evt));
+        Backward.addActionListener(this::BackwardActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

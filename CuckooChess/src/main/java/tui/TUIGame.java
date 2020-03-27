@@ -147,12 +147,9 @@ public class TUIGame extends Game {
             return false;
         } catch (IOException ex) {
             System.out.printf("IO error: %s\n", ex.getMessage());
-        } catch (ChessParseError cpe) {
+        } catch (ChessParseError | StringIndexOutOfBoundsException cpe) {
             int lineNo = (fr == null) ? -1 : fr.getLineNumber();
             System.out.printf("Parse error, line %d: %s\n", lineNo, cpe.getMessage());
-        } catch (StringIndexOutOfBoundsException e) {
-            int lineNo = (fr == null) ? -1 : fr.getLineNumber();
-            System.out.printf("Parse error, line %d: %s\n", lineNo, e.getMessage());
         } finally {
             if (fr != null) {
                 try {

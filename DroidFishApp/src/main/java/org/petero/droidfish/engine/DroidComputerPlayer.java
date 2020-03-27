@@ -1000,7 +1000,7 @@ public class DroidComputerPlayer {
             }
             if (havePvData) {
                 while (statPvInfo.size() < pvNum)
-                    statPvInfo.add(new PvInfo(0, 0, 0, 0, 0, 0, 0, 0, false, false, false, new ArrayList<Move>()));
+                    statPvInfo.add(new PvInfo(0, 0, 0, 0, 0, 0, 0, 0, false, false, false, new ArrayList<>()));
                 if (statPvInfo.size() == pvNum)
                     statPvInfo.add(null);
                 ArrayList<Move> moves = new ArrayList<>();

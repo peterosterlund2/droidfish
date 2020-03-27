@@ -199,9 +199,7 @@ public class UCIProtocol {
                 }
                 quit = true;
             }
-        } catch (ChessParseError ignore) {
-        } catch (ArrayIndexOutOfBoundsException ignore) {
-        } catch (NumberFormatException ignore) {
+        } catch (ChessParseError | ArrayIndexOutOfBoundsException | NumberFormatException ignore) {
         }
     }
 

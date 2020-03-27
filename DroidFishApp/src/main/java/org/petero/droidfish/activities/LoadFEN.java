@@ -93,9 +93,7 @@ public class LoadFEN extends ListActivity {
             workThread = new Thread(() -> {
                 if (!readFile())
                     return;
-                runOnUiThread(() -> {
-                    lfen.showList();
-                });
+                runOnUiThread(lfen::showList);
             });
             workThread.start();
         } else if ("org.petero.droidfish.loadNextFen".equals(action) ||

@@ -62,8 +62,7 @@ public class EngineServer implements ErrorHandler {
                 String arguments = prop.getProperty("arguments" + i, "");
                 configs[i] = new EngineConfig(enabled, port, filename, arguments);
             }
-        } catch (IOException ignore) {
-        } catch (NumberFormatException ignore) {
+        } catch (IOException | NumberFormatException ignore) {
         }
     }
 

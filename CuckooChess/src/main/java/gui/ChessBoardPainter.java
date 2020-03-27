@@ -179,9 +179,7 @@ public class ChessBoardPainter extends JLabel {
                 try {
                     Font font = Font.createFont(Font.TRUETYPE_FONT, inStream);
                     chessFont = font.deriveFont((float)sqSize);
-                } catch (FontFormatException ex) {
-                    throw new RuntimeException();
-                } catch (IOException ex) {
+                } catch (FontFormatException | IOException ex) {
                     throw new RuntimeException();
                 }
             }

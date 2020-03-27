@@ -41,7 +41,7 @@ final class InternalBook implements IOpeningBook {
     private boolean enabled = false;
 
     InternalBook() {
-        Thread t = new Thread(() -> initInternalBook());
+        Thread t = new Thread(this::initInternalBook);
         t.setPriority(Thread.MIN_PRIORITY);
         t.start();
     }
