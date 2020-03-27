@@ -18,17 +18,16 @@
 
 package org.petero.droidfish;
 
-import java.util.Locale;
+import android.content.Context;
+import android.speech.tts.TextToSpeech;
+import android.widget.Toast;
 
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
 
-import android.content.Context;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.TextToSpeech.OnInitListener;
-import android.widget.Toast;
+import java.util.Locale;
 
 /** Handles text to speech translation. */
 public class Speech {

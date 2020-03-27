@@ -18,12 +18,11 @@
 
 package org.petero.droidfish.activities;
 
+import android.util.Pair;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import android.app.Activity;
-import android.util.Pair;
 
 public class FENFile {
     private final File fileName;

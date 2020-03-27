@@ -18,14 +18,10 @@
 
 package chess;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public class GameTree {
     // Data from the seven tag roster (STR) part of the PGN standard

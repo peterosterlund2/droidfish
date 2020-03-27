@@ -18,14 +18,12 @@
 
 package org.petero.droidfish;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.widget.ImageButton;
+
+import java.util.ArrayList;
 
 /**
  * Handle all actions connected to a button.

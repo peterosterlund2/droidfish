@@ -18,18 +18,16 @@
 
 package org.petero.droidfish.book;
 
+import androidx.test.runner.AndroidJUnit4;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.petero.droidfish.PGNOptions;
 import org.petero.droidfish.gamelogic.Game;
 import org.petero.droidfish.gamelogic.GameTree;
 import org.petero.droidfish.gamelogic.TimeControlData;
 
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /** Test of EcoDb class. */
 @RunWith(AndroidJUnit4.class)

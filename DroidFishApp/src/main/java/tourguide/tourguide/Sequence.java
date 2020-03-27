@@ -1,7 +1,5 @@
 package tourguide.tourguide;
 
-import android.view.View;
-
 /**
  * Created by aaronliew on 8/7/15.
  */
