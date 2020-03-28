@@ -56,19 +56,19 @@ class AlphaGradientPanel extends GradientPanel {
 
     @Override
     void updateColor(Point point) {
-        int alpha = pointToAlpha(point.x);
+        int alpha = pointToAlpha(point);
         color.setAlpha(alpha);
     }
 
     private Point alphaToPoint(int alpha) {
-        float width = rect.width();
-        return new Point((int)(width - (alpha * width / 0xff) + rect.left),
-                         (int)rect.top);
+        double width = rect.width();
+        return new Point((int)Math.round(width - (alpha * width / 0xff) + rect.left),
+                         Math.round(rect.top));
     }
 
-    private int pointToAlpha(int x) {
+    private int pointToAlpha(Point p) {
         int width = (int)rect.width();
-        x = Math.min(Math.max(x - (int)rect.left, 0), width);
+        int x = Math.min(Math.max(p.x - (int)rect.left, 0), width);
         return 0xff - (x * 0xff / width);
     }
 }

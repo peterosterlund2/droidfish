@@ -19,7 +19,6 @@ package net.margaritov.preference.colorpicker;
 import android.graphics.Canvas;
 import android.graphics.ComposeShader;
 import android.graphics.LinearGradient;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.RectF;
@@ -42,9 +41,9 @@ public class SatValGradientPanel extends GradientPanel {
 
     @Override
     protected void setGradientPaint() {
-        float[] hsv = color.getHSV();
-        hsv[1] = 1f;
-        hsv[2] = 1f;
+        double[] hsv = color.getHSV();
+        hsv[1] = 1;
+        hsv[2] = 1;
         AHSVColor hue = new AHSVColor();
         hue.setHSV(hsv);
         Shader satShader = new LinearGradient(rect.left, rect.top, rect.right, rect.top,
@@ -55,7 +54,7 @@ public class SatValGradientPanel extends GradientPanel {
 
     @Override
     protected void drawTracker(Canvas canvas) {
-        float[] hsv = color.getHSV();
+        double[] hsv = color.getHSV();
         Point p = satValToPoint(hsv[1], hsv[2]);
 
         float r = PALETTE_CIRCLE_TRACKER_RADIUS;
@@ -67,28 +66,28 @@ public class SatValGradientPanel extends GradientPanel {
 
     @Override
     void updateColor(Point point) {
-        float[] hsv = color.getHSV();
-        float[] result = pointToSatVal(point.x, point.y);
+        double[] hsv = color.getHSV();
+        double[] result = pointToSatVal(point);
         hsv[1] = result[0];
         hsv[2] = result[1];
         color.setHSV(hsv);
     }
 
-    private Point satValToPoint(float sat, float val) {
-        final float width = rect.width();
-        final float height = rect.height();
+    private Point satValToPoint(double sat, double val) {
+        double width = rect.width();
+        double height = rect.height();
 
-        return new Point((int)(sat * width + rect.left),
-                         (int)((1f - val) * height + rect.top));
+        return new Point((int)Math.round(sat * width + rect.left),
+                         (int)Math.round((1 - val) * height + rect.top));
     }
 
-    private float[] pointToSatVal(float x, float y) {
-        float width = rect.width();
-        float height = rect.height();
+    private double[] pointToSatVal(Point p) {
+        double width = rect.width();
+        double height = rect.height();
 
-        x = Math.min(Math.max(x - rect.left, 0f), width);
-        y = Math.min(Math.max(y - rect.top, 0f), height);
+        double x = Math.min(Math.max(p.x - rect.left, 0), width);
+        double y = Math.min(Math.max(p.y - rect.top, 0), height);
 
-        return new float[]{ x / width, 1f - y / height };
+        return new double[]{ x / width, 1 - y / height };
     }
 }

@@ -1,7 +1,6 @@
 package net.margaritov.preference.colorpicker;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Point;
 import android.graphics.RectF;
@@ -56,13 +55,13 @@ public class RGBGradientPanel extends GradientPanel {
 
     private Point rgbComponentToPoint(int val) {
         if (horizontal) {
-            float width = rect.width();
-            return new Point((int)((val * width / 0xff) + rect.left),
-                             (int)rect.top);
+            double width = rect.width();
+            return new Point((int)Math.round((val * width / 0xff) + rect.left),
+                             Math.round(rect.top));
         } else {
-            float height = rect.height();
-            return new Point((int)rect.left,
-                             (int)(rect.bottom - (val * height / 0xff)));
+            double height = rect.height();
+            return new Point(Math.round(rect.left),
+                             (int)Math.round(rect.bottom - (val * height / 0xff)));
         }
     }
 

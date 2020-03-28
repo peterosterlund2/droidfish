@@ -51,20 +51,20 @@ public class HueGradientPanel extends GradientPanel {
 
     @Override
     void updateColor(Point point) {
-        float[] hsv = color.getHSV();
-        hsv[0] = pointToHue(point.y);
+        double[] hsv = color.getHSV();
+        hsv[0] = pointToHue(point);
         color.setHSV(hsv);
     }
 
-    private Point hueToPoint(float hue) {
-        float height = rect.height();
-        return new Point((int)rect.left,
-                         (int)(height - (hue * height / 360f) + rect.top));
+    private Point hueToPoint(double hue) {
+        double height = rect.height();
+        return new Point(Math.round(rect.left),
+                         (int)Math.round((height - (hue * height / 360) + rect.top)));
     }
 
-    private float pointToHue(float y) {
-        float height = rect.height();
-        y = Math.min(Math.max(y - rect.top, 0f), height);
-        return 360f - (y * 360f / height);
+    private double pointToHue(Point p) {
+        double height = rect.height();
+        double y = Math.min(Math.max(p.y - rect.top, 0f), height);
+        return 360 - (y * 360 / height);
     }
 }
