@@ -49,6 +49,23 @@ class AHSVColor {
             hsv[0] = oldHue;
     }
 
+    /** Set red (0), green (1) or blue (2) color component. */
+    void setRGBComponent(int component, int value) {
+        int c = getARGB();
+        switch (component) {
+        case 0:
+            c = (c & 0xff00ffff) | (value << 16);
+            break;
+        case 1:
+            c = (c & 0xffff00ff) | (value << 8);
+            break;
+        case 2:
+            c = (c & 0xffffff00) | value;
+            break;
+        }
+        setARGB(c);
+    }
+
     /** Get hue,sat,val values. */
     float[] getHSV() {
         return new float[]{hsv[0], hsv[1], hsv[2]};
@@ -62,5 +79,16 @@ class AHSVColor {
     /** Get ARGB color value. */
     int getARGB() {
         return Color.HSVToColor(alpha, hsv);
+    }
+
+    /** Get red (0), green (1), or blue (2) color component. */
+    int getRGBComponent(int component) {
+        int c = getARGB();
+        switch (component) {
+        case 0: return Color.red(c);
+        case 1: return Color.green(c);
+        case 2: return Color.blue(c);
+        default: throw new RuntimeException("Internal error");
+        }
     }
 }

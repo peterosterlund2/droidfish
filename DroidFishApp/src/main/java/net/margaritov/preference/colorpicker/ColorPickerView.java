@@ -18,6 +18,7 @@ package net.margaritov.preference.colorpicker;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.RectF;
@@ -40,6 +41,9 @@ public class ColorPickerView extends View {
     /** The height in dp of the alpha panel */
     private float ALPHA_PANEL_HEIGHT = 20f;
 
+    /** The width or height in dp of one of the red/green/blue panels. */
+    private float RGB_PANEL_SIZE = 30f;
+
     /** The distance in dp between the different color panels. */
     private float PANEL_SPACING = 10f;
 
@@ -56,9 +60,13 @@ public class ColorPickerView extends View {
     /** Distance form the edges of the view of where we are allowed to draw. */
     private RectF mDrawingRect;
 
+    /** Side of the satValPanel square. */
+    private float satValSide;
+
     private GradientPanel satValPanel;
     private GradientPanel huePanel;
     private GradientPanel alphaPanel;
+    private GradientPanel[] rgbPanel = new GradientPanel[3];
 
     private Point mStartTouchPoint = null;
 
@@ -83,6 +91,7 @@ public class ColorPickerView extends View {
         mDensity = getContext().getResources().getDisplayMetrics().density;
         HUE_PANEL_WIDTH *= mDensity;
         ALPHA_PANEL_HEIGHT *= mDensity;
+        RGB_PANEL_SIZE *= mDensity;
         PANEL_SPACING *= mDensity;
 
         mDrawingOffset = Math.max(5, BORDER_WIDTH_PX) * mDensity * 1.5f;
@@ -91,6 +100,11 @@ public class ColorPickerView extends View {
 
         setFocusable(true);
         setFocusableInTouchMode(true);
+    }
+
+    /** Return true if the current orientation is landscape. */
+    private boolean landScapeView() {
+        return getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
     @Override
@@ -104,6 +118,9 @@ public class ColorPickerView extends View {
             huePanel.draw(canvas);
         if (alphaPanel != null)
             alphaPanel.draw(canvas);
+        for (int i = 0; i < 3; i++)
+            if (rgbPanel[i] != null)
+                rgbPanel[i].draw(canvas);
     }
 
     @Override
@@ -137,7 +154,8 @@ public class ColorPickerView extends View {
         if (mStartTouchPoint == null)
             return false;
 
-        for (GradientPanel pnl : new GradientPanel[]{satValPanel, huePanel, alphaPanel}) {
+        for (GradientPanel pnl : new GradientPanel[]{satValPanel, huePanel, alphaPanel,
+                                                     rgbPanel[0], rgbPanel[1], rgbPanel[2]}) {
             if (pnl != null && pnl.contains(mStartTouchPoint)) {
                 Point curPnt = new Point((int)event.getX(),
                                          (int)event.getY());
@@ -153,51 +171,56 @@ public class ColorPickerView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        
         int widthAllowed = MeasureSpec.getSize(widthMeasureSpec);
         int heightAllowed = MeasureSpec.getSize(heightMeasureSpec);
-        
-        widthAllowed = chooseWidth(widthMode, widthAllowed);
-        heightAllowed = chooseHeight(heightMode, heightAllowed);
 
-        int width = (int) (heightAllowed - ALPHA_PANEL_HEIGHT + HUE_PANEL_WIDTH);
-        int height;
-        if (width > widthAllowed) {
-            width = widthAllowed;
-            height = (int) (widthAllowed - HUE_PANEL_WIDTH + ALPHA_PANEL_HEIGHT);
-        } else {
-            height = heightAllowed;
-        }
+        widthAllowed = chooseSize(widthMode, widthAllowed, getPreferredWidth());
+        heightAllowed = chooseSize(heightMode, heightAllowed, getPreferredHeight());
 
-        setMeasuredDimension(width, height);
-    }
+        float side = getSatValSide(widthAllowed, heightAllowed);
+        float width = side + getExtraWidth();
+        float height = side + getExtraHeight();
 
-    private int chooseWidth(int mode, int size) {
-        if (mode == MeasureSpec.AT_MOST || mode == MeasureSpec.EXACTLY) {
-            return size;
-        } else { // (mode == MeasureSpec.UNSPECIFIED)
-            return getPreferredWidth();
-        }
-    }
-
-    private int chooseHeight(int mode, int size) {
-        if (mode == MeasureSpec.AT_MOST || mode == MeasureSpec.EXACTLY) {
-            return size;
-        } else { // (mode == MeasureSpec.UNSPECIFIED)
-            return getPreferredHeight();
-        }
+        int newWidth  = widthMode  == MeasureSpec.EXACTLY ? widthAllowed  : (int)width;
+        int newHeight = heightMode == MeasureSpec.EXACTLY ? heightAllowed : (int)height;
+        setMeasuredDimension(newWidth, newHeight);
     }
 
     private int getPreferredWidth() {
-        int width = getPreferredHeight();
-        width -= PANEL_SPACING + ALPHA_PANEL_HEIGHT;
-        return (int) (width + HUE_PANEL_WIDTH + PANEL_SPACING);
+        return (int)(200 * mDensity + getExtraWidth());
     }
 
     private int getPreferredHeight() {
-        int height = (int)(200 * mDensity);
-        height += PANEL_SPACING + ALPHA_PANEL_HEIGHT;
-        return height;
+        return (int)(200 * mDensity + getExtraHeight());
+    }
+
+    private int chooseSize(int mode, int size, int preferred) {
+        if (mode == MeasureSpec.AT_MOST || mode == MeasureSpec.EXACTLY)
+            return size;
+        return preferred; // MeasureSpec.UNSPECIFIED
+    }
+
+    /** Compute side of satValPanel given total available width/height. */
+    private float getSatValSide(float width, float height) {
+        float side1 = width - getExtraWidth();
+        float side2 = height - getExtraHeight();
+        return Math.min(side1, side2);
+    }
+
+    /** Amount of space to the right of the satVal panel. */
+    private float getExtraWidth() {
+        float ret = PANEL_SPACING + HUE_PANEL_WIDTH;
+        if (landScapeView())
+            ret += 3 * (PANEL_SPACING + RGB_PANEL_SIZE);
+        return ret;
+    }
+
+    /** Amount of space below the satVal panel. */
+    private float getExtraHeight() {
+        float ret = PANEL_SPACING + ALPHA_PANEL_HEIGHT;
+        if (!landScapeView())
+            ret += 3 * (PANEL_SPACING + RGB_PANEL_SIZE);
+        return ret;
     }
 
     @Override
@@ -210,20 +233,23 @@ public class ColorPickerView extends View {
         mDrawingRect.top    =     mDrawingOffset + getPaddingTop();
         mDrawingRect.bottom = h - mDrawingOffset - getPaddingBottom();
 
+        satValSide = getSatValSide(mDrawingRect.width(),
+                                   mDrawingRect.height());
+
         setUpSatValPanel();
         setUpHuePanel();
         setUpAlphaPanel();
+        setUpRGBPanels();
     }
 
     private void setUpSatValPanel() {
         RectF dRect = mDrawingRect;
-        float panelSide = dRect.height() - BORDER_WIDTH_PX * 2;
-        panelSide -= PANEL_SPACING + ALPHA_PANEL_HEIGHT;
+        float b = BORDER_WIDTH_PX;
 
-        float left   = dRect.left + BORDER_WIDTH_PX;
-        float right  = left + panelSide;
-        float top    = dRect.top + BORDER_WIDTH_PX;
-        float bottom = top + panelSide;
+        float left   = dRect.left + b;
+        float right  = left + satValSide - 2 * b;
+        float top    = dRect.top + b;
+        float bottom = top + satValSide - 2 * b;
 
         RectF satValRect = new RectF(left,top, right, bottom);
         satValPanel = new SatValGradientPanel(satValRect, color, mDensity);
@@ -231,11 +257,12 @@ public class ColorPickerView extends View {
 
     private void setUpHuePanel() {
         RectF dRect = mDrawingRect;
+        float b = BORDER_WIDTH_PX;
 
-        float left   = dRect.right  - HUE_PANEL_WIDTH + BORDER_WIDTH_PX;
-        float right  = dRect.right  - BORDER_WIDTH_PX;
-        float top    = dRect.top    + BORDER_WIDTH_PX;
-        float bottom = dRect.bottom - BORDER_WIDTH_PX - (PANEL_SPACING + ALPHA_PANEL_HEIGHT);
+        float left   = dRect.left + satValSide + PANEL_SPACING + b;
+        float right  = left + HUE_PANEL_WIDTH - 2 * b;
+        float top    = dRect.top + b;
+        float bottom = top + satValSide - 2 * b;
 
         RectF hueRect = new RectF(left, top, right, bottom);
         huePanel = new HueGradientPanel(hueRect, color, mDensity);
@@ -243,14 +270,43 @@ public class ColorPickerView extends View {
 
     private void setUpAlphaPanel() {
         RectF dRect = mDrawingRect;
+        float b = BORDER_WIDTH_PX;
 
-        float left   = dRect.left   + BORDER_WIDTH_PX;
-        float right  = dRect.right  - BORDER_WIDTH_PX;
-        float top    = dRect.bottom - ALPHA_PANEL_HEIGHT + BORDER_WIDTH_PX;
-        float bottom = dRect.bottom - BORDER_WIDTH_PX;
+        float left   = dRect.left  + b;
+        float right  = dRect.right - b;
+        float top    = dRect.top + satValSide + PANEL_SPACING + b;
+        float bottom = top + ALPHA_PANEL_HEIGHT - 2 * b;
 
         RectF alphaRect = new RectF(left, top, right, bottom);
         alphaPanel = new AlphaGradientPanel(alphaRect, color, mDensity);
+    }
+
+    private void setUpRGBPanels() {
+        RectF dRect = mDrawingRect;
+        float b = BORDER_WIDTH_PX;
+        float w = RGB_PANEL_SIZE;
+        float s = PANEL_SPACING;
+        if (!landScapeView()) {
+            float offs = dRect.top + satValSide + s + ALPHA_PANEL_HEIGHT;
+            for (int i = 0; i < 3; i++) {
+                float left   = dRect.left  + b;
+                float right  = dRect.right - b;
+                float top    = offs + i * (s + w) + s + b;
+                float bottom = top + w - 2 * b;
+                RectF rgbRect = new RectF(left, top, right, bottom);
+                rgbPanel[i] = new RGBGradientPanel(i, rgbRect, color, mDensity, true);
+            }
+        } else {
+            float offs = dRect.left + satValSide + s + HUE_PANEL_WIDTH;
+            for (int i = 0; i < 3; i++) {
+                float left   = offs + i * (s + w) + s + b;
+                float right  = left + w - 2 * b;
+                float top    = dRect.top + b;
+                float bottom = top + satValSide - 2 * b;
+                RectF rgbRect = new RectF(left, top, right, bottom);
+                rgbPanel[i] = new RGBGradientPanel(i, rgbRect, color, mDensity, false);
+            }
+        }
     }
 
     /**

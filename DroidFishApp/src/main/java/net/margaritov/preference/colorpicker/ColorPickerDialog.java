@@ -18,10 +18,13 @@ package net.margaritov.preference.colorpicker;
 
 import org.petero.droidfish.R;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 public class ColorPickerDialog 
@@ -32,7 +35,7 @@ public class ColorPickerDialog
         View.OnClickListener {
 
     private ColorPickerView mColorPicker;
-
+    private EditText colorCode;
     private ColorPickerPanelView mOldColor;
     private ColorPickerPanelView mNewColor;
 
@@ -52,9 +55,7 @@ public class ColorPickerDialog
     }
 
     private void init(int color) {
-        // To fight color banding.
         getWindow().setFormat(PixelFormat.RGBA_8888);
-
         setUp(color, color);
     }
 
@@ -71,26 +72,49 @@ public class ColorPickerDialog
                 + additionalInfo + "'");
 
         mColorPicker = findViewById(R.id.color_picker_view);
+        colorCode = findViewById(R.id.color_code);
         mOldColor = findViewById(R.id.old_color_panel);
         mNewColor = findViewById(R.id.new_color_panel);
 
-        ((LinearLayout) mOldColor.getParent()).setPadding(
-            Math.round(mColorPicker.getDrawingOffset()), 
-            0, 
-            Math.round(mColorPicker.getDrawingOffset()), 
-            0
-        );    
-        
+        int offs = Math.round(mColorPicker.getDrawingOffset());
+        ((LinearLayout) mOldColor.getParent()).setPadding(offs, 0, offs, 0);
+
         mOldColor.setOnClickListener(this);
         mNewColor.setOnClickListener(this);
         mColorPicker.setOnColorChangedListener(this);
         mOldColor.setColor(oldColor);
+
+        colorCode.setOnFocusChangeListener((view, hasFocus) -> {
+            if (!hasFocus)
+                applyColorCode();
+        });
+        colorCode.setOnEditorActionListener((v, id, event) -> {
+            colorCode.clearFocus();
+            String ims = Activity.INPUT_METHOD_SERVICE;
+            InputMethodManager imm = (InputMethodManager)getContext().getSystemService(ims);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            return true;
+        });
+
         mColorPicker.setColor(newColor, true);
     }
 
     @Override
     public void onColorChanged(int color) {
         mNewColor.setColor(color);
+        colorCode.setText(String.format("%08x", color));
+    }
+
+    private void applyColorCode() {
+        String txt = colorCode.getText().toString().trim().toLowerCase();
+        if (txt.length() != 8) // Format must be AARRGGBB
+            return;
+        try {
+            long longVal = Long.parseLong(txt, 16);
+            int val = (int)longVal;
+            if (val != mColorPicker.getColor())
+                mColorPicker.setColor(val, true);
+        } catch (NumberFormatException ignore) {}
     }
 
     /**

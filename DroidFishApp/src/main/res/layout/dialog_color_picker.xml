@@ -24,8 +24,17 @@
         android:id="@+id/color_picker_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:tag="portrait" />
+
+    <EditText
+        android:id="@+id/color_code"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text=""
+        android:typeface="monospace"
+        android:inputType="text" />
 
     <TextView
         android:layout_width="wrap_content"
