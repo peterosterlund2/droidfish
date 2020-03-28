@@ -19,30 +19,17 @@ package net.margaritov.preference.colorpicker;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
 import android.graphics.Shader;
 
 public class HueGradientPanel extends GradientPanel {
-    private float RECTANGLE_TRACKER_OFFSET = 2f;
-
-    private Paint trackerPaint = new Paint();
-
     /** Constructor. */
     HueGradientPanel(RectF rect, AHSVColor color, float density) {
         super(rect, color, density, null);
-
-        RECTANGLE_TRACKER_OFFSET *= density;
-
         Shader hueShader = new LinearGradient(rect.left, rect.top, rect.left, rect.bottom,
                                               buildHueColorArray(), null, Shader.TileMode.CLAMP);
         gradientPaint.setShader(hueShader);
-
-        trackerPaint.setColor(0xff1c1c1c);
-        trackerPaint.setStyle(Paint.Style.STROKE);
-        trackerPaint.setStrokeWidth(2f * density);
-        trackerPaint.setAntiAlias(true);
     }
 
     private int[] buildHueColorArray() {
@@ -56,16 +43,10 @@ public class HueGradientPanel extends GradientPanel {
     protected void setGradientPaint() {
     }
 
+    @Override
     protected void drawTracker(Canvas canvas) {
-        float rectHeight = 4 * density / 2;
         Point p = hueToPoint(color.getHSV()[0]);
-        RectF r = new RectF();
-        r.left   = rect.left - RECTANGLE_TRACKER_OFFSET;
-        r.right  = rect.right + RECTANGLE_TRACKER_OFFSET;
-        r.top    = p.y - rectHeight;
-        r.bottom = p.y + rectHeight;
-
-        canvas.drawRoundRect(r, 2, 2, trackerPaint);
+        drawRectangleTracker(canvas, p, false);
     }
 
     @Override

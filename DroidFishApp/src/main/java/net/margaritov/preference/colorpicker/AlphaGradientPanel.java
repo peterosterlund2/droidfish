@@ -18,27 +18,15 @@ package net.margaritov.preference.colorpicker;
 
 import android.graphics.Canvas;
 import android.graphics.LinearGradient;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 
 class AlphaGradientPanel extends GradientPanel {
-    private float RECTANGLE_TRACKER_OFFSET = 2f;
-
-    private Paint trackerPaint = new Paint();
-
     /** Constructor. */
     AlphaGradientPanel(RectF rect, AHSVColor color, float density) {
         super(rect, color, density, getAlphaPattern(rect, density));
-
-        RECTANGLE_TRACKER_OFFSET *= density;
-
-        trackerPaint.setColor(0xff1c1c1c);
-        trackerPaint.setStyle(Paint.Style.STROKE);
-        trackerPaint.setStrokeWidth(2f * density);
-        trackerPaint.setAntiAlias(true);
     }
 
     private static Drawable getAlphaPattern(RectF rect, float density) {
@@ -60,16 +48,10 @@ class AlphaGradientPanel extends GradientPanel {
         gradientPaint.setShader(alphaShader);
     }
 
+    @Override
     protected void drawTracker(Canvas canvas) {
-        float rectWidth = 4 * density / 2;
         Point p = alphaToPoint(color.getAlpha());
-        RectF r = new RectF();
-        r.left   = p.x - rectWidth;
-        r.right  = p.x + rectWidth;
-        r.top    = rect.top    - RECTANGLE_TRACKER_OFFSET;
-        r.bottom = rect.bottom + RECTANGLE_TRACKER_OFFSET;
-
-        canvas.drawRoundRect(r, 2, 2, trackerPaint);
+        drawRectangleTracker(canvas, p, true);
     }
 
     @Override

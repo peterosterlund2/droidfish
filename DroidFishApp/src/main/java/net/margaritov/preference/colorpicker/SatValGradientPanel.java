@@ -30,8 +30,6 @@ public class SatValGradientPanel extends GradientPanel {
 
     private Shader valShader;
 
-    private Paint trackerPaint = new Paint();
-
     /** Constructor. */
     SatValGradientPanel(RectF rect, AHSVColor color, float density) {
         super(rect, color, density, null);
@@ -40,10 +38,6 @@ public class SatValGradientPanel extends GradientPanel {
 
         valShader = new LinearGradient(rect.left, rect.top, rect.left, rect.bottom,
                                        0xffffffff, 0xff000000, Shader.TileMode.CLAMP);
-
-        trackerPaint.setStyle(Paint.Style.STROKE);
-        trackerPaint.setStrokeWidth(2f * density);
-        trackerPaint.setAntiAlias(true);
     }
 
     @Override
@@ -59,6 +53,7 @@ public class SatValGradientPanel extends GradientPanel {
         gradientPaint.setShader(shader);
     }
 
+    @Override
     protected void drawTracker(Canvas canvas) {
         float[] hsv = color.getHSV();
         Point p = satValToPoint(hsv[1], hsv[2]);

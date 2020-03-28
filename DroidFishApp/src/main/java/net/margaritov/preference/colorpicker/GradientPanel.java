@@ -32,6 +32,7 @@ abstract class GradientPanel {
 
     private Paint borderPaint = new Paint();
     protected Paint gradientPaint = new Paint();
+    protected Paint trackerPaint = new Paint();
 
     /** Constructor. */
     GradientPanel(RectF rect, AHSVColor color, float density, Drawable background) {
@@ -40,6 +41,11 @@ abstract class GradientPanel {
         this.density = density;
         this.background = background;
         borderPaint.setColor(0xff6E6E6E);
+
+        trackerPaint.setColor(0xff1c1c1c);
+        trackerPaint.setStyle(Paint.Style.STROKE);
+        trackerPaint.setStrokeWidth(2f * density);
+        trackerPaint.setAntiAlias(true);
     }
 
     boolean contains(Point point) {
@@ -73,4 +79,18 @@ abstract class GradientPanel {
 
     /** Draw "current color" tracker marker. */
     abstract protected void drawTracker(Canvas canvas);
+
+    protected void drawRectangleTracker(Canvas canvas, Point p, boolean horizontal) {
+        float size = 2f * density;
+        RectF r = new RectF(rect);
+        r.inset(-size, -size);
+        if (horizontal) {
+            r.left   = p.x - size;
+            r.right  = p.x + size;
+        } else {
+            r.top    = p.y - size;
+            r.bottom = p.y + size;
+        }
+        canvas.drawRoundRect(r, 2, 2, trackerPaint);
+    }
 }
