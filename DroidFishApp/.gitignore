@@ -1,4 +1,5 @@
 /build
+/.cxx
 src/main/assets/arm64-v8a
 src/main/assets/armeabi-v7a
 src/main/assets/x86
