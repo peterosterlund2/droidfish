@@ -45,7 +45,7 @@ class AHSVColor {
         int b = Color.blue(color);
         double oldHue = hsv[0];
         ARGBToHSV(Color.rgb(r, g, b), hsv);
-        if (hsv[1] <= 0f)
+        if (hsv[1] <= 0.0)
             hsv[0] = oldHue;
     }
 
