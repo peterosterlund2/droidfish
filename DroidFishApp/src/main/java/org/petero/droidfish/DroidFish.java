@@ -52,6 +52,7 @@ import org.petero.droidfish.engine.EngineUtil;
 import org.petero.droidfish.engine.UCIOptions;
 import org.petero.droidfish.gamelogic.DroidChessController;
 import org.petero.droidfish.gamelogic.ChessParseError;
+import org.petero.droidfish.gamelogic.Game;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
@@ -2807,7 +2808,7 @@ public class DroidFish extends Activity
         View content = View.inflate(DroidFish.this, R.layout.edit_comments, null);
         builder.setView(content);
 
-        DroidChessController.CommentInfo commInfo = ctrl.getComments();
+        Game.CommentInfo commInfo = ctrl.getComments();
 
         final TextView preComment, moveView, nag, postComment;
         preComment = content.findViewById(R.id.ed_comments_pre);
@@ -2829,11 +2830,10 @@ public class DroidFish extends Activity
             String post = postComment.getText().toString().trim();
             int nagVal = Node.strToNag(nag.getText().toString());
 
-            DroidChessController.CommentInfo commInfo1 = new DroidChessController.CommentInfo();
-            commInfo1.preComment = pre;
-            commInfo1.postComment = post;
-            commInfo1.nag = nagVal;
-            ctrl.setComments(commInfo1);
+            commInfo.preComment = pre;
+            commInfo.postComment = post;
+            commInfo.nag = nagVal;
+            ctrl.setComments(commInfo);
         });
 
         builder.show();

@@ -43,6 +43,7 @@ import org.petero.droidfish.engine.DroidComputerPlayer;
 import org.petero.droidfish.engine.UCIOptions;
 import org.petero.droidfish.engine.DroidComputerPlayer.SearchRequest;
 import org.petero.droidfish.engine.DroidComputerPlayer.SearchType;
+import org.petero.droidfish.gamelogic.Game.CommentInfo;
 import org.petero.droidfish.gamelogic.Game.GameState;
 import org.petero.droidfish.gamelogic.GameTree.Node;
 
@@ -656,30 +657,20 @@ public class DroidChessController {
         updateGUI();
     }
 
-    /** Comments associated with a move. */
-    public static final class CommentInfo {
-        public String move;
-        public String preComment, postComment;
-        public int nag;
-    }
-
     /** Get comments associated with current position. */
     public final synchronized CommentInfo getComments() {
-        Node cur = game.tree.currentNode;
-        CommentInfo ret = new CommentInfo();
-        ret.move = cur.moveStrLocal;
-        ret.preComment = cur.preComment;
-        ret.postComment = cur.postComment;
-        ret.nag = cur.nag;
-        return ret;
+        Pair<CommentInfo,Boolean> p = game.getComments();
+        if (p.second) {
+            gameTextListener.clear();
+            updateGUI();
+        }
+        return p.first;
     }
 
-    /** Set comments associated with current position. */
+    /** Set comments associated with current position. "commInfo" must be an object
+     *  (possibly modified) previously returned from getComments(). */
     public final synchronized void setComments(CommentInfo commInfo) {
-        Node cur = game.tree.currentNode;
-        cur.preComment = commInfo.preComment.replace('}', '\uff5d');
-        cur.postComment = commInfo.postComment.replace('}', '\uff5d');
-        cur.nag = commInfo.nag;
+        game.setComments(commInfo);
         gameTextListener.clear();
         updateGUI();
     }

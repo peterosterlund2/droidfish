@@ -552,4 +552,67 @@ public class Game {
         }
         return ret;
     }
+
+    /** Comments associated with a move. */
+    public static final class CommentInfo {
+        private Node parent; // If non-null, use parent.postComment instead of
+        // node.preComment when updating comment data.
+        public String move;
+        public String preComment;
+        public String postComment;
+        public int nag;
+    }
+
+    /** Get comments associated with current position.
+     *  Return information about the comments in ret.first. ret.second is true
+     *  if the GUI needs to be updated because comments were coalesced. */
+    public Pair<CommentInfo,Boolean> getComments() {
+        Node cur = tree.currentNode;
+
+        // Move preComment to corresponding postComment of parent node if possible,
+        // i.e. if the comments would be next to each other in the move text area.
+        Node parent = cur.getParent();
+        if (parent != null && cur.getChildNo() != 0)
+            parent = null;
+        if (parent != null && parent.hasSibling() && parent.getChildNo() == 0)
+            parent = null;
+        boolean needUpdate = false;
+        if (parent != null && !cur.preComment.isEmpty()) {
+            if (!parent.postComment.isEmpty())
+                parent.postComment += ' ';
+            parent.postComment += cur.preComment;
+            cur.preComment = "";
+            needUpdate = true;
+        }
+        Node child = (cur.hasSibling() && cur.getChildNo() == 0) ? null : cur.getFirstChild();
+        if (child != null && !child.preComment.isEmpty()) {
+            if (!cur.postComment.isEmpty())
+                cur.postComment += ' ';
+            cur.postComment += child.preComment;
+            child.preComment = "";
+            needUpdate = true;
+        }
+
+        CommentInfo ret = new CommentInfo();
+        ret.parent = parent;
+        ret.move = cur.moveStrLocal;
+        ret.preComment = parent != null ? parent.postComment : cur.preComment;
+        ret.postComment = cur.postComment;
+        ret.nag = cur.nag;
+
+        return new Pair<>(ret, needUpdate);
+    }
+
+    /** Set comments associated with current position. "commInfo" must be an object
+     *  (possibly modified) previously returned from getComments(). */
+    public final void setComments(CommentInfo commInfo) {
+        Node cur = tree.currentNode;
+        String preComment = commInfo.preComment.replace('}', '\uff5d');
+        if (commInfo.parent != null)
+            commInfo.parent.postComment = preComment;
+        else
+            cur.preComment = preComment;
+        cur.postComment = commInfo.postComment.replace('}', '\uff5d');
+        cur.nag = commInfo.nag;
+    }
 }

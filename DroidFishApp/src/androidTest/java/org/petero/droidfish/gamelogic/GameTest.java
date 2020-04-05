@@ -21,8 +21,10 @@ package org.petero.droidfish.gamelogic;
 import android.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.petero.droidfish.PGNOptions;
+import org.petero.droidfish.gamelogic.Game.CommentInfo;
 
 import junit.framework.TestCase;
 
@@ -543,6 +545,172 @@ public class GameTest extends TestCase {
             assertEquals(TextIO.UCIstringToMove("c2c8"), p.second);
             game.undoMove();
             assertEquals("Qc8# Qc7", GameTreeTest.getVariationsAsString(game.tree));
+        }
+    }
+
+    public final void testComments() throws ChessParseError {
+        PGNOptions options = new PGNOptions();
+        options.imp.variations = true;
+        options.imp.comments = true;
+        options.imp.nag = true;
+        {
+            Game game = new Game(null, new TimeControlData());
+            String pgn = "{a} 1. e4 {b} 1... e5 {c} ({g} 1... c6 {h} 2. Nf3 {i} 2... d5) " +
+                         "2. Nf3 {d} 2... Nc6 {e} 3. d3 {f} 3... Nf6 4. Nc3 d5 *";
+            boolean res = game.readPGN(pgn, options);
+            assertEquals(true, res);
+            Pair<CommentInfo,Boolean> p = game.getComments();
+//            assertEquals(Boolean.FALSE, p.second);
+            assertEquals("", p.first.preComment);
+            assertEquals("a", p.first.postComment);
+
+            game.tree.goForward(0); // At "e4"
+            p = game.getComments();
+            assertEquals(Boolean.FALSE, p.second);
+            assertEquals("a", p.first.preComment);
+            assertEquals("b", p.first.postComment);
+
+            game.tree.goForward(0); // At "e5"
+            p = game.getComments();
+            assertEquals(Boolean.FALSE, p.second);
+            assertEquals("b", p.first.preComment);
+            assertEquals("c", p.first.postComment);
+
+            game.tree.goForward(0); // At "Nf3" in mainline
+            p = game.getComments();
+            assertEquals(Boolean.FALSE, p.second);
+            assertEquals("", p.first.preComment);
+            assertEquals("d", p.first.postComment);
+
+            game.tree.goForward(0); // At "Nc6" in mainline
+            p = game.getComments();
+            assertEquals(Boolean.FALSE, p.second);
+            assertEquals("d", p.first.preComment);
+            assertEquals("e", p.first.postComment);
+
+            game.tree.goForward(0); // At "d3" in mainline
+            p = game.getComments();
+            assertEquals(Boolean.FALSE, p.second);
+            assertEquals("e", p.first.preComment);
+            assertEquals("f", p.first.postComment);
+
+            game.tree.goBack();
+            game.tree.goBack();
+            game.tree.goBack();
+            game.tree.goBack();
+            game.tree.goForward(1); // At "c6" in variation
+            p = game.getComments();
+            assertEquals(Boolean.FALSE, p.second);
+            assertEquals("g", p.first.preComment);
+            assertEquals("h", p.first.postComment);
+
+            game.tree.goForward(1); // At "Nf3" in variation
+            p = game.getComments();
+            assertEquals(Boolean.FALSE, p.second);
+            assertEquals("h", p.first.preComment);
+            assertEquals("i", p.first.postComment);
+
+            game.tree.goForward(1); // At "d5" in variation
+            p = game.getComments();
+            assertEquals(Boolean.FALSE, p.second);
+            assertEquals("i", p.first.preComment);
+            assertEquals("", p.first.postComment);
+
+            game.tree.goBack();
+            game.tree.goBack(); // At "c6" in variation
+            game.moveVariation(-1); // At "c6" which is now mainline
+            p = game.getComments();
+            assertEquals(Boolean.TRUE, p.second);
+            assertEquals("b g", p.first.preComment);
+            assertEquals("h", p.first.postComment);
+
+            game.tree.goBack();
+            game.tree.goForward(1); // At "e5" in variation
+            p = game.getComments();
+            assertEquals(Boolean.FALSE, p.second);
+            assertEquals("", p.first.preComment);
+            assertEquals("c", p.first.postComment);
+
+            p.first.preComment = "x";
+            game.setComments(p.first);
+            p = game.getComments();
+            assertEquals(Boolean.FALSE, p.second);
+            assertEquals("x", p.first.preComment);
+            assertEquals("c", p.first.postComment);
+
+            game.moveVariation(-1); // Still at "e5", now mainline again
+            game.tree.goBack(); // At "e4"
+            p = game.getComments();
+            assertEquals(Boolean.TRUE, p.second);
+            assertEquals("a", p.first.preComment);
+            assertEquals("b g x", p.first.postComment);
+        }
+        {
+            Game game = new Game(null, new TimeControlData());
+            String pgn = "{a} 1. e4 (1. d4) *";
+            boolean res = game.readPGN(pgn, options);
+            assertEquals(true, res);
+            Pair<CommentInfo,Boolean> p = game.getComments();
+            assertEquals("", p.first.preComment);
+            assertEquals("a", p.first.postComment);
+        }
+        {
+            Game game = new Game(null, new TimeControlData());
+            String pgn = "1. e4 e5 (1... c6 2. Nf3 d5) 2. Nf3 Nc6 3. d3 Nf6 4. Nc3 d5 *";
+            boolean res = game.readPGN(pgn, options);
+            assertEquals(true, res);
+
+            CommentInfo info = game.getComments().first;
+            info.postComment = "a";
+            game.setComments(info);
+
+            game.tree.goForward(0);
+            game.tree.goForward(0);
+            info = game.getComments().first;
+            info.preComment = "b";
+            info.postComment = "c";
+            game.setComments(info);
+
+            game.tree.goForward(0);
+            game.tree.goForward(0);
+            info = game.getComments().first;
+            info.preComment = "d";
+            info.postComment = "e";
+            game.setComments(info);
+
+            game.tree.goForward(0);
+            info = game.getComments().first;
+            info.postComment = "f";
+            game.setComments(info);
+
+            game.tree.goBack();
+            game.tree.goBack();
+            game.tree.goBack();
+            game.tree.goBack();
+            game.tree.goForward(1); // At "c6" in variation
+            info = game.getComments().first;
+            info.preComment = "g";
+            info.postComment = "h";
+            game.setComments(info);
+
+            game.tree.goForward(0);
+            game.tree.goForward(0);
+            info = game.getComments().first;
+            info.preComment = "i";
+            info.postComment = "j";
+            game.setComments(info);
+
+            PGNOptions expOpts = new PGNOptions();
+            expOpts.exp.variations = true;
+            expOpts.exp.comments = true;
+            String exported = game.tree.toPGN(expOpts);
+            String[] split = exported.split("\n");
+            split = Arrays.stream(split).filter(e -> !e.startsWith("[") && e.length() > 0)
+                .toArray(String[]::new);
+            exported = String.join(" ", split);
+            String expected = "{a} 1. e4 {b} 1... e5 {c} ({g} 1... c6 {h} 2. Nf3 {i} 2... d5 {j}) " +
+                              "2. Nf3 {d} 2... Nc6 {e} 3. d3 {f} 3... Nf6 4. Nc3 d5 *";
+            assertEquals(expected, exported);
         }
     }
 }

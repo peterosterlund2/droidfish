@@ -171,12 +171,6 @@ Tap and hold the move text area to open a menu with the following actions:
     * `+- ` : White has a decisive advantage
     * `-+ ` : Black has a decisive advantage
 
-  **Note!** When a game is exported in PGN format the *Before* comment for one
-  move is merged with the *After* comment for the previous move, if there is a
-  previous move adjacent to the current move in the PGN data. The *Before*
-  comment should therefore only be used when this is not the case, such as at
-  the start of the game or at the start of a variation.
-
 * *Add opening name*: Adds or updates the `ECO` and `Opening` PGN headers based
   on information from the ECO (Encyclopedia of Chess Openings) database and the
   main line in the current game.

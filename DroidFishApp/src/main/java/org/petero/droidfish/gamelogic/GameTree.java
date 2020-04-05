@@ -1075,6 +1075,14 @@ public class GameTree {
             return parent;
         }
 
+        public boolean hasSibling() {
+            return parent != null && parent.children.size() > 1;
+        }
+
+        public Node getFirstChild() {
+            return children.isEmpty() ? null : children.get(0);
+        }
+
         /** nodePos must represent the same position as this Node object. */
         private boolean verifyChildren(Position nodePos) {
             return verifyChildren(nodePos, null);
