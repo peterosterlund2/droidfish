@@ -57,7 +57,7 @@
             android:key="showThinking" 
             android:title="@string/prefs_showThinking_title" 
             android:summary="@string/prefs_showThinking_summary" 
-            android:defaultValue="true">
+            android:defaultValue="false">
         </CheckBoxPreference>
         <CheckBoxPreference
             android:key="whiteBasedScores"
