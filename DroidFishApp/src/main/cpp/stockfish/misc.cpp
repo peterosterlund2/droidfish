@@ -142,9 +142,7 @@ const string engine_info(bool to_uci) {
       ss << setw(2) << day << setw(2) << (1 + months.find(month) / 4) << year.substr(2);
   }
 
-  ss << (Is64Bit ? " 64" : "")
-     << (HasPext ? " BMI2" : (HasPopCnt ? " POPCNT" : ""))
-     << (to_uci  ? "\nid author ": " by ")
+  ss << (to_uci  ? "\nid author ": " by ")
      << "T. Romstad, M. Costalba, J. Kiiski, G. Linscott";
 
   return ss.str();
