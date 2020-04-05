@@ -677,8 +677,8 @@ public class DroidChessController {
     /** Set comments associated with current position. */
     public final synchronized void setComments(CommentInfo commInfo) {
         Node cur = game.tree.currentNode;
-        cur.preComment = commInfo.preComment;
-        cur.postComment = commInfo.postComment;
+        cur.preComment = commInfo.preComment.replace('}', '\uff5d');
+        cur.postComment = commInfo.postComment.replace('}', '\uff5d');
         cur.nag = commInfo.nag;
         gameTextListener.clear();
         updateGUI();
