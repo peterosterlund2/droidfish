@@ -1413,7 +1413,7 @@ public class GameTree {
         }
 
         private static Pair<String, String> extractExtInfo(String comment, String cmd) {
-            comment = comment.replaceAll("\n|\r|\t", " ");
+            comment = comment.replaceAll("[\n\r\t]", " ");
             String remaining = comment;
             String param = null;
             String match = "[%" + cmd + " ";
