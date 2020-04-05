@@ -1,3 +1,12 @@
+2020-04-05: Version 1.80
+- Improve editing of PGN comments.
+- Add RGB input support to the preferences color picker.
+- Add file browser support when setting UCI options.
+- Use file browser for file/directory preferences settings.
+- Make preferences color picker handle device rotation changes correctly.
+- Fix crash when reading from a broken SCID database.
+- Update translations.
+
 2020-02-23: Version 1.79
 - Separate settings for "move sound" and "move speech".
 - Support for move input using drag and drop.
