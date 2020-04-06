@@ -556,7 +556,7 @@ public class Game {
     /** Comments associated with a move. */
     public static final class CommentInfo {
         private Node parent; // If non-null, use parent.postComment instead of
-        // node.preComment when updating comment data.
+                             // node.preComment when updating comment data.
         public String move;
         public String preComment;
         public String postComment;
