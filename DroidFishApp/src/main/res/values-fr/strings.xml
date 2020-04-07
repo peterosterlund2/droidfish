@@ -39,7 +39,7 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="load_game">Charger une partie PGN</string>
     <string name="load_position">Charger une position depuis un fichier</string>
     <string name="load_scid_game">Charger une partie Scid</string>
-    <string name="load_del_game">Load deleted game</string>
+    <string name="load_del_game">Charger partie supprimée</string>
     <string name="save_game">Sauvegarder la partie au format PGN</string>
     <string name="get_fen">Récupérer la position</string>
     <string name="repeat_last_move">Repeat last move</string>
@@ -275,7 +275,7 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="prefs_engine_settings">Paramètres du module</string>
     <string name="prefs_strength_title">Niveau de jeu</string>
     <string name="prefs_strength_summary">Supporté uniquement par les modules internes. Le mode Analyse utilisera toujours le niveau maximal.</string>
-    <string name="prefs_ponderMode_title">Pondering</string>
+    <string name="prefs_ponderMode_title">Réflexion permanente</string>
     <string name="prefs_ponderMode_summary">Laisser le module actif lors du coup de l\'opposant. Supporté par la plupart des modules.</string>
     <string name="prefs_hash_title">Table de hachage</string>
     <string name="prefs_hash_summary">Taille de la table de hachage en megaoctets</string>
@@ -297,8 +297,8 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="prefs_bookHints_summary">Afficher les coups d\'ouverture du livre pour le joueur</string>
     <string name="prefs_thinkingArrows_title">Utiliser les flèches</string>
     <string name="prefs_thinkingArrows_summary">Utiliser les flèches pour afficher les coups sur l\'échiquier</string>
-    <string name="prefs_ecoHints_title">Show ECO codes</string>
-    <string name="prefs_ecoHints_summary">Show \'Encyclopedia of Chess Openings\' classification of openings</string>
+    <string name="prefs_ecoHints_title">Montrer codes ECO</string>
+    <string name="prefs_ecoHints_summary">Montrer la classification de l\'Encyclopédie des Ouvertures aux Échecs</string>
     <string name="prefs_user_interface_appearance">Apparence</string>
     <string name="prefs_user_interface_behavior">Comportement</string>
     <string name="prefs_animateMoves_title">Animation des coups</string>
@@ -307,10 +307,10 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="prefs_autoScrollTitle_summary">Défilement automatique de la barre principale si les noms sont trop longs</string>
     <string name="prefs_quickMoveInput_title">Entrée rapide des coups</string>
     <string name="prefs_quickMoveInput_summary">Les cases de départ et d\'arrivée peuvent être touchées dans n\'importe quel ordre. Le coup est joué lorsqu\'il n\'y a plus d’ambiguïté.</string>
-    <string name="prefs_moveSoundEnabled_title">Move sound</string>
-    <string name="prefs_moveSoundEnabled_summary">Play sound when computer makes a move</string>
-    <string name="prefs_moveAnnounceType_title">Speak moves</string>
-    <string name="prefs_moveAnnounceType_summary">Speak when computer makes a move</string>
+    <string name="prefs_moveSoundEnabled_title">Bruitage des coups</string>
+    <string name="prefs_moveSoundEnabled_summary">Bruiter le coup joué par l\'ordinateur</string>
+    <string name="prefs_moveAnnounceType_title">Lecture vocale des coups</string>
+    <string name="prefs_moveAnnounceType_summary">Lire à voix haute les coups joués par l\'ordinateur</string>
     <string name="prefs_vibrateEnabled_title">Activer les vibrations</string>
     <string name="prefs_vibrateEnabled_summary">Vibrer lorsque l\'ordinateur joue un coup</string>
     <string name="prefs_fullScreenMode_title">Mode Plein écran</string>
@@ -318,16 +318,16 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="prefs_wakeLock_title">Désactiver la veille de l\'écran</string>
     <string name="prefs_drawSquareLabels_title">Coordonnées</string>
     <string name="prefs_drawSquareLabels_summary">Afficher les coordonnées: a–h et 1–8</string>
-    <string name="prefs_dragMoveEnabled_title">Drag Pieces</string>
-    <string name="prefs_dragMoveEnabled_summary">Drag a piece to make a move</string>
+    <string name="prefs_dragMoveEnabled_title">Faire glisser pièces</string>
+    <string name="prefs_dragMoveEnabled_summary">Faire glisser une pièce pour jouer un coup</string>
     <string name="prefs_scrollSensitivity_title">Vitesse de défilement</string>
     <string name="prefs_scrollSensitivity_summary">Vitesse de défilement lors de la navigation dans la partie</string>
     <string name="prefs_invertScrollDirection_title">Inverser le sens de défilement</string>
     <string name="prefs_invertScrollDirection_summary">Activer cela si vous pensez que le défilement des coups se fait dans le mauvais sens</string>
-    <string name="prefs_scrollGames_title">Sweep horizontally loads game</string>
-    <string name="prefs_scrollGames_summary">If enabled, sweeping horizontally on the chess board moves to the next/previous game</string>
-    <string name="prefs_autoScrollMoveList_title">Auto scroll move list</string>
-    <string name="prefs_autoScrollMoveList_summary">Automatically scroll the move list to the current board position</string>
+    <string name="prefs_scrollGames_title">Faire glisser horizontalement pour charger partie</string>
+    <string name="prefs_scrollGames_summary">Si activé, faire glisser l\'échiquier horizontalement passe à la partie précédente/suivante</string>
+    <string name="prefs_autoScrollMoveList_title">Défilement automatique (liste des coups)</string>
+    <string name="prefs_autoScrollMoveList_summary">Faire automatiquement défiler la liste des coups à la position actuelle</string>
     <string name="prefs_discardVariations_title">Ignorer les variations</string>
     <string name="prefs_discardVariations_summary">Ignorer les coups secondaires de la liste de coups</string>
     <string name="prefs_leftHanded_title">Mode gaucher</string>
@@ -405,8 +405,8 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="prefs_showVariationLine_summary">Montrer les variations actuelles dans la zone d\'état</string>
     <string name="prefs_viewPieceType_title">Nom des pièces</string>
     <string name="prefs_viewPieceType_summary">Définir l\'affichage des noms de pièces</string>
-    <string name="prefs_viewPieceSet_title">Piece Set</string>
-    <string name="prefs_viewPieceSet_summary">Select chess piece set</string>
+    <string name="prefs_viewPieceSet_title">Jeu de pièces</string>
+    <string name="prefs_viewPieceSet_summary">Sélectionner le jeu de pièces</string>
     <string name="prefs_blindMode_title">Jouer à l\'aveugle</string>
     <string name="prefs_blindMode_summary">Masquer les pièces de l\'échiquier</string>
     <string name="prefs_pgn_import">Importer PGN</string>
@@ -799,9 +799,9 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
         <item>speech_es</item>
     </string-array>
     <string-array name="move_announce_type_texts">
-        <item>Off</item>
-        <item>English Speech</item>
-        <item>German Speech</item>
-        <item>Spanish Speech</item>
+        <item>Désactivée</item>
+        <item>Anglais</item>
+        <item>Allemand</item>
+        <item>Espagnol</item>
     </string-array>
 </resources>
