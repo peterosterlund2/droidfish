@@ -18,7 +18,9 @@
 
 package org.petero.droidfish;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -155,7 +157,9 @@ public class PieceSet {
         String set = availPieceSets.contains(cachedPieceSet) ? cachedPieceSet
                                                              : defaultPieceSet;
         String name = "pieces/" + set + ".zip";
-        InputStream is = DroidFishApp.getContext().getAssets().open(name);
+        Context ctx = DroidFishApp.getContext();
+        AssetManager assets = ctx.getAssets();
+        InputStream is = assets.open(name);
         return new ZipInputStream(is);
     }
 
