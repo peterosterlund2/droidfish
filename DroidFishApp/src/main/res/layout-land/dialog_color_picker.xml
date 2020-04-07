@@ -24,6 +24,7 @@
         android:id="@+id/color_picker_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1.0"
         android:tag="landscape" />
 
     <LinearLayout
@@ -56,6 +57,7 @@
 
         <net.margaritov.preference.colorpicker.ColorPickerPanelView
             android:id="@+id/old_color_panel"
+            android:layout_weight="1.0"
             android:layout_width="fill_parent"
             android:layout_height="40dp" />
 
@@ -70,6 +72,7 @@
 
         <net.margaritov.preference.colorpicker.ColorPickerPanelView
             android:id="@+id/new_color_panel"
+            android:layout_weight="1.0"
             android:layout_width="fill_parent"
             android:layout_height="40dp" />
     </LinearLayout>

@@ -24,6 +24,7 @@
         android:id="@+id/color_picker_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1.0"
         android:tag="portrait" />
 
     <EditText
@@ -49,7 +50,6 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_below="@id/color_picker_view"
         android:layout_marginBottom="10dp"
         android:orientation="horizontal">
 
@@ -71,7 +71,7 @@
         <net.margaritov.preference.colorpicker.ColorPickerPanelView
             android:id="@+id/new_color_panel"
             android:layout_width="0px"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_weight="0.5" />
     </LinearLayout>
 </LinearLayout>
