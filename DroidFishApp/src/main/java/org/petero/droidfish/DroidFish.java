@@ -414,6 +414,16 @@ public class DroidFish extends Activity
                 }
             });
             addAction(new UIAction() {
+                public String getId() { return "loadGame"; }
+                public int getName() { return R.string.load_game; }
+                public int getIcon() { return R.raw.open_file; }
+                public boolean enabled() { return storageAvailable(); }
+                public void run() {
+                    selectFile(R.string.select_pgn_file, R.string.pgn_load, "currentPGNFile", pgnDir,
+                               SELECT_PGN_FILE_DIALOG, RESULT_OI_PGN_LOAD);
+                }
+            });
+            addAction(new UIAction() {
                 public String getId() { return "selectEngine"; }
                 public int getName() { return R.string.select_engine; }
                 public int getIcon() { return R.raw.engine; }

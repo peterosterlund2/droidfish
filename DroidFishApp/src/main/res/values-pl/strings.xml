@@ -771,6 +771,7 @@ Jeśli pracujesz na baterii, zalecana jest zmiana ustawień, w celu oszczędzani
         <item>@string/toggle_blind_mode</item>
         <item>@string/toggle_arrows</item>
         <item>@string/load_last_file</item>
+        <item>@string/load_game</item>
         <item>@string/select_engine</item>
         <item>@string/engine_options</item>
     </string-array>
@@ -789,6 +790,7 @@ Jeśli pracujesz na baterii, zalecana jest zmiana ustawień, w celu oszczędzani
         <item>blindMode</item>
         <item>toggleArrows</item>
         <item>loadLastFile</item>
+        <item>loadGame</item>
         <item>selectEngine</item>
         <item>engineOptions</item>
     </string-array>
