@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import org.petero.droidfish.PGNOptions;
 import org.petero.droidfish.R;
 
 
@@ -366,9 +365,9 @@ public class TextIO {
                 localized = false;
             int p = pos.getPiece(move.from);
             if (localized)
-                ret.append(pieceToCharLocalized(p));
+                ret.append(pieceToCharLocalized(p, false));
             else
-                ret.append(pieceToChar(p));
+                ret.append(pieceToChar(p, false));
             int x1 = Position.getX(move.from);
             int y1 = Position.getY(move.from);
             int x2 = Position.getX(move.to);
@@ -418,9 +417,9 @@ public class TextIO {
             ret.append((char) (y2 + '1'));
             if (move.promoteTo != Piece.EMPTY) {
                 if (localized)
-                    ret.append(pieceToCharLocalized(move.promoteTo));
+                    ret.append(pieceToCharLocalized(move.promoteTo, false));
                 else
-                    ret.append(pieceToChar(move.promoteTo));
+                    ret.append(pieceToChar(move.promoteTo, false));
             }
         }
         UndoInfo ui = new UndoInfo();
@@ -724,7 +723,7 @@ public class TextIO {
                     ret.append(dark ? ".. |" : "   |");
                 } else {
                     ret.append(Piece.isWhite(p) ? ' ' : '*');
-                    String pieceName = pieceToChar(p);
+                    String pieceName = pieceToChar(p, false);
                     if (pieceName.length() == 0)
                         pieceName = "P";
                     ret.append(pieceName);
@@ -738,40 +737,26 @@ public class TextIO {
         return ret.toString();
     }
 
-    /** Convert a piece and a square to a string, such as Nf3. */
-    public static String pieceAndSquareToString(int currentPieceType, int p, int sq) {
-        StringBuilder ret = new StringBuilder();
-        if (currentPieceType == PGNOptions.PT_FIGURINE) {
-            ret.append(Piece.toUniCode(p));
-        } else {
-            boolean localized = (currentPieceType != PGNOptions.PT_ENGLISH);
-            if ((p == Piece.WPAWN) || (p == Piece.BPAWN))
-                ret.append(localized ? pieceNames[0] : "P");
-            else
-                ret.append(localized ? pieceToCharLocalized(p) : pieceToChar(p));
-        }
-        ret.append(squareToString(sq));
-        return ret.toString();
-    }
-
-    private static String pieceToChar(int p) {
+    public static String pieceToChar(int p, boolean namedPawn) {
         switch (p) {
-            case Piece.WQUEEN:  case Piece.BQUEEN:  return "Q";
-            case Piece.WROOK:   case Piece.BROOK:   return "R";
-            case Piece.WBISHOP: case Piece.BBISHOP: return "B";
-            case Piece.WKNIGHT: case Piece.BKNIGHT: return "N";
-            case Piece.WKING:   case Piece.BKING:   return "K";
+        case Piece.WKING:   case Piece.BKING:   return "K";
+        case Piece.WQUEEN:  case Piece.BQUEEN:  return "Q";
+        case Piece.WROOK:   case Piece.BROOK:   return "R";
+        case Piece.WBISHOP: case Piece.BBISHOP: return "B";
+        case Piece.WKNIGHT: case Piece.BKNIGHT: return "N";
+        case Piece.WPAWN:   case Piece.BPAWN:   if (namedPawn) return "P";
         }
         return "";
     }
 
-    public static String pieceToCharLocalized(int p) {
+    public static String pieceToCharLocalized(int p, boolean namedPawn) {
         switch (p) {
-            case Piece.WQUEEN:  case Piece.BQUEEN:  return pieceNames[4];
-            case Piece.WROOK:   case Piece.BROOK:   return pieceNames[3];
-            case Piece.WBISHOP: case Piece.BBISHOP: return pieceNames[2];
-            case Piece.WKNIGHT: case Piece.BKNIGHT: return pieceNames[1];
-            case Piece.WKING:   case Piece.BKING:   return pieceNames[5];
+        case Piece.WKING:   case Piece.BKING:   return pieceNames[5];
+        case Piece.WQUEEN:  case Piece.BQUEEN:  return pieceNames[4];
+        case Piece.WROOK:   case Piece.BROOK:   return pieceNames[3];
+        case Piece.WBISHOP: case Piece.BBISHOP: return pieceNames[2];
+        case Piece.WKNIGHT: case Piece.BKNIGHT: return pieceNames[1];
+        case Piece.WPAWN:   case Piece.BPAWN:   if (namedPawn) return pieceNames[0];
         }
         return "";
     }

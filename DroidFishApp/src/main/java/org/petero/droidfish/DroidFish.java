@@ -54,7 +54,6 @@ import org.petero.droidfish.gamelogic.DroidChessController;
 import org.petero.droidfish.gamelogic.ChessParseError;
 import org.petero.droidfish.gamelogic.Game;
 import org.petero.droidfish.gamelogic.Move;
-import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.gamelogic.GameTree.Node;
@@ -710,12 +709,12 @@ public class DroidFish extends Activity
     }
 
     // Unicode code points for chess pieces
-    private static final String figurinePieceNames = Piece.NOTATION_PAWN   + " " +
-                                                     Piece.NOTATION_KNIGHT + " " +
-                                                     Piece.NOTATION_BISHOP + " " +
-                                                     Piece.NOTATION_ROOK   + " " +
-                                                     Piece.NOTATION_QUEEN  + " " +
-                                                     Piece.NOTATION_KING;
+    private static final String figurinePieceNames = PieceFontInfo.NOTATION_PAWN   + " " +
+                                                     PieceFontInfo.NOTATION_KNIGHT + " " +
+                                                     PieceFontInfo.NOTATION_BISHOP + " " +
+                                                     PieceFontInfo.NOTATION_ROOK   + " " +
+                                                     PieceFontInfo.NOTATION_QUEEN  + " " +
+                                                     PieceFontInfo.NOTATION_KING;
 
     private void setPieceNames(int pieceType) {
         if (pieceType == PGNOptions.PT_FIGURINE) {

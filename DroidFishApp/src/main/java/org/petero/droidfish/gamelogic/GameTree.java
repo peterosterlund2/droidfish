@@ -909,7 +909,7 @@ public class GameTree {
                 if (p == Piece.EMPTY)
                     sb.append(ret.charAt(i));
                 else
-                    sb.append(TextIO.pieceToCharLocalized(p));
+                    sb.append(TextIO.pieceToCharLocalized(p, false));
             }
             ret = sb.toString();
         }
@@ -917,7 +917,7 @@ public class GameTree {
     }
 
     /** Get PGN result string corresponding to the current position. */
-    public final String getPGNResultString() {
+    private final String getPGNResultString() {
         String gameResult = "*";
         switch (getGameState()) {
             case ALIVE:

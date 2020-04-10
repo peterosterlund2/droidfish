@@ -24,7 +24,6 @@ import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.MoveGen;
 import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
-import org.petero.droidfish.gamelogic.TextIO;
 import org.petero.droidfish.view.ChessBoard;
 
 import android.content.Context;
@@ -147,7 +146,7 @@ public class ChessBoardPlay extends ChessBoard {
                     String msg = getContext().getString(R.string.piece_can_not_be_moved);
                     int pieceType = (pgnOptions == null) ? PGNOptions.PT_LOCAL
                                                          : pgnOptions.view.pieceType;
-                    msg += ": " + TextIO.pieceAndSquareToString(pieceType, p, sq);
+                    msg += ": " + PieceFontInfo.pieceAndSquareToString(pieceType, p, sq);
                     DroidFishApp.toast(msg, Toast.LENGTH_SHORT);
                 }
             }

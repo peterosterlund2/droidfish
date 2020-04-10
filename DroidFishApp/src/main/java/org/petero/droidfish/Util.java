@@ -69,11 +69,11 @@ public final class Util {
         for (int p = Piece.WPAWN; p >= Piece.WKING; p--) {
             int diff = pos.nPieces(p) - pos.nPieces(Piece.swapColor(p));
             while (diff < 0) {
-                whiteString.append(Piece.toUniCode(Piece.swapColor(p)));
+                whiteString.append(PieceFontInfo.toUniCode(Piece.swapColor(p)));
                 diff++;
             }
             while (diff > 0) {
-                blackString.append(Piece.toUniCode(p));
+                blackString.append(PieceFontInfo.toUniCode(p));
                 diff--;
             }
         }
