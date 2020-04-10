@@ -1,3 +1,8 @@
+2020-04-10: Version 1.81
+- Fix color picker layout problems for some screen sizes.
+- Fix auto-scrolling of move list when figurine notation is enabled.
+- Add button action "Load game from PGN file".
+
 2020-04-05: Version 1.80
 - Improve editing of PGN comments.
 - Add RGB input support to the preferences color picker.
