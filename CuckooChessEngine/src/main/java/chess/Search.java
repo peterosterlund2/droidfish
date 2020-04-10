@@ -66,6 +66,7 @@ public class Search {
 
     // Reduced strength variables
     private int strength = 1000; // Strength (0-1000)
+    private int maxNPS = 0;      // If > 0, reduce strength by limiting NPS
     private boolean weak = false;        // Set to strength < 1000
     private long randomSeed = 0;
 
@@ -170,12 +171,16 @@ public class Search {
         maxTimeMillis = maxTimeLimit;
     }
 
-    final public void setStrength(int strength, long randomSeed) {
+    final public void setStrength(int strength, long randomSeed, int maxNPS) {
         if (strength < 0) strength = 0;
         if (strength > 1000) strength = 1000;
         this.strength = strength;
         weak = strength < 1000;
         this.randomSeed = randomSeed;
+        this.maxNPS = maxNPS;
+        nodesBetweenTimeCheck = 5000;
+        if (maxNPS > 0)
+            nodesBetweenTimeCheck = Math.min(Math.max(maxNPS / 100, 1), nodesBetweenTimeCheck);
     }
 
     final public Move iterativeDeepening(MoveGen.MoveList scMovesIn,
@@ -264,6 +269,9 @@ public class Search {
                         mi, "-", alpha, beta, "-", "-");
                 System.out.printf("%-6s...\n", TextIO.moveToUCIString(m)); */
                 pos.makeMove(m, ui);
+                nodes++;
+                totalNodes++;
+                nodesToGo--;
                 SearchTreeInfo sti = searchTreeInfo[0];
                 sti.currentMove = m;
                 sti.lmr = lmrS;
@@ -301,6 +309,9 @@ public class Search {
                         nodes = qNodes = 0;
                         posHashList[posHashListSize++] = pos.zobristHash();
                         pos.makeMove(m, ui);
+                        nodes++;
+                        totalNodes++;
+                        nodesToGo--;
                         int score2 = -negaScout(-beta, -score, 1, depthS - plyScale, -1, givesCheck);
                         score = Math.max(score, score2);
                         nodesThisMove += nodes + qNodes;
@@ -320,6 +331,9 @@ public class Search {
                         nodes = qNodes = 0;
                         posHashList[posHashListSize++] = pos.zobristHash();
                         pos.makeMove(m, ui);
+                        nodes++;
+                        totalNodes++;
+                        nodesToGo--;
                         score = -negaScout(-score, -alpha, 1, depthS - plyScale, -1, givesCheck);
                         nodesThisMove += nodes + qNodes;
                         posHashListSize--;
@@ -459,13 +473,22 @@ public class Search {
             long idx = log.logNodeStart(sti.nodeIdx, sti.currentMove, alpha, beta, ply, depth/plyScale);
             searchTreeInfo[ply].nodeIdx = idx;
         }
-        if (--nodesToGo <= 0) {
+        if (nodesToGo <= 0) {
             nodesToGo = nodesBetweenTimeCheck;
             long tNow = System.currentTimeMillis();
             long timeLimit = searchNeedMoreTime ? maxTimeMillis : minTimeMillis;
             if (    ((timeLimit >= 0) && (tNow - tStart >= timeLimit)) ||
                     ((maxNodes >= 0) && (totalNodes >= maxNodes))) {
                 throw new StopSearch();
+            }
+            if (maxNPS > 0) {
+                long time = tNow - tStart;
+                if (totalNodes * 1000.0 > maxNPS * Math.max(1, time)) {
+                    long wantedTime = totalNodes * 1000 / maxNPS;
+                    long sleepTime = wantedTime - time;
+                    if (sleepTime > 0)
+                        try { Thread.sleep(sleepTime); } catch (InterruptedException ignore) {}
+                }
             }
             if (tNow - tLastStats >= 1000) {
                 notifyStats();
@@ -797,6 +820,7 @@ public class Search {
                 pos.makeMove(m, ui);
                 nodes++;
                 totalNodes++;
+                nodesToGo--;
                 sti.currentMove = m;
 /*              long nodes0 = nodes;
                 long qNodes0 = qNodes;
@@ -1021,6 +1045,7 @@ public class Search {
             pos.makeMove(m, ui); 
             qNodes++;
             totalNodes++;
+            nodesToGo--;
             score = -quiesce(-beta, -alpha, ply + 1, depth - 1, nextInCheck);
             pos.unMakeMove(m, ui);
             if (score > bestScore) {

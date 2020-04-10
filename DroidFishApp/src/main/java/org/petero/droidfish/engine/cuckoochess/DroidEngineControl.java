@@ -70,6 +70,7 @@ public class DroidEngineControl {
 
     // Reduced strength variables
     private int strength = 1000;
+    private int maxNPS = 0;
     private long randomSeed = 0;
     private Random rndGen = new Random();
 
@@ -224,8 +225,8 @@ public class DroidEngineControl {
         sc = new Search(pos, posHashList, posHashListSize, tt, ht);
         sc.timeLimit(minTimeLimit, maxTimeLimit);
         sc.setListener(new SearchListener(os));
-        sc.setStrength(strength, randomSeed);
-        sc.nodesBetweenTimeCheck = 500;
+        sc.setStrength(strength, randomSeed, maxNPS);
+        sc.nodesBetweenTimeCheck = Math.min(500, sc.nodesBetweenTimeCheck);
         MoveGen.MoveList moves = moveGen.pseudoLegalMoves(pos);
         MoveGen.removeIllegal(pos, moves);
         if ((searchMoves != null) && (searchMoves.size() > 0))
@@ -367,9 +368,10 @@ public class DroidEngineControl {
         os.printLine("option name OwnBook type check default false");
         os.printLine("option name Ponder type check default true");
         os.printLine("option name UCI_AnalyseMode type check default false");
-        os.printLine("option name UCI_EngineAbout type string default %s by Peter Osterlund, see http://web.comhem.se/petero2home/javachess/index.html",
+        os.printLine("option name UCI_EngineAbout type string default %s by Peter Osterlund, see http://hem.bredband.net/petero2b/javachess/index.html",
                 ComputerPlayer.engineName);
         os.printLine("option name Strength type spin default 1000 min 0 max 1000");
+        os.printLine("option name maxNPS type spin default 0 min 0 max 10000000");
     }
 
     final void setOption(String optionName, String optionValue) {
@@ -385,6 +387,8 @@ public class DroidEngineControl {
                 analyseMode = Boolean.parseBoolean(optionValue);
             } else if (optionName.equals("strength")) {
                 strength = Integer.parseInt(optionValue);
+            } else if (optionName.equals("maxnps")) {
+                maxNPS = Integer.parseInt(optionValue);
             }
         } catch (NumberFormatException ignore) {
         }

@@ -73,6 +73,7 @@ public class EngineControl {
 
     // Reduced strength variables
     private int strength = 1000;
+    private int maxNPS = 0;
     private long randomSeed = 0;
 
     /**
@@ -226,7 +227,7 @@ public class EngineControl {
         sc = new Search(pos, posHashList, posHashListSize, tt, ht);
         sc.timeLimit(minTimeLimit, maxTimeLimit);
         sc.setListener(new SearchListener(os));
-        sc.setStrength(strength, randomSeed);
+        sc.setStrength(strength, randomSeed, maxNPS);
         MoveGen.MoveList moves = moveGen.pseudoLegalMoves(pos);
         MoveGen.removeIllegal(pos, moves);
         if ((searchMoves != null) && (searchMoves.size() > 0))
@@ -374,6 +375,7 @@ public class EngineControl {
         os.printf("option name UCI_EngineAbout type string default %s by Peter Osterlund, see %s%n",
                 ComputerPlayer.engineName, "http://hem.bredband.net/petero2b/javachess/index.html");
         os.print("option name Strength type spin default 1000 min 0 max 1000\n");
+        os.print("option name maxNPS type spin default 0 min 0 max 10000000\n");
         
         for (String pName : Parameters.instance().getParamNames()) {
             ParamBase p = Parameters.instance().getParam(pName);
@@ -424,6 +426,8 @@ public class EngineControl {
                 analyseMode = Boolean.parseBoolean(optionValue);
             } else if (optionName.equals("strength")) {
                 strength = Integer.parseInt(optionValue);
+            } else if (optionName.equals("maxnps")) {
+                maxNPS = Integer.parseInt(optionValue);
             } else {
                 Parameters.instance().set(optionName, optionValue);
             }
