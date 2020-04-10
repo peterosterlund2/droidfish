@@ -41,6 +41,7 @@ public class MoveListView extends View {
     private int layoutWidth = -1;
     private TextPaint textPaint;
     private Typeface defaultTypeface;
+    private float extraSpacing = 0.0f;
 
     /** Constructor. */
     public MoveListView(Context context, AttributeSet attrs) {
@@ -63,9 +64,14 @@ public class MoveListView extends View {
 
     /** Set typeface and text size. If tf is null the default typeface is used. */
     public void setTypeface(Typeface tf, float size) {
+        boolean modified = false;
+        float spacing = tf == null ? 0.0f : 1.0f; // Figurine font looks better with extra spacing
+        if (spacing != extraSpacing) {
+            extraSpacing = spacing;
+            modified = true;
+        }
         if (tf == null)
             tf = defaultTypeface;
-        boolean modified = false;
         if (tf != textPaint.getTypeface()) {
             textPaint.setTypeface(tf);
             modified = true;
@@ -107,12 +113,8 @@ public class MoveListView extends View {
     public int getLineStartY(int lineNo) {
         if (lineNo < 0)
             return 0;
-        Paint.FontMetricsInt fmi = new Paint.FontMetricsInt();
-        int lineHeight = textPaint.getFontMetricsInt(fmi);
-        int y = lineHeight * lineNo;
-        if (lineNo > 0 && fmi.bottom > 0)
-            y += fmi.bottom - 1;
-        return y;
+        lineNo = Math.min(lineNo, layout.getLineCount());
+        return layout.getLineTop(lineNo);
     }
 
     @Override
@@ -207,7 +209,7 @@ public class MoveListView extends View {
             layoutWidth = -1;
         } else {
             layout = new StaticLayout(text, textPaint, width,
-                    Alignment.ALIGN_NORMAL, 1.0f, 0.0f, true);
+                                      Alignment.ALIGN_NORMAL, 1.0f, extraSpacing, true);
             layoutWidth = width;
         }
     }
