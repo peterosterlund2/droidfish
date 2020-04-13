@@ -229,7 +229,7 @@ public class EngineControl {
         sc = new Search(pos, posHashList, posHashListSize, tt, ht);
         sc.timeLimit(minTimeLimit, maxTimeLimit);
         sc.setListener(new SearchListener(os));
-        sc.setStrength(getStrength(), randomSeed, maxNPS);
+        sc.setStrength(getStrength(), randomSeed, getMaxNPS());
         MoveGen.MoveList moves = moveGen.pseudoLegalMoves(pos);
         MoveGen.removeIllegal(pos, moves);
         if ((searchMoves != null) && (searchMoves.size() > 0))
@@ -482,5 +482,20 @@ public class EngineControl {
             }
         }
         return eloToStrength[n-1][1];
+    }
+
+    /** Return adjusted maxNPS value if UCI_LimitStrength is enabled. */
+    private int getMaxNPS() {
+        int intMax = Integer.MAX_VALUE;
+        int nps1 = maxNPS == 0 ? intMax : maxNPS;
+        int nps2 = nps1;
+        if (limitStrength) {
+            if (elo < 1350)
+                nps2 = Math.min(10000, nps2);
+            else
+                nps2 = Math.min(100000, nps2);
+        }
+        int nps = Math.min(nps1, nps2);
+        return nps == intMax ? 0 : nps;
     }
 }
