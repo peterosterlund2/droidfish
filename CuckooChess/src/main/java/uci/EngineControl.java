@@ -73,6 +73,8 @@ public class EngineControl {
 
     // Reduced strength variables
     private int strength = 1000;
+    private boolean limitStrength = false; // If set, overrides strength, using eloToStrength table
+    private int elo = Integer.MAX_VALUE;
     private int maxNPS = 0;
     private long randomSeed = 0;
 
@@ -227,7 +229,7 @@ public class EngineControl {
         sc = new Search(pos, posHashList, posHashListSize, tt, ht);
         sc.timeLimit(minTimeLimit, maxTimeLimit);
         sc.setListener(new SearchListener(os));
-        sc.setStrength(strength, randomSeed, maxNPS);
+        sc.setStrength(getStrength(), randomSeed, maxNPS);
         MoveGen.MoveList moves = moveGen.pseudoLegalMoves(pos);
         MoveGen.removeIllegal(pos, moves);
         if ((searchMoves != null) && (searchMoves.size() > 0))
@@ -375,14 +377,16 @@ public class EngineControl {
         os.printf("option name UCI_EngineAbout type string default %s by Peter Osterlund, see %s%n",
                 ComputerPlayer.engineName, "http://hem.bredband.net/petero2b/javachess/index.html");
         os.print("option name Strength type spin default 1000 min 0 max 1000\n");
+        os.print("option name UCI_LimitStrength type check default false\n");
+        os.print("option name UCI_Elo type spin default 1500 min -625 max 2400\n");
         os.print("option name maxNPS type spin default 0 min 0 max 10000000\n");
-        
+
         for (String pName : Parameters.instance().getParamNames()) {
             ParamBase p = Parameters.instance().getParam(pName);
             switch (p.type) {
             case CHECK: {
                 CheckParam cp = (CheckParam)p;
-                os.printf("optionn name %s type check default %s\n",
+                os.printf("option name %s type check default %s\n",
                         p.name, cp.defaultValue?"true":"false");
                 break;
             }
@@ -426,6 +430,10 @@ public class EngineControl {
                 analyseMode = Boolean.parseBoolean(optionValue);
             } else if (optionName.equals("strength")) {
                 strength = Integer.parseInt(optionValue);
+            } else if (optionName.equals("uci_limitstrength")) {
+                limitStrength = Boolean.parseBoolean(optionValue);
+            } else if (optionName.equals("uci_elo")) {
+                elo = Integer.parseInt(optionValue);
             } else if (optionName.equals("maxnps")) {
                 maxNPS = Integer.parseInt(optionValue);
             } else {
@@ -433,5 +441,46 @@ public class EngineControl {
             }
         } catch (NumberFormatException ignore) {
         }
+    }
+
+    private static int[][] eloToStrength = {
+        { -625,    0 },
+        { -572,   10 },
+        { -396,   20 },
+        { -145,   30 },
+        {  204,   45 },
+        {  473,   60 },
+        {  679,   75 },
+        {  891,  100 },
+        {  917,  200 },
+        { 1055,  300 },
+        { 1321,  375 },
+        { 1408,  400 },
+        { 1694,  500 },
+        { 1938,  600 },
+        { 2073,  675 },
+        { 2182,  750 },
+        { 2294,  875 },
+        { 2360,  950 },
+        { 2410, 1000 },
+    };
+
+    /** Get strength setting, possibly by interpolating in eloToStrength table. */
+    private int getStrength() {
+        if (!limitStrength)
+            return strength;
+        if (elo <= eloToStrength[0][0])
+            return eloToStrength[0][1];
+        int n = eloToStrength.length;
+        for (int i = 1; i < n; i++) {
+            if (elo <= eloToStrength[i][0]) {
+                double a  = eloToStrength[i-1][0];
+                double b  = eloToStrength[i  ][0];
+                double fa = eloToStrength[i-1][1];
+                double fb = eloToStrength[i  ][1];
+                return (int)Math.round(fa + (elo - a) / (b - a) * (fb - fa));
+            }
+        }
+        return eloToStrength[n-1][1];
     }
 }
