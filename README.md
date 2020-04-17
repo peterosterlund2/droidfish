@@ -30,7 +30,7 @@ that even beginners have a reasonable chance to beat it.
   the left side of the screen towards the middle. The *right drawer menu*
   contains less common actions and is opened by swiping from the right side of
   the screen towards the middle.  
-  It is also possible open the left/right drawer menu by tapping on the
+  It is also possible to open the left/right drawer menu by tapping on the
   left/right half of the app title bar.
 
 * To play a move on the board first tap the piece to move, then tap the
