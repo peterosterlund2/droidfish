@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package org.petero.droidfish.activities;
+package org.petero.droidfish.activities.util;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;

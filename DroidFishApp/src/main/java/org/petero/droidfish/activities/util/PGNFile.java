@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package org.petero.droidfish.activities;
+package org.petero.droidfish.activities.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
@@ -51,14 +51,14 @@ public class PGNFile {
         public long startPos;
         public long endPos;
 
-        GameInfo setNull(long currPos) {
+        public GameInfo setNull(long currPos) {
             info = null;
             startPos = currPos;
             endPos = currPos;
             return this;
         }
 
-        boolean isNull() { return info == null; }
+        public boolean isNull() { return info == null; }
 
         public String toString() {
             if (info == null)
@@ -410,7 +410,7 @@ public class PGNFile {
     }
 
     /** Read one game defined by gi. Return null on failure. */
-    String readOneGame(GameInfo gi) {
+    public String readOneGame(GameInfo gi) {
         try (RandomAccessFile f = new RandomAccessFile(fileName, "r")) {
             byte[] pgnData = new byte[(int) (gi.endPos - gi.startPos)];
             f.seek(gi.startPos);
@@ -458,7 +458,7 @@ public class PGNFile {
         }
     }
 
-    boolean deleteGame(GameInfo gi, ArrayList<GameInfo> gamesInFile) {
+    public boolean deleteGame(GameInfo gi, ArrayList<GameInfo> gamesInFile) {
         try {
             File tmpFile = new File(fileName + ".tmp_delete");
             try (RandomAccessFile fileReader = new RandomAccessFile(fileName, "r");
@@ -490,7 +490,7 @@ public class PGNFile {
         return false;
     }
 
-    void replacePGN(String pgnToSave, GameInfo gi, boolean silent) {
+    public void replacePGN(String pgnToSave, GameInfo gi, boolean silent) {
         try {
             File tmpFile = new File(fileName + ".tmp_delete");
             try (RandomAccessFile fileReader = new RandomAccessFile(fileName, "r");
@@ -523,7 +523,7 @@ public class PGNFile {
     }
 
     /** Delete the file. */
-    boolean delete() {
+    public boolean delete() {
         return fileName.delete();
     }
 }

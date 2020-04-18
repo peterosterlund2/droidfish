@@ -14,7 +14,7 @@
             android:id="@+id/eb_chessboard"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            class="org.petero.droidfish.activities.ChessBoardEdit" />
+            class="org.petero.droidfish.activities.util.ChessBoardEdit" />
 
         <LinearLayout
             android:layout_width="fill_parent"

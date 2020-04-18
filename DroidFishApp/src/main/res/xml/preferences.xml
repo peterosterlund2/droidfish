@@ -30,12 +30,12 @@
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/prefs_engine_settings">
-        <org.petero.droidfish.activities.SeekBarPreference
+        <org.petero.droidfish.activities.util.SeekBarPreference
             android:key="strength"
             android:title="@string/prefs_strength_title"
             android:summary="@string/prefs_strength_summary"
             android:defaultValue="1000">
-        </org.petero.droidfish.activities.SeekBarPreference>
+        </org.petero.droidfish.activities.util.SeekBarPreference>
         <CheckBoxPreference
             android:key="ponderMode"
             android:title="@string/prefs_ponderMode_title"
@@ -585,19 +585,19 @@
                 android:summary="@string/prefs_bookTournamentMode_summary"
                 android:defaultValue="false">
             </CheckBoxPreference>
-            <org.petero.droidfish.activities.SeekBarPreference
+            <org.petero.droidfish.activities.util.SeekBarPreference
                 android:key="bookRandom"
                 android:defaultValue="500"
                 android:title="@string/prefs_bookRandom_title">
-            </org.petero.droidfish.activities.SeekBarPreference>
-            <org.petero.droidfish.activities.EditFilePreference
+            </org.petero.droidfish.activities.util.SeekBarPreference>
+            <org.petero.droidfish.activities.util.EditFilePreference
                 android:key="bookFile"
                 android:title="@string/prefs_bookFile_title"
                 android:summary="@string/prefs_bookFile_summary"
                 defaultPath="DroidFish/book/"
                 ignorePattern=".*:$"
                 android:defaultValue="">
-            </org.petero.droidfish.activities.EditFilePreference>
+            </org.petero.droidfish.activities.util.EditFilePreference>
         </PreferenceScreen>
         <PreferenceScreen
             android:key="pgnSettings"
@@ -718,28 +718,28 @@
                 android:summary="@string/prefs_tbEngineProbe_summary"
                 android:defaultValue="true">
             </CheckBoxPreference>
-            <org.petero.droidfish.activities.EditFilePreference
+            <org.petero.droidfish.activities.util.EditFilePreference
                 android:key="gtbPath"
                 android:title="@string/prefs_gtbPath_title"
                 android:summary="@string/prefs_gtbPath_summary"
                 pickDirectory="true"
                 defaultPath="DroidFish/gtb"
                 android:defaultValue="">
-            </org.petero.droidfish.activities.EditFilePreference>
+            </org.petero.droidfish.activities.util.EditFilePreference>
             <EditTextPreference
                 android:key="gtbPathNet"
                 android:title="@string/prefs_gtbPathNet_title"
                 android:summary="@string/prefs_gtbPathNet_summary"
                 android:defaultValue="">
             </EditTextPreference>
-            <org.petero.droidfish.activities.EditFilePreference
+            <org.petero.droidfish.activities.util.EditFilePreference
                 android:key="rtbPath"
                 android:title="@string/prefs_rtbPath_title"
                 android:summary="@string/prefs_rtbPath_summary"
                 pickDirectory="true"
                 defaultPath="DroidFish/rtb"
                 android:defaultValue="">
-            </org.petero.droidfish.activities.EditFilePreference>
+            </org.petero.droidfish.activities.util.EditFilePreference>
             <EditTextPreference
                 android:key="rtbPathNet"
                 android:title="@string/prefs_rtbPathNet_title"

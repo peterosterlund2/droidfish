@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package org.petero.droidfish.activities;
+package org.petero.droidfish.activities.util;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -117,7 +117,7 @@ public class GameAdapter<T> extends BaseAdapter implements Filterable {
         }
     }
 
-    interface ItemMatcher<U> {
+    public interface ItemMatcher<U> {
         /** Return true if item matches the search criteria. */
         boolean matches(U item);
     }
@@ -125,7 +125,7 @@ public class GameAdapter<T> extends BaseAdapter implements Filterable {
     /** Return an object that determines if an item matches given search criteria.
      *  @param matchStr  The match string.
      *  @param useRegExp If true matchStr is interpreted as a regular expression. */
-    static <U> ItemMatcher<U> getItemMatcher(String matchStr, boolean useRegExp) {
+    public static <U> ItemMatcher<U> getItemMatcher(String matchStr, boolean useRegExp) {
         if (useRegExp) {
             Pattern tmp;
             try {

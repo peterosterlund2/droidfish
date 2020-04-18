@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package org.petero.droidfish.activities;
+package org.petero.droidfish.activities.util;
 
 import android.util.Pair;
 
@@ -35,9 +35,9 @@ public class FENFile {
         return fileName.getAbsolutePath();
     }
 
-    static final class FenInfo {
-        int gameNo;
-        String fen;
+    public static final class FenInfo {
+        public int gameNo;
+        public String fen;
 
         FenInfo(int gameNo, String fen) {
             this.gameNo = gameNo;

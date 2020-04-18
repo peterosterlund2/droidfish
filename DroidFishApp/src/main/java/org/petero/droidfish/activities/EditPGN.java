@@ -49,7 +49,9 @@ import org.petero.droidfish.DroidFishApp;
 import org.petero.droidfish.ObjectCache;
 import org.petero.droidfish.R;
 import org.petero.droidfish.Util;
-import org.petero.droidfish.activities.PGNFile.GameInfo;
+import org.petero.droidfish.activities.util.PGNFile.GameInfo;
+import org.petero.droidfish.activities.util.GameAdapter;
+import org.petero.droidfish.activities.util.PGNFile;
 import org.petero.droidfish.databinding.SelectGameBinding;
 
 import java.io.File;

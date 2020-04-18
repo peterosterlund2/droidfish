@@ -27,6 +27,7 @@ import org.petero.droidfish.FileUtil;
 import org.petero.droidfish.R;
 import org.petero.droidfish.Util;
 import org.petero.droidfish.Util.MaterialDiff;
+import org.petero.droidfish.activities.util.ChessBoardEdit;
 import org.petero.droidfish.gamelogic.ChessParseError;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.Piece;

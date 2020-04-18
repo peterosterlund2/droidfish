@@ -16,7 +16,7 @@
             layout="@layout/title" />
 
         <view
-            class="org.petero.droidfish.activities.ChessBoardEdit"
+            class="org.petero.droidfish.activities.util.ChessBoardEdit"
             android:id="@+id/eb_chessboard"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />

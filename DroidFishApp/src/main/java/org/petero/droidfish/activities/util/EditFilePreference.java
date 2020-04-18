@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package org.petero.droidfish.activities;
+package org.petero.droidfish.activities.util;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -32,6 +32,7 @@ import android.widget.LinearLayout;
 
 import org.petero.droidfish.FileUtil;
 import org.petero.droidfish.R;
+import org.petero.droidfish.activities.Preferences;
 
 import java.io.File;
 import java.util.regex.Pattern;

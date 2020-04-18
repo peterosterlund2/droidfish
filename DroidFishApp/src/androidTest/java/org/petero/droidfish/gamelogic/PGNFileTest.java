@@ -24,8 +24,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.petero.droidfish.DroidFishApp;
-import org.petero.droidfish.activities.PGNFile;
-import org.petero.droidfish.activities.PGNFile.GameInfo;
+import org.petero.droidfish.activities.util.PGNFile;
+import org.petero.droidfish.activities.util.PGNFile.GameInfo;
 
 import junit.framework.TestCase;
 
