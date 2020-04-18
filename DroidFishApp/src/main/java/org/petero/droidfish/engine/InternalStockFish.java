@@ -56,7 +56,6 @@ public class InternalStockFish extends ExternalEngine {
         return true;
     }
 
-    /** @inheritDoc */
     @Override
     public final void setStrength(int strength) {
         setOption("Skill Level", strength/50);

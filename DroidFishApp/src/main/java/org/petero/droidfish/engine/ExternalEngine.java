@@ -67,7 +67,6 @@ public class ExternalEngine extends UCIEngineBase {
         return context.getFilesDir().getAbsolutePath() + "/internal_sf";
     }
 
-    /** @inheritDoc */
     @Override
     protected void startProcess() {
         try {
@@ -194,7 +193,6 @@ public class ExternalEngine extends UCIEngineBase {
     private String syzygyPath = "";
     private boolean optionsInitialized = false;
 
-    /** @inheritDoc */
     @Override
     public void initOptions(EngineOptions engineOptions) {
         super.initOptions(engineOptions);
@@ -225,7 +223,6 @@ public class ExternalEngine extends UCIEngineBase {
         return hashMB;
     }
 
-    /** @inheritDoc */
     @Override
     public boolean optionsOk(EngineOptions engineOptions) {
         if (!optionsInitialized)
@@ -239,12 +236,10 @@ public class ExternalEngine extends UCIEngineBase {
         return true;
     }
 
-    /** @inheritDoc */
     @Override
     public void setStrength(int strength) {
     }
 
-    /** @inheritDoc */
     @Override
     public String readLineFromEngine(int timeoutMillis) {
         String ret = inLines.readLine(timeoutMillis);
@@ -257,7 +252,6 @@ public class ExternalEngine extends UCIEngineBase {
     }
 
     // FIXME!! Writes should be handled by separate thread.
-    /** @inheritDoc */
     @Override
     public void writeLineToEngine(String data) {
 //        System.out.printf("GUI -> Engine: %s\n", data);
@@ -272,7 +266,6 @@ public class ExternalEngine extends UCIEngineBase {
         }
     }
 
-    /** @inheritDoc */
     @Override
     public void shutDown() {
         if (startupThread != null)

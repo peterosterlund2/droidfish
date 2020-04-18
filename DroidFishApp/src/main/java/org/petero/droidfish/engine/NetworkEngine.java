@@ -108,7 +108,6 @@ public class NetworkEngine extends UCIEngineBase {
         }
     }
 
-    /** @inheritDoc */
     @Override
     protected void startProcess() {
         // Start thread to check for startup error
@@ -195,7 +194,6 @@ public class NetworkEngine extends UCIEngineBase {
     private String syzygyPath = "";
     private boolean optionsInitialized = false;
 
-    /** @inheritDoc */
     @Override
     public void initOptions(EngineOptions engineOptions) {
         super.initOptions(engineOptions);
@@ -213,7 +211,6 @@ public class NetworkEngine extends UCIEngineBase {
         return new File(fileName + ".ini");
     }
 
-    /** @inheritDoc */
     @Override
     public boolean optionsOk(EngineOptions engineOptions) {
         if (isError)
@@ -231,12 +228,10 @@ public class NetworkEngine extends UCIEngineBase {
         return true;
     }
 
-    /** @inheritDoc */
     @Override
     public void setStrength(int strength) {
     }
 
-    /** @inheritDoc */
     @Override
     public String readLineFromEngine(int timeoutMillis) {
         String ret = engineToGui.readLine(timeoutMillis);
@@ -248,14 +243,12 @@ public class NetworkEngine extends UCIEngineBase {
         return ret;
     }
 
-    /** @inheritDoc */
     @Override
     public void writeLineToEngine(String data) {
 //        System.out.printf("GUI -> Engine: %s\n", data);
         guiToEngine.addLine(data);
     }
 
-    /** @inheritDoc */
     @Override
     public void shutDown() {
         isRunning = false;

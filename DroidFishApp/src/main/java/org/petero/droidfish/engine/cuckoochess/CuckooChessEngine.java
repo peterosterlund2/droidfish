@@ -57,7 +57,6 @@ public class CuckooChessEngine extends UCIEngineBase {
         engineToGui = new LocalPipe();
     }
 
-    /** @inheritDoc */
     @Override
     protected final void startProcess() {
         engineThread = new Thread(() -> mainLoop(guiToEngine, engineToGui));
@@ -84,13 +83,11 @@ public class CuckooChessEngine extends UCIEngineBase {
         return true;
     }
 
-    /** @inheritDoc */
     @Override
     public boolean optionsOk(EngineOptions engineOptions) {
         return true;
     }
 
-    /** @inheritDoc */
     @Override
     public final void setStrength(int strength) {
         setOption("strength", strength);
@@ -112,7 +109,6 @@ public class CuckooChessEngine extends UCIEngineBase {
         guiToEngine.close();
     }
 
-    /** @inheritDoc */
     @Override
     public final String readLineFromEngine(int timeoutMillis) {
         if ((engineThread != null) && !engineThread.isAlive())
@@ -126,7 +122,6 @@ public class CuckooChessEngine extends UCIEngineBase {
         return ret;
     }
 
-    /** @inheritDoc */
     @Override
     public final synchronized void writeLineToEngine(String data) {
 //        System.out.printf("GUI -> Engine: %s\n", data);
