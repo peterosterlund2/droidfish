@@ -151,24 +151,6 @@ import android.widget.Toast;
 public class DroidFish extends Activity
                        implements GUIInterface,
                                   ActivityCompat.OnRequestPermissionsResultCallback {
-    // FIXME!!! PGN view option: game continuation (for training)
-    // FIXME!!! Implement bookmark mechanism for positions in pgn files
-
-    // FIXME!!! Add support for "no time control" and "hour-glass time control" as defined by the PGN standard
-
-    // FIXME!!! Add chess960 support
-    // FIXME!!! Implement "hint" feature
-
-    // FIXME!!! Show extended book info. (Win percent, number of games, performance rating, etc.)
-    // FIXME!!! Green color for "main move". Red color for "don't play in tournaments" moves.
-
-    // FIXME!!! Option to display coordinates in border outside chess board.
-
-    // FIXME!!! Save position to fen/epd file
-
-    // FIXME!!! Selection dialog for going into variation
-    // FIXME!!! Use two engines in engine/engine games
-
     private ChessBoardPlay cb;
     DroidChessController ctrl = null;
     private boolean mShowThinking;

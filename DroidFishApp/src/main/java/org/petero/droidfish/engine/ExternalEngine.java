@@ -251,7 +251,7 @@ public class ExternalEngine extends UCIEngineBase {
         return ret;
     }
 
-    // FIXME!! Writes should be handled by separate thread.
+    // XXX Writes should be handled by separate thread.
     @Override
     public void writeLineToEngine(String data) {
 //        System.out.printf("GUI -> Engine: %s\n", data);
