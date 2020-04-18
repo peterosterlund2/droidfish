@@ -46,8 +46,8 @@ public class AHSVColorTest {
         double[] hsv = new double[3];
         for (int i = 0; i < 360; i++) {
             hsv[0] = i;
-            hsv[1] = (i % 17) / 17;
-            hsv[2] = (i % 11) / 11;
+            hsv[1] = (i % 17) / 16.0;
+            hsv[2] = (i % 11) / 10.0;
             color.setHSV(hsv);
             double[] ret = color.getHSV();
             assertEquals(hsv[0], ret[0], 1e-10);
