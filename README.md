@@ -123,6 +123,29 @@ light bulb image) that toggles analysis mode. When analysis mode is disabled the
 game mode that was used before analysis mode was enabled is restored.
 
 
+# Playing strength
+
+For engines that can reduce their playing strength using the UCI_LimitStrength
+and UCI_Elo options, it is possible to specify the engine playing strength by
+opening the *Left drawer menu* and selecting *Set Engine Strength*. Both
+built-in engines (*Stockfish* and *CuckooChess*) can reduce their playing
+strength.
+
+The available Elo range can be different for different engines. If *Stockfish*
+is playing too strong even on the lowest setting, consider switching to the
+*CuckooChess* engine which is able to play at a much weaker level. At the lowest
+setting, *CuckooChess* plays random legal moves so it should be usable also for
+an absolute beginner.
+
+The selected playing strength is shown in the title bar after the engine name.
+
+Playing strength changes take effect the next time the engine starts to think
+about a move.
+
+The playing strength setting is only used in game playing mode. When the engine
+is in analysis mode, full strength is always used.
+
+
 # The move list text area
 
 The move list keeps a record of moves played during a game and during analysis.
@@ -736,34 +759,6 @@ automatically end if a player runs out of time. It is up to the user to decide
 what to do if a player runs out of time.
 
 Time control changes take effect when a new game is started.
-
-## Playing strength
-
-For built-in engines (*Stockfish* and *CuckooChess*), it is possible to specify
-the playing strength in the *Engine Settings* section. The strength is specified
-as a percentage between 0% and 100%. You can specify the value either by
-dragging the slider, or by tapping the value and entering a new value in the
-dialog box.
-
-For *Stockfish* the actual strength used is an integer value between 0 and 20,
-so the specified percentage value is divided by 5 and rounded down to an
-integer. Even at 0 strength *Stockfish* plays at a level that may be too high
-for a beginner.
-
-For *CuckooChess* the specified percentage value is used without rounding and a
-smaller value causes the engine to make mistakes more often and to make bigger
-mistakes. At 0% strength the engine plays random legal moves so it should be
-usable also for an absolute beginner.
-
-Playing strength changes take effect the next time the engine starts to think
-about a move.
-
-The playing strength setting is only used in game playing mode. When the engine
-is in analysis mode, full strength is always used.
-
-**Note!** For non built-in engines, the *Playing Strength* setting has no
-effect. It may however be possible to set the engine strength by modifying some
-of the engine UCI options.
 
 ## Hash table size
 

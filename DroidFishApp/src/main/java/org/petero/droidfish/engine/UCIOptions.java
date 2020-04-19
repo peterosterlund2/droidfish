@@ -41,7 +41,7 @@ public class UCIOptions implements Serializable, Cloneable {
         private static final long serialVersionUID = 1L;
         public String name;
         public Type type;
-        public boolean visible = true;
+        public boolean visible = true; // True if visible in "Engine Options" dialog
 
         @Override
         public OptionBase clone() throws CloneNotSupportedException {

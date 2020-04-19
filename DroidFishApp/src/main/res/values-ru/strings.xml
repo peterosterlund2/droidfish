@@ -50,7 +50,6 @@
     <string name="tools_menu">Инструменты</string>
     <string name="load_save_menu">Загрузить/Сохранить партию</string>
     <string name="goto_move">Сделать ход</string>
-    <string name="edit_strength">Изменить уровень сложности</string>
     <string name="edit_randomization">Изменить рандомизацию (случайность)</string>
     <string name="invalid_number_format">Неправильный формат числа</string>
     <string name="side_to_move">Задать направление хода</string>
@@ -273,8 +272,6 @@
     <string name="prefs_playerNameFlip_title">Поворачивать доску: игрок</string>
     <string name="prefs_playerNameFlip_summary">Использовать имя игрока для автоматического поворота доски</string>
     <string name="prefs_engine_settings">Настройки движка</string>
-    <string name="prefs_strength_title">Сила игры</string>
-    <string name="prefs_strength_summary">Поддерживается только внутренними движками. Режим анализа всегда использует полную силу.</string>
     <string name="prefs_ponderMode_title">Размышление</string>
     <string name="prefs_ponderMode_summary">Позволить движку обдумывание во время ожидания хода оппонента. Поддерживается большинством движков.</string>
     <string name="prefs_hash_title">Хэш-таблица</string>

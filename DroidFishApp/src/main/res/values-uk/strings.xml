@@ -50,7 +50,6 @@
     <string name="tools_menu">Інструменти</string>
     <string name="load_save_menu">Завантажити/Зберегти партію</string>
     <string name="goto_move">Зробити хід</string>
-    <string name="edit_strength">Змінити рівень складності</string>
     <string name="edit_randomization">Змінити рандомізацію (випадковість)</string>
     <string name="invalid_number_format">Неправильний формат числа</string>
     <string name="side_to_move">Задати напрямок ходу</string>
@@ -273,8 +272,6 @@
     <string name="prefs_playerNameFlip_title">Повертати дошку: гравець</string>
     <string name="prefs_playerNameFlip_summary">Використовувати ім\'я гравця для автоматичного повороту дошки</string>
     <string name="prefs_engine_settings">Налаштування рушія</string>
-    <string name="prefs_strength_title">Сила ігри</string>
-    <string name="prefs_strength_summary">Підтримується тільки внутрішніми рушіями. Режим аналізу завжди використовує повну силу.</string>
     <string name="prefs_ponderMode_title">Розважання</string>
     <string name="prefs_ponderMode_summary">Дозволити рушію обдумування під час очікування ходу опонента. Підтримується більшістю рушіїв.</string>
     <string name="prefs_hash_title">Геш-таблиця</string>

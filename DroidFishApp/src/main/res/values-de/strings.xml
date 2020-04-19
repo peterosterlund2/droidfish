@@ -50,7 +50,6 @@ Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese Paramet
     <string name="tools_menu">Hilfsmittel</string>
     <string name="load_save_menu">Partie laden/speichern</string>
     <string name="goto_move">Gehe zu Zug</string>
-    <string name="edit_strength">Spielstärke ändern</string>
     <string name="edit_randomization">Randomisierung ändern</string>
     <string name="invalid_number_format">Ungültiges Zahlenformat</string>
     <string name="side_to_move">Seite am Zug</string>
@@ -273,8 +272,6 @@ Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese Paramet
     <string name="prefs_playerNameFlip_title">Spielfeld nach Namen drehen</string>
     <string name="prefs_playerNameFlip_summary">Spielfeld in Abhängigkeit vom Spielernamen drehen</string>
     <string name="prefs_engine_settings">Engine-Einstellungen</string>
-    <string name="prefs_strength_title">Spielstärke</string>
-    <string name="prefs_strength_summary">Wird nur von internen Engines unterstützt. Im Analyse-Modus wird stets die volle Stärke verwendet.</string>
     <string name="prefs_ponderMode_title">Vorausberechnung</string>
     <string name="prefs_ponderMode_summary">Vorausberechnung von Zügen durch die Engine, wenn der Spieler am Zug ist (von den meisten Engines unterstützt)</string>
     <string name="prefs_hash_title">Hash-Tabelle</string>

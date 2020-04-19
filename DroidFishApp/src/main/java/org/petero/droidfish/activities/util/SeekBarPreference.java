@@ -91,9 +91,7 @@ public class SeekBarPreference extends Preference implements OnSeekBarChangeList
             builder.setView(selectPercentageBinding.getRoot());
             String title = "";
             String key = getKey();
-            if (key.equals("strength")) {
-                title = getContext().getString(R.string.edit_strength);
-            } else if (key.equals("bookRandom")) {
+            if (key.equals("bookRandom")) {
                 title = getContext().getString(R.string.edit_randomization);
             }
             builder.setTitle(title);

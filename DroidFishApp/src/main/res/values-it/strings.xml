@@ -50,7 +50,6 @@ Se l\'alimentazione è a batteria, è consigliabile modificare le impostazioni p
     <string name="tools_menu">Strumenti</string>
     <string name="load_save_menu">Apri/Salva partita</string>
     <string name="goto_move">Vai alla mossa</string>
-    <string name="edit_strength">Imposta la Forza del motore</string>
     <string name="edit_randomization">Modifica la casualizzazione</string>
     <string name="invalid_number_format">Formato del numero non valido</string>
     <string name="side_to_move">Lato che muove</string>
@@ -273,8 +272,6 @@ Se l\'alimentazione è a batteria, è consigliabile modificare le impostazioni p
     <string name="prefs_playerNameFlip_title">Gira la scacchiera: Giocatore</string>
     <string name="prefs_playerNameFlip_summary">Usa il nome del giocatore per girare la scacchiera automaticamente</string>
     <string name="prefs_engine_settings">Impostazioni del motore</string>
-    <string name="prefs_strength_title">Forza di gioco</string>
-    <string name="prefs_strength_summary">Supportato solo dai motori interni. La modalità di analisi utilizza sempre la massima forza.</string>
     <string name="prefs_ponderMode_title">Sto riflettendo</string>
     <string name="prefs_ponderMode_summary">Lascia che il motore rifletta nell\'attesa della mossa dell\'avversario. Supportato dalla maggior parte dei motori.</string>
     <string name="prefs_hash_title">Tabella hash</string>

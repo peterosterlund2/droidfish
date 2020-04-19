@@ -109,7 +109,7 @@ public class DroidComputerPlayer {
         int movesToGo;          // Number of moves to next time control
 
         String engine;          // Engine name (identifier)
-        int strength;           // Engine strength setting (0 - 1000)
+        int elo;                // Engine UCI_Elo setting, or Integer.MAX_VALUE for full strength
         int numPV;              // Number of PV lines to compute
 
         boolean ponderEnabled;  // True if pondering enabled, for engine time management
@@ -145,14 +145,14 @@ public class DroidComputerPlayer {
          * @param ponderEnabled True if pondering is enabled in the GUI. Can affect time management.
          * @param ponderMove Move to ponder, or null for non-ponder search.
          * @param engine Chess engine to use for searching.
-         * @param strength Engine strength setting.
+         * @param elo Engine Elo strength setting.
          */
         public static SearchRequest searchRequest(int id, long now,
                                                   Position prevPos, ArrayList<Move> mList,
                                                   Position currPos, boolean drawOffer,
                                                   int wTime, int bTime, int wInc, int bInc, int movesToGo,
                                                   boolean ponderEnabled, Move ponderMove,
-                                                  String engine, int strength) {
+                                                  String engine, int elo) {
             SearchRequest sr = new SearchRequest();
             sr.searchId = id;
             sr.startTime = now;
@@ -168,7 +168,7 @@ public class DroidComputerPlayer {
             sr.bInc = bInc;
             sr.movesToGo = movesToGo;
             sr.engine = engine;
-            sr.strength = strength;
+            sr.elo = elo;
             sr.numPV = 1;
             sr.ponderEnabled = ponderEnabled;
             sr.ponderMove = ponderMove;
@@ -204,7 +204,7 @@ public class DroidComputerPlayer {
             sr.isAnalyze = true;
             sr.wTime = sr.bTime = sr.wInc = sr.bInc = sr.movesToGo = 0;
             sr.engine = engine;
-            sr.strength = 1000;
+            sr.elo = Integer.MAX_VALUE;
             sr.numPV = numPV;
             sr.ponderEnabled = false;
             sr.ponderMove = null;
@@ -308,6 +308,56 @@ public class DroidComputerPlayer {
             if (uci != null)
                 uci.saveIniFile(getUCIOptions());
         }
+    }
+
+    public static class EloData {
+        public boolean limitStrength = false; // True if engine strength reduction is enabled
+        public int elo = 0;                   // Current strength setting
+        public int minElo = 0;                // Smallest possible Elo value
+        public int maxElo = 0;                // Largest possible Elo value
+
+        /** Return true if engine is able to change the playing strength. */
+        public boolean canChangeStrength() {
+            return minElo < maxElo;
+        }
+
+        /** Get current Elo setting.
+         *  Return MAX_VALUE if reduced strength not enabled or not supported. */
+        public int getEloToUse() {
+            if (canChangeStrength() && limitStrength)
+                return elo;
+            return Integer.MAX_VALUE;
+        }
+    }
+
+    /** Return engine Elo strength data. */
+    public synchronized EloData getEloData() {
+        EloData ret = new EloData();
+        UCIEngine uci = uciEngine;
+        if (uci != null) {
+            UCIOptions opts = uci.getUCIOptions();
+            UCIOptions.OptionBase lsOpt = opts.getOption("UCI_LimitStrength");
+            UCIOptions.OptionBase eloOpt = opts.getOption("UCI_Elo");
+            if (lsOpt instanceof UCIOptions.CheckOption &&
+                eloOpt instanceof UCIOptions.SpinOption) {
+                ret.limitStrength = ((UCIOptions.CheckOption)lsOpt).value;
+                UCIOptions.SpinOption eloSpin = (UCIOptions.SpinOption)eloOpt;
+                ret.elo = eloSpin.value;
+                ret.minElo = eloSpin.minValue;
+                ret.maxElo = eloSpin.maxValue;
+            }
+        }
+        return ret;
+    }
+
+    /** Set engine UCI strength parameters. */
+    public void setStrength(int elo) {
+        Map<String,String> opts = new TreeMap<>();
+        boolean limitStrength = elo != Integer.MAX_VALUE;
+        opts.put("UCI_LimitStrength", limitStrength ? "true" : "false");
+        if (limitStrength)
+            opts.put("UCI_Elo", String.valueOf(elo));
+        setEngineUCIOptions(opts);
     }
 
     /** Return all book moves, both as a formatted string and as a list of moves. */
@@ -571,7 +621,7 @@ public class DroidComputerPlayer {
 
         // Set strength and MultiPV parameters
         clearInfo();
-        uciEngine.setStrength(searchRequest.strength);
+        uciEngine.setEloStrength(searchRequest.elo);
         if (maxPV > 1) {
             int num = Math.min(maxPV, searchRequest.numPV);
             uciEngine.setOption("MultiPV", num);
@@ -721,6 +771,7 @@ public class DroidComputerPlayer {
                 uci.writeLineToEngine("ucinewgame");
                 uci.writeLineToEngine("isready");
                 engineState.setState(MainState.WAIT_READY);
+                listener.notifyEngineInitialized();
             }
             break;
         }

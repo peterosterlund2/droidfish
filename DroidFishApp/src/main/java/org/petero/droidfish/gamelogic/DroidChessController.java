@@ -41,6 +41,7 @@ import org.petero.droidfish.book.BookOptions;
 import org.petero.droidfish.book.EcoDb;
 import org.petero.droidfish.engine.DroidComputerPlayer;
 import org.petero.droidfish.engine.UCIOptions;
+import org.petero.droidfish.engine.DroidComputerPlayer.EloData;
 import org.petero.droidfish.engine.DroidComputerPlayer.SearchRequest;
 import org.petero.droidfish.engine.DroidComputerPlayer.SearchType;
 import org.petero.droidfish.gamelogic.Game.CommentInfo;
@@ -60,7 +61,6 @@ public class DroidChessController {
     private PGNOptions pgnOptions;
 
     private String engine = "";
-    private int strength = 1000;
     private int numPV = 1;
 
     private SearchListener listener;
@@ -146,11 +146,13 @@ public class DroidChessController {
             if (!gameMode.playerWhite() || !gameMode.playerBlack())
                 setPlayerNames(game); // If computer player involved, set player names
             updateGameMode();
-            abortSearch();
-            updateComputeThreads();
-            gui.updateEngineTitle();
-            updateGUI();
+            gui.updateEngineTitle(getEloToUse()); // Game mode affects Elo setting
+            restartSearch();
         }
+    }
+
+    private int getEloToUse() {
+        return eloData().getEloToUse();
     }
 
     public final GameMode getGameMode() {
@@ -179,28 +181,47 @@ public class DroidChessController {
             engineOptions = options;
             if (computerPlayer != null)
                 computerPlayer.setEngineOptions(engineOptions);
-            if (restart && (game != null)) {
-                abortSearch();
-                updateComputeThreads();
-                updateGUI();
-            }
+            if (restart)
+                restartSearch();
         }
     }
 
-    /** Set engine and engine strength. Restart computer thinking if appropriate.
-     * @param engine Name of engine.
-     * @param strength Engine strength, 0 - 1000. */
-    public final synchronized void setEngineStrength(String engine, int strength) {
-        boolean newEngine = !engine.equals(this.engine);
-        if (newEngine || (strength != this.strength)) {
-            this.engine = engine;
-            this.strength = strength;
-            if (game != null) {
-                abortSearch();
-                updateComputeThreads();
-                updateGUI();
-            }
+    private void restartSearch() {
+        if (game != null) {
+            abortSearch();
+            updateComputeThreads();
+            updateGUI();
         }
+    }
+
+    /** Set engine. Restart computer thinking if appropriate. */
+    public final synchronized void setEngine(String engine) {
+        if (!engine.equals(this.engine)) {
+            this.engine = engine;
+            restartSearch();
+        }
+    }
+
+    /** Set engine strength. Restart computer thinking if appropriate. */
+    public final synchronized void setStrength(boolean limitStrength, int elo) {
+        EloData d = eloData();
+        int oldElo = d.getEloToUse();
+        d.limitStrength = limitStrength;
+        d.elo = elo;
+        int newElo = d.getEloToUse();
+        if (oldElo != newElo) {
+            if (computerPlayer != null)
+                computerPlayer.setStrength(newElo);
+            restartSearch();
+            gui.updateEngineTitle(newElo);
+        }
+    }
+
+    /** Return engine Elo strength data. */
+    public final synchronized EloData eloData() {
+        if (computerPlayer == null)
+            return new EloData();
+        return computerPlayer.getEloData();
     }
 
     /** Set engine UCI options. */
@@ -233,8 +254,7 @@ public class DroidChessController {
              DataInputStream dis = new DataInputStream(bais)) {
             game.readFromStream(dis, version);
             game.tree.translateMoves();
-        } catch (IOException ignore) {
-        } catch (ChessParseError ignore) {
+        } catch (IOException|ChessParseError ignore) {
         }
     }
 
@@ -383,9 +403,7 @@ public class DroidChessController {
         if (humansTurn()) {
             int varNo = game.tree.addMove("--", "", 0, "", "");
             game.tree.goForward(varNo);
-            abortSearch();
-            updateComputeThreads();
-            updateGUI();
+            restartSearch();
             gui.setSelection(-1);
         }
     }
@@ -596,11 +614,8 @@ public class DroidChessController {
         clampedNumPV = Math.max(clampedNumPV, 1);
         boolean modified = clampedNumPV != this.numPV;
         this.numPV = numPV;
-        if (modified) {
-            abortSearch();
-            updateComputeThreads();
-            updateGUI();
-        }
+        if (modified)
+            restartSearch();
     }
 
     /** Request computer player to make a move immediately. */
@@ -757,7 +772,7 @@ public class DroidChessController {
                 } else if (currTime < 999950) {
                     statStrTmp.append(String.format(Locale.US, " t:%.1f", currTime / 1000.0));
                 } else {
-                    statStrTmp.append(String.format(Locale.US, " t:%d", (int)((currTime + 500) / 1000)));
+                    statStrTmp.append(String.format(Locale.US, " t:%d", (currTime + 500) / 1000));
                 }
                 statStrTmp.append(" n:");
                 appendWithPrefix(statStrTmp, currNodes);
@@ -900,15 +915,22 @@ public class DroidChessController {
         }
 
         @Override
-        public void notifySearchResult(final int id, final String cmd, final Move ponder) {
+        public void notifySearchResult(int id, String cmd, Move ponder) {
             new Thread(() -> gui.runOnUIThread(() -> makeComputerMove(id, cmd, ponder))).start();
         }
 
         @Override
-        public void notifyEngineName(final String engineName) {
+        public void notifyEngineName(String engineName) {
             gui.runOnUIThread(() -> {
                 updatePlayerNames(engineName);
                 gui.reportEngineName(engineName);
+            });
+        }
+
+        @Override
+        public void notifyEngineInitialized() {
+            gui.runOnUIThread(() -> {
+                gui.updateEngineTitle(eloData().getEloToUse());
             });
         }
 
@@ -998,7 +1020,7 @@ public class DroidChessController {
                         game.haveDrawOffer(),
                         wTime, bTime, wInc, bInc, movesToGo,
                         gui.ponderMode(), fPonderMove,
-                        engine, strength);
+                        engine, getEloToUse());
                 computerPlayer.queueSearchRequest(sr);
             } else {
                 computerPlayer.queueStartEngine(searchId, engine);
@@ -1033,8 +1055,9 @@ public class DroidChessController {
             String engine = "Computer";
             if (computerPlayer != null) {
                 engine = computerPlayer.getEngineName();
-                if (strength < 1000)
-                    engine += String.format(Locale.US, " (%.1f%%)", strength * 0.1);
+                int elo = getEloToUse();
+                if (elo != Integer.MAX_VALUE)
+                    engine += String.format(Locale.US, " (%d)", elo);
             }
             String player = gui.playerName();
             String white = gameMode.playerWhite() ? player : engine;
@@ -1045,8 +1068,9 @@ public class DroidChessController {
 
     private synchronized void updatePlayerNames(String engineName) {
         if (game != null) {
-            if (strength < 1000)
-                engineName += String.format(Locale.US, " (%.1f%%)", strength * 0.1);
+            int elo = getEloToUse();
+            if (elo != Integer.MAX_VALUE)
+                engineName += String.format(Locale.US, " (%d)", elo);
             String white = gameMode.playerWhite() ? game.tree.white : engineName;
             String black = gameMode.playerBlack() ? game.tree.black : engineName;
             game.tree.setPlayerNames(white, black);

@@ -50,7 +50,6 @@ Pil gücüyle çalışıyorsanız, pil gücünden tasarruf etmek için ayarları
     <string name="tools_menu">Araçlar</string>
     <string name="load_save_menu">Oyun Yükle/Kaydet</string>
     <string name="goto_move">Harekete git</string>
-    <string name="edit_strength">Gücü ayarla</string>
     <string name="edit_randomization">Rasgeleliği ayarla</string>
     <string name="invalid_number_format">Geçersiz sayı formatı</string>
     <string name="side_to_move">Hareket tarafı</string>
@@ -273,8 +272,6 @@ Pil gücüyle çalışıyorsanız, pil gücünden tasarruf etmek için ayarları
     <string name="prefs_playerNameFlip_title">Tahtayı Dödür: Oyuncu</string>
     <string name="prefs_playerNameFlip_summary">Tahtayı döndürmek için Oyuncu Adını kullan</string>
     <string name="prefs_engine_settings">Motor Ayarları</string>
-    <string name="prefs_strength_title">Oynama zorluğu</string>
-    <string name="prefs_strength_summary">Sadece dahili motorlar destekler. Analiz modu daima tam gücü kullanır.</string>
     <string name="prefs_ponderMode_title">Düşünme</string>
     <string name="prefs_ponderMode_summary">Rakibini beklerken bilgisayarın düşünmesine izin ver. Çoğu motor destekler.</string>
     <string name="prefs_hash_title">Hash Tablosu</string>

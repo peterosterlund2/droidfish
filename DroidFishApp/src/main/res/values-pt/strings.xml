@@ -50,7 +50,6 @@ Se você está usando somente a bateria, recomenda-se que você mude as configur
     <string name="tools_menu">Ferramentas</string>
     <string name="load_save_menu">Carregar/Salvar partida</string>
     <string name="goto_move">Ir para o lance</string>
-    <string name="edit_strength">Alterar nível</string>
     <string name="edit_randomization">Alterar aleatoriedade</string>
     <string name="invalid_number_format">Formato de número inválido</string>
     <string name="side_to_move">Lado a mover</string>
@@ -273,8 +272,6 @@ Se você está usando somente a bateria, recomenda-se que você mude as configur
     <string name="prefs_playerNameFlip_title">Inverter tabuleiro: jogador</string>
     <string name="prefs_playerNameFlip_summary">Usar o nome do jogador para virar o tabuleiro automaticamente</string>
     <string name="prefs_engine_settings">Configurações do software de Xadrez</string>
-    <string name="prefs_strength_title">Nível de jogo</string>
-    <string name="prefs_strength_summary">Somente suportado pelo software interno. Modo análise sempre usa força total.</string>
     <string name="prefs_ponderMode_title">Análise constante</string>
     <string name="prefs_ponderMode_summary">Deixar o software analisando enquanto espera o lance do oponente. Suportado pela maioria dos softwares.</string>
     <string name="prefs_hash_title">Tabela hash</string>

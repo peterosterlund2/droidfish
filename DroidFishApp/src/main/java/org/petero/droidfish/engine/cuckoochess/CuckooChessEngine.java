@@ -74,9 +74,9 @@ public class CuckooChessEngine extends UCIEngineBase {
     }
 
     @Override
-    protected boolean configurableOption(String name) {
+    protected boolean editableOption(String name) {
         name = name.toLowerCase(Locale.US);
-        if (!super.configurableOption(name))
+        if (!super.editableOption(name))
             return false;
         if (name.equals("strength"))
             return false;
@@ -86,11 +86,6 @@ public class CuckooChessEngine extends UCIEngineBase {
     @Override
     public boolean optionsOk(EngineOptions engineOptions) {
         return true;
-    }
-
-    @Override
-    public final void setStrength(int strength) {
-        setOption("strength", strength);
     }
 
     private void mainLoop(LocalPipe is, LocalPipe os) {

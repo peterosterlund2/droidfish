@@ -54,7 +54,6 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
     <string name="tools_menu">도구</string>
     <string name="load_save_menu">게임 저장/불러오기</string>
     <string name="goto_move">이동으로 가기</string>
-    <string name="edit_strength">강도 조정</string>
     <string name="edit_randomization">랜덤화 편집</string>
     <string name="invalid_number_format">잘못된 숫자 형식</string>
     <string name="side_to_move">이동할 사이드</string>
@@ -277,8 +276,6 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
     <string name="prefs_playerNameFlip_title">플립 보드 : 플레이어</string>
     <string name="prefs_playerNameFlip_summary">자동 플립 보드를 위해 플레이어 이름을 사용합니다</string>
     <string name="prefs_engine_settings">엔진 설정</string>
-    <string name="prefs_strength_title">플레이 강도</string>
-    <string name="prefs_strength_summary">내장 엔진에서만 지원합니다. 분석 모드에서는 항상 최고 강도를 사용합니다.</string>
     <string name="prefs_ponderMode_title">숙고하기</string>
     <string name="prefs_ponderMode_summary">상대방의 이동을 기다리는 동안 엔진이 생각하도록 합니다. 대부분의 엔진에 의해 지원됩니다.</string>
     <string name="prefs_hash_title">해시 테이블</string>

@@ -30,12 +30,6 @@
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/prefs_engine_settings">
-        <org.petero.droidfish.activities.util.SeekBarPreference
-            android:key="strength"
-            android:title="@string/prefs_strength_title"
-            android:summary="@string/prefs_strength_summary"
-            android:defaultValue="1000">
-        </org.petero.droidfish.activities.util.SeekBarPreference>
         <CheckBoxPreference
             android:key="ponderMode"
             android:title="@string/prefs_ponderMode_title"

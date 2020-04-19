@@ -50,7 +50,6 @@ Jeśli pracujesz na baterii, zalecana jest zmiana ustawień, w celu oszczędzani
     <string name="tools_menu">Narzędzia</string>
     <string name="load_save_menu">Załaduj/zapisz partię</string>
     <string name="goto_move">Idź do posunięcia</string>
-    <string name="edit_strength">Edytuj siłę gry</string>
     <string name="edit_randomization">Zmień losowość</string>
     <string name="invalid_number_format">Niepoprawny format liczby</string>
     <string name="side_to_move">Strona na posunięciu</string>
@@ -273,8 +272,6 @@ Jeśli pracujesz na baterii, zalecana jest zmiana ustawień, w celu oszczędzani
     <string name="prefs_playerNameFlip_title">Obracanie szachownicy: gracz</string>
     <string name="prefs_playerNameFlip_summary">Używaj nazwy gracza, żeby obracać szachownicę automatycznie</string>
     <string name="prefs_engine_settings">Ustawienia silnika</string>
-    <string name="prefs_strength_title">Siła gry</string>
-    <string name="prefs_strength_summary">Wspierane wyłącznie przez lokalne silniki szachowe. Tryb analizy zawsze używa maksymalnej siły gry.</string>
     <string name="prefs_ponderMode_title">Namysł</string>
     <string name="prefs_ponderMode_summary">Silnik szachowy będzie liczył pozycję czekając na posunięcie przeciwnika. Wspierane przez większość silników.</string>
     <string name="prefs_hash_title">Tablica haszująca</string>

@@ -237,10 +237,6 @@ public class ExternalEngine extends UCIEngineBase {
     }
 
     @Override
-    public void setStrength(int strength) {
-    }
-
-    @Override
     public String readLineFromEngine(int timeoutMillis) {
         String ret = inLines.readLine(timeoutMillis);
         if (ret == null)

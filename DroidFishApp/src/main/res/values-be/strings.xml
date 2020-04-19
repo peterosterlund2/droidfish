@@ -50,7 +50,6 @@
     <string name="tools_menu">Прылады</string>
     <string name="load_save_menu">Загрузіць/Захаваць партыю</string>
     <string name="goto_move">Зрабіць ход</string>
-    <string name="edit_strength">Змяніць ровень складанасці</string>
     <string name="edit_randomization">Змяніць рандамізацыю (выпадковасць)</string>
     <string name="invalid_number_format">Няправільны фармат ліку</string>
     <string name="side_to_move">Задаць кірунак ходу</string>
@@ -273,8 +272,6 @@
     <string name="prefs_playerNameFlip_title">Паварочваць дошку: гулец</string>
     <string name="prefs_playerNameFlip_summary">Скарыстаць імя гульца для аўтаматычнага павароту дошкі</string>
     <string name="prefs_engine_settings">Налады рухавічка</string>
-    <string name="prefs_strength_title">Сіла гульні</string>
-    <string name="prefs_strength_summary">Падтрымваецца толькі ўнутранымі рухавічкамі. Рэжым аналізу заўсёды скарыстае поўную сілу.</string>
     <string name="prefs_ponderMode_title">Разважанне</string>
     <string name="prefs_ponderMode_summary">Дазволіць рухавічку абдумванне падчас чакання ходу апанента. Падтрымваецца большасцю рухавічкоў.</string>
     <string name="prefs_hash_title">Хэш-табліца</string>

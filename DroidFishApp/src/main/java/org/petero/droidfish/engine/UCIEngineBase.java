@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 
 import org.petero.droidfish.EngineOptions;
 import org.petero.droidfish.engine.cuckoochess.CuckooChessEngine;
@@ -80,14 +81,15 @@ public abstract class UCIEngineBase implements UCIEngine {
             iniOptions.load(is);
         } catch (IOException ignore) {
         }
+        Map<String,String> opts = new TreeMap<>();
         for (Map.Entry<Object,Object> ent : iniOptions.entrySet()) {
             if (ent.getKey() instanceof String && ent.getValue() instanceof String) {
                 String key = ((String)ent.getKey()).toLowerCase(Locale.US);
                 String value = (String)ent.getValue();
-                if (configurableOption(key))
-                    setOption(key, value);
+                opts.put(key, value);
             }
         }
+        setUCIOptions(opts);
     }
 
     @Override
@@ -125,17 +127,27 @@ public abstract class UCIEngineBase implements UCIEngine {
     /** Get engine UCI options file. */
     protected abstract File getOptionsFile();
 
-    /** Return true if the UCI option can be changed by the user. */
-    protected boolean configurableOption(String name) {
+    /** Return true if the UCI option can be edited in the "Engine Options" dialog. */
+    protected boolean editableOption(String name) {
         name = name.toLowerCase(Locale.US);
         if (name.startsWith("uci_")) {
-            String[] allowed = { "uci_limitstrength", "uci_elo" };
-            return Arrays.asList(allowed).contains(name);
+            return false;
         } else {
             String[] ignored = { "hash", "ponder", "multipv",
                                  "gaviotatbpath", "syzygypath" };
             return !Arrays.asList(ignored).contains(name);
         }
+    }
+
+    /** Return true if the UCI option can be modified by the user, either directly
+     *  from the "Engine Options" dialog or indirectly, for example from the
+     *  "Set Engine Strength" dialog. */
+    private boolean configurableOption(String name) {
+        if (editableOption(name))
+            return true;
+        name = name.toLowerCase(Locale.US);
+        String[] configurable = { "uci_limitstrength", "uci_elo" };
+        return Arrays.asList(configurable).contains(name);
     }
 
     @Override
@@ -221,7 +233,7 @@ public abstract class UCIEngineBase implements UCIEngine {
                     int maxV = Integer.parseInt(maxVal);
                     if (minV <= defV && defV <= maxV)
                         option = new UCIOptions.SpinOption(name, minV, maxV, defV);
-                } catch (NumberFormatException ex) {
+                } catch (NumberFormatException ignore) {
                 }
             }
         } else if (type.equals("combo")) {
@@ -241,8 +253,7 @@ public abstract class UCIEngineBase implements UCIEngine {
         }
 
         if (option != null) {
-            if (!configurableOption(name))
-                option.visible = false;
+            option.visible = editableOption(name);
             options.addOption(option);
         }
         return option;
@@ -251,6 +262,21 @@ public abstract class UCIEngineBase implements UCIEngine {
     /** Return true if engine has option optName. */
     protected final boolean hasOption(String optName) {
         return options.contains(optName);
+    }
+
+    @Override
+    public final void setEloStrength(int elo) {
+        String lsName = "UCI_LimitStrength";
+        boolean limit = elo != Integer.MAX_VALUE;
+        UCIOptions.OptionBase o = options.getOption(lsName);
+        if (o instanceof UCIOptions.CheckOption) {
+            // Don't use setOption() since this value reflects current search parameters,
+            // not user specified strength settings, so should not be saved in .ini file.
+            writeLineToEngine(String.format(Locale.US, "setoption name %s value %s",
+                                            lsName, limit ? "true" : "false"));
+        }
+        if (limit)
+            setOption("UCI_Elo", elo);
     }
 
     @Override

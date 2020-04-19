@@ -44,6 +44,7 @@
             android:gravity="center"
             android:textSize="14sp"
             android:tag="title"
+            android:ellipsize="middle"
             android:text="@string/app_name" />
 
         <TextView

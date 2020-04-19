@@ -84,4 +84,7 @@ public interface SearchListener {
 
     /** Report engine error. */
     void reportEngineError(String errMsg);
+
+    /** Report that engine has been initialized. */
+    void notifyEngineInitialized();
 }

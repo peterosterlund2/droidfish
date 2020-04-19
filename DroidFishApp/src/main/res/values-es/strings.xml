@@ -50,7 +50,6 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="tools_menu">Herramientas</string>
     <string name="load_save_menu">Cargar/Guardar Partida</string>
     <string name="goto_move">Ir a la jugada</string>
-    <string name="edit_strength">Editar Fuerza de juego</string>
     <string name="edit_randomization">Editar Aleatoriedad</string>
     <string name="invalid_number_format"> Formato de número no válido</string>
     <string name="side_to_move">Turno de juego</string>
@@ -273,8 +272,6 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="prefs_playerNameFlip_title">Invertir tablero : Jugador</string>
     <string name="prefs_playerNameFlip_summary">Utilizar el nombre del jugador para invertir el tablero automáticamente</string>
     <string name="prefs_engine_settings">Ajustes del Motor/Programa</string>
-    <string name="prefs_strength_title">Fuerza/Nivel de Juego</string>
-    <string name="prefs_strength_summary">Soportado únicamente por los motores internos. El modo análisis siempre utiliza fuerza máxima.</string>
     <string name="prefs_ponderMode_title">Pensar siempre</string>
     <string name="prefs_ponderMode_summary">Dejar calcular al motor mientras espera la jugada del oponente. Lo incorporan la mayoría de los motores.</string>
     <string name="prefs_hash_title">Tablas Hash</string>

@@ -67,8 +67,9 @@ public interface UCIEngine {
     /** Write a line to the engine. \n will be added automatically. */
     void writeLineToEngine(String data);
 
-    /** Set the engine strength, allowed values 0 - 1000. */
-    void setStrength(int strength);
+    /** Temporarily set the engine Elo strength to use for the next search.
+     *  Integer.MAX_VALUE means full strength. */
+    void setEloStrength(int elo);
 
     /** Set an engine integer option. */
     void setOption(String name, int value);

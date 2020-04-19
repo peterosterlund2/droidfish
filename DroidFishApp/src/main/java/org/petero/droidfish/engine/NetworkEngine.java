@@ -229,10 +229,6 @@ public class NetworkEngine extends UCIEngineBase {
     }
 
     @Override
-    public void setStrength(int strength) {
-    }
-
-    @Override
     public String readLineFromEngine(int timeoutMillis) {
         String ret = engineToGui.readLine(timeoutMillis);
         if (ret == null)

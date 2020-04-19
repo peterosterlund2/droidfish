@@ -48,6 +48,7 @@ import org.petero.droidfish.activities.util.PGNFile;
 import org.petero.droidfish.activities.util.PGNFile.GameInfo;
 import org.petero.droidfish.activities.Preferences;
 import org.petero.droidfish.book.BookOptions;
+import org.petero.droidfish.engine.DroidComputerPlayer.EloData;
 import org.petero.droidfish.engine.EngineUtil;
 import org.petero.droidfish.engine.UCIOptions;
 import org.petero.droidfish.gamelogic.DroidChessController;
@@ -136,6 +137,7 @@ import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView.ScaleType;
@@ -1094,8 +1096,7 @@ public class DroidFish extends Activity
         mEcoHints = getIntSetting("ecoHints", ECO_HINTS_AUTO);
 
         String engine = settings.getString("engine", "stockfish");
-        int strength = settings.getInt("strength", 1000);
-        setEngineStrength(engine, strength);
+        setEngine(engine);
 
         mPonderMode = settings.getBoolean("ponderMode", false);
         if (!mPonderMode)
@@ -1308,16 +1309,16 @@ public class DroidFish extends Activity
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
-    private void setEngineStrength(String engine, int strength) {
+    private void setEngine(String engine) {
         if (!storageAvailable()) {
             if (!"stockfish".equals(engine) && !"cuckoochess".equals(engine))
                 engine = "stockfish";
         }
-        ctrl.setEngineStrength(engine, strength);
-        setEngineTitle(engine, strength);
+        ctrl.setEngine(engine);
+        setEngineTitle(engine, ctrl.eloData().getEloToUse());
     }
 
-    private void setEngineTitle(String engine, int strength) {
+    private void setEngineTitle(String engine, int elo) {
         String eName = "";
         if (EngineUtil.isOpenExchangeEngine(engine)) {
             String engineFileName = new File(engine).getName();
@@ -1336,10 +1337,10 @@ public class DroidFish extends Activity
             eName = getString("cuckoochess".equals(engine) ?
                               R.string.cuckoochess_engine :
                               R.string.stockfish_engine);
-            boolean analysis = (ctrl != null) && ctrl.analysisMode();
-            if ((strength < 1000) && !analysis)
-                eName = String.format(Locale.US, "%s: %d%%", eName, strength / 10);
         }
+        if (ctrl != null && !ctrl.analysisMode())
+            if (elo != Integer.MAX_VALUE)
+                eName = String.format(Locale.US, "%s: %d", eName, elo);
         engineTitleText.setText(eName);
     }
 
@@ -1363,10 +1364,9 @@ public class DroidFish extends Activity
     }
 
     @Override
-    public void updateEngineTitle() {
+    public void updateEngineTitle(int elo) {
         String engine = settings.getString("engine", "stockfish");
-        int strength = settings.getInt("strength", 1000);
-        setEngineTitle(engine, strength);
+        setEngineTitle(engine, elo);
     }
 
     @Override
@@ -1433,31 +1433,34 @@ public class DroidFish extends Activity
     }
 
     private class DrawerItem {
-        int id;
-        int itemId; // Item string resource id
+        DrawerItemId id;
+        private int resId; // Item string resource id
 
-        DrawerItem(int id, int itemId) {
+        DrawerItem(DrawerItemId id, int resId) {
             this.id = id;
-            this.itemId = itemId;
+            this.resId = resId;
         }
 
         @Override
         public String toString() {
-            return getString(itemId);
+            return getString(resId);
         }
     }
 
-    static private final int ITEM_NEW_GAME = 0;
-    static private final int ITEM_EDIT_BOARD = 1;
-    static private final int ITEM_SETTINGS = 2;
-    static private final int ITEM_FILE_MENU = 3;
-    static private final int ITEM_RESIGN = 4;
-    static private final int ITEM_FORCE_MOVE = 5;
-    static private final int ITEM_DRAW = 6;
-    static private final int ITEM_SELECT_BOOK = 7;
-    static private final int ITEM_MANAGE_ENGINES = 8;
-    static private final int ITEM_SET_COLOR_THEME = 9;
-    static private final int ITEM_ABOUT = 10;
+    private enum DrawerItemId {
+        NEW_GAME,
+        SET_STRENGTH,
+        EDIT_BOARD,
+        SETTINGS,
+        FILE_MENU,
+        RESIGN,
+        FORCE_MOVE,
+        DRAW,
+        SELECT_BOOK,
+        MANAGE_ENGINES,
+        SET_COLOR_THEME,
+        ABOUT,
+    }
 
     /** Initialize the drawer part of the user interface. */
     private void initDrawers() {
@@ -1466,14 +1469,15 @@ public class DroidFish extends Activity
         rightDrawer = findViewById(R.id.right_drawer);
 
         final DrawerItem[] leftItems = new DrawerItem[] {
-            new DrawerItem(ITEM_NEW_GAME, R.string.option_new_game),
-            new DrawerItem(ITEM_EDIT_BOARD, R.string.option_edit_board),
-            new DrawerItem(ITEM_FILE_MENU, R.string.option_file),
-            new DrawerItem(ITEM_SELECT_BOOK, R.string.option_select_book),
-            new DrawerItem(ITEM_MANAGE_ENGINES, R.string.option_manage_engines),
-            new DrawerItem(ITEM_SET_COLOR_THEME, R.string.option_color_theme),
-            new DrawerItem(ITEM_SETTINGS, R.string.option_settings),
-            new DrawerItem(ITEM_ABOUT, R.string.option_about)
+            new DrawerItem(DrawerItemId.NEW_GAME, R.string.option_new_game),
+            new DrawerItem(DrawerItemId.SET_STRENGTH, R.string.set_engine_strength),
+            new DrawerItem(DrawerItemId.EDIT_BOARD, R.string.option_edit_board),
+            new DrawerItem(DrawerItemId.FILE_MENU, R.string.option_file),
+            new DrawerItem(DrawerItemId.SELECT_BOOK, R.string.option_select_book),
+            new DrawerItem(DrawerItemId.MANAGE_ENGINES, R.string.option_manage_engines),
+            new DrawerItem(DrawerItemId.SET_COLOR_THEME, R.string.option_color_theme),
+            new DrawerItem(DrawerItemId.SETTINGS, R.string.option_settings),
+            new DrawerItem(DrawerItemId.ABOUT, R.string.option_about),
         };
         leftDrawer.setAdapter(new ArrayAdapter<>(this,
                                                  R.layout.drawer_list_item,
@@ -1484,9 +1488,9 @@ public class DroidFish extends Activity
         });
 
         final DrawerItem[] rightItems = new DrawerItem[] {
-            new DrawerItem(ITEM_RESIGN, R.string.option_resign_game),
-            new DrawerItem(ITEM_FORCE_MOVE, R.string.option_force_computer_move),
-            new DrawerItem(ITEM_DRAW, R.string.option_draw)
+            new DrawerItem(DrawerItemId.RESIGN, R.string.option_resign_game),
+            new DrawerItem(DrawerItemId.FORCE_MOVE, R.string.option_force_computer_move),
+            new DrawerItem(DrawerItemId.DRAW, R.string.option_draw),
         };
         rightDrawer.setAdapter(new ArrayAdapter<>(this,
                                                   R.layout.drawer_list_item,
@@ -1504,7 +1508,7 @@ public class DroidFish extends Activity
     }
 
     /** React to a selection in the left/right drawers. */
-    private void handleDrawerSelection(int itemId) {
+    private void handleDrawerSelection(DrawerItemId id) {
         drawerLayout.closeDrawer(Gravity.LEFT);
         drawerLayout.closeDrawer(Gravity.RIGHT);
         leftDrawer.clearChoices();
@@ -1512,30 +1516,33 @@ public class DroidFish extends Activity
 
         setAutoMode(AutoMode.OFF);
 
-        switch (itemId) {
-        case ITEM_NEW_GAME:
+        switch (id) {
+        case NEW_GAME:
             showDialog(NEW_GAME_DIALOG);
             break;
-        case ITEM_EDIT_BOARD:
+        case SET_STRENGTH:
+            reShowDialog(SET_STRENGTH_DIALOG);
+            break;
+        case EDIT_BOARD:
             startEditBoard(ctrl.getFEN());
             break;
-        case ITEM_SETTINGS: {
+        case SETTINGS: {
             Intent i = new Intent(DroidFish.this, Preferences.class);
             startActivityForResult(i, RESULT_SETTINGS);
             break;
         }
-        case ITEM_FILE_MENU:
+        case FILE_MENU:
             if (storageAvailable())
                 reShowDialog(FILE_MENU_DIALOG);
             break;
-        case ITEM_RESIGN:
+        case RESIGN:
             if (ctrl.humansTurn())
                 ctrl.resignGame();
             break;
-        case ITEM_FORCE_MOVE:
+        case FORCE_MOVE:
             ctrl.stopSearch();
             break;
-        case ITEM_DRAW:
+        case DRAW:
             if (ctrl.humansTurn()) {
                 if (ctrl.claimDrawIfPossible())
                     ctrl.stopPonder();
@@ -1543,20 +1550,20 @@ public class DroidFish extends Activity
                     DroidFishApp.toast(R.string.offer_draw, Toast.LENGTH_SHORT);
             }
             break;
-        case ITEM_SELECT_BOOK:
+        case SELECT_BOOK:
             if (storageAvailable())
                 reShowDialog(SELECT_BOOK_DIALOG);
             break;
-        case ITEM_MANAGE_ENGINES:
+        case MANAGE_ENGINES:
             if (storageAvailable())
                 reShowDialog(MANAGE_ENGINES_DIALOG);
             else
                 reShowDialog(SELECT_ENGINE_DIALOG_NOMANAGE);
             break;
-        case ITEM_SET_COLOR_THEME:
+        case SET_COLOR_THEME:
             showDialog(SET_COLOR_THEME_DIALOG);
             break;
-        case ITEM_ABOUT:
+        case ABOUT:
             showDialog(ABOUT_DIALOG);
             break;
         }
@@ -2025,6 +2032,7 @@ public class DroidFish extends Activity
     static private final int DELETE_NETWORK_ENGINE_DIALOG = 25;
     static private final int CLIPBOARD_DIALOG = 26;
     static private final int SELECT_FEN_FILE_DIALOG = 27;
+    static private final int SET_STRENGTH_DIALOG = 28;
 
     /** Remove and show a dialog. */
     void reShowDialog(int id) {
@@ -2036,6 +2044,7 @@ public class DroidFish extends Activity
     protected Dialog onCreateDialog(int id) {
         switch (id) {
         case NEW_GAME_DIALOG:                return newGameDialog();
+        case SET_STRENGTH_DIALOG:            return setStrengthDialog();
         case PROMOTE_DIALOG:                 return promoteDialog();
         case BOARD_MENU_DIALOG:              return boardMenuDialog();
         case FILE_MENU_DIALOG:               return fileMenuDialog();
@@ -2076,6 +2085,106 @@ public class DroidFish extends Activity
         return builder.create();
     }
 
+    private Dialog setStrengthDialog() {
+        EloStrengthSetter m = new EloStrengthSetter();
+        return m.getDialog();
+    }
+
+    /** Handle user interface to set engine strength. */
+    private class EloStrengthSetter {
+        private final EloData eloData = ctrl.eloData();
+
+        private CheckBox checkBox;
+        private TextView eloLabel;
+        private EditText editTxt;
+        private SeekBar seekBar;
+
+        private int progressToElo(int p) {
+            return eloData.minElo + p;
+        }
+
+        private int eloToProgress(int elo) {
+            return elo - eloData.minElo;
+        }
+
+        private void updateText(int elo) {
+            String txt = Integer.valueOf(elo).toString();
+            if (!txt.equals(editTxt.getText().toString())) {
+                editTxt.setText(txt);
+                editTxt.setSelection(txt.length());
+            }
+        }
+
+        private void updateEnabledState(boolean enabled) {
+            eloLabel.setEnabled(enabled);
+            editTxt.setEnabled(enabled);
+            seekBar.setEnabled(enabled);
+        }
+
+        public Dialog getDialog() {
+            if (!eloData.canChangeStrength()) {
+                DroidFishApp.toast(R.string.engine_cannot_reduce_strength, Toast.LENGTH_LONG);
+                return null;
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(DroidFish.this);
+            builder.setTitle(R.string.set_engine_strength);
+            View content = View.inflate(DroidFish.this, R.layout.set_strength, null);
+            builder.setView(content);
+
+            checkBox = content.findViewById(R.id.strength_checkbox);
+            eloLabel = content.findViewById(R.id.strength_elolabel);
+            editTxt = content.findViewById(R.id.strength_edittext);
+            seekBar = content.findViewById(R.id.strength_seekbar);
+
+            checkBox.setChecked(eloData.limitStrength);
+            seekBar.setMax(eloToProgress(eloData.maxElo));
+            seekBar.setProgress(eloToProgress(eloData.elo));
+            updateText(eloData.elo);
+            updateEnabledState(eloData.limitStrength);
+
+            checkBox.setOnCheckedChangeListener((button, isChecked) -> {
+                updateEnabledState(isChecked);
+            });
+            seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) { }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) { }
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    updateText(progressToElo(progress));
+                }
+            });
+            editTxt.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    String txt = editTxt.getText().toString();
+                    try {
+                        int elo = Integer.parseInt(txt);
+                        int p = eloToProgress(elo);
+                        if (p != seekBar.getProgress())
+                            seekBar.setProgress(p);
+                        updateText(progressToElo(p));
+                    } catch (NumberFormatException ignore) {
+                    }
+                }
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+                @Override
+                public void afterTextChanged(Editable s) { }
+            });
+
+            builder.setNegativeButton(R.string.cancel, null);
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                boolean limitStrength = checkBox.isChecked();
+                int elo = progressToElo(seekBar.getProgress());
+                ctrl.setStrength(limitStrength, elo);
+            });
+
+            return builder.create();
+        }
+    }
+
     private void startNewGame(int type) {
         if (type != 2) {
             int gameModeType = (type == 0) ? GameMode.PLAYER_WHITE : GameMode.PLAYER_BLACK;
@@ -2091,7 +2200,7 @@ public class DroidFish extends Activity
         ctrl.newGame(gameMode, tcData);
         ctrl.startGame();
         setBoardFlip(true);
-        updateEngineTitle();
+        updateEngineTitle(ctrl.eloData().getEloToUse()); // Game mode affects Elo setting
     }
 
     private Dialog promoteDialog() {
@@ -2502,9 +2611,8 @@ public class DroidFish extends Activity
                     editor.putString("engine", engine);
                     editor.apply();
                     dialog.dismiss();
-                    int strength = settings.getInt("strength", 1000);
                     setEngineOptions(false);
-                    setEngineStrength(engine, strength);
+                    setEngine(engine);
                 });
         builder.setOnCancelListener(dialog -> {
             if (!abortOnCancel)
@@ -2845,8 +2953,7 @@ public class DroidFish extends Activity
         int numPV = this.numPV;
         final int maxPV = ctrl.maxPV();
         if (gameMode.analysisMode()) {
-            numPV = Math.min(numPV, maxPV);
-            numPV = Math.max(numPV, 1);
+            numPV = Math.min(Math.max(numPV, 1), maxPV);
             if (maxPV > 1) {
                 lst.add(getString(R.string.num_variations)); actions.add(MULTIPV_SET);
             }
@@ -2988,11 +3095,9 @@ public class DroidFish extends Activity
 
             seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
                 @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-                }
+                public void onStopTrackingTouch(SeekBar seekBar) { }
                 @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-                }
+                public void onStartTrackingTouch(SeekBar seekBar) { }
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     int nPV = progressToNumPV(progress, maxPV);
@@ -3014,11 +3119,9 @@ public class DroidFish extends Activity
                     }
                 }
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
                 @Override
-                public void afterTextChanged(Editable s) {
-                }
+                public void afterTextChanged(Editable s) { }
             });
 
             builder.setNegativeButton(R.string.cancel, null);
@@ -3349,9 +3452,8 @@ public class DroidFish extends Activity
                 editor.putString("engine", engine);
                 editor.apply();
                 dialog.dismiss();
-                int strength = settings.getInt("strength", 1000);
                 setEngineOptions(false);
-                setEngineStrength(engine, strength);
+                setEngine(engine);
             }
             dialog.cancel();
             reShowDialog(NETWORK_ENGINE_DIALOG);
@@ -3553,22 +3655,22 @@ public class DroidFish extends Activity
     @Override
     public void reportInvalidMove(Move m) {
         String msg = String.format(Locale.US, "%s %s-%s",
-                getString(R.string.invalid_move),
-                TextIO.squareToString(m.from), TextIO.squareToString(m.to));
+                                   getString(R.string.invalid_move),
+                                   TextIO.squareToString(m.from), TextIO.squareToString(m.to));
         DroidFishApp.toast(msg, Toast.LENGTH_SHORT);
     }
 
     @Override
     public void reportEngineName(String engine) {
         String msg = String.format(Locale.US, "%s: %s",
-                getString(R.string.engine), engine);
+                                   getString(R.string.engine), engine);
         DroidFishApp.toast(msg, Toast.LENGTH_SHORT);
     }
 
     @Override
     public void reportEngineError(String errMsg) {
         String msg = String.format(Locale.US, "%s: %s",
-                getString(R.string.engine_error), errMsg);
+                                   getString(R.string.engine_error), errMsg);
         DroidFishApp.toast(msg, Toast.LENGTH_LONG);
     }
 

@@ -50,7 +50,6 @@
     <string name="tools_menu">工具</string>
     <string name="load_save_menu">加载/保存对局</string>
     <string name="goto_move">转到着法</string>
-    <string name="edit_strength">编辑棋力</string>
     <string name="edit_randomization">编辑随机性</string>
     <string name="invalid_number_format">编号格式无效</string>
     <string name="side_to_move">轮走棋方</string>
@@ -273,8 +272,6 @@
     <string name="prefs_playerNameFlip_title">翻转棋盘: 棋手</string>
     <string name="prefs_playerNameFlip_summary">以棋手名字自动翻转棋盘</string>
     <string name="prefs_engine_settings">引擎设置</string>
-    <string name="prefs_strength_title">对弈棋力</string>
-    <string name="prefs_strength_summary">支持内置引擎。分析模式总是使用最强棋力</string>
     <string name="prefs_ponderMode_title">思考</string>
     <string name="prefs_ponderMode_summary">引擎在等待对手走棋时思考。支持大多数引擎</string>
     <string name="prefs_hash_title">哈希表</string>

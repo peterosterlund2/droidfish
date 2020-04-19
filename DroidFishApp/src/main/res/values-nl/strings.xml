@@ -50,7 +50,6 @@ Als uw telefoon op batterij werkt is het aan te raden om deze instellingen te wi
     <string name="tools_menu">Tools</string>
     <string name="load_save_menu">Laad/Bewaar Partij</string>
     <string name="goto_move">Ga naar zet</string>
-    <string name="edit_strength">Speelsterkte bewerken</string>
     <string name="edit_randomization">Willekeurigheid bewerken</string>
     <string name="invalid_number_format">Ongeldig nummer formaat</string>
     <string name="side_to_move">Speler aan zet</string>
@@ -273,8 +272,6 @@ Als uw telefoon op batterij werkt is het aan te raden om deze instellingen te wi
     <string name="prefs_playerNameFlip_title">Draai bord:Speler</string>
     <string name="prefs_playerNameFlip_summary">Draai bord automatisch op spelers naam</string>
     <string name="prefs_engine_settings">Engine instellingen</string>
-    <string name="prefs_strength_title">Speel sterkte</string>
-    <string name="prefs_strength_summary">Alleen ondersteund door interne engines. Analyse gebruikt altijd de hoogste denksterkte.</string>
     <string name="prefs_ponderMode_title">Peinzen</string>
     <string name="prefs_ponderMode_summary">Laat de engine verder denken tijdens wachten op de zet van de tegenstander.</string>
     <string name="prefs_hash_title">Hashtabel</string>

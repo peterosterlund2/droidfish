@@ -50,7 +50,6 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="tools_menu">Outils</string>
     <string name="load_save_menu">Charger/Sauvegarder une partie</string>
     <string name="goto_move">Aller au coup</string>
-    <string name="edit_strength">Modifier le niveau</string>
     <string name="edit_randomization">Modifier la randomisation</string>
     <string name="invalid_number_format">Format du nombre non valide</string>
     <string name="side_to_move">Camp au trait</string>
@@ -273,8 +272,6 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="prefs_playerNameFlip_title">Disposition de l\'échiquier: Joueur</string>
     <string name="prefs_playerNameFlip_summary">Utiliser le nom du joueur pour disposer automatiquement l\'échiquier</string>
     <string name="prefs_engine_settings">Paramètres du module</string>
-    <string name="prefs_strength_title">Niveau de jeu</string>
-    <string name="prefs_strength_summary">Supporté uniquement par les modules internes. Le mode Analyse utilisera toujours le niveau maximal.</string>
     <string name="prefs_ponderMode_title">Réflexion permanente</string>
     <string name="prefs_ponderMode_summary">Laisser le module actif lors du coup de l\'opposant. Supporté par la plupart des modules.</string>
     <string name="prefs_hash_title">Table de hachage</string>

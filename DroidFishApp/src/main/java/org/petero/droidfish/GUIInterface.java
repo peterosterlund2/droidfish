@@ -86,7 +86,7 @@ public interface GUIInterface {
     void setRemainingTime(int wTime, int bTime, int nextUpdate);
 
     /** Update engine title text. */
-    void updateEngineTitle();
+    void updateEngineTitle(int elo);
 
     /** Update title with the material difference. */
     void updateMaterialDifferenceTitle(Util.MaterialDiff diff);
