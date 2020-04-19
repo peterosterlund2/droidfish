@@ -170,15 +170,12 @@ public class DroidEngineControl {
     /**
      * Compute thinking time for current search.
      */
-    final public void computeTimeLimit(SearchParams sPar) {
+    private void computeTimeLimit(SearchParams sPar) {
         minTimeLimit = -1;
         maxTimeLimit = -1;
         maxDepth = -1;
         maxNodes = -1;
         if (sPar.infinite) {
-            minTimeLimit = -1;
-            maxTimeLimit = -1;
-            maxDepth = -1;
         } else if (sPar.depth > 0) {
             maxDepth = sPar.depth;
         } else if (sPar.mate > 0) {
@@ -212,13 +209,7 @@ public class DroidEngineControl {
     }
 
     private static int clamp(int val, int min, int max) {
-        if (val < min) {
-            return min;
-        } else if (val > max) {
-            return max;
-        } else {
-            return val;
-        }
+        return Math.min(Math.max(val, min), max);
     }
 
     private void startThread(final int minTimeLimit, final int maxTimeLimit,
@@ -277,7 +268,7 @@ public class DroidEngineControl {
         engineThread.start();
     }
 
-    final public void stopThread() {
+    private void stopThread() {
         Thread myThread;
         Search mySearch;
         synchronized (threadMutex) {

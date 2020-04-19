@@ -61,7 +61,7 @@ public abstract class ChessBoard extends View {
     public boolean highlightLastMove;         // If true, last move is marked with a rectangle
     public boolean blindMode;                 // If true, no chess pieces and arrows are drawn
 
-    List<Move> moveHints;
+    private List<Move> moveHints;
 
     /** Decoration for a square. Currently the only possible decoration is a tablebase probe result. */
     public final static class SquareDecoration implements Comparable<SquareDecoration> {
