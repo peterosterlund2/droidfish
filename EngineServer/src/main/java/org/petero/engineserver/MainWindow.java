@@ -27,6 +27,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -65,7 +67,14 @@ public class MainWindow {
         arguments = new JTextField[numEngines];
 
         Container pane = frame.getContentPane();
-        frame.setTitle("Chess Engine Server");
+        String title = "Chess Engine Server";
+        try {
+            InetAddress ip = InetAddress.getLocalHost();
+            String addr = ip.getHostAddress();
+            if (!"127.0.0.1".equals(addr))
+                title += " : IP = " + addr;
+        } catch (UnknownHostException ignore) { }
+        frame.setTitle(title);
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent event) {
@@ -191,7 +200,7 @@ public class MainWindow {
     private void portChanged(int engineNo) {
         EngineConfig config = configs[engineNo];
         try {
-            int p = Integer.valueOf(port[engineNo].getText().trim());
+            int p = Integer.parseInt(port[engineNo].getText().trim());
             if (p >= 1024 && p < 65536 && p != config.port) {
                 config.port = p;
                 server.configChanged(engineNo);
