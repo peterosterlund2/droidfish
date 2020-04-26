@@ -71,7 +71,7 @@ public class DroidEngineControl {
     // Reduced strength variables
     private int strength = 1000;
     private boolean limitStrength = false; // If set, overrides strength, using eloToStrength table
-    private int elo = Integer.MAX_VALUE;
+    private int elo = 1500;
     private int maxNPS = 0;
     private long randomSeed = 0;
     private Random rndGen = new Random();
