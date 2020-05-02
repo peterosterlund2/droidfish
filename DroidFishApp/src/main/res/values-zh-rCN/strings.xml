@@ -50,6 +50,9 @@
     <string name="tools_menu">工具</string>
     <string name="load_save_menu">加载/保存对局</string>
     <string name="goto_move">转到着法</string>
+    <string name="limit_strength">Limit Strength</string>
+    <string name="set_engine_strength">Set Engine Strength</string>
+    <string name="engine_cannot_reduce_strength">Engine cannot reduce playing strength</string>
     <string name="edit_randomization">编辑随机性</string>
     <string name="invalid_number_format">编号格式无效</string>
     <string name="side_to_move">轮走棋方</string>

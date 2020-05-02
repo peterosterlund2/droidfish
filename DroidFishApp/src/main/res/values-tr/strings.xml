@@ -50,6 +50,9 @@ Pil gücüyle çalışıyorsanız, pil gücünden tasarruf etmek için ayarları
     <string name="tools_menu">Araçlar</string>
     <string name="load_save_menu">Oyun Yükle/Kaydet</string>
     <string name="goto_move">Harekete git</string>
+    <string name="limit_strength">Limit Strength</string>
+    <string name="set_engine_strength">Set Engine Strength</string>
+    <string name="engine_cannot_reduce_strength">Engine cannot reduce playing strength</string>
     <string name="edit_randomization">Rasgeleliği ayarla</string>
     <string name="invalid_number_format">Geçersiz sayı formatı</string>
     <string name="side_to_move">Hareket tarafı</string>

@@ -50,6 +50,9 @@
     <string name="tools_menu">Інструменти</string>
     <string name="load_save_menu">Завантажити/Зберегти партію</string>
     <string name="goto_move">Зробити хід</string>
+    <string name="limit_strength">Limit Strength</string>
+    <string name="set_engine_strength">Set Engine Strength</string>
+    <string name="engine_cannot_reduce_strength">Engine cannot reduce playing strength</string>
     <string name="edit_randomization">Змінити рандомізацію (випадковість)</string>
     <string name="invalid_number_format">Неправильний формат числа</string>
     <string name="side_to_move">Задати напрямок ходу</string>

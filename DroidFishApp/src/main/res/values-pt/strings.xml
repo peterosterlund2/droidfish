@@ -50,6 +50,9 @@ Se você está usando somente a bateria, recomenda-se que você mude as configur
     <string name="tools_menu">Ferramentas</string>
     <string name="load_save_menu">Carregar/Salvar partida</string>
     <string name="goto_move">Ir para o lance</string>
+    <string name="limit_strength">Limit Strength</string>
+    <string name="set_engine_strength">Set Engine Strength</string>
+    <string name="engine_cannot_reduce_strength">Engine cannot reduce playing strength</string>
     <string name="edit_randomization">Alterar aleatoriedade</string>
     <string name="invalid_number_format">Formato de número inválido</string>
     <string name="side_to_move">Lado a mover</string>

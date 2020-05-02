@@ -50,6 +50,9 @@ Se l\'alimentazione è a batteria, è consigliabile modificare le impostazioni p
     <string name="tools_menu">Strumenti</string>
     <string name="load_save_menu">Apri/Salva partita</string>
     <string name="goto_move">Vai alla mossa</string>
+    <string name="limit_strength">Limit Strength</string>
+    <string name="set_engine_strength">Set Engine Strength</string>
+    <string name="engine_cannot_reduce_strength">Engine cannot reduce playing strength</string>
     <string name="edit_randomization">Modifica la casualizzazione</string>
     <string name="invalid_number_format">Formato del numero non valido</string>
     <string name="side_to_move">Lato che muove</string>

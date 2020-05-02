@@ -50,6 +50,9 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
     <string name="tools_menu">Herramientas</string>
     <string name="load_save_menu">Cargar/Guardar Partida</string>
     <string name="goto_move">Ir a la jugada</string>
+    <string name="limit_strength">Limitar el nivel de juego</string>
+    <string name="set_engine_strength">Ajustar el nivel de juego del motor</string>
+    <string name="engine_cannot_reduce_strength">El motor no puede reducir su nivel de juego</string>
     <string name="edit_randomization">Editar Aleatoriedad</string>
     <string name="invalid_number_format"> Formato de número no válido</string>
     <string name="side_to_move">Turno de juego</string>

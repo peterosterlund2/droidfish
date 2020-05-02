@@ -54,6 +54,9 @@ DroidFish는 백그라운드에 실행 중인 상태에서 다음과 같이 설�
     <string name="tools_menu">도구</string>
     <string name="load_save_menu">게임 저장/불러오기</string>
     <string name="goto_move">이동으로 가기</string>
+    <string name="limit_strength">Limit Strength</string>
+    <string name="set_engine_strength">Set Engine Strength</string>
+    <string name="engine_cannot_reduce_strength">Engine cannot reduce playing strength</string>
     <string name="edit_randomization">랜덤화 편집</string>
     <string name="invalid_number_format">잘못된 숫자 형식</string>
     <string name="side_to_move">이동할 사이드</string>

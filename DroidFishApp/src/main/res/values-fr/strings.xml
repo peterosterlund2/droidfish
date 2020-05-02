@@ -50,6 +50,9 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="tools_menu">Outils</string>
     <string name="load_save_menu">Charger/Sauvegarder une partie</string>
     <string name="goto_move">Aller au coup</string>
+    <string name="limit_strength">Limit Strength</string>
+    <string name="set_engine_strength">Set Engine Strength</string>
+    <string name="engine_cannot_reduce_strength">Engine cannot reduce playing strength</string>
     <string name="edit_randomization">Modifier la randomisation</string>
     <string name="invalid_number_format">Format du nombre non valide</string>
     <string name="side_to_move">Camp au trait</string>

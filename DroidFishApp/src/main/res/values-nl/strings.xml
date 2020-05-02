@@ -50,6 +50,9 @@ Als uw telefoon op batterij werkt is het aan te raden om deze instellingen te wi
     <string name="tools_menu">Tools</string>
     <string name="load_save_menu">Laad/Bewaar Partij</string>
     <string name="goto_move">Ga naar zet</string>
+    <string name="limit_strength">Limit Strength</string>
+    <string name="set_engine_strength">Set Engine Strength</string>
+    <string name="engine_cannot_reduce_strength">Engine cannot reduce playing strength</string>
     <string name="edit_randomization">Willekeurigheid bewerken</string>
     <string name="invalid_number_format">Ongeldig nummer formaat</string>
     <string name="side_to_move">Speler aan zet</string>
