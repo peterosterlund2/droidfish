@@ -156,7 +156,7 @@ public class ExternalEngine extends UCIEngineBase {
                 }
             });
             stdErrThread.start();
-        } catch (IOException ex) {
+        } catch (IOException | SecurityException ex) {
             report.reportError(ex.getMessage());
         }
     }
