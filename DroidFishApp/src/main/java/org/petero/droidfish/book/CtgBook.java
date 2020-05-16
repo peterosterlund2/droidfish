@@ -242,7 +242,7 @@ class CtgBook implements IOpeningBook {
             this.f = f;
         }
 
-        static ArrayList<Integer> getHashIndices(byte[] encodedPos, CtbFile ctb) throws IOException {
+        static ArrayList<Integer> getHashIndices(byte[] encodedPos, CtbFile ctb) {
             ArrayList<Integer> ret = new ArrayList<>();
             int hash = getHashValue(encodedPos);
             for (int n = 0; n < 0x7fffffff; n = 2*n + 1) {
@@ -261,7 +261,7 @@ class CtgBook implements IOpeningBook {
             return extractInt(buf, 0, 4);
         }
 
-        private final static int tbl[] = {
+        private final static int[] tbl = {
             0x3100d2bf, 0x3118e3de, 0x34ab1372, 0x2807a847,
             0x1633f566, 0x2143b359, 0x26d56488, 0x3b9e6f59,
             0x37755656, 0x3089ca7b, 0x18e92d85, 0x0cd0e9d8,
