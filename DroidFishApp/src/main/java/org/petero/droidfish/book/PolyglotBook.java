@@ -370,7 +370,8 @@ class PolyglotBook implements IOpeningBook {
     }
 
     @Override
-    public final ArrayList<BookEntry> getBookEntries(Position pos) {
+    public final ArrayList<BookEntry> getBookEntries(BookPosInput posInput) {
+        Position pos = posInput.getCurrPos();
         try (RandomAccessFile f = new RandomAccessFile(bookFile, "r")) {
             long numEntries = f.length() / 16;
             long key = getHashKey(pos);

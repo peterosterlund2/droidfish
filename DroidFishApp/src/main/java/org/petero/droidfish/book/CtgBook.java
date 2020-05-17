@@ -62,7 +62,8 @@ class CtgBook implements IOpeningBook {
     }
 
     @Override
-    public ArrayList<BookEntry> getBookEntries(Position pos) {
+    public ArrayList<BookEntry> getBookEntries(BookPosInput posInput) {
+        Position pos = posInput.getCurrPos();
         try (RandomAccessFile ctgF = new RandomAccessFile(ctgFile, "r");
              RandomAccessFile ctbF = new RandomAccessFile(ctbFile, "r");
              RandomAccessFile ctoF = new RandomAccessFile(ctoFile, "r")) {

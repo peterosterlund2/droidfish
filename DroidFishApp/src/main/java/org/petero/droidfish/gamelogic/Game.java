@@ -112,7 +112,7 @@ public class Game {
         return ret;
     }
 
-    final Position currPos() {
+    public final Position currPos() {
         return tree.currentPos;
     }
 

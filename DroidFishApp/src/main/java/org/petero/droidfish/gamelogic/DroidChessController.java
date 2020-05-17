@@ -39,6 +39,7 @@ import org.petero.droidfish.PGNOptions;
 import org.petero.droidfish.Util;
 import org.petero.droidfish.book.BookOptions;
 import org.petero.droidfish.book.EcoDb;
+import org.petero.droidfish.book.IOpeningBook.BookPosInput;
 import org.petero.droidfish.engine.DroidComputerPlayer;
 import org.petero.droidfish.engine.UCIOptions;
 import org.petero.droidfish.engine.DroidComputerPlayer.EloData;
@@ -955,7 +956,8 @@ public class DroidChessController {
 
     private void updateBookHints() {
         if (game != null) {
-            Pair<String, ArrayList<Move>> bi = computerPlayer.getBookHints(game.currPos(), localPt());
+            BookPosInput posInput = new BookPosInput(game);
+            Pair<String, ArrayList<Move>> bi = computerPlayer.getBookHints(posInput, localPt());
             EcoDb.Result ecoData = EcoDb.getInstance().getEco(game.tree);
             String eco = ecoData.getName();
             listener.notifyBookInfo(searchId, bi.first, bi.second, eco, ecoData.distToEcoTree);

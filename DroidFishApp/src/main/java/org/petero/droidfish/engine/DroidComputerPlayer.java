@@ -28,6 +28,7 @@ import java.util.TreeMap;
 import org.petero.droidfish.EngineOptions;
 import org.petero.droidfish.book.BookOptions;
 import org.petero.droidfish.book.DroidBook;
+import org.petero.droidfish.book.IOpeningBook.BookPosInput;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.MoveGen;
 import org.petero.droidfish.gamelogic.Position;
@@ -95,7 +96,7 @@ public class DroidComputerPlayer {
         int searchId;           // Unique identifier for this search request
         long startTime;         // System time (milliseconds) when search request was created
 
-        Position prevPos;       // Position at last irreversible move
+        Position prevPos;       // Position at last null move
         ArrayList<Move> mList;  // Moves after prevPos, including ponderMove
         Position currPos;       // currPos = prevPos + mList - ponderMove
         boolean drawOffer;      // True if other side made draw offer
@@ -361,8 +362,9 @@ public class DroidComputerPlayer {
     }
 
     /** Return all book moves, both as a formatted string and as a list of moves. */
-    public final Pair<String, ArrayList<Move>> getBookHints(Position pos, boolean localized) {
-        return book.getAllBookMoves(pos, localized);
+    public final Pair<String, ArrayList<Move>> getBookHints(BookPosInput posInput,
+                                                            boolean localized) {
+        return book.getAllBookMoves(posInput, localized);
     }
 
     /** Get engine reported name. */
@@ -454,7 +456,8 @@ public class DroidComputerPlayer {
 
         if (sr.ponderMove == null) {
             // If we have a book move, play it.
-            Move bookMove = book.getBookMove(sr.currPos);
+            BookPosInput posInput = new BookPosInput(sr.currPos, sr.prevPos, sr.mList);
+            Move bookMove = book.getBookMove(posInput);
             if (bookMove != null) {
                 if (canClaimDraw(sr.currPos, posHashList, posHashListSize, bookMove).isEmpty()) {
                     listener.notifySearchResult(sr.searchId,

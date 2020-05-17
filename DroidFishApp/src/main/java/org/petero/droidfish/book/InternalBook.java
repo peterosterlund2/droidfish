@@ -52,7 +52,8 @@ final class InternalBook implements IOpeningBook {
     }
 
     @Override
-    public ArrayList<BookEntry> getBookEntries(Position pos) {
+    public ArrayList<BookEntry> getBookEntries(BookPosInput posInput) {
+        Position pos = posInput.getCurrPos();
         initInternalBook();
         ArrayList<BookEntry> ents = bookMap.get(pos.zobristHash());
         if (ents == null)

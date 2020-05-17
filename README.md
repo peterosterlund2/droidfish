@@ -560,16 +560,19 @@ restored.
 
 ## Installing additional opening books
 
-To use *polyglot* or *CTG* book files:
+To use *polyglot*, *CTG* or *ABK* book files:
 
-1. Copy one or more polyglot book files to the `DroidFish/book` directory on the
-   external storage. Polyglot books must have the file extension `.bin`.  
-   **Note!** The Android file system is case sensitive, so the extension must be
-   `.bin`, not `.Bin` or `.BIN`.
+1. Copy one or more opening book files to the `DroidFish/book` directory on the
+   external storage.
 
-1. Copy one or more CTG book files to the `DroidFish/book` directory. A CTG
-   book consists of three files with file extensions `.ctg`, `.ctb` and
-   `.cto`. You must copy all three files.
+   1. Polyglot books must have the file extension `.bin`.  
+     **Note!** The Android file system may be case sensitive, in which case the
+     extension must be `.bin`, not `.Bin` or `.BIN`.
+
+   1. A *CTG* book consists of three files with file extensions `.ctg`, `.ctb`
+      and `.cto`. You must copy all three files.
+
+   1. an *ABK* book must have the file extension `.abk`.
 
 1. Go to *Left drawer menu* -> *Select opening book*.
 
@@ -862,11 +865,11 @@ You can change aspects of the opening book from *Left drawer menu* -> *Settings*
 * *Prefer main lines*: When enabled, moves that are marked as main line moves in
   the book are given a higher weight so they will be played more often by the
   chess engine.  
-  **Note!** This option only has an effect for CTG opening books.
+  **Note!** This option only has an effect for *CTG* opening books.
 
 * *Tournament mode*: When enabled, only book moves that are marked for
   tournament play are played by the chess engine.  
-  **Note!** This option only has an effect for CTG opening books.
+  **Note!** This option only has an effect for *CTG* opening books.
 
 * *Book randomization*: Controls how often different book moves are played by
   the engine. The default is 50% which means that the statistics from the
@@ -882,6 +885,10 @@ You can change aspects of the opening book from *Left drawer menu* -> *Settings*
   very big opening book stored somewhere on the device but it would be
   impractical to copy it to the `DroidFish/book` directory.
 
-**Note!** The move percentages calculated by *DroidFish* for CTG books are
+**Note!** The move percentages calculated by *DroidFish* for *CTG* books are
 unlikely to agree with percentages calculated by other chess programs that can
-use CTG books.
+use *CTG* books.
+
+**Note!** The move percentages calculated by *DroidFish* for *ABK* books are not
+always equal to percentages shown in the Arena Chess GUI, because the algorithm
+used by Arena to compute the percentages is unknown.

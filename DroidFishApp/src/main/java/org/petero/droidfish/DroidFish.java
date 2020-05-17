@@ -2500,7 +2500,7 @@ public class DroidFish extends Activity
             if (dotIdx < 0)
                 return false;
             String ext = filename.substring(dotIdx+1);
-            return ("ctg".equals(ext) || "bin".equals(ext));
+            return ("ctg".equals(ext) || "bin".equals(ext) || "abk".equals(ext));
         });
         final int numFiles = fileNames.length;
         final String[] items = new String[numFiles + 3];

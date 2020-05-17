@@ -389,7 +389,7 @@ If you are running on battery power, it is recommended that you change settings 
     <string name="prefs_bookTournamentMode_summary">Ignore moves marked as not for tournament play</string>
     <string name="prefs_bookRandom_title">Book Randomization</string>
     <string name="prefs_bookFile_title">Book Filename</string>
-    <string name="prefs_bookFile_summary">Polyglot or CTG book file in DroidFish directory on SD Card</string>
+    <string name="prefs_bookFile_summary">Polyglot, ABK or CTG book file in DroidFish directory on SD Card</string>
     <string name="prefs_pgnSettings_title">PGN Settings</string>
     <string name="prefs_pgnSettings_summary">Settings for import and export of portable game notation (PGN) data</string>
     <string name="prefs_pgn_viewer">PGN viewer</string>

@@ -37,7 +37,7 @@ class NoBook implements IOpeningBook {
     }
 
     @Override
-    public ArrayList<BookEntry> getBookEntries(Position pos) {
+    public ArrayList<BookEntry> getBookEntries(BookPosInput posInput) {
         return null;
     }
 }

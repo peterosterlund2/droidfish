@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.petero.droidfish.Util;
+import org.petero.droidfish.book.IOpeningBook.BookPosInput;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.MoveGen;
 import org.petero.droidfish.gamelogic.Position;
@@ -64,7 +65,6 @@ public final class DroidBook {
     }
 
     private DroidBook() {
-        rndGen.setSeed(System.currentTimeMillis());
     }
 
     /** Set opening book options. */
@@ -74,6 +74,8 @@ public final class DroidBook {
             externalBook = new CtgBook();
         else if (PolyglotBook.canHandle(options))
             externalBook = new PolyglotBook();
+        else if (AbkBook.canHandle(options))
+            externalBook = new AbkBook();
         else
             externalBook = new NullBook();
         externalBook.setOptions(options);
@@ -83,10 +85,11 @@ public final class DroidBook {
     }
 
     /** Return a random book move for a position, or null if out of book. */
-    public final synchronized Move getBookMove(Position pos) {
+    public final synchronized Move getBookMove(BookPosInput posInput) {
+        Position pos = posInput.getCurrPos();
         if ((options != null) && (pos.fullMoveCounter > options.maxLength))
             return null;
-        List<BookEntry> bookMoves = getBook().getBookEntries(pos);
+        List<BookEntry> bookMoves = getBook().getBookEntries(posInput);
         if (bookMoves == null || bookMoves.isEmpty())
             return null;
 
@@ -116,11 +119,12 @@ public final class DroidBook {
     }
 
     /** Return all book moves, both as a formatted string and as a list of moves. */
-    public final synchronized Pair<String,ArrayList<Move>> getAllBookMoves(Position pos,
+    public final synchronized Pair<String,ArrayList<Move>> getAllBookMoves(BookPosInput posInput,
                                                                            boolean localized) {
+        Position pos = posInput.getCurrPos();
         StringBuilder ret = new StringBuilder();
         ArrayList<Move> bookMoveList = new ArrayList<>();
-        ArrayList<BookEntry> bookMoves = getBook().getBookEntries(pos);
+        ArrayList<BookEntry> bookMoves = getBook().getBookEntries(posInput);
 
         // Check legality
         if (bookMoves != null) {

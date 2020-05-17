@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 import junit.framework.TestCase;
 
-import org.petero.droidfish.book.DroidBook;
+import org.petero.droidfish.book.IOpeningBook.BookPosInput;
 import org.petero.droidfish.gamelogic.ChessParseError;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.MoveGen;
@@ -38,19 +38,21 @@ public class BookTest extends TestCase {
     public void testGetBookMove() throws ChessParseError {
         Position pos = TextIO.readFEN(TextIO.startPosFEN);
         DroidBook book = DroidBook.getInstance();
-        Move move = book.getBookMove(pos);
+        BookPosInput posInput = new BookPosInput(pos, null, null);
+        Move move = book.getBookMove(posInput);
         checkValid(pos, move);
 
         // Test "out of book" condition
         pos.setCastleMask(0);
-        move = book.getBookMove(pos);
+        move = book.getBookMove(posInput);
         assertEquals(null, move);
     }
 
     public void testGetAllBookMoves() throws ChessParseError {
         Position pos = TextIO.readFEN(TextIO.startPosFEN);
         DroidBook book = DroidBook.getInstance();
-        ArrayList<Move> moves = book.getAllBookMoves(pos, false).second;
+        BookPosInput posInput = new BookPosInput(pos, null, null);
+        ArrayList<Move> moves = book.getAllBookMoves(posInput, false).second;
         assertTrue(moves.size() > 1);
         for (Move m : moves) {
             checkValid(pos, m);
