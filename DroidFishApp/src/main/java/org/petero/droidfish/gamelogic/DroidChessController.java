@@ -838,8 +838,11 @@ public class DroidChessController {
 
         @Override
         public void notifyCurrMove(int id, Position pos, Move m, int moveNr) {
+            Position tmpPos = new Position(pos);
+            if (!TextIO.isValid(tmpPos, m))
+                m = new Move(0, 0, 0);
             currMove = m;
-            currMoveStr = TextIO.moveToString(pos, m, false, localPt());
+            currMoveStr = TextIO.moveToString(tmpPos, m, false, localPt());
             currMoveNr = moveNr;
             setSearchInfo(id);
         }
