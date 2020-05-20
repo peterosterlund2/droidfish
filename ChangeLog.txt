@@ -1,3 +1,8 @@
+2020-05-20: Version 1.82
+- Support UCI_Elo for setting engine strength.
+- Support for ABK (Arena) opening books.
+- Implement maxNPS UCI option for CuckooChess.
+
 2020-04-10: Version 1.81
 - Fix color picker layout problems for some screen sizes.
 - Fix auto-scrolling of move list when figurine notation is enabled.
