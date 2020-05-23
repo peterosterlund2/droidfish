@@ -50,9 +50,9 @@ Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese Paramet
     <string name="tools_menu">Hilfsmittel</string>
     <string name="load_save_menu">Partie laden/speichern</string>
     <string name="goto_move">Gehe zu Zug</string>
-    <string name="limit_strength">Limit Strength</string>
-    <string name="set_engine_strength">Set Engine Strength</string>
-    <string name="engine_cannot_reduce_strength">Engine cannot reduce playing strength</string>
+    <string name="limit_strength">Spielstärke begrenzen</string>
+    <string name="set_engine_strength">Engine-Spielstärke einstellen</string>
+    <string name="engine_cannot_reduce_strength">Einstellung der Engine-Spielstärke nicht möglich</string>
     <string name="edit_randomization">Randomisierung ändern</string>
     <string name="invalid_number_format">Ungültiges Zahlenformat</string>
     <string name="side_to_move">Seite am Zug</string>
