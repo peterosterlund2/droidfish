@@ -79,7 +79,7 @@ public abstract class UCIEngineBase implements UCIEngine {
         Properties iniOptions = new Properties();
         try (FileInputStream is = new FileInputStream(optionsFile)) {
             iniOptions.load(is);
-        } catch (IOException ignore) {
+        } catch (IOException|IllegalArgumentException ignore) {
         }
         Map<String,String> opts = new TreeMap<>();
         for (Map.Entry<Object,Object> ent : iniOptions.entrySet()) {
