@@ -34,9 +34,8 @@ public class DroidFishApp extends Application {
     private static Context appContext;
     private static Toast toast;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+    public DroidFishApp() {
+        super();
         appContext = this;
     }
 
@@ -96,10 +95,8 @@ public class DroidFishApp extends Application {
             toast.cancel();
             toast = null;
         }
-        if (appContext != null) {
-            toast = Toast.makeText(appContext, resId, duration);
-            toast.show();
-        }
+        toast = Toast.makeText(appContext, resId, duration);
+        toast.show();
     }
 
     /** Show a toast after canceling current toast. */
@@ -108,9 +105,7 @@ public class DroidFishApp extends Application {
             toast.cancel();
             toast = null;
         }
-        if (appContext != null) {
-            toast = Toast.makeText(appContext, text, duration);
-            toast.show();
-        }
+        toast = Toast.makeText(appContext, text, duration);
+        toast.show();
     }
 }
