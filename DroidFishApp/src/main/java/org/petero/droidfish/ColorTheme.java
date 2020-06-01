@@ -54,7 +54,7 @@ public class ColorTheme {
     public final static int GENERAL_BACKGROUND = 18;
     private final static int numColors = 19;
 
-    private int colorTable[] = new int[numColors];
+    private int[] colorTable = new int[numColors];
 
     private static final String[] prefNames = {
         "darkSquare", "brightSquare", "selectedSquare", "darkPiece", "brightPiece", "currentMove",
@@ -73,7 +73,7 @@ public class ColorTheme {
         R.string.colortheme_scid_brown,
         R.string.colortheme_scid_green
     };
-    private final static String themeColors[][] = {
+    private final static String[][] themeColors = {
     { // Original
         "#FF808080", "#FFBEBE5A", "#FFFF0000", "#FF000000", "#FFFFFFFF", "#FF888888",
         "#A01F1FFF", "#A0FF1F1F", "#501F1FFF", "#50FF1F1F", "#371F1FFF", "#3CFF1F1F", "#1E1F1FFF", "#28FF1F1F",

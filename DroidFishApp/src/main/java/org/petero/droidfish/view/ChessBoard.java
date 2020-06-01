@@ -294,7 +294,7 @@ public abstract class ChessBoard extends View {
     /**
      * Set the board to a given state.
      */
-    final public void setPosition(Position pos) {
+    public final void setPosition(Position pos) {
         boolean doInvalidate = false;
         if (anim.paused) {
             anim.paused = false;
@@ -326,7 +326,7 @@ public abstract class ChessBoard extends View {
     }
 
     /** Set drag state. Return true if any changes were made. */
-    private final boolean setDragStateInternal(int sq, int xCrd, int yCrd) {
+    private boolean setDragStateInternal(int sq, int xCrd, int yCrd) {
         boolean modified = false;
         if (!isValidDragSquare(sq)) {
             if (dragSquare != -1) {
@@ -347,7 +347,7 @@ public abstract class ChessBoard extends View {
     }
 
     /** Set/clear the board flipped status. */
-    final public void setFlipped(boolean flipped) {
+    public final void setFlipped(boolean flipped) {
         if (this.flipped != flipped) {
             this.flipped = flipped;
             invalidate();
@@ -355,7 +355,7 @@ public abstract class ChessBoard extends View {
     }
 
     /** Set/clear the drawSquareLabels status. */
-    final public void setDrawSquareLabels(boolean drawSquareLabels) {
+    public final void setDrawSquareLabels(boolean drawSquareLabels) {
         if (this.drawSquareLabels != drawSquareLabels) {
             this.drawSquareLabels = drawSquareLabels;
             invalidate();
@@ -363,7 +363,7 @@ public abstract class ChessBoard extends View {
     }
 
     /** Set/clear the board blindMode status. */
-    final public void setBlindMode(boolean blindMode) {
+    public final void setBlindMode(boolean blindMode) {
         if (this.blindMode != blindMode) {
             this.blindMode = blindMode;
             invalidate();
@@ -374,7 +374,7 @@ public abstract class ChessBoard extends View {
      * Set/clear the selected square.
      * @param square The square to select, or -1 to clear selection.
      */
-    final public void setSelection(int square) {
+    public final void setSelection(int square) {
         if (square != selectedSquare) {
             selectedSquare = square;
             invalidate();
@@ -680,17 +680,17 @@ public abstract class ChessBoard extends View {
             switch (sd.tbData.type) {
             case DTM:
                 if (wdl > 0)
-                    s = "+" + String.valueOf(num);
+                    s = "+" + num;
                 else if (wdl < 0)
-                    s = "-" + String.valueOf(num);
+                    s = "-" + num;
                 else
                     s = "0";
                 break;
             case DTZ:
                 if (wdl > 0)
-                    s = "W" + String.valueOf(num);
+                    s = "W" + num;
                 else if (wdl < 0)
-                    s = "L" + String.valueOf(num);
+                    s = "L" + num;
                 else
                     s = "0";
                 break;
