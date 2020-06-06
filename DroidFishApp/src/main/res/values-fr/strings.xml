@@ -32,9 +32,9 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="copy_game">Copier la partie dans le presse-papier</string>
     <string name="copy_position">Copier la position dans le presse-papier</string>
     <string name="paste">Coller depuis le presse-papier</string>
-    <string name="share_game">Share Game</string>
-    <string name="share_text">Share as Text</string>
-    <string name="share_image">Share as Image</string>
+    <string name="share_game">Partager la partie</string>
+    <string name="share_text">Partager en tant que Texte</string>
+    <string name="share_image">Partager en tant qu\'image</string>
     <string name="load_last_file">Charger depuis le dernier fichier</string>
     <string name="load_game">Charger une partie PGN</string>
     <string name="load_position">Charger une position depuis un fichier</string>
@@ -42,7 +42,7 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="load_del_game">Charger partie supprimée</string>
     <string name="save_game">Sauvegarder la partie au format PGN</string>
     <string name="get_fen">Récupérer la position</string>
-    <string name="repeat_last_move">Repeat last move</string>
+    <string name="repeat_last_move">Répéter le dernier coup</string>
     <string name="truncate_gametree">Tronquer la variation</string>
     <string name="move_var_up">Monter la variation</string>
     <string name="move_var_down">Descendre la variation</string>
@@ -50,9 +50,9 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="tools_menu">Outils</string>
     <string name="load_save_menu">Charger/Sauvegarder une partie</string>
     <string name="goto_move">Aller au coup</string>
-    <string name="limit_strength">Limit Strength</string>
-    <string name="set_engine_strength">Set Engine Strength</string>
-    <string name="engine_cannot_reduce_strength">Engine cannot reduce playing strength</string>
+    <string name="limit_strength">Limiter le niveau de jeu</string>
+    <string name="set_engine_strength">Définir le niveau du module d\'analyse</string>
+    <string name="engine_cannot_reduce_strength">Le module d\'analyse ne peut pas diminuer son niveau de jeu</string>
     <string name="edit_randomization">Modifier la randomisation</string>
     <string name="invalid_number_format">Format du nombre non valide</string>
     <string name="side_to_move">Camp au trait</string>
@@ -76,15 +76,15 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="select_en_passant_file">Sélectionner la colonne En Passant</string>
     <string name="edit_move_counters">Modifier le compteur de coups</string>
     <string name="internal_book">&lt;Livre interne&gt;</string>
-    <string name="eco_book">&lt;ECO Book&gt;</string>
-    <string name="no_book">&lt;No Book&gt;</string>
+    <string name="eco_book">&lt;Livre ECO&gt;</string>
+    <string name="no_book">&lt;Aucun livre&gt;</string>
     <string name="select_opening_book_file">Sélectionner le livre d\'ouverture</string>
     <string name="select_chess_engine">Sélectionner le module d\'analyse</string>
     <string name="select_pgn_file">Ouvrir un fichier PGN</string>
     <string name="select_pgn_file_save">Sauvegarder dans un fichier PGN</string>
     <string name="select_fen_file">Ouvrir un fichier FEN/EPD</string>
-    <string name="select_file">Select file</string>
-    <string name="select_directory">Select directory</string>
+    <string name="select_file">Sélectionner un fichier</string>
+    <string name="select_directory">Sélectionner un répertoire</string>
     <string name="pgn_load">Charger</string>
     <string name="pgn_save">Sauvegarder</string>
     <string name="reading_pgn_file">Lecture du fichier PGN&#8230;</string>
@@ -113,7 +113,7 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="edit_game">Modifier la partie</string>
     <string name="edit_headers">Modifier les en-têtes</string>
     <string name="edit_comments">Modifier les commentaires</string>
-    <string name="add_eco">Add opening name</string>
+    <string name="add_eco">Ajouter un nom d\'ouverture</string>
     <string name="go_back">Retourner</string>
     <string name="go_forward">Avancer</string>
     <string name="goto_start_game">Aller au début de la partie</string>
@@ -156,7 +156,7 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="header_site">Lieu:</string>
     <string name="header_date">Date:</string>
     <string name="header_round">Ronde:</string>
-    <string name="header_result">Result:</string>
+    <string name="header_result">Résultat:</string>
     <string name="comment_before">Avant:</string>
     <string name="comment_move">Coup:</string>
     <string name="comment_after">Après:</string>
@@ -188,12 +188,12 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="failed_to_read_pgn_data">Impossible de lire les données PGN</string>
     <string name="variation">Var:</string>
     <string name="add_analysis">Ajouter l\'analyse</string>
-    <string name="copy_to_clipboard">Copy to Clipboard</string>
-    <string name="num_variations">Number of Variations</string>
+    <string name="copy_to_clipboard">Copier dans le presse-papier</string>
+    <string name="num_variations">Nombre de Variations</string>
     <string name="hide_statistics">Masquer les statistiques</string>
     <string name="show_statistics">Afficher les statistiques</string>
-    <string name="show_whole_variations">Show whole variations</string>
-    <string name="truncate_variations">Truncate variations</string>
+    <string name="show_whole_variations">Afficher toutes les variations</string>
+    <string name="truncate_variations">Tronquer les variations</string>
     <string name="heavy_cpu_usage">Usage CPU important</string>
     <string name="background_processing">Traitement en arrière-plan</string>
     <string name="lot_cpu_power">DroidFish utilise beaucoup de puissance CPU</string>
@@ -202,7 +202,7 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="delete_file">Supprimer le fichier</string>
     <string name="delete_file_question">Supprimer le fichier?</string>
     <string name="delete_named_file">Supprimer le fichier %s?</string>
-    <string name="regexp_search">Regular Expression Search</string>
+    <string name="regexp_search">Recherche par Expression Régulière</string>
     <string name="game_saved">Partie sauvegardée</string>
     <string name="failed_to_save_game">Impossible de sauvegarder la partie</string>
     <string name="failed_to_delete_game">Impossible de supprimer la partie</string>
@@ -229,9 +229,9 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="network_port">Port</string>
     <string name="network_engine">Module réseau</string>
     <string name="failed_to_start_engine">Initialisation du module impossible</string>
-    <string name="tts_failed_to_init">Failed to initialize text to speech</string>
-    <string name="tts_data_missing">Text to speech data missing</string>
-    <string name="tts_not_supported_for_lang">Text to speech not supported for this language</string>
+    <string name="tts_failed_to_init">Échec du démarrage de la fonction de lecture</string>
+    <string name="tts_data_missing">Données manquantes pour la lecture</string>
+    <string name="tts_not_supported_for_lang">La lecture ne fonctionne pas pour cette langue</string>
     <string name="engine_terminated">Module arrété</string>
     <string name="uci_protocol_error">Erreur du protocole UCI</string>
     <string name="network_engine_config_error">Erreur de configuration du module réseau</string>
@@ -334,7 +334,7 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
     <string name="prefs_leftHanded_summary">Boutons situés sur le côté gauche en mode paysage</string>
     <string name="prefs_squareSelectType_title">Sélection de la case</string>
     <string name="prefs_squareSelectType_summary">Définir le comportement de la saisie des cases</string>
-    <string name="prefs_language_title">Language</string>
+    <string name="prefs_language_title">Langue</string>
     <string name="prefs_language_summary">Langue de l\'interface utilisateur</string>
     <string name="prefs_fontSize_title">Taille du texte</string>
     <string name="prefs_fontSize_summary">Taille de police pour la liste des coups et des informations de la partie</string>
@@ -645,21 +645,21 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
         <item>1</item>
     </string-array>
     <string-array name="language_texts">
-        <item>System default</item>
-        <item>English</item>
-        <item>Belarusian</item>
-        <item>Chinese Simplified</item>
-        <item>German</item>
-        <item>Spanish</item>
-        <item>French</item>
-        <item>Italian</item>
-        <item>Korean</item>
-        <item>Dutch</item>
-        <item>Polish</item>
-        <item>Portuguese</item>
-        <item>Russian</item>
-        <item>Turkish</item>
-        <item>Ukrainian</item>
+        <item>Langue du système</item>
+        <item>Anglais</item>
+        <item>Biélorusse</item>
+        <item>Chinois simplifié</item>
+        <item>Allemand</item>
+        <item>Espagnol</item>
+        <item>Français</item>
+        <item>Italien</item>
+        <item>Koréen</item>
+        <item>Néerlandais</item>
+        <item>Polonais</item>
+        <item>Portugais</item>
+        <item>Russe</item>
+        <item>Turc</item>
+        <item>Ukrainien</item>
     </string-array>
     <string-array name="language_values">
         <item>default</item>
@@ -691,9 +691,9 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
         <item>21</item>
     </string-array>
     <string-array name="ecoHints_texts">
-        <item>Off</item>
+        <item>Désactivé</item>
         <item>Auto</item>
-        <item>Always</item>
+        <item>Toujours</item>
     </string-array>
     <string-array name="ecoHints_values">
         <item>0</item>
