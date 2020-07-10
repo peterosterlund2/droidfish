@@ -22,7 +22,7 @@
 - Support for move input using drag and drop.
 - Function to copy analysis information as text to the clipboard.
 - Autosave old game when new game is started.
-- New file menu action "load deleted game" to retrieve previoulsy autosaved
+- New file menu action "load deleted game" to retrieve previously autosaved
   games.
 - Update translations.
 
@@ -530,7 +530,7 @@
 - New function to store computer analysis in the game tree.
 
 2010-10-17: Version 1.20
-- Fixed occational null pointer exception when exiting program.
+- Fixed occasional null pointer exception when exiting program.
 - Don't modify clocks in analysis mode.
 - Fixed bogus arrows when starting program in a mate position.
 - Updated Stockfish to version 1.9.1.
