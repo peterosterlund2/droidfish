@@ -596,6 +596,10 @@ party UCI engines:
 * Go to *Left drawer menu* -> *Manage Chess Engines* -> *Select Chess
   Engine* and select the engine to use.
 
+External engines are started with the current working directory set to
+`DroidFish/uci/logs` on the external storage. This is useful for engines that
+expect to find data files in a path relative to the current directory.
+
 *Hint!* There are many free chess engines compiled for Android that can be
 downloaded from the internet. How to find such engines is outside the scope of
 this document.
