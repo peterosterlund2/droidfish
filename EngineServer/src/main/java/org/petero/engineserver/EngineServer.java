@@ -55,9 +55,9 @@ public class EngineServer implements ErrorHandler {
             InputStream is = new FileInputStream(getConfigFile());
             prop.load(is);
             for (int i = 0; i < configs.length; i++) {
-                boolean enabled = Boolean.valueOf(prop.getProperty("enabled" + i, "false"));
+                boolean enabled = Boolean.parseBoolean(prop.getProperty("enabled" + i, "false"));
                 String defPort = Integer.toString(4567 + i);
-                int port = Integer.valueOf(prop.getProperty("port" + i, defPort));
+                int port = Integer.parseInt(prop.getProperty("port" + i, defPort));
                 String filename = prop.getProperty("filename" + i, "");
                 String arguments = prop.getProperty("arguments" + i, "");
                 configs[i] = new EngineConfig(enabled, port, filename, arguments);
@@ -119,7 +119,7 @@ public class EngineServer implements ErrorHandler {
         for (int i = 0; i < args.length; i++) {
             if ("-numengines".equals(args[i]) && i+1 < args.length) {
                 try {
-                    numEngines = Integer.valueOf(args[i+1]);
+                    numEngines = Integer.parseInt(args[i+1]);
                     numEngines = Math.max(1, numEngines);
                     numEngines = Math.min(20, numEngines);
                     i++;
