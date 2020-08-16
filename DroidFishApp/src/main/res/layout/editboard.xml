@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:id="@+id/main"
         android:orientation="vertical"
         android:layout_width="fill_parent"
@@ -33,7 +33,6 @@
 
         <LinearLayout
             android:orientation="horizontal"
-            android:id="@+id/LinearLayout02"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
