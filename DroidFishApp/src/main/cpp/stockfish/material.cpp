@@ -1,8 +1,6 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
-  Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad
-  Copyright (C) 2015-2020 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
+  Copyright (C) 2004-2020 The Stockfish developers (see AUTHORS file)
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -44,12 +42,12 @@ namespace {
   constexpr int QuadraticTheirs[][PIECE_TYPE_NB] = {
     //           THEIR PIECES
     // pair pawn knight bishop rook queen
-    {   0                               }, // Bishop pair
-    {  36,    0                         }, // Pawn
-    {   9,   63,   0                    }, // Knight      OUR PIECES
-    {  59,   65,  42,     0             }, // Bishop
-    {  46,   39,  24,   -24,    0       }, // Rook
-    {  97,  100, -42,   137,  268,    0 }  // Queen
+    {                                   }, // Bishop pair
+    {  36,                              }, // Pawn
+    {   9,   63,                        }, // Knight      OUR PIECES
+    {  59,   65,  42,                   }, // Bishop
+    {  46,   39,  24,   -24,            }, // Rook
+    {  97,  100, -42,   137,  268,      }  // Queen
   };
 
   // Endgame evaluation and scaling functions are accessed directly and not through
@@ -79,8 +77,10 @@ namespace {
           && pos.count<PAWN>(~us) >= 1;
   }
 
+
   /// imbalance() calculates the imbalance by comparing the piece count of each
   /// piece type for both colors.
+
   template<Color Us>
   int imbalance(const int pieceCount[][PIECE_TYPE_NB]) {
 
@@ -94,9 +94,9 @@ namespace {
         if (!pieceCount[Us][pt1])
             continue;
 
-        int v = 0;
+        int v = QuadraticOurs[pt1][pt1] * pieceCount[Us][pt1];
 
-        for (int pt2 = NO_PIECE_TYPE; pt2 <= pt1; ++pt2)
+        for (int pt2 = NO_PIECE_TYPE; pt2 < pt1; ++pt2)
             v +=  QuadraticOurs[pt1][pt2] * pieceCount[Us][pt2]
                 + QuadraticTheirs[pt1][pt2] * pieceCount[Them][pt2];
 
@@ -109,6 +109,7 @@ namespace {
 } // namespace
 
 namespace Material {
+
 
 /// Material::probe() looks up the current position's material configuration in
 /// the material hash table. It returns a pointer to the Entry if the position
@@ -129,7 +130,7 @@ Entry* probe(const Position& pos) {
 
   Value npm_w = pos.non_pawn_material(WHITE);
   Value npm_b = pos.non_pawn_material(BLACK);
-  Value npm   = Utility::clamp(npm_w + npm_b, EndgameLimit, MidgameLimit);
+  Value npm   = std::clamp(npm_w + npm_b, EndgameLimit, MidgameLimit);
 
   // Map total non-pawn material into [PHASE_ENDGAME, PHASE_MIDGAME]
   e->gamePhase = Phase(((npm - EndgameLimit) * PHASE_MIDGAME) / (MidgameLimit - EndgameLimit));

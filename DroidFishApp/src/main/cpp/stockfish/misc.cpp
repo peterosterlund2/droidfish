@@ -1,8 +1,6 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
-  Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad
-  Copyright (C) 2015-2020 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
+  Copyright (C) 2004-2020 The Stockfish developers (see AUTHORS file)
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -46,10 +44,16 @@ typedef bool(*fun3_t)(HANDLE, CONST GROUP_AFFINITY*, PGROUP_AFFINITY);
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <cstdlib>
 
 #if defined(__linux__) && !defined(__ANDROID__)
 #include <stdlib.h>
 #include <sys/mman.h>
+#endif
+
+#if defined(__APPLE__) || defined(__ANDROID__) || defined(__OpenBSD__) || (defined(__GLIBCXX__) && !defined(_GLIBCXX_HAVE_ALIGNED_ALLOC) && !defined(_WIN32))
+#define POSIXALIGNEDALLOC
+#include <stdlib.h>
 #endif
 
 #include "misc.h"
@@ -61,7 +65,7 @@ namespace {
 
 /// Version number. If Version is left empty, then compile date in the format
 /// DD-MM-YY and show in engine_info.
-const string Version = "";
+const string Version = "12";
 
 /// Our fancy logging facility. The trick here is to replace cin.rdbuf() and
 /// cout.rdbuf() with two Tie objects that tie cin and cout to a file stream. We
@@ -128,6 +132,7 @@ public:
 
 } // namespace
 
+
 /// engine_info() returns the full name of the current Stockfish version. This
 /// will be either "Stockfish <Tag> DD-MM-YY" (where DD-MM-YY is the date when
 /// the program was compiled) or "Stockfish <Version>", depending on whether
@@ -147,10 +152,8 @@ const string engine_info(bool to_uci) {
       ss << setw(2) << day << setw(2) << (1 + months.find(month) / 4) << year.substr(2);
   }
 
-  ss << (Is64Bit ? " 64" : "")
-     << (HasPext ? " BMI2" : (HasPopCnt ? " POPCNT" : ""))
-     << (to_uci  ? "\nid author ": " by ")
-     << "T. Romstad, M. Costalba, J. Kiiski, G. Linscott";
+  ss << (to_uci  ? "\nid author ": " by ")
+     << "the Stockfish developers (see AUTHORS file)";
 
   return ss.str();
 }
@@ -215,7 +218,40 @@ const std::string compiler_info() {
      compiler += " on unknown system";
   #endif
 
-  compiler += "\n __VERSION__ macro expands to: ";
+  compiler += "\nCompilation settings include: ";
+  compiler += (Is64Bit ? " 64bit" : " 32bit");
+  #if defined(USE_VNNI)
+    compiler += " VNNI";
+  #endif
+  #if defined(USE_AVX512)
+    compiler += " AVX512";
+  #endif
+  compiler += (HasPext ? " BMI2" : "");
+  #if defined(USE_AVX2)
+    compiler += " AVX2";
+  #endif
+  #if defined(USE_SSE41)
+    compiler += " SSE41";
+  #endif
+  #if defined(USE_SSSE3)
+    compiler += " SSSE3";
+  #endif
+  #if defined(USE_SSE2)
+    compiler += " SSE2";
+  #endif
+  compiler += (HasPopCnt ? " POPCNT" : "");
+  #if defined(USE_MMX)
+    compiler += " MMX";
+  #endif
+  #if defined(USE_NEON)
+    compiler += " NEON";
+  #endif
+
+  #if !defined(NDEBUG)
+    compiler += " DEBUG";
+  #endif
+
+  compiler += "\n__VERSION__ macro expands to: ";
   #ifdef __VERSION__
      compiler += __VERSION__;
   #else
@@ -294,9 +330,37 @@ void prefetch(void* addr) {
 #endif
 
 
-/// aligned_ttmem_alloc will return suitably aligned memory, and if possible use large pages.
-/// The returned pointer is the aligned one, while the mem argument is the one that needs to be passed to free.
-/// With c++17 some of this functionality can be simplified.
+/// std_aligned_alloc() is our wrapper for systems where the c++17 implementation
+/// does not guarantee the availability of aligned_alloc(). Memory allocated with
+/// std_aligned_alloc() must be freed with std_aligned_free().
+
+void* std_aligned_alloc(size_t alignment, size_t size) {
+
+#if defined(POSIXALIGNEDALLOC)
+  void *mem;
+  return posix_memalign(&mem, alignment, size) ? nullptr : mem;
+#elif defined(_WIN32)
+  return _mm_malloc(size, alignment);
+#else
+  return std::aligned_alloc(alignment, size);
+#endif
+}
+
+void std_aligned_free(void* ptr) {
+
+#if defined(POSIXALIGNEDALLOC)
+  free(ptr);
+#elif defined(_WIN32)
+  _mm_free(ptr);
+#else
+  free(ptr);
+#endif
+}
+
+/// aligned_ttmem_alloc() will return suitably aligned memory, if possible using large pages.
+/// The returned pointer is the aligned one, while the mem argument is the one that needs
+/// to be passed to free. With c++17 some of this functionality could be simplified.
+
 #if defined(__linux__) && !defined(__ANDROID__)
 
 void* aligned_ttmem_alloc(size_t allocSize, void*& mem) {
@@ -305,7 +369,9 @@ void* aligned_ttmem_alloc(size_t allocSize, void*& mem) {
   size_t size = ((allocSize + alignment - 1) / alignment) * alignment; // multiple of alignment
   if (posix_memalign(&mem, alignment, size))
      mem = nullptr;
+#if defined(MADV_HUGEPAGE)
   madvise(mem, allocSize, MADV_HUGEPAGE);
+#endif
   return mem;
 }
 
@@ -336,17 +402,17 @@ static void* aligned_ttmem_alloc_large_pages(size_t allocSize) {
       tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
 
       // Try to enable SeLockMemoryPrivilege. Note that even if AdjustTokenPrivileges() succeeds,
-      // we still need to query GetLastError() to ensure that the privileges were actually obtained...
+      // we still need to query GetLastError() to ensure that the privileges were actually obtained.
       if (AdjustTokenPrivileges(
               hProcessToken, FALSE, &tp, sizeof(TOKEN_PRIVILEGES), &prevTp, &prevTpLen) &&
           GetLastError() == ERROR_SUCCESS)
       {
-          // round up size to full pages and allocate
+          // Round up size to full pages and allocate
           allocSize = (allocSize + largePageSize - 1) & ~size_t(largePageSize - 1);
           mem = VirtualAlloc(
               NULL, allocSize, MEM_RESERVE | MEM_COMMIT | MEM_LARGE_PAGES, PAGE_READWRITE);
 
-          // privilege no longer needed, restore previous state
+          // Privilege no longer needed, restore previous state
           AdjustTokenPrivileges(hProcessToken, FALSE, &prevTp, 0, NULL, NULL);
       }
   }
@@ -360,7 +426,7 @@ void* aligned_ttmem_alloc(size_t allocSize, void*& mem) {
 
   static bool firstCall = true;
 
-  // try to allocate large pages
+  // Try to allocate large pages
   mem = aligned_ttmem_alloc_large_pages(allocSize);
 
   // Suppress info strings on the first call. The first call occurs before 'uci'
@@ -374,7 +440,7 @@ void* aligned_ttmem_alloc(size_t allocSize, void*& mem) {
   }
   firstCall = false;
 
-  // fall back to regular, page aligned, allocation if necessary
+  // Fall back to regular, page aligned, allocation if necessary
   if (!mem)
       mem = VirtualAlloc(NULL, allocSize, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
 
@@ -394,7 +460,9 @@ void* aligned_ttmem_alloc(size_t allocSize, void*& mem) {
 
 #endif
 
-/// aligned_ttmem_free will free the previously allocated ttmem
+
+/// aligned_ttmem_free() will free the previously allocated ttmem
+
 #if defined(_WIN64)
 
 void aligned_ttmem_free(void* mem) {
@@ -522,3 +590,61 @@ void bindThisThread(size_t idx) {
 #endif
 
 } // namespace WinProcGroup
+
+#ifdef _WIN32
+#include <direct.h>
+#define GETCWD _getcwd
+#else
+#include <unistd.h>
+#define GETCWD getcwd
+#endif
+
+namespace CommandLine {
+
+string argv0;            // path+name of the executable binary, as given by argv[0]
+string binaryDirectory;  // path of the executable directory
+string workingDirectory; // path of the working directory
+string pathSeparator;    // Separator for our current OS
+
+void init(int argc, char* argv[]) {
+    (void)argc;
+    string separator;
+
+    // extract the path+name of the executable binary
+    argv0 = argv[0];
+
+#ifdef _WIN32
+    pathSeparator = "\\";
+  #ifdef _MSC_VER
+    // Under windows argv[0] may not have the extension. Also _get_pgmptr() had
+    // issues in some windows 10 versions, so check returned values carefully.
+    char* pgmptr = nullptr;
+    if (!_get_pgmptr(&pgmptr) && pgmptr != nullptr && *pgmptr)
+        argv0 = pgmptr;
+  #endif
+#else
+    pathSeparator = "/";
+#endif
+
+    // extract the working directory
+    workingDirectory = "";
+    char buff[40000];
+    char* cwd = GETCWD(buff, 40000);
+    if (cwd)
+        workingDirectory = cwd;
+
+    // extract the binary directory path from argv0
+    binaryDirectory = argv0;
+    size_t pos = binaryDirectory.find_last_of("\\/");
+    if (pos == std::string::npos)
+        binaryDirectory = "." + pathSeparator;
+    else
+        binaryDirectory.resize(pos + 1);
+
+    // pattern replacement: "./" at the start of path is replaced by the working directory
+    if (binaryDirectory.find("." + pathSeparator) == 0)
+        binaryDirectory.replace(0, 1, workingDirectory);
+}
+
+
+} // namespace CommandLine

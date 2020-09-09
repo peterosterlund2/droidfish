@@ -16,39 +16,23 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
+// Input features and network structure used in NNUE evaluation function
 
-#include "bitboard.h"
-#include "endgame.h"
-#include "position.h"
-#include "search.h"
-#include "thread.h"
-#include "tt.h"
-#include "uci.h"
-#include "syzygy/tbprobe.h"
+#ifndef NNUE_ARCHITECTURE_H_INCLUDED
+#define NNUE_ARCHITECTURE_H_INCLUDED
 
-namespace PSQT {
-  void init();
-}
+// Defines the network structure
+#include "architectures/halfkp_256x2-32-32.h"
 
-int main(int argc, char* argv[]) {
+namespace Eval::NNUE {
 
-  std::cout << engine_info() << std::endl;
+  static_assert(kTransformedFeatureDimensions % kMaxSimdWidth == 0, "");
+  static_assert(Network::kOutputDimensions == 1, "");
+  static_assert(std::is_same<Network::OutputType, std::int32_t>::value, "");
 
-  CommandLine::init(argc, argv);
-  UCI::init(Options);
-  Tune::init();
-  PSQT::init();
-  Bitboards::init();
-  Position::init();
-  Bitbases::init();
-  Endgames::init();
-  Threads.set(size_t(Options["Threads"]));
-  Search::clear(); // After threads are up
-  Eval::init_NNUE();
+  // Trigger for full calculation instead of difference calculation
+  constexpr auto kRefreshTriggers = RawFeatures::kRefreshTriggers;
 
-  UCI::loop(argc, argv);
+}  // namespace Eval::NNUE
 
-  Threads.set(0);
-  return 0;
-}
+#endif // #ifndef NNUE_ARCHITECTURE_H_INCLUDED

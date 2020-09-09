@@ -16,39 +16,30 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
+//Common header of input features of NNUE evaluation function
 
-#include "bitboard.h"
-#include "endgame.h"
-#include "position.h"
-#include "search.h"
-#include "thread.h"
-#include "tt.h"
-#include "uci.h"
-#include "syzygy/tbprobe.h"
+#ifndef NNUE_FEATURES_COMMON_H_INCLUDED
+#define NNUE_FEATURES_COMMON_H_INCLUDED
 
-namespace PSQT {
-  void init();
-}
+#include "../../evaluate.h"
+#include "../nnue_common.h"
 
-int main(int argc, char* argv[]) {
+namespace Eval::NNUE::Features {
 
-  std::cout << engine_info() << std::endl;
+  class IndexList;
 
-  CommandLine::init(argc, argv);
-  UCI::init(Options);
-  Tune::init();
-  PSQT::init();
-  Bitboards::init();
-  Position::init();
-  Bitbases::init();
-  Endgames::init();
-  Threads.set(size_t(Options["Threads"]));
-  Search::clear(); // After threads are up
-  Eval::init_NNUE();
+  template <typename... FeatureTypes>
+  class FeatureSet;
 
-  UCI::loop(argc, argv);
+  // Trigger to perform full calculations instead of difference only
+  enum class TriggerEvent {
+    kFriendKingMoved // calculate full evaluation when own king moves
+  };
 
-  Threads.set(0);
-  return 0;
-}
+  enum class Side {
+    kFriend // side to move
+  };
+
+}  // namespace Eval::NNUE::Features
+
+#endif // #ifndef NNUE_FEATURES_COMMON_H_INCLUDED

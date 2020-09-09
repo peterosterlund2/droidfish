@@ -16,39 +16,33 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
+// header used in NNUE evaluation function
 
-#include "bitboard.h"
-#include "endgame.h"
-#include "position.h"
-#include "search.h"
-#include "thread.h"
-#include "tt.h"
-#include "uci.h"
-#include "syzygy/tbprobe.h"
+#ifndef NNUE_EVALUATE_NNUE_H_INCLUDED
+#define NNUE_EVALUATE_NNUE_H_INCLUDED
 
-namespace PSQT {
-  void init();
-}
+#include "nnue_feature_transformer.h"
 
-int main(int argc, char* argv[]) {
+#include <memory>
 
-  std::cout << engine_info() << std::endl;
+namespace Eval::NNUE {
 
-  CommandLine::init(argc, argv);
-  UCI::init(Options);
-  Tune::init();
-  PSQT::init();
-  Bitboards::init();
-  Position::init();
-  Bitbases::init();
-  Endgames::init();
-  Threads.set(size_t(Options["Threads"]));
-  Search::clear(); // After threads are up
-  Eval::init_NNUE();
+  // Hash value of evaluation function structure
+  constexpr std::uint32_t kHashValue =
+      FeatureTransformer::GetHashValue() ^ Network::GetHashValue();
 
-  UCI::loop(argc, argv);
+  // Deleter for automating release of memory area
+  template <typename T>
+  struct AlignedDeleter {
+    void operator()(T* ptr) const {
+      ptr->~T();
+      std_aligned_free(ptr);
+    }
+  };
 
-  Threads.set(0);
-  return 0;
-}
+  template <typename T>
+  using AlignedPtr = std::unique_ptr<T, AlignedDeleter<T>>;
+
+}  // namespace Eval::NNUE
+
+#endif // #ifndef NNUE_EVALUATE_NNUE_H_INCLUDED

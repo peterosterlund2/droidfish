@@ -1,8 +1,6 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
-  Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad
-  Copyright (C) 2015-2020 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
+  Copyright (C) 2004-2020 The Stockfish developers (see AUTHORS file)
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -27,13 +25,13 @@
 /// TTEntry struct is the 10 bytes transposition table entry, defined as below:
 ///
 /// key        16 bit
-/// move       16 bit
-/// value      16 bit
-/// eval value 16 bit
+/// depth       8 bit
 /// generation  5 bit
 /// pv node     1 bit
 /// bound type  2 bit
-/// depth       8 bit
+/// move       16 bit
+/// value      16 bit
+/// eval value 16 bit
 
 struct TTEntry {
 
@@ -49,19 +47,19 @@ private:
   friend class TranspositionTable;
 
   uint16_t key16;
+  uint8_t  depth8;
+  uint8_t  genBound8;
   uint16_t move16;
   int16_t  value16;
   int16_t  eval16;
-  uint8_t  genBound8;
-  uint8_t  depth8;
 };
 
 
 /// A TranspositionTable is an array of Cluster, of size clusterCount. Each
 /// cluster consists of ClusterSize number of TTEntry. Each non-empty TTEntry
 /// contains information on exactly one position. The size of a Cluster should
-/// divide the size of a cache line for best performance,
-/// as the cacheline is prefetched when possible.
+/// divide the size of a cache line for best performance, as the cacheline is
+/// prefetched when possible.
 
 class TranspositionTable {
 

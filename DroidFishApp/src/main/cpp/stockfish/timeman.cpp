@@ -1,8 +1,6 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
-  Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad
-  Copyright (C) 2015-2020 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
+  Copyright (C) 2004-2020 The Stockfish developers (see AUTHORS file)
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -28,21 +26,21 @@
 
 TimeManagement Time; // Our global time management object
 
-/// init() is called at the beginning of the search and calculates the bounds
-/// of time allowed for the current game ply.  We currently support:
-//      1) x basetime (+z increment)
-//      2) x moves in y seconds (+z increment)
+
+/// TimeManagement::init() is called at the beginning of the search and calculates
+/// the bounds of time allowed for the current game ply. We currently support:
+//      1) x basetime (+ z increment)
+//      2) x moves in y seconds (+ z increment)
 
 void TimeManagement::init(Search::LimitsType& limits, Color us, int ply) {
 
-  TimePoint minThinkingTime = TimePoint(Options["Minimum Thinking Time"]);
   TimePoint moveOverhead    = TimePoint(Options["Move Overhead"]);
   TimePoint slowMover       = TimePoint(Options["Slow Mover"]);
   TimePoint npmsec          = TimePoint(Options["nodestime"]);
 
-  // opt_scale is a percentage of available time to use for the current move.
-  // max_scale is a multiplier applied to optimumTime.
-  double opt_scale, max_scale;
+  // optScale is a percentage of available time to use for the current move.
+  // maxScale is a multiplier applied to optimumTime.
+  double optScale, maxScale;
 
   // If we have to play in 'nodes as time' mode, then convert from time
   // to nodes, and use resulting values in time management formulas.
@@ -61,7 +59,7 @@ void TimeManagement::init(Search::LimitsType& limits, Color us, int ply) {
 
   startTime = limits.startTime;
 
-  //Maximum move horizon of 50 moves
+  // Maximum move horizon of 50 moves
   int mtg = limits.movestogo ? std::min(limits.movestogo, 50) : 50;
 
   // Make sure timeLeft is > 0 since we may use it as a divisor
@@ -77,22 +75,22 @@ void TimeManagement::init(Search::LimitsType& limits, Color us, int ply) {
   // game time for the current move, so also cap to 20% of available game time.
   if (limits.movestogo == 0)
   {
-      opt_scale = std::min(0.008 + std::pow(ply + 3.0, 0.5) / 250.0,
+      optScale = std::min(0.008 + std::pow(ply + 3.0, 0.5) / 250.0,
                            0.2 * limits.time[us] / double(timeLeft));
-      max_scale = 4 + std::min(36, ply) / 12.0;
+      maxScale = std::min(7.0, 4.0 + ply / 12.0);
   }
 
   // x moves in y seconds (+ z increment)
   else
   {
-      opt_scale = std::min((0.8 + ply / 128.0) / mtg,
+      optScale = std::min((0.8 + ply / 128.0) / mtg,
                             0.8 * limits.time[us] / double(timeLeft));
-      max_scale = std::min(6.3, 1.5 + 0.11 * mtg);
+      maxScale = std::min(6.3, 1.5 + 0.11 * mtg);
   }
 
   // Never use more than 80% of the available time for this move
-  optimumTime = std::max(minThinkingTime, TimePoint(opt_scale * timeLeft));
-  maximumTime = TimePoint(std::min(0.8 * limits.time[us] - moveOverhead, max_scale * optimumTime));
+  optimumTime = TimePoint(optScale * timeLeft);
+  maximumTime = TimePoint(std::min(0.8 * limits.time[us] - moveOverhead, maxScale * optimumTime));
 
   if (Options["Ponder"])
       optimumTime += optimumTime / 4;

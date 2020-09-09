@@ -16,39 +16,24 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
+// Class for difference calculation of NNUE evaluation function
 
-#include "bitboard.h"
-#include "endgame.h"
-#include "position.h"
-#include "search.h"
-#include "thread.h"
-#include "tt.h"
-#include "uci.h"
-#include "syzygy/tbprobe.h"
+#ifndef NNUE_ACCUMULATOR_H_INCLUDED
+#define NNUE_ACCUMULATOR_H_INCLUDED
 
-namespace PSQT {
-  void init();
-}
+#include "nnue_architecture.h"
 
-int main(int argc, char* argv[]) {
+namespace Eval::NNUE {
 
-  std::cout << engine_info() << std::endl;
+  // Class that holds the result of affine transformation of input features
+  struct alignas(kCacheLineSize) Accumulator {
+    std::int16_t
+        accumulation[2][kRefreshTriggers.size()][kTransformedFeatureDimensions];
+    Value score;
+    bool computed_accumulation;
+    bool computed_score;
+  };
 
-  CommandLine::init(argc, argv);
-  UCI::init(Options);
-  Tune::init();
-  PSQT::init();
-  Bitboards::init();
-  Position::init();
-  Bitbases::init();
-  Endgames::init();
-  Threads.set(size_t(Options["Threads"]));
-  Search::clear(); // After threads are up
-  Eval::init_NNUE();
+}  // namespace Eval::NNUE
 
-  UCI::loop(argc, argv);
-
-  Threads.set(0);
-  return 0;
-}
+#endif // NNUE_ACCUMULATOR_H_INCLUDED

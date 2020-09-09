@@ -1,8 +1,6 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
-  Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad
-  Copyright (C) 2015-2020 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
+  Copyright (C) 2004-2020 The Stockfish developers (see AUTHORS file)
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -52,15 +50,6 @@ Thread::~Thread() {
   stdThread.join();
 }
 
-/// Thread::bestMoveCount(Move move) return best move counter for the given root move
-
-int Thread::best_move_count(Move move) const {
-
-  auto rm = std::find(rootMoves.begin() + pvIdx,
-                      rootMoves.begin() + pvLast, move);
-
-  return rm != rootMoves.begin() + pvLast ? rm->bestMoveCount : 0;
-}
 
 /// Thread::clear() reset histories, usually before a new game
 
@@ -80,6 +69,7 @@ void Thread::clear() {
           continuationHistory[inCheck][c][NO_PIECE][0]->fill(Search::CounterMovePruneThreshold - 1);
       }
 }
+
 
 /// Thread::start_searching() wakes up the thread that will start the search
 
@@ -158,7 +148,8 @@ void ThreadPool::set(size_t requested) {
   }
 }
 
-/// ThreadPool::clear() sets threadPool data to initial values.
+
+/// ThreadPool::clear() sets threadPool data to initial values
 
 void ThreadPool::clear() {
 
@@ -169,6 +160,7 @@ void ThreadPool::clear() {
   main()->bestPreviousScore = VALUE_INFINITE;
   main()->previousTimeReduction = 1.0;
 }
+
 
 /// ThreadPool::start_thinking() wakes up main thread waiting in idle_loop() and
 /// returns immediately. Main thread will wake up other threads and start the search.
@@ -201,20 +193,17 @@ void ThreadPool::start_thinking(Position& pos, StateListPtr& states,
 
   // We use Position::set() to set root position across threads. But there are
   // some StateInfo fields (previous, pliesFromNull, capturedPiece) that cannot
-  // be deduced from a fen string, so set() clears them and to not lose the info
-  // we need to backup and later restore setupStates->back(). Note that setupStates
-  // is shared by threads but is accessed in read-only mode.
-  StateInfo tmp = setupStates->back();
-
+  // be deduced from a fen string, so set() clears them and they are set from
+  // setupStates->back() later. The rootState is per thread, earlier states are shared
+  // since they are read-only.
   for (Thread* th : *this)
   {
       th->nodes = th->tbHits = th->nmpMinPly = th->bestMoveChanges = 0;
       th->rootDepth = th->completedDepth = 0;
       th->rootMoves = rootMoves;
-      th->rootPos.set(pos.fen(), pos.is_chess960(), &setupStates->back(), th);
+      th->rootPos.set(pos.fen(), pos.is_chess960(), &th->rootState, th);
+      th->rootState = setupStates->back();
   }
-
-  setupStates->back() = tmp;
 
   main()->start_searching();
 }
@@ -250,7 +239,8 @@ Thread* ThreadPool::get_best_thread() const {
     return bestThread;
 }
 
-/// Start non-main threads.
+
+/// Start non-main threads
 
 void ThreadPool::start_searching() {
 
@@ -259,7 +249,8 @@ void ThreadPool::start_searching() {
             th->start_searching();
 }
 
-/// Wait for non-main threads.
+
+/// Wait for non-main threads
 
 void ThreadPool::wait_for_search_finished() const {
 
