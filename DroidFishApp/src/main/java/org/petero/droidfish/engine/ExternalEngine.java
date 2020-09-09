@@ -180,12 +180,15 @@ public class ExternalEngine extends UCIEngineBase {
             if (files == null)
                 return;
             for (File f : files) {
-                if (!f.getCanonicalPath().equals(exePath))
+                if (!f.getCanonicalPath().equals(exePath) && !keepExeDirFile(f))
                     f.delete();
             }
-            new File(context.getFilesDir(), "engine.exe").delete();
         } catch (IOException ignore) {
         }
+    }
+
+    private boolean keepExeDirFile(File f) {
+        return InternalStockFish.keepExeDirFile(f);
     }
 
     private int hashMB = -1;
@@ -292,9 +295,6 @@ public class ExternalEngine extends UCIEngineBase {
         new File(internalSFPath()).delete();
         if (to.exists() && (from.length() == to.length()) && (from.lastModified() == to.lastModified()))
             return to.getAbsolutePath();
-        if (to.exists())
-            to.delete();
-        to.createNewFile();
         try (FileInputStream fis = new FileInputStream(from);
              FileChannel inFC = fis.getChannel();
              FileOutputStream fos = new FileOutputStream(to);

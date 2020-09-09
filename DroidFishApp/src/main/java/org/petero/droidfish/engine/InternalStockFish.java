@@ -32,8 +32,13 @@ import java.util.Locale;
 
 import android.os.Environment;
 
+import org.petero.droidfish.EngineOptions;
+
 /** Stockfish engine running as process, started from assets resource. */
 public class InternalStockFish extends ExternalEngine {
+    private static final String defaultNet = "nn-82215d0fd0df.nnue";
+    private static final String netOption = "evalfile";
+    private File defaultNetFile; // To get the full path of the copied default network file
 
     public InternalStockFish(Report report, String workDir) {
         super("", workDir, report);
@@ -106,15 +111,30 @@ public class InternalStockFish extends ExternalEngine {
         // on the assumption that it will reduce memory wear.
         long oldCSum = readCheckSum(new File(internalSFPath()));
         long newCSum = computeAssetsCheckSum(sfExe);
-        if (oldCSum == newCSum)
-            return to.getAbsolutePath();
+        if (oldCSum != newCSum) {
+            copyAssetFile(sfExe, to);
+            writeCheckSum(new File(internalSFPath()), newCSum);
+        }
+        copyNetFile(exeDir);
+        return to.getAbsolutePath();
+    }
 
-        if (to.exists())
-            to.delete();
-        to.createNewFile();
+    /** Copy the Stockfish default network file to "exeDir" if it is not already there. */
+    private void copyNetFile(File exeDir) throws IOException {
+        defaultNetFile = new File(exeDir, defaultNet);
+        if (defaultNetFile.exists())
+            return;
+        File tmpFile = new File(exeDir, defaultNet + ".tmp");
+        copyAssetFile(defaultNet, tmpFile);
+        if (!tmpFile.renameTo(defaultNetFile))
+            throw new IOException("Rename failed");
+    }
 
-        try (InputStream is = context.getAssets().open(sfExe);
-             OutputStream os = new FileOutputStream(to)) {
+    /** Copy a file resource from the AssetManager to the file system,
+     *  so it can be used by native code like the Stockfish engine. */
+    private void copyAssetFile(String assetName, File targetFile) throws IOException {
+        try (InputStream is = context.getAssets().open(assetName);
+             OutputStream os = new FileOutputStream(targetFile)) {
             byte[] buf = new byte[8192];
             while (true) {
                 int len = is.read(buf);
@@ -123,8 +143,34 @@ public class InternalStockFish extends ExternalEngine {
                 os.write(buf, 0, len);
             }
         }
+    }
 
-        writeCheckSum(new File(internalSFPath()), newCSum);
-        return to.getAbsolutePath();
+    /** Return true if file "f" should be kept in the exeDir directory.
+     *  It would be inefficient to remove the network file every time
+     *  an engine different from Stockfish is used, so this is a static
+     *  check performed for all engines. */
+    public static boolean keepExeDirFile(File f) {
+        return defaultNet.equals(f.getName());
+    }
+
+    @Override
+    public void initOptions(EngineOptions engineOptions) {
+        super.initOptions(engineOptions);
+        UCIOptions.OptionBase opt = getUCIOptions().getOption(netOption);
+        if (opt != null)
+            setOption(netOption, opt.getStringValue());
+    }
+
+    /** Handles setting the EvalFile UCI option to a full path if needed,
+     *  pointing to the network file embedded in DroidFish. */
+    @Override
+    public boolean setOption(String name, String value) {
+        if (name.toLowerCase(Locale.US).equals(netOption) && defaultNet.equals(value)) {
+            getUCIOptions().getOption(name).setFromString(value);
+            value = defaultNetFile.getAbsolutePath();
+            writeLineToEngine(String.format(Locale.US, "setoption name %s value %s", name, value));
+            return true;
+        }
+        return super.setOption(name, value);
     }
 }

@@ -290,7 +290,7 @@ public abstract class UCIEngineBase implements UCIEngine {
     }
 
     @Override
-    public final boolean setOption(String name, String value) {
+    public boolean setOption(String name, String value) {
         if (!options.contains(name))
             return false;
         UCIOptions.OptionBase o = options.getOption(name);
