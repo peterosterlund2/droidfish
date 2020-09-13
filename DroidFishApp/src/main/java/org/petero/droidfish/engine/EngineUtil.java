@@ -41,7 +41,7 @@ public class EngineUtil {
                 !"arm64-v8a".equals(abi)) {
             abi = "armeabi-v7a"; // Unknown ABI, assume 32-bit arm
         }
-        return abi + "/stockfish";
+        return abi + "/stockfish" + (isSimdSupported() ? "" : "_nosimd");
     }
 
     /** Return true if file "engine" is a network engine. */
@@ -99,6 +99,9 @@ public class EngineUtil {
 
     /** Change the priority of a process. */
     static native void reNice(int pid, int prio);
+
+    /** Return true if the required SIMD instructions are supported by the CPU. */
+    static native boolean isSimdSupported();
 
     /** For synchronizing non thread safe native calls. */
     public static final Object nativeLock = new Object();

@@ -23,6 +23,12 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 
+#if defined(__arm__)
+  #include "cpuinfo_arm.h"
+#elif defined(__i386__)
+  #include "cpuinfo_x86.h"
+#endif
+
 /*
  * Class:     org_petero_droidfish_engine_EngineUtil
  * Method:    chmod
@@ -48,3 +54,21 @@ extern "C" JNIEXPORT void JNICALL Java_org_petero_droidfish_engine_EngineUtil_re
     setpriority(PRIO_PROCESS, pid, prio);
 }
 
+/*
+ * Class:     org_petero_droidfish_engine_EngineUtil
+ * Method:    isSimdSupported
+ * Signature: ()Z
+ */
+extern "C" JNIEXPORT jboolean JNICALL Java_org_petero_droidfish_engine_EngineUtil_isSimdSupported
+    (JNIEnv *env, jclass) {
+#if defined(__arm__)
+    using namespace cpu_features;
+    ArmFeatures features = GetArmInfo().features;
+    return features.neon ? JNI_TRUE : JNI_FALSE;
+#elif defined(__i386__)
+    using namespace cpu_features;
+    X86Features features = GetX86Info().features;
+    return features.sse4_1 ? JNI_TRUE : JNI_FALSE;
+#endif
+    return true;
+}
