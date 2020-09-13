@@ -32,10 +32,10 @@ extern "C" JNIEXPORT jboolean JNICALL Java_org_petero_droidfish_engine_EngineUti
   (JNIEnv *env, jclass, jstring jExePath) {
     const char* exePath = env->GetStringUTFChars(jExePath, NULL);
     if (!exePath)
-        return false;
+        return static_cast<jboolean>(false);
     bool ret = chmod(exePath, 0744) == 0;
     env->ReleaseStringUTFChars(jExePath, exePath);
-    return ret;
+    return static_cast<jboolean>(ret);
 }
 
 /*
