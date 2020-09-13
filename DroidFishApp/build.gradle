@@ -78,6 +78,7 @@ preBuild.dependsOn buildEco
 task copyToAssets(type: Copy, dependsOn: 'externalNativeBuildRelease') {
     from('build/intermediates/ndkBuild/release/obj/local') {
         include '*/stockfish'
+        include '*/stockfish_nosimd'
     }
     into 'src/main/assets'
 }

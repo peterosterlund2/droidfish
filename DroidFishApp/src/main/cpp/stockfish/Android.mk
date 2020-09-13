@@ -23,8 +23,20 @@ endif
 
 include $(CLEAR_VARS)
 LOCAL_MODULE    := stockfish
-LOCAL_SRC_FILES := $(SF_SRC_FILES)
-LOCAL_CFLAGS    := -std=c++17 -O2 -fno-exceptions -DNNUE_EMBEDDING_OFF \
-                   -fPIE $(MY_ARCH_DEF) -s
-LOCAL_LDFLAGS	+= -fPIE -pie -s
-include $(BUILD_EXECUTABLE)
+include $(LOCAL_PATH)/build_sf.mk
+
+ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
+  MY_ARCH_DEF :=
+  include $(CLEAR_VARS)
+  LOCAL_MODULE    := stockfish_nosimd
+  include $(LOCAL_PATH)/build_sf.mk
+  stockfish : stockfish_nosimd
+endif
+
+ifeq ($(TARGET_ARCH_ABI),x86)
+  MY_ARCH_DEF :=
+  include $(CLEAR_VARS)
+  LOCAL_MODULE    := stockfish_nosimd
+  include $(LOCAL_PATH)/build_sf.mk
+  stockfish : stockfish_nosimd
+endif
