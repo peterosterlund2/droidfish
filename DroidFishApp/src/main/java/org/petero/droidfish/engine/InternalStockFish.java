@@ -36,7 +36,7 @@ import org.petero.droidfish.EngineOptions;
 
 /** Stockfish engine running as process, started from assets resource. */
 public class InternalStockFish extends ExternalEngine {
-    private static final String defaultNet = "nn-82215d0fd0df.nnue";
+    private static final String defaultNet = "nn-03744f8d56d8.nnue";
     private static final String netOption = "evalfile";
     private File defaultNetFile; // To get the full path of the copied default network file
 
