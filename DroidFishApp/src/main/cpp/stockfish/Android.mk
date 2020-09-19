@@ -9,10 +9,10 @@ SF_SRC_FILES := \
 
 MY_ARCH_DEF :=
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
-  MY_ARCH_DEF += -DUSE_NEON -mfpu=neon
+  MY_ARCH_DEF += -DUSE_NEON -mthumb -march=armv7-a -mfloat-abi=softfp -mfpu=neon
 endif
 ifeq ($(TARGET_ARCH_ABI),arm64-v8a)
-  MY_ARCH_DEF += -DIS_64BIT -DUSE_POPCNT -DUSE_NEON
+  MY_ARCH_DEF += -DIS_64BIT -DUSE_POPCNT -DUSE_NEON -flto=thin
 endif
 ifeq ($(TARGET_ARCH_ABI),x86_64)
   MY_ARCH_DEF += -DIS_64BIT -DUSE_SSE41 -msse4.1
@@ -26,7 +26,7 @@ LOCAL_MODULE    := stockfish
 include $(LOCAL_PATH)/build_sf.mk
 
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
-  MY_ARCH_DEF :=
+  MY_ARCH_DEF := -mthumb -march=armv7-a -mfloat-abi=softfp
   include $(CLEAR_VARS)
   LOCAL_MODULE    := stockfish_nosimd
   include $(LOCAL_PATH)/build_sf.mk
