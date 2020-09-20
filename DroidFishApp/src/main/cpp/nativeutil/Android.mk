@@ -12,16 +12,17 @@ CPU_FEATS_SRC_FILES += $(CPU_FEATS)/src/filesystem.c \
 			$(CPU_FEATS)/src/unix_features_aggregator.c
 
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
-    UTIL_SRC_FILES += $(CPU_FEATS_SRC_FILES) $(CPU_FEATS)/src/cpuinfo_arm.c
+  UTIL_SRC_FILES += $(CPU_FEATS_SRC_FILES) $(CPU_FEATS)/src/cpuinfo_arm.c
+  LOCAL_ARM_NEON := false
 endif
 #ifeq ($(TARGET_ARCH_ABI),arm64-v8a)
-#    UTIL_SRC_FILES += $(CPU_FEATS_SRC_FILES) $(CPU_FEATS)/src/cpuinfo_aarch64.c
+#  UTIL_SRC_FILES += $(CPU_FEATS_SRC_FILES) $(CPU_FEATS)/src/cpuinfo_aarch64.c
 #endif
 ifeq ($(TARGET_ARCH_ABI),x86)
-    UTIL_SRC_FILES += $(CPU_FEATS_SRC_FILES) $(CPU_FEATS)/src/cpuinfo_x86.c
+  UTIL_SRC_FILES += $(CPU_FEATS_SRC_FILES) $(CPU_FEATS)/src/cpuinfo_x86.c
 endif
 #ifeq ($(TARGET_ARCH_ABI),x86_64)
-#    UTIL_SRC_FILES += $(CPU_FEATS_SRC_FILES) $(CPU_FEATS)/src/cpuinfo_x86.c
+#  UTIL_SRC_FILES += $(CPU_FEATS_SRC_FILES) $(CPU_FEATS)/src/cpuinfo_x86.c
 #endif
 
 LOCAL_MODULE    := nativeutil

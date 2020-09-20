@@ -14,6 +14,10 @@ LOCAL_SRC_FILES := \
 	compression/zlib/zutil.c compression/liblzf/lzf_c.c compression/liblzf/lzf_d.c \
 	GtbProbe.cpp
 
+ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
+  LOCAL_ARM_NEON := false
+endif
+
 LOCAL_CFLAGS    := \
 	-I $(LOCAL_PATH)/sysport/ -I $(LOCAL_PATH)/compression/ \
 	-I $(LOCAL_PATH)/compression/liblzf/ -I $(LOCAL_PATH)/compression/zlib/ \
