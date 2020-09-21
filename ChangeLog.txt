@@ -1,3 +1,9 @@
+2020-09-21: Version 1.83
+- Fix crash if engine .ini file is corrupt.
+- Update translations.
+- Update Stockfish to development version 200920.
+- Add link to DroidFish manual from About/Help dialog.
+
 2020-05-20: Version 1.82
 - Support UCI_Elo for setting engine strength.
 - Support for ABK (Arena) opening books.
