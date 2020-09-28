@@ -795,6 +795,8 @@ public class DroidFish extends Activity
                     String fn = Environment.getExternalStorageDirectory() + sep +
                                 pgnDir + sep + ".sharedfile.pgn";
                     try (InputStream in = resolver.openInputStream(data)) {
+                        if (in == null)
+                            throw new IOException("No input stream");
                         FileUtil.writeFile(in, fn);
                     }
                     PGNFile pgnFile = new PGNFile(fn);
