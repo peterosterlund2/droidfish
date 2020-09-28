@@ -36,6 +36,7 @@ class CtgBook implements IOpeningBook {
     private File ctgFile;
     private File ctbFile;
     private File ctoFile;
+    private final static float bigWeight = 1e6f;
 
     static boolean canHandle(BookOptions options) {
         String filename = options.filename;
@@ -77,7 +78,7 @@ class CtgBook implements IOpeningBook {
             if (pd != null) {
                 boolean mirrorColor = pd.mirrorColor;
                 boolean mirrorLeftRight = pd.mirrorLeftRight;
-                ret = pd.getBookMoves();
+                ret = pd.getBookMoves(options);
                 UndoInfo ui = new UndoInfo();
                 for (BookEntry be : ret) {
                     pd.pos.makeMove(be.move, ui);
@@ -94,13 +95,14 @@ class CtgBook implements IOpeningBook {
                                 weight = 0;
                         } else if (recom >= 128) {
                             if (options.preferMainLines)
-                                weight *= 10;
+                                weight = weight == bigWeight ? bigWeight : weight * bigWeight;
                         }
                         float score = movePd.getOpponentScore() + 1e-4f;
-//                      double w0 = weight;
+//                      float w0 = weight;
                         weight = weight * score;
-//                      System.out.printf("%s : w0:%.3f rec:%d score:%d %.3f\n", TextIO.moveToUCIString(be.move),
-//                                        w0, recom, score, weight);
+//                      System.out.printf("bk %s : w0:%.3f rec:%d score:%d %.3f\n",
+//                                        TextIO.moveToUCIString(be.move),
+//                                        w0, recom, (int)score, weight);
                     }
                     be.weight = weight;
                 }
@@ -390,7 +392,7 @@ class CtgBook implements IOpeningBook {
                 buf[i] = pageBuf[offs + i];
         }
 
-        final ArrayList<BookEntry> getBookMoves() {
+        final ArrayList<BookEntry> getBookMoves(BookOptions options) {
             ArrayList<BookEntry> entries = new ArrayList<>();
             int nMoves = (moveBytes - 1) / 2;
             for (int mi = 0; mi < nMoves; mi++) {
@@ -403,14 +405,19 @@ class CtgBook implements IOpeningBook {
                 BookEntry ent = new BookEntry(m);
                 switch (flags) {
                 default:
-                case 0x00: ent.weight = 1;       break; // No annotation
-                case 0x01: ent.weight = 8;       break; // !
-                case 0x02: ent.weight = 0;       break; // ?
-                case 0x03: ent.weight = 32;      break; // !!
-                case 0x04: ent.weight = 0;       break; // ??
-                case 0x05: ent.weight = 0.5f;    break; // !?
-                case 0x06: ent.weight = 0.125f;  break; // ?!
-                case 0x08: ent.weight = 1000000; break; // Only move
+                case 0x00: ent.weight = 1f;      break; // No annotation
+                case 0x01: ent.weight = 1.23f;   break; // !
+                case 0x02: ent.weight = 0f;      break; // ?
+                case 0x03: ent.weight = 1.46f;   break; // !!
+                case 0x04: ent.weight = 0f;      break; // ??
+                case 0x05: ent.weight = 1f;      break; // !?
+                case 0x06: ent.weight = 0f;      break; // ?!
+                case 0x08:                              // Only move
+                    if (options.preferMainLines)
+                        ent.weight = bigWeight;
+                    else
+                        ent.weight = 1.0f;
+                    break;
                 }
                 entries.add(ent);
             }
