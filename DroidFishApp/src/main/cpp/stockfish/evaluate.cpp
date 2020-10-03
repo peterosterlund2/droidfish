@@ -60,7 +60,7 @@ namespace Eval {
   bool useNNUE;
   string eval_file_loaded = "None";
 
-  /// init_NNUE() tries to load a nnue network at startup time, or when the engine
+  /// NNUE::init() tries to load a nnue network at startup time, or when the engine
   /// receives a UCI command "setoption name EvalFile value nn-[a-z0-9]{12}.nnue"
   /// The name of the nnue network is always retrieved from the EvalFile option.
   /// We search the given network in three locations: internally (the default
@@ -68,7 +68,7 @@ namespace Eval {
   /// in the engine directory. Distro packagers may define the DEFAULT_NNUE_DIRECTORY
   /// variable to have the engine search in a special directory in their distro.
 
-  void init_NNUE() {
+  void NNUE::init() {
 
     useNNUE = Options["Use NNUE"];
     if (!useNNUE)
@@ -111,8 +111,8 @@ namespace Eval {
         }
   }
 
-  /// verify_NNUE() verifies that the last net used was loaded successfully
-  void verify_NNUE() {
+  /// NNUE::verify() verifies that the last net used was loaded successfully
+  void NNUE::verify() {
 
     string eval_file = string(Options["EvalFile"]);
 
@@ -199,7 +199,7 @@ namespace {
   // SafeCheck[PieceType][single/multiple] contains safe check bonus by piece type,
   // higher if multiple safe checks are possible for that piece type.
   constexpr int SafeCheck[][2] = {
-      {}, {}, {792, 1283}, {645, 967}, {1084, 1897}, {772, 1119}
+      {}, {}, {803, 1292}, {639, 974}, {1087, 1878}, {759, 1132}
   };
 
 #define S(mg, eg) make_score(mg, eg)
@@ -207,19 +207,19 @@ namespace {
   // MobilityBonus[PieceType-2][attacked] contains bonuses for middle and end game,
   // indexed by piece type and number of attacked squares in the mobility area.
   constexpr Score MobilityBonus[][32] = {
-    { S(-62,-81), S(-53,-56), S(-12,-31), S( -4,-16), S(  3,  5), S( 13, 11), // Knight
-      S( 22, 17), S( 28, 20), S( 33, 25) },
-    { S(-48,-59), S(-20,-23), S( 16, -3), S( 26, 13), S( 38, 24), S( 51, 42), // Bishop
-      S( 55, 54), S( 63, 57), S( 63, 65), S( 68, 73), S( 81, 78), S( 81, 86),
-      S( 91, 88), S( 98, 97) },
-    { S(-60,-78), S(-20,-17), S(  2, 23), S(  3, 39), S(  3, 70), S( 11, 99), // Rook
-      S( 22,103), S( 31,121), S( 40,134), S( 40,139), S( 41,158), S( 48,164),
-      S( 57,168), S( 57,169), S( 62,172) },
-    { S(-30,-48), S(-12,-30), S( -8, -7), S( -9, 19), S( 20, 40), S( 23, 55), // Queen
-      S( 23, 59), S( 35, 75), S( 38, 78), S( 53, 96), S( 64, 96), S( 65,100),
-      S( 65,121), S( 66,127), S( 67,131), S( 67,133), S( 72,136), S( 72,141),
-      S( 77,147), S( 79,150), S( 93,151), S(108,168), S(108,168), S(108,171),
-      S(110,182), S(114,182), S(114,192), S(116,219) }
+    { S(-62,-79), S(-53,-57), S(-12,-31), S( -3,-17), S(  3,  7), S( 12, 13), // Knight
+      S( 21, 16), S( 28, 21), S( 37, 26) },
+    { S(-47,-59), S(-20,-25), S( 14, -8), S( 29, 12), S( 39, 21), S( 53, 40), // Bishop
+      S( 53, 56), S( 60, 58), S( 62, 65), S( 69, 72), S( 78, 78), S( 83, 87),
+      S( 91, 88), S( 96, 98) },
+    { S(-61,-82), S(-20,-17), S(  2, 23) ,S(  3, 40), S(  4, 72), S( 11,100), // Rook
+      S( 22,104), S( 31,120), S( 39,134), S(40 ,138), S( 41,158), S( 47,163),
+      S( 59,168), S( 60,169), S( 64,173) },
+    { S(-29,-49), S(-16,-29), S( -8, -8), S( -8, 17), S( 18, 39), S( 25, 54), // Queen
+      S( 23, 59), S( 37, 73), S( 41, 76), S( 54, 95), S( 65, 95) ,S( 68,101),
+      S( 69,124), S( 70,128), S( 70,132), S( 70,133) ,S( 71,136), S( 72,140),
+      S( 74,147), S( 76,149), S( 90,153), S(104,169), S(105,171), S(106,171),
+      S(112,178), S(114,185), S(114,187), S(119,221) }
   };
 
   // KingProtector[knight/bishop] contains penalty for each distance unit to own king
@@ -1015,20 +1015,36 @@ make_v:
 
 Value Eval::evaluate(const Position& pos) {
 
-  // Use classical eval if there is a large imbalance
-  // If there is a moderate imbalance, use classical eval with probability (1/8),
-  // as derived from the node counter.
-  bool useClassical = abs(eg_value(pos.psq_score())) * 16 > NNUEThreshold1 * (16 + pos.rule50_count());
-  bool classical = !Eval::useNNUE
-                ||  useClassical
-                || (abs(eg_value(pos.psq_score())) > PawnValueMg / 4 && !(pos.this_thread()->nodes & 0xB));
-  Value v = classical ? Evaluation<NO_TRACE>(pos).value()
-                      : NNUE::evaluate(pos) * 5 / 4 + Tempo;
+  Value v;
 
-  if (   useClassical 
-      && Eval::useNNUE 
-      && abs(v) * 16 < NNUEThreshold2 * (16 + pos.rule50_count()))
-      v = NNUE::evaluate(pos) * 5 / 4 + Tempo;
+  if (!Eval::useNNUE)
+      v = Evaluation<NO_TRACE>(pos).value();
+  else
+  {
+      // Scale and shift NNUE for compatibility with search and classical evaluation
+      auto  adjusted_NNUE = [&](){
+         int mat = pos.non_pawn_material() + PieceValue[MG][PAWN] * pos.count<PAWN>();
+         return NNUE::evaluate(pos) * (720 + mat / 32) / 1024 + Tempo;
+      };
+
+      // If there is PSQ imbalance use classical eval, with small probability if it is small
+      Value psq = Value(abs(eg_value(pos.psq_score())));
+      int   r50 = 16 + pos.rule50_count();
+      bool  largePsq = psq * 16 > (NNUEThreshold1 + pos.non_pawn_material() / 64) * r50;
+      bool  classical = largePsq || (psq > PawnValueMg / 4 && !(pos.this_thread()->nodes & 0xB));
+
+      v = classical ? Evaluation<NO_TRACE>(pos).value() : adjusted_NNUE();
+
+      // If the classical eval is small and imbalance large, use NNUE nevertheless.
+      // For the case of opposite colored bishops, switch to NNUE eval with
+      // small probability if the classical eval is less than the threshold.
+      if (   largePsq
+          && (abs(v) * 16 < NNUEThreshold2 * r50
+          || (   pos.opposite_bishops()
+              && abs(v) * 16 < (NNUEThreshold1 + pos.non_pawn_material() / 64) * r50
+              && !(pos.this_thread()->nodes & 0xB))))
+          v = adjusted_NNUE();
+  }
 
   // Damp down the evaluation linearly when shuffling
   v = v * (100 - pos.rule50_count()) / 100;

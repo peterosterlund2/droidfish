@@ -192,7 +192,7 @@ namespace {
 void Search::init() {
 
   for (int i = 1; i < MAX_MOVES; ++i)
-      Reductions[i] = int((22.0 + std::log(Threads.size())) * std::log(i));
+      Reductions[i] = int((22.0 + 2 * std::log(Threads.size())) * std::log(i + 0.25 * std::log(i)));
 }
 
 
@@ -225,7 +225,7 @@ void MainThread::search() {
   Time.init(Limits, us, rootPos.game_ply());
   TT.new_search();
 
-  Eval::verify_NNUE();
+  Eval::NNUE::verify();
 
   if (rootMoves.empty())
   {
@@ -462,10 +462,7 @@ void Thread::search() {
                   ++failedHighCnt;
               }
               else
-              {
-                  ++rootMoves[pvIdx].bestMoveCount;
                   break;
-              }
 
               delta += delta / 4 + 5;
 
@@ -832,7 +829,7 @@ namespace {
         assert(eval - beta >= 0);
 
         // Null move dynamic reduction based on depth and value
-        Depth R = (817 + 71 * depth) / 213 + std::min(int(eval - beta) / 192, 3);
+        Depth R = (982 + 85 * depth) / 256 + std::min(int(eval - beta) / 192, 3);
 
         ss->currentMove = MOVE_NULL;
         ss->continuationHistory = &thisThread->continuationHistory[0][0][NO_PIECE][0];
@@ -1151,7 +1148,7 @@ moves_loop: // When in check, search starts from here
       // Step 16. Reduced depth search (LMR, ~200 Elo). If the move fails high it will be
       // re-searched at full depth.
       if (    depth >= 3
-          &&  moveCount > 1 + 2 * rootNode + 2 * (PvNode && abs(bestValue) < 2)
+          &&  moveCount > 1 + 2 * rootNode
           && (  !captureOrPromotion
               || moveCountPruning
               || ss->staticEval + PieceValue[EG][pos.captured_piece()] <= alpha
@@ -1218,14 +1215,14 @@ moves_loop: // When in check, search starts from here
           }
           else
           {
-            // Increase reduction for captures/promotions if late move and at low depth
-            if (depth < 8 && moveCount > 2)
-                r++;
+              // Increase reduction for captures/promotions if late move and at low depth
+              if (depth < 8 && moveCount > 2)
+                  r++;
 
-            // Unless giving check, this capture is likely bad
-            if (   !givesCheck
-                && ss->staticEval + PieceValue[EG][pos.captured_piece()] + 213 * depth <= alpha)
-                r++;
+              // Unless giving check, this capture is likely bad
+              if (   !givesCheck
+                  && ss->staticEval + PieceValue[EG][pos.captured_piece()] + 213 * depth <= alpha)
+                  r++;
           }
 
           Depth d = std::clamp(newDepth - r, 1, newDepth);
@@ -1570,6 +1567,7 @@ moves_loop: // When in check, search starts from here
                                                                 [pos.moved_piece(move)]
                                                                 [to_sq(move)];
 
+      // CounterMove based pruning
       if (  !captureOrPromotion
           && moveCount
           && (*contHist[0])[pos.moved_piece(move)][to_sq(move)] < CounterMovePruneThreshold
