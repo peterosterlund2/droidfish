@@ -34,16 +34,16 @@ Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese Paramet
     <string name="paste">Aus der Zwischenablage einfügen</string>
     <string name="share_game">Partie im PGN-Format freigeben</string>
     <string name="share_text">Partie im Textformat freigeben</string>
-    <string name="share_image">Spielfeldansicht als Bild freigeben</string>
+    <string name="share_image">Brettansicht als Bild freigeben</string>
     <string name="load_last_file">Aus der letzten Datei laden</string>
     <string name="load_game">Partie aus einer PGN-Datei laden</string>
     <string name="load_position">Position aus Datei laden</string>
     <string name="load_scid_game">Partie aus einer Scid-Datei laden</string>
-    <string name="load_del_game">Gelöschtes Spiel laden</string>
+    <string name="load_del_game">Gelöschte Partie laden</string>
     <string name="save_game">Partie in eine PGN-Datei speichern</string>
     <string name="get_fen">Position auslesen</string>
     <string name="repeat_last_move">Letzten Zug wiederholen</string>
-    <string name="truncate_gametree">Spielbaum abschneiden</string>
+    <string name="truncate_gametree">Partiebaum abschneiden</string>
     <string name="move_var_up">Variante nach oben verschieben</string>
     <string name="move_var_down">Variante nach unten verschieben</string>
     <string name="add_null_move">Null-Zug hinzufügen</string>
@@ -168,7 +168,7 @@ Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese Paramet
     <string name="white_mate">Spielende, Matt durch Weiß!</string>
     <string name="black_mate">Spielende, Matt durch Schwarz!</string>
     <string name="stalemate">Spielende, Remis (Patt)!</string>
-    <string name="draw_rep">Spielende, Remis (Wiederholung)!</string>
+    <string name="draw_rep">Spielende, Remis (Stellungswiederholung)!</string>
     <string name="draw_50">Spielende, Remis (50-Züge-Regel)!</string>
     <string name="draw_no_mate">Spielende, Remis (kein Matt möglich)!</string>
     <string name="draw_agree">Spielende, Remis (Vereinbarung)!</string>
@@ -539,7 +539,7 @@ Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese Paramet
         <item>16384</item>
     </string-array>
     <string-array name="moves_per_session_texts">
-        <item>Ganzes Spiel</item>
+        <item>Ganze Partie</item>
         <item>1 Zug</item>
         <item>10 Züge</item>
         <item>20 Züge</item>
