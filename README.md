@@ -251,9 +251,11 @@ The first line of information has the following format:
 
 The last line of information has the following format:
 
-d:*depth* *i*:*move* t:*time* n:*nodes* nps:*speed* h:*hashfull* tb:*tbhits*
+d:*depth*[/*selDepth*] *i*:*move* t:*time* n:*nodes* nps:*speed* h:*hashfull* tb:*tbhits*
 
-* *Depth* is the search depth to which the engine is searching the current move.
+* *depth* The search depth to which the engine is searching the current move.
+
+* *selDepth* The selective search depth, if reported by the engine.
 
 * *i* is the move number the engine is currently searching. An engine generally
   starts searching the move it thinks is best, then continues with the second,
