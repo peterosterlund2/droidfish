@@ -165,7 +165,8 @@ public class InternalStockFish extends ExternalEngine {
      *  pointing to the network file embedded in DroidFish. */
     @Override
     public boolean setOption(String name, String value) {
-        if (name.toLowerCase(Locale.US).equals(netOption) && defaultNet.equals(value)) {
+        if (name.toLowerCase(Locale.US).equals(netOption) &&
+            (defaultNet.equals(value) || value.isEmpty())) {
             getUCIOptions().getOption(name).setFromString(value);
             value = defaultNetFile.getAbsolutePath();
             writeLineToEngine(String.format(Locale.US, "setoption name %s value %s", name, value));
