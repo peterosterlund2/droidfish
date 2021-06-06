@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 28
+
     defaultConfig {
         applicationId "org.petero.droidfish"
         minSdkVersion 16
@@ -51,7 +52,9 @@ android {
         targetCompatibility = '1.8'
     }
 
-    dataBinding.enabled = true
+    buildFeatures {
+        dataBinding true
+    }
 }
 
 dependencies {
@@ -84,4 +87,10 @@ task copyToAssets(type: Copy, dependsOn: 'externalNativeBuildRelease') {
 }
 tasks.withType(JavaCompile) {
     t -> t.dependsOn copyToAssets
+}
+android {
+  applicationVariants.all { variant ->
+    tasks["merge${variant.name.capitalize()}Assets"]
+      .dependsOn(copyToAssets)
+  }
 }

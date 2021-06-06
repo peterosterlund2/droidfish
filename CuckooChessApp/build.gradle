@@ -3,8 +3,6 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
 
-    dataBinding.enabled = true
-
     defaultConfig {
         applicationId "org.petero.cuckoochess"
         minSdkVersion 14
@@ -35,9 +33,17 @@ android {
             }
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
     compileOptions {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
+    }
+
+    buildFeatures {
+        dataBinding true
     }
 }
 
