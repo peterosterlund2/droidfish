@@ -1,3 +1,6 @@
+2021-07-02: Version 1.86
+- Update to Stockfish 14.
+
 2021-02-20: Version 1.85
 - Update to Stockfish 13.
 
