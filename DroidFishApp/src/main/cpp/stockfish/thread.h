@@ -32,6 +32,7 @@
 #include "search.h"
 #include "thread_win32_osx.h"
 
+namespace Stockfish {
 
 /// Thread class keeps together all the thread-related stuff. We use
 /// per-thread pawn and material hash tables so that once we get a
@@ -54,6 +55,7 @@ public:
   void idle_loop();
   void start_searching();
   void wait_for_search_finished();
+  size_t id() const { return idx; }
 
   Pawns::Table pawnsTable;
   Material::Table materialTable;
@@ -72,8 +74,7 @@ public:
   LowPlyHistory lowPlyHistory;
   CapturePieceToHistory captureHistory;
   ContinuationHistory continuationHistory[2][2];
-  Score contempt;
-  int failedHighCnt;
+  Score trend;
 };
 
 
@@ -127,5 +128,7 @@ private:
 };
 
 extern ThreadPool Threads;
+
+} // namespace Stockfish
 
 #endif // #ifndef THREAD_H_INCLUDED

@@ -83,6 +83,8 @@
 #  define pext(b, m) 0
 #endif
 
+namespace Stockfish {
+
 #ifdef USE_POPCNT
 constexpr bool HasPopCnt = true;
 #else
@@ -189,7 +191,6 @@ enum Value : int {
   BishopValueMg = 825,   BishopValueEg = 915,
   RookValueMg   = 1276,  RookValueEg   = 1380,
   QueenValueMg  = 2538,  QueenValueEg  = 2682,
-  Tempo = 28,
 
   MidgameLimit  = 15258, EndgameLimit  = 3915
 };
@@ -481,6 +482,8 @@ constexpr bool is_ok(Move m) {
 constexpr Key make_key(uint64_t seed) {
   return seed * 6364136223846793005ULL + 1442695040888963407ULL;
 }
+
+} // namespace Stockfish
 
 #endif // #ifndef TYPES_H_INCLUDED
 
