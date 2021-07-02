@@ -473,6 +473,8 @@ TBTables TBTables;
 // If the corresponding file exists two new objects TBTable<WDL> and TBTable<DTZ>
 // are created and added to the lists and hash table. Called at init time.
 void TBTables::add(const std::vector<PieceType>& pieces) {
+    if (sizeof(char*) < 8 && pieces.size() >= 6)
+        return; // Not enough address space to support 6-men TB on 32-bit OS
 
     std::string code;
 
