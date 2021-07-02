@@ -113,6 +113,8 @@ namespace Eval {
                     currentEvalFileName = eval_file;
             }
         }
+    if (currentEvalFileName != eval_file)
+        currentEvalFileName = "";
   }
 
   /// NNUE::verify() verifies that the last net used was loaded successfully
