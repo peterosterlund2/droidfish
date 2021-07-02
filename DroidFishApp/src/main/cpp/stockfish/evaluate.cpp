@@ -112,6 +112,8 @@ namespace Eval {
                     eval_file_loaded = eval_file;
             }
         }
+    if (eval_file_loaded != eval_file)
+        eval_file_loaded = "";
   }
 
   /// NNUE::verify() verifies that the last net used was loaded successfully
