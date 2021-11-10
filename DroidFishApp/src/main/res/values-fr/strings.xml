@@ -660,6 +660,7 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
         <item>Russe</item>
         <item>Turc</item>
         <item>Ukrainien</item>
+        <item>Vietnamese</item>
     </string-array>
     <string-array name="language_values">
         <item>default</item>
@@ -677,6 +678,7 @@ Lorsque que vous êtes sur batterie, il est recommandé de changer les paramètr
         <item>ru</item>
         <item>tr</item>
         <item>uk</item>
+        <item>vi</item>
     </string-array>
     <string-array name="font_size_texts">
         <item>Petite</item>

@@ -660,6 +660,7 @@ Se você está usando somente a bateria, recomenda-se que você mude as configur
         <item>Russian</item>
         <item>Turkish</item>
         <item>Ukrainian</item>
+        <item>Vietnamese</item>
     </string-array>
     <string-array name="language_values">
         <item>default</item>
@@ -677,6 +678,7 @@ Se você está usando somente a bateria, recomenda-se que você mude as configur
         <item>ru</item>
         <item>tr</item>
         <item>uk</item>
+        <item>vi</item>
     </string-array>
     <string-array name="font_size_texts">
         <item>Pequena</item>

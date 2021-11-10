@@ -1,0 +1,811 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DroidFish</string>
+    <string name="engine_hash_default">64</string>
+    <string name="moves_per_session_default">60</string>
+    <string name="time_control_default">120000</string>
+    <string name="time_increment_default">0</string>
+    <string name="squareSelectType_default">1</string>
+    <string name="language_default">Mặc định</string>
+    <string name="font_size_default">12</string>
+    <string name="thinking_arrows_default">4</string>
+    <string name="scroll_sensitivity_default">2</string>
+    <string name="book_line_length_default">1000000</string>
+    <string name="viewPieceType_default">1</string>
+    <string name="viewPieceSet_default">Bàn cờ</string>
+    <string name="autoDelay_default">5000</string>
+    <string name="move_announce_type_default">tắt</string>
+    <string name="cpu_warning">\
+<b>Cảnh báo sử dụng CPU</b>\
+\
+Nếu bạn để cho DroidFish chạy dưới nền và <i>Chế độ chơi</i> được đặt là <i>Phân tích</i> hoặc <i>Máy đấu với máy</i>, hoặc nếu <i>Thời gian suy nghĩ</i> được đặt với giá trị cao, hoặc  <i>Suy ngẫm</i> được bật, DroidFish có thể sử dụng nhiều năng lượng CPU.\
+\
+Nếu bạn đang chạy trên nguồn điện là pin, bạn nên thay đổi cài đặt để tiết kiệm pin, hoặc bạn nên thoát <i>DroidFish</i> bằng cách sử dụng nút Back khi bạn không sử dụng chương trình.
+    </string>
+    <string name="offer_draw">Offer Draw</string>
+    <string name="queen">Hậu</string>
+    <string name="rook">Xe</string>
+    <string name="bishop">Tượng</string>
+    <string name="knight">Mã</string>
+    <string name="promote_pawn_to">Thăng chức cho quân cờ?</string>
+    <string name="clipboard">Bảng nhớ tạm</string>
+    <string name="copy_game">Sao chép game vào bảng nhớ tạm</string>
+    <string name="copy_position">Sao chép vị trí vào bảng nhớ tạm</string>
+    <string name="paste">Dán từ bảng nhớ tạm</string>
+    <string name="share_game">Chia sẻ trò chơi</string>
+    <string name="share_text">CHia sẻ dưới dạng văn bản</string>
+    <string name="share_image">Chia sẻ dưới dạng hình ảnh</string>
+    <string name="load_last_file">Nạp từ tệp gần đây nhất</string>
+    <string name="load_game">Nạp trò chơi từ tệp PGN</string>
+    <string name="load_position">Nạp vị trí từ tệp</string>
+    <string name="load_scid_game">Nạp trò chơi từ tệp Scid</string>
+    <string name="load_del_game">Nạp trò chơi đã xóa</string>
+    <string name="save_game">Lưu trò chơi vào tệp PGN</string>
+    <string name="get_fen">Truy xuất vị trí</string>
+    <string name="repeat_last_move">Lặp lại bước đi cuối cùng</string>
+    <string name="truncate_gametree">Cắt ngắn cây trò chơi</string>
+    <string name="move_var_up">Di chuyển biến thể lên</string>
+    <string name="move_var_down">Di chuyển biến thể xuống</string>
+    <string name="add_null_move">Thêm nước đi không xác định</string>
+    <string name="tools_menu">Công cụ</string>
+    <string name="load_save_menu">Nạp/Lưu trò chơi</string>
+    <string name="goto_move">Chuyển tới nước đi</string>
+    <string name="limit_strength">Giới hạn sức mạnh của Engine</string>
+    <string name="set_engine_strength">Đặt cường độ sức mạnh cho Engine trò chơi</string>
+    <string name="engine_cannot_reduce_strength">Engine không thể giảm sức mạnh</string>
+    <string name="edit_randomization">Cài đặt ngẫu nhiên hóa</string>
+    <string name="invalid_number_format">Định dạng số không hợp lệ</string>
+    <string name="side_to_move">Bên di chuyển</string>
+    <string name="clear_board">Xóa bàn cờ</string>
+    <string name="initial_position">Khởi tạo vị trí</string>
+    <string name="castling_flags">Cờ Castling</string>
+    <string name="en_passant_file">Truyền tệp</string>
+    <string name="move_counters">Bộ đếm di chuyển</string>
+    <string name="paste_position">Dán vị trí</string>
+    <string name="edit_board">Tùy chỉnh bàn cờ</string>
+    <string name="select_side_to_move_first">Chọn bên di chuyển trước</string>
+    <string name="white">Trắng</string>
+    <string name="black">Đen</string>
+    <string name="white_square_character">\u25a0</string>
+    <string name="black_square_character">\u25a1</string>
+    <string name="white_king_castle">Vua trắng</string>
+    <string name="white_queen_castle">Hậu trắng</string>
+    <string name="black_king_castle">Vua đen</string>
+    <string name="black_queen_castle">Hậu đen</string>
+    <string name="none">Không có</string>
+    <string name="select_en_passant_file">Chọn truyền tệp</string>
+    <string name="edit_move_counters">Tùy chỉnh bộ đếm di chuyển</string>
+    <string name="internal_book">&lt;Sách nội bộ&gt;</string>
+    <string name="eco_book">&lt;Sách ECO&gt;</string>
+    <string name="no_book">&lt;Không có&gt;</string>
+    <string name="select_opening_book_file">Chọn sách để mở</string>
+    <string name="select_chess_engine">Chọn Engine cờ vua</string>
+    <string name="select_pgn_file">Mở tệp PGN</string>
+    <string name="select_pgn_file_save">Lưu vào tệp PGN</string>
+    <string name="select_fen_file">Mở tệp FEN/EPD</string>
+    <string name="select_file">Chọn tệp</string>
+    <string name="select_directory">Chọn thư mục</string>
+    <string name="pgn_load">Nạp</string>
+    <string name="pgn_save">Lưu</string>
+    <string name="reading_pgn_file">Đang đọc tệp PGN…</string>
+    <string name="reading_fen_file">Đang đọc tệp FEN/EPD…</string>
+    <string name="reading_scid_file">Đang đọc tệp Scid…</string>
+    <string name="new_file">&lt;Tệp tin mới&gt;</string>
+    <string name="new_engine">&lt;Engine mới&gt;</string>
+    <string name="no_pgn_files">Không tìm thấy tập tin trong thư mục DroidFish/pgn trên thẻ SD</string>
+    <string name="no_fen_files">Không tìm thấy tập tin trong thư mục DroidFish/epd trên thẻ SD</string>
+    <string name="select_color_theme">Chọn giao diện</string>
+    <string name="colortheme_original">Gốc</string>
+    <string name="colortheme_xboard">XBoard</string>
+    <string name="colortheme_blue">Xanh</string>
+    <string name="colortheme_grey">Xám</string>
+    <string name="colortheme_scid_default">Scid Default</string>
+    <string name="colortheme_scid_brown">Scid Brown</string>
+    <string name="colortheme_scid_green">Scid Green</string>
+    <string name="select_game_mode">Chọn chế độ chơi</string>
+    <string name="edit_replay_game">Chỉnh sửa/Chơi lại trò chơi</string>
+    <string name="analysis_mode">Chế độ phân tích</string>
+    <string name="play_white">Chơi bằng quân trắng</string>
+    <string name="play_black">Chơi bằng quân đen</string>
+    <string name="two_players">Hai người chơi</string>
+    <string name="comp_vs_comp">Máy đấu với máy</string>
+    <string name="analysis">Phân tích</string>
+    <string name="edit_game">Tùy chỉnh trò chơi</string>
+    <string name="edit_headers">Chỉnh sửa tiêu đề</string>
+    <string name="edit_comments">Chỉnh sửa bình luận</string>
+    <string name="add_eco">Thêm tên đang mở</string>
+    <string name="go_back">Trước</string>
+    <string name="go_forward">Sau</string>
+    <string name="goto_start_game">Đi đến bắt đầu game</string>
+    <string name="goto_start_variation">Đi tới bắt đầu biến thể</string>
+    <string name="goto_prev_variation">Đi tới biến thể trước</string>
+    <string name="load_prev_game">Nạp trò chơi trước</string>
+    <string name="goto_end_variation">Đi đến biến thể cuối cùng</string>
+    <string name="goto_next_variation">Đi đến biến thể tiếp theo</string>
+    <string name="load_next_game">Nạp trò chơi tiếp theo</string>
+    <string name="auto_forward">Tự động tiến về trước</string>
+    <string name="auto_backward">Tự động quay về phía sau</string>
+    <string name="no_prev_game">Không có trò chơi trước đó</string>
+    <string name="no_next_game">Không có trò chơi tiếp theo</string>
+    <string name="no_prev_fen">Không có vị trí trước đó</string>
+    <string name="no_next_fen">Không có vị trí sau đó</string>
+    <string name="select_action">Chọn hành động</string>
+    <string name="flip_board">Lật bàn cờ</string>
+    <string name="blind_mode">Chế độ bịt mắt</string>
+    <string name="toggle_show_thinking">Chuyển đổi hiển thị tư duy</string>
+    <string name="toggle_book_hints">Chuyển đổi Book Hints</string>
+    <string name="toggle_tb_hints">Chuyển đổi Tablebase Hints</string>
+    <string name="toggle_pgn_variations">Chuyển đổi biến thể</string>
+    <string name="toggle_pgn_comments">Chuyển đổi bình luận</string>
+    <string name="toggle_pgn_headers">Chuyển đổi tiêu để</string>
+    <string name="toggle_analysis">Chuyển đổi phân tích Engines</string>
+    <string name="toggle_large_buttons">Chuyển đổi thành nút lớn</string>
+    <string name="toggle_blind_mode">Chuyển đổi chế độ bịt mắt</string>
+    <string name="toggle_arrows">Chuyển đổi mũi tên</string>
+    <string name="cancel">Hủy</string>
+    <string name="reset">Khởi tạo lại</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="move_number">Số lần di chuyển:</string>
+    <string name="filename">Tên tệp tin:</string>
+    <string name="halfmove">Thời gian di chuyển một nửa:</string>
+    <string name="fullmove">Thời gian di chuyển toàn bộ :</string>
+    <string name="filter_text">Tìm kiếm…</string>
+    <string name="value_percent">Giá trị (%):</string>
+    <string name="header_event">Sự kiện:</string>
+    <string name="header_site">Site:</string>
+    <string name="header_date">Ngày:</string>
+    <string name="header_round">Vòng:</string>
+    <string name="header_result">Kết quả:</string>
+    <string name="comment_before">Trước:</string>
+    <string name="comment_move">Di chuyển:</string>
+    <string name="comment_after">Sau:</string>
+    <string name="whites_move">Quân trắng di chuyển</string>
+    <string name="blacks_move">Quân đen di chuyển</string>
+    <string name="ponder">suy ngẫm</string>
+    <string name="thinking">đang nghĩ</string>
+    <string name="analyzing">đang phân tích</string>
+    <string name="white_mate">Kết thúc trò chơi, quân trắng thắng!</string>
+    <string name="black_mate">Kết thúc trò chơi, quân đen thắng!</string>
+    <string name="stalemate">Kết thúc trò chơi, hòa trong bế tắc!</string>
+    <string name="draw_rep">Kết thúc trò chơi, hòa vì lặp lại!</string>
+    <string name="draw_50">Kết thúc trò chơi, hòa vì quy tắc 50 nước đi!</string>
+    <string name="draw_no_mate">Kết thúc trò chơi, hòa vì sự bất khả thi của nước đi!</string>
+    <string name="draw_agree">Kết thúc trò chơi, hòa theo thỏa thuận!</string>
+    <string name="resign_white">Kết thúc trò chơi, quân trắng bỏ cuộc!</string>
+    <string name="resign_black">Kết thúc trò chơi, quân đen bỏ cuộc!</string>
+    <string name="book">Sách:</string>
+    <string name="invalid_move">Nước đi không hợp lệ</string>
+    <string name="piece_can_not_be_moved">Quân cờ không thể được di chuyển</string>
+    <string name="preferences">Thiết lập</string>
+    <string name="load_game_title">Chỉnh sửa tệp tin / Nạp trò chơi</string>
+    <string name="save_game_title">Chỉnh sửa tệp tin / Nạp trò chơi</string>
+    <string name="save_game_hint">Chọn một trò chơi hiện có để kiểm soát nơi lưu trò chơi. Nhấn và giữ một trò chơi hiện có để xóa nó.</string>
+    <string name="load_scid_game_title">Nạp Scid Game</string>
+    <string name="load_fen_title">Nạp vị trí</string>
+    <string name="cpu_warning_title">Cảnh báo sử dụng CPU</string>
+    <string name="edit_options_title">Thiết lập UCI</string>
+    <string name="failed_to_read_pgn_data">Lỗi khi đọc dữ liệu PGN</string>
+    <string name="variation">Biến thể:</string>
+    <string name="add_analysis">Thêm phân tích</string>
+    <string name="copy_to_clipboard">Sao chép vào bảng nhớ tạm</string>
+    <string name="num_variations">Số biến thể</string>
+    <string name="hide_statistics">Ẩn số liệu thống kê</string>
+    <string name="show_statistics">Hiện số liệu thống kê </string>
+    <string name="show_whole_variations">Hiện toàn bộ biến thể</string>
+    <string name="truncate_variations">Cắt bớt các biến thể</string>
+    <string name="heavy_cpu_usage">Sử dụng CPU cao</string>
+    <string name="background_processing">Đang xử lí dưới nền</string>
+    <string name="lot_cpu_power">DroidFish đang sử dụng quá nhiều năng lượng CPU</string>
+    <string name="delete">Xóa</string>
+    <string name="delete_game">Xóa trò chơi?</string>
+    <string name="delete_file">Xóa tệp tin</string>
+    <string name="delete_file_question">Xóa tệp tin?</string>
+    <string name="delete_named_file">Xóa tệp tin: %s?</string>
+    <string name="regexp_search">Tìm kiếm sử dụng Regular Expression (RegEx):</string>
+    <string name="game_saved">Đã lưu trò chơi</string>
+    <string name="failed_to_save_game">Lỗi khi lưu trò chơi</string>
+    <string name="failed_to_delete_game">Lỗi khi xóa game</string>
+    <string name="file_too_large">Tẹp tin quá lớn</string>
+    <string name="not_a_pgn_file">Không phải tệp PGN</string>
+    <string name="save_game_question">Lưu trò chơi?</string>
+    <string name="before_selected">Trước khi chọn</string>
+    <string name="after_selected">Sau khi chọn</string>
+    <string name="replace_selected">Thay thế lựa chọn</string>
+    <string name="engine">Engine</string>
+    <string name="engine_name">Tên Engine</string>
+    <string name="engine_name_in_use">Tên Engine đang được sử dụng</string>
+    <string name="slash_not_allowed">Kí tự &#47; không được phép</string>
+    <string name="engine_error">Lỗi Engine</string>
+    <string name="stockfish_engine">Stockfish</string>
+    <string name="cuckoochess_engine">CuckooChess</string>
+    <string name="select_engine">Chọn Engine</string>
+    <string name="engine_options">Cài đặt Engine</string>
+    <string name="set_engine_options">Cài đặt</string>
+    <string name="configure_network_engine">Cấu hình Engine mạng</string>
+    <string name="create_network_engine">Tạo Engine mạng</string>
+    <string name="delete_network_engine">Xóa Engine mạng?</string>
+    <string name="host_name">Tên máy chủ</string>
+    <string name="network_port">Cổng</string>
+    <string name="network_engine">Engine mạng</string>
+    <string name="failed_to_start_engine">Lỗi khi khởi động Engine</string>
+    <string name="tts_failed_to_init">Lỗi khi khởi tạo văn bản để phát âm</string>
+    <string name="tts_data_missing">Văn bản cho dữ liệu phát âm bị thiếu</string>
+    <string name="tts_not_supported_for_lang">Văn bản cho dữ liệu phát âm không được hỗ trợ ở ngôn ngữ hiện tại</string>
+    <string name="engine_terminated">Đã dừng Engine</string>
+    <string name="uci_protocol_error">Lỗi giao thức UCI</string>
+    <string name="network_engine_config_error">Cấu hình Engine mạng thất bại</string>
+    <string name="invalid_network_port">Cổng mạng không hợp lệ</string>
+    <string name="start_new_game">Bắt đầu trò chơi mới?</string>
+    <string name="strength_cuckoo_hint">Sử dụng động cơ CuckooChess để có sức mạnh thấp hơn.</string>
+    <string name="piece_names">P N B R Q K</string>
+    <string name="highlight_last_move_title">Tô đậm nước đi cuối cùng</string>
+    <string name="highlight_last_move_summary">Vẽ hình vuông xung quanh nước đi cuối cùng</string>
+    <string name="material_diff_title">Hiển thị sự khác biệt vật liệu</string>
+    <string name="material_diff_summary">Hiển thị phụ đề bổ sung cho các phần đã chụp</string>
+    <string name="err_too_few_spaces">Quá ít khoảng cách</string>
+    <string name="err_invalid_piece">Quân cờ không hợp lệ</string>
+    <string name="err_invalid_side">Bên không hợp lệ</string>
+    <string name="err_invalid_castling_flags">Cờ nhập thành không hợp lệ</string>
+    <string name="err_invalid_en_passant_square">Ô vuông vi phạm không hợp lệ</string>
+    <string name="err_white_num_kings">Quân trắng chỉ phải được có một vua</string>
+    <string name="err_black_num_kings">Quân đen chỉ phải được có một vua</string>
+    <string name="err_king_capture_possible">Có thể bắt vua</string>
+    <string name="err_too_many_rows">Quá nhiều hàng</string>
+    <string name="err_too_many_columns">Quá nhiều cột</string>
+    <string name="err_pawn_on_first_last_rank">Quân Tốt trên xếp hạng đầu tiên / cuối cùng</string>
+    <string name="err_too_many_white_pieces">Quá nhiều quân trắng</string>
+    <string name="err_too_many_black_pieces">Quá nhiều quân đen</string>
+    <string name="option_new_game">Trò chơi mới</string>
+    <string name="option_file">Tệp</string>
+    <string name="option_resign_game">Từ bỏ trò chơi</string>
+    <string name="option_edit_board">Tùy chỉnh bản cờ</string>
+    <string name="option_settings">Cài đặt</string>
+    <string name="option_force_computer_move">Buộc máy phải đi</string>
+    <string name="option_draw">Chấp nhận hòa</string>
+    <string name="option_select_book">Chọn mở sách</string>
+    <string name="option_manage_engines">Các Engine cờ vua</string>
+    <string name="option_color_theme">Đặt màu</string>
+    <string name="option_about">Thông tin/Trợ giúp</string>
+    <string name="prefs_playing_options">Cài đặt khi chơi</string>
+    <string name="prefs_playerName_title">Tên người chơi</string>
+    <string name="prefs_playerName_summary">Tên người chơi mặc định khi bắt đầu trò chơi mới</string>
+    <string name="prefs_autoSwapSides_title">Lật bàn cờ: Tự động</string>
+    <string name="prefs_autoSwapSides_summary">Sử dụng mặt để di chuyển sang bảng lật tự động</string>
+    <string name="prefs_playerNameFlip_title">Lật bàn cờ: Người chơi</string>
+    <string name="prefs_playerNameFlip_summary">Sử dụng Tên người chơi để lật bảng tự động</string>
+    <string name="prefs_engine_settings">Cài đặt Engine</string>
+    <string name="prefs_ponderMode_title">Suy ngẫm</string>
+    <string name="prefs_ponderMode_summary">Để động cơ suy nghĩ trong khi chờ đợi nước đi của đối thủ. Được hỗ trợ bởi hầu hết các Engines.</string>
+    <string name="prefs_hash_title">Băm bảng</string>
+    <string name="prefs_hash_summary">Kích thước băm bảng theo đơn vị Megabytes</string>
+    <string name="prefs_time_control">Quản lí thời gian</string>
+    <string name="prefs_movesPerSession_title">Các nước đi</string>
+    <string name="prefs_movesPerSession_summary">Số lần di chuyển giữa các điều khiển thời gian</string>
+    <string name="prefs_timeControl_title">Thời gian</string>
+    <string name="prefs_timeControl_summary">Thời gian suy nghĩ tối đa giữa các lần kiểm soát thời gian</string>
+    <string name="prefs_timeIncrement_title">Tăng</string>
+    <string name="prefs_timeIncrement_summary">Thêm thời gian suy nghĩ cho mỗi nước đi đã hoàn thành</string>
+    <string name="prefs_autoDelay_title">Tự động di chuyển độ trễ</string>
+    <string name="prefs_autoDelay_summary">Độ trễ giữa các lần di chuyển trong chế độ tiến / lùi tự động</string>
+    <string name="prefs_hints">Trợ giúp</string>
+    <string name="prefs_showThinking_title">Hiển thị tư duy máy tính</string>
+    <string name="prefs_showThinking_summary">Hiển thị thông tin thuật toán máy tính trong quá trình tìm kiếm</string>
+    <string name="prefs_whiteBasedScores_title">Điểm dựa trên màu trắng</string>
+    <string name="prefs_whiteBasedScores_summary">Điểm phân tích tích cực tốt cho quân trắng</string>
+    <string name="prefs_bookHints_title">Hiển thị sách gợi ý</string>
+    <string name="prefs_bookHints_summary">Hiển thị gợi ý di chuyển sách mở đầu cho người chơi</string>
+    <string name="prefs_thinkingArrows_title">Sử dụng mũi tên</string>
+    <string name="prefs_thinkingArrows_summary">Sử dụng mũi tên để hiển thị các nước đi trên bàn cờ</string>
+    <string name="prefs_ecoHints_title">Hiển thị mã ECO</string>
+    <string name="prefs_ecoHints_summary">Hiển thị Encyclopedia cho cờ vua</string>
+    <string name="prefs_user_interface_appearance">Giao diện</string>
+    <string name="prefs_user_interface_behavior">Hiển thị</string>
+    <string name="prefs_animateMoves_title">Hiệu ứng nước đi</string>
+    <string name="prefs_animateMoves_summary">Hiệu ứng di chuyển quân cờ</string>
+    <string name="prefs_autoScrollTitle_title">Cuộn thanh tiêu đề</string>
+    <string name="prefs_autoScrollTitle_summary">Tự động cuộn thanh tiêu đề nếu tên người chơi quá dài</string>
+    <string name="prefs_quickMoveInput_title">Nhập Di chuyển nhanh</string>
+    <string name="prefs_quickMoveInput_summary">Các hình vuông From và To có thể được chạm theo bất kỳ thứ tự nào. Di chuyển được chơi ngay sau khi xác định duy nhất.</string>
+    <string name="prefs_moveSoundEnabled_title">Âm thanh di chuyển</string>
+    <string name="prefs_moveSoundEnabled_summary">Phát âm thanh khi máy di chuyển</string>
+    <string name="prefs_moveAnnounceType_title">Nói nước đi</string>
+    <string name="prefs_moveAnnounceType_summary">Nói khi máy di chuyển</string>
+    <string name="prefs_vibrateEnabled_title">Bật bộ rung</string>
+    <string name="prefs_vibrateEnabled_summary">Rung khi máy tính di chuyển</string>
+    <string name="prefs_fullScreenMode_title">Chế độ Toàn màn hình</string>
+    <string name="prefs_fullScreenMode_summary">Chế độ Toàn màn hình ẩn thanh trạng thái</string>
+    <string name="prefs_wakeLock_title">Tắt thời gian chờ màn hình</string>
+    <string name="prefs_drawSquareLabels_title">Nhãn hình vuông</string>
+    <string name="prefs_drawSquareLabels_summary">Hiển thị nhãn hình vuông: a–h và 1–8</string>
+    <string name="prefs_dragMoveEnabled_title">Kéo các quân cờ</string>
+    <string name="prefs_dragMoveEnabled_summary">Kéo các quân cờ để di chuyển</string>
+    <string name="prefs_scrollSensitivity_title">Tốc độ cuộn</string>
+    <string name="prefs_scrollSensitivity_summary">Tốc độ cuộn cho điều hướng trò chơi</string>
+    <string name="prefs_invertScrollDirection_title">Đảo ngược hướng cuộn</string>
+    <string name="prefs_invertScrollDirection_summary">Bật tính năng này nếu bạn cho rằng cuộn di chuyển sai hướng</string>
+    <string name="prefs_scrollGames_title">Quét theo chiều ngang</string>
+    <string name="prefs_scrollGames_summary">Nếu được bật, quét theo chiều ngang trên bàn cờ sẽ di chuyển đến trò chơi tiếp theo / trước đó</string>
+    <string name="prefs_autoScrollMoveList_title">Tự động cuộn danh sách nước đi</string>
+    <string name="prefs_autoScrollMoveList_summary">Tự động cuộn danh sách di chuyển đến vị trí bảng hiện tại</string>
+    <string name="prefs_discardVariations_title">Hủy bỏ các biến thể</string>
+    <string name="prefs_discardVariations_summary">Loại bỏ các di chuyển không phải dòng chính khỏi danh sách di chuyển</string>
+    <string name="prefs_leftHanded_title">Chế độ thuận tay trái</string>
+    <string name="prefs_leftHanded_summary">Các điều khiển ở bên trái ở chế độ ngang</string>
+    <string name="prefs_squareSelectType_title">Ô vuông lựa chọn</string>
+    <string name="prefs_squareSelectType_summary">Kiểm soát cách hoạt động của việc chọn các ô vuông trên bàn cờ</string>
+    <string name="prefs_language_title">Ngôn ngữ</string>
+    <string name="prefs_language_summary">Ngôn ngữ giao diện người dùng</string>
+    <string name="prefs_fontSize_title">Cỡ chữ</string>
+    <string name="prefs_fontSize_summary">Kích thước phông chữ cho danh sách di chuyển và thông tin trò chơi</string>
+    <string name="prefs_largeButtons_title">Nút bấm lớn hơn</string>
+    <string name="prefs_largeButtons_summary">Sử dụng các nút lớn để điều hướng trò chơi và cài đặt chế độ</string>
+    <string name="prefs_buttonSettings_title">Cấu hình nút bấm</string>
+    <string name="prefs_buttonSettings_summary">Định cấu hình kích thước nút và các hành động của nút.</string>
+    <string name="prefs_button_action_0_title">Hành động chính</string>
+    <string name="prefs_button_action_1_title">Hành động 1</string>
+    <string name="prefs_button_action_2_title">Hành động 2</string>
+    <string name="prefs_button_action_3_title">Hành động 3</string>
+    <string name="prefs_button_action_4_title">Hành động 4</string>
+    <string name="prefs_button_action_5_title">Hành động 5</string>
+    <string name="prefs_button_action_6_title">Hành động 6</string>
+    <string name="prefs_custom_button_1">Nút bấm tùy chỉnh 1</string>
+    <string name="prefs_custom_button_2">Nút bấm tùy chỉnh 2</string>
+    <string name="prefs_custom_button_3">Nút bấm tùy chỉnh 3</string>
+    <string name="prefs_colors_title">Cài đặt màu</string>
+    <!-- Color Picker -->
+    <string name="press_color_to_apply">Bấm vào màu bạn muốn chọn để xác nhận</string>
+    <!--  End color Picker -->
+    <string name="prefs_colors_summary">Thay đổi các màu riêng lẻ</string>
+    <string name="prefs_chess_board">Bàn cờ</string>
+    <string name="prefs_color_brightSquare_title">Ô vuông sáng</string>
+    <string name="prefs_color_darkSquare_title">Ô vuông tối</string>
+    <string name="prefs_color_selectedSquare_title">Ô vuông được chọn</string>
+    <string name="prefs_color_brightPiece_title">Quân trắng</string>
+    <string name="prefs_color_darkPiece_title">Quân đen</string>
+    <string name="prefs_color_arrow0_title">Mũi tên 1</string>
+    <string name="prefs_color_arrow1_title">Mũi tên 2</string>
+    <string name="prefs_color_arrow2_title">Mũi tên 3</string>
+    <string name="prefs_color_arrow3_title">Mũi tên 4</string>
+    <string name="prefs_color_arrow4_title">Mũi tên 5</string>
+    <string name="prefs_color_arrow5_title">Mũi tên 6</string>
+    <string name="prefs_color_arrow6_title">Mũi tên 7</string>
+    <string name="prefs_color_arrow7_title">Mũi tên 8</string>
+    <string name="prefs_color_squareLabel_title">Nhãn ô vuông</string>
+    <string name="prefs_color_decoration_title">Bảng trợ giúp</string>
+    <string name="prefs_move_list">Danh sách nước đi</string>
+    <string name="prefs_color_currentMove_title">Nước đi hiện tại</string>
+    <string name="prefs_color_pgnComment_title">Bình luận</string>
+    <string name="prefs_color_fontForeground_title">Font</string>
+    <string name="prefs_color_generalBackground_title">Nền</string>
+    <string name="prefs_other">Khác</string>
+    <string name="prefs_bookSettings_title">Đang mở cài đặt sách</string>
+    <string name="prefs_bookSettings_summary">Cài đặt để mở cách sử dụng sách</string>
+    <string name="prefs_bookMaxLength_title">Độ dài sách</string>
+    <string name="prefs_bookMaxLength_summary">Độ dài dòng sách tối đa</string>
+    <string name="prefs_bookPreferMainLines_title">Ưu tiên các dòng chính</string>
+    <string name="prefs_bookPreferMainLines_summary">Ưu tiên các lượt di chuyển sách được đánh dấu là lượt di chuyển chính</string>
+    <string name="prefs_bookTournamentMode_title">Chế độ thi đấu</string>
+    <string name="prefs_bookTournamentMode_summary">Bỏ qua các nước đi được đánh dấu là không dành cho thi đấu giải đấu</string>
+    <string name="prefs_bookRandom_title">Ngẫu nhiên hóa sách</string>
+    <string name="prefs_bookFile_title">Đặt tên tệp</string>
+    <string name="prefs_bookFile_summary">Tệp sách đa ngôn ngữ, ABK hoặc CTG trong thư mục DroidFish trên Thẻ SD</string>
+    <string name="prefs_pgnSettings_title">Cài đặt PGN</string>
+    <string name="prefs_pgnSettings_summary">Cài đặt để nhập và xuất dữ liệu ký hiệu trò chơi di động (PGN)</string>
+    <string name="prefs_pgn_viewer">Xem PGN</string>
+    <string name="prefs_viewVariations_title">Các biến thể</string>
+    <string name="prefs_viewVariations_summary">Bao gồm các động thái không phải dòng chính</string>
+    <string name="prefs_viewComments_title">Bình luận</string>
+    <string name="prefs_viewComments_summary">Bao gồm các nhận xét do người dùng viết</string>
+    <string name="prefs_viewNAG_title">Chú thích</string>
+    <string name="prefs_viewNAG_summary">Bao gồm glyph chú thích bằng số (NAG), chẳng hạn như ! và ?</string>
+    <string name="prefs_viewHeaders_title">Tiêu đề</string>
+    <string name="prefs_viewHeaders_summary">Hiển thị các dòng tiêu đề PGN</string>
+    <string name="prefs_showVariationLine_title">Hiển thị các biến thể hiện tại</string>
+    <string name="prefs_showVariationLine_summary">Hiển thị các biến thể hiện tại trong khu vực trạng thái</string>
+    <string name="prefs_viewPieceType_title">Tên các quân cờ</string>
+    <string name="prefs_viewPieceType_summary">Kiểm soát cách hiển thị tên quân cờ</string>
+    <string name="prefs_viewPieceSet_title">Đặt quân cờ</string>
+    <string name="prefs_viewPieceSet_summary">Chọn đặt quân cờ</string>
+    <string name="prefs_blindMode_title">Chế độ bịt mắt</string>
+    <string name="prefs_blindMode_summary">Hiển thị bảng trống thay vì các quân cờ</string>
+    <string name="prefs_pgn_import">Nhập dữ liệu PGN</string>
+    <string name="prefs_importVariations_title">Các biến thể</string>
+    <string name="prefs_importVariations_summary">Bao gồm các động thái không phải dòng chính</string>
+    <string name="prefs_importComments_title">Bình luận</string>
+    <string name="prefs_importComments_summary">Bao gồm các nhận xét do người dùng viết</string>
+    <string name="prefs_importNAG_title">Chú thích</string>
+    <string name="prefs_importNAG_summary">Bao gồm glyph chú thích bằng số (NAG), chẳng hạn như ! và ?</string>
+    <string name="prefs_pgn_export">Xuất dữ liệu PGN</string>
+    <string name="prefs_exportVariations_title">Các biến thể</string>
+    <string name="prefs_exportVariations_summary">Bao gồm các động thái không phải dòng chính</string>
+    <string name="prefs_exportComments_title">Bình luận</string>
+    <string name="prefs_exportComments_summary">Bao gồm các nhận xét do người dùng viết</string>
+    <string name="prefs_exportNAG_title">Chú thích</string>
+    <string name="prefs_exportNAG_summary">Bao gồm glyph chú thích bằng số (NAG), chẳng hạn như ! và ?</string>
+    <string name="prefs_exportPlayerAction_title">Các hành động của người chơi</string>
+    <string name="prefs_exportPlayerAction_summary">Bao gồm thông tin về các hành động rút lui và từ bỏ</string>
+    <string name="prefs_exportTime_title">Đồng hồ</string>
+    <string name="prefs_exportTime_summary">Bao gồm thông tin thời gian cho mỗi lần di chuyển</string>
+    <string name="prefs_egtbSettings_title">Bảng kết thúc trò chơi</string>
+    <string name="prefs_tbHints_title">Hiển thị các gợi ý</string>
+    <string name="prefs_tbHints_summary">Khi chạm vào một quân cờ, hiển thị giá trị cơ sở bảng cho tất cả các bước di chuyển có thể có của mảnh đó</string>
+    <string name="prefs_tbHintsEdit_title">Chỉnh sửa Gợi ý về Quân cờ</string>
+    <string name="prefs_tbHintsEdit_summary">Khi chạm vào một phần ở chế độ bảng chỉnh sửa, hiển thị giá trị cơ sở bảng cho tất cả các vị trí thay thế có thể có của phần đó</string>
+    <string name="prefs_tbRootProbe_title">Thăm dò tận gốc</string>
+    <string name="prefs_tbRootProbe_summary">Lọc ra các bước di chuyển không tối ưu trước khi bắt đầu tìm kiếm</string>
+    <string name="prefs_tbEngineProbe_title">Đo động cơ</string>
+    <string name="prefs_tbEngineProbe_summary">Bật tính năng dò tìm cơ sở bảng trong công cụ, khi được hỗ trợ</string>
+    <string name="prefs_gtbPath_title">Thư mục GTB</string>
+    <string name="prefs_gtbPath_summary">Thư mục nơi các cơ sở bảng Gaviota được cài đặt. Để trống để sử dụng thư mục mặc định</string>
+    <string name="prefs_gtbPathNet_title">Thư mục mạng GTB</string>
+    <string name="prefs_gtbPathNet_summary">Thư mục cho các công cụ mạng nơi các cơ sở bảng Gaviota được cài đặt.</string>
+    <string name="prefs_rtbPath_title">Thư mục Syzygy</string>
+    <string name="prefs_rtbPath_summary">Thư mục nơi các cơ sở bảng Syzygy được cài đặt. Để trống để sử dụng thư mục mặc định</string>
+    <string name="prefs_rtbPathNet_title">Thư mục mạng Syzygy</string>
+    <string name="prefs_rtbPathNet_summary">Thư mục cho các công cụ mạng nơi cơ sở bảng Syzygy được cài đặt.</string>
+    <string name="prefs_guideShowOnStart_title">Hướng dẫn cho người mới bắt đầu</string>
+    <string name="prefs_guideShowOnStart_summary">Hiển thị hướng dẫn cho người mới bắt đầu vào lần khởi động chương trình tiếp theo.</string>
+    <string name="tour_leftMenu_title">Menu bên trái</string>
+    <string name="tour_leftMenu_desc">Để mở menu bên trái, hãy chạm vào bên trái của thanh tiêu đề hoặc vuốt từ bên trái màn hình sang bên phải.</string>
+    <string name="tour_rightMenu_title">Menu bên phải</string>
+    <string name="tour_rightMenu_desc">Để mở menu bên phải, chạm vào bên phải của thanh tiêu đề hoặc vuốt từ bên phải màn hình sang bên trái.</string>
+    <string name="tour_chessBoard_title">Bàn cờ</string>
+    <string name="tour_chessBoard_desc">Chạm và giữ bàn cờ để mở menu công cụ.</string>
+    <string name="tour_buttons_title">Các nút bấm</string>
+    <string name="tour_buttons_desc">Nhấn vào một nút để gọi hành động của nó. Chạm và giữ một nút để mở menu chứa các thao tác phụ. Để định cấu hình các hành động của nút, hãy chuyển đến Menu bên trái &gt; Cài đặt &gt; Hành vi &gt; Định cấu hình các nút.</string>
+    <string name="tour_moveList_title">Danh sách nước đi</string>
+    <string name="tour_moveList_desc">Nhấn vào một nước đi trong danh sách nước đi để đặt bàn cờ đến vị trí tương ứng. Chạm và giữ danh sách di chuyển để mở menu Chỉnh sửa trò chơi.</string>
+    <string name="tour_analysis_title">Thông tin phân tích</string>
+    <string name="tour_analysis_desc">Khi động cơ đang suy nghĩ, hãy chạm và giữ thông tin phân tích để mở menu Phân tích.</string>
+    <string name="buttonDesc_custom1">@string/prefs_custom_button_1</string>
+    <string name="buttonDesc_custom2">@string/prefs_custom_button_2</string>
+    <string name="buttonDesc_custom3">@string/prefs_custom_button_3</string>
+    <string name="buttonDesc_mode">Chế độ nút</string>
+    <string name="buttonDesc_back">Nút quay lại</string>
+    <string name="buttonDesc_forward">Nút chuyển tiếp</string>
+    <string-array name="viewPieceType_texts">
+        <item>Chữ cái tiếng anh</item>
+        <item>Chữ cái ngôn ngữ địa phương</item>
+        <item>Ký hiệu bức tượng nhỏ</item>
+    </string-array>
+    <string-array name="viewPieceType_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="viewPieceSet_texts">
+        <item>Trường hợp cờ vua</item>
+        <item>Alfonso</item>
+        <item>Alpha</item>
+        <item>Cburnett</item>
+        <item>Các biểu tượng cờ vua</item>
+        <item>Cờ vua</item>
+        <item>Free Staunton</item>
+        <item>Kilfiger</item>
+        <item>Leipzig</item>
+        <item>Magnetic</item>
+        <item>Maya</item>
+        <item>Merida</item>
+        <item>Merida New</item>
+        <item>Metal Tops</item>
+        <item>Pirat</item>
+        <item>Regular</item>
+        <item>Wikimedia</item>
+    </string-array>
+    <string-array name="viewPieceSet_values">
+        <item>chesscases</item>
+        <item>alfonso</item>
+        <item>alpha</item>
+        <item>cburnett</item>
+        <item>chessicons</item>
+        <item>chessmonk</item>
+        <item>freestaunton</item>
+        <item>kilfiger</item>
+        <item>leipzig</item>
+        <item>magnetic</item>
+        <item>maya</item>
+        <item>merida</item>
+        <item>merida_new</item>
+        <item>metaltops</item>
+        <item>pirat</item>
+        <item>regular</item>
+        <item>wikimedia</item>
+    </string-array>
+    <string-array name="engine_hash_texts">
+        <item>16 MB</item>
+        <item>32 MB</item>
+        <item>64 MB</item>
+        <item>128 MB</item>
+        <item>256 MB</item>
+        <item>512 MB</item>
+        <item>1024 MB</item>
+        <item>2048 MB</item>
+        <item>4096 MB</item>
+        <item>8192 MB</item>
+        <item>16384 MB</item>
+    </string-array>
+    <string-array name="engine_hash_values">
+        <item>16</item>
+        <item>32</item>
+        <item>64</item>
+        <item>128</item>
+        <item>256</item>
+        <item>512</item>
+        <item>1024</item>
+        <item>2048</item>
+        <item>4096</item>
+        <item>8192</item>
+        <item>16384</item>
+    </string-array>
+    <string-array name="moves_per_session_texts">
+        <item>Toàn bộ trò chơi</item>
+        <item>1 nước</item>
+        <item>10 nước</item>
+        <item>20 nước</item>
+        <item>30 nước</item>
+        <item>40 nước</item>
+        <item>50 nước</item>
+        <item>60 nước</item>
+    </string-array>
+    <string-array name="moves_per_session_values">
+        <item>0</item>
+        <item>1</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+    </string-array>
+    <string-array name="time_control_texts">
+        <item>15 giây</item>
+        <item>30 giây</item>
+        <item>1 phút</item>
+        <item>2 phút</item>
+        <item>3 phút</item>
+        <item>5 phút</item>
+        <item>10 phút</item>
+        <item>15 phút</item>
+        <item>30 phút</item>
+        <item>45 phút</item>
+        <item>60 phút</item>
+        <item>90 phút</item>
+        <item>120 phút</item>
+    </string-array>
+    <string-array name="time_control_values">
+        <item>15000</item>
+        <item>30000</item>
+        <item>60000</item>
+        <item>120000</item>
+        <item>180000</item>
+        <item>300000</item>
+        <item>600000</item>
+        <item>900000</item>
+        <item>1800000</item>
+        <item>2700000</item>
+        <item>3600000</item>
+        <item>5400000</item>
+        <item>7200000</item>
+    </string-array>
+    <string-array name="time_increment_texts">
+        <item>0s</item>
+        <item>1s</item>
+        <item>2s</item>
+        <item>3s</item>
+        <item>4s</item>
+        <item>5s</item>
+        <item>10s</item>
+        <item>12s</item>
+        <item>15s</item>
+        <item>30s</item>
+        <item>60s</item>
+    </string-array>
+    <string-array name="time_increment_values">
+        <item>0</item>
+        <item>1000</item>
+        <item>2000</item>
+        <item>3000</item>
+        <item>4000</item>
+        <item>5000</item>
+        <item>10000</item>
+        <item>12000</item>
+        <item>15000</item>
+        <item>30000</item>
+        <item>60000</item>
+    </string-array>
+    <string-array name="autoDelay_texts">
+        <item>0.5s</item>
+        <item>1s</item>
+        <item>2s</item>
+        <item>3s</item>
+        <item>5s</item>
+        <item>10s</item>
+        <item>15s</item>
+        <item>30s</item>
+        <item>60s</item>
+    </string-array>
+    <string-array name="autoDelay_values">
+        <item>500</item>
+        <item>1000</item>
+        <item>2000</item>
+        <item>3000</item>
+        <item>5000</item>
+        <item>10000</item>
+        <item>15000</item>
+        <item>30000</item>
+        <item>60000</item>
+    </string-array>
+    <string-array name="squareSelectType_texts">
+        <item>Sticky</item>
+        <item>Toggle</item>
+    </string-array>
+    <string-array name="squareSelectType_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string-array name="language_texts">
+        <item>Mặc định hệ thống</item>
+        <item>English</item>
+        <item>Belarusian</item>
+        <item>Tiếng Trung giản thể</item>
+        <item>German</item>
+        <item>Spanish</item>
+        <item>French</item>
+        <item>Italian</item>
+        <item>Korean</item>
+        <item>Dutch</item>
+        <item>Polish</item>
+        <item>Portuguese</item>
+        <item>Russian</item>
+        <item>Turkish</item>
+        <item>Ukrainian</item>
+        <item>Vietnamese</item>
+    </string-array>
+    <string-array name="language_values">
+        <item>default</item>
+        <item>en</item>
+        <item>be</item>
+        <item>zh_CN</item>
+        <item>de</item>
+        <item>es</item>
+        <item>fr</item>
+        <item>it</item>
+        <item>ko</item>
+        <item>nl</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ru</item>
+        <item>tr</item>
+        <item>uk</item>
+        <item>vi</item>
+    </string-array>
+    <string-array name="font_size_texts">
+        <item>Nhỏ</item>
+        <item>Vừa</item>
+        <item>Lớn</item>
+        <item>Rất lớn</item>
+    </string-array>
+    <string-array name="font_size_values">
+        <item>10</item>
+        <item>12</item>
+        <item>16</item>
+        <item>21</item>
+    </string-array>
+    <string-array name="ecoHints_texts">
+        <item>Tắt</item>
+        <item>Tự động</item>
+        <item>Luôn luôn</item>
+    </string-array>
+    <string-array name="ecoHints_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="thinking_arrows_texts">
+        <item>Không có mũi tên</item>
+        <item>Tối đa 1 mũi tên</item>
+        <item>Tối đa 2 mũi tên</item>
+        <item>Tối đa 3 mũi tên</item>
+        <item>Tối đa 4 mũi tên</item>
+        <item>Tối đa 5 mũi tên</item>
+        <item>Tối đa 6 mũi tên</item>
+        <item>Tối đa 7 mũi tên</item>
+        <item>Tối đa 3 mũi tên</item>
+    </string-array>
+    <string-array name="thinking_arrows_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </string-array>
+    <string-array name="scroll_sensitivity_texts">
+        <item>Tắt</item>
+        <item>Chậm nhất</item>
+        <item>Chậm</item>
+        <item>Bình thường</item>
+        <item>Nhanh</item>
+        <item>Nhanh nhất</item>
+    </string-array>
+    <string-array name="scroll_sensitivity_values">
+        <item>0</item>
+        <item>6</item>
+        <item>3</item>
+        <item>2</item>
+        <item>1</item>
+        <item>0.5</item>
+    </string-array>
+    <string-array name="book_line_length_texts">
+        <item>5 nước</item>
+        <item>10 nước</item>
+        <item>15 nước</item>
+        <item>20 nước</item>
+        <item>30 nước</item>
+        <item>50 nước</item>
+        <item>Không giới hạn</item>
+    </string-array>
+    <string-array name="book_line_length_values">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>30</item>
+        <item>50</item>
+        <item>1000000</item>
+    </string-array>
+    <string-array name="button_action_texts">
+        <item>Tắt</item>
+        <item>@string/flip_board</item>
+        <item>@string/toggle_analysis</item>
+        <item>@string/option_force_computer_move</item>
+        <item>@string/toggle_show_thinking</item>
+        <item>@string/toggle_book_hints</item>
+        <item>@string/toggle_tb_hints</item>
+        <item>@string/toggle_pgn_variations</item>
+        <item>@string/toggle_pgn_comments</item>
+        <item>@string/toggle_pgn_headers</item>
+        <item>@string/toggle_large_buttons</item>
+        <item>@string/toggle_blind_mode</item>
+        <item>@string/toggle_arrows</item>
+        <item>@string/load_last_file</item>
+        <item>@string/load_game</item>
+        <item>@string/select_engine</item>
+        <item>@string/engine_options</item>
+    </string-array>
+    <string-array name="button_action_values">
+        <item></item>
+        <item>flipboard</item>
+        <item>toggleAnalysis</item>
+        <item>forceMove</item>
+        <item>showThinking</item>
+        <item>bookHints</item>
+        <item>tbHints</item>
+        <item>viewVariations</item>
+        <item>viewComments</item>
+        <item>viewHeaders</item>
+        <item>largeButtons</item>
+        <item>blindMode</item>
+        <item>toggleArrows</item>
+        <item>loadLastFile</item>
+        <item>loadGame</item>
+        <item>selectEngine</item>
+        <item>engineOptions</item>
+    </string-array>
+    <string-array name="move_announce_type_values">
+        <item>Tắt</item>
+        <item>speech_en</item>
+        <item>speech_de</item>
+        <item>speech_es</item>
+    </string-array>
+    <string-array name="move_announce_type_texts">
+        <item>Tắt</item>
+        <item>Phát âm bằng tiếng Anh</item>
+        <item>Phát âm bằng tiếng Đức</item>
+        <item>Phát âm bằng tiếng Tây Ban Nha</item>
+    </string-array>
+</resources>

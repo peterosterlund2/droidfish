@@ -660,6 +660,7 @@ Als uw telefoon op batterij werkt is het aan te raden om deze instellingen te wi
         <item>Russian</item>
         <item>Turkish</item>
         <item>Ukrainian</item>
+        <item>Vietnamese</item>
     </string-array>
     <string-array name="language_values">
         <item>default</item>
@@ -677,6 +678,7 @@ Als uw telefoon op batterij werkt is het aan te raden om deze instellingen te wi
         <item>ru</item>
         <item>tr</item>
         <item>uk</item>
+        <item>vi</item>
     </string-array>
     <string-array name="font_size_texts">
         <item>Klein</item>
