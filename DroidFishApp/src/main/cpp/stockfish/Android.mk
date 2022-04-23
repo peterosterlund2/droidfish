@@ -5,7 +5,7 @@ SF_SRC_FILES := \
 	bitbase.cpp endgame.cpp material.cpp movepick.cpp position.cpp timeman.cpp \
 	tune.cpp ucioption.cpp \
 	bitboard.cpp evaluate.cpp misc.cpp search.cpp tt.cpp syzygy/tbprobe.cpp \
-	nnue/evaluate_nnue.cpp nnue/features/half_ka_v2.cpp
+	nnue/evaluate_nnue.cpp nnue/features/half_ka_v2_hm.cpp
 
 MY_ARCH_DEF :=
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)

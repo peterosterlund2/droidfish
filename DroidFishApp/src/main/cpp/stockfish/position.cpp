@@ -1,6 +1,6 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
-  Copyright (C) 2004-2021 The Stockfish developers (see AUTHORS file)
+  Copyright (C) 2004-2022 The Stockfish developers (see AUTHORS file)
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -1013,9 +1013,9 @@ void Position::do_null_move(StateInfo& newSt) {
   }
 
   st->key ^= Zobrist::side;
+  ++st->rule50;
   prefetch(TT.first_entry(key()));
 
-  ++st->rule50;
   st->pliesFromNull = 0;
 
   sideToMove = ~sideToMove;
@@ -1080,8 +1080,9 @@ bool Position::see_ge(Move m, Value threshold) const {
   if (swap <= 0)
       return true;
 
+  assert(color_of(piece_on(from)) == sideToMove);
   Bitboard occupied = pieces() ^ from ^ to;
-  Color stm = color_of(piece_on(from));
+  Color stm = sideToMove;
   Bitboard attackers = attackers_to(to, occupied);
   Bitboard stmAttackers, bb;
   int res = 1;
