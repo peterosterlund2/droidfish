@@ -1,6 +1,6 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
-  Copyright (C) 2004-2021 The Stockfish developers (see AUTHORS file)
+  Copyright (C) 2004-2023 The Stockfish developers (see AUTHORS file)
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -40,9 +40,9 @@ void TTEntry::save(Key k, Value v, bool pv, Bound b, Depth d, Move m, Value ev) 
       move16 = (uint16_t)m;
 
   // Overwrite less valuable entries (cheapest checks first)
-  if (b == BOUND_EXACT
+  if (   b == BOUND_EXACT
       || (uint16_t)k != key16
-      || d - DEPTH_OFFSET > depth8 - 4)
+      || d - DEPTH_OFFSET + 2 * pv > depth8 - 4)
   {
       assert(d > DEPTH_OFFSET);
       assert(d < 256 + DEPTH_OFFSET);
@@ -87,7 +87,7 @@ void TranspositionTable::clear() {
 
   std::vector<std::thread> threads;
 
-  for (size_t idx = 0; idx < Options["Threads"]; ++idx)
+  for (size_t idx = 0; idx < size_t(Options["Threads"]); ++idx)
   {
       threads.emplace_back([this, idx]() {
 
@@ -98,7 +98,7 @@ void TranspositionTable::clear() {
           // Each thread will zero its part of the hash table
           const size_t stride = size_t(clusterCount / Options["Threads"]),
                        start  = size_t(stride * idx),
-                       len    = idx != Options["Threads"] - 1 ?
+                       len    = idx != size_t(Options["Threads"]) - 1 ?
                                 stride : clusterCount - start;
 
           std::memset(&table[start], 0, len * sizeof(Cluster));

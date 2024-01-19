@@ -48,8 +48,8 @@ public class MainWindow {
     private JTextField[] filename;
     private JTextField[] arguments;
 
-    private EngineServer server;
-    private EngineConfig[] configs;
+    private final EngineServer server;
+    private final EngineConfig[] configs;
 
     public MainWindow(EngineServer server, EngineConfig[] configs) {
         this.server = server;

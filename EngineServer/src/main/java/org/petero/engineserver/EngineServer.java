@@ -29,8 +29,8 @@ import java.util.Properties;
 
 /** Manages starting and stopping PortListeners. */
 public class EngineServer implements ErrorHandler {
-    private EngineConfig[] configs;
-    private PortListener[] portListeners;
+    private final EngineConfig[] configs;
+    private final PortListener[] portListeners;
     private MainWindow window;
 
     private EngineServer(int numEngines) {

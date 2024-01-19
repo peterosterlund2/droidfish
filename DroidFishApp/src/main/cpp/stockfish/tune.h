@@ -1,6 +1,6 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
-  Copyright (C) 2004-2021 The Stockfish developers (see AUTHORS file)
+  Copyright (C) 2004-2023 The Stockfish developers (see AUTHORS file)
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -26,8 +26,8 @@
 
 namespace Stockfish {
 
-typedef std::pair<int, int> Range; // Option's min-max values
-typedef Range (RangeFun) (int);
+using Range = std::pair<int, int>; // Option's min-max values
+using RangeFun = Range (int);
 
 // Default Range function, to calculate Option's min-max values
 inline Range default_range(int v) {
@@ -75,7 +75,7 @@ struct SetRange {
 
 class Tune {
 
-  typedef void (PostUpdate) (); // Post-update function
+  using PostUpdate = void (); // Post-update function
 
   Tune() { read_results(); }
   Tune(const Tune&) = delete;
@@ -84,7 +84,7 @@ class Tune {
 
   static Tune& instance() { static Tune t; return t; } // Singleton
 
-  // Use polymorphism to accomodate Entry of different types in the same vector
+  // Use polymorphism to accommodate Entry of different types in the same vector
   struct EntryBase {
     virtual ~EntryBase() = default;
     virtual void init_option() = 0;

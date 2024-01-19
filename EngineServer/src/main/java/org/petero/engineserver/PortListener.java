@@ -30,11 +30,11 @@ import java.util.ArrayList;
 
 
 /** Listens to a TCP port and connects an engine process to a TCP socket. */
-public class PortListener {
-    private EngineConfig config;
-    private ErrorHandler errorHandler;
+class PortListener {
+    private final EngineConfig config;
+    private final ErrorHandler errorHandler;
 
-    private Thread thread;
+    private final Thread thread;
     private ServerSocket serverSocket;
     private Socket clientSocket;
     private Process proc;
@@ -44,20 +44,17 @@ public class PortListener {
         this.config = config;
         this.errorHandler = errorHandler;
 
-        thread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    mainLoop();
-                } catch (InterruptedException ex) {
-                    if (!shutDownFlag)
-                        reportError("Background thread interrupted", ex);
-                } catch (IOException ex) {
-                    if (!shutDownFlag)
-                        reportError("IO error in background thread", ex);
-                }
+        thread = new Thread(() -> {
+            try {
+                mainLoop();
+            } catch (InterruptedException ex) {
+                if (!shutDownFlag)
+                    reportError("Background thread interrupted", ex);
+            } catch (IOException ex) {
+                if (!shutDownFlag)
+                    reportError("IO error in background thread", ex);
             }
-        };
+        });
         thread.start();
     }
 
@@ -149,27 +146,24 @@ public class PortListener {
     }
 
     private Thread forwardIO(InputStream is, OutputStream os) {
-        Thread t = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    byte[] buffer = new byte[4096];
-                    while (true) {
-                        int len = is.read(buffer);
-                        if (len < 0)
-                            break;
-                        os.write(buffer, 0, len);
-                        os.flush();
-                    }
-                } catch (IOException ignore) {
+        Thread t = new Thread(() -> {
+            try {
+                byte[] buffer = new byte[4096];
+                while (true) {
+                    int len = is.read(buffer);
+                    if (len < 0)
+                        break;
+                    os.write(buffer, 0, len);
+                    os.flush();
                 }
-                close(is);
-                close(os);
-                Process p = proc;
-                if (p != null)
-                    p.destroyForcibly();
+            } catch (IOException ignore) {
             }
-        };
+            close(is);
+            close(os);
+            Process p = proc;
+            if (p != null)
+                p.destroyForcibly();
+        });
         t.start();
         return t;
     }

@@ -1,6 +1,6 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
-  Copyright (C) 2004-2021 The Stockfish developers (see AUTHORS file)
+  Copyright (C) 2004-2023 The Stockfish developers (see AUTHORS file)
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
 
 // Code for calculating NNUE evaluation function
 
+#include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <set>
 #include <sstream>
-#include <iomanip>
-#include <fstream>
+#include <string_view>
 
 #include "../evaluate.h"
 #include "../position.h"
-#include "../misc.h"
 #include "../uci.h"
 #include "../types.h"
 
@@ -83,7 +83,7 @@ namespace Stockfish::Eval::NNUE {
   }  // namespace Detail
 
   // Initialize the evaluation function parameters
-  void initialize() {
+  static void initialize() {
 
     Detail::initialize(featureTransformer);
     for (std::size_t i = 0; i < LayerStacks; ++i)
@@ -91,7 +91,7 @@ namespace Stockfish::Eval::NNUE {
   }
 
   // Read network header
-  bool read_header(std::istream& stream, std::uint32_t* hashValue, std::string* desc)
+  static bool read_header(std::istream& stream, std::uint32_t* hashValue, std::string* desc)
   {
     std::uint32_t version, size;
 
@@ -105,17 +105,17 @@ namespace Stockfish::Eval::NNUE {
   }
 
   // Write network header
-  bool write_header(std::ostream& stream, std::uint32_t hashValue, const std::string& desc)
+  static bool write_header(std::ostream& stream, std::uint32_t hashValue, const std::string& desc)
   {
     write_little_endian<std::uint32_t>(stream, Version);
     write_little_endian<std::uint32_t>(stream, hashValue);
-    write_little_endian<std::uint32_t>(stream, desc.size());
+    write_little_endian<std::uint32_t>(stream, (std::uint32_t)desc.size());
     stream.write(&desc[0], desc.size());
     return !stream.fail();
   }
 
   // Read network parameters
-  bool read_parameters(std::istream& stream) {
+  static bool read_parameters(std::istream& stream) {
 
     std::uint32_t hashValue;
     if (!read_header(stream, &hashValue, &netDescription)) return false;
@@ -127,7 +127,7 @@ namespace Stockfish::Eval::NNUE {
   }
 
   // Write network parameters
-  bool write_parameters(std::ostream& stream) {
+  static bool write_parameters(std::ostream& stream) {
 
     if (!write_header(stream, HashValue, netDescription)) return false;
     if (!Detail::write_parameters(stream, *featureTransformer)) return false;
@@ -136,46 +136,44 @@ namespace Stockfish::Eval::NNUE {
     return (bool)stream;
   }
 
+  void hint_common_parent_position(const Position& pos) {
+    if (Eval::useNNUE)
+        featureTransformer->hint_common_access(pos);
+  }
+
   // Evaluation function. Perform differential calculation.
-  Value evaluate(const Position& pos, bool adjusted) {
+  Value evaluate(const Position& pos, bool adjusted, int* complexity) {
 
     // We manually align the arrays on the stack because with gcc < 9.3
     // overaligning stack variables with alignas() doesn't work correctly.
 
     constexpr uint64_t alignment = CacheLineSize;
+    constexpr int delta = 24;
 
 #if defined(ALIGNAS_ON_STACK_VARIABLES_BROKEN)
     TransformedFeatureType transformedFeaturesUnaligned[
       FeatureTransformer::BufferSize + alignment / sizeof(TransformedFeatureType)];
-    char bufferUnaligned[Network::BufferSize + alignment];
 
     auto* transformedFeatures = align_ptr_up<alignment>(&transformedFeaturesUnaligned[0]);
-    auto* buffer = align_ptr_up<alignment>(&bufferUnaligned[0]);
 #else
     alignas(alignment)
       TransformedFeatureType transformedFeatures[FeatureTransformer::BufferSize];
-    alignas(alignment) char buffer[Network::BufferSize];
 #endif
 
     ASSERT_ALIGNED(transformedFeatures, alignment);
-    ASSERT_ALIGNED(buffer, alignment);
 
-    const std::size_t bucket = (pos.count<ALL_PIECES>() - 1) / 4;
+    const int bucket = (pos.count<ALL_PIECES>() - 1) / 4;
     const auto psqt = featureTransformer->transform(pos, transformedFeatures, bucket);
-    const auto output = network[bucket]->propagate(transformedFeatures, buffer);
+    const auto positional = network[bucket]->propagate(transformedFeatures);
 
-    int materialist = psqt;
-    int positional  = output[0];
+    if (complexity)
+        *complexity = abs(psqt - positional) / OutputScale;
 
-    int delta_npm = abs(pos.non_pawn_material(WHITE) - pos.non_pawn_material(BLACK));
-    int entertainment = (adjusted && delta_npm <= BishopValueMg - KnightValueMg ? 7 : 0);
-
-    int A = 128 - entertainment;
-    int B = 128 + entertainment;
-
-    int sum = (A * materialist + B * positional) / 128;
-
-    return static_cast<Value>( sum / OutputScale );
+    // Give more value to positional evaluation when adjusted flag is set
+    if (adjusted)
+        return static_cast<Value>(((1024 - delta) * psqt + (1024 + delta) * positional) / (1024 * OutputScale));
+    else
+        return static_cast<Value>((psqt + positional) / OutputScale);
   }
 
   struct NnueEvalTrace {
@@ -196,27 +194,20 @@ namespace Stockfish::Eval::NNUE {
 #if defined(ALIGNAS_ON_STACK_VARIABLES_BROKEN)
     TransformedFeatureType transformedFeaturesUnaligned[
       FeatureTransformer::BufferSize + alignment / sizeof(TransformedFeatureType)];
-    char bufferUnaligned[Network::BufferSize + alignment];
 
     auto* transformedFeatures = align_ptr_up<alignment>(&transformedFeaturesUnaligned[0]);
-    auto* buffer = align_ptr_up<alignment>(&bufferUnaligned[0]);
 #else
     alignas(alignment)
       TransformedFeatureType transformedFeatures[FeatureTransformer::BufferSize];
-    alignas(alignment) char buffer[Network::BufferSize];
 #endif
 
     ASSERT_ALIGNED(transformedFeatures, alignment);
-    ASSERT_ALIGNED(buffer, alignment);
 
     NnueEvalTrace t{};
     t.correctBucket = (pos.count<ALL_PIECES>() - 1) / 4;
-    for (std::size_t bucket = 0; bucket < LayerStacks; ++bucket) {
-      const auto psqt = featureTransformer->transform(pos, transformedFeatures, bucket);
-      const auto output = network[bucket]->propagate(transformedFeatures, buffer);
-
-      int materialist = psqt;
-      int positional  = output[0];
+    for (IndexType bucket = 0; bucket < LayerStacks; ++bucket) {
+      const auto materialist = featureTransformer->transform(pos, transformedFeatures, bucket);
+      const auto positional = network[bucket]->propagate(transformedFeatures);
 
       t.psqt[bucket] = static_cast<Value>( materialist / OutputScale );
       t.positional[bucket] = static_cast<Value>( positional / OutputScale );
@@ -225,71 +216,49 @@ namespace Stockfish::Eval::NNUE {
     return t;
   }
 
-  static const std::string PieceToChar(" PNBRQK  pnbrqk");
+  constexpr std::string_view PieceToChar(" PNBRQK  pnbrqk");
 
-  // Requires the buffer to have capacity for at least 5 values
+
+  // format_cp_compact() converts a Value into (centi)pawns and writes it in a buffer.
+  // The buffer must have capacity for at least 5 chars.
   static void format_cp_compact(Value v, char* buffer) {
 
     buffer[0] = (v < 0 ? '-' : v > 0 ? '+' : ' ');
 
-    int cp = std::abs(100 * v / PawnValueEg);
-
+    int cp = std::abs(100 * v / UCI::NormalizeToPawnValue);
     if (cp >= 10000)
     {
-      buffer[1] = '0' + cp / 10000; cp %= 10000;
-      buffer[2] = '0' + cp / 1000; cp %= 1000;
-      buffer[3] = '0' + cp / 100; cp %= 100;
-      buffer[4] = ' ';
+        buffer[1] = '0' + cp / 10000; cp %= 10000;
+        buffer[2] = '0' + cp / 1000; cp %= 1000;
+        buffer[3] = '0' + cp / 100;
+        buffer[4] = ' ';
     }
     else if (cp >= 1000)
     {
-      buffer[1] = '0' + cp / 1000; cp %= 1000;
-      buffer[2] = '0' + cp / 100; cp %= 100;
-      buffer[3] = '.';
-      buffer[4] = '0' + cp / 10;
+        buffer[1] = '0' + cp / 1000; cp %= 1000;
+        buffer[2] = '0' + cp / 100; cp %= 100;
+        buffer[3] = '.';
+        buffer[4] = '0' + cp / 10;
     }
     else
     {
-      buffer[1] = '0' + cp / 100; cp %= 100;
-      buffer[2] = '.';
-      buffer[3] = '0' + cp / 10; cp %= 10;
-      buffer[4] = '0' + cp / 1;
+        buffer[1] = '0' + cp / 100; cp %= 100;
+        buffer[2] = '.';
+        buffer[3] = '0' + cp / 10; cp %= 10;
+        buffer[4] = '0' + cp / 1;
     }
   }
 
-  // Requires the buffer to have capacity for at least 7 values
-  static void format_cp_aligned_dot(Value v, char* buffer) {
-    buffer[0] = (v < 0 ? '-' : v > 0 ? '+' : ' ');
 
-    int cp = std::abs(100 * v / PawnValueEg);
+  // format_cp_aligned_dot() converts a Value into (centi)pawns, always keeping two decimals.
+  static void format_cp_aligned_dot(Value v, std::stringstream &stream) {
+    const double cp = 1.0 * std::abs(int(v)) / UCI::NormalizeToPawnValue;
 
-    if (cp >= 10000)
-    {
-      buffer[1] = '0' + cp / 10000; cp %= 10000;
-      buffer[2] = '0' + cp / 1000; cp %= 1000;
-      buffer[3] = '0' + cp / 100; cp %= 100;
-      buffer[4] = '.';
-      buffer[5] = '0' + cp / 10; cp %= 10;
-      buffer[6] = '0' + cp;
-    }
-    else if (cp >= 1000)
-    {
-      buffer[1] = ' ';
-      buffer[2] = '0' + cp / 1000; cp %= 1000;
-      buffer[3] = '0' + cp / 100; cp %= 100;
-      buffer[4] = '.';
-      buffer[5] = '0' + cp / 10; cp %= 10;
-      buffer[6] = '0' + cp;
-    }
-    else
-    {
-      buffer[1] = ' ';
-      buffer[2] = ' ';
-      buffer[3] = '0' + cp / 100; cp %= 100;
-      buffer[4] = '.';
-      buffer[5] = '0' + cp / 10; cp %= 10;
-      buffer[6] = '0' + cp / 1;
-    }
+    stream << (v < 0 ? '-' : v > 0 ? '+' : ' ')
+           << std::setiosflags(std::ios::fixed)
+           << std::setw(6)
+           << std::setprecision(2)
+           << cp;
   }
 
 
@@ -369,17 +338,10 @@ namespace Stockfish::Eval::NNUE {
 
     for (std::size_t bucket = 0; bucket < LayerStacks; ++bucket)
     {
-      char buffer[3][8];
-      std::memset(buffer, '\0', sizeof(buffer));
-
-      format_cp_aligned_dot(t.psqt[bucket], buffer[0]);
-      format_cp_aligned_dot(t.positional[bucket], buffer[1]);
-      format_cp_aligned_dot(t.psqt[bucket] + t.positional[bucket], buffer[2]);
-
-      ss <<  "|  " << bucket    << "        "
-         << " |  " << buffer[0] << "  "
-         << " |  " << buffer[1] << "  "
-         << " |  " << buffer[2] << "  "
+      ss <<  "|  " << bucket    << "        ";
+      ss << " |  "; format_cp_aligned_dot(t.psqt[bucket], ss); ss << "  "
+         << " |  "; format_cp_aligned_dot(t.positional[bucket], ss); ss << "  "
+         << " |  "; format_cp_aligned_dot(t.psqt[bucket] + t.positional[bucket], ss); ss << "  "
          << " |";
       if (bucket == t.correctBucket)
           ss << " <-- this bucket is used";
@@ -419,7 +381,7 @@ namespace Stockfish::Eval::NNUE {
         actualFilename = filename.value();
     else
     {
-        if (eval_file_loaded != EvalFileDefaultName)
+        if (currentEvalFileName != EvalFileDefaultName)
         {
              msg = "Failed to export a net. A non-embedded net can only be saved if the filename is specified";
 

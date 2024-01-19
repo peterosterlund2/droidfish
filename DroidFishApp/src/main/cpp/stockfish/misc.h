@@ -1,6 +1,6 @@
 /*
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
-  Copyright (C) 2004-2021 The Stockfish developers (see AUTHORS file)
+  Copyright (C) 2004-2023 The Stockfish developers (see AUTHORS file)
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -28,6 +28,9 @@
 
 #include "types.h"
 
+#define stringify2(x) #x
+#define stringify(x) stringify2(x)
+
 namespace Stockfish {
 
 std::string engine_info(bool to_uci = false);
@@ -39,12 +42,13 @@ void std_aligned_free(void* ptr);
 void* aligned_large_pages_alloc(size_t size); // memory aligned by page size, min alignment: 4096 bytes
 void aligned_large_pages_free(void* mem); // nop if mem == nullptr
 
-void dbg_hit_on(bool b);
-void dbg_hit_on(bool c, bool b);
-void dbg_mean_of(int v);
+void dbg_hit_on(bool cond, int slot = 0);
+void dbg_mean_of(int64_t value, int slot = 0);
+void dbg_stdev_of(int64_t value, int slot = 0);
+void dbg_correl_of(int64_t value1, int64_t value2, int slot = 0);
 void dbg_print();
 
-typedef std::chrono::milliseconds::rep TimePoint; // A value in milliseconds
+using TimePoint = std::chrono::milliseconds::rep; // A value in milliseconds
 static_assert(sizeof(TimePoint) == sizeof(int64_t), "TimePoint should be 64 bits");
 inline TimePoint now() {
   return std::chrono::duration_cast<std::chrono::milliseconds>
@@ -85,48 +89,20 @@ static inline const union { uint32_t i; char c[4]; } Le = { 0x01020304 };
 static inline const bool IsLittleEndian = (Le.c[0] == 4);
 
 
-template <typename T>
-class ValueListInserter {
-public:
-  ValueListInserter(T* v, std::size_t& s) :
-    values(v),
-    size(&s)
-  {
-  }
-
-  void push_back(const T& value) { values[(*size)++] = value; }
-private:
-  T* values;
-  std::size_t* size;
-};
-
 template <typename T, std::size_t MaxSize>
 class ValueList {
 
 public:
   std::size_t size() const { return size_; }
-  void resize(std::size_t newSize) { size_ = newSize; }
   void push_back(const T& value) { values_[size_++] = value; }
-  T& operator[](std::size_t index) { return values_[index]; }
-  T* begin() { return values_; }
-  T* end() { return values_ + size_; }
-  const T& operator[](std::size_t index) const { return values_[index]; }
   const T* begin() const { return values_; }
   const T* end() const { return values_ + size_; }
-  operator ValueListInserter<T>() { return ValueListInserter(values_, size_); }
-
-  void swap(ValueList& other) {
-    const std::size_t maxSize = std::max(size_, other.size_);
-    for (std::size_t i = 0; i < maxSize; ++i) {
-      std::swap(values_[i], other.values_[i]);
-    }
-    std::swap(size_, other.size_);
-  }
 
 private:
   T values_[MaxSize];
   std::size_t size_ = 0;
 };
+
 
 /// xorshift64star Pseudo-Random Number Generator
 /// This class is based on original code written and dedicated
@@ -166,7 +142,7 @@ public:
 
 inline uint64_t mul_hi64(uint64_t a, uint64_t b) {
 #if defined(__GNUC__) && defined(IS_64BIT)
-    __extension__ typedef unsigned __int128 uint128;
+    __extension__ using uint128 = unsigned __int128;
     return ((uint128)a * (uint128)b) >> 64;
 #else
     uint64_t aL = (uint32_t)a, aH = a >> 32;
