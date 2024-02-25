@@ -25,6 +25,8 @@
 
 #if defined(__arm__)
   #include "cpuinfo_arm.h"
+#elif defined(__aarch64__)
+  #include "cpuinfo_aarch64.h"
 #elif defined(__i386__)
   #include "cpuinfo_x86.h"
 #endif
@@ -65,10 +67,14 @@ extern "C" JNIEXPORT jboolean JNICALL Java_org_petero_droidfish_engine_EngineUti
     using namespace cpu_features;
     ArmFeatures features = GetArmInfo().features;
     return features.neon ? JNI_TRUE : JNI_FALSE;
+#elif defined(__aarch64__)
+    using namespace cpu_features;
+    Aarch64Features features = GetAarch64Info().features;
+    return features.asimddp ? JNI_TRUE : JNI_FALSE;
 #elif defined(__i386__)
     using namespace cpu_features;
     X86Features features = GetX86Info().features;
     return features.sse4_1 ? JNI_TRUE : JNI_FALSE;
 #endif
-    return true;
+    return JNI_TRUE;
 }

@@ -15,9 +15,9 @@ ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
   UTIL_SRC_FILES += $(CPU_FEATS_SRC_FILES) $(CPU_FEATS)/src/cpuinfo_arm.c
   LOCAL_ARM_NEON := false
 endif
-#ifeq ($(TARGET_ARCH_ABI),arm64-v8a)
-#  UTIL_SRC_FILES += $(CPU_FEATS_SRC_FILES) $(CPU_FEATS)/src/cpuinfo_aarch64.c
-#endif
+ifeq ($(TARGET_ARCH_ABI),arm64-v8a)
+  UTIL_SRC_FILES += $(CPU_FEATS_SRC_FILES) $(CPU_FEATS)/src/cpuinfo_aarch64.c
+endif
 ifeq ($(TARGET_ARCH_ABI),x86)
   UTIL_SRC_FILES += $(CPU_FEATS_SRC_FILES) $(CPU_FEATS)/src/cpuinfo_x86.c
 endif
