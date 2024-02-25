@@ -1,9 +1,8 @@
 LOCAL_PATH := $(call my-dir)
 
 SF_SRC_FILES := \
-	benchmark.cpp main.cpp movegen.cpp pawns.cpp thread.cpp uci.cpp psqt.cpp \
-	bitbase.cpp endgame.cpp material.cpp movepick.cpp position.cpp timeman.cpp \
-	tune.cpp ucioption.cpp \
+	benchmark.cpp main.cpp movegen.cpp thread.cpp uci.cpp \
+	movepick.cpp position.cpp timeman.cpp tune.cpp ucioption.cpp \
 	bitboard.cpp evaluate.cpp misc.cpp search.cpp tt.cpp syzygy/tbprobe.cpp \
 	nnue/evaluate_nnue.cpp nnue/features/half_ka_v2_hm.cpp
 

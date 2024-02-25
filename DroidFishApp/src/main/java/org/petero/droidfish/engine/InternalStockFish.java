@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.Locale;
 
 import android.os.Environment;
@@ -36,9 +37,9 @@ import org.petero.droidfish.EngineOptions;
 
 /** Stockfish engine running as process, started from assets resource. */
 public class InternalStockFish extends ExternalEngine {
-    private static final String defaultNet = "nn-5af11540bbfe.nnue";
-    private static final String netOption = "evalfile";
-    private File defaultNetFile; // To get the full path of the copied default network file
+    private static final String[] defaultNets = {"nn-b1a57edbea57.nnue", "nn-baff1ede1f90.nnue"};
+    private static final String[] netOptions = {"evalfile", "evalfilesmall"};
+    private final File[] defaultNetFiles = {null, null}; // Full path of the copied default network files
 
     public InternalStockFish(Report report, String workDir) {
         super("", workDir, report);
@@ -115,19 +116,21 @@ public class InternalStockFish extends ExternalEngine {
             copyAssetFile(sfExe, to);
             writeCheckSum(new File(internalSFPath()), newCSum);
         }
-        copyNetFile(exeDir);
+        copyNetFiles(exeDir);
         return to.getAbsolutePath();
     }
 
-    /** Copy the Stockfish default network file to "exeDir" if it is not already there. */
-    private void copyNetFile(File exeDir) throws IOException {
-        defaultNetFile = new File(exeDir, defaultNet);
-        if (defaultNetFile.exists())
-            return;
-        File tmpFile = new File(exeDir, defaultNet + ".tmp");
-        copyAssetFile(defaultNet, tmpFile);
-        if (!tmpFile.renameTo(defaultNetFile))
-            throw new IOException("Rename failed");
+    /** Copy the Stockfish default network files to "exeDir" if they are not already there. */
+    private void copyNetFiles(File exeDir) throws IOException {
+        for (int i = 0; i < 2; i++) {
+            defaultNetFiles[i] = new File(exeDir, defaultNets[i]);
+            if (!defaultNetFiles[i].exists()) {
+                File tmpFile = new File(exeDir, defaultNets[i] + ".tmp");
+                copyAssetFile(defaultNets[i], tmpFile);
+                if (!tmpFile.renameTo(defaultNetFiles[i]))
+                    throw new IOException("Rename failed");
+            }
+        }
     }
 
     /** Copy a file resource from the AssetManager to the file system,
@@ -150,27 +153,31 @@ public class InternalStockFish extends ExternalEngine {
      *  an engine different from Stockfish is used, so this is a static
      *  check performed for all engines. */
     public static boolean keepExeDirFile(File f) {
-        return defaultNet.equals(f.getName());
+        return Arrays.asList(defaultNets).contains(f.getName());
     }
 
     @Override
     public void initOptions(EngineOptions engineOptions) {
         super.initOptions(engineOptions);
-        UCIOptions.OptionBase opt = getUCIOptions().getOption(netOption);
-        if (opt != null)
-            setOption(netOption, opt.getStringValue());
+        for (int i = 0; i < 2; i++) {
+            UCIOptions.OptionBase opt = getUCIOptions().getOption(netOptions[i]);
+            if (opt != null)
+                setOption(netOptions[i], opt.getStringValue());
+        }
     }
 
     /** Handles setting the EvalFile UCI option to a full path if needed,
      *  pointing to the network file embedded in DroidFish. */
     @Override
     public boolean setOption(String name, String value) {
-        if (name.toLowerCase(Locale.US).equals(netOption) &&
-            (defaultNet.equals(value) || value.isEmpty())) {
-            getUCIOptions().getOption(name).setFromString(value);
-            value = defaultNetFile.getAbsolutePath();
-            writeLineToEngine(String.format(Locale.US, "setoption name %s value %s", name, value));
-            return true;
+        for (int i = 0; i < 2; i++) {
+            if (name.toLowerCase(Locale.US).equals(netOptions[i]) &&
+                (defaultNets[i].equals(value) || value.isEmpty())) {
+                getUCIOptions().getOption(name).setFromString(value);
+                value = defaultNetFiles[i].getAbsolutePath();
+                writeLineToEngine(String.format(Locale.US, "setoption name %s value %s", name, value));
+                return true;
+            }
         }
         return super.setOption(name, value);
     }
