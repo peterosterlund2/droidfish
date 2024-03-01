@@ -660,6 +660,7 @@ If you are running on battery power, it is recommended that you change settings 
         <item>Russian</item>
         <item>Turkish</item>
         <item>Ukrainian</item>
+        <item>Vietnamese</item>
     </string-array>
     <string-array name="language_values">
         <item>default</item>
@@ -677,6 +678,7 @@ If you are running on battery power, it is recommended that you change settings 
         <item>ru</item>
         <item>tr</item>
         <item>uk</item>
+        <item>vi</item>
         </string-array>
     <string-array name="font_size_texts">
         <item>Small</item>

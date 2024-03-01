@@ -1,0 +1,305 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+  </head>
+  <body>
+
+<h2>About</h2>
+<p>
+  <i>DroidFish</i> là một giao diện người dùng cờ vua đồ họa giàu tính năng, kết hợp với
+  <i>Stockfish</i> chess engine rất mạnh mẽ
+</p>
+
+<p>
+  Hướng dẫn sử dụng đầy đủ có sẵn ở <a href="https://github.com/peterosterlund2/droidfish/blob/master/README.md">đây (html)</a> and <a href="https://github.com/peterosterlund2/droidfish/raw/master/doc/droidfish_manual.pdf">và đây (pdf)</a>.
+</p>
+
+<h3>Tính năng</h3>
+<ul>
+  <li>Sách mở đầu</li>
+  <li>Hoàn tác/làm lại không giới hạn</li>
+  <li>Sao chép/dán vào/từ khay nhớ tạm</li>
+  <li>Chế độ phân tích</li>
+  <li>Đấu hai người</li>
+  <li>Máy đấu với máy</li>
+  <li>Thiết lập các vị trí</li>
+  <li>Hỗ trợ PGN mở rộng</li>
+  <li>Có thể tùy chỉnh sức mạnh trò chơiz</li>
+  <li>UCI engine từ bên thứ ba</li>
+  <li>Bảng kết thúc trò chơi Gaviota</li>
+  <li>Bảng kết thúc trò chơi Syzygy</li>
+</ul>
+
+<h3>Gợi ý</h3>
+<ul>
+  <li>
+    Chế độ nhấn và giữ nút trái/phải cho các lệnh bổ sung.
+  </li>
+  <li>
+    Khi chơi lại một trò chơi, hãy thay đổi chế độ trò chơi thành <i>Chỉnh sửa/Chơi lại trò chơi</i> để có thể hoàn tác/làm lại một nửa các bước di chuyển 
+  </li>
+</ul>
+
+<h3>Sách mở</h3>
+<p>
+  DroidFish chứa một cuốn sách nhỏ mở bên trong. Nếu bạn muốn sử dụng
+  một cuốn sách lớn hơn, bạn có thể định cấu hình DroidFish để sử dụng<i>polyglot</i>
+  hoặc <i>CTG</i> các tệp sách:
+</p>
+<ol>
+  <li>
+    Sao chép một hoặc nhiều tệp sách polyglot vào <i>DroidFish/book</i> Thư mục này ở trên thẻ nhớ SD.
+    Sách Polyglot phải có định dạng <i>.bin</i>.
+    <b>Chú ý!</b> Hệ thống tệp Android phân biệt chữ hoa chữ thường, vì vậy phần mở rộng phải là <i>.bin</i>, không phải <i>.Bin</i> or <i>.BIN</i>.
+  </li>
+  <li>
+    Sao chép một hoặc nhiều tệp sách CTG vào thư mục <i>DroidFish/book</i>
+    Sách CTG bao gồm ba tệp có phần mở rộng tệp <i>.ctg</i>, <i>.ctb</i> và <i>.cto</i>.
+    Bạn phải sao chép đủ các tệp này
+  </li>
+  <li>
+    Từ menu chương trình, kích hoạt chức năng <i>Chọn sách mở đầu</i>
+  </li>
+  <li>
+    Chọn tệp sách mở mà bạn muốn sử dụng.
+  </li>
+</ol>
+
+<h3>Tệp PGN</h3>
+<p>
+  DroidFish có thể tải trò chơi từ tệp PGN.
+</p>
+<ol>
+  <li>
+    Sao chép 1 hoặc nhiều tệp PGN <i>DroidFish/pgn</i> Thư mục này trên thẻ nhớ SD.
+  </li>
+  <li>
+    Nhấn và giữ bàn cờ và chọn <i>Tải trò chơi từ tệp PGN</i>.
+  </li>
+  <li>
+    Chọn tệp, sau đó chọn trò chơi trong tệp bạn muốn tải.
+  </li>
+</ol>
+<p>
+  Để chỉnh sửa tiêu đề trò chơi, chẳng hạn như tên người chơi, hãy nhấn và giữ danh sách di chuyển và chọn
+  <i>Chỉnh sửa tiêu đề</i>. Để chỉnh sửa nhận xét cho một lần di chuyển, hãy nhấn và giữ danh sách di chuyển và chọn <i>Chỉnh sửa bình luận</i>.
+</p>
+<p>
+  Để lưu trò chơi đã chỉnh sửa của bạn, hãy nhấn và giữ bàn cờ và chọn <i>Lưu game vào tệp PGN</i>. Select the file to save to, then select the position in the file
+  where the new game will be saved.
+</p>
+<p>
+  <b>Note!</b> If the <a href="http://play.google.com/store/apps/details?id=org.openintents.filemanager">OI File Manager</a> is installed, any directory can be used to load/save games.
+</p>
+<p>
+  Để thêm phân tích máy tính vào cây trò chơi, hãy nhấn và giữ thông tin phân tích khi máy tính đang suy nghĩ và chọn <i>Thêm phân tích</i>.
+  Biến thể chính hiện tại được thêm vào dưới dạng một biến thể trong cây trò chơi.
+</p>
+<p>
+  Trong chế độ phân tích, có thể thêm các bước di chuyển rỗng vào cây trò chơi. Xin lưu ý rằng các nước đi không có trong tiêu chuẩn PGN và có thể không hoạt động trong các chương trình cờ vua đọc PGN khác.
+</p>
+
+<h3>Tệp Scid</h3>
+<p>
+  Nếu bạn có <a href="http://play.google.com/store/apps/details?id=org.scid.android">Scid on the go</a> được cài đặt, bạn có thể đọc các cơ sở dữ liệu Scid trực tiếp trong DroidFish.
+  Nhấn giữ trên bàn cờ và chọn <i>Tải trò chơi từ tệp Scid</i>.
+</p>
+
+<h3>Tệp FEN/EPD</h3>
+<p>
+  DroidFish có thể tải các vị trí từ các tệp FEN/EPD.
+</p>
+<ol>
+  <li>
+    Sao chép một hoặc nhiều tệp FEN/EPD vào <i>DroidFish/epd</i> thư mục này trên thẻ SD
+  </li>
+  <li>
+    Nhấn và giữ bàn cờ và chọn <i>Tải vị trí từ tệp</i>.
+  </li>
+  <li>
+    Chọn tệp, sau đó chọn vị trí trong tệp bạn muốn tải.
+  </li>
+</ol>
+
+<p>
+  Bạn cũng có thể tải các vị trí từ các chương trình bên ngoài, chẳng hạn như <a href="http://play.google.com/store/apps/details?id=com.kgroth.chessocr">ChessOcr</a> (không miễn phí), cho phép bạn sử dụng máy ảnh để chụp ảnh sơ đồ cờ vua và tự động thiết lập vị trí trong DroidFish.
+</p>
+<ol>
+  <li>
+    Nhấn và giữ bàn cờ và chọn <i>Truy xuất vị trí</i>.
+  </li>
+  <li>
+    Làm theo hướng dẫn trong chương trình.
+  </li>
+</ol>
+
+<h3>Động cơ UCI</h3>
+<p>
+  DroidFish có thể sử dụng công cụ UCI của bên thứ ba.
+</p>
+<ol>
+  <li>
+    Sao chép một hoặc nhiều mã nhị phân công cụ UCI vào <i>DroidFish/uci</i> Thư mục này có trên thẻ SD. 
+    <b>Lưu ý!</b> Các tệp nhị phân phải được biên dịch cho Android.
+  </li>
+  <li>
+    Từ menu chương trình, chọn <i>các Engines cờ vua</i> sau đó bấm <i>Chọn Engine</i> và chọn động cơ để sử dụng.
+  </li>
+</ol>
+
+<h3>Công cụ UCI trên máy chủ từ xa</h3>
+<p>
+  DroidFish có thể sử dụng công cụ UCI chạy trên máy chủ từ xa.
+</p>
+<ol>
+  <li>
+    Cài đặt phần mềm máy chủ mạng cờ vua trên máy tính từ xa.
+    <ol>
+      <li>
+        Đối với windows, hãy cài đặt phần mềm máy chủ từ <a href="http://hem.bredband.net/petero2b/droidfish/index.html">DroidFish</a>
+      </li>
+      <li>
+        Đối với linux, <tt>mini-inetd</tt> từ gói <tt>tcputils</tt> có thể được sử dụng
+      </li>
+    </ol>
+  </li>
+  <li>
+    Chọn <i>các Engines cờ vua</i> trong menu chương trình, tạo một công cụ mạng mới và nhập tên máy chủ và số cổng cho công cụ từ xa.
+  </li>
+  <li>
+    Từ menu chương trình, chọn <i>Quản lý các Engines</i> sau đó bấm <i>Chọn Engine</i> và chọn động cơ để sử dụng.
+  </li>
+</ol>
+
+<h3>Gaviota endgame tablebases</h3>
+<p>
+  để sử dụng <a href="http://sites.google.com/site/gaviotachessengine/Home/endgame-tablebases-1">Gaviota endgame tablebases</a>:
+</p>
+<ol>
+  <li>
+    Sao chép các tệp .gtb.cp4 vào <i>DroidFish/gtb</i> Thư mục này tồn tại trên thẻ SD
+  </li>
+  <li>
+    Sử dụng <i>Bảng kết thúc trò chơi</i> trên màn hình tùy chọn để kiểm soát cách sử dụng
+  </li>
+</ol>
+
+<h3>Syzygy endgame tablebases</h3>
+<p>
+  Để sử dụng <a href="https://www.chessprogramming.org/Syzygy_Bases">Syzygy endgame tablebases</a>:
+</p>
+<ol>
+  <li>
+    Sao chép các tệp .rtbw và tùy chọn .rtbz vào <i>DroidFish/rtb</i> Thư mục này tồn trại trên thẻ SD
+  </li>
+  <li>
+    Sử dụng <i>Bảng kết thúc trò chơi</i> trên màn hình tùy chọn để kiểm soát cách sử dụng
+  </li>
+</ol>
+
+<h3>License</h3>
+<p>
+  <a href="http://www.gnu.org/licenses/gpl.html">GNU GPL v3</a>.
+
+  The source code is available from <a href="https://github.com/peterosterlund2/droidfish">GitHub</a>.
+</p>
+
+<h3>Developers</h3>
+<ul>
+  <li>
+    <i>DroidFish</i> is developed by Peter Österlund.
+  </li>
+  <li>
+    <i>Stockfish</i> is developed by Tord Romstad, Marco Costalba, Gary Linscott and Joona Kiiski.
+  </li>
+  <li>
+    User interface improvements by Aaro Korhonen.
+  </li>
+  <li>
+    Gaviota Tablebases Probing Code API, Copyright © 2010 Miguel A. Ballicora.
+    <ul>
+      <li>
+        LZMA compression by Igor Pavlov.
+      </li>
+      <li>
+        ZLIB compression, Copyright © 1995-2005 Jean-loup Gailly and Mark Adler.
+      </li>
+      <li>
+        LZF compression, Copyright © 2000-2007 Marc Alexander Lehmann.
+      </li>
+    </ul>
+  </li>
+  <li>
+    SVG library from <a href="http://bigbadaboom.github.io/androidsvg/">androidsvg</a> project.
+  </li>
+  <li>
+    Chess pieces from <a href="http://www.pychess.org">PyChess</a> project.
+  </li>
+  <li>
+    Color picker, Copyright © 2010 Daniel Nilsson and Copyright © 2011 Sergey Margaritov.
+  </li>
+  <li>
+    Open exchange chess engine interface code by Gerhard Kalab, <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 license</a>.
+  </li>
+  <li>
+    Syzygy tablebases probing code, Copyright © 2011-2013 Ronald de Man.
+  </li>
+  <li>
+    <a href="https://github.com/worker8/TourGuide">TourGuide</a> library, Copyright © 2015 Tan Jun Rong.
+  </li>
+  <li>
+    <a href="https://github.com/Tesla-Redux/android-floating-action-button">Floating action button</a> library, Copyright © 2014 str4d and Jerzy Chalupski.
+  </li>
+  <li>
+    <a href="https://github.com/google/cpu_features">cpu_features</a> library, Copyright © 2017 Google Inc., <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 license</a>.
+  </li>
+</ul>
+
+<h3>Translations</h3>
+<p>
+  Translations are managed by <a href="http://crowdin.net/project/droidfish-android-chess-app">crowdin.net</a>.
+</p>
+<ul>
+  <li>
+    German translation by Uwe Walschus.
+  </li>
+  <li>
+    Spanish translation by Amador Cuesta.
+  </li>
+  <li>
+    Russian translation by SWEN и dfuk (allBlackBerry).
+  </li>
+  <li>
+    Portuguese translation by C. R. Zamana.
+  </li>
+  <li>
+    French translation by Eric Weibel (Thanvillé).
+  </li>
+  <li>
+    Italian translation by Michele Carfora (suessola).
+  </li>
+  <li>
+    Dutch translation by David Pront.
+  </li>
+  <li>
+    Polish translation by Rafał Smyka.
+  </li>
+  <li>
+    Ukrainian translation by Mix Gerder and Toru Hasegawa.
+  </li>
+  <li>
+    Belarusian translation by Mix Gerder.
+  </li>
+  <li>
+    Korean translation by Hyobeom Ahn.
+  </li>
+  <li>
+    Turkish translation by Emrullah Ertürk.
+  </li>
+  <li>
+    Vietnamese translation by Nguyen Duy Thanh
+  </li>
+</ul>
+
+  </body>
+</html>

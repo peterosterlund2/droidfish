@@ -660,6 +660,7 @@ Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese Paramet
         <item>Russisch</item>
         <item>Türkisch</item>
         <item>Ukrainisch</item>
+        <item>Vietnamese</item>
     </string-array>
     <string-array name="language_values">
         <item>default</item>
@@ -677,6 +678,7 @@ Um gegebenenfalls Strom zu sparen, ist es empfehlenswert, dass Sie diese Paramet
         <item>ru</item>
         <item>tr</item>
         <item>uk</item>
+        <item>vi</item>
     </string-array>
     <string-array name="font_size_texts">
         <item>Klein</item>
