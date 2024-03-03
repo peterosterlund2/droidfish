@@ -1320,3 +1320,134 @@ used by Arena to compute the percentages is unknown.
     -ms-transition: none !important;
     transition: none !important;
 }
+/* fallback */
+@font-face {
+    font-family: 'Material Symbols Outlined';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v71/kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY43zj-jCxv3fzvRNU22ZXGJpEpjC_1v-p_4MrImHCIJIZrDCvHOej.woff2) format('woff2');
+}
+
+/* fallback */
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/materialicons/v139/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
+}
+
+
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+
+
+.material-symbols-outlined {
+    font-size: 22px !important;
+    margin-right: 5px !important;
+    vertical-align: bottom !important;
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 700,
+        'GRAD' 0,
+        'opsz' 48
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+
+.material-icons {
+    font-size: 22px !important;
+    margin-right: 5px !important;
+    vertical-align: bottom !important;
+}/* fallback */
+@font-face {
+    font-family: 'Material Symbols Outlined';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v71/kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY43zj-jCxv3fzvRNU22ZXGJpEpjC_1v-p_4MrImHCIJIZrDCvHOej.woff2) format('woff2');
+}
+
+/* fallback */
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/materialicons/v139/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
+}
+
+
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+
+
+.material-symbols-outlined {
+    font-size: 22px !important;
+    margin-right: 5px !important;
+    vertical-align: bottom !important;
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 700,
+        'GRAD' 0,
+        'opsz' 48
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+
+.material-icons {
+    font-size: 22px !important;
+    margin-right: 5px !important;
+    vertical-align: bottom !important;
+}
