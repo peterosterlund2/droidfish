@@ -1,0 +1,242 @@
+body {
+    min-width: 300px;
+    min-height: 500px;
+    background-color: #292A2D;
+    /* background-image: linear-gradient(to top, #209cff 100%, #68e0cf 200%); */
+    color: #ffffff;
+    padding: 0;
+    margin: 0;
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+    font-family: "Montserrat";
+}
+
+.header-logo {
+    background-color: #202123;
+    width: 100%;
+    /* position: absolute; */
+    /* right: 0; */
+    /* top: 0; */
+}
+
+.main-logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+    padding: 15px 0 15px 0px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    padding: 10px 25px;
+}
+
+
+.options-slider {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    margin-top: 30px;
+    margin-bottom: 8px;
+}
+
+.options-slider::before,
+.options-slider::after {
+    position: absolute;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.options-slider::before {
+    content: attr(data-min);
+    left: 10px;
+}
+
+.options-slider::after {
+    content: attr(data-max);
+    right: 10px;
+}
+
+.options-slider .title {
+    display: inline;
+    position: absolute;
+    top: -10px;
+    left: 8px;
+    transform: translateY(-50%);
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    font-size: 0.65rem;
+    /* pointer-events: none; */
+    /* user-select: none; */
+}
+
+
+.options-slider .title::after {
+    content: attr(data-value);
+    margin-left: 5px;
+    font-variant-numeric: tabular-nums;
+    color: #fff;
+}
+
+
+.options-slider input {
+    -webkit-appearance: none;
+    width: calc(100% - (70px));
+    height: 2px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.314);
+    outline: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+
+.options-slider input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+.options-slider input::-webkit-slider-thumb:hover {
+    background: #d4d4d4;
+    transform: scale(1.2);
+}
+
+.options-slider input::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border: 0;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    transition: background 0.15s ease-in-out;
+}
+
+.options-slider input::-moz-range-thumb:hover {
+    background: #d4d4d4;
+}
+
+.options-checkbox {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 10px 25px;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.options-checkbox input {
+    opacity: 0;
+    position: absolute;
+}
+
+.options-checkbox input+label {
+    user-select: none;
+}
+
+.options-checkbox input+label::before,
+.options-checkbox input+label::after {
+    content: "";
+    position: absolute;
+    transition: 150ms cubic-bezier(0.24, 0, 0.5, 1);
+    transform: translateY(-50%);
+    top: 50%;
+    right: 10px;
+    cursor: pointer;
+}
+
+.options-checkbox input+label::before {
+    height: 20px;
+    width: 33px;
+    border-radius: 20px;
+    background: rgba(214, 214, 214, 0.434);
+}
+
+.options-checkbox input+label::after {
+    height: 16px;
+    width: 16px;
+    border-radius: 60px;
+    right: 24px;
+    background: #fff;
+}
+
+.options-checkbox input:checked+label:before {
+    background: #2CA137;
+    transition: all 150ms cubic-bezier(0, 0, 0, 0.1);
+}
+
+.options-checkbox input:checked+label:after {
+    right: 14px;
+}
+
+.options-checkbox input:focus+label:before {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.75);
+}
+
+.options-checkbox input:disabled+label:before,
+.options-checkbox input:disabled+label:after {
+    cursor: not-allowed;
+}
+
+.options-checkbox input:disabled+label:before {
+    background: #4f4f6a;
+}
+
+.options-checkbox input:disabled+label:after {
+    background: #909090;
+}
+
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+
+    width: 260px;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -130px;
+
+    visibility: hidden;
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    text-align: center;
+    padding: 8px 8px;
+    border-radius: 6px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}

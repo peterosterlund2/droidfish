@@ -1,0 +1,194 @@
+.board-layout-evaluation {
+    display: flex;
+    grid-column: evaluation
+}
+
+.board-layout-evaluation>* {
+    margin-left: calc(var(--boardContainerWidth) - var(--boardWidth) - var(--gutterLeftOfBoard));
+    margin-right: calc(var(--gutterLeftOfBoard) + var(--boardWidth) - var(--boardContainerWidth))
+}
+
+@media (min-width: 960px) {
+    body.with-evaluation {
+        --evalAndGutter: calc(var(--gutterLeftOfBoard) + var(--evalWidth));
+        --evalWidth: 2rem
+    }
+
+    .board-layout-evaluation {
+        width: var(--evalWidth)
+    }
+
+    .board-layout-evaluation>* {
+        margin: 0 0 0 calc(var(--boardContainerWidth) - var(--boardWidth))
+    }
+}
+
+.evaluation-bar-bar {
+    border-radius: .2rem;
+    flex-shrink: 0;
+    height: 100%;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 20px
+}
+
+.evaluation-bar-bar.evaluation-bar-clickable {
+    cursor: pointer
+}
+
+.evaluation-bar-bar.evaluation-bar-flipped,
+.evaluation-bar-bar.evaluation-bar-flipped .evaluation-bar-loader,
+.evaluation-bar-bar.evaluation-bar-flipped .evaluation-bar-scoreAbbreviated {
+    transform: rotate(180deg)
+}
+
+.evaluation-bar-bar.evaluation-bar-flipped .evaluation-bar-score {
+    --flipTransform: rotate(180deg)
+}
+
+.evaluation-bar-bar .evaluation-bar-fill {
+    background-color: hsla(0, 0%, 100%, .05);
+    border-radius: .2rem;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    z-index: -1
+}
+
+.evaluation-bar-bar .evaluation-bar-color {
+    bottom: 0;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    transition: transform 1s ease-in;
+    width: 100%
+}
+
+.evaluation-bar-bar .evaluation-bar-white {
+    background-color: #fff;
+    z-index: 2
+}
+
+.evaluation-bar-bar .evaluation-bar-black {
+    background-color: #403d39;
+    z-index: 1
+}
+
+.evaluation-bar-bar .evaluation-bar-draw {
+    background-color: #777574;
+    z-index: 0
+}
+
+.evaluation-bar-bar .evaluation-bar-loader {
+    height: 100%;
+    width: 100%
+}
+
+.evaluation-bar-bar .evaluation-bar-loading-message {
+    color: hsla(0, 0%, 100%, .6);
+    font-size: 1.5rem;
+    font-weight: 600;
+    left: 50%;
+    position: absolute;
+    -webkit-text-orientation: sideways;
+    text-orientation: sideways;
+    text-transform: uppercase;
+    top: 50%;
+    transform: translate3d(-50%, -50%, 0) rotate(180deg);
+    -ms-writing-mode: tb-rl;
+    writing-mode: vertical-rl;
+    z-index: 2
+}
+
+.evaluation-bar-bar .evaluation-bar-score {
+    display: none;
+    font-size: 1.2rem;
+    font-weight: 600;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    padding: .5rem .2rem;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    z-index: 2
+}
+
+.evaluation-bar-bar .evaluation-bar-score.evaluation-bar-dark {
+    bottom: 0;
+    color: #403d39
+}
+
+.evaluation-bar-bar .evaluation-bar-score.evaluation-bar-light {
+    color: #fff;
+    top: 0
+}
+
+.evaluation-bar-bar .evaluation-bar-score.evaluation-bar-draw {
+    color: #fff
+}
+
+.evaluation-bar-bar:hover .evaluation-bar-score {
+    border-radius: .3rem;
+    bottom: auto;
+    display: block;
+    font-weight: 700;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    padding: .1rem .5rem;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    transform: translate(calc(10px - 50%), -50%) var(--flipTransform, rotate(0deg));
+    transition: opacity .2s;
+    transition-delay: .1s;
+    width: 45px;
+    z-index: 2
+}
+
+.evaluation-bar-bar:hover .evaluation-bar-score.evaluation-bar-dark {
+    background-color: #fff;
+    color: #403d39
+}
+
+.evaluation-bar-bar:hover .evaluation-bar-score.evaluation-bar-light {
+    background-color: #403d39;
+    color: #fff
+}
+
+.evaluation-bar-bar:hover .evaluation-bar-score-long {
+    white-space: nowrap;
+    width: auto
+}
+
+.evaluation-bar-bar .evaluation-bar-scoreAbbreviated {
+    font-size: 1rem;
+    font-weight: 600;
+    padding: .5rem 0;
+    position: absolute;
+    text-align: center;
+    white-space: pre;
+    width: 100%;
+    z-index: 2
+}
+
+.evaluation-bar-bar .evaluation-bar-scoreAbbreviated.evaluation-bar-dark {
+    bottom: 0;
+    color: #403d39
+}
+
+.evaluation-bar-bar .evaluation-bar-scoreAbbreviated.evaluation-bar-light {
+    color: #fff;
+    top: 0
+}
+
+.evaluation-bar-bar .evaluation-bar-scoreAbbreviated.evaluation-bar-draw {
+    background: transparent;
+    color: #fff;
+    top: calc(50% - 1rem)
+}
