@@ -900,7 +900,7 @@ used by Arena to compute the percentages is unknown.
     display: flex;
     grid-column: evaluation
 }
-
+*eval bar*
 .board-layout-evaluation>* {
     margin-left: calc(var(--boardContainerWidth) - var(--boardWidth) - var(--gutterLeftOfBoard));
     margin-right: calc(var(--gutterLeftOfBoard) + var(--boardWidth) - var(--boardContainerWidth))
