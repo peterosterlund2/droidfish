@@ -1,0 +1,2 @@
+* Improve translations
+* Add Fastlane app store metadata

@@ -1,0 +1,24 @@
+Port of the CuckooChess applet/engine.
+
+<b>Features include:</b>
+ * Opening books: Internal, polyglot, CTG
+ * Clocks
+ * Analyze mode
+ * Two player mode
+ * Edit board
+ * PGN import/export/edit
+ * FEN/EPD import
+ * Adjustable playing strength
+ * One Touch Moves
+ * Blindfold mode
+ * Color themes
+ * Animated moves
+ * Scid DB support using "Scid on the go"
+ * Highly configurable
+ * Third party UCI engines
+ * Configurable UCI engine options
+ * Support for "open exchange" engine apps, such as Texel and Komodo 8.
+ * Gaviota endgame tablebases
+ * Syzygy endgame tablebases
+If you have https://f-droid.org/packages/org.scid.android installed you can read Scid database files
+directly from the app by long-pressing the board and choosing Load game from a Scid file.
