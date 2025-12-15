@@ -1,3 +1,7 @@
+TBD: Version 1.91
+- Improve translations
+- Add Fastlane app store metadata
+
 2024-02-25: Version 1.90
 - Update to Stockfish 16.1.
 
